@@ -237,7 +237,7 @@ public class RaListener implements Listener {
         }
 
         if (event.getEntity().hasMetadata("ReActions-money")) {
-            if (!RaVault.isEconomyConected()) return;
+            if (!RaVault.isEconomyConnected()) return;
             if (killer != null) {
                 int money = Util.getMinMaxRandom(event.getEntity().getMetadata("ReActions-money").get(0).asString());
                 RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "", "");

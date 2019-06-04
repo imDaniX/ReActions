@@ -22,10 +22,9 @@
 
 package me.fromgate.reactions.externals.worldedit;
 
-import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.event.extent.EditSessionEvent;
 import com.sk89q.worldedit.event.platform.PlayerInputEvent;
 import com.sk89q.worldedit.extension.platform.Actor;
@@ -40,8 +39,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import static me.fromgate.reactions.externals.worldedit.RaWorldEdit.getRegionSelector;
-import static me.fromgate.reactions.externals.worldedit.RaWorldEdit.getSelection;
+import static me.fromgate.reactions.externals.worldedit.RaWorldEdit.*;
 
 public class WeListener {
     private static Region regionSelection = null;
@@ -56,11 +54,11 @@ public class WeListener {
         if (actor != null && actor.isPlayer()) {
             Player player = Bukkit.getPlayer(actor.getUniqueId());
             Bukkit.getScheduler().runTaskLater(plg(), () -> {
-                Selection selection = getSelection(player);
+                Region selection = getSelection(player);
                 if (selection != null) {
                     Region region = null;
                     try {
-                        region = selection.getRegionSelector().getRegion();
+                        region = getRegion(player);
                         if (region != null) {
                             // Check Region Selection
                             checkChangeSelectionRegion(player, selection, region);
@@ -78,19 +76,19 @@ public class WeListener {
     }
 
     @Subscribe
-    public void onPlayerInputEvent(PlayerInputEvent event) throws CommandException, IncompleteRegionException {
+    public void onPlayerInputEvent(PlayerInputEvent event) throws IncompleteRegionException {
         Player player = Bukkit.getPlayer(event.getPlayer().getUniqueId());
         if (player != null) {
-            Selection selection = getSelection(player);
+            Region selection = getSelection(player);
             if (selection != null) {
-                Region region = selection.getRegionSelector().getRegion();
+                Region region = getRegion(player);
                 // Check Region Selection
                 checkChangeSelectionRegion(player, selection, region);
             }
         }
     }
 
-    public void checkChangeSelectionRegion(Player player, Selection selection, Region region) {
+    public void checkChangeSelectionRegion(Player player, Region selection, Region region) {
         if (regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
             regionSelection = region.clone();
             if (raiseChangeSelectionRegionEvent(player, selection, regionSelection)) {
@@ -101,10 +99,10 @@ public class WeListener {
         }
     }
 
-    public static boolean raiseChangeSelectionRegionEvent(Player player, Selection selection, Region region) {
-        WeSelection weSelection = new WeSelection(selection.getRegionSelector().getTypeName(),
-                selection.getMinimumPoint(), selection.getMaximumPoint(),
-                selection.getArea(), selection.getWorld(), region.toString());
+    public static boolean raiseChangeSelectionRegionEvent(Player player, Region selection, Region region) {
+        WeSelection weSelection = new WeSelection(getRegionSelector(player).getTypeName(),
+                BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()), BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
+                selection.getArea(), BukkitAdapter.adapt(selection.getWorld()), region.toString());
         WeSelectionRegionEvent e = new WeSelectionRegionEvent(player, weSelection);
         Bukkit.getServer().getPluginManager().callEvent(e);
         return e.isCancelled();

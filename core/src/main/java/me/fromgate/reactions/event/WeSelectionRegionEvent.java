@@ -1,6 +1,5 @@
 package me.fromgate.reactions.event;
 
-import com.sk89q.worldedit.bukkit.selections.Selection;
 import com.sk89q.worldedit.regions.Region;
 import me.fromgate.reactions.externals.worldedit.WeSelection;
 import org.bukkit.entity.Player;
@@ -12,7 +11,7 @@ public class WeSelectionRegionEvent extends RAEvent {
     /*private Region region;
     private Selection selection; */
 
-    public WeSelectionRegionEvent(Player player, Selection selection, Region region) {
+    public WeSelectionRegionEvent(Player player, Region selection, Region region) {
         super(player);
         // this.selection = selection;
         // this.region = region;

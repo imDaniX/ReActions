@@ -1,15 +1,18 @@
 package me.fromgate.reactions.module.wgbridge;
 
-
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
+import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.domains.Association;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.flags.Flag;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.RegionGroup;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.fromgate.reactions.util.message.M;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
+import com.sk89q.worldguard.protection.regions.RegionQuery;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -17,19 +20,23 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-
-public class WGBridge5x extends WGBridge {
+public class WGBridge7x extends WGBridge {
 
     private static WorldGuardPlugin worldguard = null;
+    private static RegionContainer container;
+    private static RegionQuery query = null;
 
     @Override
     public void init() {
         if (!isConnected()) return;
+        setVersion("WGBridge 0.0.2/WG6x");
         if (this.wgPlugin instanceof WorldGuardPlugin) {
             worldguard = (WorldGuardPlugin) wgPlugin;
-            setVersion("WGBridge 0.0.2/WG5x");
+            container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+            query = container.createQuery();
         } else this.connected = false;
     }
 
@@ -38,16 +45,9 @@ public class WGBridge5x extends WGBridge {
         List<String> rgs = new ArrayList<>();
         if (loc == null) return rgs;
         if (!connected) return rgs;
-        ApplicableRegionSet rset = null;
-        try {
-            rset = worldguard.getRegionManager(loc.getWorld()).getApplicableRegions(loc);
-        } catch (Exception e) {
-            M.logMessage("Failed to get region list!");
-            e.printStackTrace();
-        }
+        ApplicableRegionSet rset = query.getApplicableRegions(BukkitAdapter.adapt(loc));
         if ((rset == null) || (rset.size() == 0)) return rgs;
-        for (ProtectedRegion rg : rset)
-            rgs.add(loc.getWorld().getName() + "." + rg.getId());
+        for (ProtectedRegion rg : rset) rgs.add((loc.getWorld().getName() + "." + rg.getId()).toLowerCase());
         return rgs;
     }
 
@@ -90,7 +90,7 @@ public class WGBridge5x extends WGBridge {
         if (rg.isEmpty()) return false;
         World world = getRegionWorld(rg);
         String regionName = getRegionName(rg);
-        return (worldguard.getRegionManager(world).getRegions().containsKey(regionName));
+        return (container.get(BukkitAdapter.adapt(world)).getRegions().containsKey(regionName));
     }
 
     @Override
@@ -99,7 +99,7 @@ public class WGBridge5x extends WGBridge {
         if (!connected) return locs;
         World world = getRegionWorld(rg);
         String regionName = getRegionName(rg);
-        ProtectedRegion prg = worldguard.getRegionManager(world).getRegion(regionName);
+        ProtectedRegion prg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (prg == null) return locs;
         locs.add(new Location(world, prg.getMinimumPoint().getX(), prg.getMinimumPoint().getY(), prg.getMinimumPoint().getZ()));
         locs.add(new Location(world, prg.getMaximumPoint().getX(), prg.getMaximumPoint().getY(), prg.getMaximumPoint().getZ()));
@@ -112,7 +112,7 @@ public class WGBridge5x extends WGBridge {
         if (!connected) return locs;
         World world = getRegionWorld(rg);
         String regionName = getRegionName(rg);
-        ProtectedRegion prg = worldguard.getRegionManager(world).getRegion(regionName);
+        ProtectedRegion prg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
 
         if (prg != null) {
             for (int x = prg.getMinimumPoint().getBlockX(); x <= prg.getMaximumPoint().getBlockX(); x++)
@@ -130,7 +130,6 @@ public class WGBridge5x extends WGBridge {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isPlayerIsMemberOrOwner(Player p, String region) {
         if (!connected) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
@@ -138,13 +137,13 @@ public class WGBridge5x extends WGBridge {
         if (region.isEmpty()) return false;
         World world = getRegionWorld(region);
         String regionName = getRegionName(region);
-        ProtectedRegion rg = worldguard.getRegionManager(world).getRegion(regionName);
+        ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
-        return (rg.isOwner(p.getName())) || (rg.isMember(p.getName()));
+        return localPlayer.getAssociation(Arrays.asList(rg)) != Association.NON_MEMBER;
     }
 
+
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isPlayerIsOwner(Player p, String region) {
         if (!connected) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
@@ -152,13 +151,12 @@ public class WGBridge5x extends WGBridge {
         if (region.isEmpty()) return false;
         World world = getRegionWorld(region);
         String regionName = getRegionName(region);
-        ProtectedRegion rg = worldguard.getRegionManager(world).getRegion(regionName);
+        ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
-        return rg.isOwner(p.getName());
+        return localPlayer.getAssociation(Arrays.asList(rg)) == Association.OWNER;
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean isPlayerIsMember(Player p, String region) {
         if (!connected) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
@@ -166,9 +164,9 @@ public class WGBridge5x extends WGBridge {
         if (region.isEmpty()) return false;
         World world = getRegionWorld(region);
         String regionName = getRegionName(region);
-        ProtectedRegion rg = worldguard.getRegionManager(world).getRegion(regionName);
+        ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
-        return rg.isMember(p.getName());
+        return localPlayer.getAssociation(Arrays.asList(rg)) == Association.MEMBER;
     }
 
     @Override
@@ -178,7 +176,7 @@ public class WGBridge5x extends WGBridge {
         World world = getRegionWorld(region);
         if (!loc.getWorld().equals(world)) return false;
         String regionName = getRegionName(region);
-        ProtectedRegion rg = worldguard.getRegionManager(world).getRegion(regionName);
+        ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
         return (rg.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
     }
@@ -209,20 +207,20 @@ public class WGBridge5x extends WGBridge {
         }
         if (world == null) return false;
         if (flagName == null) return false;
-        ProtectedRegion rg = worldguard.getRegionManager(world).getRegion(regionName);
+        ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
-        ApplicableRegionSet set = worldguard.getRegionManager(world).getApplicableRegions(rg);
-        Flag<?> f = DefaultFlag.fuzzyMatchFlag(flagName);
+        ApplicableRegionSet set = container.get(BukkitAdapter.adapt(world)).getApplicableRegions(rg);
+        Flag<?> f = Flags.fuzzyMatchFlag(WorldGuard.getInstance().getFlagRegistry(), flagName);
         if (f == null) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
-        if (set.getFlag(f, localPlayer) == null) return false;
+        if (set.queryValue(localPlayer, f) == null) return false;
         Boolean result = false;
-        String flagStr = set.getFlag(f, localPlayer).toString();
+        String flagStr = set.queryValue(localPlayer, f).toString();
         if (flagStr.equalsIgnoreCase(valueName)) result = true;
 
         if (result && group_parts.length > 1) {
             RegionGroup group;
-            group = set.getFlag(f.getRegionGroupFlag());
+            group = set.queryValue(null, f.getRegionGroupFlag());
             if ((group.toString()).replace("_", "").equalsIgnoreCase(group_parts[1].replace("_", ""))) return true;
         } else if (result) return true;
         return false;
@@ -233,6 +231,6 @@ public class WGBridge5x extends WGBridge {
     }
 
     public RegionManager getRegionManager(World world) {
-        return worldguard.getRegionContainer().get(world);
+        return container.get(BukkitAdapter.adapt(world));
     }
 }

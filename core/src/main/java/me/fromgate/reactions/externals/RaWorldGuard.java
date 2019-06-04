@@ -31,7 +31,7 @@ import me.fromgate.reactions.activators.RegionActivator;
 import me.fromgate.reactions.activators.RegionEnterActivator;
 import me.fromgate.reactions.activators.RegionLeaveActivator;
 import me.fromgate.reactions.module.wgbridge.WGBridge;
-import me.fromgate.reactions.module.wgbridge.WGBridge6x;
+import me.fromgate.reactions.module.wgbridge.WGBridge7x;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -65,7 +65,7 @@ public class RaWorldGuard {
             } catch (Exception ignored) {
             }
         }
-        return new WGBridge6x();
+        return new WGBridge7x();
     }
 
     public static void updateRegionCache() {
@@ -88,7 +88,7 @@ public class RaWorldGuard {
         List<String> regions = new ArrayList<>();
         for (String rg : regionActivators) {
             if (bridge.isLocationInRegion(loc, rg))
-                regions.add(WGBridge6x.getFullRegionName(rg));
+                regions.add(WGBridge7x.getFullRegionName(rg));
         }
         return regions;
     }

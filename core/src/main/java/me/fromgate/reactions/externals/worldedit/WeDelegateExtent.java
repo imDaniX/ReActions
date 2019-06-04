@@ -22,12 +22,12 @@
 
 package me.fromgate.reactions.externals.worldedit;
 
-import com.sk89q.worldedit.Vector;
 import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.blocks.BaseBlock;
 import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.extent.AbstractDelegateExtent;
 import com.sk89q.worldedit.extent.Extent;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.world.block.BlockStateHolder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -49,7 +49,7 @@ public class WeDelegateExtent extends AbstractDelegateExtent {
     }
 
     @Override
-    public boolean setBlock(Vector vector, BaseBlock block) throws WorldEditException {
+	public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 vector, T block) throws WorldEditException {
         Location loc = new Location(player.getWorld(), vector.getX(), vector.getY(), vector.getZ());
         Material blockType = Material.AIR; //Material.getMaterial(block.getId());
         return !WeListener.raiseWEChangeEvent(player, loc, blockType) && super.setBlock(vector, block);

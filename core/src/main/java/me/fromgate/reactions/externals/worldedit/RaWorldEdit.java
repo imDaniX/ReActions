@@ -1,18 +1,18 @@
 package me.fromgate.reactions.externals.worldedit;
 
 import com.sk89q.minecraft.util.commands.CommandException;
-import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.LocalConfiguration;
 import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.Vector;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
-import com.sk89q.worldedit.bukkit.selections.Polygonal2DSelection;
-import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Polygonal2DRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
+import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
@@ -67,7 +67,7 @@ public class RaWorldEdit {
         } catch (Exception ignored) {
         }
         if (r == null) return null;
-        Vector v = r.getMinimumPoint();
+        BlockVector3 v = r.getMinimumPoint();
         return new org.bukkit.util.Vector(v.getX(), v.getY(), v.getZ());
     }
 
@@ -79,7 +79,7 @@ public class RaWorldEdit {
         } catch (Exception ignored) {
         }
         if (r == null) return null;
-        Vector v = r.getMaximumPoint();
+        BlockVector3 v = r.getMaximumPoint();
         return new org.bukkit.util.Vector(v.getX(), v.getY(), v.getZ());
     }
 
@@ -90,13 +90,19 @@ public class RaWorldEdit {
     }
 
     public static RegionSelector getRegionSelector(Player player) {
-        Selection sel = worldedit.getSelection(player);
-        if (sel == null) return null;
-        return sel.getRegionSelector();
+        LocalSession session = worldedit.getSession(player);
+        if (session == null) return null;
+        return session.getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
     }
 
-    public static Selection getSelection(Player player) {
-        return worldedit.getSelection(player);
+    public static Region getSelection(Player player) {
+        LocalSession session = worldedit.getSession(player);
+        if (session == null) return null;
+        try {
+            return session.getSelection(BukkitAdapter.adapt(player.getWorld()));
+        } catch (IncompleteRegionException e) {
+            return null;
+        }
     }
 
     public static boolean hasSuperPickAxe(Player player) {
@@ -108,7 +114,7 @@ public class RaWorldEdit {
     }
 
     public static int getArea(Player player) {
-        Selection selection = getSelection(player);
+        Region selection = getSelection(player);
         if (selection == null) return 0;
         return selection.getArea();
     }
@@ -118,16 +124,16 @@ public class RaWorldEdit {
     }
 
     public static ProtectedRegion checkRegionFromSelection(Player player, String id) throws CommandException {
-        Selection selection = getSelection(player);
+        Region selection = getSelection(player);
         // Detect the type of region from WorldEdit
-        if (selection instanceof Polygonal2DSelection) {
-            Polygonal2DSelection polySel = (Polygonal2DSelection) selection;
-            int minY = polySel.getNativeMinimumPoint().getBlockY();
-            int maxY = polySel.getNativeMaximumPoint().getBlockY();
-            return new ProtectedPolygonalRegion(id, polySel.getNativePoints(), minY, maxY);
-        } else if (selection instanceof CuboidSelection) {
-            BlockVector min = selection.getNativeMinimumPoint().toBlockVector();
-            BlockVector max = selection.getNativeMaximumPoint().toBlockVector();
+        if (selection instanceof Polygonal2DRegion) {
+            Polygonal2DRegion polySel = (Polygonal2DRegion) selection;
+            int minY = polySel.getMaximumY();
+            int maxY = polySel.getMinimumY();
+            return new ProtectedPolygonalRegion(id, polySel.getPoints(), minY, maxY);
+        } else if (selection instanceof CuboidRegion) {
+            BlockVector3 min = selection.getMinimumPoint();
+            BlockVector3 max = selection.getMaximumPoint();
             return new ProtectedCuboidRegion(id, min, max);
         } else {
             //	Bukkit.broadcastMessage("§c"+"Sorry, you can only use cuboids and polygons for WorldGuard regions.");
@@ -140,9 +146,9 @@ public class RaWorldEdit {
         World world = p.getWorld();
         LocalPlayer player = RaWorldGuard.getWrapPlayer(p);
         String id = "__canbuild__";
-        Vector loc = player.getPosition();
-        BlockVector min = new Vector(loc.getBlockX() + radius, 0, loc.getBlockZ() + radius).toBlockVector();
-        BlockVector max = new Vector(loc.getBlockX() - radius, world.getMaxHeight(), loc.getBlockZ() - radius).toBlockVector();
+        Location loc = player.getLocation();
+        BlockVector3 min = BlockVector3.at(loc.getBlockX() + radius, 0, loc.getBlockZ() + radius);
+        BlockVector3 max = BlockVector3.at(loc.getBlockX() - radius, world.getMaxHeight(), loc.getBlockZ() - radius);
         ProtectedRegion region = new ProtectedCuboidRegion(id, min, max);
 
         ApplicableRegionSet set = RaWorldGuard.getRegionManager(world).getApplicableRegions(region);
@@ -179,8 +185,8 @@ public class RaWorldEdit {
             for (ProtectedRegion each : set) {
                 if (each != null) {
                     if (each.getOwners().contains(player) || each.getMembers().contains(player)) {
-                        BlockVector rgBlockMin = region.getMinimumPoint();
-                        BlockVector rgBlockMax = region.getMaximumPoint();
+                        BlockVector3 rgBlockMin = region.getMinimumPoint();
+                        BlockVector3 rgBlockMax = region.getMaximumPoint();
                         if (each.contains(rgBlockMin.getBlockX(), rgBlockMin.getBlockY(), rgBlockMin.getBlockZ())
                                 && each.contains(rgBlockMax.getBlockX(), rgBlockMax.getBlockY(), rgBlockMax.getBlockZ())) {
                             canBuild = true;

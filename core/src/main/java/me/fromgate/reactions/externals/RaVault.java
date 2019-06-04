@@ -48,11 +48,11 @@ public class RaVault {
         }
     }
 
-    public static boolean isEconomyConected() {
+    public static boolean isEconomyConnected() {
         return vault_eco;
     }
 
-    public static boolean isPermissionConected() {
+    public static boolean isPermissionConnected() {
         return vault_perm;
     }
 
@@ -77,36 +77,36 @@ public class RaVault {
     @Deprecated
     @SuppressWarnings("deprecation")
     public static double getBalance(String account) {
-        if (!isEconomyConected()) return 0;
+        if (!isEconomyConnected()) return 0;
         return economy.getBalance(account);
     }
 
     @Deprecated
     @SuppressWarnings("deprecation")
     public static void withdrawPlayer(String account, double amount) {
-        if (!isEconomyConected()) return;
+        if (!isEconomyConnected()) return;
         economy.withdrawPlayer(account, amount);
     }
 
     @Deprecated
     @SuppressWarnings("deprecation")
     public static void depositPlayer(String account, double amount) {
-        if (!isEconomyConected()) return;
+        if (!isEconomyConnected()) return;
         economy.depositPlayer(account, amount);
     }
 
     public static boolean playerAddGroup(Player p, String group) {
-        if (!isPermissionConected()) return false;
+        if (!isPermissionConnected()) return false;
         return permission.playerAddGroup(p, group);
     }
 
     public static boolean playerInGroup(Player p, String group) {
-        if (!isPermissionConected()) return false;
+        if (!isPermissionConnected()) return false;
         return permission.playerInGroup(p, group);
     }
 
     public static boolean playerRemoveGroup(Player p, String group) {
-        if (!isPermissionConected()) return false;
+        if (!isPermissionConnected()) return false;
         return permission.playerRemoveGroup(p, group);
     }
 
@@ -134,7 +134,7 @@ public class RaVault {
      */
     @SuppressWarnings("deprecation")
     public static boolean hasMoney(String account, String worldName, double amount) {
-        if (!RaVault.isEconomyConected()) return false;
+        if (!RaVault.isEconomyConnected()) return false;
         if (worldName.isEmpty()) return economy.has(account, amount);
         if (Bukkit.getWorld(worldName) == null) return false;
         return economy.has(account, worldName, amount);
@@ -142,7 +142,7 @@ public class RaVault {
 
 
     public static boolean creditAccount(String target, String source, double amount, String worldName) {
-        if (!RaVault.isEconomyConected()) return false;
+        if (!RaVault.isEconomyConnected()) return false;
         if (!source.isEmpty()) {
             if (hasMoney(source, worldName, amount)) return false;
             withdrawAccount(source, worldName, amount);
@@ -152,7 +152,7 @@ public class RaVault {
     }
 
     public static boolean debitAccount(String accountFrom, String accountTo, double amount, String worldName) {
-        if (!RaVault.isEconomyConected()) return false;
+        if (!RaVault.isEconomyConnected()) return false;
         if (!hasMoney(accountFrom, worldName, amount)) return false;
         withdrawAccount(accountFrom, worldName, amount);
         if (!accountTo.isEmpty()) depositAccount(accountTo, worldName, amount);
@@ -163,14 +163,14 @@ public class RaVault {
      * worldName ignored. Vault is not supporting formatting for world's vau
      */
     public static String format(double amount, String worldName) {
-        if (!isEconomyConected()) return Double.toString(amount);
+        if (!isEconomyConnected()) return Double.toString(amount);
         if (worldName.equalsIgnoreCase(Bukkit.getWorlds().get(0).getName())) return Double.toString(amount);
         return economy.format(amount);
     }
 
     @Deprecated
     public static String formatMoney(String value) {
-        if (!isEconomyConected()) return value;
+        if (!isEconomyConnected()) return value;
         return economy.format(Double.parseDouble(value)); // Integer???
     }
 

@@ -35,12 +35,12 @@ public class RaEconomics {
 
     public static boolean isEconomyFound() {
         if (RaCraftConomy.isEnabled()) return true;
-        return RaVault.isEconomyConected();
+        return RaVault.isEconomyConnected();
     }
 
     public static boolean hasMoney(String account, double amount, String currencyName, String worldName) {
         if (RaCraftConomy.isEnabled()) return RaCraftConomy.hasAmount(account, amount, currencyName, worldName);
-        if (RaVault.isEconomyConected()) return RaVault.hasMoney(account, worldName, amount);
+        if (RaVault.isEconomyConnected()) return RaVault.hasMoney(account, worldName, amount);
         return false;
     }
 
@@ -52,7 +52,7 @@ public class RaEconomics {
         if (RaCraftConomy.isEnabled()) {
             if (RaCraftConomy.creditAccount(target, source, amount, currencyName, worldName))
                 return RaCraftConomy.format(amount, currencyName, worldName);
-        } else if (RaVault.isEconomyConected()) {
+        } else if (RaVault.isEconomyConnected()) {
             if (RaVault.creditAccount(target, source, amount, worldName))
                 return RaVault.format(amount, worldName);
         }
@@ -66,7 +66,7 @@ public class RaEconomics {
         if (RaCraftConomy.isEnabled()) {
             if (RaCraftConomy.debitAccount(accountFrom, accountTo, amount, currencyName, worldName))
                 return RaCraftConomy.format(amount, currencyName, worldName);
-        } else if (RaVault.isEconomyConected()) {
+        } else if (RaVault.isEconomyConnected()) {
             if (RaVault.debitAccount(accountFrom, accountTo, amount, worldName))
                 return RaVault.format(amount, worldName);
         }
@@ -79,13 +79,13 @@ public class RaEconomics {
 
     public static Map<String, String> getBalances(Player p) {
         if (RaCraftConomy.isEnabled()) return RaCraftConomy.getAllBalances(p.getName());
-        else if (RaVault.isEconomyConected()) return RaVault.getAllBalances(p.getName());
+        else if (RaVault.isEconomyConnected()) return RaVault.getAllBalances(p.getName());
         return new HashMap<>();
     }
 
     public static String format(double amount, String currencyName, String worldName) {
         if (RaCraftConomy.isEnabled()) return RaCraftConomy.format(amount, currencyName, worldName);
-        if (RaVault.isEconomyConected())
+        if (RaVault.isEconomyConnected())
             return RaVault.format(amount, worldName.isEmpty() ? Bukkit.getWorlds().get(0).getName() : worldName);
         return Double.toString(amount);
     }

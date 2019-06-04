@@ -18,23 +18,19 @@ compileJava.sourceCompatibility = 1.8
 compileJava.targetCompatibility = 1.8
 
 
-
 repositories {
     mavenCentral()
     maven { url "http://repo.maven.apache.org/maven2" }
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
-    maven { url "http://maven.sk89q.com/repo/" }
     maven { url "http://repo.nukkit.ru" }
-    maven { url "https://mvnrepository.com/artifact/net.milkbowl.vault/VaultAPI" }
     maven { url "http://repo.dmulloy2.net/nexus/repository/public/" }
-    // ProtocolLib repo broken, try to look here too
-    maven { url "http://mvn.yawk.at/" }
     maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/"}
     maven { url "http://cnaude.org/repo/" }
     maven { url "https://repo.codemc.org/repository/maven-public"}
 }
 
 dependencies {
+    compile files(fileTree(dir: 'core/libs', includes: ['*.jar']))
     compile group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.2.1'
     compile group: 'com.massivecraft.massivecore', name: 'massivecore', version: '2.9.9'
     compile group: 'com.massivecraft.factions', name: 'factions', version: '2.9.0'
@@ -43,9 +39,6 @@ dependencies {
     compile group: 'com.palmergames.bukkit.towny', name: 'Towny', version: '0.9.1'
     compile group: 'com.greatmancode', name: 'craftconomy3', version: '3.3', ext: 'jar'
     compile group: 'org.bukkit', name: 'bukkit', version: '1.13.2-R0.1-SNAPSHOT'
-    compile group: 'com.sk89q', name: 'worldedit', version: '6.0.0-SNAPSHOT'
-    compile group: 'com.sk89q', name: 'worldguard', version: '6.1.1-SNAPSHOT'
-    compile group: 'net.milkbowl.vault', name: 'VaultAPI', version: '1.6'
     compile group: 'me.clip', name: 'placeholderapi', version: '2.9.2'
     compile group: 'org.bstats', name: 'bstats-bukkit-lite', version: '1.5'
 }
@@ -53,11 +46,9 @@ dependencies {
 
 sourceSets {
     core
-    WGBridge5x
     main {
         java {
             srcDir 'core/src/main/java'
-            srcDir 'WGBridge5x/src/main/java'
         }
         resources {
             srcDirs = ['core/src/main/resources']
@@ -68,16 +59,14 @@ sourceSets {
 
 jar {
     from sourceSets.core.output
-    from sourceSets.WGBridge5x.output
 }
 
 shadowJar {
     shadowJar.archiveName = 'ReActions-1.0-SNAPSHOT.jar'
     relocate 'org.bstats', 'me.fromgate.reactions.externals.bstats'
     dependencies {
-        include(dependency('org.bstats:bstats-bukkit-lite:1.2'))
+        include(dependency('org.bstats:bstats-bukkit-lite:1.5'))
         include(project(':core'))
-        include(project(':WGBridge5x'))
     }
 
 }
