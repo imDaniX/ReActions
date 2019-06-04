@@ -53,7 +53,7 @@ public class ButtonActivator extends Activator {
     ButtonActivator(String name, Block targetBlock) {
         super(name, "activators");
         if (targetBlock != null &&
-                (targetBlock.getType() == Material.STONE_BUTTON || targetBlock.getType() == Material.WOOD_BUTTON)) {
+                (targetBlock.getType().name().endsWith("_BUTTON"))) {
             this.world = targetBlock.getWorld().getName();
             this.x = targetBlock.getX();
             this.y = targetBlock.getY();

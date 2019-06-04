@@ -48,7 +48,7 @@ public class SignActivator extends Activator {
     public SignActivator(String name, Block targetBlock, String param) {
         super(name, "activators");
         Sign sign = null;
-        if (targetBlock != null && (targetBlock.getType() == Material.SIGN_POST || targetBlock.getType() == Material.WALL_SIGN)) {
+        if (targetBlock != null && (targetBlock.getType() == Material.SIGN || targetBlock.getType() == Material.WALL_SIGN)) {
             sign = (Sign) targetBlock.getState();
         }
         Param params = new Param(param);

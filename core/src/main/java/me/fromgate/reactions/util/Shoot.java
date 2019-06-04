@@ -113,7 +113,7 @@ public class Shoot {
     @SuppressWarnings("deprecation")
     private static boolean isEmpty(Block b, LivingEntity shooter) {
         if (!b.getType().isSolid()) return true;
-        if (Util.isItemInList(b.getType().getId(), b.getData(), actionShootThrough)) return true;
+        if (Util.isItemInList(b.getType(), b.getData(), actionShootThrough)) return true;
         if ((shooter instanceof Player) && (isShotAndBreak(b, (Player) shooter))) {
             b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
             b.breakNaturally();
@@ -131,7 +131,7 @@ public class Shoot {
 
     @SuppressWarnings("deprecation")
     private static boolean isShotAndBreak(Block b, Player p) {
-        if (Util.isItemInList(b.getType().getId(), b.getData(), actionShootBreak)) return breakBlock(b, p);
+        if (Util.isItemInList(b.getType(), b.getData(), actionShootBreak)) return breakBlock(b, p);
         return false;
     }
 

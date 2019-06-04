@@ -419,7 +419,7 @@ public class RaListener implements Listener {
     public void onSignClick(PlayerInteractEvent event) {
         if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if ((event.getClickedBlock().getType() != Material.WALL_SIGN) &&
-                (event.getClickedBlock().getType() != Material.SIGN_POST)) return;
+                (event.getClickedBlock().getType() != Material.SIGN)) return;
         Sign sign = (Sign) event.getClickedBlock().getState();
         if (sign == null) return;
         EventManager.raiseSignEvent(event.getPlayer(), sign.getLines(), event.getClickedBlock().getLocation(), event.getAction() == Action.LEFT_CLICK_BLOCK);

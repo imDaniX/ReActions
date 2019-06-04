@@ -11,7 +11,7 @@ commands:
       usage: 
            /react help
    exec:
-      aliases: [execute,run]
+      aliases: [run]
       description: execute EXEC-activator  
       usage: 
            /exec <ActivatorId> [player:<PlayerSelector>] [delay:<Time>]

@@ -233,28 +233,29 @@ public class ActionItems extends Action {
             case LEATHER_BOOTS:
             case CHAINMAIL_BOOTS:
             case IRON_BOOTS:
-            case GOLD_BOOTS:
+            case GOLDEN_BOOTS:
             case DIAMOND_BOOTS:
                 return 0;
             case LEATHER_LEGGINGS:
             case CHAINMAIL_LEGGINGS:
             case IRON_LEGGINGS:
-            case GOLD_LEGGINGS:
+            case GOLDEN_LEGGINGS:
             case DIAMOND_LEGGINGS:
                 return 1;
             case LEATHER_CHESTPLATE:
             case CHAINMAIL_CHESTPLATE:
             case IRON_CHESTPLATE:
-            case GOLD_CHESTPLATE:
+            case GOLDEN_CHESTPLATE:
             case DIAMOND_CHESTPLATE:
                 return 2;
+            /*
             case LEATHER_HELMET:
             case CHAINMAIL_HELMET:
             case IRON_HELMET:
-            case GOLD_HELMET:
+            case GOLDEN_HELMET:
             case DIAMOND_HELMET:
             case PUMPKIN:
-                return 3;
+            */
             default:
                 return 3;
         }

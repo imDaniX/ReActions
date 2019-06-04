@@ -57,10 +57,10 @@ public class ActionBlockSet extends Action {
         if (b.getType() != Material.AIR && drop) b.breakNaturally();
 
         if (item != null) {
-            //b.setType(item.getType());
-            //b.setData(item.getData().getData(),phys);
-            b.setTypeIdAndData(item.getTypeId(), item.getData().getData(), phys);
-        } else b.setTypeId(Material.AIR.getId(), phys);
+            b.setType(item.getType());
+            //b.setBlockData(item.getData(),phys);
+            //b.setTypeIdAndData(item.getTypeId(), item.getData().getData(), phys);
+        } else b.setType(Material.AIR, phys);
         setMessageParam(ItemUtil.itemToString(item));
         return true;
     }

@@ -28,8 +28,9 @@ import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
+import org.bukkit.material.Door;
 import org.bukkit.material.Lever;
 
 public class ActionPowerSet extends Action {
@@ -64,11 +65,9 @@ public class ActionPowerSet extends Action {
     @SuppressWarnings("deprecation")
     private boolean setPower(Block b, boolean power) {
         if (b.getType() == Material.LEVER) {
-            BlockState state = b.getState();
-            Lever lever = (Lever) state.getData();
-            lever.setPowered(power);
-            b.setData(lever.getData(), true);
-            state.update();
+            Switch sw = (Switch) b.getBlockData();
+            sw.setPowered(power);
+            b.setBlockData(sw, true);
         } else if (isDoorBlock(b)) {
             Util.setOpen(b, power);
         } else return false;
@@ -81,10 +80,7 @@ public class ActionPowerSet extends Action {
     }
 
     public boolean isDoorBlock(Block b) {
-        if (b.getType() == Material.WOODEN_DOOR) return true;
-        if (b.getType() == Material.TRAP_DOOR) return true;
-        if (b.getType() == Material.FENCE_GATE) return true;
-        return b.getType() == Material.IRON_DOOR_BLOCK;
+        return b.getBlockData() instanceof Door;
     }
 
 

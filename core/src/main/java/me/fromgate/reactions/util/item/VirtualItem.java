@@ -51,6 +51,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.json.simple.JSONObject;
@@ -163,17 +164,13 @@ public class VirtualItem extends ItemStack {
                 itemStr = itemStr.substring(0, itemStr.indexOf(":"));
                 dataStr = itemStr.substring(itemStr.indexOf(":") + 1);
             }
-            type = INT.matcher(itemStr).matches() ? Material.getMaterial(Integer
-                    .valueOf(itemStr)) : Material.getMaterial(itemStr
-                    .toUpperCase());
+            type = Material.getMaterial(itemStr.toUpperCase());
             data = INT.matcher(dataStr).matches() ? Integer.valueOf(dataStr) : 0;
             amount = getNumber(amountStr);
             if (amount == 0) return null;
         } else if (params.containsKey("type")) {
             String typeStr = getParam(params, "type", "");
-            type = INT.matcher(typeStr).matches() ? Material.getMaterial(Integer
-                    .valueOf(typeStr)) : Material.getMaterial(typeStr
-                    .toUpperCase());
+            type = Material.getMaterial(typeStr.toUpperCase());
         } else
             return null;
         if (type == null)
@@ -275,6 +272,7 @@ public class VirtualItem extends ItemStack {
     }
 
     // ////////////////////////////////////////////////////
+    @SuppressWarnings("deprecation")
     protected void setEnchantStorage(String enchStr) {
         if (enchStr == null || enchStr.isEmpty()) return;
         if (!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
@@ -327,6 +325,7 @@ public class VirtualItem extends ItemStack {
         this.setItemMeta(pm);
     }
 
+    @SuppressWarnings("deprecation")
     protected void setSkull(String owner) {
         if (owner == null || owner.isEmpty())
             return;
@@ -355,15 +354,8 @@ public class VirtualItem extends ItemStack {
         } else {
             DyeColor dc = parseDyeColor(colorStr);
             if (dc == null) return;
-            switch (this.getType()) {
-                case WOOL:
-                    this.setDurability(dc.getWoolData());
-                    break;
-                case INK_SACK:
-                    this.setDurability(dc.getDyeData());
-                default:
-                    break;
-            }
+            if(this.getData() instanceof Colorable)
+                ((Colorable)this).setColor(dc);
         }
     }
 
@@ -992,7 +984,6 @@ public class VirtualItem extends ItemStack {
      * @param itemStr - old item format
      * @return - ItemStack
      */
-    @SuppressWarnings("deprecation")
     protected static ItemStack parseOldItemStack(String itemStr) {
         if (!TRY_OLD_ITEM_PARSE)
             return null;
@@ -1015,23 +1006,19 @@ public class VirtualItem extends ItemStack {
             enchant = iStr.substring(iStr.indexOf("@") + 1);
             iStr = iStr.substring(0, iStr.indexOf("@"));
         }
-        int id;
+        Material id;
         int amount = 1;
         short data = 0;
         String[] si = iStr.split("\\*");
         if (si.length > 0) {
             if (si.length == 2)
                 amount = Math.max(getNumber(si[1]), 1);
-            String ti[] = si[0].split(":");
+            String[] ti = si[0].split(":");
             if (ti.length > 0) {
-                if (INT.matcher(ti[0]).matches())
-                    id = Integer.parseInt(ti[0]);
-                else {
-                    Material m = Material.getMaterial(ti[0].toUpperCase());
-                    if (m == null)
-                        return null;
-                    id = m.getId();
-                }
+                Material m = Material.getMaterial(ti[0].toUpperCase());
+                if (m == null)
+                    return null;
+                id = m;
                 if ((ti.length == 2) && (INT.matcher(ti[1]).matches()))
                     data = Short.parseShort(ti[1]);
                 ItemStack item = new ItemStack(id, amount, data);
@@ -1111,7 +1098,6 @@ public class VirtualItem extends ItemStack {
         return compare(itemMap, -1);
     }
 
-    @SuppressWarnings("deprecation")
     public boolean compare(Map<String, String> itemMap, int amount) {
         boolean regex = !itemMap.containsKey("regex") || itemMap.get("regex").equalsIgnoreCase("true");
 
@@ -1129,7 +1115,7 @@ public class VirtualItem extends ItemStack {
                 itemStr = itemStr.substring(0, itemStr.indexOf(":"));
                 dataStr = itemStr.substring(itemStr.indexOf(":") + 1);
             }
-            itemMap.put("type", INT.matcher(itemStr).matches() ? (Material.getMaterial(Integer.valueOf(itemStr))).name() : (Material.getMaterial(itemStr.toUpperCase())).name());
+            itemMap.put("type", Material.getMaterial(itemStr.toUpperCase()).name());
 
             if (INT.matcher(dataStr).matches()) itemMap.put("data", dataStr);
             if (INT.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
@@ -1141,15 +1127,13 @@ public class VirtualItem extends ItemStack {
         if (this.hasLore() && !itemMap.containsKey("lore")) return false;
         if (itemMap.containsKey("type")) {
             String typeStr = itemMap.get("type").toUpperCase();
-            if (INT.matcher(typeStr).matches()) {
-                Material m = null;
-                try {
-                    m = Material.getMaterial(Integer.parseInt(typeStr));
-                } catch (Exception ignored) {
-                }
-                if (m == null) return false;
-                typeStr = m.name();
+            Material m = null;
+            try {
+                m = Material.getMaterial(typeStr);
+            } catch (Exception ignored) {
             }
+            if (m == null) return false;
+            typeStr = m.name();
             if (!compareOrMatch(this.getType().name(), typeStr.toUpperCase(), regex)) return false;
 
             if (itemMap.containsKey("color")) {

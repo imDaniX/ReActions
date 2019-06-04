@@ -215,7 +215,7 @@ public class EventManager {
         if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK))) {
             return false;
         }
-        if (!((event.getClickedBlock().getType() == Material.STONE_BUTTON) || (event.getClickedBlock().getType() == Material.WOOD_BUTTON))) {
+        if (!(event.getClickedBlock().getType().name().endsWith("_BUTTON"))) {
             return false;
         }
         if (!BukkitCompatibilityFix.isHandSlot(event)) {
@@ -303,7 +303,7 @@ public class EventManager {
     // Plate Event
     public static boolean raisePlateEvent(PlayerInteractEvent event) {
         if (event.getAction() != Action.PHYSICAL) return false;
-        if (!((event.getClickedBlock().getType() == Material.WOOD_PLATE) || (event.getClickedBlock().getType() == Material.STONE_PLATE))) {
+        if (!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) {
             return false;
         }
         final Player p = event.getPlayer();

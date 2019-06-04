@@ -21,17 +21,11 @@ import java.util.regex.Pattern;
 public class ItemUtil {
 
     private static Random random = new Random();
-    private static boolean itemVersion = determineVersion(); // false - old, true - new;
 
     private final static Pattern INT_GZ = Pattern.compile("[1-9]+[0-9]*");
     private final static Pattern D = Pattern.compile("\\d+");
     private final static Pattern ITEM_D = Pattern.compile("item\\d+|ITEM\\d+");
     private final static Pattern SET_D = Pattern.compile("set\\d+|SET\\d+");
-
-    private static boolean determineVersion() {
-        String versionStr = Bukkit.getBukkitVersion().replaceAll("[^0-9]", "");
-        return versionStr.matches("15\\d*|16\\d*|17\\d*");
-    }
 
     public static void giveItemOrDrop(Player player, ItemStack item) {
         for (ItemStack itemDrop : player.getInventory().addItem(item).values()) {
@@ -40,7 +34,7 @@ public class ItemUtil {
     }
 
     public static VirtualItem itemFromString(String itemStr) {
-        return itemVersion ? VirtualItem.fromString(itemStr) : VirtualItem18.fromString(itemStr);
+        return VirtualItem.fromString(itemStr);
     }
 
     public static void giveItemOrDrop(Player player, String itemStr) {
@@ -156,7 +150,7 @@ public class ItemUtil {
     }
 
     public static VirtualItem itemFromItemStack(ItemStack item) {
-        return itemVersion ? VirtualItem.fromItemStack(item) : VirtualItem18.fromItemStack(item);
+        return VirtualItem.fromItemStack(item);
     }
 
     public static ItemStack parseItemStack(String string) {
@@ -232,7 +226,7 @@ public class ItemUtil {
     //item:{item1:{[...] chance:50} item2:{} item3:{}
 
     public static VirtualItem itemFromMap(Param params) {
-        return itemVersion ? VirtualItem.fromMap(params.getMap()) : VirtualItem18.fromMap(params.getMap());
+        return VirtualItem.fromMap(params.getMap());
 
     }
 

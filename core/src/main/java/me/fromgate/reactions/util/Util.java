@@ -388,21 +388,21 @@ public class Util {
      * представленным в виде строки вида id1:data1,id2:data2,MATERIAL_NAME:data
      * При этом если data может быть опущена
      */
-    public static boolean isItemInList(int id, int data, String str) {
+    public static boolean isItemInList(Material type, int data, String str) {
         String[] ln = str.split(",");
         if (ln.length > 0)
             for (String itemInList : ln) {
-                if (compareItemIdDataStr(id, data, itemInList)) return true;
+                if (compareItemIdDataStr(type, data, itemInList)) return true;
             }
 
         return false;
     }
 
     @SuppressWarnings("deprecation")
-    public static boolean compareItemIdDataStr(int id, int data, String itemStr) {
+    public static boolean compareItemIdDataStr(Material type, int data, String itemStr) {
         ItemStack item = ItemUtil.parseItemStack(itemStr);
         if (item == null) return false;
-        if (item.getTypeId() != id) return false;
+        if (item.getType() != type) return false;
         if (data < 0) return true;
         return data == item.getDurability();
     }

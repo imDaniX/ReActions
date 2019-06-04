@@ -91,11 +91,10 @@ public class ActionBlockFill extends Action {
                         Block block = min.getWorld().getBlockAt(x, y, z);
                         if (block.getType() != Material.AIR && drop) block.breakNaturally();
                         if (blockItem != null && blockItem.getType() != Material.AIR) {
-                            block.setTypeIdAndData(blockItem.getTypeId(), blockItem.getData().getData(), phys);
-                            /*
-                            block.setType(blockItem.getType());
-							block.setData(blockItem.getData().getData()); */
-                        } else block.setTypeId(Material.AIR.getId(), phys);
+                            //block.setTypeIdAndData(blockItem.getTypeId(), blockItem.getData().getData(), phys);
+                            block.setType(blockItem.getType(), phys);
+							//block.setData(blockItem.getData().getData());
+                        } else block.setType(Material.AIR, phys);
                     }
     }
 }

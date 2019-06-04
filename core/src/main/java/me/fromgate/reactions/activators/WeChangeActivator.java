@@ -56,7 +56,7 @@ public class WeChangeActivator extends Activator {
         else if (StringUtils.isNumeric(bType)) {
             int bTypeID = Integer.parseInt(bType);
             //noinspection deprecation
-            blockType = Material.getMaterial(bTypeID).name();
+            blockType = Material.getMaterial(bType).name();
         } else if (!bType.equalsIgnoreCase("ANY") && Material.getMaterial(bType) != null)
             blockType = Material.getMaterial(bType).name();
         else blockType = "ANY";

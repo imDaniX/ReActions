@@ -43,7 +43,7 @@ public class PlateActivator extends Activator {
 
     PlateActivator(String name, Block targetBlock) {
         super(name, "activators");
-        if (targetBlock != null && (targetBlock.getType() == Material.STONE_PLATE) || (targetBlock.getType() == Material.WOOD_PLATE)) {
+        if (targetBlock != null && (targetBlock.getType().name().endsWith("PRESSURE_PLATE"))) {
             this.world = targetBlock.getWorld().getName();
             this.x = targetBlock.getX();
             this.y = targetBlock.getY();
