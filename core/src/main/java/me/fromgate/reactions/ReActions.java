@@ -102,7 +102,7 @@ public class ReActions extends JavaPlugin {
         } catch (Throwable ignored) {
         }
 
-        new MetricsLite(this);
+        // new MetricsLite(this);
     }
 
 }
