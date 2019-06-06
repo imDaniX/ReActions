@@ -10,6 +10,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,22 @@ public class ItemUtil {
     private final static Pattern D = Pattern.compile("\\d+");
     private final static Pattern ITEM_D = Pattern.compile("item\\d+|ITEM\\d+");
     private final static Pattern SET_D = Pattern.compile("set\\d+|SET\\d+");
+
+    public static int getDurability(ItemStack item) {
+        ItemMeta meta = item.getItemMeta();
+        if(meta instanceof Damageable)
+            return ((Damageable)meta).getDamage();
+        return 0;
+    }
+
+    public static boolean setDurability(ItemStack item, int durability) {
+        ItemMeta meta = item.getItemMeta();
+        if(meta instanceof Damageable) {
+            ((Damageable)meta).setDamage(durability);
+            return true;
+        }
+        return false;
+    }
 
     public static void giveItemOrDrop(Player player, ItemStack item) {
         for (ItemStack itemDrop : player.getInventory().addItem(item).values()) {

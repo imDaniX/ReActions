@@ -39,10 +39,12 @@ import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Builder;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
@@ -51,7 +53,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.json.simple.JSONObject;
@@ -96,20 +97,20 @@ public class VirtualItem extends ItemStack {
     /**
      * Constructor Create new VirtualItem object
      *
-     * @param type   - Item type
-     * @param data   - durabiltity (data)
-     * @param amount - amount
+     * @param type   - Item material
+     * @param damage - Durability
+     * @param amount - Amount
      */
-    public VirtualItem(Material type, int data, int amount) {
+    public VirtualItem(Material type, int damage, int amount) {
         super(type);
-        this.setDurability((short) data);
+        this.setDamage(damage);
         this.setAmount(amount);
     }
 
     /**
      * Constructor Create new VirtualItem object based on ItemStack
      *
-     * @param item
+     * @param item   - Base ItemStack
      */
     public VirtualItem(ItemStack item) {
         super(item);
@@ -144,7 +145,6 @@ public class VirtualItem extends ItemStack {
      * @return - VirtualItem object
      */
 
-    @SuppressWarnings("deprecation")
     public static VirtualItem fromMap(Map<String, String> params) {
         if (params == null || params.isEmpty())
             return null;
@@ -154,7 +154,6 @@ public class VirtualItem extends ItemStack {
         if (params.containsKey("item") || params.containsKey("default-param")) {
             String itemStr = params.containsKey("item") ? params.get("item")
                     : params.get("default-param");
-            String dataStr = "0";
             String amountStr = "1";
             if (itemStr.contains("*")) {
                 itemStr = itemStr.substring(0, itemStr.indexOf("*"));
@@ -162,10 +161,8 @@ public class VirtualItem extends ItemStack {
             }
             if (itemStr.contains(":")) {
                 itemStr = itemStr.substring(0, itemStr.indexOf(":"));
-                dataStr = itemStr.substring(itemStr.indexOf(":") + 1);
             }
             type = Material.getMaterial(itemStr.toUpperCase());
-            data = INT.matcher(dataStr).matches() ? Integer.valueOf(dataStr) : 0;
             amount = getNumber(amountStr);
             if (amount == 0) return null;
         } else if (params.containsKey("type")) {
@@ -190,28 +187,21 @@ public class VirtualItem extends ItemStack {
         vi.setMap(getParam(params, "map-scale", "false").equalsIgnoreCase("true"));
         vi.setEnchantStorage(getParam(params, "stored-enchants"));
         vi.setFireworkEffect(getParam(params, "firework-effects"));
-        vi.setItemParams18(params);
         return vi;
-    }
-
-    public void setItemParams18(Map<String, String> params) {
-        // TODO Auto-generated method stub
-
     }
 
     /**
      * Serialize VirtualItem to Map<String,String>
      *
-     * @return
+     * @return - Map of parameters to recreate item
      */
     public Map<String, String> toMap() {
         Map<String, String> params = new LinkedHashMap<>();
         params.put("type", this.getType().name());
-        params.put("data", Integer.toString(this.getDurability()));
+        params.put("data", Integer.toString(this.getDamage()));
         params.put("amount", Integer.toString(this.getAmount()));
         putEnchants(params, "enchantments", this.getEnchantments());
         putItemMeta(params, this.getItemMeta());
-        putItemMeta18(params);
         if (ADD_REGEX) params.put("regex", "false");
         return params;
     }
@@ -222,7 +212,7 @@ public class VirtualItem extends ItemStack {
     /**
      * Serialize item to JSON-string
      *
-     * @return
+     * @return JSON-string generated from ItemStack
      */
     @SuppressWarnings("unchecked")
     public String toJSON() {
@@ -236,8 +226,8 @@ public class VirtualItem extends ItemStack {
     /**
      * Deserialize item from JSON-string
      *
-     * @param itemJSON
-     * @return
+     * @param itemJSON - JSON-string with item parameters
+     * @return - VirtualItem generated from JSON-string
      */
     public static VirtualItem fromJSONString(String itemJSON) {
         if (itemJSON == null || itemJSON.isEmpty())
@@ -272,7 +262,6 @@ public class VirtualItem extends ItemStack {
     }
 
     // ////////////////////////////////////////////////////
-    @SuppressWarnings("deprecation")
     protected void setEnchantStorage(String enchStr) {
         if (enchStr == null || enchStr.isEmpty()) return;
         if (!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
@@ -286,7 +275,7 @@ public class VirtualItem extends ItemStack {
                 eType = eType.substring(0, eType.indexOf(":"));
                 power = INT.matcher(powerStr).matches() ? Integer.valueOf(powerStr) : 0;
             }
-            Enchantment enchantment = Enchantment.getByName(eType.toUpperCase());
+            Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(eType.toUpperCase()));
             if (enchantment == null) continue;
             esm.addStoredEnchant(enchantment, power, true);
         }
@@ -341,7 +330,6 @@ public class VirtualItem extends ItemStack {
      *
      * @param colorStr
      */
-    @SuppressWarnings("deprecation")
     protected void setColor(String colorStr) {
         if (colorStr == null || colorStr.isEmpty()) return;
 
@@ -352,10 +340,12 @@ public class VirtualItem extends ItemStack {
             lm.setColor(c);
             this.setItemMeta(lm);
         } else {
+        /*
             DyeColor dc = parseDyeColor(colorStr);
             if (dc == null) return;
             if(this.getData() instanceof Colorable)
                 ((Colorable)this).setColor(dc);
+         */
         }
     }
 
@@ -366,7 +356,7 @@ public class VirtualItem extends ItemStack {
         for (Enchantment e : enchantments.keySet()) {
             if (sb.length() > 0)
                 sb.append(";");
-            sb.append(e.getName()).append(":").append(enchantments.get(e));
+            sb.append(e.getKey().getKey()).append(":").append(enchantments.get(e));
         }
         params.put(key, sb.toString());
     }
@@ -407,7 +397,7 @@ public class VirtualItem extends ItemStack {
             BookMeta bm = (BookMeta) itemMeta;
             put(params, "book-author", bm.getAuthor().replace('§', '&'));
             put(params, "book-title", bm.getTitle().replace('§', '&'));
-            if (bm.getPages() != null && !bm.getPages().isEmpty()) {
+            if (!bm.getPages().isEmpty()) {
                 List<String> pages = new ArrayList<>();
                 for (String page : bm.getPages()) {
                     String newPage = page.replaceAll("§0\n", "&z");
@@ -430,12 +420,12 @@ public class VirtualItem extends ItemStack {
         if (itemMeta instanceof SkullMeta) {
             SkullMeta sm = (SkullMeta) itemMeta;
             if (sm.hasOwner())
-                put(params, "skull-owner", sm.getOwner());
+                put(params, "skull-owner", sm.getOwningPlayer().getName());
         }
         if (itemMeta instanceof PotionMeta) {
             PotionMeta pm = (PotionMeta) itemMeta;
             if (pm.hasCustomEffects())
-                putEffects(params, "potion-effects", pm.getCustomEffects());
+                putEffects(params, pm.getCustomEffects());
         }
         if (itemMeta instanceof MapMeta) {
             MapMeta mm = (MapMeta) itemMeta;
@@ -486,8 +476,7 @@ public class VirtualItem extends ItemStack {
 
     }
 
-    protected void putEffects(Map<String, String> params, String key,
-                              List<PotionEffect> customEffects) {
+    protected void putEffects(Map<String, String> params, List<PotionEffect> customEffects) {
         StringBuilder sb = new StringBuilder();
         for (PotionEffect pef : customEffects) {
             if (sb.length() > 0)
@@ -495,7 +484,7 @@ public class VirtualItem extends ItemStack {
             sb.append(pef.getType().getName()).append(":");
             sb.append(pef.getAmplifier()).append(":").append(pef.getDuration());
         }
-        put(params, key, sb.toString());
+        put(params, "potion-effects", sb.toString());
     }
 
     protected static List<Color> parseColors(String colorStr) {
@@ -511,7 +500,7 @@ public class VirtualItem extends ItemStack {
     }
 
     /**
-     * Parse bukkit colors. Name and RGB vlues supported
+     * Parse bukkit colors. Name and RGB values supported
      *
      * @param colorStr - Color name, or RGB values (Example: 10,15,20)
      * @return - Color
@@ -531,9 +520,11 @@ public class VirtualItem extends ItemStack {
             DyeColor c = DyeColor.getByDyeData((byte) num);
             return c == null ? null : c.getColor();
         } else {
+        	/*
             for (DyeColor dc : DyeColor.values())
                 if (dc.name().equalsIgnoreCase(colorStr))
                     return dc.getColor();
+        	 */
         }
         return null;
     }
@@ -589,7 +580,7 @@ public class VirtualItem extends ItemStack {
                 return dc.name();
         if (!useRGB)
             getClosestColor(c).name();
-        String sb = String.valueOf(c.getRed()) + "," +
+        String sb = c.getRed() + "," +
                 c.getGreen() + "," +
                 c.getBlue();
         return sb;
@@ -632,7 +623,7 @@ public class VirtualItem extends ItemStack {
         if (this.getItemMeta().hasDisplayName()) sb.append(this.getItemMeta().getDisplayName());
         else {
             sb.append(this.getType().name());
-            if (this.getDurability() > 0) sb.append(":").append(this.getDurability());
+            if (this.getDamage() > 0) sb.append(":").append(this.getDamage());
         }
         if (this.getAmount() > 1) sb.append("*").append(this.getAmount());
         return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
@@ -666,8 +657,7 @@ public class VirtualItem extends ItemStack {
                 eType = eType.substring(0, eType.indexOf(":"));
                 power = INT_MIN_MAX.matcher(powerStr).matches() ? getNumber(powerStr) : 0;
             }
-            Enchantment enchantment = Enchantment
-                    .getByName(eType.toUpperCase());
+            Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(eType.toUpperCase()));
             if (enchantment == null)
                 continue;
             ench.put(enchantment, power);
@@ -826,7 +816,7 @@ public class VirtualItem extends ItemStack {
      *
      * @param params - Map contained parameter (key) and it's values
      * @param key    - Parameter id to get value
-     * @return
+     * @return - Value of parameter
      */
     protected static String getParam(Map<String, String> params, String key) {
         if (!params.containsKey(key)) return null;
@@ -849,8 +839,6 @@ public class VirtualItem extends ItemStack {
         trail = "true".equalsIgnoreCase(getParam(params, "trail", "false"));
         colors = parseColors(getParam(params, "colors", ""));
         fadeColors = parseColors(getParam(params, "fade-colors", ""));
-        if (fType == null)
-            return;
         Builder b = FireworkEffect.builder().with(fType);
         if (flicker)
             b = b.withFlicker();
@@ -1021,7 +1009,8 @@ public class VirtualItem extends ItemStack {
                 id = m;
                 if ((ti.length == 2) && (INT.matcher(ti[1]).matches()))
                     data = Short.parseShort(ti[1]);
-                ItemStack item = new ItemStack(id, amount, data);
+                ItemStack item = new ItemStack(id, amount);
+                ItemUtil.setDurability(item, data);
                 if (!enchant.isEmpty()) {
 
                     String[] ln = enchant.split(",");
@@ -1046,8 +1035,7 @@ public class VirtualItem extends ItemStack {
                                 level = Math.max(1, getNumber(ec.substring(ench
                                         .length() + 1)));
                             }
-                            Enchantment e = Enchantment.getByName(ench
-                                    .toUpperCase());
+                            Enchantment e = Enchantment.getByKey(NamespacedKey.minecraft(ench.toUpperCase()));
                             if (e == null)
                                 continue;
                             item.addUnsafeEnchantment(e, level);
@@ -1080,7 +1068,7 @@ public class VirtualItem extends ItemStack {
         if (this.getAmount() < amountToRemove)
             return false; // Сравниваем ТЕКУЩИЙ предмет с целевым. Т.е. текущего должно быть столько же (или больше чем) того с которым сравниваем.
         if (this.getType() != item.getType()) return false;
-        if (this.getDurability() != item.getDurability()) return false;
+        if (this.getDamage() != ItemUtil.getDurability(item)) return false;
         return Bukkit.getItemFactory().equals(this.getItemMeta(), item.getItemMeta());
     }
 
@@ -1099,9 +1087,10 @@ public class VirtualItem extends ItemStack {
     }
 
     public boolean compare(Map<String, String> itemMap, int amount) {
+		if (itemMap == null || itemMap.isEmpty()) return false;
+		
         boolean regex = !itemMap.containsKey("regex") || itemMap.get("regex").equalsIgnoreCase("true");
 
-        if (itemMap == null || itemMap.isEmpty()) return false;
         ItemMeta thisMeta = this.getItemMeta();
         if (itemMap.containsKey("item") || itemMap.containsKey("default-param")) {
             String itemStr = itemMap.containsKey("item") ? itemMap.get("item") : itemMap.get("default-param");
@@ -1119,8 +1108,8 @@ public class VirtualItem extends ItemStack {
 
             if (INT.matcher(dataStr).matches()) itemMap.put("data", dataStr);
             if (INT.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
-            if (itemMap.containsKey("item")) itemMap.remove("item");
-            if (itemMap.containsKey("default-param")) itemMap.remove("default-param");
+			itemMap.remove("item");
+			itemMap.remove("default-param");
         }
         if (amount > 0) itemMap.put("amount", Integer.toString(amount));
         if (this.hasDisplayName() && !itemMap.containsKey("name")) return false;
@@ -1137,24 +1126,19 @@ public class VirtualItem extends ItemStack {
             if (!compareOrMatch(this.getType().name(), typeStr.toUpperCase(), regex)) return false;
 
             if (itemMap.containsKey("color")) {
+            	/*
                 DyeColor dyeColor = parseDyeColor(itemMap.get("color"));
-                switch (typeStr.toUpperCase()) {
-                    case "WOOL":
-                    case "35":
-                        itemMap.put("data", String.valueOf(dyeColor.getWoolData()));
-                        break;
-                    case "INK_SACK":
-                    case "351":
-                        itemMap.put("data", String.valueOf(dyeColor.getWoolData()));
-                        break;
-                }
+                if(this.getItemMeta() instanceof Colorable)
+                	itemMap.put("data", String.valueOf(dyeColor.getWoolData()));
+
+            	*/
             }
         }
 
         if (itemMap.containsKey("data")) {
             String dataStr = itemMap.get("data");
             int reqData = INT.matcher(dataStr).matches() ? Integer.parseInt(dataStr) : -1;
-            if (reqData != (int) this.getDurability()) return false;
+            if (reqData != this.getDamage()) return false;
         }
         if (itemMap.containsKey("amount")) {
             String amountStr = itemMap.get("amount");
@@ -1176,10 +1160,10 @@ public class VirtualItem extends ItemStack {
         }
 
         if (itemMap.containsKey("lore")) {
-            List<String> thisLore = thisMeta.hasLore() ? thisMeta.getLore() : new ArrayList<String>();
+            List<String> thisLore = thisMeta.hasLore() ? thisMeta.getLore() : new ArrayList<>();
             String thisLoreStr = Joiner.on(DIVIDER).join(thisLore);
             String loreStr = ChatColor.translateAlternateColorCodes('&', itemMap.get("lore")); //Joiner.on(regex ? Pattern.quote(DIVIDER) : DIVIDER).join(thisLore);
-            if (!compareOrMatch(thisLoreStr, loreStr, regex)) return false;
+            return compareOrMatch(thisLoreStr, loreStr, regex);
         }
         return true;
     }
@@ -1196,5 +1180,29 @@ public class VirtualItem extends ItemStack {
             }
         }
         return str.equalsIgnoreCase(toStr);
+    }
+
+    /**
+     * Actually {@link #getDurability()} but for 1.13+
+     *
+     * @return Durability of item
+     */
+    public int getDamage() {
+        ItemMeta meta = this.getItemMeta();
+        if(meta instanceof Damageable) {
+            return ((Damageable)meta).getDamage();
+        }
+        return 0;
+    }
+    
+    /**
+     * Actually {@link #setDurability(short)} but for 1.13+
+     */
+    public void setDamage(int damage) {
+        ItemMeta meta = this.getItemMeta();
+        if(meta instanceof Damageable) {
+            ((Damageable)meta).setDamage(damage);
+            this.setItemMeta(meta);
+        }
     }
 }

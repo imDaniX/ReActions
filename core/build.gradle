@@ -17,6 +17,7 @@ repositories {
 }
 
 dependencies {
+    compile files(fileTree(dir: 'core/libs', includes: ['*.jar']))
     compile group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.2.1'
     compile group: 'com.massivecraft.massivecore', name: 'massivecore', version: '2.9.9'
     compile group: 'com.massivecraft.factions', name: 'factions', version: '2.9.0'
@@ -27,5 +28,4 @@ dependencies {
     compile group: 'org.bukkit', name: 'bukkit', version: '1.13.2-R0.1-SNAPSHOT'
     compile group: 'me.clip', name: 'placeholderapi', version: '2.9.2'
     compile group: 'org.bstats', name: 'bstats-bukkit-lite', version: '1.5'
-    compile files(fileTree(dir: 'libs', includes: ['*.jar']))
 }
