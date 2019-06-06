@@ -21,7 +21,7 @@ public class ActionWalkSpeed extends Action {
         return walkSpeedPlayer(player, speed / 10);
     }
 
-    public boolean walkSpeedPlayer(Player player, double speed) {
+    private boolean walkSpeedPlayer(Player player, double speed) {
         if (player == null || player.isDead() || !player.isOnline()) return false;
         if (speed > 1) speed = 1;
         if (speed < 0) speed = 0;

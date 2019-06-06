@@ -23,9 +23,9 @@
 package me.fromgate.reactions.util.mob;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.activators.ExecActivator;
 import me.fromgate.reactions.externals.RaEffects;
 import me.fromgate.reactions.externals.RaWorldGuard;
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -33,6 +33,7 @@ import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.M;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -112,7 +113,6 @@ public class MobSpawn {
     }
 
 
-    @SuppressWarnings("deprecation")
     private static List<LivingEntity> spawnMob(Location loc, String mobstr) {
         List<LivingEntity> mobs = new ArrayList<>();
         String[] ln = mobstr.split(":");
@@ -127,15 +127,14 @@ public class MobSpawn {
                 mbs = mbs.substring(name.length() + 1);
             }
 
+            EntityType et = EntityType.ZOMBIE;
+            try {
+                et = EntityType.valueOf(mbs.toUpperCase());
+            } catch (IllegalArgumentException ignore) {            }
 
-            EntityType et = EntityType.fromName(mbs);
             if (mbs.equalsIgnoreCase("horse")) et = MobHorse.getHorseType();
             if (mbs.equalsIgnoreCase("wither")) et = MobWither.getWitherType();
 
-            if (et == null) {
-                M.logOnce("mobspawnunknowntype_" + mobstr, "Unknown mob type " + mbs + " (" + mobstr + ")");
-                continue;
-            }
             Entity e = loc.getWorld().spawnEntity(loc, et);
             if (e == null) {
                 M.logOnce("mobspawnfail_" + mobstr, "Cannot spawn mob " + mbs + " (" + mobstr + ")");
@@ -152,7 +151,7 @@ public class MobSpawn {
             LivingEntity mob = (LivingEntity) e;
             setMobName(mob, name);
             mobs.add(mob);
-            if (k > 0) BukkitCompatibilityFix.addPassenger(mobs.get(k), mobs.get(k - 1));
+            if (k > 0) mobs.get(k).addPassenger(mobs.get(k - 1));
             k++;
         }
         //if (mobs.size() == 2) mobs.get(1).setPassenger(mobs.get(0));
@@ -167,29 +166,29 @@ public class MobSpawn {
         RaEffects.playEffect(loc, playeffect, data);
     }
 
-    public static void setMobName(LivingEntity e, String name) {
+    private static void setMobName(LivingEntity e, String name) {
         if (name.isEmpty()) return;
         if ((e.getCustomName() != null) && (!e.getCustomName().isEmpty())) return;
         e.setCustomName(ChatColor.translateAlternateColorCodes('&', name.replace("_", " ")));
         e.setCustomNameVisible(true);
     }
 
-    public static void setMobXP(LivingEntity e, String xp) {
+    private static void setMobXP(LivingEntity e, String xp) {
         if (xp.isEmpty()) return;
         e.setMetadata("ReActions-xp", new FixedMetadataValue(ReActions.instance, xp));
     }
 
-    public static void setMobMoney(LivingEntity e, String money) {
+    private static void setMobMoney(LivingEntity e, String money) {
         if (money.isEmpty()) return;
         e.setMetadata("ReActions-money", new FixedMetadataValue(ReActions.instance, money));
     }
 
-    public static void setMobExec(LivingEntity e, String exec_activator, String exec_delay) {
+    private static void setMobExec(LivingEntity e, String exec_activator, String exec_delay) {
         if (exec_activator.isEmpty()) return;
         e.setMetadata("ReActions-activator", new FixedMetadataValue(ReActions.instance, "activator:" + exec_activator + (exec_delay.isEmpty() ? "" : " delay:" + exec_delay)));
     }
 
-    public static void setMobDrop(LivingEntity e, String drop) {
+    private static void setMobDrop(LivingEntity e, String drop) {
         //id:data*amount,id:dat*amount%chance;id:data*amount;id:dat*amount%chance;id:data*amount;id:dat*amount%chance
         if (drop.isEmpty()) return;
         List<ItemStack> stack = ItemUtil.parseRandomItemsStr(drop);
@@ -212,7 +211,7 @@ public class MobSpawn {
         e.setMetadata("ReActions-growl", new FixedMetadataValue(ReActions.instance, growl));
     }
 
-    public static void setMobDropStack(LivingEntity e, List<ItemStack> stack) {
+    private static void setMobDropStack(LivingEntity e, List<ItemStack> stack) {
         if (stack.isEmpty()) return;
         drops.put(e, stack);
         //e.setMetadata("ReActions-drop", new FixedMetadataValue(ReActions.instance, stack));
@@ -224,12 +223,11 @@ public class MobSpawn {
     }
 
 
-    public static void setMobHealth(LivingEntity e, double health) {
-        if (health > 0) {
-            if (health > BukkitCompatibilityFix.getEntityHealth(e))
-                BukkitCompatibilityFix.setEntityMaxHealth(e, health);
-            BukkitCompatibilityFix.setEntityHealth(e, health);
-        }
+    private static void setMobHealth(LivingEntity e, double health) {
+        if (health > 0)
+            if (health > e.getHealth())
+                e.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
+            e.setHealth(health);
     }
 
     public static void setMobEquipment(LivingEntity e, String equip) {
@@ -262,12 +260,12 @@ public class MobSpawn {
         }
         if (!weapon.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(weapon);
-            if (item != null) BukkitCompatibilityFix.setItemInHand(e, item);
+            if (item != null) e.getEquipment().setItemInMainHand(item);
         }
 
         if (!offhand.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(offhand);
-            if (item != null) BukkitCompatibilityFix.setItemInOffHand(e, item);
+            if (item != null) e.getEquipment().setItemInOffHand(item);
         }
     }
 

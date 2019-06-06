@@ -1,9 +1,7 @@
 package me.fromgate.reactions.util.item;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -62,22 +60,24 @@ public class ItemUtil {
     }
 
     public static boolean removeItemInHand(Player player, String itemStr) {
-        ItemStack inHand = BukkitCompatibilityFix.getItemInHand(player);
-        if (inHand == null || inHand.getType() == Material.AIR) return false;
+        ItemStack inHand = player.getInventory().getItemInMainHand();
+        if (inHand == null || inHand.getType() == Material.AIR)
+            return false;
         VirtualItem hand = VirtualItem.fromItemStack(inHand);
         VirtualItem vi = removeItemFromStack(hand, itemStr);
         if (vi == null) return false;
-        BukkitCompatibilityFix.setItemInHand(player, vi.getType() == Material.AIR ? null : vi);
+        player.getInventory().setItemInMainHand(vi.getType() == Material.AIR ? null : vi);
         return true;
     }
 
     public static boolean removeItemInOffHand(Player player, String itemStr) {
-        ItemStack inHand = BukkitCompatibilityFix.getItemInOffHand(player);
-        if (inHand == null || inHand.getType() == Material.AIR) return false;
+        ItemStack inHand = player.getInventory().getItemInOffHand();
+        if (inHand == null || inHand.getType() == Material.AIR)
+            return false;
         VirtualItem hand = VirtualItem.fromItemStack(inHand);
         VirtualItem vi = removeItemFromStack(hand, itemStr);
         if (vi == null) return false;
-        BukkitCompatibilityFix.setItemInOffHand(player, vi.getType() == Material.AIR ? null : vi);
+        player.getInventory().setItemInOffHand(vi.getType() == Material.AIR ? null : vi);
         return true;
     }
 

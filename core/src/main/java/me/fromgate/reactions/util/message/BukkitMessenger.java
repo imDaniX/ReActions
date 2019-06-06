@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.util.message;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -76,14 +75,12 @@ public class BukkitMessenger implements Messenger {
         return tip(sender, text);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean tip(Object sender, String text) {
         Player player = toPlayer(sender);
-        if (player == null) {
+        if (player == null)
             return false;
-        }
-        BukkitCompatibilityFix.sendTitle(player, text);
+        player.sendTitle(null, text, 10, 70, 20);
         return true;
     }
 

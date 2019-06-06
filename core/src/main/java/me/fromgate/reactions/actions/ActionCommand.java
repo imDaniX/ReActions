@@ -37,7 +37,7 @@ public class ActionCommand extends Action {
     public final static int CONSOLE = 2;
     public final static int CHAT = 3;
 
-    private int commandAs = NORMAL;
+    private int commandAs;
 
 
     public ActionCommand(int commandAs) {
@@ -66,7 +66,7 @@ public class ActionCommand extends Action {
         return true;
     }
 
-    public static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
+    private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
         if (Bukkit.isPrimaryThread()) {
             dispatchCmd(setOp, sender, commandLine);
         } else {

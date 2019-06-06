@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.flags.Flags;
@@ -31,7 +30,6 @@ import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.M;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -122,18 +120,14 @@ public enum Actions {
     RADIUS_CLEAR("clearradius", true, new ActionClearRadius());
 
     private String alias;
-    private boolean requireplayer;
+    private boolean requirePlayer;
     private Action action;
 
-    Actions(String alias, boolean requireplayer, Action action) {
+    Actions(String alias, boolean requirePlayer, Action action) {
         this.alias = alias;
-        this.requireplayer = requireplayer;
+        this.requirePlayer = requirePlayer;
         this.action = action;
         this.action.init(this);
-    }
-
-    static ReActions plg() {
-        return ReActions.instance;
     }
 
     public String getAlias() {
@@ -175,8 +169,7 @@ public enum Actions {
                 String timeStr = param.getParam("time", "0");
                 long time = Util.parseTime(timeStr);
                 if (time == 0) continue;
-                List<ActVal> futureList = new ArrayList<>();
-                futureList.addAll(actions.subList(i + 1, actions.size()));
+                List<ActVal> futureList = new ArrayList<>(actions.subList(i + 1, actions.size()));
                 aw.executeDelayed(player, futureList, isAction, time);
                 return cancelParentEvent;
             }
@@ -188,7 +181,7 @@ public enum Actions {
     }
 
     public boolean performAction(Player p, /*Activator a,*/ boolean action, Param actionParam) {
-        if ((p == null) && this.requireplayer) return false;
+        if ((p == null) && this.requirePlayer) return false;
         return this.action.executeAction(p,/* a,*/ action, actionParam);
     }
 
@@ -213,18 +206,5 @@ public enum Actions {
             }
         }
         Util.printPage(sender, actionList, M.MSG_ACTIONLISTTITLE, pageNum);
-    }
-
-
-    public Player getNearestPlayer(Player player) {
-        Player nearest = null;
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if (!player.getWorld().equals(onlinePlayer.getWorld())) continue; // Check only players in player's world
-            if ((nearest != null) &&
-                    (player.getLocation().distance(nearest.getLocation()) < player.getLocation().distance(onlinePlayer.getLocation())))
-                continue;
-            nearest = onlinePlayer;
-        }
-        return nearest;
     }
 }

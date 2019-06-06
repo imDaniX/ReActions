@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.GodMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -63,9 +62,9 @@ public class FlagState extends Flag {
                 if (!player.isInsideVehicle()) return false;
                 return player.getVehicle().getType() == EntityType.PIG;
             case SPECTATOR_TARGET:
-                if (BukkitCompatibilityFix.getSpectatorTarget(player) != null) return true;
+                if (player.getSpectatorTarget() != null) return true;
             case GLIDE:
-                if (BukkitCompatibilityFix.isGliding(player)) return true;
+                if (player.isGliding()) return true;
             case GOD:
                 GodMode.setCheckGod(player);
                 if (GodMode.isGod(player)) return true;

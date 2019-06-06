@@ -32,7 +32,6 @@ import me.fromgate.reactions.activators.MessageActivator;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.activators.SignActivator;
 import me.fromgate.reactions.externals.RaWorldGuard;
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -47,6 +46,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -57,6 +57,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -70,6 +71,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -133,48 +135,43 @@ public class EventManager {
     public static boolean raiseDoorEvent(PlayerInteractEvent event) {
         if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
-        if (!Util.isDoorBlock(event.getClickedBlock())) return false;
-        if (!BukkitCompatibilityFix.isHandSlot(event)) {
+        if (!Util.isDoorBlock(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND)
             return false;
-        }
         DoorEvent e = new DoorEvent(event.getPlayer(), Util.getDoorBottomBlock(event.getClickedBlock()));
         Bukkit.getServer().getPluginManager().callEvent(e);
         return e.isCancelled();
     }
 
     public static boolean raiseItemConsumeEvent(PlayerItemConsumeEvent event) {
-        if (event.getItem() == null) return false;
         ItemConsumeEvent ce = new ItemConsumeEvent(event.getPlayer());
         Bukkit.getServer().getPluginManager().callEvent(ce);
         return ce.isCancelled();
     }
 
     public static boolean raiseItemClickEvent(PlayerInteractEntityEvent event) {
-        ItemStack itemInHand = BukkitCompatibilityFix.getItemInHand(event.getPlayer());
-        if (itemInHand == null || itemInHand.getType() == Material.AIR) return false;
-        if (!BukkitCompatibilityFix.isHandSlot(event)) {
+        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+        if (itemInHand == null || itemInHand.getType() == Material.AIR)
             return false;
-        }
+        if (event.getHand() != EquipmentSlot.HAND)
+            return false;
         ItemClickEvent ice = new ItemClickEvent(event.getPlayer());
         Bukkit.getServer().getPluginManager().callEvent(ice);
         return true;
     }
 
     public static boolean raiseItemClickEvent(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) {
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return false;
-        }
-        if (!BukkitCompatibilityFix.isHandSlot(event)) {
+        if (event.getHand() != EquipmentSlot.HAND)
             return false;
-        }
-        ItemStack itemInHand = BukkitCompatibilityFix.getItemInHand(event.getPlayer());
-        if (itemInHand == null || itemInHand.getType() == Material.AIR) return false;
+        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+        if (itemInHand == null || itemInHand.getType() == Material.AIR)
+            return false;
         ItemClickEvent ice = new ItemClickEvent(event.getPlayer());
         Bukkit.getServer().getPluginManager().callEvent(ice);
-        itemInHand = BukkitCompatibilityFix.getItemInHand(event.getPlayer());
-        if (itemInHand == null || itemInHand.getType() == Material.AIR) {
+        itemInHand = event.getPlayer().getInventory().getItemInMainHand();
+        if (itemInHand == null || itemInHand.getType() == Material.AIR)
             event.setCancelled(true);
-        }
         return true;
     }
 
@@ -182,9 +179,8 @@ public class EventManager {
     public static boolean raiseLeverEvent(PlayerInteractEvent event) {
         if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
-        if (!BukkitCompatibilityFix.isHandSlot(event)) {
+        if (event.getHand() != EquipmentSlot.HAND)
             return false;
-        }
         if (event.getClickedBlock().getType() != Material.LEVER) return false;
         LeverEvent e = new LeverEvent(event.getPlayer(), event.getClickedBlock());
         Bukkit.getServer().getPluginManager().callEvent(e);
@@ -218,7 +214,7 @@ public class EventManager {
         if (!(event.getClickedBlock().getType().name().endsWith("_BUTTON"))) {
             return false;
         }
-        if (!BukkitCompatibilityFix.isHandSlot(event)) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return false;
         }
         BlockState state = event.getClickedBlock().getState();
@@ -363,12 +359,12 @@ public class EventManager {
         if (player.isDead()) return;
         if (!RaWorldGuard.isPlayerInRegion(player, region)) return;
         String rg = "rg-" + region;
-        if (!isTimeToRaiseEvent(player, rg, Cfg.worlduardRecheck, repeat)) return;
+        if (!isTimeToRaiseEvent(player, rg, Cfg.worldguardRecheck, repeat)) return;
 
         RegionEvent wge = new RegionEvent(player, region);
         Bukkit.getServer().getPluginManager().callEvent(wge);
 
-        Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureRegionCheck(playerName, region, true), 20 * Cfg.worlduardRecheck);
+        Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureRegionCheck(playerName, region, true), 20 * Cfg.worldguardRecheck);
     }
 
 
@@ -407,7 +403,7 @@ public class EventManager {
         @SuppressWarnings("deprecation")
         Player player = Bukkit.getPlayerExact(playerName);
         if (player == null || !player.isOnline() || player.isDead()) return false;
-        ItemStack itemInHand = BukkitCompatibilityFix.getItemInHand(player);
+        ItemStack itemInHand = player.getInventory().getItemInMainHand();
         if (itemInHand == null || itemInHand.getType() == Material.AIR) return false;
         String rg = "ih-" + itemStr;
         if (!isTimeToRaiseEvent(player, rg, Cfg.itemHoldRecheck, repeat)) return false;
@@ -451,10 +447,10 @@ public class EventManager {
     public static boolean raiseMobDamageEvent(EntityDamageEvent event, Player damager) {
         if (damager == null) return false;
         if (!(event.getEntity() instanceof LivingEntity)) return false;
-        double damage = BukkitCompatibilityFix.getEventDamage(event);
+        double damage = event.getDamage();
         MobDamageEvent mde = new MobDamageEvent((LivingEntity) event.getEntity(), damager, damage, event.getCause());
         Bukkit.getServer().getPluginManager().callEvent(mde);
-        BukkitCompatibilityFix.setEventDamage(event, mde.getDamage());
+        event.setDamage(mde.getDamage());
         return mde.isCancelled();
     }
 
@@ -465,11 +461,11 @@ public class EventManager {
     }
 
     public static boolean raiseBlockClickEvent(PlayerInteractEvent event) {
-        Boolean leftClick;
+        boolean leftClick;
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) leftClick = false;
         else if (event.getAction() == Action.LEFT_CLICK_BLOCK) leftClick = true;
         else return false;
-        if (!BukkitCompatibilityFix.isHandSlot(event)) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return false;
         }
         BlockClickEvent e = new BlockClickEvent(event.getPlayer(), event.getClickedBlock(), leftClick);
@@ -477,7 +473,6 @@ public class EventManager {
         return e.isCancelled();
     }
 
-    @SuppressWarnings("deprecation")
     public static boolean raiseInventoryClickEvent(InventoryClickEvent event) {
         Player p = (Player) event.getWhoClicked();
         ItemStack oldItem = event.getCurrentItem();
@@ -496,10 +491,10 @@ public class EventManager {
     public static boolean raiseDropEvent(PlayerDropItemEvent event) {
         Item item = event.getItemDrop();
         Player player = event.getPlayer();
-        double pickupDelay = BukkitCompatibilityFix.getItemPickupDelay(item);
+        double pickupDelay = item.getPickupDelay();
         DropEvent e = new DropEvent(player, event.getItemDrop(), pickupDelay);
         Bukkit.getServer().getPluginManager().callEvent(e);
-        BukkitCompatibilityFix.setItemPickupDelay(item, e.getPickupDelay());
+        e.setPickupDelay(e.getPickupDelay());
         ItemStack newItemStack = e.getItemStack();
         if (newItemStack != null && newItemStack.getType() == Material.AIR) {
             item.remove();
@@ -513,7 +508,7 @@ public class EventManager {
                 itemStack.setType(newItemStack.getType());
                 if (newItemStack.getData() != null) itemStack.setData(newItemStack.getData());
                 if (newItemStack.getItemMeta() != null) itemStack.setItemMeta(newItemStack.getItemMeta());
-                itemStack.setDurability(newItemStack.getDurability());
+                ItemUtil.setDurability(itemStack, ItemUtil.getDurability(newItemStack));
             }
         }
         return e.isCancelled();
@@ -526,7 +521,7 @@ public class EventManager {
     }
 
     public static boolean raiseEntityClickEvent(PlayerInteractEntityEvent event) {
-        if (!BukkitCompatibilityFix.isHandSlot(event)) {
+        if (event.getHand() != EquipmentSlot.HAND) {
             return false;
         }
         EntityClickEvent e = new EntityClickEvent(event.getPlayer(), event.getRightClicked());
@@ -535,10 +530,10 @@ public class EventManager {
     }
 
     public static boolean raiseBlockBreakEvent(BlockBreakEvent event) {
-        boolean isDropItems = BukkitCompatibilityFix.isDropItems(event);
+        boolean isDropItems = event.isDropItems();
         PlayerBlockBreakEvent e = new PlayerBlockBreakEvent(event.getPlayer(), event.getBlock(), isDropItems);
         Bukkit.getServer().getPluginManager().callEvent(e);
-        BukkitCompatibilityFix.setDropItems(event, e.isDropItems());
+        event.setDropItems(e.isDropItems());
         return e.isCancelled();
     }
 
@@ -549,29 +544,32 @@ public class EventManager {
     }
 
     public static boolean raisePlayerDamageByMobEvent(EntityDamageByEntityEvent event, LivingEntity damager, Entity entityDamager) {
-        if (!(event.getEntity() instanceof LivingEntity)) return false;
-        double damage = BukkitCompatibilityFix.getEventDamage(event);
+        if (!(event.getEntity() instanceof LivingEntity))
+            return false;
+        double damage = event.getDamage();
         DamageByMobEvent dm = new DamageByMobEvent((Player) event.getEntity(), damager, entityDamager, damage, event.getCause());
         Bukkit.getServer().getPluginManager().callEvent(dm);
-        BukkitCompatibilityFix.setEventDamage(event, dm.getDamage());
+        event.setDamage(dm.getDamage());
         return dm.isCancelled();
     }
 
     public static boolean raisePlayerDamageByBlockEvent(EntityDamageByBlockEvent event, Block blockDamager) {
-        if (!(event.getEntity() instanceof LivingEntity)) return false;
-        double damage = BukkitCompatibilityFix.getEventDamage(event);
+        if (!(event.getEntity() instanceof LivingEntity))
+            return false;
+        double damage = event.getDamage();
         DamageByBlockEvent db = new DamageByBlockEvent((Player) event.getEntity(), blockDamager, damage, event.getCause());
         Bukkit.getServer().getPluginManager().callEvent(db);
-        BukkitCompatibilityFix.setEventDamage(event, db.getDamage());
+        event.setDamage(db.getDamage());
         return db.isCancelled();
     }
 
     public static boolean raisePlayerDamageEvent(EntityDamageEvent event, String source) {
-        if (!(event.getEntity() instanceof LivingEntity)) return false;
-        double damage = BukkitCompatibilityFix.getEventDamage(event);
+        if (!(event.getEntity() instanceof LivingEntity))
+            return false;
+        double damage = event.getDamage();
         DamageEvent de = new DamageEvent((Player) event.getEntity(), damage, event.getCause(), source);
         Bukkit.getServer().getPluginManager().callEvent(de);
-        BukkitCompatibilityFix.setEventDamage(event, de.getDamage());
+        event.setDamage(de.getDamage());
         return de.isCancelled();
     }
 
@@ -591,22 +589,24 @@ public class EventManager {
     }
 
     public static boolean raiseProjectileHitEvent(ProjectileHitEvent event) {
-        Entity hitEntity = BukkitCompatibilityFix.getHitEntity(event);
-        if (hitEntity == null || !(hitEntity instanceof Player)) return false;
+        Entity hitEntity = event.getHitEntity();
+        if (hitEntity == null || !(hitEntity instanceof Player))
+            return false;
         Player player = (Player) hitEntity;
         Entity entity = event.getEntity();
-        if (entity == null) return false;
         // TODO PlayerProjectileHit activator
         return false;
     }
 
-    public static boolean raisePlayerPickupItemEvent(PlayerPickupItemEvent event) {
+    public static boolean raisePlayerPickupItemEvent(EntityPickupItemEvent event) {
         Item item = event.getItem();
-        Player player = event.getPlayer();
-        double pickupDelay = BukkitCompatibilityFix.getItemPickupDelay(item);
+        if(event.getEntityType() != EntityType.PLAYER)
+            return false;
+        Player player = (Player) event.getEntity();
+        int pickupDelay = item.getPickupDelay();
         PickupItemEvent e = new PickupItemEvent(player, event.getItem(), pickupDelay);
         Bukkit.getServer().getPluginManager().callEvent(e);
-        BukkitCompatibilityFix.setItemPickupDelay(item, e.getPickupDelay());
+        item.setPickupDelay(e.getPickupDelay());
         ItemStack newItemStack = e.getItemStack();
         if (newItemStack != null && newItemStack.getType() == Material.AIR) {
             e.setCancelled(true);
@@ -621,7 +621,7 @@ public class EventManager {
                 itemStack.setType(newItemStack.getType());
                 if (newItemStack.getData() != null) itemStack.setData(newItemStack.getData());
                 if (newItemStack.getItemMeta() != null) itemStack.setItemMeta(newItemStack.getItemMeta());
-                itemStack.setDurability(newItemStack.getDurability());
+                ItemUtil.setDurability(itemStack, ItemUtil.getDurability(newItemStack));
             }
         }
         return e.isCancelled();

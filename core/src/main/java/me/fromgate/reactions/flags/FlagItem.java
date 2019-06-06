@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
@@ -42,7 +41,7 @@ public class FlagItem extends Flag {
     public boolean checkFlag(Player player, String itemStr) {
         switch (flagType) {
             case 0:
-                ItemStack inHand = BukkitCompatibilityFix.getItemInHand(player);
+                ItemStack inHand = player.getInventory().getItemInMainHand();
                 Variables.setTempVar("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
                 return ItemUtil.compareItemStr(inHand, itemStr, true);
             case 1:
@@ -50,7 +49,7 @@ public class FlagItem extends Flag {
             case 2:
                 return isItemWeared(player, itemStr);
             case 3:
-                ItemStack inOffhand = BukkitCompatibilityFix.getItemInOffHand(player);
+                ItemStack inOffhand = player.getInventory().getItemInOffHand();
                 Variables.setTempVar("item_amount", inOffhand == null ? "0" : String.valueOf(inOffhand.getAmount()));
                 return ItemUtil.compareItemStr(inOffhand, itemStr, true);
         }

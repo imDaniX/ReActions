@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import org.bukkit.entity.Player;
 
 public class FlagHealth extends Flag {
@@ -35,6 +34,6 @@ public class FlagHealth extends Flag {
         } catch (Exception e) {
             return false;
         }
-        return BukkitCompatibilityFix.getEntityHealth(player) >= health;
+        return player.getHealth() >= health;
     }
 }

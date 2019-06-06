@@ -42,7 +42,7 @@ public class PickupItemActivator extends Activator {
         Variables.setTempVar("item", ItemUtil.itemToString(pie.getItemStack()));
         boolean result = Actions.executeActivator(pie.getPlayer(), this);
         String pickupDelayStr = Variables.getTempVar("pickupDelay");
-        if (FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Double.parseDouble(pickupDelayStr));
+        if (FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
         Param itemParam = new Param(Variables.getTempVar("item"));
         if (!itemParam.isEmpty()) {
             String itemType = itemParam.getParam("type", "0");

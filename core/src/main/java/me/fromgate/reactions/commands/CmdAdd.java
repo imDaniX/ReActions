@@ -8,7 +8,6 @@ import me.fromgate.reactions.externals.RaWorldGuard;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.timer.Timers;
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.FakeCmd;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
@@ -36,8 +35,7 @@ public class CmdAdd extends Cmd {
             arg4 = new StringBuilder(arg4.toString().trim());
         }
         if (ActivatorType.isValid(arg1)) {
-            @SuppressWarnings("deprecation")
-            Block block = BukkitCompatibilityFix.getTargetBlock(player, 100);
+            Block block = player.getTargetBlock(null, 100);
             return addActivator(sender, player, arg1, arg2, (arg3.isEmpty() ? "" : arg3) + ((arg4.length() == 0) ? "" : " " + arg4), block);
         } else if (arg1.equalsIgnoreCase("loc")) {
             if (player == null) return false;

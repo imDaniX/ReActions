@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.EntityEffect;
@@ -44,9 +43,9 @@ public class ActionDamage extends Action {
     }
 
 
-    public boolean damagePlayer(Player player, double damage) {
+    private boolean damagePlayer(Player player, double damage) {
         if (player == null || player.isDead() || !player.isOnline()) return false;
-        if (damage > 0) BukkitCompatibilityFix.damageEntity(player, damage);
+        if (damage > 0) player.damage(damage);
         else player.playEffect(EntityEffect.HURT);
         setMessageParam(Double.toString(damage));
         return true;

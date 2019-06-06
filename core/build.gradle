@@ -17,7 +17,7 @@ repositories {
 }
 
 dependencies {
-    compile files(fileTree(dir: 'core/libs', includes: ['*.jar']))
+    compile files(fileTree(dir: 'libs', includes: ['*.jar']))
     compile group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.2.1'
     compile group: 'com.massivecraft.massivecore', name: 'massivecore', version: '2.9.9'
     compile group: 'com.massivecraft.factions', name: 'factions', version: '2.9.0'

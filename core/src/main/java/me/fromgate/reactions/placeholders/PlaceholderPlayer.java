@@ -1,6 +1,5 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.PlayerRespawner;
 import me.fromgate.reactions.util.Util;
@@ -20,7 +19,7 @@ public class PlaceholderPlayer extends Placeholder {
         if (player == null) return null;
         switch (key.toLowerCase()) {
             case "health":
-                return Double.toString(BukkitCompatibilityFix.getEntityHealth(player));
+                return Double.toString(player.getHealth());
             case "player_inv":
             case "invplayer":
                 return getPlayerInventory(player, param);
@@ -48,7 +47,6 @@ public class PlaceholderPlayer extends Placeholder {
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     private Location getViewLocation(Player p) {
         Block b = p.getTargetBlock(null, 100);
         if (b == null) return p.getLocation();
@@ -56,9 +54,8 @@ public class PlaceholderPlayer extends Placeholder {
     }
 
 
-    @SuppressWarnings("deprecation")
     private String getPlayerItemInHand(Player player) {
-        VirtualItem vi = ItemUtil.itemFromItemStack(player.getItemInHand()); //VirtualItem.fromItemStack(player.getItemInHand());
+        VirtualItem vi = ItemUtil.itemFromItemStack(player.getInventory().getItemInMainHand()); //VirtualItem.fromItemStack(player.getItemInHand());
         if (vi == null) return "";
         return vi.toString();
     }
@@ -71,8 +68,13 @@ public class PlaceholderPlayer extends Placeholder {
             vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
         } else {
             switch (value.toLowerCase()) {
+                case "mainhand":
                 case "hand":
                     return getPlayerItemInHand(player);
+                case "offhand":
+                    vi = ItemUtil.itemFromItemStack(player.getInventory().getItemInOffHand());
+                    break;
+                case "head":
                 case "helm":
                 case "helmet":
                     vi = ItemUtil.itemFromItemStack(player.getInventory().getHelmet());

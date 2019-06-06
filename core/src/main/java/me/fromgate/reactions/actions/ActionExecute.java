@@ -34,7 +34,7 @@ public class ActionExecute extends Action {
         return execActivator(player, params);
     }
 
-    public boolean execActivator(Player player, Param params) {
+    private boolean execActivator(Player player, Param params) {
         String id = params.getParam("activator", "");
         if (id.isEmpty()) return false;
         setMessageParam(id);

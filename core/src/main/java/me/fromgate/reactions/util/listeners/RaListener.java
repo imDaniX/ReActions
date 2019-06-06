@@ -77,7 +77,6 @@ import me.fromgate.reactions.event.WeChangeEvent;
 import me.fromgate.reactions.event.WeSelectionRegionEvent;
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.GodMode;
 import me.fromgate.reactions.util.PlayerRespawner;
 import me.fromgate.reactions.util.RaDebug;
@@ -86,6 +85,7 @@ import me.fromgate.reactions.util.TempOp;
 import me.fromgate.reactions.util.UpdateChecker;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import me.fromgate.reactions.util.mob.MobSpawn;
 import me.fromgate.reactions.util.waiter.ActionsWaiter;
 import org.bukkit.Bukkit;
@@ -109,6 +109,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
@@ -132,6 +133,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -149,8 +151,8 @@ public class RaListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL)
     public void onServerCommandEvent(ServerCommandEvent event) {
         EventManager.raiseMessageEvent(Bukkit.getConsoleSender(), MessageActivator.Source.CONSOLE_INPUT, event.getCommand());
-        if (EventManager.raiseCommandEvent(null, event.getCommand(), BukkitCompatibilityFix.isCancelledServerCommandEvent(event))) {
-            BukkitCompatibilityFix.setCancelledServerCommandEvent(event, true);
+        if (EventManager.raiseCommandEvent(null, event.getCommand(), event.isCancelled())) {
+            event.setCancelled(true);
         }
     }
 
@@ -187,9 +189,11 @@ public class RaListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerPickupItemEvent(PlayerPickupItemEvent event) {
-        EventManager.raiseItemHoldEvent(event.getPlayer());
-        EventManager.raiseItemWearEvent(event.getPlayer());
+    public void onPlayerPickupItemEvent(EntityPickupItemEvent event) {
+        if(event.getEntityType() != EntityType.PLAYER) return;
+        Player player = (Player) event.getEntity();
+        EventManager.raiseItemHoldEvent(player);
+        EventManager.raiseItemWearEvent(player);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -208,9 +212,8 @@ public class RaListener implements Listener {
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerClickMob(PlayerInteractEntityEvent event) {
         EventManager.raiseItemClickEvent(event);
-        if (event.getRightClicked() == null) return;
         if (!(event.getRightClicked() instanceof LivingEntity)) return;
-        if (!BukkitCompatibilityFix.isHandSlot(event)) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
         EventManager.raiseMobClickEvent(event.getPlayer(), (LivingEntity) event.getRightClicked());
     }
 
@@ -297,8 +300,7 @@ public class RaListener implements Listener {
         if (!damager.hasMetadata("ReActions-dmg")) return;
         double dmg = damager.getMetadata("ReActions-dmg").get(0).asDouble();
         if (dmg < 0) return;
-        dmg = BukkitCompatibilityFix.getEventDamage(event) * dmg;
-        BukkitCompatibilityFix.setEventDamage(event, dmg);
+        event.setDamage(event.getDamage() * dmg);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -308,7 +310,7 @@ public class RaListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDamage(EntityDamageEvent event) {
-        String source = "ANY";
+        String source;
         if (event.getEntity().getType() != EntityType.PLAYER) return;
 
         if (event.getCause() == DamageCause.CUSTOM && Math.round(event.getDamage()) == 0) {
@@ -320,12 +322,10 @@ public class RaListener implements Listener {
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             Entity entityDamager = evdmg.getDamager();
             LivingEntity damager = Util.getDamagerEntity(event);
-            if (damager == null && entityDamager != null && entityDamager instanceof Projectile) {
-                damager = BukkitCompatibilityFix.getShooter((Projectile) entityDamager);
-            }
-            if (EventManager.raisePlayerDamageByMobEvent(evdmg, damager, entityDamager)) {
+            if (damager == null && entityDamager instanceof Projectile)
+                damager = EntityUtil.getEntityFromProjectile((Projectile)entityDamager);
+            if (EventManager.raisePlayerDamageByMobEvent(evdmg, damager, entityDamager))
                 event.setCancelled(true);
-            }
         } else if ((event instanceof EntityDamageByBlockEvent)) {
             source = "BLOCK";
             EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
@@ -368,7 +368,7 @@ public class RaListener implements Listener {
         EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
         if (evdmg.getDamager() instanceof Projectile) {
             Projectile prj = (Projectile) evdmg.getDamager();
-            LivingEntity shooter = BukkitCompatibilityFix.getShooter(prj);
+            LivingEntity shooter = EntityUtil.getEntityFromProjectile(prj.getShooter());
             if (shooter == null) return;
             if (!(shooter instanceof Player)) return;
         } else if (evdmg.getDamager().getType() != EntityType.PLAYER) return;
@@ -386,7 +386,7 @@ public class RaListener implements Listener {
             damager = (Player) evdmg.getDamager();
         } else if (evdmg.getDamager() instanceof Projectile) {
             Projectile prj = (Projectile) evdmg.getDamager();
-            LivingEntity shooter = BukkitCompatibilityFix.getShooter(prj);
+            LivingEntity shooter = EntityUtil.getEntityFromProjectile(prj.getShooter());
             if (shooter == null) return;
             if (!(shooter instanceof Player)) return;
             damager = (Player) shooter;
@@ -479,12 +479,12 @@ public class RaListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+    public void onPlayerPickupItem(EntityPickupItemEvent event) {
         if (EventManager.raisePlayerPickupItemEvent(event)) event.setCancelled(true);
     }
 
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerJoinActivators(PlayerJoinEvent event) {
         EventManager.raiseJoinEvent(event.getPlayer(), !event.getPlayer().hasPlayedBefore());
         EventManager.raiseAllRegionEvents(event.getPlayer(), event.getPlayer().getLocation(), null);

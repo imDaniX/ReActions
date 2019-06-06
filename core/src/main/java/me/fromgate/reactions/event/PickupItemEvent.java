@@ -9,9 +9,9 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PickupItemEvent extends RAEvent {
     private ItemStack itemStack;
-    private Double pickupDelay;
+    private int pickupDelay;
 
-    public PickupItemEvent(Player p, Item item, double pickupDelay) {
+    public PickupItemEvent(Player p, Item item, int pickupDelay) {
         super(p);
         this.itemStack = item.getItemStack();
         this.pickupDelay = pickupDelay;
@@ -25,11 +25,11 @@ public class PickupItemEvent extends RAEvent {
         this.itemStack = itemStack;
     }
 
-    public Double getPickupDelay() {
+    public int getPickupDelay() {
         return this.pickupDelay;
     }
 
-    public void setPickupDelay(Double pickupDelay) {
+    public void setPickupDelay(int pickupDelay) {
         this.pickupDelay = pickupDelay;
     }
 

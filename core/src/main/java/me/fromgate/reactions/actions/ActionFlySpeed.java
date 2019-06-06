@@ -21,7 +21,7 @@ public class ActionFlySpeed extends Action {
         return flySpeedPlayer(player, speed / 10);
     }
 
-    public boolean flySpeedPlayer(Player player, double speed) {
+    private boolean flySpeedPlayer(Player player, double speed) {
         if (player == null || player.isDead() || !player.isOnline()) return false;
         if (speed > 1) speed = 1;
         if (speed < 0) speed = 0;

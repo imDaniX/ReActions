@@ -62,7 +62,6 @@ public class ActionPowerSet extends Action {
         return power;
     }
 
-    @SuppressWarnings("deprecation")
     private boolean setPower(Block b, boolean power) {
         if (b.getType() == Material.LEVER) {
             Switch sw = (Switch) b.getBlockData();

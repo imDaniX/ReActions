@@ -34,7 +34,6 @@ import org.bukkit.inventory.ItemStack;
 
 public class ActionBlockSet extends Action {
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean execute(Player p, Param params) {
         //String istr = params.getParam("block", "");

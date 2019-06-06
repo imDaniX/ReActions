@@ -29,10 +29,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
@@ -147,15 +146,11 @@ public class Shoot {
         eDirection.add(new Vector(0.0D, 0.1D, 0.0D)).multiply(knockbackTarget);
         entity.setVelocity(eDirection);
 
-        EntityEvent event = BukkitCompatibilityFix.createEntityDamageByEntityEvent(damager, entity, DamageCause.ENTITY_ATTACK, damage);
-
-        if (event == null) return false;
-
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(damager, entity, DamageCause.ENTITY_ATTACK, damage);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if (!((Cancellable) event).isCancelled()) {
-            BukkitCompatibilityFix.damageEntity(entity, damage);
-        }
-        return !((Cancellable) event).isCancelled();
+        if (!(event.isCancelled()))
+            entity.damage(damage);
+        return !event.isCancelled();
     }
 
 }

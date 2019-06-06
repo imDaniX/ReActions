@@ -29,7 +29,7 @@ import me.fromgate.reactions.util.message.M;
 import org.bukkit.entity.Player;
 
 public class ActionSql extends Action {
-    int sqlType;
+    private int sqlType;
 
     public ActionSql(int sqlType) {
         this.sqlType = sqlType;

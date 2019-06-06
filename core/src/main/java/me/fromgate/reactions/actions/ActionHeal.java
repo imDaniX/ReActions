@@ -23,8 +23,8 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaEffects;
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -40,11 +40,10 @@ public class ActionHeal extends Action {
         String playerName = params.getParam("player", p != null ? p.getName() : "");
         player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
         if (player == null) return false;
-        double health = BukkitCompatibilityFix.getEntityHealth(player);
-        double healthMax = BukkitCompatibilityFix.getEntityMaxHealth(player);
+        double health = player.getHealth();
+        double healthMax = EntityUtil.getMaxHealth(player);
         if (health < healthMax && hp >= 0) {
-            BukkitCompatibilityFix
-                    .setEntityHealth(player, hp == 0 ? healthMax : Math.min(hp + health, healthMax));
+            player.setHealth(hp == 0 ? healthMax : Math.min(hp + health, healthMax));
         }
         if (playhearts && RaEffects.isPlayEffectConnected()) {
             RaEffects.playEffect(player.getEyeLocation(), "HEART", "offset:0.5 num:4 speed:0.7");

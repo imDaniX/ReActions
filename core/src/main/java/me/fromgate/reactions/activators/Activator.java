@@ -146,12 +146,9 @@ public abstract class Activator {
         if (!(obj instanceof Activator))
             return false;
         Activator other = (Activator) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!this.name.equals(other.name))
-            return false;
-        return true;
+        if (name == null)
+            return other.name == null;
+        return this.name.equals(other.name);
     }
 
     /*
@@ -197,7 +194,7 @@ public abstract class Activator {
             String param = "";
             if (flgstr.contains("=")) {
                 flag = flgstr.substring(0, flgstr.indexOf("="));
-                param = flgstr.substring(flgstr.indexOf("=") + 1, flgstr.length());
+                param = flgstr.substring(flgstr.indexOf("=") + 1);
             }
             addAction(flag, param);
         }
@@ -208,7 +205,7 @@ public abstract class Activator {
             String param = "";
             if (flgstr.contains("=")) {
                 flag = flgstr.substring(0, flgstr.indexOf("="));
-                param = flgstr.substring(flgstr.indexOf("=") + 1, flgstr.length());
+                param = flgstr.substring(flgstr.indexOf("=") + 1);
             }
             addReaction(flag, param);
         }

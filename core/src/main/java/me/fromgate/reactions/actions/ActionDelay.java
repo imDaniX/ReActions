@@ -30,7 +30,7 @@ import org.bukkit.entity.Player;
 
 public class ActionDelay extends Action {
 
-    boolean globalDelay;
+    private boolean globalDelay;
 
     public ActionDelay(boolean globalDelay) {
         this.globalDelay = globalDelay;

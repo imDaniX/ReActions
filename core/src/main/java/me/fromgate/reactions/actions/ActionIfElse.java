@@ -74,7 +74,7 @@ public class ActionIfElse extends Action {
             String action = params.getParam(actionKey);
 
             String flag = action.substring(0, action.indexOf("="));
-            String param = action.substring(action.indexOf("=") + 1, action.length());
+            String param = action.substring(action.indexOf("=") + 1);
             actions.add(new ActVal(Actions.getValidName(flag), param));
         }
 

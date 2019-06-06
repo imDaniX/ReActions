@@ -78,8 +78,7 @@ public class ActionBlockFill extends Action {
         return true;
     }
 
-    @SuppressWarnings("deprecation")
-    public void fillArea(ItemStack blockItem, Location loc1, Location loc2, int chance, boolean phys, boolean drop) {
+    private void fillArea(ItemStack blockItem, Location loc1, Location loc2, int chance, boolean phys, boolean drop) {
         Location min = new Location(loc1.getWorld(), Math.min(loc1.getBlockX(), loc2.getBlockX()),
                 Math.min(loc1.getBlockY(), loc2.getBlockY()), Math.min(loc1.getBlockZ(), loc2.getBlockZ()));
         Location max = new Location(loc1.getWorld(), Math.max(loc1.getBlockX(), loc2.getBlockX()),

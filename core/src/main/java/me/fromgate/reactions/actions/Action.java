@@ -23,7 +23,6 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -32,10 +31,9 @@ import org.bukkit.entity.Player;
 
 
 public abstract class Action {
-    Actions type = null;
+    private Actions type = null;
     private String messageParam = "";
     private boolean actionExecuting = true;
-    private Activator activator;
 
     ReActions plg() {
         return ReActions.instance;
@@ -52,10 +50,6 @@ public abstract class Action {
 
     public boolean isAction() {
         return this.actionExecuting;
-    }
-
-    public String getActivatorName() {
-        return this.activator.getName();
     }
 
     public boolean executeAction(Player player, boolean action, Param params) {

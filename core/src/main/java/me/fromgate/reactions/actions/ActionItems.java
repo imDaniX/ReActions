@@ -23,7 +23,6 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.event.EventManager;
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -40,7 +39,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class ActionItems extends Action {
-    private ItemActionType actionType = ItemActionType.GIVE_ITEM;
+    private ItemActionType actionType;
 
     public ActionItems(ItemActionType actionType) {
         this.actionType = actionType;
@@ -157,8 +156,9 @@ public class ActionItems extends Action {
             Variables.setTempVar("item_str_esc", "");
             return true;
         }
-        Variables.setTempVar("item_str", ItemUtil.itemToString(BukkitCompatibilityFix.getItemInOffHand(player)));
-        Variables.setTempVar("item_str_esc", Util.escapeJava(ItemUtil.itemToString(BukkitCompatibilityFix.getItemInOffHand(player))));
+        String item = ItemUtil.itemToString(player.getInventory().getItemInOffHand());
+        Variables.setTempVar("item_str", item);
+        Variables.setTempVar("item_str_esc", Util.escapeJava(item));
         return true;
     }
 
@@ -203,7 +203,7 @@ public class ActionItems extends Action {
         String itemStr = params.getParam("slot", "");
         if (itemStr.isEmpty()) return false;
         if (!itemStr.equalsIgnoreCase("offhand")) return false;
-        BukkitCompatibilityFix.setItemInOffHand(player, item);
+        player.getInventory().setItemInOffHand(item);
         EventManager.raiseItemWearEvent(player);
         return true;
     }
@@ -265,7 +265,7 @@ public class ActionItems extends Action {
     private boolean removeItemInHand(Player player, Param params) {
         String itemStr = params.getParam("param-line", "");
         if (itemStr.isEmpty()) return false;
-        Variables.setTempVar("item", ItemUtil.itemToString(BukkitCompatibilityFix.getItemInHand(player)));
+        Variables.setTempVar("item", ItemUtil.itemToString(player.getInventory().getItemInMainHand()));
         if (!ItemUtil.removeItemInHand(player, itemStr)) return false;
         String actionItems = ItemUtil.toDisplayString(itemStr);
         setMessageParam(actionItems);
@@ -277,7 +277,7 @@ public class ActionItems extends Action {
     private boolean removeItemInOffand(Player player, Param params) {
         String itemStr = params.getParam("param-line", "");
         if (itemStr.isEmpty()) return false;
-        Variables.setTempVar("item", ItemUtil.itemToString(BukkitCompatibilityFix.getItemInOffHand(player)));
+        Variables.setTempVar("item", ItemUtil.itemToString(player.getInventory().getItemInOffHand()));
         if (!ItemUtil.removeItemInOffHand(player, itemStr)) return false;
         String actionItems = ItemUtil.toDisplayString(itemStr);
         setMessageParam(actionItems);

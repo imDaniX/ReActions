@@ -14,7 +14,7 @@ public class Cfg {
     public static boolean languageSave = false;
     public static boolean checkUpdates = false;
     public static boolean centerTpCoords = true;
-    public static int worlduardRecheck = 2;
+    public static int worldguardRecheck = 2;
     public static int itemHoldRecheck = 2;
     public static int itemWearRecheck = 2;
     public static boolean horizontalPushback = false;
@@ -40,7 +40,7 @@ public class Cfg {
         config.set("reactions.save-empty-actions-and-flags-sections", saveEmptySections);
         config.set("reactions.show-messages-for-actions", actionMsg);
         config.set("reactions.center-player-teleport", centerTpCoords);
-        config.set("reactions.region-recheck-delay", worlduardRecheck);
+        config.set("reactions.region-recheck-delay", worldguardRecheck);
         config.set("reactions.item-hold-recheck-delay", itemHoldRecheck);
         config.set("reactions.item-wear-recheck-delay", itemWearRecheck);
         config.set("reactions.horizontal-pushback-action", horizontalPushback);
@@ -66,7 +66,7 @@ public class Cfg {
         saveEmptySections = config.getBoolean("reactions.save-empty-actions-and-flags-sections", false);
         centerTpCoords = config.getBoolean("reactions.center-player-teleport", true);
         actionMsg = config.getString("reactions.show-messages-for-actions", "tp,grpadd,grprmv,townset,townkick,itemrmv,itemgive,moneypay,moneygive");
-        worlduardRecheck = config.getInt("reactions.region-recheck-delay", 2);
+        worldguardRecheck = config.getInt("reactions.region-recheck-delay", 2);
         itemHoldRecheck = config.getInt("reactions.item-hold-recheck-delay", 2);
         itemWearRecheck = config.getInt("reactions.item-wear-recheck-delay", 2);
         horizontalPushback = config.getBoolean("reactions.horizontal-pushback-action", false);

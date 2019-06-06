@@ -1,6 +1,5 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.util.BukkitCompatibilityFix;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -13,7 +12,7 @@ public class PlaceholderDamage extends Placeholder {
     public String processPlaceholder(Player player, String key, String param) {
         EntityDamageEvent de = player.getLastDamageCause();
         if (de == null) return null;
-        if (key.equalsIgnoreCase("DAMAGE")) return Double.toString(BukkitCompatibilityFix.getEventDamage(de));
+        if (key.equalsIgnoreCase("DAMAGE")) return Double.toString(de.getDamage());
         else if (key.equalsIgnoreCase("DAMAGER")) return getDamager(de, false);
         else if (key.equalsIgnoreCase("DAMAGER_NAME")) return getDamager(de, false);
         return null;

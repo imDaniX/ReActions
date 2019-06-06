@@ -25,6 +25,7 @@ package me.fromgate.reactions.util;
 import com.google.common.base.Charsets;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -60,8 +61,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,7 +83,7 @@ public class Util {
     private final static Pattern TIME_X_S = Pattern.compile("^\\d+s$");
     private final static Pattern TIME_X_T = Pattern.compile("^\\d+t$");
 
-    static Random random = new Random();
+    private static ThreadLocalRandom random = ThreadLocalRandom.current();
 
     public static int getMinMaxRandom(String minmaxstr) {
         int min = 0;
@@ -144,13 +145,11 @@ public class Util {
 
 
     private static Sound getSoundStr(String param) {
-        Sound snd = null;
         try {
-            snd = Sound.valueOf(param.toUpperCase());
+            return Sound.valueOf(param.toUpperCase());
         } catch (Exception ignored) {
+            return Sound.UI_BUTTON_CLICK;
         }
-        if (snd == null) snd = BukkitCompatibilityFix.getSound("UI_BUTTON_CLICK");
-        return snd;
     }
 
 
@@ -183,7 +182,6 @@ public class Util {
     }
 
 
-    @SuppressWarnings("deprecation")
     public static String replaceStandartLocations(Player p, String param) {
         if (p == null) return param;
         Location targetBlock = null;
@@ -224,7 +222,7 @@ public class Util {
             if (evdmg.getDamager() instanceof LivingEntity) return (LivingEntity) evdmg.getDamager();
             if (evdmg.getCause() == DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();
-                LivingEntity shooterEntity = BukkitCompatibilityFix.getShooter(prj);
+                LivingEntity shooterEntity = EntityUtil.getEntityFromProjectile(prj.getShooter());
                 if (shooterEntity == null) return null;
                 return shooterEntity;
             }
@@ -239,7 +237,7 @@ public class Util {
             if (evdmg.getDamager().getType() == EntityType.PLAYER) return (Player) evdmg.getDamager();
             if (evdmg.getCause() == DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();
-                LivingEntity shooterEntity = BukkitCompatibilityFix.getShooter(prj);
+                LivingEntity shooterEntity = EntityUtil.getEntityFromProjectile(prj.getShooter());
                 if (shooterEntity == null) return null;
                 if (shooterEntity instanceof Player) return (Player) shooterEntity;
             }
@@ -253,20 +251,15 @@ public class Util {
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             if (evdmg.getCause() == DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();
-                LivingEntity shooterEntity = BukkitCompatibilityFix.getShooter(prj);
-                if (shooterEntity == null) return null;
-                return shooterEntity;
+                return EntityUtil.getEntityFromProjectile(prj.getShooter());
             } else if (evdmg.getCause() == DamageCause.MAGIC) {
                 Entity entityDamager = evdmg.getDamager();
                 LivingEntity shooterEntity = null;
-                if (entityDamager instanceof ThrownPotion) {
-                    shooterEntity = BukkitCompatibilityFix.getShooter((ThrownPotion) entityDamager);
-                }
-                if (shooterEntity == null) return null;
+                if (entityDamager instanceof ThrownPotion)
+                    shooterEntity = EntityUtil.getEntityFromProjectile(((ThrownPotion) entityDamager).getShooter());
                 return shooterEntity;
-            } else if (evdmg.getDamager() instanceof LivingEntity) {
+            } else if (evdmg.getDamager() instanceof LivingEntity)
                 return (LivingEntity) evdmg.getDamager();
-            }
         }
         return null;
     }
@@ -279,6 +272,7 @@ public class Util {
         return false;
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean setOpen(Block b, boolean open) {
         BlockState state = b.getState();
         if (!(state.getData() instanceof Openable)) return false;
@@ -307,6 +301,7 @@ public class Util {
         return block;
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean isDoorBlock(Block b) {
         if (b.getType() == Material.IRON_DOOR) return true;
         MaterialData data = b.getState().getData();
@@ -397,14 +392,13 @@ public class Util {
 
         return false;
     }
-
-    @SuppressWarnings("deprecation")
+    
     public static boolean compareItemIdDataStr(Material type, int data, String itemStr) {
         ItemStack item = ItemUtil.parseItemStack(itemStr);
         if (item == null) return false;
         if (item.getType() != type) return false;
         if (data < 0) return true;
-        return data == item.getDurability();
+        return data == ItemUtil.getDurability(item);
     }
 
     public static boolean rollDiceChance(int chance) {

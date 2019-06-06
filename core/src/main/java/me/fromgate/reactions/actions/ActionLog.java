@@ -81,8 +81,8 @@ public class ActionLog extends Action {
     public boolean execute(Player p, Param params) {
         if (params.hasAnyParam("prefix", "color", "file")) {
             String plg_name = ReActions.getPlugin().getDescription().getName();
-            Boolean prefix = params.getParam("prefix", true);
-            Boolean color = params.getParam("color", false);
+            boolean prefix = params.getParam("prefix", true);
+            boolean color = params.getParam("color", false);
             String file = params.getParam("file", "");
             String message = params.getParam("text", removeParams(params.getParam("param-line")));
             if (message.isEmpty()) return false;
