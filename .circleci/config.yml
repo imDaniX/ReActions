@@ -9,4 +9,4 @@ jobs:
     - run: gradle shadowJar
     - store_artifacts:
         path: build/libs/ReActions-1.0-SNAPSHOT.jar
-        destination: ReActions-1.0-SNAPSHOT.jar
+        destination: ReActions.jar
