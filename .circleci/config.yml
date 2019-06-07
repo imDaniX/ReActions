@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: circleci/openjdk:8u181-jdk
+    steps:
+    - checkout
+    - run: gradle clean
+    - run: gradle shadowJar
+    - store_artifacts:
+        path: build/libs/ReActions-1.0-SNAPSHOT.jar
