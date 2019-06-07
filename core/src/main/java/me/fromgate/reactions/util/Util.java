@@ -222,9 +222,7 @@ public class Util {
             if (evdmg.getDamager() instanceof LivingEntity) return (LivingEntity) evdmg.getDamager();
             if (evdmg.getCause() == DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();
-                LivingEntity shooterEntity = EntityUtil.getEntityFromProjectile(prj.getShooter());
-                if (shooterEntity == null) return null;
-                return shooterEntity;
+                return EntityUtil.getEntityFromProjectile(prj.getShooter());
             }
         }
         return null;
