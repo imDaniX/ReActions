@@ -46,7 +46,7 @@ import java.util.regex.Pattern;
 public class Locator {
     private final static Pattern FLOAT = Pattern.compile("-?[0-9]+\\.?[0-9]*");
 
-    private static Map<String, TpLoc> tports = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private static Map<String, TpLocation> tports = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 
     /**
@@ -305,7 +305,7 @@ public class Locator {
                 YamlConfiguration lcs = new YamlConfiguration();
                 lcs.load(f);
                 for (String key : lcs.getKeys(false))
-                    tports.put(key, new TpLoc(lcs.getString(key + ".world"),
+                    tports.put(key, new TpLocation(lcs.getString(key + ".world"),
                             lcs.getDouble(key + ".x"),
                             lcs.getDouble(key + ".y"),
                             lcs.getDouble(key + ".z"),
@@ -334,7 +334,7 @@ public class Locator {
 
     public static boolean addTpLoc(String id, Location loc) {
         if (id.isEmpty()) return false;
-        tports.put(id, new TpLoc(loc));
+        tports.put(id, new TpLocation(loc));
         return true;
     }
 

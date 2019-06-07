@@ -32,6 +32,7 @@ import me.fromgate.reactions.activators.MessageActivator;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.activators.SignActivator;
 import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -67,7 +68,6 @@ import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
@@ -135,9 +135,9 @@ public class EventManager {
     public static boolean raiseDoorEvent(PlayerInteractEvent event) {
         if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
-        if (!Util.isDoorBlock(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND)
+        if (!BlockUtil.isOpenable(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND)
             return false;
-        DoorEvent e = new DoorEvent(event.getPlayer(), Util.getDoorBottomBlock(event.getClickedBlock()));
+        DoorEvent e = new DoorEvent(event.getPlayer(), BlockUtil.getDoorBottomBlock(event.getClickedBlock()));
         Bukkit.getServer().getPluginManager().callEvent(e);
         return e.isCancelled();
     }

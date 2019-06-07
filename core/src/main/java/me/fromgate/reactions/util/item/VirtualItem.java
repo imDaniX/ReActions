@@ -64,7 +64,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -73,7 +73,7 @@ public class VirtualItem extends ItemStack {
     private static boolean ALLOW_RANDOM = true;
     private static boolean TRY_OLD_ITEM_PARSE = true;
     static boolean ADD_REGEX = true;
-    protected static Random random = new Random();
+    private static ThreadLocalRandom random = ThreadLocalRandom.current();
     private final static String DIVIDER = "\\n";
     private final static Pattern AMOUNT_RANDOM = Pattern.compile("<\\d+|>\\d+|<=\\d+|>=\\d+");
     private final static Pattern BYTES_RGB = Pattern.compile("^[0-9]{1,3},[0-9]{1,3},[0-9]{1,3}$");

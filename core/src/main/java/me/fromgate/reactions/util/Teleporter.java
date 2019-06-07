@@ -48,6 +48,4 @@ public class Teleporter {
             events.get(player).setTo(location);
         } else player.teleport(location);
     }
-
-
 }

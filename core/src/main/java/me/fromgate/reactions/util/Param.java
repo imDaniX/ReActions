@@ -7,7 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Param {
-    private String paramStr = "";
+    private String paramStr;
     private Map<String, String> params = new HashMap<>();
 
     private final static Pattern PARAM_PATTERN = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");
@@ -27,7 +27,7 @@ public class Param {
         this.params.put("param-line", this.paramStr); // очередная залипуха
     }
 
-    public void setParamString(String paramStr) {
+    private void setParamString(String paramStr) {
         this.paramStr = paramStr;
     }
 
@@ -153,7 +153,7 @@ public class Param {
         return false;
     }
 
-    public static Map<String, String> parseParams(String param, String defaultKey) {
+    private static Map<String, String> parseParams(String param, String defaultKey) {
         Map<String, String> params = new HashMap<>();
         Matcher matcher = PARAM_PATTERN.matcher(hideBkts(param));
         while (matcher.find()) {
@@ -217,7 +217,7 @@ public class Param {
     }
 
     public void remove(String key) {
-        if (this.params.containsKey(key)) this.params.remove(key);
+        this.params.remove(key);
     }
 
     public int size() {

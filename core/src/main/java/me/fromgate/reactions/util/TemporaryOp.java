@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class TempOp {
+public class TemporaryOp {
 
     private static Set<String> tempOps = new HashSet<>();
 

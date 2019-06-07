@@ -23,7 +23,6 @@
 package me.fromgate.reactions.util.mob;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.activators.ExecActivator;
 import me.fromgate.reactions.externals.RaEffects;
 import me.fromgate.reactions.externals.RaWorldGuard;
 import me.fromgate.reactions.util.Locator;
@@ -59,13 +58,12 @@ public class MobSpawn {
             M.logMessage("Failed to spawn mob: " + params.getParam("param-line"));
             return;
         }
-        String locstr = params.getParam("loc", "");
-        Location loc = Locator.parseLocation(locstr, p == null ? null : p.getLocation());
+        String locationStr = params.getParam("loc", "");
+        Location loc = Locator.parseLocation(locationStr, p == null ? null : p.getLocation());
         String region = params.getParam("region", "");
         int radius = params.getParam("radius", 0);
         int num = Util.getMinMaxRandom(params.getParam("num", "1"));
-        String hparam = params.getParam("health", "0");
-        double health = Util.getMinMaxRandom(hparam);
+        double health = Util.getMinMaxRandom( params.getParam("health", "0"));
         String playeffect = params.getParam("effect", "");
         String dtheffect = params.getParam("dtheffect", "");
         String chest = params.getParam("chest", "");
@@ -75,7 +73,7 @@ public class MobSpawn {
         String weapon = params.getParam("weapon", "");
         String offhand = params.getParam("offhand", "");
         boolean land = params.getParam("land", true);
-        String poteff = params.getParam("potion", "");
+        String potionEff = params.getParam("potion", "");
         String name = params.getParam("name", "");
         String drop = params.getParam("drop", "");
         String xp = params.getParam("xp", "");
@@ -96,7 +94,7 @@ public class MobSpawn {
             for (LivingEntity le : mobs) {
                 setMobHealth(le, health);
                 setMobName(le, name);
-                potionEffect(le, poteff);
+                potionEffect(le, potionEff);
                 if (equip.isEmpty()) setMobEquipment(le, helm, chest, leg, boot, weapon, offhand);
                 else setMobEquipment(le, equip);
                 setMobDrop(le, drop);
@@ -130,10 +128,7 @@ public class MobSpawn {
             EntityType et = EntityType.ZOMBIE;
             try {
                 et = EntityType.valueOf(mbs.toUpperCase());
-            } catch (IllegalArgumentException ignore) {            }
-
-            if (mbs.equalsIgnoreCase("horse")) et = MobHorse.getHorseType();
-            if (mbs.equalsIgnoreCase("wither")) et = MobWither.getWitherType();
+            } catch (IllegalArgumentException ignore) {}
 
             Entity e = loc.getWorld().spawnEntity(loc, et);
             if (e == null) {
@@ -146,7 +141,6 @@ public class MobSpawn {
                 M.logOnce("mobspawnnotmob_" + mobstr, "Cannot spawn mob " + mbs + " (" + mobstr + ")");
                 continue;
             }
-
 
             LivingEntity mob = (LivingEntity) e;
             setMobName(mob, name);
@@ -230,7 +224,7 @@ public class MobSpawn {
             e.setHealth(health);
     }
 
-    public static void setMobEquipment(LivingEntity e, String equip) {
+    private static void setMobEquipment(LivingEntity e, String equip) {
         if (equip.isEmpty()) return;
         if (!Util.isWordInList(e.getType().name(), "zombie,skeleton")) return;
         String[] ln = equip.split(";");
@@ -240,7 +234,7 @@ public class MobSpawn {
         setMobEquipment(e, eq[0], eq[1], eq[2], eq[3], eq[4], eq[5]);
     }
 
-    public static void setMobEquipment(LivingEntity e, String helm, String chest, String leg, String boot, String weapon, String offhand) {
+    private static void setMobEquipment(LivingEntity e, String helm, String chest, String leg, String boot, String weapon, String offhand) {
         // if (!Util.isWordInList(e.getType().name(), "zombie,skeleton,villager")) return;
         if (!helm.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(helm);
@@ -269,7 +263,7 @@ public class MobSpawn {
         }
     }
 
-    public static void potionEffect(LivingEntity e, String potion) {
+    private static void potionEffect(LivingEntity e, String potion) {
         if (potion.isEmpty()) return;
         String[] pts = potion.split(",");
         for (String pot : pts) {
@@ -285,7 +279,6 @@ public class MobSpawn {
         }
     }
 
-
     public static List<ItemStack> getMobDrop(LivingEntity le) {
         if (drops.containsKey(le)) {
             List<ItemStack> drop = drops.get(le);
@@ -300,6 +293,5 @@ public class MobSpawn {
         }
         return null;
     }
-
 
 }

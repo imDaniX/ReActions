@@ -28,7 +28,7 @@ import org.bukkit.Location;
 
 import java.text.DecimalFormat;
 
-public class TpLoc {
+public class TpLocation {
     public String world;
     public double x;
     public double y;
@@ -36,7 +36,7 @@ public class TpLoc {
     public float yaw;
     public float pitch;
 
-    public TpLoc(Location loc) {
+    public TpLocation(Location loc) {
         this.world = loc.getWorld().getName();
         this.x = loc.getX();
         this.y = loc.getY();
@@ -45,7 +45,7 @@ public class TpLoc {
         this.pitch = loc.getPitch();
     }
 
-    public TpLoc(String world, double x, double y, double z, float yaw, float pitch) {
+    public TpLocation(String world, double x, double y, double z, float yaw, float pitch) {
         this.world = world;
         this.x = x;
         this.y = y;

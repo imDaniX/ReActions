@@ -52,10 +52,10 @@ public class UpdateChecker {
         projectBukkitDev = "http://dev.bukkit.org/bukkit-plugins/" + bukkitDevName + "/";
         informPermission = bukkitDevName + ".config";
         projectLastVersion = "";
-        setUpdateMessage(new ArrayList<String>());
+        setUpdateMessage(new ArrayList<>());
         if (enableUpdateChecker) {
             updateMsg();
-            Bukkit.getScheduler().runTaskTimerAsynchronously(pluginInstance, () -> updateMsg(), (40 + (new Random()).nextInt(20)) * 1200, 60 * 1200);
+            Bukkit.getScheduler().runTaskTimerAsynchronously(pluginInstance, (Runnable)UpdateChecker::updateMsg, (40 + (new Random()).nextInt(20)) * 1200, 60 * 1200);
         }
     }
 
@@ -107,9 +107,7 @@ public class UpdateChecker {
      *            "&ePlease download new version from BukkitDev:","&b%url%");
      */
     public static void setUpdateMessage(String... str) {
-        List<String> list = new ArrayList<>();
-        list.addAll(Arrays.asList(str));
-        setUpdateMessage(list);
+        setUpdateMessage(new ArrayList<>(Arrays.asList(str)));
     }
 
 
@@ -123,9 +121,8 @@ public class UpdateChecker {
      */
     public static void updateMsg(Player player) {
         if (isUpdateRequired() && player.hasPermission(informPermission)) {
-            for (String message : updateMessages) {
+            for (String message : updateMessages)
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', replacePlaceholders(message)));
-            }
         }
     }
 

@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class Task implements Runnable {
-    String taskId;
-    String playerName;
-    List<ActVal> actions;
-    boolean isAction;
-    boolean isExecuted;
-    long executionTime;
-    BukkitTask task;
+    private String taskId;
+    private String playerName;
+    private List<ActVal> actions;
+    private boolean isAction;
+    private boolean isExecuted;
+    private long executionTime;
+    private BukkitTask task;
 
     public Task(String playerName, List<ActVal> actions, boolean isAction, long time) {
         this.taskId = UUID.randomUUID().toString();

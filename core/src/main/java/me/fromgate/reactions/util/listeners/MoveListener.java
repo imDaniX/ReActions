@@ -20,14 +20,13 @@
  *
  */
 
-
 package me.fromgate.reactions.util.listeners;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.PushBack;
-import me.fromgate.reactions.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -50,23 +49,21 @@ public class MoveListener implements Listener {
                     Location from = prevLocations.getOrDefault(player.getName(), null);
                     Location to = player.getLocation();
                     if (!to.getWorld().equals(from.getWorld())) from = null;
-                    proccesMove(player, from, to);
+                    processMove(player, from, to);
                     prevLocations.put(player.getName(), to);
                 });
             }, 30, Cfg.playerMoveTaskTick);
-        } else {
-            Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
-        }
+        } else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerMove(PlayerMoveEvent event) {
-        proccesMove(event.getPlayer(), event.getFrom(), event.getTo());
+        processMove(event.getPlayer(), event.getFrom(), event.getTo());
     }
 
-    private static void proccesMove(Player player, Location from, Location to) {
+    private static void processMove(Player player, Location from, Location to) {
         PushBack.rememberLocations(player, from, to);
-        if (!Util.isSameBlock(from, to)) {
+        if (!BlockUtil.isSameBlock(from, to)) {
             EventManager.raiseAllRegionEvents(player, to, from);
         }
     }
@@ -78,9 +75,7 @@ public class MoveListener implements Listener {
     }
 
     public static void removeLocation(Player player) {
-        if (prevLocations.containsKey(player.getName())) {
-            prevLocations.remove(player.getName());
-        }
+        prevLocations.remove(player.getName());
     }
 
 }

@@ -96,8 +96,7 @@ import java.util.TreeSet;
  * @since Build 2008.0426.1016
  */
 
-public class MathEval
-        extends Object {
+public class MathEval {
 
     //*************************************************************************************************
     //INSTANCE PROPERTIES
@@ -128,8 +127,8 @@ public class MathEval
         operators = new Operator[256];
         DefaultImpl.registerOperators(this);
 
-        constants = new TreeMap<String, Double>(String.CASE_INSENSITIVE_ORDER);
-        variables = new TreeMap<String, Double>(String.CASE_INSENSITIVE_ORDER);
+        constants = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        variables = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         setConstant("E", Math.E);
         setConstant("Euler", 0.577215664901533D);
         setConstant("LN2", 0.693147180559945D);
@@ -139,8 +138,8 @@ public class MathEval
         setConstant("PHI", 1.618033988749895D);
         setConstant("PI", Math.PI);
 
-        pureFunctions = new TreeMap<String, FunctionHandler>(String.CASE_INSENSITIVE_ORDER);
-        impureFunctions = new TreeMap<String, FunctionHandler>(String.CASE_INSENSITIVE_ORDER);
+        pureFunctions = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        impureFunctions = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         DefaultImpl.registerFunctions(this);
 
         relaxed = false;
@@ -158,14 +157,14 @@ public class MathEval
 
         operators = oth.operators;
 
-        constants = new TreeMap<String, Double>(String.CASE_INSENSITIVE_ORDER);
+        constants = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         constants.putAll(oth.constants);
 
-        variables = new TreeMap<String, Double>(String.CASE_INSENSITIVE_ORDER);
+        variables = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         variables.putAll(oth.variables);
 
-        pureFunctions = new TreeMap<String, FunctionHandler>(String.CASE_INSENSITIVE_ORDER);
-        impureFunctions = new TreeMap<String, FunctionHandler>(String.CASE_INSENSITIVE_ORDER);
+        pureFunctions = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        impureFunctions = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         pureFunctions.putAll(oth.pureFunctions);
         impureFunctions.putAll(oth.impureFunctions);
 
@@ -186,7 +185,7 @@ public class MathEval
     public double getConstant(String nam) {
         Double val = constants.get(nam);
 
-        return (val == null ? 0 : val.doubleValue());
+        return (val == null ? 0 : val);
     }
 
     /**
@@ -263,7 +262,7 @@ public class MathEval
     public double getVariable(String nam) {
         Double val = variables.get(nam);
 
-        return (val == null ? 0 : val.doubleValue());
+        return (val == null ? 0 : val);
     }
 
     /**
@@ -420,7 +419,7 @@ public class MathEval
 
         for (ofs = beg; (ofs = skipWhitespace(expression, ofs, end)) <= end; ofs++) {
             boolean fnc = false;
-            double rgt = Double.NaN;                                             // next operand (right-value) to process
+            double rgt;                                             // next operand (right-value) to process
 
             for (beg = ofs; ofs <= end; ofs++) {
                 char chr = expression.charAt(ofs);
@@ -553,7 +552,7 @@ public class MathEval
 
         String fncnam = expression.substring(beg, argbeg).trim();
         ArgParser fncargs = new ArgParser(argbeg, end);
-        FunctionHandler fnchdl = null;
+        FunctionHandler fnchdl;
 
         try {
             if ((fnchdl = pureFunctions.get(fncnam)) != null) {
@@ -595,10 +594,10 @@ public class MathEval
         Double val;
 
         if ((val = constants.get(nam)) != null) {
-            return val.doubleValue();
+            return val;
         } else if ((val = variables.get(nam)) != null) {
             isConstant = false;
-            return val.doubleValue();
+            return val;
         } else if (relaxed) {
             isConstant = false;
             return 0.0;
@@ -699,8 +698,7 @@ public class MathEval
      * This class is immutable and threadsafe, but note that whether it can be used in multiple MathEval instances (as
      * opposed to for multiple operators in one instance) depends on the threadsafety of the handler it contains.
      */
-    static public final class Operator
-            extends Object {
+    static public final class Operator {
         final char symbol;                                                     // parser symbol for this operator
         final int precedenceL;                                                // precedence when on the left
         final int precedenceR;                                                // precedence when on the right
@@ -774,7 +772,6 @@ public class MathEval
      * An implementation of the default supported operations and functions.
      */
     static class DefaultImpl
-            extends Object
             implements OperatorHandler, FunctionHandler {
         private DefaultImpl() {
         }
@@ -1014,15 +1011,15 @@ public class MathEval
     /**
      * Operator/operand on on the left.
      */
-    static public final int LEFT_SIDE = 'L';
+    private static final int LEFT_SIDE = 'L';
     /**
      * Operator/operand on on the right.
      */
-    static public final int RIGHT_SIDE = 'R';
+    private static final int RIGHT_SIDE = 'R';
     /**
      * Operator/operand side is immaterial.
      */
-    static public final int NO_SIDE = 'B';
+    private static final int NO_SIDE = 'B';
 
     /**
      * Implementation for the default operators.

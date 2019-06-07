@@ -22,16 +22,14 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Door;
-import org.bukkit.material.Lever;
 
 public class ActionPowerSet extends Action {
 
@@ -53,10 +51,10 @@ public class ActionPowerSet extends Action {
         boolean power = state.equalsIgnoreCase("on") || state.equalsIgnoreCase("true");
         if (state.equalsIgnoreCase("toggle")) {
             if (b.getType() == Material.LEVER) {
-                Lever lever = (Lever) b.getState().getData();
-                power = lever.isPowered();
-            } else if (isDoorBlock(b)) {
-                power = Util.isOpen(b);
+                Switch sw = (Switch) b.getBlockData();
+                power = sw.isPowered();
+            } else if (BlockUtil.isOpenable(b)) {
+                power = BlockUtil.isOpen(b);
             } else power = true;
         }
         return power;
@@ -67,20 +65,14 @@ public class ActionPowerSet extends Action {
             Switch sw = (Switch) b.getBlockData();
             sw.setPowered(power);
             b.setBlockData(sw, true);
-        } else if (isDoorBlock(b)) {
-            Util.setOpen(b, power);
+        } else if (BlockUtil.isOpenable(b)) {
+            BlockUtil.setOpen(b, power);
         } else return false;
         return true;
     }
 
-    public boolean isPowerBlock(Block b) {
+    private boolean isPowerBlock(Block b) {
         if (b.getType() == Material.LEVER) return true;
-        return isDoorBlock(b);
+        return BlockUtil.isOpenable(b);
     }
-
-    public boolean isDoorBlock(Block b) {
-        return b.getBlockData() instanceof Door;
-    }
-
-
 }

@@ -27,15 +27,11 @@ import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.M;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -47,11 +43,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Door;
-import org.bukkit.material.Gate;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.Openable;
-import org.bukkit.material.TrapDoor;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.ChatPaginator;
 import org.bukkit.util.ChatPaginator.ChatPage;
@@ -153,36 +144,7 @@ public class Util {
     }
 
 
-    public static List<Entity> getEntities(Location l1, Location l2) {
-        List<Entity> entities = new ArrayList<>();
-        if (!l1.getWorld().equals(l2.getWorld())) return entities;
-        int x1 = Math.min(l1.getBlockX(), l2.getBlockX());
-        int x2 = Math.max(l1.getBlockX(), l2.getBlockX());
-        int y1 = Math.min(l1.getBlockY(), l2.getBlockY());
-        int y2 = Math.max(l1.getBlockY(), l2.getBlockY());
-        int z1 = Math.min(l1.getBlockZ(), l2.getBlockZ());
-        int z2 = Math.max(l1.getBlockZ(), l2.getBlockZ());
-        int chX1 = x1 >> 4;
-        int chX2 = x2 >> 4;
-        int chZ1 = z1 >> 4;
-        int chZ2 = z2 >> 4;
-        for (int x = chX1; x <= chX2; x++) {
-            for (int z = chZ1; z <= chZ2; z++) {
-                for (Entity e : l1.getWorld().getChunkAt(x, z).getEntities()) {
-                    double ex = e.getLocation().getX();
-                    double ey = e.getLocation().getY();
-                    double ez = e.getLocation().getZ();
-                    if ((x1 <= ex) && (ex <= x2) && (y1 <= ey) && (ey <= y2) && (z1 <= ez) && (ez <= z2)) {
-                        entities.add(e);
-                    }
-                }
-            }
-        }
-        return entities;
-    }
-
-
-    public static String replaceStandartLocations(Player p, String param) {
+    public static String replaceStandardLocations(Player p, String param) {
         if (p == null) return param;
         Location targetBlock = null;
         try {
@@ -270,44 +232,6 @@ public class Util {
         return false;
     }
 
-    @SuppressWarnings("deprecation")
-    public static boolean setOpen(Block b, boolean open) {
-        BlockState state = b.getState();
-        if (!(state.getData() instanceof Openable)) return false;
-        Openable om = (Openable) state.getData();
-        om.setOpen(open);
-        state.setData((MaterialData) om);
-        state.update();
-        return true;
-    }
-
-    public static boolean isOpen(Block b) {
-        if (b.getState().getData() instanceof Openable) {
-            Openable om = (Openable) b.getState().getData();
-            return om.isOpen();
-        }
-        return false;
-    }
-
-    public static Block getDoorBottomBlock(Block block) {
-        if (block.getType() == Material.IRON_DOOR || block.getState().getData() instanceof Door) {
-            Block bottomBlock = block.getRelative(BlockFace.DOWN);
-            if (bottomBlock.getType() == Material.IRON_DOOR || bottomBlock.getState().getData() instanceof Door) {
-                return bottomBlock;
-            }
-        }
-        return block;
-    }
-
-    @SuppressWarnings("deprecation")
-    public static boolean isDoorBlock(Block b) {
-        if (b.getType() == Material.IRON_DOOR) return true;
-        MaterialData data = b.getState().getData();
-        if (data instanceof Door) return true;
-        if (data instanceof TrapDoor) return true;
-        return data instanceof Gate;
-    }
-
     public static String join(String... s) {
         StringBuilder sb = new StringBuilder();
         for (String str : s)
@@ -344,23 +268,6 @@ public class Util {
         int to = from + pageHeight <= lines.size() ? from + pageHeight : lines.size();
         String[] selectedLines = Arrays.copyOfRange(lines.toArray(new String[lines.size()]), from, to);
         return new ChatPage(selectedLines, actualPageNumber, totalPages);
-    }
-
-
-    /* Функция проверяет входит ли число (int)
-     * в список чисел представленных в виде строки вида n1,n2,n3,...nN
-     */
-    public static boolean isIdInList(int id, String str) {
-        if (!str.isEmpty()) {
-            String[] ln = str.split(",");
-            if (ln.length > 0)
-                for (String numStrInList : ln) {
-                    if ((!numStrInList.isEmpty()) && NUM.matcher(numStrInList).matches() && (Integer.parseInt(numStrInList) == id)) {
-                        return true;
-                    }
-                }
-        }
-        return false;
     }
 
     /*
@@ -443,12 +350,12 @@ public class Util {
         return true;
     }
 
-    public static Long timeToTicks(Long time) {
+    public static long timeToTicks(Long time) {
         //1000 ms = 20 ticks
         return Math.max(1, (time / 50));
     }
 
-    public static Long parseTime(String time) {
+    public static long parseTime(String time) {
         int dd = 0; // дни
         int hh = 0; // часы
         int mm = 0; // минуты
@@ -470,30 +377,21 @@ public class Util {
             Matcher matcher = TIME_X_MSDHMST.matcher(time);
             while (matcher.find()) {
                 String foundTime = matcher.group();
-                if (TIME_X_MS.matcher(foundTime).matches()) {
-                    ms = Integer.parseInt(time.replace("ms", ""));
-                } else if (TIME_X_D.matcher(foundTime).matches()) {
-                    dd = Integer.parseInt(time.replace("d", ""));
-                } else if (TIME_X_H.matcher(foundTime).matches()) {
-                    hh = Integer.parseInt(time.replace("h", ""));
-                } else if (TIME_X_M.matcher(foundTime).matches()) {
-                    mm = Integer.parseInt(time.replace("m", ""));
-                } else if (TIME_X_S.matcher(foundTime).matches()) {
-                    ss = Integer.parseInt(time.replace("s", ""));
-                } else if (TIME_X_T.matcher(foundTime).matches()) {
-                    tt = Integer.parseInt(time.replace("t", ""));
-                }
+                if (TIME_X_MS.matcher(foundTime).matches())
+                    ms = Integer.parseInt(time.substring(0, time.length()-2));
+                else if (TIME_X_D.matcher(foundTime).matches())
+                    dd = Integer.parseInt(time.substring(0, time.length()-1));
+                else if (TIME_X_H.matcher(foundTime).matches())
+                    hh = Integer.parseInt(time.substring(0, time.length()-1));
+                else if (TIME_X_M.matcher(foundTime).matches())
+                    mm = Integer.parseInt(time.substring(0, time.length()-1));
+                else if (TIME_X_S.matcher(foundTime).matches())
+                    ss = Integer.parseInt(time.substring(0, time.length()-1));
+                else if (TIME_X_T.matcher(foundTime).matches())
+                    tt = Integer.parseInt(time.substring(0, time.length()-1));
             }
         }
         return (dd * 86400000L) + (hh * 3600000L) + (mm * 60000L) + (ss * 1000L) + (tt * 50L) + ms;
-    }
-
-    public static String itemToString(ItemStack item) {
-        String str;
-        String n = item.getItemMeta().hasDisplayName() ? ChatColor.stripColor(item.getItemMeta().getDisplayName()) : item.getType().name();
-        String a = item.getAmount() > 1 ? "*" + item.getAmount() : "";
-        str = n + a;
-        return str;
     }
 
     public static int safeLongToInt(long l) {
@@ -553,10 +451,6 @@ public class Util {
                 b.append(c);
         }
         return b.toString();
-    }
-
-    public static boolean isSameBlock(Location loc1, Location loc2) {
-        return loc1.getWorld().equals(loc2.getWorld()) && !(loc1.getBlockX() != loc2.getX()) && !(loc1.getBlockZ() != loc2.getZ()) && !(loc1.getBlockY() != loc2.getY());
     }
 
 }

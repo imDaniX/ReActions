@@ -29,12 +29,12 @@ import java.util.HashMap;
 public class RaDebug {
     private static HashMap<String, Boolean> debug = new HashMap<>();
 
-    public static void setPlayerDebug(Player p, boolean debugmode) {
-        debug.put(p.getName(), debugmode);
+    public static void setPlayerDebug(Player p, boolean debugMode) {
+        debug.put(p.getName(), debugMode);
     }
 
     public static void offPlayerDebug(Player p) {
-        if (debug.containsKey(p.getName())) debug.remove(p.getName());
+        debug.remove(p.getName());
     }
 
     public static boolean checkFlagAndDebug(Player p, boolean flag) {

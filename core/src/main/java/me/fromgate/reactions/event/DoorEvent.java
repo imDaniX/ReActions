@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.event;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.BlockUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -36,12 +36,12 @@ public class DoorEvent extends RAEvent {
     }
 
     public Block getDoorBlock() {
-        if (Util.isDoorBlock(door_block)) return door_block;
+        if (BlockUtil.isOpenable(door_block)) return door_block;
         return null;
     }
 
     public boolean isDoorOpened() {
-        return Util.isOpen(door_block);
+        return BlockUtil.isOpen(door_block);
     }
 
     public Location getDoorLocation() {

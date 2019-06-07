@@ -24,7 +24,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.TempOp;
+import me.fromgate.reactions.util.TemporaryOp;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -75,9 +75,9 @@ public class ActionCommand extends Action {
     }
 
     private static void dispatchCmd(final boolean setOp, final CommandSender sender, final String commandLine) {
-        TempOp.setTempOp(sender);
+        TemporaryOp.setTempOp(sender);
         Bukkit.getServer().dispatchCommand(sender, commandLine);
-        TempOp.removeTempOp(sender);
+        TemporaryOp.removeTempOp(sender);
     }
 
 }

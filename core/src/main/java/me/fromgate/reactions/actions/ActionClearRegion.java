@@ -25,6 +25,7 @@ package me.fromgate.reactions.actions;
 import me.fromgate.reactions.externals.RaWorldGuard;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -43,7 +44,7 @@ public class ActionClearRegion extends Action {
         if (!RaWorldGuard.isConnected()) return false;
         List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(region);
         if (locs.size() != 2) return false;
-        List<Entity> en = Util.getEntities(locs.get(0), locs.get(1));
+        List<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
         int count = 0;
         for (Entity e : en) {
             if (e.getType() == EntityType.PLAYER) continue;

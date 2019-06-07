@@ -34,13 +34,10 @@ public class ItemUtil {
         return 0;
     }
 
-    public static boolean setDurability(ItemStack item, int durability) {
+    public static void setDurability(ItemStack item, int durability) {
         ItemMeta meta = item.getItemMeta();
-        if(meta instanceof Damageable) {
+        if(meta instanceof Damageable)
             ((Damageable)meta).setDamage(durability);
-            return true;
-        }
-        return false;
     }
 
     public static void giveItemOrDrop(Player player, ItemStack item) {

@@ -81,7 +81,7 @@ import me.fromgate.reactions.util.GodMode;
 import me.fromgate.reactions.util.PlayerRespawner;
 import me.fromgate.reactions.util.RaDebug;
 import me.fromgate.reactions.util.Teleporter;
-import me.fromgate.reactions.util.TempOp;
+import me.fromgate.reactions.util.TemporaryOp;
 import me.fromgate.reactions.util.UpdateChecker;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.M;
@@ -126,7 +126,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -398,17 +397,17 @@ public class RaListener implements Listener {
     }
 
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
         if (EventManager.raiseCommandEvent(event.getPlayer(), event.getMessage().replaceFirst("/", ""), event.isCancelled())) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = false)
+    @EventHandler(priority = EventPriority.NORMAL)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        TempOp.removeTempOp(player);
+        TemporaryOp.removeTempOp(player);
         ActionsWaiter.refresh();
         RaDebug.offPlayerDebug(player);
         UpdateChecker.updateMsg(player);
@@ -494,7 +493,7 @@ public class RaListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerQuitActivators(PlayerQuitEvent event) {
-        TempOp.removeTempOp(event.getPlayer());
+        TemporaryOp.removeTempOp(event.getPlayer());
         EventManager.raiseQuitEvent(event);
         MoveListener.removeLocation(event.getPlayer());
     }

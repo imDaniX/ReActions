@@ -40,7 +40,7 @@ public class ActionsWaiter {
     }
 
     public static void remove(Task task) {
-        if (tasks.contains(task)) tasks.remove(task);
+        tasks.remove(task);
         save();
     }
 
@@ -74,7 +74,7 @@ public class ActionsWaiter {
         }
         if (toRemove.isEmpty()) return;
         for (Task t : toRemove) {
-            if (tasks.contains(t)) tasks.remove(t);
+            tasks.remove(t);
         }
         save();
     }

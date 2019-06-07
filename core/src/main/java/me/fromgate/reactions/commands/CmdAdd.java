@@ -53,7 +53,7 @@ public class CmdAdd extends Cmd {
                 M.CMD_ADDMENUADDFAIL.print(sender, arg2);
             }
         } else if (Activators.contains(arg1)) {
-            String param = Util.replaceStandartLocations(player, arg4.toString()); // используется в addActions
+            String param = Util.replaceStandardLocations(player, arg4.toString()); // используется в addActions
             if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
                 if (addAction(arg1, arg3, param)) {
                     Activators.saveActivators();

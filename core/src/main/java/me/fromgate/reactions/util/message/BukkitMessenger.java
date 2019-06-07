@@ -33,15 +33,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class BukkitMessenger implements Messenger {
 
-    JavaPlugin plugin;
+    private JavaPlugin plugin;
 
 
     public BukkitMessenger(JavaPlugin plugin) {
@@ -97,7 +96,6 @@ public class BukkitMessenger implements Messenger {
 
     @Override
     public boolean broadcast(String permission, String text) {
-        List<Player> playerList = new ArrayList<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (permission == null || permission.isEmpty() || player.hasPermission(permission)) {
                 player.sendMessage(text);
@@ -121,7 +119,6 @@ public class BukkitMessenger implements Messenger {
         return s;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public Map<String, String> load(String language) {
         Map<String, String> msg = new HashMap<>();
@@ -131,7 +128,7 @@ public class BukkitMessenger implements Messenger {
             if (f.exists()) lng.load(f);
             else {
                 InputStream is = plugin.getClass().getResourceAsStream("/language/" + language + ".lng");
-                if (is != null) lng.load(new InputStreamReader(is, "UTF-8"));
+                if (is != null) lng.load(new InputStreamReader(is, StandardCharsets.UTF_8));
             }
         } catch (Exception e) {
             M.LNG_LOAD_FAIL.log();
@@ -151,11 +148,10 @@ public class BukkitMessenger implements Messenger {
         File f = new File(plugin.getDataFolder() + File.separator + language + ".lng");
         try {
             if (f.exists()) lng.load(f);
-        } catch (Exception ignore) {
-        }
-        for (Map.Entry<String, String> message : messages.entrySet()) {
+        } catch (Exception ignore) {}
+
+        for (Map.Entry<String, String> message : messages.entrySet())
             lng.set(message.getKey().toLowerCase(), message.getValue());
-        }
 
         try {
             lng.save(f);
@@ -169,11 +165,11 @@ public class BukkitMessenger implements Messenger {
         return (toSender(send) != null);
     }
 
-    public CommandSender toSender(Object sender) {
+    private CommandSender toSender(Object sender) {
         return sender instanceof CommandSender ? (CommandSender) sender : null;
     }
 
-    public Player toPlayer(Object sender) {
+    private Player toPlayer(Object sender) {
         return sender instanceof Player ? (Player) sender : null;
     }
 }

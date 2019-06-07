@@ -31,7 +31,6 @@ import java.util.Map;
 public class Selector {
     private static Map<String, Location> locs = new HashMap<>();
 
-    @SuppressWarnings("deprecation")
     public static void selectLocation(Player p, Location loc) {
         if (p == null) return;
         if (loc == null) loc = p.getTargetBlock(null, 100).getLocation();

@@ -36,21 +36,21 @@ import java.util.Map;
 
 public class PlayerRespawner {
     private static Map<String, LivingEntity> players = new HashMap<>();
-    private static Map<String, Location> deathpoints = new HashMap<>();
+    private static Map<String, Location> deathPoints = new HashMap<>();
 
     public static void addPlayerRespawn(PlayerDeathEvent event) {
-        Player deadplayer = event.getEntity();
-        deathpoints.put(deadplayer.getName(), deadplayer.getLocation());  // это может пригодиться и в других ситуациях
-        LivingEntity killer = Util.getAnyKiller(deadplayer.getLastDamageCause());
-        players.put(deadplayer.getName(), killer);
+        Player deadPlayer = event.getEntity();
+        deathPoints.put(deadPlayer.getName(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
+        LivingEntity killer = Util.getAnyKiller(deadPlayer.getLastDamageCause());
+        players.put(deadPlayer.getName(), killer);
     }
 
     public static Location getLastDeathPoint(Player player) {
-        if (deathpoints.containsKey(player.getName())) return deathpoints.get(player.getName());
+        if (deathPoints.containsKey(player.getName())) return deathPoints.get(player.getName());
         return player.getLocation();
     }
 
-    public static LivingEntity getLastKiller(Player player) {
+    private static LivingEntity getLastKiller(Player player) {
         if (players.containsKey(player.getName()))
             return players.get(player.getName());
         return null;
@@ -62,7 +62,7 @@ public class PlayerRespawner {
         players.remove(player.getName());
         PlayerDeathActivator.DeathCause d = PlayerDeathActivator.DeathCause.OTHER;
         if (killer != null && killer.getType() == EntityType.PLAYER) d = PlayerDeathActivator.DeathCause.PVP;
-        else if (killer != null && killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;
+        else if (killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;
         Bukkit.getServer().getPluginManager().callEvent(new PlayerRespawnedEvent(player, killer, d));
     }
 

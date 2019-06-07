@@ -75,12 +75,8 @@ public class PushBack {
     }
 
     public static void clear(Player player) {
-        if (prevLocs1.containsKey(player.getName())) {
-            prevLocs1.remove(player.getName());
-        }
-        if (prevLocs2.containsKey(player.getName())) {
-            prevLocs2.remove(player.getName());
-        }
+        prevLocs1.remove(player.getName());
+        prevLocs2.remove(player.getName());
     }
 
     public static Location getPlayerPrevLoc1(Player player) {
