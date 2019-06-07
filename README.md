@@ -8,7 +8,7 @@ ReActions is a plugin for craftbukkit (spigot) server. It brings to Minecraft se
 
 [**Страница плагина на RuBukkit**](http://rubukkit.org/threads/mech-fun-reactions-chto-togda-inache-bukkitdev.41857/)
 
-[**Latest Dev Build** ![Snapshot](https://circleci.com/gh/Redolith/ReActions.svg?style=shield&circle-token=2bb628276a494b5ac51ec0a0ae4deda896b6f3e3)](https://circleci.com/gh/Redolith/ReActions)
+[**Latest Dev Build (Dropbox)**](https://www.dropbox.com/s/nl3upbb0xwhqtnd/ReActions-1.0-SNAPSHOT.jar?dl=0)
 
 ## Documentation
 
