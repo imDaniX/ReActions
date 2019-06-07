@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
     }
 }
 apply plugin: 'com.github.johnrengelman.shadow'
@@ -71,5 +71,4 @@ shadowJar {
         include(dependency('org.bstats:bstats-bukkit-lite:1.5'))
         include(project(':core'))
     }
-
 }
