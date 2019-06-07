@@ -6,36 +6,36 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 
+import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.script.SimpleBindings;
+import javax.script.SimpleScriptContext;
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * Created by MaxDikiy on 2017-05-17.
  */
 public class ActionIfElse extends Action {
+    private static final ScriptEngineManager factory = new ScriptEngineManager();
+    private static final ScriptEngine engine = factory.getEngineByName("JavaScript");
 
     @Override
     public boolean execute(Player p, Param params) {
-        String condition;
-        String then_;
-        String else_;
-        String suffix;
-        if (params.isParamsExists("if", "then", "else")) {
-            ScriptEngineManager factory = new ScriptEngineManager();
-            ScriptEngine engine = factory.getEngineByName("JavaScript");
+        if (params.isParamsExists("if")&&params.hasAnyParam("then", "else")) {
+            final ScriptContext context = new SimpleScriptContext();
+            context.setBindings(new SimpleBindings(), ScriptContext.ENGINE_SCOPE);
 
-            condition = params.getParam("if", "");
-            then_ = params.getParam("then", "");
-            else_ = params.getParam("else", "");
-            suffix = params.getParam("suffix", "");
+            String condition = params.getParam("if", "");
+            String then_ = params.getParam("then", "");
+            String else_ = params.getParam("else", "");
+            String suffix = params.getParam("suffix", "");
 
             try {
-                Boolean result = (Boolean) engine.eval(condition.toLowerCase());
-                if (!executeActivator(p, condition.toLowerCase(), (result) ? then_ : else_)
+                Boolean result = (Boolean) engine.eval(condition, context);
+                if (!executeActivator(p, condition, (result) ? then_ : else_)
                         && !executeActions(p, (result) ? then_ : else_))
                     Variables.setTempVar("ifelseresult" + suffix, (result) ? then_ : else_);
             } catch (ScriptException e) {
