@@ -11,14 +11,14 @@ repositories {
     maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
     maven { url "http://repo.nukkit.ru" }
     maven { url "http://repo.dmulloy2.net/nexus/repository/public/" }
-    maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/"}
+    maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" }
     maven { url "http://cnaude.org/repo/" }
-    maven { url "https://repo.codemc.org/repository/maven-public"}
-    maven { url "http://maven.enginehub.org/repo/"}
+    maven { url "https://repo.codemc.org/repository/maven-public" }
+    maven { url "http://maven.enginehub.org/repo/" }
+    maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    compile files(fileTree(dir: 'libs', includes: ['*.jar']))
     compile group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.2.1'
     compile group: 'com.massivecraft.massivecore', name: 'massivecore', version: '2.9.9'
     compile group: 'com.massivecraft.factions', name: 'factions', version: '2.9.0'
@@ -31,4 +31,5 @@ dependencies {
     compile group: 'org.bstats', name: 'bstats-bukkit-lite', version: '1.5'
     compile group: 'com.sk89q.worldedit', name: 'worldedit-bukkit', version: '7.0.0-SNAPSHOT'
     compile group: 'com.sk89q.worldguard', name: 'worldguard-legacy', version: '7.0.0-SNAPSHOT'
+    compile group: 'com.github.MilkBowl', name: 'VaultAPI', version: '1.7'
 }
