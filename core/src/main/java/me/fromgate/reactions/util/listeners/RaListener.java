@@ -84,7 +84,7 @@ import me.fromgate.reactions.util.Teleporter;
 import me.fromgate.reactions.util.TemporaryOp;
 import me.fromgate.reactions.util.UpdateChecker;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import me.fromgate.reactions.util.mob.MobSpawn;
 import me.fromgate.reactions.util.waiter.ActionsWaiter;
@@ -161,7 +161,7 @@ public class RaListener implements Listener {
             SignActivator signAct = (SignActivator) activator;
             if (!signAct.checkMask(event.getLines())) continue;
             if (event.getPlayer().hasPermission("reactions.sign." + signAct.getName().toLowerCase())) return;
-            M.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getName());
+            Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getName());
             event.setCancelled(true);
             return;
         }
@@ -243,7 +243,7 @@ public class RaListener implements Listener {
             if (killer != null) {
                 int money = Util.getMinMaxRandom(event.getEntity().getMetadata("ReActions-money").get(0).asString());
                 RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "", "");
-                M.MSG_MOBBOUNTY.print(killer, 'e', '6', RaEconomics.format(money, "", ""), event.getEntity().getType().name());
+                Msg.MSG_MOBBOUNTY.print(killer, 'e', '6', RaEconomics.format(money, "", ""), event.getEntity().getType().name());
             }
         }
 

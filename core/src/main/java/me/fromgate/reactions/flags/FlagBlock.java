@@ -3,7 +3,7 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public class FlagBlock extends Flag {
         if (istr.isEmpty()) return loc.getBlock().getType() != Material.AIR;
         ItemStack item = ItemUtil.parseItemStack(istr);
         if ((item == null) || ((!item.getType().isBlock()))) {
-            M.logOnce("wrongblockflag" + istr, "Failed to check flag BLOCK. Wrong block " + istr.toUpperCase() + " Parameters: " + param);
+            Msg.logOnce("wrongblockflag" + istr, "Failed to check flag BLOCK. Wrong block " + istr.toUpperCase() + " Parameters: " + param);
             return false;
         }
         return loc.getBlock().getType() == item.getType();

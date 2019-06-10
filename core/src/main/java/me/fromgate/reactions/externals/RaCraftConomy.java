@@ -28,7 +28,7 @@ import com.greatmancode.craftconomy3.account.Account;
 import com.greatmancode.craftconomy3.account.Balance;
 import com.greatmancode.craftconomy3.currency.Currency;
 import com.greatmancode.craftconomy3.tools.interfaces.Loader;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
@@ -41,7 +41,7 @@ public class RaCraftConomy {
 
     public static void init() {
         enabled = isCraftconomyInstalled();
-        if (enabled) M.logMessage("CraftConomy connected");
+        if (enabled) Msg.logMessage("CraftConomy connected");
     }
 
     public static boolean isEnabled() {

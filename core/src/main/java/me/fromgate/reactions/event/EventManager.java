@@ -37,7 +37,7 @@ import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.playerselector.PlayerSelectors;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -263,11 +263,11 @@ public class EventManager {
         if (id.isEmpty()) return false;
         Activator act = Activators.get(id);
         if (act == null) {
-            M.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
+            Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
             return false;
         }
         if (act.getType() != ActivatorType.EXEC) {
-            M.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
+            Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
             return false;
         }
 

@@ -25,7 +25,7 @@ package me.fromgate.reactions.actions;
 import com.google.common.base.Joiner;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.playerselector.PlayerSelectors;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -66,7 +66,7 @@ public class ActionMessage extends Action {
         String annoymentTime = params.getParam("hide");
         for (Player p : players) {
             if (showMessage(p, message, annoymentTime)) {
-                M.printMessage(p, message);
+                Msg.printMessage(p, message);
             }
         }
     }

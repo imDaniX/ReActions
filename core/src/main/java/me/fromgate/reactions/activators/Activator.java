@@ -123,8 +123,7 @@ public abstract class Activator {
 
     @Override
     public int hashCode() {
-         /* Надо будет переделать так чтобы получалась сортировка по алфавиту, хм.. и группировка по группам сразу...
-          */
+         // TODO: Надо будет переделать так чтобы получалась сортировка по алфавиту, хм.. и группировка по группам сразу...
         final int prime = 31;
         int result = 1;
         result = prime * result + ((name == null) ? 0 : name.hashCode());

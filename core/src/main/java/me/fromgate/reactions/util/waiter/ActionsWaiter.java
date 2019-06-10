@@ -2,7 +2,7 @@ package me.fromgate.reactions.util.waiter;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.ActVal;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -56,7 +56,7 @@ public class ActionsWaiter {
         try {
             cfg.load(f);
         } catch (Exception e) {
-            M.logMessage("Failed to load delayed actions");
+            Msg.logMessage("Failed to load delayed actions");
             return;
         }
         for (String key : cfg.getKeys(false)) {
@@ -90,7 +90,7 @@ public class ActionsWaiter {
             try {
                 cfg.save(f);
             } catch (Throwable e) {
-                M.logMessage("Failed to save delayed actions");
+                Msg.logMessage("Failed to save delayed actions");
             }
         }, 1);
     }

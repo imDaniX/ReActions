@@ -25,7 +25,7 @@ package me.fromgate.reactions.actions;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.VelocityUtil;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -34,7 +34,7 @@ public class ActionVelocityJump extends Action {
 
     @Override
     public boolean execute(Player p, Param params) {
-        M.logOnce("velocity-jump-warning", "&cWarning! VELOCITY_JUMP action is under construction. In next version of plugin it could be changed, renamed or removed!");
+        Msg.logOnce("velocity-jump-warning", "&cWarning! VELOCITY_JUMP action is under construction. In next version of plugin it could be changed, renamed or removed!");
         String locStr = params.getParam("loc", "");
         if (locStr.isEmpty()) return false;
         Location loc = Locator.parseCoordinates(locStr);

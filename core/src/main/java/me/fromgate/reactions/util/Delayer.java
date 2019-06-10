@@ -24,7 +24,7 @@ package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.timer.Time;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -109,7 +109,7 @@ public class Delayer {
             lst.add("[" + ln[0] + "] " + ln[1] + ": " + Time.fullTimeToString(delays.get(key)));
         }
         Collections.sort(lst);
-        M.printPage(sender, lst, M.MSG_LISTDELAY, pageNum, linePerPage, true);
+        Msg.printPage(sender, lst, Msg.MSG_LISTDELAY, pageNum, linePerPage, true);
     }
 
     public static String[] getStringTime(String playerName, String id) {

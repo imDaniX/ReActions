@@ -1,10 +1,10 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.activators.Activators;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
-@CmdDefine(command = "react", description = M.CMD_GROUP, permission = "reactions.config",
+@CmdDefine(command = "react", description = Msg.CMD_GROUP, permission = "reactions.config",
         subCommands = {"group"}, allowConsole = true, shortDescription = "&3/react group <activator> <groupname>")
 public class CmdGroup extends Cmd {
     @Override
@@ -14,8 +14,8 @@ public class CmdGroup extends Cmd {
         String group = args.length > 2 ? args[2] : "activators";
         if (Activators.setGroup(id, group)) {
             Activators.saveActivators();
-            M.printMSG(sender, "msg_groupset", id, group);
-        } else M.printMSG(sender, "msg_groupsetfailed", id, group);
+            Msg.printMSG(sender, "msg_groupset", id, group);
+        } else Msg.printMSG(sender, "msg_groupsetfailed", id, group);
         return true;
     }
 }

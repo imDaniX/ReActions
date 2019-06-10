@@ -26,7 +26,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -51,7 +51,7 @@ public class SQLManager {
             Class.forName("com.mysql.jdbc.Driver");
             enabled = true;
         } catch (ClassNotFoundException e) {
-            M.logOnce("mysqlinitfail", "MySQL JDBC Driver not found!");
+            Msg.logOnce("mysqlinitfail", "MySQL JDBC Driver not found!");
             enabled = false;
         }
     }
@@ -118,7 +118,7 @@ public class SQLManager {
         try {
             connection = DriverManager.getConnection(connectionLine, prop);
         } catch (Exception e) {
-            M.logOnce("sqlconnect", "Failed to connect to database: " + connectionLine + " user: " + userName);
+            Msg.logOnce("sqlconnect", "Failed to connect to database: " + connectionLine + " user: " + userName);
         }
         return connection;
     }
@@ -144,7 +144,7 @@ public class SQLManager {
                 if (column > 0 && column <= columns) resultStr = result.getString(column);
             }
         } catch (Exception e) {
-            M.logOnce(query, "Failed to execute query: " + query);
+            Msg.logOnce(query, "Failed to execute query: " + query);
         }
         try {
             if (result != null) result.close();
@@ -168,8 +168,8 @@ public class SQLManager {
             statement.executeUpdate(query);
             ok = true;
         } catch (Exception e) {
-            M.logOnce(query, "Failed to execute query: " + query);
-            if (e.getMessage() != null) M.logOnce(query + e.getMessage(), e.getMessage());
+            Msg.logOnce(query, "Failed to execute query: " + query);
+            if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
             e.printStackTrace();
         }
         try {
@@ -199,8 +199,8 @@ public class SQLManager {
             result = selectStmt.executeQuery(query);
             resultBool = result.next();
         } catch (Exception e) {
-            M.logOnce(query, "Failed to execute query: " + query);
-            if (e.getMessage() != null) M.logOnce(query + e.getMessage(), e.getMessage());
+            Msg.logOnce(query, "Failed to execute query: " + query);
+            if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
         }
         try {
             if (result != null) result.close();

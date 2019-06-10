@@ -5,10 +5,10 @@ import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.placeholders.Placeholders;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
-@CmdDefine(command = "react", description = M.HLP_THISHELP, permission = "reactions.config",
+@CmdDefine(command = "react", description = Msg.HLP_THISHELP, permission = "reactions.config",
         subCommands = {"help|hlp"}, allowConsole = true, shortDescription = "&3/react help [command]")
 public class CmdHelp extends Cmd {
     @Override

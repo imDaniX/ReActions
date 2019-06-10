@@ -31,7 +31,7 @@ import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyUniverse;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -45,7 +45,7 @@ public class RaTowny {
 
     public static boolean init() {
         connected = connectToTowny();
-        if (connected) M.logMessage("Towny found");
+        if (connected) Msg.logMessage("Towny found");
         return connected;
     }
 

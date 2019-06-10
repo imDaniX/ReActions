@@ -36,7 +36,7 @@ import me.fromgate.reactions.util.FlagVal;
 import me.fromgate.reactions.util.RaDebug;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -191,14 +191,14 @@ public enum Flags {
             String flagName = flagType.name();
             String alias = flagType.getAlias().equalsIgnoreCase(flagName) ? " " : " (" + flagType.getAlias() + ") ";
 
-            M msg = M.getByName("flag_" + flagName);
+            Msg msg = Msg.getByName("flag_" + flagName);
             if (msg == null) {
-                M.LNG_FAIL_FLAG_DESC.log(flagName);
+                Msg.LNG_FAIL_FLAG_DESC.log(flagName);
             } else {
                 flagList.add("&6" + flagName + "&e" + alias + "&3: &a" + msg.getText("NOCOLOR"));
             }
         }
-        Util.printPage(sender, flagList, M.MSG_FLAGLISTTITLE, pageNum);
+        Util.printPage(sender, flagList, Msg.MSG_FLAGLISTTITLE, pageNum);
     }
 
 

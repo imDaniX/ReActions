@@ -68,7 +68,7 @@ import me.fromgate.reactions.event.VariableEvent;
 import me.fromgate.reactions.event.WeChangeEvent;
 import me.fromgate.reactions.event.WeSelectionRegionEvent;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.Event;
@@ -196,14 +196,14 @@ public enum ActivatorType {
         for (ActivatorType activatorType : ActivatorType.values()) {
             String name = activatorType.name();
             String alias = activatorType.getAlias().equalsIgnoreCase(name) ? " " : " (" + activatorType.getAlias() + ") ";
-            M activatorDesc = M.getByName("ACTIVATOR_" + name);
+            Msg activatorDesc = Msg.getByName("ACTIVATOR_" + name);
             if (activatorDesc == null) {
-                M.LNG_MISSED_ACTIVATOR_DESC.log(name);
+                Msg.LNG_MISSED_ACTIVATOR_DESC.log(name);
             } else {
                 activatorList.add("&6" + name + "&e" + alias + "&3: &a" + activatorDesc.getText("NOCOLOR"));
             }
         }
-        Util.printPage(sender, activatorList, M.MSG_ACTIVATORLISTTITLE, pageNum);
+        Util.printPage(sender, activatorList, Msg.MSG_ACTIVATORLISTTITLE, pageNum);
     }
 
 

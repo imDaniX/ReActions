@@ -23,7 +23,7 @@
 package me.fromgate.reactions.timer;
 
 import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.quartz.CronExpression;
 
 import java.text.ParseException;
@@ -70,7 +70,7 @@ public class Timer {
             try {
                 this.timeServer = new CronExpression(time);
             } catch (ParseException e) {
-                M.logOnce(time, "Failed to parse cron format: " + time);
+                Msg.logOnce(time, "Failed to parse cron format: " + time);
                 this.timeServer = null;
                 e.printStackTrace();
             }

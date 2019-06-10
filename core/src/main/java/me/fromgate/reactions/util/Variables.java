@@ -24,7 +24,7 @@ package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.EventManager;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -383,7 +383,7 @@ public class Variables {
                 varList.add(key + " : " + vars.get(key));
             }
         }
-        M.printPage(sender, varList, M.MSG_VARLIST, pageNum, linesPerPage);
+        Msg.printPage(sender, varList, Msg.MSG_VARLIST, pageNum, linesPerPage);
     }
 
     public static boolean isNumber(String... str) {

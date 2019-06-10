@@ -4,7 +4,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.EventManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -49,7 +49,7 @@ public class InventoryMenu implements Listener {
         try {
             cfg.save(f);
         } catch (Exception e) {
-            M.logMessage("Failed to save menu configuration file");
+            Msg.logMessage("Failed to save menu configuration file");
         }
     }
 
@@ -65,7 +65,7 @@ public class InventoryMenu implements Listener {
                 menu.put(key, vi);
             }
         } catch (Exception e) {
-            M.logMessage("Failed to load menu configuration file");
+            Msg.logMessage("Failed to load menu configuration file");
         }
     }
 
@@ -222,15 +222,15 @@ public class InventoryMenu implements Listener {
     public static void printMenu(CommandSender sender, String id) {
         if (menu.containsKey(id)) {
             VirtualInventory vi = menu.get(id);
-            M.printMSG(sender, "msg_menuinfotitle", 'e', '6', id, vi.size, vi.title);
+            Msg.printMSG(sender, "msg_menuinfotitle", 'e', '6', id, vi.size, vi.title);
             for (int i = 0; i < vi.size; i++) {
                 String exec = vi.execs.get(i);
                 String slot = vi.slots.get(i);
                 if (exec.isEmpty() && slot.isEmpty()) continue;
                 slot = itemToString(slot);
-                M.printMSG(sender, "msg_menuinfoslot", i + 1, exec.isEmpty() ? "N/A" : exec, slot.isEmpty() ? "AIR" : slot);
+                Msg.printMSG(sender, "msg_menuinfoslot", i + 1, exec.isEmpty() ? "N/A" : exec, slot.isEmpty() ? "AIR" : slot);
             }
-        } else M.printMSG(sender, "msg_menuidfail", id);
+        } else Msg.printMSG(sender, "msg_menuidfail", id);
     }
 
     public static void printMenuList(CommandSender sender, int pageNum, String mask) {
@@ -241,7 +241,7 @@ public class InventoryMenu implements Listener {
                 menuList.add(id + " : " + menu.get(id).title);
             }
         }
-        M.printPage(sender, menuList, M.MSG_MENULIST, pageNum, linesPerPage);
+        Msg.printPage(sender, menuList, Msg.MSG_MENULIST, pageNum, linesPerPage);
     }
 
     public static String itemToString(String itemStr) {

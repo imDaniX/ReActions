@@ -3,7 +3,7 @@ package me.fromgate.reactions.placeholders;
 import me.fromgate.reactions.externals.RaPlaceholderAPI;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -98,9 +98,9 @@ public class Placeholders {
         for (Placeholder ph : placeholders) {
             for (String phKey : ph.getKeys()) {
                 if (phKey.toLowerCase().equals(phKey)) continue;
-                M desc = M.getByName("placeholder_" + phKey);
+                Msg desc = Msg.getByName("placeholder_" + phKey);
                 if (desc == null) {
-                    M.LNG_FAIL_PLACEHOLDER_DESC.log(phKey);
+                    Msg.LNG_FAIL_PLACEHOLDER_DESC.log(phKey);
                 } else {
                     phList.add("&6" + phKey + "&3: &a" + desc.getText("NOCOLOR"));
                 }
@@ -109,16 +109,16 @@ public class Placeholders {
         for (Flags f : Flags.values()) {
             if (f != Flags.TIME && f != Flags.CHANCE) continue;
             String name = f.name();
-            M desc = M.getByName("placeholder_" + name);
+            Msg desc = Msg.getByName("placeholder_" + name);
             if (desc == null) {
-                M.LNG_FAIL_PLACEHOLDER_DESC.log(name);
+                Msg.LNG_FAIL_PLACEHOLDER_DESC.log(name);
             } else {
                 phList.add("&6" + name + "&3: &a" + desc.getText("NOCOLOR"));
             }
         }
-        phList.add("&6VAR&3: &a" + M.PLACEHOLDER_VAR.getText("NOCOLOR"));
-        phList.add("&6SIGN_LOC, SIGN_LINE1,.. SIGN_LINE4&3: &a" + M.PLACEHOLDER_SIGNACT.getText("NOCOLOR"));
-        phList.add("&6ARG0, ARG1, ARG2...&3: &a" + M.PLACEHOLDER_COMMANDACT.getText("NOCOLOR"));
-        M.printPage(sender, phList, M.MSG_PLACEHOLDERLISTTITLE, pageNum, sender instanceof Player ? 10 : 1000);
+        phList.add("&6VAR&3: &a" + Msg.PLACEHOLDER_VAR.getText("NOCOLOR"));
+        phList.add("&6SIGN_LOC, SIGN_LINE1,.. SIGN_LINE4&3: &a" + Msg.PLACEHOLDER_SIGNACT.getText("NOCOLOR"));
+        phList.add("&6ARG0, ARG1, ARG2...&3: &a" + Msg.PLACEHOLDER_COMMANDACT.getText("NOCOLOR"));
+        Msg.printPage(sender, phList, Msg.MSG_PLACEHOLDERLISTTITLE, pageNum, sender instanceof Player ? 10 : 1000);
     }
 }

@@ -45,7 +45,7 @@ import me.fromgate.reactions.util.listeners.ArmorStandListener;
 import me.fromgate.reactions.util.listeners.MoveListener;
 import me.fromgate.reactions.util.listeners.RaListener;
 import me.fromgate.reactions.util.message.BukkitMessenger;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.playerselector.PlayerSelectors;
 import me.fromgate.reactions.util.waiter.ActionsWaiter;
 import org.bstats.bukkit.MetricsLite;
@@ -66,7 +66,7 @@ public class ReActions extends JavaPlugin {
         instance = this;
         Cfg.load();
         Cfg.save();
-        M.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
+        Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
         UpdateChecker.init(this, "ReActions", "61726", "reactions", Cfg.checkUpdates);
 
         if (!getDataFolder().exists()) getDataFolder().mkdirs();
@@ -92,15 +92,9 @@ public class ReActions extends JavaPlugin {
         Placeholders.init();
         Bukkit.getLogger().addHandler(new LogHandler());
         getServer().getPluginManager().registerEvents(new RaListener(), this);
+        getServer().getPluginManager().registerEvents(new ArmorStandListener(), this);
         MoveListener.init();
         GodMode.init();
-
-        try {
-            if (Class.forName("org.bukkit.event.player.PlayerInteractAtEntityEvent") != null) {
-                Bukkit.getPluginManager().registerEvents(new ArmorStandListener(), this);
-            }
-        } catch (Throwable ignored) {
-        }
 
         new MetricsLite(this);
     }

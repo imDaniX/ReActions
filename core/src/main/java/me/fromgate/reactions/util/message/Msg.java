@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public enum M {
+public enum Msg {
 
     //Default (lang) messages
     LNG_LOAD_FAIL("Failed to load languages from file. Default message used"),
@@ -518,7 +518,7 @@ public enum M {
      * return Message.ERROR_MESSAGE.log(variable1); // print in log and return value true
      */
     public boolean log(Object... s) {
-        M.logMessage(getText(s));
+        Msg.logMessage(getText(s));
         return true;
     }
 
@@ -580,7 +580,7 @@ public enum M {
      * @return — always returns true.
      */
     public boolean print(Object sender, Object... s) {
-        if (sender == null) return M.LNG_PRINT_FAIL.log(this.name());
+        if (sender == null) return Msg.LNG_PRINT_FAIL.log(this.name());
         return messenger.print(sender, getText(s));
     }
 
@@ -685,19 +685,19 @@ public enum M {
     private Character color1;
     private Character color2;
 
-    M(String msg) {
+    Msg(String msg) {
         message = msg;
         this.color1 = null;
         this.color2 = null;
     }
 
-    M(String msg, char color1, char color2) {
+    Msg(String msg, char color1, char color2) {
         this.message = msg;
         this.color1 = color1;
         this.color2 = color2;
     }
 
-    M(String msg, char color) {
+    Msg(String msg, char color) {
         this(msg, color, color);
     }
 
@@ -711,13 +711,13 @@ public enum M {
      * Call this file in onEnable method after initializing plugin configuration
      */
     public static void init(String pluginName, Messenger mess, String lang, boolean debug, boolean save) {
-        M.pluginName = pluginName;
+        Msg.pluginName = pluginName;
         messenger = mess;
         language = lang;
         debugMode = debug;
         initMessages();
         if (save) saveMessages();
-        LNG_CONFIG.debug(M.values().length, language, true, debugMode);
+        LNG_CONFIG.debug(Msg.values().length, language, true, debugMode);
         testRequiredMessages();
     }
 
@@ -737,11 +737,11 @@ public enum M {
 
     private static void initMessages() {
         Map<String, String> lng = messenger.load(language);
-        for (M key : M.values()) {
+        for (Msg key : Msg.values()) {
             if (lng.containsKey(key.name().toLowerCase())) {
                 key.initMessage(lng.get(key.name().toLowerCase()));
             } else if (!(language.equalsIgnoreCase("default") || language.equalsIgnoreCase("english"))) {
-                M.LNG_TRANSLATION_NOT_FOUND.log(key.name());
+                Msg.LNG_TRANSLATION_NOT_FOUND.log(key.name());
             }
         }
     }
@@ -751,25 +751,25 @@ public enum M {
         for (ActivatorType activator : ActivatorType.values()) {
             key = "ACTIVATOR_" + activator.name().toUpperCase();
             if (!exists(key)) {
-                M.LNG_MISSED_ACTIVATOR_DESC.log(key);
+                Msg.LNG_MISSED_ACTIVATOR_DESC.log(key);
             }
         }
         for (Actions action : Actions.values()) {
             key = "ACTION_" + action.name().toUpperCase();
             if (!exists(key)) {
-                M.LNG_FAIL_ACTION_DESC.log(key);
+                Msg.LNG_FAIL_ACTION_DESC.log(key);
             }
         }
         for (Flags flag : Flags.values()) {
             key = "FLAG_" + flag.name().toUpperCase();
             if (!exists(key)) {
-                M.LNG_FAIL_FLAG_DESC.log(key);
+                Msg.LNG_FAIL_FLAG_DESC.log(key);
             }
         }
     }
 
     private static boolean exists(String key) {
-        for (M m : values()) {
+        for (Msg m : values()) {
             if (m.name().equalsIgnoreCase(key)) return true;
         }
         return false;
@@ -777,7 +777,7 @@ public enum M {
 
     private static void saveMessages() {
         Map<String, String> messages = new LinkedHashMap<>();
-        for (M msg : M.values()) {
+        for (Msg msg : Msg.values()) {
             messages.put(msg.name().toLowerCase(), msg.message);
         }
         messenger.save(language, messages);
@@ -813,20 +813,20 @@ public enum M {
         }
     }
 
-    public static void printPage(Object sender, List<String> lines, M title, int pageNum, int linesPerPage) {
+    public static void printPage(Object sender, List<String> lines, Msg title, int pageNum, int linesPerPage) {
         printPage(sender, lines, title, pageNum, linesPerPage, false);
     }
 
-    public static void printPage(Object sender, List<String> lines, M title, int pageNum, int linesPerPage, boolean showNum) {
+    public static void printPage(Object sender, List<String> lines, Msg title, int pageNum, int linesPerPage, boolean showNum) {
         printPage(sender, lines, title, null, pageNum, linesPerPage, showNum);
     }
 
-    public static void printPage(Object sender, List<String> lines, M title, M footer, int pageNum, int linesPerPage) {
+    public static void printPage(Object sender, List<String> lines, Msg title, Msg footer, int pageNum, int linesPerPage) {
         printPage(sender, lines, title, footer, pageNum, linesPerPage, false);
 
     }
 
-    public static void printPage(Object sender, List<String> lines, M title, M footer, int pageNum, int linesPerPage, boolean showNum) {
+    public static void printPage(Object sender, List<String> lines, Msg title, Msg footer, int pageNum, int linesPerPage, boolean showNum) {
         if (lines == null || lines.isEmpty()) return;
         List<String> page = new ArrayList<>();
         if (title != null) page.add(title.getText('e', '6', pluginName));
@@ -849,19 +849,19 @@ public enum M {
     }
 
 
-    public static M getByName(String name) {
-        for (M m : values()) {
+    public static Msg getByName(String name) {
+        for (Msg m : values()) {
             if (m.name().equalsIgnoreCase(name)) return m;
         }
         return null;
     }
 
     public static String enDis(boolean value) {
-        return value ? M.ENABLED.toString() : M.DISABLED.toString();
+        return value ? Msg.ENABLED.toString() : Msg.DISABLED.toString();
     }
 
     public static boolean printMSG(Object sender, String key, Object... s) {
-        M m = getByName(key.toUpperCase());
+        Msg m = getByName(key.toUpperCase());
         if (m == null) {
             LNG_PRINT_FAIL_M.print(sender, key);
             return LNG_PRINT_FAIL_M.log(sender, key);
@@ -874,7 +874,7 @@ public enum M {
     public static void logOnce(String key, Object... s) {
         if (onceLog.contains(key)) return;
         onceLog.add(key);
-        M.logMessage(s);
+        Msg.logMessage(s);
     }
 
     public static void printMessage(Object sender, String message) {

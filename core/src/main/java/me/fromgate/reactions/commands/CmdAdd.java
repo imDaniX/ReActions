@@ -12,12 +12,12 @@ import me.fromgate.reactions.util.FakeCmd;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@CmdDefine(command = "react", description = M.CMD_ADD, permission = "reactions.config",
+@CmdDefine(command = "react", description = Msg.CMD_ADD, permission = "reactions.config",
         subCommands = {"add"}, allowConsole = true,
         shortDescription = "&3/react add [<activator> <Id>|loc <Id>|<Id> f <flag> <param>|<Id> <a|r> <action> <param>")
 public class CmdAdd extends Cmd {
@@ -41,46 +41,46 @@ public class CmdAdd extends Cmd {
             if (player == null) return false;
             if (!Locator.addTpLoc(arg2, player.getLocation())) return false;
             Locator.saveLocs();
-            M.CMD_ADDTPADDED.print(sender, arg2);
+            Msg.CMD_ADDTPADDED.print(sender, arg2);
         } else if (arg1.equalsIgnoreCase("timer")) {
             Param params = Param.parseParams((arg3.isEmpty() ? "" : arg3) + ((arg4.length() == 0) ? "" : " " + arg4));
             return Timers.addTimer(sender, arg2, params, true);
         } else if (arg1.equalsIgnoreCase("menu")) {
             // /react add menu id size sdjkf
             if (InventoryMenu.add(arg2, Util.isInteger(arg3) ? Integer.parseInt(arg3) : 9, ((Util.isInteger(arg3) ? "" : arg3 + " ") + ((arg4.length() == 0) ? "" : arg4.toString())).trim())) {
-                M.CMD_ADDMENUADDED.print(sender, arg2);
+                Msg.CMD_ADDMENUADDED.print(sender, arg2);
             } else {
-                M.CMD_ADDMENUADDFAIL.print(sender, arg2);
+                Msg.CMD_ADDMENUADDFAIL.print(sender, arg2);
             }
         } else if (Activators.contains(arg1)) {
             String param = Util.replaceStandardLocations(player, arg4.toString()); // используется в addActions
             if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
                 if (addAction(arg1, arg3, param)) {
                     Activators.saveActivators();
-                    M.CMD_ACTADDED.print(sender, arg3 + " (" + param + ")"); //TODO~
+                    Msg.CMD_ACTADDED.print(sender, arg3 + " (" + param + ")"); //TODO~
                     return true;
                 } else {
-                    M.CMD_ACTNOTADDED.print(sender, arg3 + " (" + param + ")");
+                    Msg.CMD_ACTNOTADDED.print(sender, arg3 + " (" + param + ")");
                 }
             } else if (arg2.equalsIgnoreCase("r") || arg2.equalsIgnoreCase("reaction")) {
                 if (addReAction(arg1, arg3, param)) {
                     Activators.saveActivators();
-                    return M.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
+                    return Msg.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
                 } else {
-                    M.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
+                    Msg.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
                 }
             } else if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
                 if (addFlag(arg1, arg3, param)) {
                     Activators.saveActivators();
-                    return M.CMD_FLAGADDED.print(sender, arg3 + " (" + param + ")");
+                    return Msg.CMD_FLAGADDED.print(sender, arg3 + " (" + param + ")");
                 } else {
-                    M.CMD_FLAGNOTADDED.print(sender, arg3 + " (" + arg4 + ")");
+                    Msg.CMD_FLAGNOTADDED.print(sender, arg3 + " (" + arg4 + ")");
                 }
             } else {
-                M.CMD_UNKNOWNBUTTON.print(sender, arg2);
+                Msg.CMD_UNKNOWNBUTTON.print(sender, arg2);
             }
         } else {
-            M.CMD_UNKNOWNADD.print(sender, 'c');
+            Msg.CMD_UNKNOWNADD.print(sender, 'c');
         }
         return true;
     }
@@ -116,14 +116,14 @@ public class CmdAdd extends Cmd {
         if (at == null) return false;
         Activator activator = at.create(name, targetBlock, param);
         if (activator == null || !activator.isValid()) {
-            M.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
+            Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
             return true;
         }
         if (Activators.addActivator(activator)) {
             Activators.saveActivators();
-            M.CMD_ADDBADDED.print(sender, activator.toString());
+            Msg.CMD_ADDBADDED.print(sender, activator.toString());
         } else {
-            M.CMD_NOTADDBADDED.print(sender, activator.toString());
+            Msg.CMD_NOTADDBADDED.print(sender, activator.toString());
         }
         FakeCmd.updateAllCommands();
         RaWorldGuard.updateRegionCache();

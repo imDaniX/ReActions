@@ -3,7 +3,7 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@CmdDefine(command = "react", description = M.CMD_CHECK, permission = "reactions.config",
+@CmdDefine(command = "react", description = Msg.CMD_CHECK, permission = "reactions.config",
         subCommands = {"check"}, allowConsole = false, shortDescription = "&3/react check [radius]")
 public class CmdCheck extends Cmd {
 
@@ -39,6 +39,6 @@ public class CmdCheck extends Cmd {
             }
         }
         List<String> plst = new ArrayList<>(lst);
-        M.printPage(player, plst, M.MSG_CHECK, 1, 100, true);
+        Msg.printPage(player, plst, Msg.MSG_CHECK, 1, 100, true);
     }
 }

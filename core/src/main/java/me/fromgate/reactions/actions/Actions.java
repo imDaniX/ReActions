@@ -29,7 +29,7 @@ import me.fromgate.reactions.placeholders.Placeholders;
 import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -198,13 +198,13 @@ public enum Actions {
         for (Actions actionType : Actions.values()) {
             String name = actionType.name();
             String alias = actionType.getAlias().equalsIgnoreCase(name) ? " " : " (" + actionType.getAlias() + ") ";
-            M msg = M.getByName("action_" + name);
+            Msg msg = Msg.getByName("action_" + name);
             if (msg == null) {
-                M.LNG_FAIL_ACTION_DESC.log(name);
+                Msg.LNG_FAIL_ACTION_DESC.log(name);
             } else {
                 actionList.add("&6" + name + "&e" + alias + "&3: &a" + msg.getText("NOCOLOR"));
             }
         }
-        Util.printPage(sender, actionList, M.MSG_ACTIONLISTTITLE, pageNum);
+        Util.printPage(sender, actionList, Msg.MSG_ACTIONLISTTITLE, pageNum);
     }
 }

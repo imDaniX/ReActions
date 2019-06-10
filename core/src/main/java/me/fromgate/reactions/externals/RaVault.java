@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.externals;
 
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -44,7 +44,7 @@ public class RaVault {
         if (checkVault()) {
             vault_perm = setupPermissions();
             vault_eco = setupEconomy();
-            M.logMessage("Vault connected");
+            Msg.logMessage("Vault connected");
         }
     }
 

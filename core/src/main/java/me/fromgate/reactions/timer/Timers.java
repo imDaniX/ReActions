@@ -25,7 +25,7 @@ package me.fromgate.reactions.timer;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.EventManager;
 import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -102,50 +102,50 @@ public class Timers {
             Timer timer = timers.get(id);
             timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer.toString());
         }
-        M.printPage(sender, timerList, M.MSG_TIMERLIST, pageNum, LINES_PER_PAGE_15, true);
+        Msg.printPage(sender, timerList, Msg.MSG_TIMERLIST, pageNum, LINES_PER_PAGE_15, true);
     }
 
     public static boolean removeTimer(CommandSender sender, String name) {
         if (name.isEmpty()) {
-            M.MSG_TIMERNEEDNAME.print(sender);
+            Msg.MSG_TIMERNEEDNAME.print(sender);
             return false;
         }
         if (!timers.containsKey(name)) {
-            M.MSG_TIMERUNKNOWNNAME.print(sender, name);
+            Msg.MSG_TIMERUNKNOWNNAME.print(sender, name);
             return false;
         }
         timers.remove(name);
         save();
-        return M.MSG_TIMERREMOVED.print(sender, name);
+        return Msg.MSG_TIMERREMOVED.print(sender, name);
     }
 
     public static boolean addTimer(CommandSender sender, String name, Param params, boolean save) {
         if (name.isEmpty()) return false;
         if (timers.containsKey(name)) {
-            M.MSG_TIMEREXIST.print(sender, name);
+            Msg.MSG_TIMEREXIST.print(sender, name);
             return false;
         }
         if (params.isEmpty()) {
-            M.MSG_TIMERNEEDPARAMS.print(sender);
+            Msg.MSG_TIMERNEEDPARAMS.print(sender);
             return false;
         }
         if (params.getParam("activator", "").isEmpty()) {
-            M.MSG_TIMERNEEDACTIVATOR.print(sender);
+            Msg.MSG_TIMERNEEDACTIVATOR.print(sender);
             return false;
         }
         if (!params.isParamsExists("timer-type")) {
-            M.MSG_TIMERNEEDTYPE.print(sender);
+            Msg.MSG_TIMERNEEDTYPE.print(sender);
             return false;
         }
         if (!params.isParamsExists("time")) {
-            M.MSG_TIMERNEEDTIME.print(sender);
+            Msg.MSG_TIMERNEEDTIME.print(sender);
             return false;
         }
         Timer timer = new Timer(params);
         timers.put(name, timer);
         updateIngameTimers();
         if (save) save();
-        return (sender == null) || M.MSG_TIMERADDED.print(sender, name);
+        return (sender == null) || Msg.MSG_TIMERADDED.print(sender, name);
     }
 
     public static Map<String, Timer> getIngameTimers() {
@@ -232,7 +232,7 @@ public class Timers {
         try {
             cfg.load(f);
         } catch (Exception e) {
-            M.logMessage("Failed to save timers.yml file");
+            Msg.logMessage("Failed to save timers.yml file");
             return;
         }
         for (String timerType : cfg.getKeys(false)) {
@@ -272,7 +272,7 @@ public class Timers {
         try {
             cfg.save(f);
         } catch (IOException e) {
-            M.logMessage("Failed to save timers.yml file");
+            Msg.logMessage("Failed to save timers.yml file");
         }
     }
 

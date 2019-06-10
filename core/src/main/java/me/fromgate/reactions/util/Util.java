@@ -24,7 +24,7 @@ package me.fromgate.reactions.util;
 
 import com.google.common.base.Charsets;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -244,16 +244,16 @@ public class Util {
     }
 
 
-    public static void printPage(CommandSender sender, List<String> list, M title, int page) {
+    public static void printPage(CommandSender sender, List<String> list, Msg title, int page) {
         int pageHeight = (sender instanceof Player) ? 9 : 1000;
         if (title != null) title.print(sender);
         ChatPage chatPage = paginate(list, page, Cfg.chatLength, pageHeight);
         for (String str : chatPage.getLines()) {
-            M.printMessage(sender, str);
+            Msg.printMessage(sender, str);
         }
 
         if (pageHeight == 9) {
-            M.LST_FOOTER.print(sender, 'e', '6', chatPage.getPageNumber(), chatPage.getTotalPages());
+            Msg.LST_FOOTER.print(sender, 'e', '6', chatPage.getPageNumber(), chatPage.getTotalPages());
         }
     }
 

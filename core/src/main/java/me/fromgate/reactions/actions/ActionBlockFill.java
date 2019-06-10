@@ -27,7 +27,7 @@ import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -47,7 +47,7 @@ public class ActionBlockFill extends Action {
         if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
             item = ItemUtil.itemFromMap(itemParam);
             if ((item == null) || ((!item.getType().isBlock()))) {
-                M.logOnce("wrongblockfill" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
+                Msg.logOnce("wrongblockfill" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
                 return false;
             }
         }

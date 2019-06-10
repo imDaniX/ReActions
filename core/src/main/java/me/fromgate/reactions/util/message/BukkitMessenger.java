@@ -131,7 +131,7 @@ public class BukkitMessenger implements Messenger {
                 if (is != null) lng.load(new InputStreamReader(is, StandardCharsets.UTF_8));
             }
         } catch (Exception e) {
-            M.LNG_LOAD_FAIL.log();
+            Msg.LNG_LOAD_FAIL.log();
             return msg;
         }
 
@@ -156,7 +156,7 @@ public class BukkitMessenger implements Messenger {
         try {
             lng.save(f);
         } catch (Exception e) {
-            M.LNG_SAVE_FAIL.log();
+            Msg.LNG_SAVE_FAIL.log();
         }
     }
 

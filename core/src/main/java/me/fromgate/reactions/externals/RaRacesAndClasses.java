@@ -24,7 +24,7 @@ package me.fromgate.reactions.externals;
 
 import de.tobiyas.racesandclasses.APIs.ClassAPI;
 import de.tobiyas.racesandclasses.APIs.RaceAPI;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -42,7 +42,7 @@ public class RaRacesAndClasses {
             enabled = isRacesAndClassesInstalled();
         } catch (Exception ignored) {
         }
-        if (enabled) M.logMessage("RacesAndClasses found");
+        if (enabled) Msg.logMessage("RacesAndClasses found");
     }
 
     private static boolean isRacesAndClassesInstalled() {

@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -15,7 +15,7 @@ public @interface CmdDefine {
 
     boolean allowConsole() default false;
 
-    M description();
+    Msg description();
 
     String shortDescription();
 }

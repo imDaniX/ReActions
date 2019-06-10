@@ -4,14 +4,14 @@ import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.util.Locator;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@CmdDefine(command = "react", description = M.CMD_INFO, permission = "reactions.config",
+@CmdDefine(command = "react", description = Msg.CMD_INFO, permission = "reactions.config",
         subCommands = {"info"}, allowConsole = true, shortDescription = "&3/react info <activator> [f|a|r]")
 public class CmdInfo extends Cmd {
     @Override
@@ -23,7 +23,7 @@ public class CmdInfo extends Cmd {
             printActInfo(sender, id, far);
         } else if (id.equalsIgnoreCase("menu")) {
             InventoryMenu.printMenu(sender, far);
-        } else M.printMSG(sender, "cmd_unknownbutton", id);
+        } else Msg.printMSG(sender, "cmd_unknownbutton", id);
         return true;
     }
 
@@ -43,15 +43,15 @@ public class CmdInfo extends Cmd {
             r = far.contains("r") || far.equalsIgnoreCase("reaction") || far.equalsIgnoreCase("me/fromgate/reactions");
         }
 
-        M.printMSG(sender, "&5☆ &d&l" + M.MSG_ACTINFOTITLE.getText("NOCOLOR") + " &r&5☆");
-        M.printMSG(sender, "msg_actinfo", act.getName(), act.getType(), act.getGroup());
-        M.printMSG(sender, "msg_actinfo2", act.getFlags().size(), act.getActions().size(), act.getReactions().size());
+        Msg.printMSG(sender, "&5☆ &d&l" + Msg.MSG_ACTINFOTITLE.getText("NOCOLOR") + " &r&5☆");
+        Msg.printMSG(sender, "msg_actinfo", act.getName(), act.getType(), act.getGroup());
+        Msg.printMSG(sender, "msg_actinfo2", act.getFlags().size(), act.getActions().size(), act.getReactions().size());
         if (f && (!act.getFlags().isEmpty())) {
             List<String> flg = new ArrayList<>();
             for (int i = 0; i < act.getFlags().size(); i++) {
                 flg.add((act.getFlags().get(i).not ? "&4! &e" : "  &e") + act.getFlags().get(i).flag + " &3= &a" + act.getFlags().get(i).value);
             }
-            M.printPage(sender, flg, M.LST_FLAGS, 1, 100, true);
+            Msg.printPage(sender, flg, Msg.LST_FLAGS, 1, 100, true);
         }
         if (a && (!act.getActions().isEmpty())) {
             List<String> flg = new ArrayList<>();
@@ -64,7 +64,7 @@ public class CmdInfo extends Cmd {
                 }
                 flg.add("  &e" + action + " &3= &a" + param);
             }
-            M.printPage(sender, flg, M.LST_ACTIONS, 1, 100, true);
+            Msg.printPage(sender, flg, Msg.LST_ACTIONS, 1, 100, true);
         }
         if (r && (!act.getReactions().isEmpty())) {
             List<String> flg = new ArrayList<>();
@@ -77,7 +77,7 @@ public class CmdInfo extends Cmd {
                 }
                 flg.add("  &e" + action + " &3= &a" + param);
             }
-            M.printPage(sender, flg, M.LST_REACTIONS, 1, 100, true);
+            Msg.printPage(sender, flg, Msg.LST_REACTIONS, 1, 100, true);
         }
     }
 }

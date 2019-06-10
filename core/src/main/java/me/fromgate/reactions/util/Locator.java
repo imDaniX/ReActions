@@ -25,7 +25,7 @@ package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.externals.RaWorldGuard;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -349,7 +349,7 @@ public class Locator {
         for (String loc : tports.keySet()) {
             locList.add("&3" + loc + " &a" + tports.get(loc).toString());
         }
-        M.printPage(sender, locList, M.MSG_LISTLOC, pageNum, linesPerPage, true);
+        Msg.printPage(sender, locList, Msg.MSG_LISTLOC, pageNum, linesPerPage, true);
     }
 
 

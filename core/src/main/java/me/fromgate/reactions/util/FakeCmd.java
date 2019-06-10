@@ -5,7 +5,7 @@ import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.activators.CommandActivator;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -36,7 +36,7 @@ public class FakeCmd implements CommandExecutor {
                 commands.append(c.getCommand());
             }
         }
-        M.CMD_REGISTERED.log(commands.toString());
+        Msg.CMD_REGISTERED.log(commands.toString());
     }
 
     public static boolean registerNewCommand(String commandStr) {

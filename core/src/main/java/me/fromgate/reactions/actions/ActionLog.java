@@ -26,7 +26,7 @@ import com.google.common.base.Joiner;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.playerselector.PlayerSelectors;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -93,7 +93,7 @@ public class ActionLog extends Action {
             } else {
                 saveToFile(file, message);
             }
-        } else M.logMessage(params.getParam("param-line"));
+        } else Msg.logMessage(params.getParam("param-line"));
 
         return true;
     }

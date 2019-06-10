@@ -26,7 +26,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.entity.Player;
 
 
@@ -59,9 +59,9 @@ public abstract class Action {
         setMessageParam(params.getParam("param-line"));
         boolean actionFailed = (!execute(player, params));
         if ((player != null) && (printAction())) {
-            M msg = M.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase());
+            Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase());
             if (msg == null) {
-                M.LNG_FAIL_ACTION_MSG.print(type.name());
+                Msg.LNG_FAIL_ACTION_MSG.print(type.name());
             } else {
                 msg.print(player, messageParam);
             }

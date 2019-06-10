@@ -2,17 +2,19 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Commander implements CommandExecutor {
-    private static List<Cmd> commands = new ArrayList<>();
+    private static Set<Cmd> commands = new HashSet<>();
     private static JavaPlugin plugin;
     private static Commander commander;
 
@@ -66,7 +68,7 @@ public class Commander implements CommandExecutor {
         for (Cmd cmd : commands) {
             helpList.add(cmd.getFullDescription());
         }
-        M.printMessage(sender, "&6&lReActions v" + ReActions.getPlugin().getDescription().getVersion() + " &r&6| " + M.HLP_HELP.getText("NO_COLOR"));
+        Msg.printMessage(sender, "&6&lReActions v" + ReActions.getPlugin().getDescription().getVersion() + " &r&6| " + Msg.HLP_HELP.getText("NO_COLOR"));
         Util.printPage(sender, helpList, null, page);
     }
 

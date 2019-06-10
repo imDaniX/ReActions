@@ -7,14 +7,14 @@ import me.fromgate.reactions.util.Delayer;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 
-@CmdDefine(command = "react", description = M.CMD_LIST, permission = "reactions.config",
+@CmdDefine(command = "react", description = Msg.CMD_LIST, permission = "reactions.config",
         subCommands = {"list"}, allowConsole = true, shortDescription = "&3/react list [loc|group|type] [page]")
 public class CmdList extends Cmd {
 
@@ -63,20 +63,20 @@ public class CmdList extends Cmd {
 
     public void printAct(CommandSender sender, int page, int lpp) {
         List<String> ag = Activators.getActivatorsList();
-        M.printPage(sender, ag, M.MSG_ACTLIST, page, lpp, true);
-        M.MSG_LISTCOUNT.print(sender, Activators.size(), Locator.sizeTpLoc());
+        Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
+        Msg.MSG_LISTCOUNT.print(sender, Activators.size(), Locator.sizeTpLoc());
     }
 
     public void printActGroup(CommandSender sender, String group, int page, int lpp) {
         List<String> ag = Activators.getActivatorsListGroup(group);
-        M.MSG_ACTLISTGRP.print(sender, group, '6', '6');
-        M.printPage(sender, ag, null, page, lpp, true);
+        Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
+        Msg.printPage(sender, ag, null, page, lpp, true);
     }
 
     public void printActType(CommandSender sender, String type, int page, int lpp) {
         List<String> ag = Activators.getActivatorsList(type);
-        M.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
-        M.printPage(sender, ag, null, page, lpp, true);
+        Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
+        Msg.printPage(sender, ag, null, page, lpp, true);
     }
 
 

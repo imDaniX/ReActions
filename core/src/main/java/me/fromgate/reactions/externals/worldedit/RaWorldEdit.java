@@ -19,7 +19,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import me.fromgate.reactions.externals.RaWorldGuard;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -46,7 +46,7 @@ public class RaWorldEdit {
             worldedit.getWorldEdit().getEventBus().register(new WeListener());
             connected = true;
         } catch (Throwable e) {
-            M.logMessage("Worledit not found...");
+            Msg.logMessage("Worledit not found...");
             connected = false;
         }
     }

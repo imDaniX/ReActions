@@ -26,7 +26,7 @@ import me.fromgate.playeffect.PlayEffect;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.message.M;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -44,11 +44,11 @@ public class RaEffects {
     //ENDER_SIGNAL  POTION_BREAK MOBSPAWNER_FLAMES  SMOKE 
     public static void init() {
         use_play_effects = isPlayEffectInstalled();
-        if (use_play_effects) M.logMessage("PlayEffect found");
+        if (use_play_effects) Msg.logMessage("PlayEffect found");
         else {
-            M.logMessage("PlayEffect plugin is not found at your system");
-            M.logMessage("If you need more effects please download PlayEffect from:");
-            M.logMessage("http://dev.bukkit.org/bukkit-plugins/playeffect/");
+            Msg.logMessage("PlayEffect plugin is not found at your system");
+            Msg.logMessage("If you need more effects please download PlayEffect from:");
+            Msg.logMessage("http://dev.bukkit.org/bukkit-plugins/playeffect/");
         }
     }
 
