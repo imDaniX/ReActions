@@ -1123,7 +1123,11 @@ public class VirtualItem extends ItemStack {
             }
             if (m == null) return false;
             typeStr = m.name();
-            if (!compareOrMatch(this.getType().name(), typeStr.toUpperCase(), regex)) return false;
+            try {
+                if (!compareOrMatch(this.getType().name(), typeStr.toUpperCase(), regex)) return false;
+            } catch (StringIndexOutOfBoundsException e) {
+                return false;
+            }
 
             if (itemMap.containsKey("color")) {
             	/*
