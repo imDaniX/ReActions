@@ -41,7 +41,7 @@ import me.fromgate.reactions.util.GodMode;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.UpdateChecker;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.listeners.ArmorStandListener;
+import me.fromgate.reactions.util.listeners.BukkitListener;
 import me.fromgate.reactions.util.listeners.MoveListener;
 import me.fromgate.reactions.util.listeners.RaListener;
 import me.fromgate.reactions.util.message.BukkitMessenger;
@@ -92,7 +92,7 @@ public class ReActions extends JavaPlugin {
         Placeholders.init();
         Bukkit.getLogger().addHandler(new LogHandler());
         getServer().getPluginManager().registerEvents(new RaListener(), this);
-        getServer().getPluginManager().registerEvents(new ArmorStandListener(), this);
+		getServer().getPluginManager().registerEvents(new BukkitListener(), this);
         MoveListener.init();
         GodMode.init();
 

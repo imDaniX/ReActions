@@ -28,24 +28,24 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class DoorEvent extends RAEvent {
-    private Block door_block;
+    private Block doorBlock;
 
     public DoorEvent(Player p, Block block) {
         super(p);
-        this.door_block = block;
+        this.doorBlock = block;
     }
 
     public Block getDoorBlock() {
-        if (BlockUtil.isOpenable(door_block)) return door_block;
+        if (BlockUtil.isOpenable(doorBlock)) return doorBlock;
         return null;
     }
 
     public boolean isDoorOpened() {
-        return BlockUtil.isOpen(door_block);
+        return BlockUtil.isOpen(doorBlock);
     }
 
     public Location getDoorLocation() {
-        return door_block.getLocation();
+        return doorBlock.getLocation();
     }
 
 

@@ -26,13 +26,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemClickEvent extends RAEvent {
-    public ItemClickEvent(Player p) {
+    private ItemStack item;
+    private boolean mainHand;
+    public ItemClickEvent(Player p, ItemStack item, boolean mainHand) {
         super(p);
+        this.item = item;
     }
 
-    @SuppressWarnings("deprecation")
     public ItemStack getItem() {
-        return this.getPlayer().getItemInHand();
+        return item;
     }
+    public boolean isMainHand() {return mainHand;}
 
 }

@@ -26,7 +26,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class ButtonEvent extends RAEvent {
-    private Location button_loc = null;
+    private Location button_loc;
 
     public ButtonEvent(Player p, Location loc) {
         super(p);

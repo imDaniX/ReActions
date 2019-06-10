@@ -149,12 +149,18 @@ public class EventManager {
     }
 
     public static boolean raiseItemClickEvent(PlayerInteractEntityEvent event) {
-        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
-        if (itemInHand == null || itemInHand.getType() == Material.AIR)
-            return false;
-        if (event.getHand() != EquipmentSlot.HAND)
-            return false;
-        ItemClickEvent ice = new ItemClickEvent(event.getPlayer());
+        ItemClickEvent ice;
+        if(event.getHand() == EquipmentSlot.HAND) {
+            ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
+            if (item == null || item.getType() == Material.AIR)
+                return false;
+             ice = new ItemClickEvent(event.getPlayer(), item, true);
+        } else {
+            ItemStack item = event.getPlayer().getInventory().getItemInOffHand();
+            if (item == null || item.getType() == Material.AIR)
+                return false;
+            ice = new ItemClickEvent(event.getPlayer(), item, false);
+        }
         Bukkit.getServer().getPluginManager().callEvent(ice);
         return true;
     }
@@ -162,16 +168,19 @@ public class EventManager {
     public static boolean raiseItemClickEvent(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return false;
-        if (event.getHand() != EquipmentSlot.HAND)
-            return false;
-        ItemStack itemInHand = event.getPlayer().getInventory().getItemInMainHand();
-        if (itemInHand == null || itemInHand.getType() == Material.AIR)
-            return false;
-        ItemClickEvent ice = new ItemClickEvent(event.getPlayer());
+        ItemClickEvent ice;
+        if(event.getHand() == EquipmentSlot.HAND) {
+            ItemStack item = event.getPlayer().getInventory().getItemInMainHand();
+            if (item == null || item.getType() == Material.AIR)
+                return false;
+            ice = new ItemClickEvent(event.getPlayer(), item, true);
+        } else {
+            ItemStack item = event.getPlayer().getInventory().getItemInOffHand();
+            if (item == null || item.getType() == Material.AIR)
+                return false;
+            ice = new ItemClickEvent(event.getPlayer(), item, false);
+        }
         Bukkit.getServer().getPluginManager().callEvent(ice);
-        itemInHand = event.getPlayer().getInventory().getItemInMainHand();
-        if (itemInHand == null || itemInHand.getType() == Material.AIR)
-            event.setCancelled(true);
         return true;
     }
 

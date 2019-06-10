@@ -3,7 +3,7 @@ package me.fromgate.reactions.event;
 import org.bukkit.entity.Player;
 
 public class FactionCreateEvent extends RAEvent {
-    String faction;
+    private String faction;
 
     public FactionCreateEvent(String factionName, Player player) {
         super(player);

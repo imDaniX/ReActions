@@ -29,7 +29,7 @@ import org.bukkit.entity.Player;
 
 public class BlockClickEvent extends RAEvent {
     private Block block;
-    boolean leftClick;
+    private boolean leftClick;
 
     public BlockClickEvent(Player p, Block block, boolean leftClick) {
         super(p);

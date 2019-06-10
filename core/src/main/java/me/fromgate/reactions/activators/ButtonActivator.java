@@ -33,10 +33,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 
 public class ButtonActivator extends Activator {
-    String world;
-    int x;
-    int y;
-    int z;
+    private String world;
+    private int x;
+    private int y;
+    private int z;
 
     ButtonActivator(String name, String group, YamlConfiguration cfg) {
         super(name, group, cfg);
@@ -50,7 +50,7 @@ public class ButtonActivator extends Activator {
         this.z = b.getZ();
     }
 
-    ButtonActivator(String name, Block targetBlock) {
+    public ButtonActivator(String name, Block targetBlock) {
         super(name, "activators");
         if (targetBlock != null &&
                 (targetBlock.getType().name().endsWith("_BUTTON"))) {

@@ -23,10 +23,10 @@
 package me.fromgate.reactions.event;
 
 public class FactionRelationEvent extends RAEvent {
-    String faction1;
-    String faction2;
-    String oldRelation;
-    String newRelation;
+    private String faction1;
+    private String faction2;
+    private String oldRelation;
+    private String newRelation;
 
     public FactionRelationEvent(String faction1, String faction2, String oldRelation, String newRelation) {
         super(null);

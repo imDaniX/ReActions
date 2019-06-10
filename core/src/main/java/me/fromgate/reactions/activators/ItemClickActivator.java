@@ -61,6 +61,7 @@ public class ItemClickActivator extends Activator {
                     Variables.setTempVar("item", vi.toString());
                     Variables.setTempVar("item-str", vi.toDisplayString());
                 }
+                Variables.setTempVar("hand", ie.isMainHand() ? "MAIN" : "OFF");
                 return Actions.executeActivator(ie.getPlayer(), this);
             }
 
