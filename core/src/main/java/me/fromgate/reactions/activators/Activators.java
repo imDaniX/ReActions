@@ -60,7 +60,7 @@ public class Activators {
         List<String> groups = findGroupsInDirs("");
         if (!groups.isEmpty())
             for (String group : groups)
-                loadActivators(group);
+                loadActivators(group, false);
 
         Timers.updateIngameTimers();
         RaWorldGuard.updateRegionCache();
@@ -93,6 +93,13 @@ public class Activators {
             }
         }
         return grps;
+    }
+
+    public static void replace(Activator newAct) {
+        String name = newAct.getName();
+        for (Activator a : act)
+            if(a.equals(name)) act.remove(a);
+        act.add(newAct);
     }
 
     public static boolean contains(String name) {
@@ -249,7 +256,7 @@ public class Activators {
         }
     }
 
-    public static void loadActivators(String group) {
+    public static void loadActivators(String group, boolean forced) {
         File f = new File(plg().getDataFolder() + File.separator + "Activators" + File.separatorChar + group + ".yml");
         if (!f.exists()) return;
         YamlConfiguration cfg = new YamlConfiguration();
@@ -261,7 +268,28 @@ public class Activators {
             return;
         }
 
-        for (String type : cfg.getKeys(false)) {
+        if(forced)
+            for (String type : cfg.getKeys(false)) {
+                if (!ActivatorType.isValid(type)) continue;
+                ConfigurationSection cs = cfg.getConfigurationSection(type);
+                if (cs == null) continue;
+                for (String name : cs.getKeys(false)) {
+                    ActivatorType at = ActivatorType.getByName(type);
+                    if (at == null) {
+                        Msg.logOnce("cannotcreate" + type + name, "Failed to create new activator. Type: " + type + " Name: " + name);
+                        continue;
+                    }
+
+                    Activator a = createActivator(at, name, group, cfg);
+                    if (a == null) {
+                        Msg.logOnce("cannotcreate2" + type + name, "Failed to create new activator. Type: " + type + " Name: " + name);
+                        continue;
+                    }
+                    if (!addActivator(a))
+                        Msg.logOnce("cannotcreate3", "Failed to create new activator. Type: " + type + " Name: " + name);
+                }
+            }
+        else             for (String type : cfg.getKeys(false)) {
             if (!ActivatorType.isValid(type)) continue;
             ConfigurationSection cs = cfg.getConfigurationSection(type);
             if (cs == null) continue;
@@ -277,7 +305,7 @@ public class Activators {
                     Msg.logOnce("cannotcreate2" + type + name, "Failed to create new activator. Type: " + type + " Name: " + name);
                     continue;
                 }
-                addActivator(a);
+                replace(a);
             }
         }
     }

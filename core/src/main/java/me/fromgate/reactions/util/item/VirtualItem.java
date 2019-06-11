@@ -1116,18 +1116,10 @@ public class VirtualItem extends ItemStack {
         if (this.hasLore() && !itemMap.containsKey("lore")) return false;
         if (itemMap.containsKey("type")) {
             String typeStr = itemMap.get("type").toUpperCase();
-            Material m = null;
-            try {
-                m = Material.getMaterial(typeStr);
-            } catch (Exception ignored) {
-            }
+            Material m = Material.getMaterial(typeStr);
             if (m == null) return false;
-            typeStr = m.name();
-            try {
-                if (!compareOrMatch(this.getType().name(), typeStr.toUpperCase(), regex)) return false;
-            } catch (StringIndexOutOfBoundsException e) {
-                return false;
-            }
+            typeStr = m.toString();
+            if (!compareOrMatch(this.getType().toString(), typeStr, regex)) return false;
 
             if (itemMap.containsKey("color")) {
             	/*
