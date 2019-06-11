@@ -34,6 +34,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -274,7 +275,10 @@ public class Variables {
                     String fstr = f.getName();
                     if (fstr.endsWith(".yml")) {
                         cfg.load(f);
-                        for (String key : cfg.getKeys(true)) {
+                        Set<String> keys = cfg.getKeys(true);
+                        if(keys.size() == 0)
+                            f.delete();
+                        else for (String key : keys) {
                             if (!key.contains(".")) continue;
                             vars.put(key, cfg.getString(key));
                         }
