@@ -32,6 +32,7 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class ItemClickActivator extends Activator {
     private String item;
