@@ -49,23 +49,8 @@ public class RaWorldGuard {
     private static Set<String> regionActivators = null;
 
     public static void init() {
-        bridge = getWGBridge();
+        bridge = new WGBridge7x();
         updateRegionCache();
-    }
-
-    public static WGBridge getWGBridge() {
-        Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        if (plugin == null) return null;
-        if (!plugin.getClass().getName().equals("com.sk89q.worldguard.bukkit.WorldGuardPlugin")) return null;
-        String version = plugin.getDescription().getVersion().replaceAll("[^0-9]", "");
-        if (version.startsWith("5")) {
-            try {
-                Class<?> c = Class.forName("me.fromgate.reactions.module.wgbridge.WGBridge5x");
-                return (WGBridge) c.newInstance();
-            } catch (Exception ignored) {
-            }
-        }
-        return new WGBridge7x();
     }
 
     public static void updateRegionCache() {

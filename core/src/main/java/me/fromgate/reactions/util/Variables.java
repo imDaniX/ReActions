@@ -75,7 +75,7 @@ public class Variables {
     public static void clearVar(Player player, String var) {
         String prevVal = Variables.getVar(player, var, "");
         String id = varId(player, var);
-        if (vars.containsKey(id)) vars.remove(id);
+        vars.remove(id);
         if (!Cfg.playerSelfVarFile) save();
         else save(player.getName());
         EventManager.raiseVariableEvent(var, player == null ? "" : player.getName(), "", prevVal);
@@ -285,8 +285,7 @@ public class Variables {
                     }
                 }
             }
-        } catch (Exception ignored) {
-        }
+        } catch (Exception ignored) {}
     }
 
     private static void removePlayerVars(String player) {

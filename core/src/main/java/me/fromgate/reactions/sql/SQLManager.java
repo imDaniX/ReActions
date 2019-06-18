@@ -36,7 +36,7 @@ import java.util.Properties;
 
 public class SQLManager {
     private static boolean enabled = false;
-    private static String serverAdress = "127.0.0.1";
+    private static String serverAddress = "127.0.0.1";
     private static String port = "3306";
     private static String dataBase;
     private static String userName;
@@ -58,7 +58,7 @@ public class SQLManager {
 
 
     public static void loadCfg() {
-        serverAdress = ReActions.instance.getConfig().getString("MySQL.server", "localhost");
+        serverAddress = ReActions.instance.getConfig().getString("MySQL.server", "localhost");
         port = ReActions.instance.getConfig().getString("MySQL.port", "3306");
         dataBase = ReActions.instance.getConfig().getString("MySQL.database", "ReActions");
         userName = ReActions.instance.getConfig().getString("MySQL.username", "root");
@@ -67,7 +67,7 @@ public class SQLManager {
     }
 
     public static void saveCfg() {
-        ReActions.instance.getConfig().set("MySQL.server", serverAdress);
+        ReActions.instance.getConfig().set("MySQL.server", serverAddress);
         ReActions.instance.getConfig().set("MySQL.port", port);
         ReActions.instance.getConfig().set("MySQL.database", dataBase);
         ReActions.instance.getConfig().set("MySQL.username", userName);
@@ -94,13 +94,13 @@ public class SQLManager {
         return result.equalsIgnoreCase(value);
     }
 
-    public static Connection connectToMySQL() {
+    private static Connection connectToMySQL() {
         return connectToMySQL(new Param());
     }
 
     // server port db user password codepage
-    public static Connection connectToMySQL(Param params) {
-        String cAddress = params.getParam("server", serverAdress);
+    private static Connection connectToMySQL(Param params) {
+        String cAddress = params.getParam("server", serverAddress);
         String cPort = params.getParam("port", port);
         String cDataBase = params.getParam("db", dataBase);
         String cUser = params.getParam("user", userName);

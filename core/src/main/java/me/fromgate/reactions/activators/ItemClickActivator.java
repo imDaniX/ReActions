@@ -35,7 +35,7 @@ import org.bukkit.event.Event;
 
 public class ItemClickActivator extends Activator {
     private String item;
-
+    private EquipmentSlot hand;
 
     public ItemClickActivator(String name, String group, YamlConfiguration cfg) {
         super(name, group, cfg);

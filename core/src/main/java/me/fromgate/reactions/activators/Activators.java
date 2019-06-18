@@ -268,7 +268,7 @@ public class Activators {
             return;
         }
 
-        if(forced)
+        if(!forced)
             for (String type : cfg.getKeys(false)) {
                 if (!ActivatorType.isValid(type)) continue;
                 ConfigurationSection cs = cfg.getConfigurationSection(type);
@@ -289,7 +289,7 @@ public class Activators {
                         Msg.logOnce("cannotcreate3", "Failed to create new activator. Type: " + type + " Name: " + name);
                 }
             }
-        else             for (String type : cfg.getKeys(false)) {
+        else for (String type : cfg.getKeys(false)) {
             if (!ActivatorType.isValid(type)) continue;
             ConfigurationSection cs = cfg.getConfigurationSection(type);
             if (cs == null) continue;
