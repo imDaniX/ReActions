@@ -36,7 +36,7 @@ import org.bukkit.inventory.EquipmentSlot;
 
 public class ItemClickActivator extends Activator {
     private String item;
-    private EquipmentSlot hand;
+    private boolean mainHand;
 
     public ItemClickActivator(String name, String group, YamlConfiguration cfg) {
         super(name, group, cfg);
@@ -56,6 +56,8 @@ public class ItemClickActivator extends Activator {
         }
         if (event instanceof ItemClickEvent) {
             ItemClickEvent ie = (ItemClickEvent) event;
+            if(ie.isMainHand() != mainHand)
+                return false;
             if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
                 VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
                 if (vi != null) {
@@ -83,6 +85,7 @@ public class ItemClickActivator extends Activator {
     @Override
     public void load(String root, YamlConfiguration cfg) {
         this.item = cfg.getString(root + ".item");
+        this.mainHand = cfg.getString(root + ".hand", "main").equalsIgnoreCase("main");
     }
 
     @Override

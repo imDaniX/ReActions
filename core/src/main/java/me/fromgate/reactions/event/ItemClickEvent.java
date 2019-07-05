@@ -31,6 +31,7 @@ public class ItemClickEvent extends RAEvent {
     public ItemClickEvent(Player p, ItemStack item, boolean mainHand) {
         super(p);
         this.item = item;
+        this.mainHand = mainHand;
     }
 
     public ItemStack getItem() {
