@@ -81,9 +81,11 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onChatCommand(AsyncPlayerChatEvent event) {
-		if (EventManager.raiseMessageEvent(event.getPlayer(), MessageActivator.Source.CHAT_INPUT, event.getMessage())) {
-			event.setCancelled(true);
-		}
+		Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
+			if (EventManager.raiseMessageEvent(event.getPlayer(), MessageActivator.Source.CHAT_INPUT, event.getMessage())) {
+				event.setCancelled(true);
+			}
+		});
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)

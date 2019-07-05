@@ -267,6 +267,7 @@ public class Variables {
     public static void loadVars() {
         if (Cfg.playerSelfVarFile) load();
         try {
+            int deleted = 0;
             YamlConfiguration cfg = new YamlConfiguration();
             File dir = new File(ReActions.instance.getDataFolder() + File.separator + "variables");
             if (!dir.exists()) return;
@@ -276,8 +277,10 @@ public class Variables {
                     if (fstr.endsWith(".yml")) {
                         cfg.load(f);
                         Set<String> keys = cfg.getKeys(true);
-                        if(keys.size() == 0)
+                        if(keys.isEmpty()) {
+                            deleted++;
                             f.delete();
+                        }
                         else for (String key : keys) {
                             if (!key.contains(".")) continue;
                             vars.put(key, cfg.getString(key));
@@ -285,6 +288,7 @@ public class Variables {
                     }
                 }
             }
+            Msg.logMessage("Deleted "+ deleted + " variable files.");
         } catch (Exception ignored) {}
     }
 
