@@ -24,7 +24,7 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.RAEvent;
-import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.timer.Timers;
 import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.FlagVal;

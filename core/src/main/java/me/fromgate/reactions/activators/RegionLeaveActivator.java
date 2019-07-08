@@ -24,8 +24,8 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.RegionLeaveEvent;
-import me.fromgate.reactions.externals.RaWorldGuard;
-import me.fromgate.reactions.module.wgbridge.WGBridge;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.WGBridge;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;

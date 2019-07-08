@@ -1,4 +1,4 @@
-package me.fromgate.reactions.module.wgbridge;
+package me.fromgate.reactions.externals.worldguard;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.managers.RegionManager;

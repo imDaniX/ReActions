@@ -1,6 +1,6 @@
 package me.fromgate.reactions.util.playerselector;
 
-import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;

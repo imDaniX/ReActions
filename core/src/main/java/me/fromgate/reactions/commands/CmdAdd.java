@@ -4,7 +4,7 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.Activators;
-import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.timer.Timers;

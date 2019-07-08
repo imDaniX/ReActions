@@ -24,7 +24,7 @@
 package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

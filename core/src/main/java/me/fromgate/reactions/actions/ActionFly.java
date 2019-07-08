@@ -5,11 +5,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class ActionFly extends Action {
+    @SuppressWarnings("deprecation")
     @Override
     public boolean execute(Player p, Param params) {
         Player player;
         String playerName = params.getParam("player", p != null ? p.getName() : "");
-        //noinspection deprecation
         player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
         AllowFly allow = AllowFly.NONE;
         AllowFly fly = AllowFly.NONE;

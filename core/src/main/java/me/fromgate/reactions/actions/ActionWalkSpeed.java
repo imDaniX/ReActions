@@ -8,13 +8,13 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 2017-05-16.
  */
 public class ActionWalkSpeed extends Action {
+    @SuppressWarnings("deprecation")
     @Override
     public boolean execute(Player p, Param params) {
         Player player = p;
         double speed;
         if (params.hasAnyParam("speed", "player")) {
             String playerName = params.getParam("player", p != null ? p.getName() : "");
-            //noinspection deprecation
             player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
             speed = params.getParam("speed", 0);
         } else speed = params.getParam("param-line", 0);

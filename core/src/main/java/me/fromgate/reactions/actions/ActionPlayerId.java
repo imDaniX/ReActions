@@ -13,8 +13,9 @@ import java.util.UUID;
  * Created by MaxDikiy on 5/6/2017.
  */
 public class ActionPlayerId extends Action {
-    private Boolean isOnlineMode;
+    private boolean isOnlineMode;
 
+    @SuppressWarnings("deprecation")
     @Override
     public boolean execute(Player p, Param params) {
         String playerName = params.getParam("player", "");
@@ -35,7 +36,6 @@ public class ActionPlayerId extends Action {
             String[] components = playerName.split("-");
             if (components.length == 5) uniqueID = UUID.fromString(playerName);
             if (uniqueID == null) {
-                //noinspection deprecation
                 player = Bukkit.getPlayer(playerName);
             } else {
                 player = Bukkit.getPlayer(uniqueID);

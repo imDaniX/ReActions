@@ -45,7 +45,7 @@ public class PlayerInventoryClickEvent extends RAEvent {
 
     public PlayerInventoryClickEvent(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType slotType, ItemStack item, Integer numberKey, InventoryView inventoryView, Integer slot) {
         super(p);
-        this.inventoryName = inventory.getName();
+        this.inventoryName = inventoryView.getTitle();
         this.action = action;
         this.click = click;
         this.inventory = inventory.getType();

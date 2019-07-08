@@ -24,7 +24,7 @@ package me.fromgate.reactions.util.mob;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.externals.RaEffects;
-import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;

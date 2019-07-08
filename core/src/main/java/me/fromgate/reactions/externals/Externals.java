@@ -2,6 +2,7 @@ package me.fromgate.reactions.externals;
 
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import org.bukkit.Bukkit;
 
 public class Externals {

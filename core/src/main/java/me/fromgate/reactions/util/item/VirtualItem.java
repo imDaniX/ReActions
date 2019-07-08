@@ -162,7 +162,9 @@ public class VirtualItem extends ItemStack {
             if (itemStr.contains(":")) {
                 itemStr = itemStr.substring(0, itemStr.indexOf(":"));
             }
-            type = Material.getMaterial(itemStr.toUpperCase());
+            type = Material.getMaterial(itemStr.toUpperCase(), false);
+            if(type == null)
+                type = Material.getMaterial(itemStr.toUpperCase(), true);
             amount = getNumber(amountStr);
             if (amount == 0) return null;
         } else if (params.containsKey("type")) {
@@ -339,13 +341,6 @@ public class VirtualItem extends ItemStack {
             LeatherArmorMeta lm = (LeatherArmorMeta) this.getItemMeta();
             lm.setColor(c);
             this.setItemMeta(lm);
-        } else {
-        /*
-            DyeColor dc = parseDyeColor(colorStr);
-            if (dc == null) return;
-            if(this.getData() instanceof Colorable)
-                ((Colorable)this).setColor(dc);
-         */
         }
     }
 

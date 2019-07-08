@@ -20,7 +20,7 @@
  * 
  */
 
-package me.fromgate.reactions.externals;
+package me.fromgate.reactions.externals.worldguard;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
@@ -30,13 +30,9 @@ import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.activators.RegionActivator;
 import me.fromgate.reactions.activators.RegionEnterActivator;
 import me.fromgate.reactions.activators.RegionLeaveActivator;
-import me.fromgate.reactions.module.wgbridge.WGBridge;
-import me.fromgate.reactions.module.wgbridge.WGBridge7x;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
 import java.util.HashSet;

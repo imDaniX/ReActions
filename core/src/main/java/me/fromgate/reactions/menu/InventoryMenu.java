@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -249,7 +250,7 @@ public class InventoryMenu implements Listener {
         ItemStack item = ItemUtil.parseItemStack(itemStr);
         if (item == null || item.getType() == Material.AIR) return "AIR";
         String returnStr = item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : "";
-        String itemTypeData = item.getType().name() + (item.getDurability() == 0 ? "" : ":" + item.getDurability()) + (item.getAmount() == 1 ? "" : "*" + item.getAmount());
+        String itemTypeData = item.getType().name() + (ItemUtil.getDurability(item) == 0 ? "" : ":" + ItemUtil.getDurability(item)) + (item.getAmount() == 1 ? "" : "*" + item.getAmount());
         return ChatColor.stripColor(returnStr.isEmpty() ? itemTypeData : returnStr + "[" + itemTypeData + "]");
     }
 
@@ -265,11 +266,12 @@ public class InventoryMenu implements Listener {
         return getInventoryCode((Player) human, inv);
     }
 
+    @SuppressWarnings("deprecation")
     public static int getInventoryCode(Player player, Inventory inv) {
         if (player == null || inv == null) return -1;
         StringBuilder sb = new StringBuilder();
         sb.append(player.getName());
-        sb.append(inv.getTitle());
+        sb.append(inv.getName());
         for (ItemStack i : inv.getContents()) {
             String iStr = "emptyslot";
             if (i != null && i.getType() != Material.AIR) {
@@ -282,7 +284,7 @@ public class InventoryMenu implements Listener {
                 }
                 sb.append(i.getType().name());
                 sb.append(":");
-                sb.append(i.getDurability());
+                sb.append(ItemUtil.getDurability(i));
                 sb.append(":");
                 sb.append(i.getAmount());
             }

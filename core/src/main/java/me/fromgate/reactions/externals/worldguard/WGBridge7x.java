@@ -1,4 +1,4 @@
-package me.fromgate.reactions.module.wgbridge;
+package me.fromgate.reactions.externals.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
@@ -21,6 +21,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class WGBridge7x extends WGBridge {
@@ -32,7 +33,7 @@ public class WGBridge7x extends WGBridge {
     @Override
     public void init() {
         if (!isConnected()) return;
-        setVersion("WGBridge 0.0.2/WG6x");
+        setVersion("WGBridge 0.0.2/WG7x");
         if (this.wgPlugin instanceof WorldGuardPlugin) {
             worldguard = (WorldGuardPlugin) wgPlugin;
             container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -139,7 +140,7 @@ public class WGBridge7x extends WGBridge {
         String regionName = getRegionName(region);
         ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
-        return localPlayer.getAssociation(Arrays.asList(rg)) != Association.NON_MEMBER;
+        return localPlayer.getAssociation(Collections.singletonList(rg)) != Association.NON_MEMBER;
     }
 
 
@@ -153,7 +154,7 @@ public class WGBridge7x extends WGBridge {
         String regionName = getRegionName(region);
         ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
-        return localPlayer.getAssociation(Arrays.asList(rg)) == Association.OWNER;
+        return localPlayer.getAssociation(Collections.singletonList(rg)) == Association.OWNER;
     }
 
     @Override
@@ -166,7 +167,7 @@ public class WGBridge7x extends WGBridge {
         String regionName = getRegionName(region);
         ProtectedRegion rg = container.get(BukkitAdapter.adapt(world)).getRegion(regionName);
         if (rg == null) return false;
-        return localPlayer.getAssociation(Arrays.asList(rg)) == Association.MEMBER;
+        return localPlayer.getAssociation(Collections.singletonList(rg)) == Association.MEMBER;
     }
 
     @Override
@@ -181,7 +182,6 @@ public class WGBridge7x extends WGBridge {
         return (rg.contains(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public boolean isFlagInRegion(Player p, String region) {
         if (!connected) return false;
@@ -214,16 +214,15 @@ public class WGBridge7x extends WGBridge {
         if (f == null) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
         if (set.queryValue(localPlayer, f) == null) return false;
-        Boolean result = false;
+        boolean result = false;
         String flagStr = set.queryValue(localPlayer, f).toString();
         if (flagStr.equalsIgnoreCase(valueName)) result = true;
 
         if (result && group_parts.length > 1) {
             RegionGroup group;
             group = set.queryValue(null, f.getRegionGroupFlag());
-            if ((group.toString()).replace("_", "").equalsIgnoreCase(group_parts[1].replace("_", ""))) return true;
-        } else if (result) return true;
-        return false;
+            return (group.toString()).replace("_", "").equalsIgnoreCase(group_parts[1].replace("_", ""));
+        } else return result;
     }
 
     public LocalPlayer getWrapPlayer(Player player) {

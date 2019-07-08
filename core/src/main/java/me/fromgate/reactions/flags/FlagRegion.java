@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 

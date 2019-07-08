@@ -31,7 +31,7 @@ import me.fromgate.reactions.activators.ItemWearActivator;
 import me.fromgate.reactions.activators.MessageActivator;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.activators.SignActivator;
-import me.fromgate.reactions.externals.RaWorldGuard;
+import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
