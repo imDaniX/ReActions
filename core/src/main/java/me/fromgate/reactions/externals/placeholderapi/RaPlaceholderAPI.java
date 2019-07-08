@@ -18,7 +18,6 @@ public class RaPlaceholderAPI {
     }
 
     public static String processPlaceholder(Player player, String text) {
-        if (!enabled) return text;
-        return PlaceholderAPI.setPlaceholders(player, text);
+        return enabled ? PlaceholderAPI.setPlaceholders(player, text) : text;
     }
 }

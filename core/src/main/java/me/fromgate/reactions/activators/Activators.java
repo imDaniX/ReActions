@@ -38,6 +38,7 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -97,16 +98,19 @@ public class Activators {
 
     public static void replace(Activator newAct) {
         String name = newAct.getName();
-        for (Activator a : act)
-            if(a.equals(name)) act.remove(a);
+        Iterator<Activator> iterator = act.iterator();
+        while(iterator.hasNext())
+            if(iterator.next().equals(name)) {
+                iterator.remove();
+                break;
+            }
         act.add(newAct);
     }
 
     public static boolean contains(String name) {
         boolean rst = false;
-        for (Activator a : act) {
+        for (Activator a : act)
             if (a.equals(name)) return true;
-        }
         return rst;
     }
 
@@ -118,12 +122,12 @@ public class Activators {
         act.clear();
     }
 
-    public static List<Activator> getActivatorInLocation(World world, int x, int y, int z) {
+    public static Set<Activator> getActivatorInLocation(World world, int x, int y, int z) {
         return getActivatorInLocation(new Location(world, x, y, z));
     }
 
-    public static List<Activator> getActivatorInLocation(Location loc) {
-        List<Activator> found = new ArrayList<>();
+    public static Set<Activator> getActivatorInLocation(Location loc) {
+        Set<Activator> found = new HashSet<>();
         for (Activator a : act)
             if (a.isLocatedAt(loc))
                 found.add(a);

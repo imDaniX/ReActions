@@ -511,7 +511,7 @@ public enum Msg {
     /**
      * Send current message to log files
      *
-     * @param s
+     * @param s - array of any object that you need to print out.
      * @return — always returns true.
      * Examples:
      * Message.ERROR_MESSAGE.log(variable1); // just print in log
@@ -525,7 +525,7 @@ public enum Msg {
     /**
      * Same as log, but will printout nothing if debug mode is disabled
      *
-     * @param s
+     * @param s - array of any object that you need to print out.
      * @return — always returns true.
      */
     public boolean debug(Object... s) {
@@ -540,7 +540,7 @@ public enum Msg {
      *
      * @param seconds — how much time (in seconds) to show message
      * @param sender  — Player
-     * @param s
+     * @param s - array of any object that you need to print out.
      * @return — always returns true.
      */
     public boolean tip(int seconds, Object sender, Object... s) {
@@ -565,7 +565,7 @@ public enum Msg {
      * Show a message to player in center of screen
      *
      * @param sender — Player
-     * @param s
+     * @param s - array of any object that you need to print out.
      * @return — always returns true.
      */
     public boolean tip(Object sender, Object... s) {
@@ -576,7 +576,7 @@ public enum Msg {
      * Send message to Player or to ConsoleSender
      *
      * @param sender
-     * @param s
+     * @param s - array of any object that you need to print out.
      * @return — always returns true.
      */
     public boolean print(Object sender, Object... s) {
@@ -588,7 +588,7 @@ public enum Msg {
      * Send message to all players or to players with defined permission
      *
      * @param permission
-     * @param s
+     * @param s - array of any object that you need to print out.
      * @return — always returns true.
      * <p>
      * Examples:
@@ -786,7 +786,7 @@ public enum Msg {
     /**
      * Send message (formed using join method) to server log if debug mode is enabled
      *
-     * @param s
+     * @param s - array of any object that you need to print out.
      */
     public static boolean debugMessage(Object... s) {
         if (debugMode) messenger.log(clean(join(s)));
@@ -796,7 +796,7 @@ public enum Msg {
     /**
      * Join object array to string (separated by space)
      *
-     * @param s
+     * @param s - array of any object that you need to join.
      */
     public static String join(Object... s) {
         StringBuilder sb = new StringBuilder();
@@ -870,7 +870,7 @@ public enum Msg {
         }
     }
 
-
+    @SuppressWarnings("unchecked")
     public static void logOnce(String key, Object... s) {
         if (onceLog.contains(key)) return;
         onceLog.add(key);
