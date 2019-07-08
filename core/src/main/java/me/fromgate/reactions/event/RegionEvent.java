@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -26,15 +26,15 @@ import org.bukkit.entity.Player;
 
 public class RegionEvent extends RAEvent {
 
-    private String region;
+	private String region;
 
-    public RegionEvent(Player player, String region) {
-        super(player);
-        this.region = region;
-    }
+	public RegionEvent(Player player, String region) {
+		super(player);
+		this.region = region;
+	}
 
-    public String getRegion() {
-        return this.region;
-    }
+	public String getRegion() {
+		return this.region;
+	}
 
 }

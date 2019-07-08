@@ -17,81 +17,81 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ActionsWaiter {
 
-    private static Set<Task> tasks;
+	private static Set<Task> tasks;
 
-    public static void init() {
-        tasks = Collections.newSetFromMap(new ConcurrentHashMap<Task, Boolean>()); //new HashSet<>();
-        load();
-    }
+	public static void init() {
+		tasks = Collections.newSetFromMap(new ConcurrentHashMap<Task, Boolean>()); //new HashSet<>();
+		load();
+	}
 
-    public static void executeDelayed(Player player, ActVal action, boolean isAction, long time) {
-        if (action == null) return;
-        List<ActVal> actions = new ArrayList<>();
-        actions.add(action);
-        executeDelayed(player, actions, isAction, time);
-    }
+	public static void executeDelayed(Player player, ActVal action, boolean isAction, long time) {
+		if (action == null) return;
+		List<ActVal> actions = new ArrayList<>();
+		actions.add(action);
+		executeDelayed(player, actions, isAction, time);
+	}
 
-    public static void executeDelayed(Player player, List<ActVal> actions, boolean isAction, long time) {
-        if (actions.isEmpty()) return;
-        String playerStr = player != null ? player.getName() : null;
-        Task task = new Task(playerStr, actions, isAction, time);
-        tasks.add(task);
-        save();
-    }
+	public static void executeDelayed(Player player, List<ActVal> actions, boolean isAction, long time) {
+		if (actions.isEmpty()) return;
+		String playerStr = player != null ? player.getName() : null;
+		Task task = new Task(playerStr, actions, isAction, time);
+		tasks.add(task);
+		save();
+	}
 
-    public static void remove(Task task) {
-        tasks.remove(task);
-        save();
-    }
+	public static void remove(Task task) {
+		tasks.remove(task);
+		save();
+	}
 
-    public static void load() {
-        if (!tasks.isEmpty()) {
-            for (Task t : tasks) {
-                t.stop();
-            }
-        }
-        tasks.clear();
-        YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
-        try {
-            cfg.load(f);
-        } catch (Exception e) {
-            Msg.logMessage("Failed to load delayed actions");
-            return;
-        }
-        for (String key : cfg.getKeys(false)) {
-            Task t = new Task(cfg, key);
-            tasks.add(t);
-        }
-    }
+	public static void load() {
+		if (!tasks.isEmpty()) {
+			for (Task t : tasks) {
+				t.stop();
+			}
+		}
+		tasks.clear();
+		YamlConfiguration cfg = new YamlConfiguration();
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
+		try {
+			cfg.load(f);
+		} catch (Exception e) {
+			Msg.logMessage("Failed to load delayed actions");
+			return;
+		}
+		for (String key : cfg.getKeys(false)) {
+			Task t = new Task(cfg, key);
+			tasks.add(t);
+		}
+	}
 
-    public static void refresh() {
-        Set<Task> toRemove = new HashSet<>();
-        if (tasks.isEmpty()) return;
-        for (Task t : tasks) {
-            if (t.isTimePassed()) t.execute();
-            if (t.isExecuted()) toRemove.add(t);
-        }
-        if (toRemove.isEmpty()) return;
-        for (Task t : toRemove) {
-            tasks.remove(t);
-        }
-        save();
-    }
+	public static void refresh() {
+		Set<Task> toRemove = new HashSet<>();
+		if (tasks.isEmpty()) return;
+		for (Task t : tasks) {
+			if (t.isTimePassed()) t.execute();
+			if (t.isExecuted()) toRemove.add(t);
+		}
+		if (toRemove.isEmpty()) return;
+		for (Task t : toRemove) {
+			tasks.remove(t);
+		}
+		save();
+	}
 
-    public static void save() {
-        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
-            YamlConfiguration cfg = new YamlConfiguration();
-            File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
-            if (f.exists()) f.delete();
-            for (Task t : tasks) {
-                if (!t.isExecuted()) t.save(cfg);
-            }
-            try {
-                cfg.save(f);
-            } catch (Throwable e) {
-                Msg.logMessage("Failed to save delayed actions");
-            }
-        }, 1);
-    }
+	public static void save() {
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
+			YamlConfiguration cfg = new YamlConfiguration();
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
+			if (f.exists()) f.delete();
+			for (Task t : tasks) {
+				if (!t.isExecuted()) t.save(cfg);
+			}
+			try {
+				cfg.save(f);
+			} catch (Throwable e) {
+				Msg.logMessage("Failed to save delayed actions");
+			}
+		}, 1);
+	}
 }

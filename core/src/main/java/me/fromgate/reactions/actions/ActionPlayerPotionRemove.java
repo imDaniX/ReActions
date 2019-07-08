@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -30,33 +30,33 @@ import org.bukkit.potion.PotionEffectType;
 
 public class ActionPlayerPotionRemove extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        String str = removePotionEffect(p, params.getParam("param-line", ""));
-        if (str.isEmpty()) return false;
-        this.setMessageParam(str);
-        return true;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		String str = removePotionEffect(p, params.getParam("param-line", ""));
+		if (str.isEmpty()) return false;
+		this.setMessageParam(str);
+		return true;
+	}
 
-    private String removePotionEffect(Player p, String param) {
-        String str = "";
-        if (param.equalsIgnoreCase("all") || param.equalsIgnoreCase("*"))
-            for (PotionEffect pe : p.getActivePotionEffects()) p.removePotionEffect(pe.getType());
-        else {
-            String[] pefs = param.split(",");
-            if (pefs.length > 0) {
-                for (String pefStr : pefs) {
-                    PotionEffectType pef = Util.parsePotionEffect(pefStr);
-                    if (pef == null) continue;
-                    if (p.hasPotionEffect(pef)) {
-                        p.removePotionEffect(pef);
-                        str = str.isEmpty() ? pef.getName() : str + ", " + pef.getName();
-                    }
-                }
-            }
-        }
-        return str;
+	private String removePotionEffect(Player p, String param) {
+		String str = "";
+		if (param.equalsIgnoreCase("all") || param.equalsIgnoreCase("*"))
+			for (PotionEffect pe : p.getActivePotionEffects()) p.removePotionEffect(pe.getType());
+		else {
+			String[] pefs = param.split(",");
+			if (pefs.length > 0) {
+				for (String pefStr : pefs) {
+					PotionEffectType pef = Util.parsePotionEffect(pefStr);
+					if (pef == null) continue;
+					if (p.hasPotionEffect(pef)) {
+						p.removePotionEffect(pef);
+						str = str.isEmpty() ? pef.getName() : str + ", " + pef.getName();
+					}
+				}
+			}
+		}
+		return str;
 
-    }
+	}
 
 }

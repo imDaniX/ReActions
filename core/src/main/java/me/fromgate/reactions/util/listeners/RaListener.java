@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -74,227 +74,227 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 public class RaListener implements Listener {
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onButton(ButtonEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onButton(ButtonEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlate(PlateEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlate(PlateEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onRegion(RegionEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onRegion(RegionEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onRegionEnter(RegionEnterEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onRegionEnter(RegionEnterEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onRegionLeave(RegionLeaveEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
-
-
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onRegionLeave(ExecEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onRegionLeave(RegionLeaveEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onCommandActivator(CommandEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPvpKillActivator(PvpKillEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPvpDeathActivator(PlayerWasKilledEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
-
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPvpRespawnActivator(PlayerRespawnedEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onRegionLeave(ExecEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onLeverActivator(LeverEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onCommandActivator(CommandEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onDoorActivator(DoorEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPvpKillActivator(PvpKillEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onJoinActivator(JoinEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPvpDeathActivator(PlayerWasKilledEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onQuitActivator(QuitEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPvpRespawnActivator(PlayerRespawnedEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onMobClickActivator(MobClickEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onMobKillActivator(MobKillEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onLeverActivator(LeverEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onMobDamageActivator(MobDamageEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onDoorActivator(DoorEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL)
-    public void onItemClickActivator(ItemClickEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onJoinActivator(JoinEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onConsume(ItemConsumeEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onQuitActivator(QuitEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onItemHold(ItemHoldEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onMobClickActivator(MobClickEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onItemWear(ItemWearEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onMobKillActivator(MobKillEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onSignClick(SignEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onMobDamageActivator(MobDamageEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFactionEvent(FactionEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onItemClickActivator(ItemClickEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFactionRelationEvent(FactionRelationEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onConsume(ItemConsumeEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFactionCreateEvent(FactionCreateEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onItemHold(ItemHoldEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFactionDisbandEvent(FactionDisbandEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onItemWear(ItemWearEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onMessageEvent(MessageEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onSignClick(SignEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onBlockClickActivator(BlockClickEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFactionEvent(FactionEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onInventoryClickActivator(PlayerInventoryClickEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFactionRelationEvent(FactionRelationEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onDropActivator(DropEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFactionCreateEvent(FactionCreateEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPickupItemActivator(PickupItemEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFactionDisbandEvent(FactionDisbandEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFlightActivator(FlightEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onMessageEvent(MessageEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onEntityClickActivator(EntityClickEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onBlockClickActivator(BlockClickEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onBlockBreakActivator(PlayerBlockBreakEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onInventoryClickActivator(PlayerInventoryClickEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onSneakActivator(SneakEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onDropActivator(DropEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onDamage(DamageEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPickupItemActivator(PickupItemEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onDamageByMob(DamageByMobEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFlightActivator(FlightEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onDamageByBlock(DamageByBlockEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onEntityClickActivator(EntityClickEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onVariableEvent(VariableEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onBlockBreakActivator(PlayerBlockBreakEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onWESelectionRegionEvent(WeSelectionRegionEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onSneakActivator(SneakEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onWEChangeEvent(WeChangeEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onDamage(DamageEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onGameModeChangeEvent(GameModeEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onDamageByMob(DamageByMobEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onGodChangeEvent(GodEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onDamageByBlock(DamageByBlockEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onItemHeldEvent(ItemHeldEvent event) {
-        event.setCancelled(Activators.activate(event));
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onVariableEvent(VariableEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onWESelectionRegionEvent(WeSelectionRegionEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onWEChangeEvent(WeChangeEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onGameModeChangeEvent(GameModeEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onGodChangeEvent(GodEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
+
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onItemHeldEvent(ItemHeldEvent event) {
+		event.setCancelled(Activators.activate(event));
+	}
 
 }

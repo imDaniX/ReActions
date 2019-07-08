@@ -31,8 +31,8 @@ import static me.fromgate.reactions.externals.worldedit.RaWorldEdit.hasSuperPick
  * Created by MaxDikiy on 11/10/2017.
  */
 public class FlagSuperPickAxe extends Flag {
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        return Boolean.parseBoolean(param) == hasSuperPickAxe(player);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		return Boolean.parseBoolean(param) == hasSuperPickAxe(player);
+	}
 }

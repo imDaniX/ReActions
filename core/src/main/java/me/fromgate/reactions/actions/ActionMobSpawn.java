@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,10 +28,10 @@ import org.bukkit.entity.Player;
 
 public class ActionMobSpawn extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        MobSpawn.mobSpawn(p, params);
-        return true;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		MobSpawn.mobSpawn(p, params);
+		return true;
+	}
 
 }

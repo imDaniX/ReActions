@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -33,67 +33,67 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class PlayerInventoryClickEvent extends RAEvent {
-    private InventoryAction action;
-    private ClickType click;
-    private SlotType slotType;
-    private InventoryType inventory;
-    private ItemStack item;
-    private Integer numberKey;
-    private Integer slot;
-    private InventoryView inventoryView;
-    private String inventoryName;
+	private InventoryAction action;
+	private ClickType click;
+	private SlotType slotType;
+	private InventoryType inventory;
+	private ItemStack item;
+	private Integer numberKey;
+	private Integer slot;
+	private InventoryView inventoryView;
+	private String inventoryName;
 
-    public PlayerInventoryClickEvent(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType slotType, ItemStack item, Integer numberKey, InventoryView inventoryView, Integer slot) {
-        super(p);
-        this.inventoryName = inventoryView.getTitle();
-        this.action = action;
-        this.click = click;
-        this.inventory = inventory.getType();
-        this.slotType = slotType;
-        this.item = item;
-        this.numberKey = numberKey;
-        this.slot = slot;
-        this.inventoryView = inventoryView;
-    }
+	public PlayerInventoryClickEvent(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType slotType, ItemStack item, Integer numberKey, InventoryView inventoryView, Integer slot) {
+		super(p);
+		this.inventoryName = inventoryView.getTitle();
+		this.action = action;
+		this.click = click;
+		this.inventory = inventory.getType();
+		this.slotType = slotType;
+		this.item = item;
+		this.numberKey = numberKey;
+		this.slot = slot;
+		this.inventoryView = inventoryView;
+	}
 
-    public String getInventoryName() {
-        return this.inventoryName;
-    }
+	public String getInventoryName() {
+		return this.inventoryName;
+	}
 
-    public InventoryAction getAction() {
-        return this.action;
-    }
+	public InventoryAction getAction() {
+		return this.action;
+	}
 
-    public ClickType getClickType() {
-        return this.click;
-    }
+	public ClickType getClickType() {
+		return this.click;
+	}
 
-    public InventoryType getInventoryType() {
-        return this.inventory;
-    }
+	public InventoryType getInventoryType() {
+		return this.inventory;
+	}
 
-    public SlotType getSlotType() {
-        return this.slotType;
-    }
+	public SlotType getSlotType() {
+		return this.slotType;
+	}
 
-    public ItemStack getItemStack() {
-        return this.item;
-    }
+	public ItemStack getItemStack() {
+		return this.item;
+	}
 
-    public void setItemStack(ItemStack itemStack) {
-        this.item = itemStack;
-    }
+	public void setItemStack(ItemStack itemStack) {
+		this.item = itemStack;
+	}
 
-    public Integer getNumberKey() {
-        return this.numberKey;
-    }
+	public Integer getNumberKey() {
+		return this.numberKey;
+	}
 
-    public Integer getSlot() {
-        return this.slot;
-    }
+	public Integer getSlot() {
+		return this.slot;
+	}
 
-    public Inventory getBottomInventory() {
-        return this.inventoryView.getBottomInventory();
-    }
+	public Inventory getBottomInventory() {
+		return this.inventoryView.getBottomInventory();
+	}
 
 }

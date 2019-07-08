@@ -35,174 +35,174 @@ import org.bukkit.event.Event;
 import java.util.regex.Pattern;
 
 public class MessageActivator extends Activator {
-    private final static Pattern NOT_D = Pattern.compile("\\D+");
-    private final static Pattern NUM = Pattern.compile("-?[0-9]+");
-    private final static Pattern FLOAT = Pattern.compile("-?[0-9]+\\.?[0-9]*");
+	private final static Pattern NOT_D = Pattern.compile("\\D+");
+	private final static Pattern NUM = Pattern.compile("-?[0-9]+");
+	private final static Pattern FLOAT = Pattern.compile("-?[0-9]+\\.?[0-9]*");
 
 
-    Type type;
-    Source source;
-    String mask;
+	Type type;
+	Source source;
+	String mask;
 
-    public MessageActivator(String name, String group, YamlConfiguration cfg) {
-        super(name, group, cfg);
-    }
+	public MessageActivator(String name, String group, YamlConfiguration cfg) {
+		super(name, group, cfg);
+	}
 
-    public MessageActivator(String name, String param) {
-        super(name, "activators");
-        Param params = new Param(param, "mask");
-        this.type = Type.getByName(params.getParam("type", "EQUAL"));
-        this.source = Source.getByName(params.getParam("source", "CHAT_MESSAGE"));
-        this.mask = params.getParam("mask", params.getParam("message", "<message mask>"));
-    }
+	public MessageActivator(String name, String param) {
+		super(name, "activators");
+		Param params = new Param(param, "mask");
+		this.type = Type.getByName(params.getParam("type", "EQUAL"));
+		this.source = Source.getByName(params.getParam("source", "CHAT_MESSAGE"));
+		this.mask = params.getParam("mask", params.getParam("message", "<message mask>"));
+	}
 
-    @Override
-    public void save(String root, YamlConfiguration cfg) {
-        cfg.set(root + ".mask", mask);
-        cfg.set(root + ".type", type.name());
-        cfg.set(root + ".source", source.name());
-    }
+	@Override
+	public void save(String root, YamlConfiguration cfg) {
+		cfg.set(root + ".mask", mask);
+		cfg.set(root + ".type", type.name());
+		cfg.set(root + ".source", source.name());
+	}
 
-    @Override
-    public void load(String root, YamlConfiguration cfg) {
-        mask = cfg.getString(root + ".mask", "Unknown mask");
-        this.type = Type.getByName(cfg.getString(root + ".type", Type.EQUAL.name()));
-        this.source = Source.getByName(cfg.getString(root + ".source", Source.CHAT_INPUT.name()));
-    }
-
-
-    public enum Type {
-        REGEX,
-        CONTAINS,
-        EQUAL,
-        START,
-        END;
-
-        public static Type getByName(String name) {
-            if (name.equalsIgnoreCase("contain")) return Type.CONTAINS;
-            if (name.equalsIgnoreCase("equals")) return Type.EQUAL;
-            for (Type t : Type.values()) {
-                if (t.name().equalsIgnoreCase(name)) return t;
-            }
-            return Type.EQUAL;
-        }
-
-        public static boolean isValid(String name) {
-            for (Type t : Type.values()) {
-                if (t.name().equalsIgnoreCase(name)) return true;
-            }
-            return false;
-        }
-    }
+	@Override
+	public void load(String root, YamlConfiguration cfg) {
+		mask = cfg.getString(root + ".mask", "Unknown mask");
+		this.type = Type.getByName(cfg.getString(root + ".type", Type.EQUAL.name()));
+		this.source = Source.getByName(cfg.getString(root + ".source", Source.CHAT_INPUT.name()));
+	}
 
 
-    public enum Source {
-        ALL,
-        CHAT_INPUT,
-        CONSOLE_INPUT,
-        CHAT_OUTPUT,
-        LOG_OUTPUT;
-        //ANSWER;
+	public enum Type {
+		REGEX,
+		CONTAINS,
+		EQUAL,
+		START,
+		END;
 
-        public static Source getByName(String name) {
-            for (Source source : Source.values()) {
-                if (source.name().equalsIgnoreCase(name)) return source;
-            }
-            return Source.ALL;
-        }
+		public static Type getByName(String name) {
+			if (name.equalsIgnoreCase("contain")) return Type.CONTAINS;
+			if (name.equalsIgnoreCase("equals")) return Type.EQUAL;
+			for (Type t : Type.values()) {
+				if (t.name().equalsIgnoreCase(name)) return t;
+			}
+			return Type.EQUAL;
+		}
 
-        public static boolean isValid(String name) {
-            for (Source source : Source.values()) {
-                if (source.name().equalsIgnoreCase(name)) return true;
-            }
-            return false;
-        }
-    }
+		public static boolean isValid(String name) {
+			for (Type t : Type.values()) {
+				if (t.name().equalsIgnoreCase(name)) return true;
+			}
+			return false;
+		}
+	}
 
 
-    @Override
-    public boolean activate(Event event) {
-        if (!(event instanceof MessageEvent)) return false;
-        MessageEvent e = (MessageEvent) event;
-        if (!e.isForActivator(this)) return false;
-        setTempVars(e.getMessage());
-        return Actions.executeActivator(e.getPlayer(), this);
-    }
+	public enum Source {
+		ALL,
+		CHAT_INPUT,
+		CONSOLE_INPUT,
+		CHAT_OUTPUT,
+		LOG_OUTPUT;
+		//ANSWER;
 
-    @Override
-    public boolean isLocatedAt(Location loc) {
-        return false;
-    }
+		public static Source getByName(String name) {
+			for (Source source : Source.values()) {
+				if (source.name().equalsIgnoreCase(name)) return source;
+			}
+			return Source.ALL;
+		}
 
-    @Override
-    public ActivatorType getType() {
-        return ActivatorType.MESSAGE;
-    }
+		public static boolean isValid(String name) {
+			for (Source source : Source.values()) {
+				if (source.name().equalsIgnoreCase(name)) return true;
+			}
+			return false;
+		}
+	}
 
-    @Override
-    public boolean isValid() {
-        return !Util.emptySting(mask);
-    }
 
-    public boolean filterMessage(Source source, String message) {
-        if (source != this.source && this.source != Source.ALL) return false;
-        return filter(message);
-    }
+	@Override
+	public boolean activate(Event event) {
+		if (!(event instanceof MessageEvent)) return false;
+		MessageEvent e = (MessageEvent) event;
+		if (!e.isForActivator(this)) return false;
+		setTempVars(e.getMessage());
+		return Actions.executeActivator(e.getPlayer(), this);
+	}
 
-    private boolean filter(String message) {
-        switch (type) {
-            case CONTAINS:
-                return message.toLowerCase().contains(this.mask.toLowerCase());
-            case END:
-                return message.toLowerCase().endsWith(this.mask.toLowerCase());
-            case EQUAL:
-                return message.equalsIgnoreCase(this.mask);
-            case REGEX:
-                return message.matches(this.mask);
-            case START:
-                return message.toLowerCase().startsWith(this.mask.toLowerCase());
-        }
-        return false;
-    }
+	@Override
+	public boolean isLocatedAt(Location loc) {
+		return false;
+	}
 
-    private void setTempVars(String message) {
-        Variables.setTempVar("message", message);
-        String[] args = message.split(" ");
-        int countInt = 0;
-        int countNum = 0;
-        if (args != null && args.length > 0) {
-            for (int i = 0; i < args.length; i++) {
-                Variables.setTempVar("word" + Integer.toString(i + 1), args[i]);
-                Variables.setTempVar("wnum" + Integer.toString(i + 1), NOT_D.matcher(args[i]).replaceAll(""));
-                if (NUM.matcher(args[i]).matches()) {
-                    countInt++;
-                    Variables.setTempVar("int" + countInt, args[i]);
-                }
-                if (FLOAT.matcher(args[i]).matches()) {
-                    countNum++;
-                    Variables.setTempVar("num" + countNum, args[i]);
-                }
+	@Override
+	public ActivatorType getType() {
+		return ActivatorType.MESSAGE;
+	}
 
-            }
-        }
-        Variables.setTempVar("word-count", Integer.toString(args.length));
-        Variables.setTempVar("int-count", Integer.toString(countInt));
-        Variables.setTempVar("num-count", Integer.toString(countNum));
-    }
+	@Override
+	public boolean isValid() {
+		return !Util.emptySting(mask);
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-        if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-        if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-        if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-        sb.append(" (");
-        sb.append("type:").append(this.type.name());
-        sb.append(" source:").append(this.source.name());
-        sb.append(" mask:").append(this.mask);
-        sb.append(")");
-        return sb.toString();
-    }
+	public boolean filterMessage(Source source, String message) {
+		if (source != this.source && this.source != Source.ALL) return false;
+		return filter(message);
+	}
+
+	private boolean filter(String message) {
+		switch (type) {
+			case CONTAINS:
+				return message.toLowerCase().contains(this.mask.toLowerCase());
+			case END:
+				return message.toLowerCase().endsWith(this.mask.toLowerCase());
+			case EQUAL:
+				return message.equalsIgnoreCase(this.mask);
+			case REGEX:
+				return message.matches(this.mask);
+			case START:
+				return message.toLowerCase().startsWith(this.mask.toLowerCase());
+		}
+		return false;
+	}
+
+	private void setTempVars(String message) {
+		Variables.setTempVar("message", message);
+		String[] args = message.split(" ");
+		int countInt = 0;
+		int countNum = 0;
+		if (args != null && args.length > 0) {
+			for (int i = 0; i < args.length; i++) {
+				Variables.setTempVar("word" + Integer.toString(i + 1), args[i]);
+				Variables.setTempVar("wnum" + Integer.toString(i + 1), NOT_D.matcher(args[i]).replaceAll(""));
+				if (NUM.matcher(args[i]).matches()) {
+					countInt++;
+					Variables.setTempVar("int" + countInt, args[i]);
+				}
+				if (FLOAT.matcher(args[i]).matches()) {
+					countNum++;
+					Variables.setTempVar("num" + countNum, args[i]);
+				}
+
+			}
+		}
+		Variables.setTempVar("word-count", Integer.toString(args.length));
+		Variables.setTempVar("int-count", Integer.toString(countInt));
+		Variables.setTempVar("num-count", Integer.toString(countNum));
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
+		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
+		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
+		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		sb.append(" (");
+		sb.append("type:").append(this.type.name());
+		sb.append(" source:").append(this.source.name());
+		sb.append(" mask:").append(this.mask);
+		sb.append(")");
+		return sb.toString();
+	}
 
 
 }

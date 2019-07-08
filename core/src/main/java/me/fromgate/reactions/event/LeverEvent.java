@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,27 +29,27 @@ import org.bukkit.entity.Player;
 import org.bukkit.material.Lever;
 
 public class LeverEvent extends RAEvent {
-    private Block lever_block;
+	private Block lever_block;
 
 
-    public LeverEvent(Player p, Block block) {
-        super(p);
-        this.lever_block = block;
-    }
+	public LeverEvent(Player p, Block block) {
+		super(p);
+		this.lever_block = block;
+	}
 
-    public Lever getLever() {
-        if (lever_block.getType() != Material.LEVER) return null;
-        return (Lever) lever_block.getState().getData();
-    }
+	public Lever getLever() {
+		if (lever_block.getType() != Material.LEVER) return null;
+		return (Lever) lever_block.getState().getData();
+	}
 
-    public boolean isLeverPowered() {
-        Lever lever = getLever();
-        if (lever == null) return false;
-        return lever.isPowered();
-    }
+	public boolean isLeverPowered() {
+		Lever lever = getLever();
+		if (lever == null) return false;
+		return lever.isPowered();
+	}
 
-    public Location getLeverLocation() {
-        return lever_block.getLocation();
-    }
+	public Location getLeverLocation() {
+		return lever_block.getLocation();
+	}
 
 }

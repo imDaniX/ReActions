@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,28 +27,28 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class PlayerRespawnedEvent extends RAEvent {
-    private PlayerDeathActivator.DeathCause cause;
-    private LivingEntity killer;
+	private PlayerDeathActivator.DeathCause cause;
+	private LivingEntity killer;
 
 
-    public PlayerRespawnedEvent(Player player, LivingEntity killer, PlayerDeathActivator.DeathCause cause) {
-        super(player);
-        this.killer = killer;
-        this.cause = cause;
-    }
+	public PlayerRespawnedEvent(Player player, LivingEntity killer, PlayerDeathActivator.DeathCause cause) {
+		super(player);
+		this.killer = killer;
+		this.cause = cause;
+	}
 
 
-    @Override
-    public Player getPlayer() {
-        return this.player;
-    }
+	@Override
+	public Player getPlayer() {
+		return this.player;
+	}
 
-    public LivingEntity getKiller() {
-        return this.killer;
-    }
+	public LivingEntity getKiller() {
+		return this.killer;
+	}
 
-    public PlayerDeathActivator.DeathCause getDeathCause() {
-        return this.cause;
-    }
+	public PlayerDeathActivator.DeathCause getDeathCause() {
+		return this.cause;
+	}
 
 }

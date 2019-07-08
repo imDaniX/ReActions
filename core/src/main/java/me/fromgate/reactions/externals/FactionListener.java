@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -34,34 +34,34 @@ import org.bukkit.event.Listener;
 
 public class FactionListener implements Listener {
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFactionChange(EventFactionsMembershipChange event) {
-        EventManager.raiseFactionEvent(event.getMPlayer().getPlayer(),
-                event.getMPlayer().getFaction().isDefault() ? "default" : event.getMPlayer().getFactionName(),
-                event.getNewFaction().isDefault() ? "default" : event.getNewFaction().getName());
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFactionChange(EventFactionsMembershipChange event) {
+		EventManager.raiseFactionEvent(event.getMPlayer().getPlayer(),
+				event.getMPlayer().getFaction().isDefault() ? "default" : event.getMPlayer().getFactionName(),
+				event.getNewFaction().isDefault() ? "default" : event.getNewFaction().getName());
+	}
 
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFactionCreate(EventFactionsCreate event) {
-        EventManager.raiseFactionCreateEvent(event.getFactionName(),
-                (event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFactionCreate(EventFactionsCreate event) {
+		EventManager.raiseFactionCreateEvent(event.getFactionName(),
+				(event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onFactionDisband(EventFactionsDisband event) {
-        EventManager.raiseFactionDisbandEvent(event.getFaction().getName(),
-                (event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onFactionDisband(EventFactionsDisband event) {
+		EventManager.raiseFactionDisbandEvent(event.getFaction().getName(),
+				(event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
+	}
 
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onRelationChange(EventFactionsRelationChange event) {
-        EventManager.raiseFactionRelationEvent(event.getFaction().getName(),
-                event.getOtherFaction().getName(),
-                event.getFaction().getRelationWish(event.getOtherFaction()).name(),
-                event.getNewRelation().name());
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onRelationChange(EventFactionsRelationChange event) {
+		EventManager.raiseFactionRelationEvent(event.getFaction().getName(),
+				event.getOtherFaction().getName(),
+				event.getFaction().getRelationWish(event.getOtherFaction()).name(),
+				event.getNewRelation().name());
 
-    }
+	}
 
 }

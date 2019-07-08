@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -26,12 +26,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemHoldEvent extends RAEvent {
-    public ItemHoldEvent(Player p) {
-        super(p);
-    }
+	public ItemHoldEvent(Player p) {
+		super(p);
+	}
 
-    public ItemStack getItem() {
-        return this.getPlayer().getInventory().getItemInMainHand();
-    }
+	public ItemStack getItem() {
+		return this.getPlayer().getInventory().getItemInMainHand();
+	}
 
 }

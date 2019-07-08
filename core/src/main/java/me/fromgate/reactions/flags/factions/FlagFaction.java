@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -30,10 +30,10 @@ import org.bukkit.entity.Player;
 public class FlagFaction extends Flag {
 
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!Externals.isConnectedFactions()) return false;
-        return RaFactions.isPlayerInFaction(player, param);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!Externals.isConnectedFactions()) return false;
+		return RaFactions.isPlayerInFaction(player, param);
+	}
 
 }

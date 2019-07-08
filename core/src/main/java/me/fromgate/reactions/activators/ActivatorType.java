@@ -78,133 +78,133 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum ActivatorType {
-    // алиас, класс активатора, класс события
-    BUTTON("b", ButtonActivator.class, ButtonEvent.class, true),
-    PLATE("plt", PlateActivator.class, PlateEvent.class, true),
-    REGION("rg", RegionActivator.class, RegionEvent.class),
-    REGION_ENTER("rgenter", RegionEnterActivator.class, RegionEnterEvent.class),
-    REGION_LEAVE("rgleave", RegionLeaveActivator.class, RegionLeaveEvent.class),
-    EXEC("exe", ExecActivator.class, ExecEvent.class),
-    COMMAND("cmd", CommandActivator.class, CommandEvent.class),
-    MESSAGE("msg", MessageActivator.class, MessageEvent.class),
-    PVP_KILL("pvpkill", PvpKillActivator.class, PvpKillEvent.class),
-    PLAYER_DEATH("PVP_DEATH", PlayerDeathActivator.class, PlayerWasKilledEvent.class),
-    PLAYER_RESPAWN("PVP_RESPAWN", PlayerRespawnActivator.class, PlayerRespawnedEvent.class),
-    LEVER("lvr", LeverActivator.class, LeverEvent.class, true),
-    DOOR("door", DoorActivator.class, DoorEvent.class, true),
-    JOIN("join", JoinActivator.class, JoinEvent.class),
-    QUIT("quit", QuitActivator.class, QuitEvent.class),
-    MOB_CLICK("mobclick", MobClickActivator.class, MobClickEvent.class),
-    MOB_KILL("mobkill", MobKillActivator.class, MobKillEvent.class),
-    MOB_DAMAGE("mobdamage", MobDamageActivator.class, MobDamageEvent.class),
-    ITEM_CLICK("itemclick", ItemClickActivator.class, ItemClickEvent.class),
-    ITEM_CONSUME("consume", ItemConsumeActivator.class, ItemConsumeEvent.class),
-    ITEM_HOLD("itemhold", ItemHoldActivator.class, ItemHoldEvent.class),
-    ITEM_HELD("itemheld", ItemHeldActivator.class, ItemHeldEvent.class),
-    ITEM_WEAR("itemwear", ItemWearActivator.class, ItemWearEvent.class),
-    FCT_CHANGE("faction", FactionActivator.class, FactionEvent.class),
-    FCT_RELATION("fctrelation", FactionRelationActivator.class, FactionRelationEvent.class),
-    FCT_CREATE("fctcreate", FactionCreateActivator.class, FactionCreateEvent.class),
-    FCT_DISBAND("fctdisband", FactionDisbandActivator.class, FactionDisbandEvent.class),
-    SIGN("sign", SignActivator.class, SignEvent.class, true),
-    BLOCK_CLICK("blockclick", BlockClickActivator.class, BlockClickEvent.class, true),
-    INVENTORY_CLICK("inventoryclick", InventoryClickActivator.class, PlayerInventoryClickEvent.class),
-    DROP("drop", DropActivator.class, DropEvent.class),
-    PICKUP_ITEM("pickupitem", PickupItemActivator.class, PickupItemEvent.class),
-    FLIGHT("flight", FlightActivator.class, FlightEvent.class),
-    ENTITY_CLICK("entityclick", EntityClickActivator.class, EntityClickEvent.class),
-    BLOCK_BREAK("blockbreak", BlockBreakActivator.class, PlayerBlockBreakEvent.class, true),
-    SNEAK("sneak", SneakActivator.class, SneakEvent.class),
-    DAMAGE("damage", DamageActivator.class, DamageEvent.class),
-    DAMAGE_BY_MOB("damagebymob", DamageByMobActivator.class, DamageByMobEvent.class),
-    DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator.class, DamageByBlockEvent.class, true),
-    VARIABLE("var", VariableActivator.class, VariableEvent.class),
-    WE_SELECTION_REGION("weselectionregion", WeSelectionRegionActivator.class, WeSelectionRegionEvent.class),
-    WE_CHANGE("wechange", WeChangeActivator.class, WeChangeEvent.class),
-    GAME_MODE("gamemode", GameModeActivator.class, GameModeEvent.class),
-    GOD("god", GodActivator.class, GodEvent.class);
+	// алиас, класс активатора, класс события
+	BUTTON("b", ButtonActivator.class, ButtonEvent.class, true),
+	PLATE("plt", PlateActivator.class, PlateEvent.class, true),
+	REGION("rg", RegionActivator.class, RegionEvent.class),
+	REGION_ENTER("rgenter", RegionEnterActivator.class, RegionEnterEvent.class),
+	REGION_LEAVE("rgleave", RegionLeaveActivator.class, RegionLeaveEvent.class),
+	EXEC("exe", ExecActivator.class, ExecEvent.class),
+	COMMAND("cmd", CommandActivator.class, CommandEvent.class),
+	MESSAGE("msg", MessageActivator.class, MessageEvent.class),
+	PVP_KILL("pvpkill", PvpKillActivator.class, PvpKillEvent.class),
+	PLAYER_DEATH("PVP_DEATH", PlayerDeathActivator.class, PlayerWasKilledEvent.class),
+	PLAYER_RESPAWN("PVP_RESPAWN", PlayerRespawnActivator.class, PlayerRespawnedEvent.class),
+	LEVER("lvr", LeverActivator.class, LeverEvent.class, true),
+	DOOR("door", DoorActivator.class, DoorEvent.class, true),
+	JOIN("join", JoinActivator.class, JoinEvent.class),
+	QUIT("quit", QuitActivator.class, QuitEvent.class),
+	MOB_CLICK("mobclick", MobClickActivator.class, MobClickEvent.class),
+	MOB_KILL("mobkill", MobKillActivator.class, MobKillEvent.class),
+	MOB_DAMAGE("mobdamage", MobDamageActivator.class, MobDamageEvent.class),
+	ITEM_CLICK("itemclick", ItemClickActivator.class, ItemClickEvent.class),
+	ITEM_CONSUME("consume", ItemConsumeActivator.class, ItemConsumeEvent.class),
+	ITEM_HOLD("itemhold", ItemHoldActivator.class, ItemHoldEvent.class),
+	ITEM_HELD("itemheld", ItemHeldActivator.class, ItemHeldEvent.class),
+	ITEM_WEAR("itemwear", ItemWearActivator.class, ItemWearEvent.class),
+	FCT_CHANGE("faction", FactionActivator.class, FactionEvent.class),
+	FCT_RELATION("fctrelation", FactionRelationActivator.class, FactionRelationEvent.class),
+	FCT_CREATE("fctcreate", FactionCreateActivator.class, FactionCreateEvent.class),
+	FCT_DISBAND("fctdisband", FactionDisbandActivator.class, FactionDisbandEvent.class),
+	SIGN("sign", SignActivator.class, SignEvent.class, true),
+	BLOCK_CLICK("blockclick", BlockClickActivator.class, BlockClickEvent.class, true),
+	INVENTORY_CLICK("inventoryclick", InventoryClickActivator.class, PlayerInventoryClickEvent.class),
+	DROP("drop", DropActivator.class, DropEvent.class),
+	PICKUP_ITEM("pickupitem", PickupItemActivator.class, PickupItemEvent.class),
+	FLIGHT("flight", FlightActivator.class, FlightEvent.class),
+	ENTITY_CLICK("entityclick", EntityClickActivator.class, EntityClickEvent.class),
+	BLOCK_BREAK("blockbreak", BlockBreakActivator.class, PlayerBlockBreakEvent.class, true),
+	SNEAK("sneak", SneakActivator.class, SneakEvent.class),
+	DAMAGE("damage", DamageActivator.class, DamageEvent.class),
+	DAMAGE_BY_MOB("damagebymob", DamageByMobActivator.class, DamageByMobEvent.class),
+	DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator.class, DamageByBlockEvent.class, true),
+	VARIABLE("var", VariableActivator.class, VariableEvent.class),
+	WE_SELECTION_REGION("weselectionregion", WeSelectionRegionActivator.class, WeSelectionRegionEvent.class),
+	WE_CHANGE("wechange", WeChangeActivator.class, WeChangeEvent.class),
+	GAME_MODE("gamemode", GameModeActivator.class, GameModeEvent.class),
+	GOD("god", GodActivator.class, GodEvent.class);
 
-    private String alias;
-    private Class<? extends Activator> aclass;
-    private Class<? extends Event> eclass;
-    private boolean needTargetBlock;
-
-
-    ActivatorType(String alias, Class<? extends Activator> actclass, Class<? extends Event> evntclass, boolean needTargetBlock) {
-        this.alias = alias;
-        this.aclass = actclass;
-        this.eclass = evntclass;
-        this.needTargetBlock = needTargetBlock;
-    }
-
-    ActivatorType(String alias, Class<? extends Activator> actclass, Class<? extends Event> evntclass) {
-        this(alias, actclass, evntclass, false);
-    }
-
-    public Class<? extends Activator> getActivatorClass() {
-        return aclass;
-    }
-
-    public Class<? extends Event> getEventClass() {
-        return eclass;
-    }
-
-    public Activator create(String name, String param) {
-        return create(name, null, param);
-    }
-
-    public Activator create(String name, Block targetBlock, String param) {
-        Constructor<? extends Activator> constructor;
-        Activator activator = null;
-        try {
-            if (this.needTargetBlock) {
-                constructor = aclass.getConstructor(String.class, Block.class, String.class);
-                activator = constructor.newInstance(name, targetBlock, param);
-            } else {
-                constructor = aclass.getConstructor(String.class, String.class);
-                activator = constructor.newInstance(name, param);
-            }
-        } catch (Exception ignore) {
-            ignore.printStackTrace();
-        }
-        return activator;
-    }
+	private String alias;
+	private Class<? extends Activator> aclass;
+	private Class<? extends Event> eclass;
+	private boolean needTargetBlock;
 
 
-    public String getAlias() {
-        return this.alias;
-    }
+	ActivatorType(String alias, Class<? extends Activator> actclass, Class<? extends Event> evntclass, boolean needTargetBlock) {
+		this.alias = alias;
+		this.aclass = actclass;
+		this.eclass = evntclass;
+		this.needTargetBlock = needTargetBlock;
+	}
 
-    public static boolean isValid(String str) {
-        for (ActivatorType at : ActivatorType.values())
-            if (at.name().equalsIgnoreCase(str) || at.alias.equalsIgnoreCase(str)) return true;
-        return false;
-    }
+	ActivatorType(String alias, Class<? extends Activator> actclass, Class<? extends Event> evntclass) {
+		this(alias, actclass, evntclass, false);
+	}
 
-    public boolean isValidEvent(Event event) {
-        return eclass.isInstance(event);
-    }
+	public Class<? extends Activator> getActivatorClass() {
+		return aclass;
+	}
 
-    public static ActivatorType getByName(String name) {
-        for (ActivatorType at : ActivatorType.values())
-            if (at.name().equalsIgnoreCase(name) || at.getAlias().equalsIgnoreCase(name)) return at;
-        return null;
-    }
+	public Class<? extends Event> getEventClass() {
+		return eclass;
+	}
 
-    public static void listActivators(CommandSender sender, int pageNum) {
-        List<String> activatorList = new ArrayList<>();
-        for (ActivatorType activatorType : ActivatorType.values()) {
-            String name = activatorType.name();
-            String alias = activatorType.getAlias().equalsIgnoreCase(name) ? " " : " (" + activatorType.getAlias() + ") ";
-            Msg activatorDesc = Msg.getByName("ACTIVATOR_" + name);
-            if (activatorDesc == null) {
-                Msg.LNG_MISSED_ACTIVATOR_DESC.log(name);
-            } else {
-                activatorList.add("&6" + name + "&e" + alias + "&3: &a" + activatorDesc.getText("NOCOLOR"));
-            }
-        }
-        Util.printPage(sender, activatorList, Msg.MSG_ACTIVATORLISTTITLE, pageNum);
-    }
+	public Activator create(String name, String param) {
+		return create(name, null, param);
+	}
+
+	public Activator create(String name, Block targetBlock, String param) {
+		Constructor<? extends Activator> constructor;
+		Activator activator = null;
+		try {
+			if (this.needTargetBlock) {
+				constructor = aclass.getConstructor(String.class, Block.class, String.class);
+				activator = constructor.newInstance(name, targetBlock, param);
+			} else {
+				constructor = aclass.getConstructor(String.class, String.class);
+				activator = constructor.newInstance(name, param);
+			}
+		} catch (Exception ignore) {
+			ignore.printStackTrace();
+		}
+		return activator;
+	}
+
+
+	public String getAlias() {
+		return this.alias;
+	}
+
+	public static boolean isValid(String str) {
+		for (ActivatorType at : ActivatorType.values())
+			if (at.name().equalsIgnoreCase(str) || at.alias.equalsIgnoreCase(str)) return true;
+		return false;
+	}
+
+	public boolean isValidEvent(Event event) {
+		return eclass.isInstance(event);
+	}
+
+	public static ActivatorType getByName(String name) {
+		for (ActivatorType at : ActivatorType.values())
+			if (at.name().equalsIgnoreCase(name) || at.getAlias().equalsIgnoreCase(name)) return at;
+		return null;
+	}
+
+	public static void listActivators(CommandSender sender, int pageNum) {
+		List<String> activatorList = new ArrayList<>();
+		for (ActivatorType activatorType : ActivatorType.values()) {
+			String name = activatorType.name();
+			String alias = activatorType.getAlias().equalsIgnoreCase(name) ? " " : " (" + activatorType.getAlias() + ") ";
+			Msg activatorDesc = Msg.getByName("ACTIVATOR_" + name);
+			if (activatorDesc == null) {
+				Msg.LNG_MISSED_ACTIVATOR_DESC.log(name);
+			} else {
+				activatorList.add("&6" + name + "&e" + alias + "&3: &a" + activatorDesc.getText("NOCOLOR"));
+			}
+		}
+		Util.printPage(sender, activatorList, Msg.MSG_ACTIVATORLISTTITLE, pageNum);
+	}
 
 
 }

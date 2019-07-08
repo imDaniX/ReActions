@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -55,48 +55,48 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReActions extends JavaPlugin {
 
-    public static ReActions instance;
+	public static ReActions instance;
 
-    public static ReActions getPlugin() {
-        return instance;
-    }
+	public static JavaPlugin getPlugin() {
+		return instance;
+	}
 
-    @Override
-    public void onEnable() {
-        instance = this;
-        Cfg.load();
-        Cfg.save();
-        Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
-        UpdateChecker.init(this, "ReActions", "61726", "reactions", Cfg.checkUpdates);
+	@Override
+	public void onEnable() {
+		instance = this;
+		Cfg.load();
+		Cfg.save();
+		Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
+		UpdateChecker.init(this, "ReActions", "61726", "reactions", Cfg.checkUpdates);
 
-        if (!getDataFolder().exists()) getDataFolder().mkdirs();
+		if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
 
-        Commander.init(this);
-        Timers.init();
-        Activators.init();
-        Bukkit.getScheduler().runTaskLater(this, FakeCmd::init, 1);
-        PlayerSelectors.init();
-        RaEffects.init();
-        RaRacesAndClasses.init();
-        Externals.init();
-        RaVault.init();
-        RaCraftConomy.init();
-        ActionsWaiter.init();
-        Delayer.load();
-        if (!Cfg.playerSelfVarFile) Variables.load();
-        else Variables.loadVars();
-        Locator.loadLocs();
-        SQLManager.init();
-        InventoryMenu.init();
-        Placeholders.init();
-        Bukkit.getLogger().addHandler(new LogHandler());
-        getServer().getPluginManager().registerEvents(new RaListener(), this);
+		Commander.init(this);
+		Timers.init();
+		Activators.init();
+		Bukkit.getScheduler().runTaskLater(this, FakeCmd::init, 1);
+		PlayerSelectors.init();
+		RaEffects.init();
+		RaRacesAndClasses.init();
+		Externals.init();
+		RaVault.init();
+		RaCraftConomy.init();
+		ActionsWaiter.init();
+		Delayer.load();
+		if (!Cfg.playerSelfVarFile) Variables.load();
+		else Variables.loadVars();
+		Locator.loadLocs();
+		SQLManager.init();
+		InventoryMenu.init();
+		Placeholders.init();
+		Bukkit.getLogger().addHandler(new LogHandler());
+		getServer().getPluginManager().registerEvents(new RaListener(), this);
 		getServer().getPluginManager().registerEvents(new BukkitListener(), this);
-        MoveListener.init();
-        GodMode.init();
+		MoveListener.init();
+		GodMode.init();
 
-        new MetricsLite(this);
-    }
+		new MetricsLite(this);
+	}
 
 }

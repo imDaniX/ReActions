@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -25,15 +25,15 @@ package me.fromgate.reactions.event;
 import org.bukkit.entity.Player;
 
 public class PvpKillEvent extends RAEvent {
-    private Player deadplayer;
+	private Player deadplayer;
 
-    public PvpKillEvent(Player player, Player killedplayer) {
-        super(player);
-        this.deadplayer = killedplayer;
-    }
+	public PvpKillEvent(Player player, Player killedplayer) {
+		super(player);
+		this.deadplayer = killedplayer;
+	}
 
-    public Player getKilledPlayer() {
-        return this.deadplayer;
-    }
+	public Player getKilledPlayer() {
+		return this.deadplayer;
+	}
 
 }

@@ -14,63 +14,63 @@ import java.util.List;
 import java.util.Set;
 
 public class Commander implements CommandExecutor {
-    private static Set<Cmd> commands = new HashSet<>();
-    private static JavaPlugin plugin;
-    private static Commander commander;
+	private static Set<Cmd> commands = new HashSet<>();
+	private static JavaPlugin plugin;
+	private static Commander commander;
 
-    public static void init(JavaPlugin plg) {
-        plugin = plg;
-        commander = new Commander();
-        addNewCommand(new CmdHelp());
-        addNewCommand(new CmdRun());
-        addNewCommand(new CmdAdd());
-        addNewCommand(new CmdSet());
-        addNewCommand(new CmdCopy());
-        addNewCommand(new CmdList());
-        addNewCommand(new CmdInfo());
-        addNewCommand(new CmdGroup());
-        addNewCommand(new CmdRemove());
-        addNewCommand(new CmdClear());
-        addNewCommand(new CmdSelect());
-        addNewCommand(new CmdDebug());
-        addNewCommand(new CmdCheck());
-        addNewCommand(new CmdReload());
-        addNewCommand(new CmdExec());
-    }
+	public static void init(JavaPlugin plg) {
+		plugin = plg;
+		commander = new Commander();
+		addNewCommand(new CmdHelp());
+		addNewCommand(new CmdRun());
+		addNewCommand(new CmdAdd());
+		addNewCommand(new CmdSet());
+		addNewCommand(new CmdCopy());
+		addNewCommand(new CmdList());
+		addNewCommand(new CmdInfo());
+		addNewCommand(new CmdGroup());
+		addNewCommand(new CmdRemove());
+		addNewCommand(new CmdClear());
+		addNewCommand(new CmdSelect());
+		addNewCommand(new CmdDebug());
+		addNewCommand(new CmdCheck());
+		addNewCommand(new CmdReload());
+		addNewCommand(new CmdExec());
+	}
 
-    public static JavaPlugin getPlugin() {
-        return plugin;
-    }
+	public static JavaPlugin getPlugin() {
+		return plugin;
+	}
 
-    public static boolean addNewCommand(Cmd cmd) {
-        if (cmd.getCommand() == null) return false;
-        if (cmd.getCommand().isEmpty()) return false;
-        plugin.getCommand(cmd.getCommand()).setExecutor(commander);
-        commands.add(cmd);
-        return true;
-    }
+	public static boolean addNewCommand(Cmd cmd) {
+		if (cmd.getCommand() == null) return false;
+		if (cmd.getCommand().isEmpty()) return false;
+		plugin.getCommand(cmd.getCommand()).setExecutor(commander);
+		commands.add(cmd);
+		return true;
+	}
 
-    public static boolean isPluginYml(String cmdStr) {
-        return plugin.getDescription().getCommands().containsKey(cmdStr);
-    }
+	public static boolean isPluginYml(String cmdStr) {
+		return plugin.getDescription().getCommands().containsKey(cmdStr);
+	}
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String cmdLabel, String[] args) {
-        for (Cmd cmd : commands) {
-            if (!cmd.getCommand().equalsIgnoreCase(command.getLabel())) continue;
-            if (cmd.executeCommand(sender, args)) return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String cmdLabel, String[] args) {
+		for (Cmd cmd : commands) {
+			if (!cmd.getCommand().equalsIgnoreCase(command.getLabel())) continue;
+			if (cmd.executeCommand(sender, args)) return true;
+		}
+		return false;
+	}
 
-    public static void printHelp(CommandSender sender, int page) {
-        List<String> helpList = new ArrayList<>();
-        for (Cmd cmd : commands) {
-            helpList.add(cmd.getFullDescription());
-        }
-        Msg.printMessage(sender, "&6&lReActions v" + ReActions.getPlugin().getDescription().getVersion() + " &r&6| " + Msg.HLP_HELP.getText("NO_COLOR"));
-        Util.printPage(sender, helpList, null, page);
-    }
+	public static void printHelp(CommandSender sender, int page) {
+		List<String> helpList = new ArrayList<>();
+		for (Cmd cmd : commands) {
+			helpList.add(cmd.getFullDescription());
+		}
+		Msg.printMessage(sender, "&6&lReActions v" + ReActions.getPlugin().getDescription().getVersion() + " &r&6| " + Msg.HLP_HELP.getText("NO_COLOR"));
+		Util.printPage(sender, helpList, null, page);
+	}
 
 
 }

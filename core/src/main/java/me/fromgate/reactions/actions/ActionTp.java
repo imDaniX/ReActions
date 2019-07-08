@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -33,48 +33,48 @@ import org.bukkit.entity.Player;
 
 public class ActionTp extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        Location loc = teleportPlayer(p, params);
-        if (loc != null) this.setMessageParam(Locator.locationToStringFormated(loc));
-        return (loc != null);
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		Location loc = teleportPlayer(p, params);
+		if (loc != null) this.setMessageParam(Locator.locationToStringFormated(loc));
+		return (loc != null);
+	}
 
-    private Location teleportPlayer(Player p, Param params) {
-        Location loc;
-        int radius = 0;
-        if (params.isEmpty()) return null;
-        if (params.isParamsExists("param")) {
-            loc = Locator.parseLocation(params.getParam("param", ""), p.getLocation());
-        } else {
-            loc = Locator.parseLocation(params.getParam("loc", ""), p.getLocation());
-            radius = params.getParam("radius", 0);
-        }
-        boolean land = params.getParam("land", true);
+	private Location teleportPlayer(Player p, Param params) {
+		Location loc;
+		int radius = 0;
+		if (params.isEmpty()) return null;
+		if (params.isParamsExists("param")) {
+			loc = Locator.parseLocation(params.getParam("param", ""), p.getLocation());
+		} else {
+			loc = Locator.parseLocation(params.getParam("loc", ""), p.getLocation());
+			radius = params.getParam("radius", 0);
+		}
+		boolean land = params.getParam("land", true);
 
-        if (loc != null) {
-            if (radius > 0) loc = Locator.getRadiusLocation(loc, radius, land);
-            if (Cfg.centerTpCoords) {
-                loc.setX(loc.getBlockX() + 0.5);
-                loc.setZ(loc.getBlockZ() + 0.5);
-            }
-            try {
-                while (!loc.getChunk().isLoaded()) loc.getChunk().load();
-            } catch (Exception ignored) {
-            }
+		if (loc != null) {
+			if (radius > 0) loc = Locator.getRadiusLocation(loc, radius, land);
+			if (Cfg.centerTpCoords) {
+				loc.setX(loc.getBlockX() + 0.5);
+				loc.setZ(loc.getBlockZ() + 0.5);
+			}
+			try {
+				while (!loc.getChunk().isLoaded()) loc.getChunk().load();
+			} catch (Exception ignored) {
+			}
 
-            Variables.setTempVar("loc-from", Locator.locationToString(p.getLocation()));
-            Variables.setTempVar("loc-from-str", Locator.locationToStringFormated(p.getLocation()));
-            Variables.setTempVar("loc-to", Locator.locationToString(loc));
-            Variables.setTempVar("loc-to-str", Locator.locationToStringFormated(loc));
-            Teleporter.teleport(p, loc);
-            String playeffect = params.getParam("effect", "");
-            if (!playeffect.isEmpty()) {
-                if (playeffect.equalsIgnoreCase("smoke") && (!params.isParamsExists("wind"))) params.set("wind", "all");
-                RaEffects.playEffect(loc, playeffect, params);
-            }
-        }
-        return loc;
-    }
+			Variables.setTempVar("loc-from", Locator.locationToString(p.getLocation()));
+			Variables.setTempVar("loc-from-str", Locator.locationToStringFormated(p.getLocation()));
+			Variables.setTempVar("loc-to", Locator.locationToString(loc));
+			Variables.setTempVar("loc-to-str", Locator.locationToStringFormated(loc));
+			Teleporter.teleport(p, loc);
+			String playeffect = params.getParam("effect", "");
+			if (!playeffect.isEmpty()) {
+				if (playeffect.equalsIgnoreCase("smoke") && (!params.isParamsExists("wind"))) params.set("wind", "all");
+				RaEffects.playEffect(loc, playeffect, params);
+			}
+		}
+		return loc;
+	}
 
 }

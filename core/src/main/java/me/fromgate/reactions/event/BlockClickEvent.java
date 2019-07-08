@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,25 +28,25 @@ import org.bukkit.entity.Player;
 
 
 public class BlockClickEvent extends RAEvent {
-    private Block block;
-    private boolean leftClick;
+	private Block block;
+	private boolean leftClick;
 
-    public BlockClickEvent(Player p, Block block, boolean leftClick) {
-        super(p);
-        this.block = block;
-        this.leftClick = leftClick;
-    }
+	public BlockClickEvent(Player p, Block block, boolean leftClick) {
+		super(p);
+		this.block = block;
+		this.leftClick = leftClick;
+	}
 
-    public Block getBlockClick() {
-        return this.block;
-    }
+	public Block getBlockClick() {
+		return this.block;
+	}
 
-    public Location getBlockClickLocation() {
-        return block.getLocation();
-    }
+	public Location getBlockClickLocation() {
+		return block.getLocation();
+	}
 
-    public boolean isLeftClicked() {
-        return leftClick;
-    }
+	public boolean isLeftClicked() {
+		return leftClick;
+	}
 
 }

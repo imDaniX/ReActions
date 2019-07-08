@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -32,20 +32,20 @@ import java.util.Map;
 
 
 public class Teleporter {
-    private static Map<Player, PlayerTeleportEvent> events = new HashMap<>();
+	private static Map<Player, PlayerTeleportEvent> events = new HashMap<>();
 
-    public static void startTeleport(PlayerTeleportEvent event) {
-        events.put(event.getPlayer(), event);
-    }
+	public static void startTeleport(PlayerTeleportEvent event) {
+		events.put(event.getPlayer(), event);
+	}
 
-    public static void stopTeleport(Player player) {
-        if (events.containsKey(player)) events.remove(player);
-    }
+	public static void stopTeleport(Player player) {
+		if (events.containsKey(player)) events.remove(player);
+	}
 
-    public static void teleport(Player player, Location location) {
-        if (location == null) return;
-        if (events.containsKey(player)) {
-            events.get(player).setTo(location);
-        } else player.teleport(location);
-    }
+	public static void teleport(Player player, Location location) {
+		if (location == null) return;
+		if (events.containsKey(player)) {
+			events.get(player).setTo(location);
+		} else player.teleport(location);
+	}
 }

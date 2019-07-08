@@ -260,11 +260,7 @@ public class BukkitListener implements Listener {
 		if ((event instanceof EntityDamageByEntityEvent)) {
 			source = "ENTITY";
 			EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-			Entity entityDamager = evdmg.getDamager();
-			LivingEntity damager = Util.getDamagerEntity(event);
-			if (damager == null && entityDamager instanceof Projectile)
-				damager = EntityUtil.getEntityFromProjectile((Projectile)entityDamager);
-			if (EventManager.raisePlayerDamageByMobEvent(evdmg, damager, entityDamager))
+			if (EventManager.raisePlayerDamageByMobEvent(evdmg))
 				event.setCancelled(true);
 		} else if ((event instanceof EntityDamageByBlockEvent)) {
 			source = "BLOCK";

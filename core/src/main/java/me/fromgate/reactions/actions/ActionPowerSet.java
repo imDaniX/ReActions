@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -33,46 +33,46 @@ import org.bukkit.entity.Player;
 
 public class ActionPowerSet extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        Location loc = Locator.parseLocation(params.getParam("loc", ""), null);
-        setMessageParam("UNKNOWN");
-        if (loc == null) return false;
-        Block b = loc.getBlock();
-        setMessageParam(b.getType().name());
-        if (!isPowerBlock(b)) return false;
-        String state = params.getParam("power", "on");
-        boolean power = getPower(b, state);
-        return setPower(b, power);
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		Location loc = Locator.parseLocation(params.getParam("loc", ""), null);
+		setMessageParam("UNKNOWN");
+		if (loc == null) return false;
+		Block b = loc.getBlock();
+		setMessageParam(b.getType().name());
+		if (!isPowerBlock(b)) return false;
+		String state = params.getParam("power", "on");
+		boolean power = getPower(b, state);
+		return setPower(b, power);
+	}
 
 
-    private boolean getPower(Block b, String state) {
-        boolean power = state.equalsIgnoreCase("on") || state.equalsIgnoreCase("true");
-        if (state.equalsIgnoreCase("toggle")) {
-            if (b.getType() == Material.LEVER) {
-                Switch sw = (Switch) b.getBlockData();
-                power = sw.isPowered();
-            } else if (BlockUtil.isOpenable(b)) {
-                power = BlockUtil.isOpen(b);
-            } else power = true;
-        }
-        return power;
-    }
+	private boolean getPower(Block b, String state) {
+		boolean power = state.equalsIgnoreCase("on") || state.equalsIgnoreCase("true");
+		if (state.equalsIgnoreCase("toggle")) {
+			if (b.getType() == Material.LEVER) {
+				Switch sw = (Switch) b.getBlockData();
+				power = sw.isPowered();
+			} else if (BlockUtil.isOpenable(b)) {
+				power = BlockUtil.isOpen(b);
+			} else power = true;
+		}
+		return power;
+	}
 
-    private boolean setPower(Block b, boolean power) {
-        if (b.getType() == Material.LEVER) {
-            Switch sw = (Switch) b.getBlockData();
-            sw.setPowered(power);
-            b.setBlockData(sw, true);
-        } else if (BlockUtil.isOpenable(b)) {
-            BlockUtil.setOpen(b, power);
-        } else return false;
-        return true;
-    }
+	private boolean setPower(Block b, boolean power) {
+		if (b.getType() == Material.LEVER) {
+			Switch sw = (Switch) b.getBlockData();
+			sw.setPowered(power);
+			b.setBlockData(sw, true);
+		} else if (BlockUtil.isOpenable(b)) {
+			BlockUtil.setOpen(b, power);
+		} else return false;
+		return true;
+	}
 
-    private boolean isPowerBlock(Block b) {
-        if (b.getType() == Material.LEVER) return true;
-        return BlockUtil.isOpenable(b);
-    }
+	private boolean isPowerBlock(Block b) {
+		if (b.getType() == Material.LEVER) return true;
+		return BlockUtil.isOpenable(b);
+	}
 }

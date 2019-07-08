@@ -5,9 +5,9 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PlaceholderDefine {
-    String id();
+	String id();
 
-    boolean needPlayer() default false;
+	boolean needPlayer() default false;
 
-    String[] keys();
+	String[] keys();
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -31,50 +31,50 @@ import org.bukkit.plugin.Plugin;
 
 public class RaRacesAndClasses {
 
-    private static boolean enabled = false;
+	private static boolean enabled = false;
 
-    public static boolean isEnabled() {
-        return enabled;
-    }
+	public static boolean isEnabled() {
+		return enabled;
+	}
 
-    public static void init() {
-        try {
-            enabled = isRacesAndClassesInstalled();
-        } catch (Exception ignored) {
-        }
-        if (enabled) Msg.logMessage("RacesAndClasses found");
-    }
+	public static void init() {
+		try {
+			enabled = isRacesAndClassesInstalled();
+		} catch (Exception ignored) {
+		}
+		if (enabled) Msg.logMessage("RacesAndClasses found");
+	}
 
-    private static boolean isRacesAndClassesInstalled() {
-        Plugin pe = Bukkit.getServer().getPluginManager().getPlugin("RacesAndClasses");
-        return (pe != null);
-    }
+	private static boolean isRacesAndClassesInstalled() {
+		Plugin pe = Bukkit.getServer().getPluginManager().getPlugin("RacesAndClasses");
+		return (pe != null);
+	}
 
-    // Флаг RNC_RACE
-    public static boolean checkRace(Player player, String race) {
-        if (!enabled) return false;
-        return RaceAPI.getRaceNameOfPlayer(player).equalsIgnoreCase(race);
-    }
+	// Флаг RNC_RACE
+	public static boolean checkRace(Player player, String race) {
+		if (!enabled) return false;
+		return RaceAPI.getRaceNameOfPlayer(player).equalsIgnoreCase(race);
+	}
 
-    // Действие RNC_SET_RACE
-    public static boolean setRace(Player player, String race) {
-        if (!enabled) return false;
-        if (player == null) return false;
-        return RaceAPI.addPlayerToRace(player, race);
-    }
+	// Действие RNC_SET_RACE
+	public static boolean setRace(Player player, String race) {
+		if (!enabled) return false;
+		if (player == null) return false;
+		return RaceAPI.addPlayerToRace(player, race);
+	}
 
-    // Флаг RNC_CLASS
-    public static boolean checkClass(Player player, String className) {
-        if (!enabled) return false;
-        return ClassAPI.getClassNameOfPlayer(player).equalsIgnoreCase(className);
-    }
+	// Флаг RNC_CLASS
+	public static boolean checkClass(Player player, String className) {
+		if (!enabled) return false;
+		return ClassAPI.getClassNameOfPlayer(player).equalsIgnoreCase(className);
+	}
 
-    // Действие RNC_SET_CLASS
-    public static boolean setClass(Player player, String className) {
-        if (!enabled) return false;
-        if (player == null) return false;
-        return ClassAPI.addPlayerToClass(player, className);
-    }
+	// Действие RNC_SET_CLASS
+	public static boolean setClass(Player player, String className) {
+		if (!enabled) return false;
+		if (player == null) return false;
+		return ClassAPI.addPlayerToClass(player, className);
+	}
 
 
 }

@@ -10,22 +10,22 @@ import java.util.Set;
 
 public class TemporaryOp {
 
-    private static Set<String> tempOps = new HashSet<>();
+	private static Set<String> tempOps = new HashSet<>();
 
-    public static void setTempOp(CommandSender sender) {
-        if (sender instanceof Player) {
-            if (sender.isOp()) return;
-            tempOps.add(sender.getName());
-            sender.setOp(true);
-        }
-    }
+	public static void setTempOp(CommandSender sender) {
+		if (sender instanceof Player) {
+			if (sender.isOp()) return;
+			tempOps.add(sender.getName());
+			sender.setOp(true);
+		}
+	}
 
-    public static void removeTempOp(CommandSender sender) {
-        if (sender instanceof Player) {
-            if (!tempOps.contains(sender.getName())) return;
-            tempOps.remove(sender.getName());
-            sender.setOp(false);
-        }
-    }
+	public static void removeTempOp(CommandSender sender) {
+		if (sender instanceof Player) {
+			if (!tempOps.contains(sender.getName())) return;
+			tempOps.remove(sender.getName());
+			sender.setOp(false);
+		}
+	}
 
 }

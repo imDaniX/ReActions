@@ -42,9 +42,9 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class Timers {
-    /*
-        Command example:
-	    /react add timer <name> activator:<exec> time:<HH:MM,HH:MM|0_0/5_*_*_*_?> [player:<player>] [world:<world>] 
+	/*
+		Command example:
+		/react add timer <name> activator:<exec> time:<HH:MM,HH:MM|0_0/5_*_*_*_?> [player:<player>] [world:<world>]
 
 
 		Example Cron Expressions
@@ -70,233 +70,233 @@ public class Timers {
 	 */
 
 	/*
-     * TODO
+	 * TODO
 	 * нужно будет добавить поддержку временных поясов
 	 * 	
 	 */
 
 
-    private static BukkitTask ingameTimer = null;
-    private static String currentIngameTime;
-    private static BukkitTask serverTimer = null;
+	private static BukkitTask ingameTimer = null;
+	private static String currentIngameTime;
+	private static BukkitTask serverTimer = null;
 
-    private static Map<String, Timer> timers;
-    private static Set<String> timersIngame;
+	private static Map<String, Timer> timers;
+	private static Set<String> timersIngame;
 
-    private static final int LINES_PER_PAGE_15 = 15;
-
-
-    public static boolean addTimer(String name, Param params) {
-        return addTimer(null, name, params, false);
-    }
-
-    public static void listTimers(CommandSender sender, int pageNum) {
-        List<String> timerList = new ArrayList<>();
-        Map<String, Timer> timers = getIngameTimers();
-        for (String id : timers.keySet()) {
-            Timer timer = timers.get(id);
-            timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer.toString());
-        }
-        timers = getServerTimers();
-        for (String id : timers.keySet()) {
-            Timer timer = timers.get(id);
-            timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer.toString());
-        }
-        Msg.printPage(sender, timerList, Msg.MSG_TIMERLIST, pageNum, LINES_PER_PAGE_15, true);
-    }
-
-    public static boolean removeTimer(CommandSender sender, String name) {
-        if (name.isEmpty()) {
-            Msg.MSG_TIMERNEEDNAME.print(sender);
-            return false;
-        }
-        if (!timers.containsKey(name)) {
-            Msg.MSG_TIMERUNKNOWNNAME.print(sender, name);
-            return false;
-        }
-        timers.remove(name);
-        save();
-        return Msg.MSG_TIMERREMOVED.print(sender, name);
-    }
-
-    public static boolean addTimer(CommandSender sender, String name, Param params, boolean save) {
-        if (name.isEmpty()) return false;
-        if (timers.containsKey(name)) {
-            Msg.MSG_TIMEREXIST.print(sender, name);
-            return false;
-        }
-        if (params.isEmpty()) {
-            Msg.MSG_TIMERNEEDPARAMS.print(sender);
-            return false;
-        }
-        if (params.getParam("activator", "").isEmpty()) {
-            Msg.MSG_TIMERNEEDACTIVATOR.print(sender);
-            return false;
-        }
-        if (!params.isParamsExists("timer-type")) {
-            Msg.MSG_TIMERNEEDTYPE.print(sender);
-            return false;
-        }
-        if (!params.isParamsExists("time")) {
-            Msg.MSG_TIMERNEEDTIME.print(sender);
-            return false;
-        }
-        Timer timer = new Timer(params);
-        timers.put(name, timer);
-        updateIngameTimers();
-        if (save) save();
-        return (sender == null) || Msg.MSG_TIMERADDED.print(sender, name);
-    }
-
-    public static Map<String, Timer> getIngameTimers() {
-        Map<String, Timer> ingameTimers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        for (String key : timers.keySet()) {
-            Timer timer = timers.get(key);
-            if (timer.isIngameTimer()) ingameTimers.put(key, timer);
-        }
-        return ingameTimers;
-    }
-
-    public static Map<String, Timer> getServerTimers() {
-        Map<String, Timer> serverTimers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        for (String key : timers.keySet()) {
-            Timer timer = timers.get(key);
-            if (!timer.isIngameTimer()) serverTimers.put(key, timer);
-        }
-        return serverTimers;
-    }
+	private static final int LINES_PER_PAGE_15 = 15;
 
 
-    public static void updateIngameTimers() {
-        timersIngame.clear();
-        Map<String, Timer> ingame = getIngameTimers();
-        for (String key : ingame.keySet()) {
-            Timer timer = ingame.get(key);
-            timersIngame.addAll(timer.getIngameTimes());
-        }
-    }
+	public static boolean addTimer(String name, Param params) {
+		return addTimer(null, name, params, false);
+	}
+
+	public static void listTimers(CommandSender sender, int pageNum) {
+		List<String> timerList = new ArrayList<>();
+		Map<String, Timer> timers = getIngameTimers();
+		for (String id : timers.keySet()) {
+			Timer timer = timers.get(id);
+			timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer.toString());
+		}
+		timers = getServerTimers();
+		for (String id : timers.keySet()) {
+			Timer timer = timers.get(id);
+			timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer.toString());
+		}
+		Msg.printPage(sender, timerList, Msg.MSG_TIMERLIST, pageNum, LINES_PER_PAGE_15, true);
+	}
+
+	public static boolean removeTimer(CommandSender sender, String name) {
+		if (name.isEmpty()) {
+			Msg.MSG_TIMERNEEDNAME.print(sender);
+			return false;
+		}
+		if (!timers.containsKey(name)) {
+			Msg.MSG_TIMERUNKNOWNNAME.print(sender, name);
+			return false;
+		}
+		timers.remove(name);
+		save();
+		return Msg.MSG_TIMERREMOVED.print(sender, name);
+	}
+
+	public static boolean addTimer(CommandSender sender, String name, Param params, boolean save) {
+		if (name.isEmpty()) return false;
+		if (timers.containsKey(name)) {
+			Msg.MSG_TIMEREXIST.print(sender, name);
+			return false;
+		}
+		if (params.isEmpty()) {
+			Msg.MSG_TIMERNEEDPARAMS.print(sender);
+			return false;
+		}
+		if (params.getParam("activator", "").isEmpty()) {
+			Msg.MSG_TIMERNEEDACTIVATOR.print(sender);
+			return false;
+		}
+		if (!params.isParamsExists("timer-type")) {
+			Msg.MSG_TIMERNEEDTYPE.print(sender);
+			return false;
+		}
+		if (!params.isParamsExists("time")) {
+			Msg.MSG_TIMERNEEDTIME.print(sender);
+			return false;
+		}
+		Timer timer = new Timer(params);
+		timers.put(name, timer);
+		updateIngameTimers();
+		if (save) save();
+		return (sender == null) || Msg.MSG_TIMERADDED.print(sender, name);
+	}
+
+	public static Map<String, Timer> getIngameTimers() {
+		Map<String, Timer> ingameTimers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		for (String key : timers.keySet()) {
+			Timer timer = timers.get(key);
+			if (timer.isIngameTimer()) ingameTimers.put(key, timer);
+		}
+		return ingameTimers;
+	}
+
+	public static Map<String, Timer> getServerTimers() {
+		Map<String, Timer> serverTimers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		for (String key : timers.keySet()) {
+			Timer timer = timers.get(key);
+			if (!timer.isIngameTimer()) serverTimers.put(key, timer);
+		}
+		return serverTimers;
+	}
 
 
-    public static void init() {
-        currentIngameTime = "";
-        timersIngame = new HashSet<>();
-        timers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        load();
-        initIngameTimer();
-        initServerTimer();
-    }
-
-    public static void initIngameTimer() {
-        if (ingameTimer != null) return;
-        ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.instance, () -> {
-            String currentTime = Time.currentIngameTime();
-            if (currentIngameTime.equalsIgnoreCase(currentTime)) return;
-            currentIngameTime = currentTime;
-            if (!timersIngame.contains(currentIngameTime)) return;
-            Map<String, Timer> timers = getIngameTimers();
-            for (String key : timers.keySet()) {
-                Timer timer = timers.get(key);
-                if (timer.isTimeToRun()) {
-                    EventManager.raiseExecEvent(null, timer.getParams());
-                }
-            }
-        }, 1, 4); //1 По идее так не упустим, хотя.... ;)
-    }
-
-    public static void initServerTimer() {
-        if (serverTimer != null) return;
-        serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.instance, () -> {
-            for (Timer timer : getServerTimers().values()) {
-                if (timer.isTimeToRun()) {
-                    EventManager.raiseExecEvent(null, timer.getParams());
-                }
-            }
-        }, 1, 20);
-    }
+	public static void updateIngameTimers() {
+		timersIngame.clear();
+		Map<String, Timer> ingame = getIngameTimers();
+		for (String key : ingame.keySet()) {
+			Timer timer = ingame.get(key);
+			timersIngame.addAll(timer.getIngameTimes());
+		}
+	}
 
 
-    public static String getCurrentIngameTime() {
-        return currentIngameTime;
-    }
+	public static void init() {
+		currentIngameTime = "";
+		timersIngame = new HashSet<>();
+		timers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		load();
+		initIngameTimer();
+		initServerTimer();
+	}
 
-    public static void onDisable() {
-        ingameTimer.cancel();
-        serverTimer.cancel();
-    }
+	public static void initIngameTimer() {
+		if (ingameTimer != null) return;
+		ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.instance, () -> {
+			String currentTime = Time.currentIngameTime();
+			if (currentIngameTime.equalsIgnoreCase(currentTime)) return;
+			currentIngameTime = currentTime;
+			if (!timersIngame.contains(currentIngameTime)) return;
+			Map<String, Timer> timers = getIngameTimers();
+			for (String key : timers.keySet()) {
+				Timer timer = timers.get(key);
+				if (timer.isTimeToRun()) {
+					EventManager.raiseExecEvent(null, timer.getParams());
+				}
+			}
+		}, 1, 4); //1 По идее так не упустим, хотя.... ;)
+	}
 
-    public static void load() {
-        timers.clear();
-        YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActions.instance.getDataFolder() + File.separator + "timers.yml");
-        if (!f.exists()) return;
-        try {
-            cfg.load(f);
-        } catch (Exception e) {
-            Msg.logMessage("Failed to save timers.yml file");
-            return;
-        }
-        for (String timerType : cfg.getKeys(false)) {
-            if (!(timerType.equalsIgnoreCase("INGAME") || timerType.equalsIgnoreCase("SERVER"))) continue;
-            ConfigurationSection cs = cfg.getConfigurationSection(timerType);
-            if (cs == null) continue;
-            for (String timerId : cs.getKeys(false)) {
-                ConfigurationSection csParams = cs.getConfigurationSection(timerId);
-                if (csParams == null) continue;
-                Param params = new Param();
-                params.set("timer-type", timerType);
-                for (String param : csParams.getKeys(true)) {
-                    if (!csParams.isString(param)) continue;
-                    params.set(param, csParams.getString(param));
-                }
-                addTimer(timerId, params);
-            }
-        }
-    }
+	public static void initServerTimer() {
+		if (serverTimer != null) return;
+		serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.instance, () -> {
+			for (Timer timer : getServerTimers().values()) {
+				if (timer.isTimeToRun()) {
+					EventManager.raiseExecEvent(null, timer.getParams());
+				}
+			}
+		}, 1, 20);
+	}
 
-    public static void save() {
-        YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActions.instance.getDataFolder() + File.separator + "timers.yml");
-        if (f.exists()) f.delete();
-        for (String name : timers.keySet()) {
-            Timer timer = timers.get(name);
-            Param params = timer.getParams();
-            if (params.isEmpty()) continue;
-            String timerType = timer.isIngameTimer() ? "INGAME" : "SERVER";
-            String root = timerType + "." + name + ".";
-            for (String key : params.keySet()) {
-                if (key.equalsIgnoreCase("timer-type")) continue;
-                if (key.equalsIgnoreCase("param-line")) continue;
-                cfg.set(root + key, key.equalsIgnoreCase("time") ? params.getParam(key).replace("_", " ") : params.getParam(key));
-            }
-        }
-        try {
-            cfg.save(f);
-        } catch (IOException e) {
-            Msg.logMessage("Failed to save timers.yml file");
-        }
-    }
 
-    public static boolean isTimerExists(String timerName) {
-        return timers.containsKey(timerName);
-    }
+	public static String getCurrentIngameTime() {
+		return currentIngameTime;
+	}
 
-    public static boolean setPause(String timerName, boolean pause) {
-        if (timers.isEmpty()) return false;
-        if (!(timerName.equalsIgnoreCase("all") || isTimerExists(timerName))) return false;
-        if (timerName.equalsIgnoreCase("all")) {
-            for (Timer timer : timers.values())
-                timer.setPause(pause);
-        } else {
-            Timer timer = timers.get(timerName);
-            timer.setPause(pause);
-        }
-        return true;
-    }
+	public static void onDisable() {
+		ingameTimer.cancel();
+		serverTimer.cancel();
+	}
 
-    public static boolean isTimerWorking(String timerName) {
-        if (!isTimerExists(timerName)) return false;
-        return (!timers.get(timerName).isPaused());
-    }
+	public static void load() {
+		timers.clear();
+		YamlConfiguration cfg = new YamlConfiguration();
+		File f = new File(ReActions.instance.getDataFolder() + File.separator + "timers.yml");
+		if (!f.exists()) return;
+		try {
+			cfg.load(f);
+		} catch (Exception e) {
+			Msg.logMessage("Failed to save timers.yml file");
+			return;
+		}
+		for (String timerType : cfg.getKeys(false)) {
+			if (!(timerType.equalsIgnoreCase("INGAME") || timerType.equalsIgnoreCase("SERVER"))) continue;
+			ConfigurationSection cs = cfg.getConfigurationSection(timerType);
+			if (cs == null) continue;
+			for (String timerId : cs.getKeys(false)) {
+				ConfigurationSection csParams = cs.getConfigurationSection(timerId);
+				if (csParams == null) continue;
+				Param params = new Param();
+				params.set("timer-type", timerType);
+				for (String param : csParams.getKeys(true)) {
+					if (!csParams.isString(param)) continue;
+					params.set(param, csParams.getString(param));
+				}
+				addTimer(timerId, params);
+			}
+		}
+	}
+
+	public static void save() {
+		YamlConfiguration cfg = new YamlConfiguration();
+		File f = new File(ReActions.instance.getDataFolder() + File.separator + "timers.yml");
+		if (f.exists()) f.delete();
+		for (String name : timers.keySet()) {
+			Timer timer = timers.get(name);
+			Param params = timer.getParams();
+			if (params.isEmpty()) continue;
+			String timerType = timer.isIngameTimer() ? "INGAME" : "SERVER";
+			String root = timerType + "." + name + ".";
+			for (String key : params.keySet()) {
+				if (key.equalsIgnoreCase("timer-type")) continue;
+				if (key.equalsIgnoreCase("param-line")) continue;
+				cfg.set(root + key, key.equalsIgnoreCase("time") ? params.getParam(key).replace("_", " ") : params.getParam(key));
+			}
+		}
+		try {
+			cfg.save(f);
+		} catch (IOException e) {
+			Msg.logMessage("Failed to save timers.yml file");
+		}
+	}
+
+	public static boolean isTimerExists(String timerName) {
+		return timers.containsKey(timerName);
+	}
+
+	public static boolean setPause(String timerName, boolean pause) {
+		if (timers.isEmpty()) return false;
+		if (!(timerName.equalsIgnoreCase("all") || isTimerExists(timerName))) return false;
+		if (timerName.equalsIgnoreCase("all")) {
+			for (Timer timer : timers.values())
+				timer.setPause(pause);
+		} else {
+			Timer timer = timers.get(timerName);
+			timer.setPause(pause);
+		}
+		return true;
+	}
+
+	public static boolean isTimerWorking(String timerName) {
+		if (!isTimerExists(timerName)) return false;
+		return (!timers.get(timerName).isPaused());
+	}
 
 }
 

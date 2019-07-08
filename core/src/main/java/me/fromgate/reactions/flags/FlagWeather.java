@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -25,10 +25,10 @@ package me.fromgate.reactions.flags;
 import org.bukkit.entity.Player;
 
 public class FlagWeather extends Flag {
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (param.equalsIgnoreCase("rain")) return !player.getWorld().isThundering() && player.getWorld().hasStorm();
-        if (param.equalsIgnoreCase("thunder")) return player.getWorld().isThundering() && player.getWorld().hasStorm();
-        return !player.getWorld().hasStorm();
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (param.equalsIgnoreCase("rain")) return !player.getWorld().isThundering() && player.getWorld().hasStorm();
+		if (param.equalsIgnoreCase("thunder")) return player.getWorld().isThundering() && player.getWorld().hasStorm();
+		return !player.getWorld().hasStorm();
+	}
 }

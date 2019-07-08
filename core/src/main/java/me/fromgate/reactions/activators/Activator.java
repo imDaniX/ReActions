@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -38,212 +38,212 @@ import java.util.List;
 
 public abstract class Activator {
 
-    String name;
-    String group;
+	String name;
+	String group;
 
-    public Activator(String name, String group) {
-        this.name = name;
-        this.group = group;
-    }
+	public Activator(String name, String group) {
+		this.name = name;
+		this.group = group;
+	}
 
-    public Activator(String name, String group, YamlConfiguration cfg) {
-        this.name = name;
-        this.loadActivator(cfg);
-        this.group = group;
-    }
+	public Activator(String name, String group, YamlConfiguration cfg) {
+		this.name = name;
+		this.loadActivator(cfg);
+		this.group = group;
+	}
 
-    private List<FlagVal> flags = new ArrayList<>();
-    private List<ActVal> actions = new ArrayList<>();
-    private List<ActVal> reactions = new ArrayList<>();
+	private List<FlagVal> flags = new ArrayList<>();
+	private List<ActVal> actions = new ArrayList<>();
+	private List<ActVal> reactions = new ArrayList<>();
 
-    public void addFlag(String flag, String param, boolean not) {
-        flags.add(new FlagVal(Flags.getValidName(flag), param, not));
-    }
+	public void addFlag(String flag, String param, boolean not) {
+		flags.add(new FlagVal(Flags.getValidName(flag), param, not));
+	}
 
-    public boolean removeFlag(int index) {
-        if (flags.size() <= index) return false;
-        flags.remove(index);
-        return true;
-    }
+	public boolean removeFlag(int index) {
+		if (flags.size() <= index) return false;
+		flags.remove(index);
+		return true;
+	}
 
-    public List<FlagVal> getFlags() {
-        return flags;
-    }
+	public List<FlagVal> getFlags() {
+		return flags;
+	}
 
-    public void addAction(String action, String param) {
-        actions.add(new ActVal(Actions.getValidName(action), param));
-    }
+	public void addAction(String action, String param) {
+		actions.add(new ActVal(Actions.getValidName(action), param));
+	}
 
-    public boolean removeAction(int index) {
-        if (actions.size() <= index) return false;
-        actions.remove(index);
-        return true;
-    }
+	public boolean removeAction(int index) {
+		if (actions.size() <= index) return false;
+		actions.remove(index);
+		return true;
+	}
 
-    public void addReaction(String action, String param) {
-        reactions.add(new ActVal(Actions.getValidName(action), param));
-    }
+	public void addReaction(String action, String param) {
+		reactions.add(new ActVal(Actions.getValidName(action), param));
+	}
 
-    public boolean removeReaction(int index) {
-        if (reactions.size() <= index) return false;
-        reactions.remove(index);
-        return true;
-    }
+	public boolean removeReaction(int index) {
+		if (reactions.size() <= index) return false;
+		reactions.remove(index);
+		return true;
+	}
 
-    public List<ActVal> getActions() {
-        return actions;
-    }
+	public List<ActVal> getActions() {
+		return actions;
+	}
 
-    public List<ActVal> getReactions() {
-        return reactions;
-    }
-
-
-    public void clearFlags() {
-        flags.clear();
-    }
-
-    public void clearActions() {
-        actions.clear();
-    }
-
-    public void clearReactions() {
-        reactions.clear();
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-        if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-        if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-        if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-        return sb.toString();
-    }
+	public List<ActVal> getReactions() {
+		return reactions;
+	}
 
 
-    @Override
-    public int hashCode() {
-         // TODO: Надо будет переделать так чтобы получалась сортировка по алфавиту, хм.. и группировка по группам сразу...
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
+	public void clearFlags() {
+		flags.clear();
+	}
 
-    public boolean equals(String name) {
-        if (name == null) return false;
-        if (name.isEmpty()) return false;
-        return this.name.equalsIgnoreCase(name);
-    }
+	public void clearActions() {
+		actions.clear();
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Activator))
-            return false;
-        Activator other = (Activator) obj;
-        if (name == null)
-            return other.name == null;
-        return this.name.equals(other.name);
-    }
+	public void clearReactions() {
+		reactions.clear();
+	}
 
-    /*
-     *  Группу по идее дублировать не надо... т.е. она должна выставляться "из вне"...
-     */
-    public void saveActivator(YamlConfiguration cfg) {
-        String key = getType() + "." + this.name;
-        save(key, cfg);
-        List<String> flg = new ArrayList<>();
-        for (FlagVal f : flags) flg.add(f.toString());
-        cfg.set(key + ".flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
-        flg = new ArrayList<>();
-        for (ActVal a : actions) flg.add(a.toString());
-        cfg.set(key + ".actions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
-        flg = new ArrayList<>();
-        for (ActVal a : reactions) flg.add(a.toString());
-        cfg.set(key + ".reactions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
-    }
-
-    public void loadActivator(YamlConfiguration cfg) {
-        String key = getType().name() + "." + this.name;
-        load(key, cfg);
-        List<String> flg = cfg.getStringList(key + ".flags");
-        for (String flgstr : flg) {
-            String flag = flgstr;
-            String param = "";
-            boolean not = false;
-            if (flgstr.contains("=")) {
-                flag = flgstr.substring(0, flgstr.indexOf("="));
-                if (flgstr.indexOf("=") < flgstr.length())
-                    param = flgstr.substring(flgstr.indexOf("=") + 1, flgstr.length());
-            }
-            if (flag.startsWith("!")) {
-                flag = flag.replaceFirst("!", "");
-                not = true;
-            }
-            addFlag(flag, param, not);
-        }
-
-        flg = cfg.getStringList(key + ".actions");
-        for (String flgstr : flg) {
-            String flag = flgstr;
-            String param = "";
-            if (flgstr.contains("=")) {
-                flag = flgstr.substring(0, flgstr.indexOf("="));
-                param = flgstr.substring(flgstr.indexOf("=") + 1);
-            }
-            addAction(flag, param);
-        }
-
-        flg = cfg.getStringList(key + ".reactions");
-        for (String flgstr : flg) {
-            String flag = flgstr;
-            String param = "";
-            if (flgstr.contains("=")) {
-                flag = flgstr.substring(0, flgstr.indexOf("="));
-                param = flgstr.substring(flgstr.indexOf("=") + 1);
-            }
-            addReaction(flag, param);
-        }
-    }
-
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    public String getGroup() {
-        return this.group;
-    }
-
-    public String getName() {
-        return this.name;
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
+		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
+		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
+		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		return sb.toString();
+	}
 
 
-    public boolean executeActivator(Event event) {
-        boolean result = activate(event);
-        Variables.clearAllTempVar();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		 // TODO: Надо будет переделать так чтобы получалась сортировка по алфавиту, хм.. и группировка по группам сразу...
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
+	}
+
+	public boolean equals(String name) {
+		if (name == null) return false;
+		if (name.isEmpty()) return false;
+		return this.name.equalsIgnoreCase(name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Activator))
+			return false;
+		Activator other = (Activator) obj;
+		if (name == null)
+			return other.name == null;
+		return this.name.equals(other.name);
+	}
+
+	/*
+	 *  Группу по идее дублировать не надо... т.е. она должна выставляться "из вне"...
+	 */
+	public void saveActivator(YamlConfiguration cfg) {
+		String key = getType() + "." + this.name;
+		save(key, cfg);
+		List<String> flg = new ArrayList<>();
+		for (FlagVal f : flags) flg.add(f.toString());
+		cfg.set(key + ".flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
+		flg = new ArrayList<>();
+		for (ActVal a : actions) flg.add(a.toString());
+		cfg.set(key + ".actions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
+		flg = new ArrayList<>();
+		for (ActVal a : reactions) flg.add(a.toString());
+		cfg.set(key + ".reactions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
+	}
+
+	public void loadActivator(YamlConfiguration cfg) {
+		String key = getType().name() + "." + this.name;
+		load(key, cfg);
+		List<String> flg = cfg.getStringList(key + ".flags");
+		for (String flgstr : flg) {
+			String flag = flgstr;
+			String param = "";
+			boolean not = false;
+			if (flgstr.contains("=")) {
+				flag = flgstr.substring(0, flgstr.indexOf("="));
+				if (flgstr.indexOf("=") < flgstr.length())
+					param = flgstr.substring(flgstr.indexOf("=") + 1, flgstr.length());
+			}
+			if (flag.startsWith("!")) {
+				flag = flag.replaceFirst("!", "");
+				not = true;
+			}
+			addFlag(flag, param, not);
+		}
+
+		flg = cfg.getStringList(key + ".actions");
+		for (String flgstr : flg) {
+			String flag = flgstr;
+			String param = "";
+			if (flgstr.contains("=")) {
+				flag = flgstr.substring(0, flgstr.indexOf("="));
+				param = flgstr.substring(flgstr.indexOf("=") + 1);
+			}
+			addAction(flag, param);
+		}
+
+		flg = cfg.getStringList(key + ".reactions");
+		for (String flgstr : flg) {
+			String flag = flgstr;
+			String param = "";
+			if (flgstr.contains("=")) {
+				flag = flgstr.substring(0, flgstr.indexOf("="));
+				param = flgstr.substring(flgstr.indexOf("=") + 1);
+			}
+			addReaction(flag, param);
+		}
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
+	}
+
+	public String getGroup() {
+		return this.group;
+	}
+
+	public String getName() {
+		return this.name;
+	}
 
 
-    public abstract boolean activate(Event event); // Наверное всё-таки так
+	public boolean executeActivator(Event event) {
+		boolean result = activate(event);
+		Variables.clearAllTempVar();
+		return result;
+	}
 
-    public abstract boolean isLocatedAt(Location loc);
 
-    public abstract void save(String root, YamlConfiguration cfg);
+	public abstract boolean activate(Event event); // Наверное всё-таки так
 
-    public abstract void load(String root, YamlConfiguration cfg);
+	public abstract boolean isLocatedAt(Location loc);
 
-    public abstract ActivatorType getType();
+	public abstract void save(String root, YamlConfiguration cfg);
 
-    public boolean isTypeOf(String str) {
-        return ((getType().name().equalsIgnoreCase(str)) || (getType().getAlias().equalsIgnoreCase(str)));
-    }
+	public abstract void load(String root, YamlConfiguration cfg);
 
-    public abstract boolean isValid();
+	public abstract ActivatorType getType();
+
+	public boolean isTypeOf(String str) {
+		return ((getType().name().equalsIgnoreCase(str)) || (getType().getAlias().equalsIgnoreCase(str)));
+	}
+
+	public abstract boolean isValid();
 
 }

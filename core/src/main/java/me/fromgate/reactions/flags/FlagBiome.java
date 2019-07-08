@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,14 +27,14 @@ import org.bukkit.entity.Player;
 
 public class FlagBiome extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        Biome b = null;
-        for (Biome bb : Biome.values()) {
-            if (bb.name().equalsIgnoreCase(param)) b = bb;
-        }
-        if (b == null) return false;
-        return player.getLocation().getBlock().getBiome().equals(b);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		Biome b = null;
+		for (Biome bb : Biome.values()) {
+			if (bb.name().equalsIgnoreCase(param)) b = bb;
+		}
+		if (b == null) return false;
+		return player.getLocation().getBlock().getBiome().equals(b);
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -35,179 +35,179 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class SQLManager {
-    private static boolean enabled = false;
-    private static String serverAddress = "127.0.0.1";
-    private static String port = "3306";
-    private static String dataBase;
-    private static String userName;
-    private static String password;
-    private static String codepage = "UTF-8";
+	private static boolean enabled = false;
+	private static String serverAddress;
+	private static String port;
+	private static String dataBase;
+	private static String userName;
+	private static String password;
+	private static String codepage;
 
 
-    public static void init() {
-        loadCfg();
-        saveCfg();
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            enabled = true;
-        } catch (ClassNotFoundException e) {
-            Msg.logOnce("mysqlinitfail", "MySQL JDBC Driver not found!");
-            enabled = false;
-        }
-    }
+	public static void init() {
+		loadCfg();
+		saveCfg();
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+			enabled = true;
+		} catch (ClassNotFoundException e) {
+			Msg.logOnce("mysqlinitfail", "MySQL JDBC Driver not found!");
+			enabled = false;
+		}
+	}
 
 
-    public static void loadCfg() {
-        serverAddress = ReActions.instance.getConfig().getString("MySQL.server", "localhost");
-        port = ReActions.instance.getConfig().getString("MySQL.port", "3306");
-        dataBase = ReActions.instance.getConfig().getString("MySQL.database", "ReActions");
-        userName = ReActions.instance.getConfig().getString("MySQL.username", "root");
-        password = ReActions.instance.getConfig().getString("MySQL.password", "password");
-        codepage = ReActions.instance.getConfig().getString("MySQL.codepage", "");
-    }
+	public static void loadCfg() {
+		serverAddress = ReActions.instance.getConfig().getString("MySQL.server", "localhost");
+		port = ReActions.instance.getConfig().getString("MySQL.port", "3306");
+		dataBase = ReActions.instance.getConfig().getString("MySQL.database", "ReActions");
+		userName = ReActions.instance.getConfig().getString("MySQL.username", "root");
+		password = ReActions.instance.getConfig().getString("MySQL.password", "password");
+		codepage = ReActions.instance.getConfig().getString("MySQL.codepage", "UTF-8");
+	}
 
-    public static void saveCfg() {
-        ReActions.instance.getConfig().set("MySQL.server", serverAddress);
-        ReActions.instance.getConfig().set("MySQL.port", port);
-        ReActions.instance.getConfig().set("MySQL.database", dataBase);
-        ReActions.instance.getConfig().set("MySQL.username", userName);
-        ReActions.instance.getConfig().set("MySQL.password", password);
-        ReActions.instance.getConfig().set("MySQL.codepage", codepage);
-        ReActions.instance.saveConfig();
-    }
-
-
-    public static void setQueryToVar(String player, String var, String query, int column, Param params) {
-        if (!enabled) return;
-        String result = SQLManager.executeSelect(query, column, params);
-        Variables.setVar(player, var, result);
-    }
+	public static void saveCfg() {
+		ReActions.instance.getConfig().set("MySQL.server", serverAddress);
+		ReActions.instance.getConfig().set("MySQL.port", port);
+		ReActions.instance.getConfig().set("MySQL.database", dataBase);
+		ReActions.instance.getConfig().set("MySQL.username", userName);
+		ReActions.instance.getConfig().set("MySQL.password", password);
+		ReActions.instance.getConfig().set("MySQL.codepage", codepage);
+		ReActions.instance.saveConfig();
+	}
 
 
-    public static String executeSelect(String query, Param params) {
-        return executeSelect(query, -1, params);
-    }
-
-    public static boolean compareSelect(String value, String query, int column, Param params) {
-        String result = executeSelect(query, column, params);
-        if (Util.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
-        return result.equalsIgnoreCase(value);
-    }
-
-    private static Connection connectToMySQL() {
-        return connectToMySQL(new Param());
-    }
-
-    // server port db user password codepage
-    private static Connection connectToMySQL(Param params) {
-        String cAddress = params.getParam("server", serverAddress);
-        String cPort = params.getParam("port", port);
-        String cDataBase = params.getParam("db", dataBase);
-        String cUser = params.getParam("user", userName);
-        String cPassword = params.getParam("password", password);
-        String cCodepage = params.getParam("codepage", codepage);
-        Properties prop = new Properties();
-        if (!cCodepage.isEmpty()) {
-            prop.setProperty("useUnicode", "true");
-            prop.setProperty("characterEncoding", cCodepage);
-        }
-        prop.setProperty("user", cUser);
-        prop.setProperty("password", cPassword);
-        Connection connection = null;
-        String connectionLine = "jdbc:mysql://" + cAddress + (cPort.isEmpty() ? "" : ":" + cPort) + "/" + cDataBase;
-        try {
-            connection = DriverManager.getConnection(connectionLine, prop);
-        } catch (Exception e) {
-            Msg.logOnce("sqlconnect", "Failed to connect to database: " + connectionLine + " user: " + userName);
-        }
-        return connection;
-    }
+	public static void setQueryToVar(String player, String var, String query, int column, Param params) {
+		if (!enabled) return;
+		String result = SQLManager.executeSelect(query, column, params);
+		Variables.setVar(player, var, result);
+	}
 
 
-    public static String executeSelect(String query, int column, Param params) {
-        if (!enabled) return "";
+	public static String executeSelect(String query, Param params) {
+		return executeSelect(query, -1, params);
+	}
 
-        Statement selectStmt = null;
-        ResultSet result = null;
-        String resultStr = "";
-        Connection connection = connectToMySQL(params);
+	public static boolean compareSelect(String value, String query, int column, Param params) {
+		String result = executeSelect(query, column, params);
+		if (Util.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
+		return result.equalsIgnoreCase(value);
+	}
 
-        try {
-            selectStmt = connection.createStatement();
-            String sqlset = Variables.getTempVar("SQL_SET");
-            if (!sqlset.isEmpty()) {
-                selectStmt.execute(sqlset);
-            }
-            result = selectStmt.executeQuery(query);
-            if (result.first()) {
-                int columns = result.getMetaData().getColumnCount();
-                if (column > 0 && column <= columns) resultStr = result.getString(column);
-            }
-        } catch (Exception e) {
-            Msg.logOnce(query, "Failed to execute query: " + query);
-        }
-        try {
-            if (result != null) result.close();
-            if (selectStmt != null) selectStmt.close();
-            if (connection != null) connection.close();
-        } catch (Exception ignored) {
-        }
-        return resultStr;
-    }
+	private static Connection connectToMySQL() {
+		return connectToMySQL(new Param());
+	}
 
-
-    public static boolean executeUpdate(String query, Param params) {
-        if (!enabled) return false;
-        Connection connection = connectToMySQL(params);
-        if (connection == null) return false;
-        Statement statement = null;
-        boolean ok = false;
-        try {
-            statement = connection.createStatement();
-            //statement.execute("SET NAMES 'utf8'");
-            statement.executeUpdate(query);
-            ok = true;
-        } catch (Exception e) {
-            Msg.logOnce(query, "Failed to execute query: " + query);
-            if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
-            e.printStackTrace();
-        }
-        try {
-            if (statement != null) statement.close();
-            if (connection != null) connection.close();
-        } catch (Exception ignored) {
-        }
-        return ok;
-    }
+	// server port db user password codepage
+	private static Connection connectToMySQL(Param params) {
+		String cAddress = params.getParam("server", serverAddress);
+		String cPort = params.getParam("port", port);
+		String cDataBase = params.getParam("db", dataBase);
+		String cUser = params.getParam("user", userName);
+		String cPassword = params.getParam("password", password);
+		String cCodepage = params.getParam("codepage", codepage);
+		Properties prop = new Properties();
+		if (!cCodepage.isEmpty()) {
+			prop.setProperty("useUnicode", "true");
+			prop.setProperty("characterEncoding", cCodepage);
+		}
+		prop.setProperty("user", cUser);
+		prop.setProperty("password", cPassword);
+		Connection connection = null;
+		String connectionLine = "jdbc:mysql://" + cAddress + (cPort.isEmpty() ? "" : ":" + cPort) + "/" + cDataBase;
+		try {
+			connection = DriverManager.getConnection(connectionLine, prop);
+		} catch (Exception e) {
+			Msg.logOnce("sqlconnect", "Failed to connect to database: " + connectionLine + " user: " + userName);
+		}
+		return connection;
+	}
 
 
-    public static boolean isEnabled() {
-        return enabled;
-    }
+	public static String executeSelect(String query, int column, Param params) {
+		if (!enabled) return "";
 
-    public static boolean isSelectResultEmpty(String query) {
-        if (!enabled) return false;
-        Connection connection = connectToMySQL();
-        if (connection == null) return false;
+		Statement selectStmt = null;
+		ResultSet result = null;
+		String resultStr = "";
+		Connection connection = connectToMySQL(params);
 
-        Statement selectStmt = null;
-        ResultSet result = null;
-        boolean resultBool = false;
+		try {
+			selectStmt = connection.createStatement();
+			String sqlset = Variables.getTempVar("SQL_SET");
+			if (!sqlset.isEmpty()) {
+				selectStmt.execute(sqlset);
+			}
+			result = selectStmt.executeQuery(query);
+			if (result.first()) {
+				int columns = result.getMetaData().getColumnCount();
+				if (column > 0 && column <= columns) resultStr = result.getString(column);
+			}
+		} catch (Exception e) {
+			Msg.logOnce(query, "Failed to execute query: " + query);
+		}
+		try {
+			if (result != null) result.close();
+			if (selectStmt != null) selectStmt.close();
+			if (connection != null) connection.close();
+		} catch (Exception ignored) {
+		}
+		return resultStr;
+	}
 
-        try {
-            selectStmt = connection.createStatement();
-            result = selectStmt.executeQuery(query);
-            resultBool = result.next();
-        } catch (Exception e) {
-            Msg.logOnce(query, "Failed to execute query: " + query);
-            if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
-        }
-        try {
-            if (result != null) result.close();
-            if (selectStmt != null) selectStmt.close();
-            if (connection != null) connection.close();
-        } catch (Exception ignored) {
-        }
-        return resultBool;
-    }
+
+	public static boolean executeUpdate(String query, Param params) {
+		if (!enabled) return false;
+		Connection connection = connectToMySQL(params);
+		if (connection == null) return false;
+		Statement statement = null;
+		boolean ok = false;
+		try {
+			statement = connection.createStatement();
+			//statement.execute("SET NAMES 'utf8'");
+			statement.executeUpdate(query);
+			ok = true;
+		} catch (Exception e) {
+			Msg.logOnce(query, "Failed to execute query: " + query);
+			if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
+			e.printStackTrace();
+		}
+		try {
+			if (statement != null) statement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ignored) {
+		}
+		return ok;
+	}
+
+
+	public static boolean isEnabled() {
+		return enabled;
+	}
+
+	public static boolean isSelectResultEmpty(String query) {
+		if (!enabled) return false;
+		Connection connection = connectToMySQL();
+		if (connection == null) return false;
+
+		Statement selectStmt = null;
+		ResultSet result = null;
+		boolean resultBool = false;
+
+		try {
+			selectStmt = connection.createStatement();
+			result = selectStmt.executeQuery(query);
+			resultBool = result.next();
+		} catch (Exception e) {
+			Msg.logOnce(query, "Failed to execute query: " + query);
+			if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
+		}
+		try {
+			if (result != null) result.close();
+			if (selectStmt != null) selectStmt.close();
+			if (connection != null) connection.close();
+		} catch (Exception ignored) {
+		}
+		return resultBool;
+	}
 }

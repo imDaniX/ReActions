@@ -26,14 +26,14 @@ import org.bukkit.entity.Player;
 
 public class FlagHealth extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        double health;
-        try {
-            health = Double.parseDouble(param);
-        } catch (Exception e) {
-            return false;
-        }
-        return player.getHealth() >= health;
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		double health;
+		try {
+			health = Double.parseDouble(param);
+		} catch (Exception e) {
+			return false;
+		}
+		return player.getHealth() >= health;
+	}
 }

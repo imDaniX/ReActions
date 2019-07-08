@@ -3,15 +3,15 @@ package me.fromgate.reactions.event;
 import org.bukkit.entity.Player;
 
 public class FactionDisbandEvent extends RAEvent {
-    private String faction;
+	private String faction;
 
-    public FactionDisbandEvent(String factionName, Player player) {
-        super(player);
-        this.faction = factionName;
-    }
+	public FactionDisbandEvent(String factionName, Player player) {
+		super(player);
+		this.faction = factionName;
+	}
 
-    public String getFaction() {
-        return this.faction;
-    }
+	public String getFaction() {
+		return this.faction;
+	}
 
 }

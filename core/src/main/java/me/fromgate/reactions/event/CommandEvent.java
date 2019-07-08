@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -25,26 +25,26 @@ package me.fromgate.reactions.event;
 import org.bukkit.entity.Player;
 
 public class CommandEvent extends RAEvent {
-    private String command;
-    private String[] args;
-    private boolean parentEventCanceled;
+	private String command;
+	private String[] args;
+	private boolean parentEventCanceled;
 
-    public CommandEvent(Player p, String command, String[] args, boolean canceled) {
-        super(p);
-        this.command = command;
-        this.args = args;
-        this.parentEventCanceled = canceled;
-    }
+	public CommandEvent(Player p, String command, String[] args, boolean canceled) {
+		super(p);
+		this.command = command;
+		this.args = args;
+		this.parentEventCanceled = canceled;
+	}
 
-    public String getCommand() {
-        return this.command;
-    }
+	public String getCommand() {
+		return this.command;
+	}
 
-    public String[] getArgs() {
-        return this.args;
-    }
+	public String[] getArgs() {
+		return this.args;
+	}
 
-    public boolean isParentCanceled() {
-        return this.parentEventCanceled;
-    }
+	public boolean isParentCanceled() {
+		return this.parentEventCanceled;
+	}
 }

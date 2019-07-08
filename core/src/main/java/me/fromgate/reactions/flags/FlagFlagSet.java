@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -31,51 +31,51 @@ import java.util.regex.Pattern;
 
 public class FlagFlagSet extends Flag {
 
-    private final static Pattern BRACES = Pattern.compile("(^\\{\\s*)|(\\s*}$)");
-    private final static Pattern BRACES_GROUP = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");
+	private final static Pattern BRACES = Pattern.compile("(^\\{\\s*)|(\\s*}$)");
+	private final static Pattern BRACES_GROUP = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (param.isEmpty()) return false;
-        List<String> flagList = parseParamsList(param);
-        if (flagList.isEmpty()) return false;
-        for (String flagStr : flagList) {
-            boolean negative = flagStr.startsWith("!");
-            if (negative) flagStr = flagStr.replaceFirst("!", "");
-            String[] fnv = flagStr.split(":", 2);
-            if (fnv.length != 2) continue;
-            if (Flags.checkFlag(player, fnv[0], BRACES.matcher(fnv[1]).replaceAll(""), negative)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (param.isEmpty()) return false;
+		List<String> flagList = parseParamsList(param);
+		if (flagList.isEmpty()) return false;
+		for (String flagStr : flagList) {
+			boolean negative = flagStr.startsWith("!");
+			if (negative) flagStr = flagStr.replaceFirst("!", "");
+			String[] fnv = flagStr.split(":", 2);
+			if (fnv.length != 2) continue;
+			if (Flags.checkFlag(player, fnv[0], BRACES.matcher(fnv[1]).replaceAll(""), negative)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 
-    public List<String> parseParamsList(String param) {
-        List<String> paramList = new ArrayList<>();
-        Matcher matcher = BRACES_GROUP.matcher(hideBkts(param));
-        while (matcher.find()) {
-            paramList.add(matcher.group().trim().replace("#BKT1#", "{").replace("#BKT2#", "}"));
-        }
-        return paramList;
-    }
+	public List<String> parseParamsList(String param) {
+		List<String> paramList = new ArrayList<>();
+		Matcher matcher = BRACES_GROUP.matcher(hideBkts(param));
+		while (matcher.find()) {
+			paramList.add(matcher.group().trim().replace("#BKT1#", "{").replace("#BKT2#", "}"));
+		}
+		return paramList;
+	}
 
-    private static String hideBkts(String s) {
-        int count = 0;
-        StringBuilder r = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            String a = String.valueOf(c);
-            if (c == '{') {
-                count++;
-                if (count != 1) a = "#BKT1#";
-            } else if (c == '}') {
-                if (count != 1) a = "#BKT2#";
-                count--;
-            }
-            r.append(a);
-        }
-        return r.toString();
-    }
+	private static String hideBkts(String s) {
+		int count = 0;
+		StringBuilder r = new StringBuilder();
+		for (int i = 0; i < s.length(); i++) {
+			char c = s.charAt(i);
+			String a = String.valueOf(c);
+			if (c == '{') {
+				count++;
+				if (count != 1) a = "#BKT1#";
+			} else if (c == '}') {
+				if (count != 1) a = "#BKT2#";
+				count--;
+			}
+			r.append(a);
+		}
+		return r.toString();
+	}
 }

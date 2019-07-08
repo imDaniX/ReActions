@@ -40,42 +40,42 @@ import java.util.Map;
 
 public class MoveListener implements Listener {
 
-    private static Map<String, Location> prevLocations = new HashMap<>();
+	private static Map<String, Location> prevLocations = new HashMap<>();
 
-    public static void init() {
-        if (Cfg.playerMoveTaskUse) {
-            Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> {
-                Bukkit.getOnlinePlayers().forEach(player -> {
-                    Location from = prevLocations.getOrDefault(player.getName(), null);
-                    Location to = player.getLocation();
-                    if (!to.getWorld().equals(from.getWorld())) from = null;
-                    processMove(player, from, to);
-                    prevLocations.put(player.getName(), to);
-                });
-            }, 30, Cfg.playerMoveTaskTick);
-        } else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
-    }
+	public static void init() {
+		if (Cfg.playerMoveTaskUse) {
+			Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> {
+				Bukkit.getOnlinePlayers().forEach(player -> {
+					Location from = prevLocations.getOrDefault(player.getName(), null);
+					Location to = player.getLocation();
+					if (!to.getWorld().equals(from.getWorld())) from = null;
+					processMove(player, from, to);
+					prevLocations.put(player.getName(), to);
+				});
+			}, 30, Cfg.playerMoveTaskTick);
+		} else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
+	}
 
-    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-    public void onPlayerMove(PlayerMoveEvent event) {
-        processMove(event.getPlayer(), event.getFrom(), event.getTo());
-    }
+	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+	public void onPlayerMove(PlayerMoveEvent event) {
+		processMove(event.getPlayer(), event.getFrom(), event.getTo());
+	}
 
-    private static void processMove(Player player, Location from, Location to) {
-        PushBack.rememberLocations(player, from, to);
-        if (!BlockUtil.isSameBlock(from, to)) {
-            EventManager.raiseAllRegionEvents(player, to, from);
-        }
-    }
+	private static void processMove(Player player, Location from, Location to) {
+		PushBack.rememberLocations(player, from, to);
+		if (!BlockUtil.isSameBlock(from, to)) {
+			EventManager.raiseAllRegionEvents(player, to, from);
+		}
+	}
 
-    public static void initLocation(Player player) {
-        if (Cfg.playerMoveTaskUse) {
-            prevLocations.put(player.getName(), player.getLocation());
-        }
-    }
+	public static void initLocation(Player player) {
+		if (Cfg.playerMoveTaskUse) {
+			prevLocations.put(player.getName(), player.getLocation());
+		}
+	}
 
-    public static void removeLocation(Player player) {
-        prevLocations.remove(player.getName());
-    }
+	public static void removeLocation(Player player) {
+		prevLocations.remove(player.getName());
+	}
 
 }

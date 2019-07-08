@@ -34,77 +34,77 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 
 public class ItemClickActivator extends Activator {
-    private String item;
-    private boolean mainHand;
+	private String item;
+	private boolean mainHand;
 
-    public ItemClickActivator(String name, String group, YamlConfiguration cfg) {
-        super(name, group, cfg);
-    }
+	public ItemClickActivator(String name, String group, YamlConfiguration cfg) {
+		super(name, group, cfg);
+	}
 
-    public ItemClickActivator(String name, String item) {
-        super(name, "activators");
-        this.item = item;
-    }
+	public ItemClickActivator(String name, String item) {
+		super(name, "activators");
+		this.item = item;
+	}
 
 
-    @Override
-    public boolean activate(Event event) {
-        if (item.isEmpty() || (ItemUtil.parseItemStack(item) == null)) {
-            Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
-            return false;
-        }
-        if (event instanceof ItemClickEvent) {
-            ItemClickEvent ie = (ItemClickEvent) event;
-            if(ie.isMainHand() != mainHand)
-                return false;
-            if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
-                VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
-                if (vi != null) {
-                    Variables.setTempVar("item", vi.toString());
-                    Variables.setTempVar("item-str", vi.toDisplayString());
-                }
-                Variables.setTempVar("hand", ie.isMainHand() ? "MAIN" : "OFF");
-                return Actions.executeActivator(ie.getPlayer(), this);
-            }
+	@Override
+	public boolean activate(Event event) {
+		if (item.isEmpty() || (ItemUtil.parseItemStack(item) == null)) {
+			Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
+			return false;
+		}
+		if (event instanceof ItemClickEvent) {
+			ItemClickEvent ie = (ItemClickEvent) event;
+			if(ie.isMainHand() != mainHand)
+				return false;
+			if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
+				VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
+				if (vi != null) {
+					Variables.setTempVar("item", vi.toString());
+					Variables.setTempVar("item-str", vi.toDisplayString());
+				}
+				Variables.setTempVar("hand", ie.isMainHand() ? "MAIN" : "OFF");
+				return Actions.executeActivator(ie.getPlayer(), this);
+			}
 
-        }
-        return false;
-    }
+		}
+		return false;
+	}
 
-    @Override
-    public boolean isLocatedAt(Location loc) {
-        return false;
-    }
+	@Override
+	public boolean isLocatedAt(Location loc) {
+		return false;
+	}
 
-    @Override
-    public void save(String root, YamlConfiguration cfg) {
-        cfg.set(root + ".item", this.item);
-    }
+	@Override
+	public void save(String root, YamlConfiguration cfg) {
+		cfg.set(root + ".item", this.item);
+	}
 
-    @Override
-    public void load(String root, YamlConfiguration cfg) {
-        this.item = cfg.getString(root + ".item");
-        this.mainHand = cfg.getString(root + ".hand", "main").equalsIgnoreCase("main");
-    }
+	@Override
+	public void load(String root, YamlConfiguration cfg) {
+		this.item = cfg.getString(root + ".item");
+		this.mainHand = cfg.getString(root + ".hand", "main").equalsIgnoreCase("main");
+	}
 
-    @Override
-    public ActivatorType getType() {
-        return ActivatorType.ITEM_CLICK;
-    }
+	@Override
+	public ActivatorType getType() {
+		return ActivatorType.ITEM_CLICK;
+	}
 
-    @Override
-    public boolean isValid() {
-        return !Util.emptySting(item);
-    }
+	@Override
+	public boolean isValid() {
+		return !Util.emptySting(item);
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-        if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-        if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-        if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-        sb.append(" (").append(this.item).append(")");
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
+		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
+		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
+		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		sb.append(" (").append(this.item).append(")");
+		return sb.toString();
+	}
 
 }

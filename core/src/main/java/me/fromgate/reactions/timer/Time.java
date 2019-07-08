@@ -31,44 +31,44 @@ import java.util.Date;
 public class Time {
 
 
-    public static long getIngameTime() {
-        return Bukkit.getWorlds().get(0).getTime();
-    }
+	public static long getIngameTime() {
+		return Bukkit.getWorlds().get(0).getTime();
+	}
 
-    public static String currentIngameTime() {
-        return ingameTimeToString(Bukkit.getWorlds().get(0).getTime());
-    }
+	public static String currentIngameTime() {
+		return ingameTimeToString(Bukkit.getWorlds().get(0).getTime());
+	}
 
-    public Long timeToTicks(Long time) {
-        //1000 ms = 20 ticks
-        return Math.max(1, (time / 50));
-    }
+	public Long timeToTicks(Long time) {
+		//1000 ms = 20 ticks
+		return Math.max(1, (time / 50));
+	}
 
-    public static String ingameTimeToString(long ingameTime) {
-        return ingameTimeToString(ingameTime, false);
-    }
+	public static String ingameTimeToString(long ingameTime) {
+		return ingameTimeToString(ingameTime, false);
+	}
 
-    public static String ingameTimeToString(long time, boolean showms) {
-        String timeStr;
-        int hours = (int) ((time / 1000 + 6) % 24);
-        int minutes = (int) (60 * (time % 1000) / 1000);
-        timeStr = String.format("%02d:%02d", hours, minutes);
-        if (showms && (time < 1000)) timeStr = Long.toString(time) + "ms";
-        return timeStr;
-    }
+	public static String ingameTimeToString(long time, boolean showms) {
+		String timeStr;
+		int hours = (int) ((time / 1000 + 6) % 24);
+		int minutes = (int) (60 * (time % 1000) / 1000);
+		timeStr = String.format("%02d:%02d", hours, minutes);
+		if (showms && (time < 1000)) timeStr = Long.toString(time) + "ms";
+		return timeStr;
+	}
 
-    public static String fullTimeToString(long time, String format) {
-        Date date = new Date(time);
-        DateFormat formatter = new SimpleDateFormat(format);
-        return formatter.format(date);
-    }
+	public static String fullTimeToString(long time, String format) {
+		Date date = new Date(time);
+		DateFormat formatter = new SimpleDateFormat(format);
+		return formatter.format(date);
+	}
 
-    public static String fullTimeToString(long time) {
-        return fullTimeToString(time, "dd-MM-YYYY HH:mm:ss");
-        /*Date date = new Date(time);
-        DateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss");
-        return formatter.format(date);*/
-    }
+	public static String fullTimeToString(long time) {
+		return fullTimeToString(time, "dd-MM-YYYY HH:mm:ss");
+		/*Date date = new Date(time);
+		DateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss");
+		return formatter.format(date);*/
+	}
 
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,19 +27,19 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 
 public class RaDebug {
-    private static HashMap<String, Boolean> debug = new HashMap<>();
+	private static HashMap<String, Boolean> debug = new HashMap<>();
 
-    public static void setPlayerDebug(Player p, boolean debugMode) {
-        debug.put(p.getName(), debugMode);
-    }
+	public static void setPlayerDebug(Player p, boolean debugMode) {
+		debug.put(p.getName(), debugMode);
+	}
 
-    public static void offPlayerDebug(Player p) {
-        debug.remove(p.getName());
-    }
+	public static void offPlayerDebug(Player p) {
+		debug.remove(p.getName());
+	}
 
-    public static boolean checkFlagAndDebug(Player p, boolean flag) {
-        if ((p != null) && debug.containsKey(p.getName())) return (debug.get(p.getName()));
-        return flag;
-    }
+	public static boolean checkFlagAndDebug(Player p, boolean flag) {
+		if ((p != null) && debug.containsKey(p.getName())) return (debug.get(p.getName()));
+		return flag;
+	}
 
 }

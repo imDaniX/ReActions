@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -30,45 +30,45 @@ import org.bukkit.entity.Player;
 
 public class ActionDelay extends Action {
 
-    private boolean globalDelay;
+	private boolean globalDelay;
 
-    public ActionDelay(boolean globalDelay) {
-        this.globalDelay = globalDelay;
-    }
+	public ActionDelay(boolean globalDelay) {
+		this.globalDelay = globalDelay;
+	}
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        String timeStr = "";
-        String playerName = this.globalDelay ? "" : (p != null ? p.getName() : "");
-        String variableId = "";
-        boolean add = false;
-        if (params.isParamsExists("id", "delay") || params.isParamsExists("id", "time")) {
-            variableId = params.getParam("id", "");
-            playerName = params.getParam("player", playerName);
-            timeStr = params.getParam("delay", params.getParam("time", ""));
-            add = params.getParam("add", false);
-        } else {
-            String oldFormat = params.getParam("param-line", "");
-            if (oldFormat.contains("/")) {
-                String[] m = oldFormat.split("/");
-                if (m.length >= 2) {
-                    timeStr = m[0];
-                    variableId = m[1];
-                }
-            } else timeStr = oldFormat;
-        }
+	@Override
+	public boolean execute(Player p, Param params) {
+		String timeStr = "";
+		String playerName = this.globalDelay ? "" : (p != null ? p.getName() : "");
+		String variableId = "";
+		boolean add = false;
+		if (params.isParamsExists("id", "delay") || params.isParamsExists("id", "time")) {
+			variableId = params.getParam("id", "");
+			playerName = params.getParam("player", playerName);
+			timeStr = params.getParam("delay", params.getParam("time", ""));
+			add = params.getParam("add", false);
+		} else {
+			String oldFormat = params.getParam("param-line", "");
+			if (oldFormat.contains("/")) {
+				String[] m = oldFormat.split("/");
+				if (m.length >= 2) {
+					timeStr = m[0];
+					variableId = m[1];
+				}
+			} else timeStr = oldFormat;
+		}
 
-        if (timeStr.isEmpty()) return false;
-        if (variableId.isEmpty()) return false;
-        setDelay(playerName, variableId, Util.parseTime(timeStr), add);
-        Delayer.setTempPlaceholders(playerName, variableId);
-        setMessageParam(Variables.getTempVar("delay-left-hms", timeStr));
-        return true;
-    }
+		if (timeStr.isEmpty()) return false;
+		if (variableId.isEmpty()) return false;
+		setDelay(playerName, variableId, Util.parseTime(timeStr), add);
+		Delayer.setTempPlaceholders(playerName, variableId);
+		setMessageParam(Variables.getTempVar("delay-left-hms", timeStr));
+		return true;
+	}
 
-    private void setDelay(String playerName, String variableId, long delayTime, boolean add) {
-        if (playerName.isEmpty()) Delayer.setDelay(variableId, delayTime, add);
-        else Delayer.setPersonalDelay(playerName, variableId, delayTime, add);
-    }
+	private void setDelay(String playerName, String variableId, long delayTime, boolean add) {
+		if (playerName.isEmpty()) Delayer.setDelay(variableId, delayTime, add);
+		else Delayer.setPersonalDelay(playerName, variableId, delayTime, add);
+	}
 
 }

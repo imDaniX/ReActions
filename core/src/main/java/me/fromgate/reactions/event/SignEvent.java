@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -30,28 +30,28 @@ import org.bukkit.entity.Player;
 
 public class SignEvent extends RAEvent {
 
-    private String[] signLines;
-    private Location loc;
-    boolean leftClick;
+	private String[] signLines;
+	private Location loc;
+	boolean leftClick;
 
-    public SignEvent(Player player, String[] signLines, Location loc, boolean leftClick) {
-        super(player);
-        this.signLines = signLines;
-        this.loc = loc;
-        this.leftClick = leftClick;
-    }
+	public SignEvent(Player player, String[] signLines, Location loc, boolean leftClick) {
+		super(player);
+		this.signLines = signLines;
+		this.loc = loc;
+		this.leftClick = leftClick;
+	}
 
-    public String[] getSignLines() {
-        return this.signLines;
-    }
+	public String[] getSignLines() {
+		return this.signLines;
+	}
 
-    public String getSignLocation() {
-        return Locator.locationToString(this.loc);
-    }
+	public String getSignLocation() {
+		return Locator.locationToString(this.loc);
+	}
 
-    public boolean isLeftClicked() {
-        return leftClick;
-    }
+	public boolean isLeftClicked() {
+		return leftClick;
+	}
 
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,11 +28,11 @@ import org.bukkit.entity.Player;
 
 public class FlagOnline extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!Util.isIntegerGZ(param)) return false;
-        int reqplayer = Integer.parseInt(param);
-        return (reqplayer <= Bukkit.getOnlinePlayers().size());
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!Util.isIntegerGZ(param)) return false;
+		int reqplayer = Integer.parseInt(param);
+		return (reqplayer <= Bukkit.getOnlinePlayers().size());
+	}
 
 }

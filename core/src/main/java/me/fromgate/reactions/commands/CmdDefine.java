@@ -7,16 +7,16 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CmdDefine {
-    String command();
+	String command();
 
-    String[] subCommands();
+	String[] subCommands();
 
-    String permission();
+	String permission();
 
-    boolean allowConsole() default false;
+	boolean allowConsole() default false;
 
-    Msg description();
+	Msg description();
 
-    String shortDescription();
+	String shortDescription();
 }
 

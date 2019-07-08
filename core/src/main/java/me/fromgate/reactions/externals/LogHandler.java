@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -31,20 +31,20 @@ import java.util.logging.StreamHandler;
 
 public class LogHandler extends StreamHandler {
 
-    @Override
-    public void publish(LogRecord record) {
-        EventManager.raiseMessageEvent(null, MessageActivator.Source.LOG_OUTPUT, record.getMessage());
-        super.publish(record);
-    }
+	@Override
+	public void publish(LogRecord record) {
+		EventManager.raiseMessageEvent(null, MessageActivator.Source.LOG_OUTPUT, record.getMessage());
+		super.publish(record);
+	}
 
-    @Override
-    public void flush() {
-        super.flush();
-    }
+	@Override
+	public void flush() {
+		super.flush();
+	}
 
-    @Override
-    public void close() throws SecurityException {
-        super.close();
-    }
+	@Override
+	public void close() throws SecurityException {
+		super.close();
+	}
 
 }

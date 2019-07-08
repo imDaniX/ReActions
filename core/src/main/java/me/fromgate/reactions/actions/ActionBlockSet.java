@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -34,34 +34,34 @@ import org.bukkit.inventory.ItemStack;
 
 public class ActionBlockSet extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        //String istr = params.getParam("block", "");
-        boolean phys = params.getParam("physics", false);
-        boolean drop = params.getParam("drop", false);
-        Param itemParam = new Param(params.getParam("block", "AIR"), "type");
-        ItemStack item = null;
-        if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
-            item = ItemUtil.itemFromMap(itemParam);
-            if ((item == null) || ((!item.getType().isBlock()))) {
-                Msg.logOnce("wrongblock" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
-                return false;
-            }
-        }
+	@Override
+	public boolean execute(Player p, Param params) {
+		//String istr = params.getParam("block", "");
+		boolean phys = params.getParam("physics", false);
+		boolean drop = params.getParam("drop", false);
+		Param itemParam = new Param(params.getParam("block", "AIR"), "type");
+		ItemStack item = null;
+		if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
+			item = ItemUtil.itemFromMap(itemParam);
+			if ((item == null) || ((!item.getType().isBlock()))) {
+				Msg.logOnce("wrongblock" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
+				return false;
+			}
+		}
 
-        Location loc = Locator.parseLocation(params.getParam("loc", ""), null);
-        if (loc == null) return false;
-        Block b = loc.getBlock();
+		Location loc = Locator.parseLocation(params.getParam("loc", ""), null);
+		if (loc == null) return false;
+		Block b = loc.getBlock();
 
-        if (b.getType() != Material.AIR && drop) b.breakNaturally();
+		if (b.getType() != Material.AIR && drop) b.breakNaturally();
 
-        if (item != null) {
-            b.setType(item.getType());
-            //b.setBlockData(item.getData(),phys);
-            //b.setTypeIdAndData(item.getTypeId(), item.getData().getData(), phys);
-        } else b.setType(Material.AIR, phys);
-        setMessageParam(ItemUtil.itemToString(item));
-        return true;
-    }
+		if (item != null) {
+			b.setType(item.getType());
+			//b.setBlockData(item.getData(),phys);
+			//b.setTypeIdAndData(item.getTypeId(), item.getData().getData(), phys);
+		} else b.setType(Material.AIR, phys);
+		setMessageParam(ItemUtil.itemToString(item));
+		return true;
+	}
 
 }

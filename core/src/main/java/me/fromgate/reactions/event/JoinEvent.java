@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -25,14 +25,14 @@ package me.fromgate.reactions.event;
 import org.bukkit.entity.Player;
 
 public class JoinEvent extends RAEvent {
-    private boolean firstjoin = false;
+	private boolean firstjoin = false;
 
-    public JoinEvent(Player p, boolean firstjoin) {
-        super(p);
-        this.firstjoin = firstjoin;
-    }
+	public JoinEvent(Player p, boolean firstjoin) {
+		super(p);
+		this.firstjoin = firstjoin;
+	}
 
-    public boolean isFirstJoin() {
-        return this.firstjoin;
-    }
+	public boolean isFirstJoin() {
+		return this.firstjoin;
+	}
 }

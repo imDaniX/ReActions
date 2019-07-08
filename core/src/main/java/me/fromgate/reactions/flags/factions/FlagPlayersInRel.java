@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -36,15 +36,15 @@ import org.bukkit.entity.Player;
  */
 
 public class FlagPlayersInRel extends Flag {
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!Externals.isConnectedFactions()) return false;
-        String[] params = param.split("\\s");
-        Player player1 = Bukkit.getPlayer(params[0].trim());
-        Player player2 = Bukkit.getPlayer(params[1].trim());
-        String targetRel = params[2].trim();
-        String playersRel = RaFactions.getRelationWith(player1, RaFactions.getPlayerFaction(player2));
-        return targetRel.equalsIgnoreCase(playersRel);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!Externals.isConnectedFactions()) return false;
+		String[] params = param.split("\\s");
+		Player player1 = Bukkit.getPlayer(params[0].trim());
+		Player player2 = Bukkit.getPlayer(params[1].trim());
+		String targetRel = params[2].trim();
+		String playersRel = RaFactions.getRelationWith(player1, RaFactions.getPlayerFaction(player2));
+		return targetRel.equalsIgnoreCase(playersRel);
+	}
 }

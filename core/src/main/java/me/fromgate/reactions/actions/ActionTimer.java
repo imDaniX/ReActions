@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,20 +27,20 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class ActionTimer extends Action {
-    private boolean pauseTimer;
-    /*    TIMER_STOP("timerstop",false,new ActionTimer(false)),
-    TIMER_RESUME("timerresume",false,new ActionTimer(true));
-    */
+	private boolean pauseTimer;
+	/*	TIMER_STOP("timerstop",false,new ActionTimer(false)),
+	TIMER_RESUME("timerresume",false,new ActionTimer(true));
+	*/
 
-    public ActionTimer(boolean pauseTimer) {
-        this.pauseTimer = pauseTimer;
-    }
+	public ActionTimer(boolean pauseTimer) {
+		this.pauseTimer = pauseTimer;
+	}
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        String timer = params.getParam("timer", "");
-        if (timer.isEmpty()) return false;
-        return Timers.setPause(timer, pauseTimer);
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		String timer = params.getParam("timer", "");
+		if (timer.isEmpty()) return false;
+		return Timers.setPause(timer, pauseTimer);
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -32,52 +32,52 @@ import org.bukkit.entity.Player;
 
 public class ActionCommand extends Action {
 
-    public final static int NORMAL = 0;
-    public final static int OP = 1;
-    public final static int CONSOLE = 2;
-    public final static int CHAT = 3;
+	public final static int NORMAL = 0;
+	public final static int OP = 1;
+	public final static int CONSOLE = 2;
+	public final static int CHAT = 3;
 
-    private int commandAs;
+	private int commandAs;
 
 
-    public ActionCommand(int commandAs) {
-        this.commandAs = commandAs;
-    }
+	public ActionCommand(int commandAs) {
+		this.commandAs = commandAs;
+	}
 
-    @Override
-    public boolean execute(Player player, Param params) {
-        if (commandAs != CONSOLE && player == null) return false;
-        String commandLine = ChatColor.translateAlternateColorCodes('&', params.getParam("param-line"));
-        switch (commandAs) {
-            case NORMAL:
-                dispatchCommand(false, player, commandLine);
-                break;
-            case OP:
-                dispatchCommand(true, player, commandLine);
-                break;
-            case CONSOLE:
-                dispatchCommand(false, Bukkit.getConsoleSender(), commandLine);
-                break;
-            case CHAT:
-                commandLine = commandLine.replaceFirst("/", "");
-                player.chat("/" + commandLine);
-                break;
-        }
-        return true;
-    }
+	@Override
+	public boolean execute(Player player, Param params) {
+		if (commandAs != CONSOLE && player == null) return false;
+		String commandLine = ChatColor.translateAlternateColorCodes('&', params.getParam("param-line"));
+		switch (commandAs) {
+			case NORMAL:
+				dispatchCommand(false, player, commandLine);
+				break;
+			case OP:
+				dispatchCommand(true, player, commandLine);
+				break;
+			case CONSOLE:
+				dispatchCommand(false, Bukkit.getConsoleSender(), commandLine);
+				break;
+			case CHAT:
+				commandLine = commandLine.replaceFirst("/", "");
+				player.chat("/" + commandLine);
+				break;
+		}
+		return true;
+	}
 
-    private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
-        if (Bukkit.isPrimaryThread()) {
-            dispatchCmd(setOp, sender, commandLine);
-        } else {
-            Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> dispatchCmd(setOp, sender, commandLine));
-        }
-    }
+	private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
+		if (Bukkit.isPrimaryThread()) {
+			dispatchCmd(setOp, sender, commandLine);
+		} else {
+			Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> dispatchCmd(setOp, sender, commandLine));
+		}
+	}
 
-    private static void dispatchCmd(final boolean setOp, final CommandSender sender, final String commandLine) {
-        TemporaryOp.setTempOp(sender);
-        Bukkit.getServer().dispatchCommand(sender, commandLine);
-        TemporaryOp.removeTempOp(sender);
-    }
+	private static void dispatchCmd(final boolean setOp, final CommandSender sender, final String commandLine) {
+		TemporaryOp.setTempOp(sender);
+		Bukkit.getServer().dispatchCommand(sender, commandLine);
+		TemporaryOp.removeTempOp(sender);
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,26 +29,26 @@ import org.bukkit.entity.Player;
 
 public class ActionDamage extends Action {
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean execute(Player p, Param params) {
-        Player player = p;
-        double damage = 0;
-        if (params.hasAnyParam("damage", "player")) {
-            String playerName = params.getParam("player", p != null ? p.getName() : "");
-            player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
-            damage = params.getParam("damage", 0);
-        } else params.getParam("param-line", 0);
-        return damagePlayer(player, damage);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean execute(Player p, Param params) {
+		Player player = p;
+		double damage = 0;
+		if (params.hasAnyParam("damage", "player")) {
+			String playerName = params.getParam("player", p != null ? p.getName() : "");
+			player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
+			damage = params.getParam("damage", 0);
+		} else params.getParam("param-line", 0);
+		return damagePlayer(player, damage);
+	}
 
 
-    private boolean damagePlayer(Player player, double damage) {
-        if (player == null || player.isDead() || !player.isOnline()) return false;
-        if (damage > 0) player.damage(damage);
-        else player.playEffect(EntityEffect.HURT);
-        setMessageParam(Double.toString(damage));
-        return true;
-    }
+	private boolean damagePlayer(Player player, double damage) {
+		if (player == null || player.isDead() || !player.isOnline()) return false;
+		if (damage > 0) player.damage(damage);
+		else player.playEffect(EntityEffect.HURT);
+		setMessageParam(Double.toString(damage));
+		return true;
+	}
 
 }

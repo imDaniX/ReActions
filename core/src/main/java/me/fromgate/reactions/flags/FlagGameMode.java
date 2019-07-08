@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,22 +28,22 @@ import org.bukkit.entity.Player;
 
 public class FlagGameMode extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        int g = -1;
-        if (Util.isInteger(param)) g = Integer.parseInt(param);
-        else if (param.equalsIgnoreCase("survival")) g = 0;
-        else if (param.equalsIgnoreCase("creative")) g = 1;
-        else if (param.equalsIgnoreCase("adventure")) g = 2;
-        switch (g) {
-            case 0:
-                return player.getGameMode() == GameMode.SURVIVAL;
-            case 1:
-                return player.getGameMode() == GameMode.CREATIVE;
-            case 2:
-                return player.getGameMode() == GameMode.ADVENTURE;
-        }
-        return false;
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		int g = -1;
+		if (Util.isInteger(param)) g = Integer.parseInt(param);
+		else if (param.equalsIgnoreCase("survival")) g = 0;
+		else if (param.equalsIgnoreCase("creative")) g = 1;
+		else if (param.equalsIgnoreCase("adventure")) g = 2;
+		switch (g) {
+			case 0:
+				return player.getGameMode() == GameMode.SURVIVAL;
+			case 1:
+				return player.getGameMode() == GameMode.CREATIVE;
+			case 2:
+				return player.getGameMode() == GameMode.ADVENTURE;
+		}
+		return false;
+	}
 
 }

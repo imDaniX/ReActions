@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,47 +29,47 @@ import org.bukkit.Location;
 import java.text.DecimalFormat;
 
 public class TpLocation {
-    public String world;
-    public double x;
-    public double y;
-    public double z;
-    public float yaw;
-    public float pitch;
+	public String world;
+	public double x;
+	public double y;
+	public double z;
+	public float yaw;
+	public float pitch;
 
-    public TpLocation(Location loc) {
-        this.world = loc.getWorld().getName();
-        this.x = loc.getX();
-        this.y = loc.getY();
-        this.z = loc.getZ();
-        this.yaw = loc.getYaw();
-        this.pitch = loc.getPitch();
-    }
+	public TpLocation(Location loc) {
+		this.world = loc.getWorld().getName();
+		this.x = loc.getX();
+		this.y = loc.getY();
+		this.z = loc.getZ();
+		this.yaw = loc.getYaw();
+		this.pitch = loc.getPitch();
+	}
 
-    public TpLocation(String world, double x, double y, double z, float yaw, float pitch) {
-        this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        this.yaw = yaw;
-        this.pitch = pitch;
-    }
+	public TpLocation(String world, double x, double y, double z, float yaw, float pitch) {
+		this.world = world;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.yaw = yaw;
+		this.pitch = pitch;
+	}
 
-    public Location getLocation() {
-        return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
-    }
+	public Location getLocation() {
+		return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+	}
 
-    public boolean equalToLoc(Location loc) {
-        return (loc.getWorld().getName().equalsIgnoreCase(this.world) &&
-                (Math.round(loc.getX()) == Math.round(x)) &&
-                (Math.round(loc.getY()) == Math.round(y)) &&
-                (Math.round(loc.getZ()) == Math.round(z)));
-    }
+	public boolean equalToLoc(Location loc) {
+		return (loc.getWorld().getName().equalsIgnoreCase(this.world) &&
+				(Math.round(loc.getX()) == Math.round(x)) &&
+				(Math.round(loc.getY()) == Math.round(y)) &&
+				(Math.round(loc.getZ()) == Math.round(z)));
+	}
 
-    @Override
-    public String toString() {
-        DecimalFormat fmt = new DecimalFormat("####0.##");
-        return "[" + this.world + "] " + fmt.format(x) + ", " + fmt.format(y) + ", " + fmt.format(z);
-    }
+	@Override
+	public String toString() {
+		DecimalFormat fmt = new DecimalFormat("####0.##");
+		return "[" + this.world + "] " + fmt.format(x) + ", " + fmt.format(y) + ", " + fmt.format(z);
+	}
 
 
 }

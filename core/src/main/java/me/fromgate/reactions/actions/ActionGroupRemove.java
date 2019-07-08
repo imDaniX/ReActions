@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,13 +28,13 @@ import org.bukkit.entity.Player;
 
 public class ActionGroupRemove extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        String param = params.getParam("param-line", "");
-        if (RaVault.playerInGroup(p, param)) {
-            return RaVault.playerRemoveGroup(p, param);
-        }
-        return true;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		String param = params.getParam("param-line", "");
+		if (RaVault.playerInGroup(p, param)) {
+			return RaVault.playerRemoveGroup(p, param);
+		}
+		return true;
+	}
 
 }

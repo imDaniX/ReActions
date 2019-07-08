@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -26,31 +26,31 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class ExecEvent extends RAEvent {
-    private String activator;
-    private Player targetPlayer;
-    private Param tempVars;
+	private String activator;
+	private Player targetPlayer;
+	private Param tempVars;
 
-    public ExecEvent(Player player, Player targetPlayer, String activator) {
-        super(player);
-        this.targetPlayer = targetPlayer;
-        this.activator = activator;
-        this.tempVars = null;
-    }
+	public ExecEvent(Player player, Player targetPlayer, String activator) {
+		super(player);
+		this.targetPlayer = targetPlayer;
+		this.activator = activator;
+		this.tempVars = null;
+	}
 
-    public ExecEvent(Player p, Player targetPlayer, String activator, Param tempVars) {
-        this(p, targetPlayer, activator);
-        this.tempVars = tempVars;
-    }
+	public ExecEvent(Player p, Player targetPlayer, String activator, Param tempVars) {
+		this(p, targetPlayer, activator);
+		this.tempVars = tempVars;
+	}
 
-    public String getActivatorId() {
-        return this.activator;
-    }
+	public String getActivatorId() {
+		return this.activator;
+	}
 
-    public Player getTargetPlayer() {
-        return this.targetPlayer;
-    }
+	public Player getTargetPlayer() {
+		return this.targetPlayer;
+	}
 
-    public Param getTempVars() {
-        return this.tempVars;
-    }
+	public Param getTempVars() {
+		return this.tempVars;
+	}
 }

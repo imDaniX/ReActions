@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -31,12 +31,12 @@ import org.bukkit.inventory.ItemStack;
 
 public class FlagWalkBlock extends Flag {
 
-    @SuppressWarnings("deprecation")
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        Block walk = player.getLocation().getBlock();
-        if (walk.getType() == Material.AIR) walk = walk.getRelative(BlockFace.DOWN);
-        return ItemUtil.compareItemStr(new ItemStack(walk.getType(), 1, walk.getData()), param);
-    }
+	@SuppressWarnings("deprecation")
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		Block walk = player.getLocation().getBlock();
+		if (walk.getType() == Material.AIR) walk = walk.getRelative(BlockFace.DOWN);
+		return ItemUtil.compareItemStr(new ItemStack(walk.getType(), 1, walk.getData()), param);
+	}
 
 }

@@ -5,13 +5,13 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemConsumeEvent extends RAEvent {
 
-    public ItemConsumeEvent(Player p) {
-        super(p);
-    }
+	public ItemConsumeEvent(Player p) {
+		super(p);
+	}
 
-    @SuppressWarnings("deprecation")
-    public ItemStack getItem() {
-        return this.getPlayer().getItemInHand();
-    }
+	@SuppressWarnings("deprecation")
+	public ItemStack getItem() {
+		return this.getPlayer().getItemInHand();
+	}
 
 }

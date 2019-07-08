@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -31,50 +31,50 @@ import org.bukkit.entity.Player;
 
 
 public abstract class Action {
-    private Actions type = null;
-    private String messageParam = "";
-    private boolean actionExecuting = true;
+	private Actions type = null;
+	private String messageParam = "";
+	private boolean actionExecuting = true;
 
-    ReActions plg() {
-        return ReActions.instance;
-    }
+	ReActions plg() {
+		return ReActions.instance;
+	}
 
 
-    public void setMessageParam(String msgparam) {
-        this.messageParam = msgparam;
-    }
+	public void setMessageParam(String msgparam) {
+		this.messageParam = msgparam;
+	}
 
-    public void init(Actions at) {
-        this.type = at;
-    }
+	public void init(Actions at) {
+		this.type = at;
+	}
 
-    public boolean isAction() {
-        return this.actionExecuting;
-    }
+	public boolean isAction() {
+		return this.actionExecuting;
+	}
 
-    public boolean executeAction(Player player, boolean action, Param params) {
-        this.actionExecuting = action;
-        //this.activator = a;
-        if (!params.hasAnyParam("param-line")) params.set("param-line", "");
-        setMessageParam(params.getParam("param-line"));
-        boolean actionFailed = (!execute(player, params));
-        if ((player != null) && (printAction())) {
-            Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase());
-            if (msg == null) {
-                Msg.LNG_FAIL_ACTION_MSG.print(type.name());
-            } else {
-                msg.print(player, messageParam);
-            }
-        }
-        //Залипухи, но похоже по другому - никак...
-        //if (a==null) return true;
-        //if ((a.getType() == ActivatorType.COMMAND)&&(!((CommandActivator) a).isCommandRegistered())) return true;
-        return (this.type == Actions.CANCEL_EVENT) && (!actionFailed);
-    }
+	public boolean executeAction(Player player, boolean action, Param params) {
+		this.actionExecuting = action;
+		//this.activator = a;
+		if (!params.hasAnyParam("param-line")) params.set("param-line", "");
+		setMessageParam(params.getParam("param-line"));
+		boolean actionFailed = (!execute(player, params));
+		if ((player != null) && (printAction())) {
+			Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase());
+			if (msg == null) {
+				Msg.LNG_FAIL_ACTION_MSG.print(type.name());
+			} else {
+				msg.print(player, messageParam);
+			}
+		}
+		//Залипухи, но похоже по другому - никак...
+		//if (a==null) return true;
+		//if ((a.getType() == ActivatorType.COMMAND)&&(!((CommandActivator) a).isCommandRegistered())) return true;
+		return (this.type == Actions.CANCEL_EVENT) && (!actionFailed);
+	}
 
-    private boolean printAction() {
-        return (Util.isWordInList(this.type.name(), Cfg.actionMsg) || Util.isWordInList(this.type.getAlias(), Cfg.actionMsg));
-    }
+	private boolean printAction() {
+		return (Util.isWordInList(this.type.name(), Cfg.actionMsg) || Util.isWordInList(this.type.getAlias(), Cfg.actionMsg));
+	}
 
-    public abstract boolean execute(Player p, Param params);
+	public abstract boolean execute(Player p, Param params);
 }

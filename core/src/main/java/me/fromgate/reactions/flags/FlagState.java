@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,70 +28,70 @@ import org.bukkit.entity.Player;
 
 public class FlagState extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        Posture pt = Posture.getByName(param);
-        if (pt == null) return false;
-        switch (pt) {
-            case SNEAK:
-                return player.isSneaking();
-            case FLY:
-                return player.isFlying();
-            case SPRINT:
-                return player.isSprinting();
-            case VEHICLE:
-                return player.isInsideVehicle();
-            case STAND:
-                if (player.isSleeping()) return false;
-                if (player.isSneaking()) return false;
-                if (player.isSprinting()) return false;
-                if (player.isFlying()) return false;
-                return !player.isInsideVehicle();
-            case OP:
-                return player.isOp();
-            case VEHICLE_BOAT:
-                if (!player.isInsideVehicle()) return false;
-                return player.getVehicle().getType() == EntityType.BOAT;
-            case VEHICLE_HORSE:
-                if (!player.isInsideVehicle()) return false;
-                return player.getVehicle().getType() == EntityType.HORSE;
-            case VEHICLE_MINECART:
-                if (!player.isInsideVehicle()) return false;
-                return player.getVehicle().getType() == EntityType.MINECART;
-            case VEHICLE_PIG:
-                if (!player.isInsideVehicle()) return false;
-                return player.getVehicle().getType() == EntityType.PIG;
-            case SPECTATOR_TARGET:
-                if (player.getSpectatorTarget() != null) return true;
-            case GLIDE:
-                if (player.isGliding()) return true;
-            case GOD:
-                GodMode.setCheckGod(player);
-                if (GodMode.isGod(player)) return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		Posture pt = Posture.getByName(param);
+		if (pt == null) return false;
+		switch (pt) {
+			case SNEAK:
+				return player.isSneaking();
+			case FLY:
+				return player.isFlying();
+			case SPRINT:
+				return player.isSprinting();
+			case VEHICLE:
+				return player.isInsideVehicle();
+			case STAND:
+				if (player.isSleeping()) return false;
+				if (player.isSneaking()) return false;
+				if (player.isSprinting()) return false;
+				if (player.isFlying()) return false;
+				return !player.isInsideVehicle();
+			case OP:
+				return player.isOp();
+			case VEHICLE_BOAT:
+				if (!player.isInsideVehicle()) return false;
+				return player.getVehicle().getType() == EntityType.BOAT;
+			case VEHICLE_HORSE:
+				if (!player.isInsideVehicle()) return false;
+				return player.getVehicle().getType() == EntityType.HORSE;
+			case VEHICLE_MINECART:
+				if (!player.isInsideVehicle()) return false;
+				return player.getVehicle().getType() == EntityType.MINECART;
+			case VEHICLE_PIG:
+				if (!player.isInsideVehicle()) return false;
+				return player.getVehicle().getType() == EntityType.PIG;
+			case SPECTATOR_TARGET:
+				if (player.getSpectatorTarget() != null) return true;
+			case GLIDE:
+				if (player.isGliding()) return true;
+			case GOD:
+				GodMode.setCheckGod(player);
+				if (GodMode.isGod(player)) return true;
+		}
+		return false;
+	}
 
-    enum Posture {
-        SNEAK,
-        SPRINT,
-        STAND,
-        VEHICLE,
-        VEHICLE_MINECART,
-        VEHICLE_BOAT,
-        VEHICLE_PIG,
-        VEHICLE_HORSE,
-        FLY,
-        OP,
-        SPECTATOR_TARGET,
-        GLIDE,
-        GOD;
+	enum Posture {
+		SNEAK,
+		SPRINT,
+		STAND,
+		VEHICLE,
+		VEHICLE_MINECART,
+		VEHICLE_BOAT,
+		VEHICLE_PIG,
+		VEHICLE_HORSE,
+		FLY,
+		OP,
+		SPECTATOR_TARGET,
+		GLIDE,
+		GOD;
 
-        public static Posture getByName(String name) {
-            for (Posture pt : Posture.values())
-                if (pt.name().equalsIgnoreCase(name)) return pt;
-            return null;
-        }
-    }
+		public static Posture getByName(String name) {
+			for (Posture pt : Posture.values())
+				if (pt.name().equalsIgnoreCase(name)) return pt;
+			return null;
+		}
+	}
 
 }

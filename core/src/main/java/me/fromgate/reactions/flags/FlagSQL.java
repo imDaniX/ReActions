@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,31 +27,31 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class FlagSQL extends Flag {
-    boolean check;
+	boolean check;
 
-    public FlagSQL(boolean check) {
-        this.check = check;
-    }
+	public FlagSQL(boolean check) {
+		this.check = check;
+	}
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!SQLManager.isEnabled()) return false;
-        Param params = new Param(param);
-        if (!params.isParamsExists("value", "select", "from") &&
-                !(params.isParamsExists("query"))) return false;
-        String value = params.getParam("value", "");
-        String select = params.getParam("select", "");
-        String query = params.getParam("query", "");
-        if (query.isEmpty()) {
-            if (select.isEmpty()) return false;
-            String from = params.getParam("from", "");
-            if (from.isEmpty()) return false;
-            String where = params.getParam("where", "");
-            query = "SELECT " + select + " FROM " + from + (where.isEmpty() ? "" : " WHERE " + where);
-        }
-        int column = params.getParam("column", 1);
-        if (check) return SQLManager.compareSelect(value, query, column, params);
-        else return SQLManager.isSelectResultEmpty(query);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!SQLManager.isEnabled()) return false;
+		Param params = new Param(param);
+		if (!params.isParamsExists("value", "select", "from") &&
+				!(params.isParamsExists("query"))) return false;
+		String value = params.getParam("value", "");
+		String select = params.getParam("select", "");
+		String query = params.getParam("query", "");
+		if (query.isEmpty()) {
+			if (select.isEmpty()) return false;
+			String from = params.getParam("from", "");
+			if (from.isEmpty()) return false;
+			String where = params.getParam("where", "");
+			query = "SELECT " + select + " FROM " + from + (where.isEmpty() ? "" : " WHERE " + where);
+		}
+		int column = params.getParam("column", 1);
+		if (check) return SQLManager.compareSelect(value, query, column, params);
+		else return SQLManager.isSelectResultEmpty(query);
+	}
 
 }

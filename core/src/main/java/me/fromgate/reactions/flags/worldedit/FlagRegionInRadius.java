@@ -27,10 +27,10 @@ import me.fromgate.reactions.flags.Flag;
 import org.bukkit.entity.Player;
 
 public class FlagRegionInRadius extends Flag {
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        int radius = 0;
-        if (!param.isEmpty()) radius = Integer.parseInt(param);
-        return RaWorldEdit.checkRegionInRadius(player, radius);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		int radius = 0;
+		if (!param.isEmpty()) radius = Integer.parseInt(param);
+		return RaWorldEdit.checkRegionInRadius(player, radius);
+	}
 }

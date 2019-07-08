@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,21 +29,21 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemWearEvent extends RAEvent {
 
-    public ItemWearEvent(Player p) {
-        super(p);
-    }
+	public ItemWearEvent(Player p) {
+		super(p);
+	}
 
-    public boolean isItemWeared(String itemStr) {
-        for (ItemStack armour : getPlayer().getInventory().getArmorContents())
-            if (ItemUtil.compareItemStr(armour, itemStr)) return true;
-        return false;
-    }
+	public boolean isItemWeared(String itemStr) {
+		for (ItemStack armour : getPlayer().getInventory().getArmorContents())
+			if (ItemUtil.compareItemStr(armour, itemStr)) return true;
+		return false;
+	}
 
-    public ItemStack getFoundedItem(String itemStr) {
-        for (ItemStack armour : getPlayer().getInventory().getArmorContents())
-            if (ItemUtil.compareItemStr(armour, itemStr)) return armour;
-        return new ItemStack(Material.AIR);
-    }
+	public ItemStack getFoundedItem(String itemStr) {
+		for (ItemStack armour : getPlayer().getInventory().getArmorContents())
+			if (ItemUtil.compareItemStr(armour, itemStr)) return armour;
+		return new ItemStack(Material.AIR);
+	}
 
 
 }

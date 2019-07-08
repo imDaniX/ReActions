@@ -7,17 +7,17 @@ import org.bukkit.entity.Player;
 
 public class RaPlaceholderAPI {
 
-    private static boolean enabled = false;
+	private static boolean enabled = false;
 
-    public static void init() {
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            enabled = true;
-            new PapiResolver().register();
-            Msg.logMessage("Connected to PlaceholderAPI");
-        }
-    }
+	public static void init() {
+		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+			enabled = true;
+			new PapiResolver().register();
+			Msg.logMessage("Connected to PlaceholderAPI");
+		}
+	}
 
-    public static String processPlaceholder(Player player, String text) {
-        return enabled ? PlaceholderAPI.setPlaceholders(player, text) : text;
-    }
+	public static String processPlaceholder(Player player, String text) {
+		return enabled ? PlaceholderAPI.setPlaceholders(player, text) : text;
+	}
 }

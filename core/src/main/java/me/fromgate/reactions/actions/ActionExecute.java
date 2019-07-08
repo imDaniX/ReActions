@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,16 +29,16 @@ import org.bukkit.entity.Player;
 
 public class ActionExecute extends Action {
 
-    @Override
-    public boolean execute(Player player, Param params) {
-        return execActivator(player, params);
-    }
+	@Override
+	public boolean execute(Player player, Param params) {
+		return execActivator(player, params);
+	}
 
-    private boolean execActivator(Player player, Param params) {
-        String id = params.getParam("activator", "");
-        if (id.isEmpty()) return false;
-        setMessageParam(id);
-        return EventManager.raiseExecEvent(player, params, Variables.getTempVars());
-    }
+	private boolean execActivator(Player player, Param params) {
+		String id = params.getParam("activator", "");
+		if (id.isEmpty()) return false;
+		setMessageParam(id);
+		return EventManager.raiseExecEvent(player, params, Variables.getTempVars());
+	}
 
 }

@@ -40,136 +40,136 @@ import java.util.Map;
 
 public class BukkitMessenger implements Messenger {
 
-    private JavaPlugin plugin;
+	private JavaPlugin plugin;
 
 
-    public BukkitMessenger(JavaPlugin plugin) {
-        this.plugin = plugin;
-    }
+	public BukkitMessenger(JavaPlugin plugin) {
+		this.plugin = plugin;
+	}
 
-    @Override
-    public String colorize(String text) {
-        return ChatColor.translateAlternateColorCodes('&', text);
-    }
+	@Override
+	public String colorize(String text) {
+		return ChatColor.translateAlternateColorCodes('&', text);
+	}
 
-    @Override
-    public boolean broadcast(String text) {
-        Bukkit.getServer().broadcastMessage(text);
-        return true;
-    }
+	@Override
+	public boolean broadcast(String text) {
+		Bukkit.getServer().broadcastMessage(text);
+		return true;
+	}
 
-    @Override
-    public boolean log(String text) {
-        plugin.getLogger().info(text);
-        return true;
-    }
+	@Override
+	public boolean log(String text) {
+		plugin.getLogger().info(text);
+		return true;
+	}
 
-    @Override
-    public String clean(String text) {
-        return ChatColor.stripColor(text);
-    }
+	@Override
+	public String clean(String text) {
+		return ChatColor.stripColor(text);
+	}
 
-    @Override
-    public boolean tip(int seconds, Object sender, String text) {
-        return tip(sender, text);
-    }
+	@Override
+	public boolean tip(int seconds, Object sender, String text) {
+		return tip(sender, text);
+	}
 
-    @Override
-    public boolean tip(Object sender, String text) {
-        Player player = toPlayer(sender);
-        if (player == null)
-            return false;
-        player.sendTitle(null, text, 10, 70, 20);
-        return true;
-    }
+	@Override
+	public boolean tip(Object sender, String text) {
+		Player player = toPlayer(sender);
+		if (player == null)
+			return false;
+		player.sendTitle(null, text, 10, 70, 20);
+		return true;
+	}
 
-    @Override
-    public boolean print(Object obj, String text) {
-        CommandSender sender = toSender(obj);
-        if (sender != null) {
-            sender.sendMessage(text);
-        } else {
-            log("Failed to print message - wrong recipient: " + (obj == null ? "null" : obj.toString()));
-        }
-        return true;
-    }
+	@Override
+	public boolean print(Object obj, String text) {
+		CommandSender sender = toSender(obj);
+		if (sender != null) {
+			sender.sendMessage(text);
+		} else {
+			log("Failed to print message - wrong recipient: " + (obj == null ? "null" : obj.toString()));
+		}
+		return true;
+	}
 
-    @Override
-    public boolean broadcast(String permission, String text) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (permission == null || permission.isEmpty() || player.hasPermission(permission)) {
-                player.sendMessage(text);
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean broadcast(String permission, String text) {
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (permission == null || permission.isEmpty() || player.hasPermission(permission)) {
+				player.sendMessage(text);
+			}
+		}
+		return true;
+	}
 
-    @Override
-    public String toString(Object obj, boolean fullFloat) {
-        if (obj == null) return "'null'";
-        String s = obj.toString();
-        DecimalFormat fmt = new DecimalFormat("####0.##");
-        if (obj instanceof Location) {
-            Location loc = (Location) obj;
-            if (fullFloat)
-                s = loc.getWorld() + "[" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + "]";
-            else
-                s = loc.getWorld() + "[" + fmt.format(loc.getX()) + ", " + fmt.format(loc.getY()) + ", " + fmt.format(loc.getZ()) + "]";
-        }
-        return s;
-    }
+	@Override
+	public String toString(Object obj, boolean fullFloat) {
+		if (obj == null) return "'null'";
+		String s = obj.toString();
+		DecimalFormat fmt = new DecimalFormat("####0.##");
+		if (obj instanceof Location) {
+			Location loc = (Location) obj;
+			if (fullFloat)
+				s = loc.getWorld() + "[" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + "]";
+			else
+				s = loc.getWorld() + "[" + fmt.format(loc.getX()) + ", " + fmt.format(loc.getY()) + ", " + fmt.format(loc.getZ()) + "]";
+		}
+		return s;
+	}
 
-    @Override
-    public Map<String, String> load(String language) {
-        Map<String, String> msg = new HashMap<>();
-        YamlConfiguration lng = new YamlConfiguration();
-        File f = new File(plugin.getDataFolder() + File.separator + language + ".lng");
-        try {
-            if (f.exists()) lng.load(f);
-            else {
-                InputStream is = plugin.getClass().getResourceAsStream("/language/" + language + ".lng");
-                if (is != null) lng.load(new InputStreamReader(is, StandardCharsets.UTF_8));
-            }
-        } catch (Exception e) {
-            Msg.LNG_LOAD_FAIL.log();
-            return msg;
-        }
+	@Override
+	public Map<String, String> load(String language) {
+		Map<String, String> msg = new HashMap<>();
+		YamlConfiguration lng = new YamlConfiguration();
+		File f = new File(plugin.getDataFolder() + File.separator + language + ".lng");
+		try {
+			if (f.exists()) lng.load(f);
+			else {
+				InputStream is = plugin.getClass().getResourceAsStream("/language/" + language + ".lng");
+				if (is != null) lng.load(new InputStreamReader(is, StandardCharsets.UTF_8));
+			}
+		} catch (Exception e) {
+			Msg.LNG_LOAD_FAIL.log();
+			return msg;
+		}
 
-        for (String key : lng.getKeys(true)) {
-            if (lng.isConfigurationSection(key)) continue;
-            msg.put(key, lng.getString(key));
-        }
-        return msg;
-    }
+		for (String key : lng.getKeys(true)) {
+			if (lng.isConfigurationSection(key)) continue;
+			msg.put(key, lng.getString(key));
+		}
+		return msg;
+	}
 
-    @Override
-    public void save(String language, Map<String, String> messages) {
-        YamlConfiguration lng = new YamlConfiguration();
-        File f = new File(plugin.getDataFolder() + File.separator + language + ".lng");
-        try {
-            if (f.exists()) lng.load(f);
-        } catch (Exception ignore) {}
+	@Override
+	public void save(String language, Map<String, String> messages) {
+		YamlConfiguration lng = new YamlConfiguration();
+		File f = new File(plugin.getDataFolder() + File.separator + language + ".lng");
+		try {
+			if (f.exists()) lng.load(f);
+		} catch (Exception ignore) {}
 
-        for (Map.Entry<String, String> message : messages.entrySet())
-            lng.set(message.getKey().toLowerCase(), message.getValue());
+		for (Map.Entry<String, String> message : messages.entrySet())
+			lng.set(message.getKey().toLowerCase(), message.getValue());
 
-        try {
-            lng.save(f);
-        } catch (Exception e) {
-            Msg.LNG_SAVE_FAIL.log();
-        }
-    }
+		try {
+			lng.save(f);
+		} catch (Exception e) {
+			Msg.LNG_SAVE_FAIL.log();
+		}
+	}
 
-    @Override
-    public boolean isValidSender(Object send) {
-        return (toSender(send) != null);
-    }
+	@Override
+	public boolean isValidSender(Object send) {
+		return (toSender(send) != null);
+	}
 
-    private CommandSender toSender(Object sender) {
-        return sender instanceof CommandSender ? (CommandSender) sender : null;
-    }
+	private CommandSender toSender(Object sender) {
+		return sender instanceof CommandSender ? (CommandSender) sender : null;
+	}
 
-    private Player toPlayer(Object sender) {
-        return sender instanceof Player ? (Player) sender : null;
-    }
+	private Player toPlayer(Object sender) {
+		return sender instanceof Player ? (Player) sender : null;
+	}
 }

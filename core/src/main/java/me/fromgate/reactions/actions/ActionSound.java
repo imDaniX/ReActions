@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,11 +27,11 @@ import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
 public class ActionSound extends Action {
-    @Override
-    public boolean execute(Player p, Param params) {
-        String str = Util.soundPlay(p == null ? null : p.getLocation(), params);
-        if (str.isEmpty()) return false;
-        this.setMessageParam(str);
-        return true;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		String str = Util.soundPlay(p == null ? null : p.getLocation(), params);
+		if (str.isEmpty()) return false;
+		this.setMessageParam(str);
+		return true;
+	}
 }

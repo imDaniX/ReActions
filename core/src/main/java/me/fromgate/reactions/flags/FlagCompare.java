@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,19 +29,19 @@ import org.bukkit.entity.Player;
 
 public class FlagCompare extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        Param params = new Param(param, "unknown");
-        String paramValue = params.getParam("param", "");
-        if (paramValue.isEmpty()) return false;
-        if (!params.isParamsExists("value1")) return false;
-        for (String valueKey : params.keySet()) {
-            if (!((valueKey.toLowerCase()).startsWith("value"))) continue;
-            String value = params.getParam(valueKey);
-            if (Util.isIntegerSigned(value, paramValue) && (Integer.parseInt(value) == Integer.parseInt(paramValue)))
-                return true;
-            else if (paramValue.equalsIgnoreCase(value)) return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		Param params = new Param(param, "unknown");
+		String paramValue = params.getParam("param", "");
+		if (paramValue.isEmpty()) return false;
+		if (!params.isParamsExists("value1")) return false;
+		for (String valueKey : params.keySet()) {
+			if (!((valueKey.toLowerCase()).startsWith("value"))) continue;
+			String value = params.getParam(valueKey);
+			if (Util.isIntegerSigned(value, paramValue) && (Integer.parseInt(value) == Integer.parseInt(paramValue)))
+				return true;
+			else if (paramValue.equalsIgnoreCase(value)) return true;
+		}
+		return false;
+	}
 }

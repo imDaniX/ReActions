@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -32,19 +32,19 @@ import org.bukkit.material.Lever;
 
 public class FlagPowered extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        Param params = new Param(param);
-        String locStr = params.isParamsExists("loc") ? params.getParam("loc", "") : param;
-        if (locStr.isEmpty()) return false;
-        Location loc = Locator.parseLocation(locStr, null);
-        if (loc == null) return false;
-        Block b = loc.getBlock();
-        if (b.getType() == Material.LEVER) {
-            Lever lever = (Lever) b.getState().getData();
-            return lever.isPowered();
-        }
-        return b.isBlockIndirectlyPowered();
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		Param params = new Param(param);
+		String locStr = params.isParamsExists("loc") ? params.getParam("loc", "") : param;
+		if (locStr.isEmpty()) return false;
+		Location loc = Locator.parseLocation(locStr, null);
+		if (loc == null) return false;
+		Block b = loc.getBlock();
+		if (b.getType() == Material.LEVER) {
+			Lever lever = (Lever) b.getState().getData();
+			return lever.isPowered();
+		}
+		return b.isBlockIndirectlyPowered();
+	}
 
 }

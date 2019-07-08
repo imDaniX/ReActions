@@ -14,37 +14,37 @@ import java.util.regex.Pattern;
  */
 public class ActionRegex extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        String prefix = params.getParam("prefix", "");
-        String regex = params.getParam("regex", "");
-        String input = params.getParam("input", removeParams(params.getParam("param-line")));
+	@Override
+	public boolean execute(Player p, Param params) {
+		String prefix = params.getParam("prefix", "");
+		String regex = params.getParam("regex", "");
+		String input = params.getParam("input", removeParams(params.getParam("param-line")));
 
-        if (input.isEmpty()) return false;
+		if (input.isEmpty()) return false;
 
-        Pattern pattern = Pattern.compile(regex);
-        Matcher m = pattern.matcher(input);
-        int count = -1;
-        String group;
+		Pattern pattern = Pattern.compile(regex);
+		Matcher m = pattern.matcher(input);
+		int count = -1;
+		String group;
 
-        while (m.find()) {
-            count++;
-            for (int i = 0; i <= m.groupCount(); i++) {
-                if (m.group(i) != null) group = m.group(i);
-                else group = "";
-                Variables.setTempVar(prefix + "group" + count + "" + i, group);
-                Variables.setTempVar(prefix + "group_" + count + "_" + i, group);
-                Variables.setTempVar(prefix + "group:" + count + ":" + i, group);
-            }
-        }
-        return true;
-    }
+		while (m.find()) {
+			count++;
+			for (int i = 0; i <= m.groupCount(); i++) {
+				if (m.group(i) != null) group = m.group(i);
+				else group = "";
+				Variables.setTempVar(prefix + "group" + count + "" + i, group);
+				Variables.setTempVar(prefix + "group_" + count + "_" + i, group);
+				Variables.setTempVar(prefix + "group:" + count + ":" + i, group);
+			}
+		}
+		return true;
+	}
 
-    private String removeParams(String message) {
-        String sb = "(?i)(" + Joiner.on("|").join(PlayerSelectors.getAllKeys()) +
-                "|hide|regex|prefix):(\\{.*\\}|\\S+)\\s{0,1}";
-        return message.replaceAll(sb, "");
+	private String removeParams(String message) {
+		String sb = "(?i)(" + Joiner.on("|").join(PlayerSelectors.getAllKeys()) +
+				"|hide|regex|prefix):(\\{.*\\}|\\S+)\\s{0,1}";
+		return message.replaceAll(sb, "");
 
-    }
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -35,35 +35,35 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class PlayerRespawner {
-    private static Map<String, LivingEntity> players = new HashMap<>();
-    private static Map<String, Location> deathPoints = new HashMap<>();
+	private static Map<String, LivingEntity> players = new HashMap<>();
+	private static Map<String, Location> deathPoints = new HashMap<>();
 
-    public static void addPlayerRespawn(PlayerDeathEvent event) {
-        Player deadPlayer = event.getEntity();
-        deathPoints.put(deadPlayer.getName(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
-        LivingEntity killer = Util.getAnyKiller(deadPlayer.getLastDamageCause());
-        players.put(deadPlayer.getName(), killer);
-    }
+	public static void addPlayerRespawn(PlayerDeathEvent event) {
+		Player deadPlayer = event.getEntity();
+		deathPoints.put(deadPlayer.getName(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
+		LivingEntity killer = Util.getAnyKiller(deadPlayer.getLastDamageCause());
+		players.put(deadPlayer.getName(), killer);
+	}
 
-    public static Location getLastDeathPoint(Player player) {
-        if (deathPoints.containsKey(player.getName())) return deathPoints.get(player.getName());
-        return player.getLocation();
-    }
+	public static Location getLastDeathPoint(Player player) {
+		if (deathPoints.containsKey(player.getName())) return deathPoints.get(player.getName());
+		return player.getLocation();
+	}
 
-    private static LivingEntity getLastKiller(Player player) {
-        if (players.containsKey(player.getName()))
-            return players.get(player.getName());
-        return null;
-    }
+	private static LivingEntity getLastKiller(Player player) {
+		if (players.containsKey(player.getName()))
+			return players.get(player.getName());
+		return null;
+	}
 
-    public static void raisePlayerRespawnEvent(Player player) {
-        if (!players.containsKey(player.getName())) return;
-        LivingEntity killer = getLastKiller(player);
-        players.remove(player.getName());
-        PlayerDeathActivator.DeathCause d = PlayerDeathActivator.DeathCause.OTHER;
-        if (killer != null && killer.getType() == EntityType.PLAYER) d = PlayerDeathActivator.DeathCause.PVP;
-        else if (killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;
-        Bukkit.getServer().getPluginManager().callEvent(new PlayerRespawnedEvent(player, killer, d));
-    }
+	public static void raisePlayerRespawnEvent(Player player) {
+		if (!players.containsKey(player.getName())) return;
+		LivingEntity killer = getLastKiller(player);
+		players.remove(player.getName());
+		PlayerDeathActivator.DeathCause d = PlayerDeathActivator.DeathCause.OTHER;
+		if (killer != null && killer.getType() == EntityType.PLAYER) d = PlayerDeathActivator.DeathCause.PVP;
+		else if (killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;
+		Bukkit.getServer().getPluginManager().callEvent(new PlayerRespawnedEvent(player, killer, d));
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -32,17 +32,17 @@ import org.bukkit.util.Vector;
 
 public class ActionVelocityJump extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        Msg.logOnce("velocity-jump-warning", "&cWarning! VELOCITY_JUMP action is under construction. In next version of plugin it could be changed, renamed or removed!");
-        String locStr = params.getParam("loc", "");
-        if (locStr.isEmpty()) return false;
-        Location loc = Locator.parseCoordinates(locStr);
-        if (loc == null) return false;
-        int jumpHeight = params.getParam("jump", 5);
-        Vector velocity = VelocityUtil.calculateVelocity(p.getLocation(), loc, jumpHeight);
-        p.setVelocity(velocity);
-        return false;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		Msg.logOnce("velocity-jump-warning", "&cWarning! VELOCITY_JUMP action is under construction. In next version of plugin it could be changed, renamed or removed!");
+		String locStr = params.getParam("loc", "");
+		if (locStr.isEmpty()) return false;
+		Location loc = Locator.parseCoordinates(locStr);
+		if (loc == null) return false;
+		int jumpHeight = params.getParam("jump", 5);
+		Vector velocity = VelocityUtil.calculateVelocity(p.getLocation(), loc, jumpHeight);
+		p.setVelocity(velocity);
+		return false;
+	}
 
 }

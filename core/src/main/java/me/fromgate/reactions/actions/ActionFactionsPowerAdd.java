@@ -7,10 +7,10 @@ import org.bukkit.entity.Player;
 
 public class ActionFactionsPowerAdd extends Action {
 
-    @Override
-    public boolean execute(Player player, Param params) {
-        if (!Externals.isConnectedFactions()) return false;
-        RaFactions.addPower(player, params.getParam("power", 0.0));
-        return true;
-    }
+	@Override
+	public boolean execute(Player player, Param params) {
+		if (!Externals.isConnectedFactions()) return false;
+		RaFactions.addPower(player, params.getParam("power", 0.0));
+		return true;
+	}
 }

@@ -35,68 +35,68 @@ import java.util.List;
 
 public class RegionActivator extends Activator {
 
-    private String region;
+	private String region;
 
-    RegionActivator(String name, String group, YamlConfiguration cfg) {
-        super(name, group, cfg);
-    }
+	RegionActivator(String name, String group, YamlConfiguration cfg) {
+		super(name, group, cfg);
+	}
 
-    public RegionActivator(String name, String region) {
-        super(name, "activators");
-        this.region = region;
-    }
+	public RegionActivator(String name, String region) {
+		super(name, "activators");
+		this.region = region;
+	}
 
-    public String getRegion() {
-        return this.region;
-    }
+	public String getRegion() {
+		return this.region;
+	}
 
-    @Override
-    public boolean activate(Event event) {
-        if (!(event instanceof RegionEvent)) return false;
-        RegionEvent be = (RegionEvent) event;
-        if (be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region)))
-            return Actions.executeActivator(be.getPlayer(), this);
-        return false;
-    }
+	@Override
+	public boolean activate(Event event) {
+		if (!(event instanceof RegionEvent)) return false;
+		RegionEvent be = (RegionEvent) event;
+		if (be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region)))
+			return Actions.executeActivator(be.getPlayer(), this);
+		return false;
+	}
 
-    @Override
-    public boolean isLocatedAt(Location loc) {
-        if (!RaWorldGuard.isConnected()) return false;
-        List<String> rgs = RaWorldGuard.getRegions(loc);
-        if (rgs.isEmpty()) return false;
-        return rgs.contains(this.region);
-    }
+	@Override
+	public boolean isLocatedAt(Location loc) {
+		if (!RaWorldGuard.isConnected()) return false;
+		List<String> rgs = RaWorldGuard.getRegions(loc);
+		if (rgs.isEmpty()) return false;
+		return rgs.contains(this.region);
+	}
 
-    @Override
-    public void save(String root, YamlConfiguration cfg) {
-        cfg.set(root + ".region", this.region);
-    }
+	@Override
+	public void save(String root, YamlConfiguration cfg) {
+		cfg.set(root + ".region", this.region);
+	}
 
-    @Override
-    public void load(String root, YamlConfiguration cfg) {
-        this.region = cfg.getString(root + ".region");
-    }
+	@Override
+	public void load(String root, YamlConfiguration cfg) {
+		this.region = cfg.getString(root + ".region");
+	}
 
-    @Override
-    public ActivatorType getType() {
-        return ActivatorType.REGION;
-    }
+	@Override
+	public ActivatorType getType() {
+		return ActivatorType.REGION;
+	}
 
-    @Override
-    public boolean isValid() {
-        return !Util.emptySting(region);
-    }
+	@Override
+	public boolean isValid() {
+		return !Util.emptySting(region);
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-        if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-        if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-        if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-        sb.append(" (");
-        sb.append("region:").append(this.region);
-        sb.append(")");
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
+		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
+		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
+		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		sb.append(" (");
+		sb.append("region:").append(this.region);
+		sb.append(")");
+		return sb.toString();
+	}
 
 }

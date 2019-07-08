@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,10 +27,10 @@ import org.bukkit.entity.Player;
 
 public class FlagExecStop extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (param.isEmpty()) return false;
-        return Activators.isStopped(player, param, false);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (param.isEmpty()) return false;
+		return Activators.isStopped(player, param, false);
+	}
 
 }

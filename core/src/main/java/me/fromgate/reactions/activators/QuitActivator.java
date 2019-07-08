@@ -32,61 +32,61 @@ import org.bukkit.event.Event;
 public class QuitActivator extends Activator {
 
 
-    QuitActivator(String name, String group, YamlConfiguration cfg) {
-        super(name, group, cfg);
-    }
+	QuitActivator(String name, String group, YamlConfiguration cfg) {
+		super(name, group, cfg);
+	}
 
-    QuitActivator(String name) {
-        super(name, "activators");
-    }
+	QuitActivator(String name) {
+		super(name, "activators");
+	}
 
-    public QuitActivator(String name, String param) {
-        this(name);
-    }
+	public QuitActivator(String name, String param) {
+		this(name);
+	}
 
-    @Override
-    public boolean activate(Event event) {
-        if (event instanceof QuitEvent) {
-            QuitEvent ce = (QuitEvent) event;
-            Variables.setTempVar("quit-message", ce.getQuitMessage());
-            boolean result = Actions.executeActivator(ce.getPlayer(), this);
-            ce.setQuiteMessage(Variables.getTempVar("quit-message"));
-            return result;
-        }
-        return false;
-    }
+	@Override
+	public boolean activate(Event event) {
+		if (event instanceof QuitEvent) {
+			QuitEvent ce = (QuitEvent) event;
+			Variables.setTempVar("quit-message", ce.getQuitMessage());
+			boolean result = Actions.executeActivator(ce.getPlayer(), this);
+			ce.setQuiteMessage(Variables.getTempVar("quit-message"));
+			return result;
+		}
+		return false;
+	}
 
 
-    @Override
-    public boolean isLocatedAt(Location loc) {
-        return false;
-    }
+	@Override
+	public boolean isLocatedAt(Location loc) {
+		return false;
+	}
 
-    @Override
-    public void save(String root, YamlConfiguration cfg) {
-    }
+	@Override
+	public void save(String root, YamlConfiguration cfg) {
+	}
 
-    @Override
-    public void load(String root, YamlConfiguration cfg) {
-    }
+	@Override
+	public void load(String root, YamlConfiguration cfg) {
+	}
 
-    @Override
-    public ActivatorType getType() {
-        return ActivatorType.QUIT;
-    }
+	@Override
+	public ActivatorType getType() {
+		return ActivatorType.QUIT;
+	}
 
-    @Override
-    public boolean isValid() {
-        return true;
-    }
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-        if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-        if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-        if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-        return sb.toString();
-    }
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
+		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
+		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
+		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		return sb.toString();
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,10 +27,10 @@ import org.bukkit.entity.Player;
 
 public class FlagFoodlevel extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!Util.isInteger(param)) return false;
-        return player.getFoodLevel() >= Integer.parseInt(param);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!Util.isInteger(param)) return false;
+		return player.getFoodLevel() >= Integer.parseInt(param);
+	}
 
 }

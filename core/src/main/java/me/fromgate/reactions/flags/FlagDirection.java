@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -26,64 +26,64 @@ import org.bukkit.entity.Player;
 
 public class FlagDirection extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        return isPlayerDirected(player, param);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		return isPlayerDirected(player, param);
+	}
 
-    enum Direction {
-        SOUTH,
-        SOUTHWEST,
-        WEST,
-        NORTHWEST,
-        NORTH,
-        NORTHEAST,
-        EAST,
-        SOUTHEAST
-    }
-
-
-    private boolean isPlayerDirected(Player p, String dirstr) {
-        Direction d1 = getDirectionByName(dirstr);
-        if (d1 == null) return false;
-        Direction d2 = getPlayerDirection(p);
-        if (d2 == null) return false;
-        return (d1 == d2);
-    }
+	enum Direction {
+		SOUTH,
+		SOUTHWEST,
+		WEST,
+		NORTHWEST,
+		NORTH,
+		NORTHEAST,
+		EAST,
+		SOUTHEAST
+	}
 
 
-    private Direction getDirectionByName(String dirstr) {
-        for (Direction d : Direction.values())
-            if (d.name().equalsIgnoreCase(dirstr)) return d;
-        return null;
+	private boolean isPlayerDirected(Player p, String dirstr) {
+		Direction d1 = getDirectionByName(dirstr);
+		if (d1 == null) return false;
+		Direction d2 = getPlayerDirection(p);
+		if (d2 == null) return false;
+		return (d1 == d2);
+	}
 
-    }
 
-    private Direction getPlayerDirection(Player p) {
-        double angle = (p.getLocation().getYaw() < 0) ? (360 + p.getLocation().getYaw()) : p.getLocation().getYaw();
-        int sector = (int) (angle - ((angle + 22.5) % 45.0) + 22.5);
-        switch (sector) {
-            case 1:
-                return Direction.SOUTH;
-            case 360:
-                return Direction.SOUTH;
-            case 45:
-                return Direction.SOUTHWEST;
-            case 90:
-                return Direction.WEST;
-            case 135:
-                return Direction.NORTHWEST;
-            case 180:
-                return Direction.NORTH;
-            case 225:
-                return Direction.NORTHEAST;
-            case 270:
-                return Direction.EAST;
-            case 315:
-                return Direction.SOUTHEAST;
-        }
-        return null;
-    }
+	private Direction getDirectionByName(String dirstr) {
+		for (Direction d : Direction.values())
+			if (d.name().equalsIgnoreCase(dirstr)) return d;
+		return null;
+
+	}
+
+	private Direction getPlayerDirection(Player p) {
+		double angle = (p.getLocation().getYaw() < 0) ? (360 + p.getLocation().getYaw()) : p.getLocation().getYaw();
+		int sector = (int) (angle - ((angle + 22.5) % 45.0) + 22.5);
+		switch (sector) {
+			case 1:
+				return Direction.SOUTH;
+			case 360:
+				return Direction.SOUTH;
+			case 45:
+				return Direction.SOUTHWEST;
+			case 90:
+				return Direction.WEST;
+			case 135:
+				return Direction.NORTHWEST;
+			case 180:
+				return Direction.NORTH;
+			case 225:
+				return Direction.NORTHEAST;
+			case 270:
+				return Direction.EAST;
+			case 315:
+				return Direction.SOUTHEAST;
+		}
+		return null;
+	}
 
 
 }

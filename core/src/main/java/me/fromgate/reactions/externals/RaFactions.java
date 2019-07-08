@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -42,66 +42,66 @@ import static java.lang.Math.min;
 
 public class RaFactions {
 
-    private static boolean enabled = false;
+	private static boolean enabled = false;
 
-    protected static boolean init() {
-        Plugin pf = Bukkit.getServer().getPluginManager().getPlugin("Factions");
-        if (pf == null) return false;
-        try {
-            Bukkit.getPluginManager().registerEvents(new FactionListener(), ReActions.instance);
-            Msg.logMessage("Factions found");
-            enabled = true;
-        } catch (Throwable t) {
-            enabled = false;
-        }
-        return enabled;
-    }
+	protected static boolean init() {
+		Plugin pf = Bukkit.getServer().getPluginManager().getPlugin("Factions");
+		if (pf == null) return false;
+		try {
+			Bukkit.getPluginManager().registerEvents(new FactionListener(), ReActions.instance);
+			Msg.logMessage("Factions found");
+			enabled = true;
+		} catch (Throwable t) {
+			enabled = false;
+		}
+		return enabled;
+	}
 
-    public static String getPlayerFaction(Player player) {
-        if (!enabled) return "";
-        MPlayer uplayer = MPlayer.get(player);
-        return uplayer.getFaction().isDefault() ? "default" : uplayer.getFaction().getName();
-    }
+	public static String getPlayerFaction(Player player) {
+		if (!enabled) return "";
+		MPlayer uplayer = MPlayer.get(player);
+		return uplayer.getFaction().isDefault() ? "default" : uplayer.getFaction().getName();
+	}
 
-    public static boolean isPlayerInFaction(Player player, String faction) {
-        if (!enabled) return false;
-        if (player == null) return false;
-        return faction.equalsIgnoreCase(getPlayerFaction(player));
-    }
+	public static boolean isPlayerInFaction(Player player, String faction) {
+		if (!enabled) return false;
+		if (player == null) return false;
+		return faction.equalsIgnoreCase(getPlayerFaction(player));
+	}
 
-    public static List<Player> playersInFaction(String factionName) {
-        List<Player> players = new ArrayList<>();
-        if (!enabled) return players;
-        Faction faction = getFactionByName(factionName);
-        if (faction == null) return players;
-        for (MPlayer uplayer : faction.getMPlayers()) {
-            if (uplayer.isOffline()) continue;
-            players.add(uplayer.getPlayer());
-        }
-        return players;
-    }
+	public static List<Player> playersInFaction(String factionName) {
+		List<Player> players = new ArrayList<>();
+		if (!enabled) return players;
+		Faction faction = getFactionByName(factionName);
+		if (faction == null) return players;
+		for (MPlayer uplayer : faction.getMPlayers()) {
+			if (uplayer.isOffline()) continue;
+			players.add(uplayer.getPlayer());
+		}
+		return players;
+	}
 
-    public static Faction getFactionByName(String factionName) {
-        for (Faction faction : FactionColl.get().getAll()) {
-            if (faction.isDefault() && factionName.equalsIgnoreCase("default")) return faction;
-            if (faction.getName().equalsIgnoreCase(factionName)) return faction;
-        }
-        return null;
-    }
+	public static Faction getFactionByName(String factionName) {
+		for (Faction faction : FactionColl.get().getAll()) {
+			if (faction.isDefault() && factionName.equalsIgnoreCase("default")) return faction;
+			if (faction.getName().equalsIgnoreCase(factionName)) return faction;
+		}
+		return null;
+	}
 
-    public static String getFactionAt(Location loc) {
-        return BoardColl.get().getFactionAt(PS.valueOf(loc)).getName();
-    }
+	public static String getFactionAt(Location loc) {
+		return BoardColl.get().getFactionAt(PS.valueOf(loc)).getName();
+	}
 
-    public static String getRelationWith(Player player, String withFactionStr) {
-        MPlayer uplayer = MPlayer.get(player);
-        return uplayer.getRelationTo(getFactionByName(withFactionStr)).toString();
-    }
+	public static String getRelationWith(Player player, String withFactionStr) {
+		MPlayer uplayer = MPlayer.get(player);
+		return uplayer.getRelationTo(getFactionByName(withFactionStr)).toString();
+	}
 
-    public static void addPower(Player player, double value) {
-        MPlayer uplayer = MPlayer.get(player);
-        double currentPower = uplayer.getPower();
-        double newPower = min(uplayer.getPowerMax(), max(currentPower + value, uplayer.getPowerMin()));
-        uplayer.setPower(newPower);
-    }
+	public static void addPower(Player player, double value) {
+		MPlayer uplayer = MPlayer.get(player);
+		double currentPower = uplayer.getPower();
+		double newPower = min(uplayer.getPowerMax(), max(currentPower + value, uplayer.getPowerMin()));
+		uplayer.setPower(newPower);
+	}
 }

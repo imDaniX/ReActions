@@ -30,52 +30,52 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 
 public class PvpKillActivator extends Activator {
-    PvpKillActivator(String name) {
-        super(name, "activators");
-    }
+	PvpKillActivator(String name) {
+		super(name, "activators");
+	}
 
-    public PvpKillActivator(String name, String param) {
-        this(name);
-    }
+	public PvpKillActivator(String name, String param) {
+		this(name);
+	}
 
-    public PvpKillActivator(String name, String group, YamlConfiguration cfg) {
-        super(name, group, cfg);
-    }
+	public PvpKillActivator(String name, String group, YamlConfiguration cfg) {
+		super(name, group, cfg);
+	}
 
-    @Override
-    public boolean activate(Event event) {
-        if (!(event instanceof PvpKillEvent)) return false;
-        PvpKillEvent pe = (PvpKillEvent) event;
-        Variables.setTempVar("targetplayer", pe.getKilledPlayer().getName());
-        return Actions.executeActivator(pe.getPlayer(), this);
-    }
+	@Override
+	public boolean activate(Event event) {
+		if (!(event instanceof PvpKillEvent)) return false;
+		PvpKillEvent pe = (PvpKillEvent) event;
+		Variables.setTempVar("targetplayer", pe.getKilledPlayer().getName());
+		return Actions.executeActivator(pe.getPlayer(), this);
+	}
 
-    @Override
-    public boolean isLocatedAt(Location loc) {
-        return false;
-    }
+	@Override
+	public boolean isLocatedAt(Location loc) {
+		return false;
+	}
 
-    @Override
-    public void save(String root, YamlConfiguration cfg) {
-    }
+	@Override
+	public void save(String root, YamlConfiguration cfg) {
+	}
 
-    @Override
-    public void load(String root, YamlConfiguration cfg) {
-    }
+	@Override
+	public void load(String root, YamlConfiguration cfg) {
+	}
 
-    @Override
-    public ActivatorType getType() {
-        return ActivatorType.PVP_KILL;
-    }
+	@Override
+	public ActivatorType getType() {
+		return ActivatorType.PVP_KILL;
+	}
 
-    @Override
-    public boolean isValid() {
-        return true;
-    }
+	@Override
+	public boolean isValid() {
+		return true;
+	}
 
-    /*
-    @Override
-    public String getTargetPlayer(){
-        return targetplayer; 
-    }*/
+	/*
+	@Override
+	public String getTargetPlayer(){
+		return targetplayer;
+	}*/
 }

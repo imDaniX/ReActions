@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -81,564 +81,560 @@ import java.util.List;
 import java.util.Set;
 
 public class EventManager {
-    private static ReActions plg() {
-        return ReActions.instance;
-    }
-
-    public static boolean raiseFactionEvent(Player p, String oldFaction, String newFaction) {
-        FactionEvent e = new FactionEvent(p, oldFaction, newFaction);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return true;
-    }
-
-
-    public static boolean raiseFactionCreateEvent(String factionName, Player player) {
-        FactionCreateEvent e = new FactionCreateEvent(factionName, player);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return true;
-    }
-
-    public static boolean raiseFactionDisbandEvent(String factionName, Player player) {
-        FactionDisbandEvent e = new FactionDisbandEvent(factionName, player);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return true;
-    }
-
-
-    public static boolean raiseFactionRelationEvent(String faction, String factionOther, String oldRelation, String newRelation) {
-        FactionRelationEvent e = new FactionRelationEvent(faction, factionOther, oldRelation, newRelation);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return true;
-    }
-
-    public static boolean raiseMobClickEvent(Player player, LivingEntity mob) {
-        if (mob == null) return false;
-        MobClickEvent e = new MobClickEvent(player, mob);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return true;
-    }
-
-    public static boolean raiseMobKillEvent(Player player, LivingEntity mob) {
-        if (mob == null) return false;
-        MobKillEvent e = new MobKillEvent(player, mob);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return true;
-    }
-
-
-    public static boolean raiseJoinEvent(Player player, boolean joinfirst) {
-        JoinEvent e = new JoinEvent(player, joinfirst);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return true;
-    }
-
-    public static boolean raiseDoorEvent(PlayerInteractEvent event) {
-        if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
-            return false;
-        if (!BlockUtil.isOpenable(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND)
-            return false;
-        DoorEvent e = new DoorEvent(event.getPlayer(), BlockUtil.getDoorBottomBlock(event.getClickedBlock()));
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-    public static boolean raiseItemConsumeEvent(PlayerItemConsumeEvent event) {
-        ItemConsumeEvent ce = new ItemConsumeEvent(event.getPlayer());
-        Bukkit.getServer().getPluginManager().callEvent(ce);
-        return ce.isCancelled();
-    }
-
-    public static boolean raiseItemClickEvent(PlayerInteractEntityEvent event) {
-        ItemClickEvent ice;
-        boolean mainHand = event.getHand() == EquipmentSlot.HAND;
-        ItemStack item = mainHand?event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
-        if (item == null || item.getType() == Material.AIR)
-            return false;
-        ice = new ItemClickEvent(event.getPlayer(), item, mainHand);
-        Bukkit.getServer().getPluginManager().callEvent(ice);
-        return true;
-    }
-
-    public static boolean raiseItemClickEvent(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
-            return false;
-        ItemClickEvent ice;
-        boolean mainHand = event.getHand() == EquipmentSlot.HAND;
-        ItemStack item = mainHand?event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
-        if (item == null || item.getType() == Material.AIR)
-            return false;
-        ice = new ItemClickEvent(event.getPlayer(), item, mainHand);
-        Bukkit.getServer().getPluginManager().callEvent(ice);
-        return true;
-    }
-
-
-    public static boolean raiseLeverEvent(PlayerInteractEvent event) {
-        if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
-            return false;
-        if (event.getHand() != EquipmentSlot.HAND)
-            return false;
-        if (event.getClickedBlock().getType() != Material.LEVER) return false;
-        LeverEvent e = new LeverEvent(event.getPlayer(), event.getClickedBlock());
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-
-    // PVP Kill Event
-    public static void raisePvpKillEvent(PlayerDeathEvent event) {
-        Player deadplayer = event.getEntity();
-        Player killer = Util.getKiller(deadplayer.getLastDamageCause());
-        if (killer == null) return;
-        PvpKillEvent pe = new PvpKillEvent(killer, deadplayer);
-        Bukkit.getServer().getPluginManager().callEvent(pe);
-    }
-
-    // PVP Death Event
-    public static void raisePvpDeathEvent(PlayerDeathEvent event) {
-        Player deadplayer = event.getEntity();
-        LivingEntity killer = Util.getAnyKiller(deadplayer.getLastDamageCause());
-        PlayerDeathActivator.DeathCause ds = (killer == null) ? PlayerDeathActivator.DeathCause.OTHER : (killer instanceof Player) ? PlayerDeathActivator.DeathCause.PVP : PlayerDeathActivator.DeathCause.PVE;
-        PlayerWasKilledEvent pe = new PlayerWasKilledEvent(killer, deadplayer, ds);
-        Bukkit.getServer().getPluginManager().callEvent(pe);
-    }
-
-    // Button Event
-    public static boolean raiseButtonEvent(PlayerInteractEvent event) {
-        if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK))) {
-            return false;
-        }
-        if (!(event.getClickedBlock().getType().name().endsWith("_BUTTON"))) {
-            return false;
-        }
-        if (event.getHand() != EquipmentSlot.HAND) {
-            return false;
-        }
-        BlockState state = event.getClickedBlock().getState();
-        if (state.getData() instanceof Button) {
-            Button button = (Button) state.getData();
-            if (button.isPowered()) return false;
-        }
-        ButtonEvent be = new ButtonEvent(event.getPlayer(), event.getClickedBlock().getLocation());
-        Bukkit.getServer().getPluginManager().callEvent(be);
-        return be.isCancelled();
-    }
-
-    public static boolean raiseSignEvent(Player player, String[] lines, Location loc, boolean leftClick) {
-        for (Activator act : Activators.getActivators(ActivatorType.SIGN)) {
-            SignActivator sign = (SignActivator) act;
-            if (sign.checkMask(lines)) {
-                SignEvent se = new SignEvent(player, lines, loc, leftClick);
-                Bukkit.getServer().getPluginManager().callEvent(se);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean raiseCommandEvent(Player p, String command, boolean canceled) {
-        if (command.isEmpty()) return false;
-        String[] args = command.split(" ");
-        CommandEvent ce = new CommandEvent(p, command, args, canceled);
-        Bukkit.getServer().getPluginManager().callEvent(ce);
-        return ce.isCancelled();
-    }
-
-    public static boolean raiseExecEvent(CommandSender sender, String param) {
-        if (param.isEmpty()) return false;
-        return raiseExecEvent(sender, new Param(param, "player"));
-    }
-
-    public static boolean raiseExecEvent(CommandSender sender, Param param) {
-        return raiseExecEvent(sender, param, null);
-    }
-
-    public static boolean raiseExecEvent(CommandSender sender, Param param, final Param tempVars) {
-        if (param.isEmpty()) return false;
-        final Player senderPlayer = (sender instanceof Player) ? (Player) sender : null;
-        final String id = param.getParam("activator", param.getParam("exec"));
-        if (id.isEmpty()) return false;
-        Activator act = Activators.get(id);
-        if (act == null) {
-            Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
-            return false;
-        }
-        if (act.getType() != ActivatorType.EXEC) {
-            Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
-            return false;
-        }
-
-        int repeat = Math.min(param.getParam("repeat", 1), 1);
-
-        long delay = Util.timeToTicks(Util.parseTime(param.getParam("delay", "1t")));
-
-        final Set<Player> target = new HashSet<>();
-
-        if (param.isParamsExists("player")) {
-            target.addAll(PlayerSelectors.getPlayerList(new Param(param.getParam("player"), "player")));
-        }
-        target.addAll(PlayerSelectors.getPlayerList(param));   // Оставляем для совместимости со старым вариантом
-
-        if (target.isEmpty() && !param.hasAnyParam(PlayerSelectors.getAllKeys())) target.add(senderPlayer);
-
-        for (int i = 0; i < repeat; i++) {
-            Bukkit.getScheduler().runTaskLater(plg(), () -> {
-                for (Player player : target) {
-                    if (Activators.isStopped(player, id, true)) continue;
-                    ExecEvent ce = new ExecEvent(senderPlayer, player, id, tempVars);
-                    Bukkit.getServer().getPluginManager().callEvent(ce);
-                }
-            }, delay * repeat);
-        }
-        return true;
-    }
-
-    // Plate Event
-    public static boolean raisePlateEvent(PlayerInteractEvent event) {
-        if (event.getAction() != Action.PHYSICAL) return false;
-        if (!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) {
-            return false;
-        }
-        final Player p = event.getPlayer();
-        final Location l = event.getClickedBlock().getLocation();
-        Bukkit.getScheduler().runTaskLater(plg(), () -> {
-            PlateEvent pe = new PlateEvent(p, l);
-            Bukkit.getServer().getPluginManager().callEvent(pe);
-        }, 1);
-        return false;
-    }
-
-    public static void raiseAllRegionEvents(final Player player, final Location to, final Location from) {
-        if (!RaWorldGuard.isConnected()) return;
-        Bukkit.getScheduler().runTaskLaterAsynchronously(ReActions.instance, () -> {
-
-            final List<String> regionsTo = RaWorldGuard.getRegions(to);
-            final List<String> regionsFrom = RaWorldGuard.getRegions(from);
-
-            Bukkit.getScheduler().runTask(ReActions.instance, () -> {
-                raiseRegionEvent(player, regionsTo);
-                raiseRgEnterEvent(player, regionsTo, regionsFrom);
-                raiseRgLeaveEvent(player, regionsTo, regionsFrom);
-            });
-        }, 1);
-    }
-
-    private static void raiseRgEnterEvent(Player player, List<String> regionTo, List<String> regionFrom) {
-        if (regionTo.isEmpty()) return;
-        for (String rg : regionTo)
-            if (!regionFrom.contains(rg)) {
-                RegionEnterEvent wge = new RegionEnterEvent(player, rg);
-                Bukkit.getServer().getPluginManager().callEvent(wge);
-            }
-    }
-
-    private static void raiseRgLeaveEvent(Player player, List<String> regionTo, List<String> regionFrom) {
-        if (regionFrom.isEmpty()) return;
-        for (String rg : regionFrom)
-            if (!regionTo.contains(rg)) {
-                RegionLeaveEvent wge = new RegionLeaveEvent(player, rg);
-                Bukkit.getServer().getPluginManager().callEvent(wge);
-            }
-    }
-
-    private static void raiseRegionEvent(Player player, List<String> to) {
-        if (to.isEmpty()) return;
-        for (String region : to) {
-            setFutureRegionCheck(player.getName(), region, false);
-        }
-    }
-
-    private static void setFutureRegionCheck(final String playerName, final String region, boolean repeat) {
-        @SuppressWarnings("deprecation")
-        Player player = Bukkit.getPlayerExact(playerName);
-        if (player == null) return;
-        if (!player.isOnline()) return;
-        if (player.isDead()) return;
-        if (!RaWorldGuard.isPlayerInRegion(player, region)) return;
-        String rg = "rg-" + region;
-        if (!isTimeToRaiseEvent(player, rg, Cfg.worldguardRecheck, repeat)) return;
-
-        RegionEvent wge = new RegionEvent(player, region);
-        Bukkit.getServer().getPluginManager().callEvent(wge);
-
-        Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureRegionCheck(playerName, region, true), 20 * Cfg.worldguardRecheck);
-    }
-
-
-    private static void setFutureItemWearCheck(final String playerName, final String itemStr, boolean repeat) {
-        @SuppressWarnings("deprecation")
-        Player player = Bukkit.getPlayerExact(playerName);
-        if (player == null) return;
-        if (!player.isOnline()) return;
-        String rg = "iw-" + itemStr;
-        if (!isTimeToRaiseEvent(player, rg, Cfg.itemWearRecheck, repeat)) return;
-        ItemWearEvent iwe = new ItemWearEvent(player);
-        if (!iwe.isItemWeared(itemStr)) return;
-        Bukkit.getServer().getPluginManager().callEvent(iwe);
-        Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemWearCheck(playerName, itemStr, true), 20 * Cfg.itemWearRecheck);
-    }
-
-
-    public static void raiseItemWearEvent(Player player) {
-        final String playerName = player.getName();
-        Bukkit.getScheduler().runTaskLater(plg(), () -> {
-            for (ItemWearActivator iw : Activators.getItemWearActivatos())
-                setFutureItemWearCheck(playerName, iw.getItemStr(), false);
-        }, 1);
-    }
-
-    public static void raiseItemHoldEvent(Player player) {
-        final String playerName = player.getName();
-        Bukkit.getScheduler().runTaskLater(plg(), () -> {
-            for (ItemHoldActivator ih : Activators.getItemHoldActivatos())
-                setFutureItemHoldCheck(playerName, ih.getItemStr(), false);
-        }, 1);
-    }
-
-
-    private static boolean setFutureItemHoldCheck(final String playerName, final String itemStr, boolean repeat) {
-        @SuppressWarnings("deprecation")
-        Player player = Bukkit.getPlayerExact(playerName);
-        if (player == null || !player.isOnline() || player.isDead()) return false;
-        ItemStack itemInHand = player.getInventory().getItemInMainHand();
-        if (itemInHand == null || itemInHand.getType() == Material.AIR) return false;
-        String rg = "ih-" + itemStr;
-        if (!isTimeToRaiseEvent(player, rg, Cfg.itemHoldRecheck, repeat)) return false;
-        if (!ItemUtil.compareItemStr(itemInHand, itemStr)) return false;
-        ItemHoldEvent ihe = new ItemHoldEvent(player);
-        Bukkit.getServer().getPluginManager().callEvent(ihe);
-
-        Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemHoldCheck(playerName, itemStr, true), 20 * Cfg.itemHoldRecheck);
-        return true;
-    }
-
-    public static boolean isTimeToRaiseEvent(Player p, String id, int seconds, boolean repeat) {
-        Long curtime = System.currentTimeMillis();
-        Long prevtime = p.hasMetadata("reactions-rchk-" + id) ? p.getMetadata("reactions-rchk-" + id).get(0).asLong() : 0;
-        boolean needUpdate = repeat || ((curtime - prevtime) >= (1000 * seconds));
-        if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(plg(), curtime));
-        return needUpdate;
-    }
-
-    public static boolean raiseMessageEvent(CommandSender sender, MessageActivator.Source source, String message) {
-        Player player = sender != null && (sender instanceof Player) ? (Player) sender : null;
-        for (MessageActivator a : Activators.getMessageActivators()) {
-            if (a.filterMessage(source, message)) {
-                MessageEvent me = new MessageEvent(player, a, message);
-                Bukkit.getServer().getPluginManager().callEvent(me);
-                return me.isCancelled();
-            }
-        }
-        return false;
-    }
-
-    public static void raiseVariableEvent(String var, String playerName, String newValue, String prevValue) {
-        if (newValue.equalsIgnoreCase(prevValue)) return;
-        @SuppressWarnings("deprecation")
-        Player player = Bukkit.getPlayerExact(playerName);
-        if (!playerName.isEmpty() && player == null) return;
-        VariableEvent ve = new VariableEvent(player, var, newValue, prevValue);
-        Bukkit.getServer().getPluginManager().callEvent(ve);
-    }
-
-    public static boolean raiseMobDamageEvent(EntityDamageEvent event, Player damager) {
-        if (damager == null) return false;
-        if (!(event.getEntity() instanceof LivingEntity)) return false;
-        double damage = event.getDamage();
-        MobDamageEvent mde = new MobDamageEvent((LivingEntity) event.getEntity(), damager, damage, event.getCause());
-        Bukkit.getServer().getPluginManager().callEvent(mde);
-        event.setDamage(mde.getDamage());
-        return mde.isCancelled();
-    }
-
-    public static void raiseQuitEvent(PlayerQuitEvent event) {
-        QuitEvent qu = new QuitEvent(event.getPlayer(), event.getQuitMessage());
-        Bukkit.getServer().getPluginManager().callEvent(qu);
-        event.setQuitMessage(qu.getQuitMessage() == null || qu.getQuitMessage().isEmpty() ? null : ChatColor.translateAlternateColorCodes('&', qu.getQuitMessage()));
-    }
-
-    public static boolean raiseBlockClickEvent(PlayerInteractEvent event) {
-        boolean leftClick;
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) leftClick = false;
-        else if (event.getAction() == Action.LEFT_CLICK_BLOCK) leftClick = true;
-        else return false;
-        if (event.getHand() != EquipmentSlot.HAND) {
-            return false;
-        }
-        BlockClickEvent e = new BlockClickEvent(event.getPlayer(), event.getClickedBlock(), leftClick);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-    public static boolean raiseInventoryClickEvent(InventoryClickEvent event) {
-        Player p = (Player) event.getWhoClicked();
-        ItemStack oldItem = event.getCurrentItem();
-        PlayerInventoryClickEvent e = new PlayerInventoryClickEvent(p, event.getAction(), event.getClick(), event.getInventory(), event.getSlotType(), event.getCurrentItem(), event.getHotbarButton(), event.getView(), event.getSlot());
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        ItemStack newItemStack = e.getItemStack();
-        if (newItemStack != null) {
-            if (newItemStack.getType() != Material.AIR && newItemStack.getAmount() <= 1 && oldItem != null) {
-                newItemStack.setAmount(oldItem.getAmount());
-            }
-            if (!(event instanceof InventoryCreativeEvent)) event.setCurrentItem(newItemStack);
-        }
-        return e.isCancelled();
-    }
-
-    public static boolean raiseDropEvent(PlayerDropItemEvent event) {
-        Item item = event.getItemDrop();
-        Player player = event.getPlayer();
-        double pickupDelay = item.getPickupDelay();
-        DropEvent e = new DropEvent(player, event.getItemDrop(), pickupDelay);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        e.setPickupDelay(e.getPickupDelay());
-        ItemStack newItemStack = e.getItemStack();
-        if (newItemStack != null && newItemStack.getType() == Material.AIR) {
-            item.remove();
-        } else if (newItemStack != null) {
-            ItemStack itemStack = item.getItemStack();
-            if (newItemStack.getAmount() > 1) {
-                for (int i = 0; i < newItemStack.getAmount(); i++) {
-                    item.setItemStack(new ItemStack(newItemStack.clone()));
-                }
-            } else {
-                itemStack.setType(newItemStack.getType());
-                if (newItemStack.getData() != null) itemStack.setData(newItemStack.getData());
-                if (newItemStack.getItemMeta() != null) itemStack.setItemMeta(newItemStack.getItemMeta());
-                ItemUtil.setDurability(itemStack, ItemUtil.getDurability(newItemStack));
-            }
-        }
-        return e.isCancelled();
-    }
-
-    public static boolean raiseFlightEvent(PlayerToggleFlightEvent event) {
-        FlightEvent e = new FlightEvent(event.getPlayer(), event.isFlying());
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-    public static boolean raiseEntityClickEvent(PlayerInteractEntityEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND) {
-            return false;
-        }
-        EntityClickEvent e = new EntityClickEvent(event.getPlayer(), event.getRightClicked());
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-    public static boolean raiseBlockBreakEvent(BlockBreakEvent event) {
-        boolean isDropItems = event.isDropItems();
-        PlayerBlockBreakEvent e = new PlayerBlockBreakEvent(event.getPlayer(), event.getBlock(), isDropItems);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        event.setDropItems(e.isDropItems());
-        return e.isCancelled();
-    }
-
-    public static boolean raiseSneakEvent(PlayerToggleSneakEvent event) {
-        SneakEvent e = new SneakEvent(event.getPlayer(), event.isSneaking());
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-    public static boolean raisePlayerDamageByMobEvent(EntityDamageByEntityEvent event, LivingEntity damager, Entity entityDamager) {
-        if (!(event.getEntity() instanceof LivingEntity))
-            return false;
-        double damage = event.getDamage();
-        DamageByMobEvent dm = new DamageByMobEvent((Player) event.getEntity(), damager, entityDamager, damage, event.getCause());
-        Bukkit.getServer().getPluginManager().callEvent(dm);
-        event.setDamage(dm.getDamage());
-        return dm.isCancelled();
-    }
-
-    public static boolean raisePlayerDamageByBlockEvent(EntityDamageByBlockEvent event, Block blockDamager) {
-        if (!(event.getEntity() instanceof LivingEntity))
-            return false;
-        double damage = event.getDamage();
-        DamageByBlockEvent db = new DamageByBlockEvent((Player) event.getEntity(), blockDamager, damage, event.getCause());
-        Bukkit.getServer().getPluginManager().callEvent(db);
-        event.setDamage(db.getDamage());
-        return db.isCancelled();
-    }
-
-    public static boolean raisePlayerDamageEvent(EntityDamageEvent event, String source) {
-        if (!(event.getEntity() instanceof LivingEntity))
-            return false;
-        double damage = event.getDamage();
-        DamageEvent de = new DamageEvent((Player) event.getEntity(), damage, event.getCause(), source);
-        Bukkit.getServer().getPluginManager().callEvent(de);
-        event.setDamage(de.getDamage());
-        return de.isCancelled();
-    }
-
-    public static boolean raiseEntityChangeBlockEvent(EntityChangeBlockEvent event) {
-        if (event.getEntity() instanceof FallingBlock) {
-            FallingBlock fb = (FallingBlock) event.getEntity();
-            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                for (Entity e : p.getNearbyEntities(0.5D, 1.0D, 0.5D)) {
-                    if ((e instanceof FallingBlock) && fb == e) {
-                        //noinspection deprecation
-                        Bukkit.getPluginManager().callEvent(new EntityDamageByEntityEvent(e, p, EntityDamageEvent.DamageCause.FALLING_BLOCK, 0));
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    public static boolean raiseProjectileHitEvent(ProjectileHitEvent event) {
-        Entity hitEntity = event.getHitEntity();
-        if (hitEntity == null || !(hitEntity instanceof Player))
-            return false;
-        Player player = (Player) hitEntity;
-        Entity entity = event.getEntity();
-        // TODO PlayerProjectileHit activator
-        return false;
-    }
-
-    public static boolean raisePlayerPickupItemEvent(EntityPickupItemEvent event) {
-        Item item = event.getItem();
-        if(event.getEntityType() != EntityType.PLAYER)
-            return false;
-        Player player = (Player) event.getEntity();
-        int pickupDelay = item.getPickupDelay();
-        PickupItemEvent e = new PickupItemEvent(player, event.getItem(), pickupDelay);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        item.setPickupDelay(e.getPickupDelay());
-        ItemStack newItemStack = e.getItemStack();
-        if (newItemStack != null && newItemStack.getType() == Material.AIR) {
-            e.setCancelled(true);
-            item.remove();
-        } else if (newItemStack != null) {
-            ItemStack itemStack = item.getItemStack();
-            if (newItemStack.getAmount() > 1) {
-                e.setCancelled(true);
-                item.remove();
-                ItemUtil.giveItemOrDrop(player, newItemStack);
-            } else {
-                itemStack.setType(newItemStack.getType());
-                if (newItemStack.getData() != null) itemStack.setData(newItemStack.getData());
-                if (newItemStack.getItemMeta() != null) itemStack.setItemMeta(newItemStack.getItemMeta());
-                ItemUtil.setDurability(itemStack, ItemUtil.getDurability(newItemStack));
-            }
-        }
-        return e.isCancelled();
-    }
-
-    public static boolean raisePlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
-        GameModeEvent e = new GameModeEvent(event.getPlayer(), event.getNewGameMode());
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-    public static boolean raisePlayerGodChangeEvent(Player player, boolean god) {
-        GodEvent e = new GodEvent(player, god);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
-
-    public static boolean raiseItemHeldEvent(Player player, int newSlot, int previousSlot) {
-        ItemHeldEvent e = new ItemHeldEvent(player, newSlot, previousSlot);
-        Bukkit.getServer().getPluginManager().callEvent(e);
-        return e.isCancelled();
-    }
+	private static ReActions plg() {
+		return ReActions.instance;
+	}
+
+	public static boolean raiseFactionEvent(Player p, String oldFaction, String newFaction) {
+		FactionEvent e = new FactionEvent(p, oldFaction, newFaction);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return true;
+	}
+
+
+	public static boolean raiseFactionCreateEvent(String factionName, Player player) {
+		FactionCreateEvent e = new FactionCreateEvent(factionName, player);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return true;
+	}
+
+	public static boolean raiseFactionDisbandEvent(String factionName, Player player) {
+		FactionDisbandEvent e = new FactionDisbandEvent(factionName, player);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return true;
+	}
+
+
+	public static boolean raiseFactionRelationEvent(String faction, String factionOther, String oldRelation, String newRelation) {
+		FactionRelationEvent e = new FactionRelationEvent(faction, factionOther, oldRelation, newRelation);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return true;
+	}
+
+	public static boolean raiseMobClickEvent(Player player, LivingEntity mob) {
+		if (mob == null) return false;
+		MobClickEvent e = new MobClickEvent(player, mob);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return true;
+	}
+
+	public static boolean raiseMobKillEvent(Player player, LivingEntity mob) {
+		if (mob == null) return false;
+		MobKillEvent e = new MobKillEvent(player, mob);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return true;
+	}
+
+
+	public static boolean raiseJoinEvent(Player player, boolean joinfirst) {
+		JoinEvent e = new JoinEvent(player, joinfirst);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return true;
+	}
+
+	public static boolean raiseDoorEvent(PlayerInteractEvent event) {
+		if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
+			return false;
+		if (!BlockUtil.isOpenable(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND)
+			return false;
+		DoorEvent e = new DoorEvent(event.getPlayer(), BlockUtil.getDoorBottomBlock(event.getClickedBlock()));
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+	public static boolean raiseItemConsumeEvent(PlayerItemConsumeEvent event) {
+		ItemConsumeEvent ce = new ItemConsumeEvent(event.getPlayer());
+		Bukkit.getServer().getPluginManager().callEvent(ce);
+		return ce.isCancelled();
+	}
+
+	public static boolean raiseItemClickEvent(PlayerInteractEntityEvent event) {
+		ItemClickEvent ice;
+		boolean mainHand = event.getHand() == EquipmentSlot.HAND;
+		ItemStack item = mainHand?event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
+		if (item == null || item.getType() == Material.AIR)
+			return false;
+		ice = new ItemClickEvent(event.getPlayer(), item, mainHand);
+		Bukkit.getServer().getPluginManager().callEvent(ice);
+		return true;
+	}
+
+	public static boolean raiseItemClickEvent(PlayerInteractEvent event) {
+		if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK)
+			return false;
+		ItemClickEvent ice;
+		boolean mainHand = event.getHand() == EquipmentSlot.HAND;
+		ItemStack item = mainHand?event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
+		if (item == null || item.getType() == Material.AIR)
+			return false;
+		ice = new ItemClickEvent(event.getPlayer(), item, mainHand);
+		Bukkit.getServer().getPluginManager().callEvent(ice);
+		return true;
+	}
+
+
+	public static boolean raiseLeverEvent(PlayerInteractEvent event) {
+		if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
+			return false;
+		if (event.getHand() != EquipmentSlot.HAND)
+			return false;
+		if (event.getClickedBlock().getType() != Material.LEVER) return false;
+		LeverEvent e = new LeverEvent(event.getPlayer(), event.getClickedBlock());
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+
+	// PVP Kill Event
+	public static void raisePvpKillEvent(PlayerDeathEvent event) {
+		Player deadplayer = event.getEntity();
+		Player killer = Util.getKiller(deadplayer.getLastDamageCause());
+		if (killer == null) return;
+		PvpKillEvent pe = new PvpKillEvent(killer, deadplayer);
+		Bukkit.getServer().getPluginManager().callEvent(pe);
+	}
+
+	// PVP Death Event
+	public static void raisePvpDeathEvent(PlayerDeathEvent event) {
+		Player deadplayer = event.getEntity();
+		LivingEntity killer = Util.getAnyKiller(deadplayer.getLastDamageCause());
+		PlayerDeathActivator.DeathCause ds = (killer == null) ? PlayerDeathActivator.DeathCause.OTHER : (killer instanceof Player) ? PlayerDeathActivator.DeathCause.PVP : PlayerDeathActivator.DeathCause.PVE;
+		PlayerWasKilledEvent pe = new PlayerWasKilledEvent(killer, deadplayer, ds);
+		Bukkit.getServer().getPluginManager().callEvent(pe);
+	}
+
+	// Button Event
+	public static boolean raiseButtonEvent(PlayerInteractEvent event) {
+		if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK))) {
+			return false;
+		}
+		if (!(event.getClickedBlock().getType().name().endsWith("_BUTTON"))) {
+			return false;
+		}
+		if (event.getHand() != EquipmentSlot.HAND) {
+			return false;
+		}
+		BlockState state = event.getClickedBlock().getState();
+		if (state.getData() instanceof Button) {
+			Button button = (Button) state.getData();
+			if (button.isPowered()) return false;
+		}
+		ButtonEvent be = new ButtonEvent(event.getPlayer(), event.getClickedBlock().getLocation());
+		Bukkit.getServer().getPluginManager().callEvent(be);
+		return be.isCancelled();
+	}
+
+	public static boolean raiseSignEvent(Player player, String[] lines, Location loc, boolean leftClick) {
+		for (Activator act : Activators.getActivators(ActivatorType.SIGN)) {
+			SignActivator sign = (SignActivator) act;
+			if (sign.checkMask(lines)) {
+				SignEvent se = new SignEvent(player, lines, loc, leftClick);
+				Bukkit.getServer().getPluginManager().callEvent(se);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean raiseCommandEvent(Player p, String command, boolean canceled) {
+		if (command.isEmpty()) return false;
+		String[] args = command.split(" ");
+		CommandEvent ce = new CommandEvent(p, command, args, canceled);
+		Bukkit.getServer().getPluginManager().callEvent(ce);
+		return ce.isCancelled();
+	}
+
+	public static boolean raiseExecEvent(CommandSender sender, String param) {
+		if (param.isEmpty()) return false;
+		return raiseExecEvent(sender, new Param(param, "player"));
+	}
+
+	public static boolean raiseExecEvent(CommandSender sender, Param param) {
+		return raiseExecEvent(sender, param, null);
+	}
+
+	public static boolean raiseExecEvent(CommandSender sender, Param param, final Param tempVars) {
+		if (param.isEmpty()) return false;
+		final Player senderPlayer = (sender instanceof Player) ? (Player) sender : null;
+		final String id = param.getParam("activator", param.getParam("exec"));
+		if (id.isEmpty()) return false;
+		Activator act = Activators.get(id);
+		if (act == null) {
+			Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
+			return false;
+		}
+		if (act.getType() != ActivatorType.EXEC) {
+			Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
+			return false;
+		}
+
+		int repeat = Math.min(param.getParam("repeat", 1), 1);
+
+		long delay = Util.timeToTicks(Util.parseTime(param.getParam("delay", "1t")));
+
+		final Set<Player> target = new HashSet<>();
+
+		if (param.isParamsExists("player")) {
+			target.addAll(PlayerSelectors.getPlayerList(new Param(param.getParam("player"), "player")));
+		}
+		target.addAll(PlayerSelectors.getPlayerList(param));   // Оставляем для совместимости со старым вариантом
+
+		if (target.isEmpty() && !param.hasAnyParam(PlayerSelectors.getAllKeys())) target.add(senderPlayer);
+
+		for (int i = 0; i < repeat; i++) {
+			Bukkit.getScheduler().runTaskLater(plg(), () -> {
+				for (Player player : target) {
+					if (Activators.isStopped(player, id, true)) continue;
+					ExecEvent ce = new ExecEvent(senderPlayer, player, id, tempVars);
+					Bukkit.getServer().getPluginManager().callEvent(ce);
+				}
+			}, delay * repeat);
+		}
+		return true;
+	}
+
+	// Plate Event
+	public static boolean raisePlateEvent(PlayerInteractEvent event) {
+		if (event.getAction() != Action.PHYSICAL) return false;
+		if (!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) {
+			return false;
+		}
+		final Player p = event.getPlayer();
+		final Location l = event.getClickedBlock().getLocation();
+		Bukkit.getScheduler().runTaskLater(plg(), () -> {
+			PlateEvent pe = new PlateEvent(p, l);
+			Bukkit.getServer().getPluginManager().callEvent(pe);
+		}, 1);
+		return false;
+	}
+
+	public static void raiseAllRegionEvents(final Player player, final Location to, final Location from) {
+		if (!RaWorldGuard.isConnected()) return;
+		Bukkit.getScheduler().runTaskLaterAsynchronously(ReActions.instance, () -> {
+
+			final List<String> regionsTo = RaWorldGuard.getRegions(to);
+			final List<String> regionsFrom = RaWorldGuard.getRegions(from);
+
+			Bukkit.getScheduler().runTask(ReActions.instance, () -> {
+				raiseRegionEvent(player, regionsTo);
+				raiseRgEnterEvent(player, regionsTo, regionsFrom);
+				raiseRgLeaveEvent(player, regionsTo, regionsFrom);
+			});
+		}, 1);
+	}
+
+	private static void raiseRgEnterEvent(Player player, List<String> regionTo, List<String> regionFrom) {
+		if (regionTo.isEmpty()) return;
+		for (String rg : regionTo)
+			if (!regionFrom.contains(rg)) {
+				RegionEnterEvent wge = new RegionEnterEvent(player, rg);
+				Bukkit.getServer().getPluginManager().callEvent(wge);
+			}
+	}
+
+	private static void raiseRgLeaveEvent(Player player, List<String> regionTo, List<String> regionFrom) {
+		if (regionFrom.isEmpty()) return;
+		for (String rg : regionFrom)
+			if (!regionTo.contains(rg)) {
+				RegionLeaveEvent wge = new RegionLeaveEvent(player, rg);
+				Bukkit.getServer().getPluginManager().callEvent(wge);
+			}
+	}
+
+	private static void raiseRegionEvent(Player player, List<String> to) {
+		if (to.isEmpty()) return;
+		for (String region : to) {
+			setFutureRegionCheck(player.getName(), region, false);
+		}
+	}
+
+	private static void setFutureRegionCheck(final String playerName, final String region, boolean repeat) {
+		@SuppressWarnings("deprecation")
+		Player player = Bukkit.getPlayerExact(playerName);
+		if (player == null) return;
+		if (!player.isOnline()) return;
+		if (player.isDead()) return;
+		if (!RaWorldGuard.isPlayerInRegion(player, region)) return;
+		String rg = "rg-" + region;
+		if (!isTimeToRaiseEvent(player, rg, Cfg.worldguardRecheck, repeat)) return;
+
+		RegionEvent wge = new RegionEvent(player, region);
+		Bukkit.getServer().getPluginManager().callEvent(wge);
+
+		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureRegionCheck(playerName, region, true), 20 * Cfg.worldguardRecheck);
+	}
+
+
+	private static void setFutureItemWearCheck(final String playerName, final String itemStr, boolean repeat) {
+		@SuppressWarnings("deprecation")
+		Player player = Bukkit.getPlayerExact(playerName);
+		if (player == null) return;
+		if (!player.isOnline()) return;
+		String rg = "iw-" + itemStr;
+		if (!isTimeToRaiseEvent(player, rg, Cfg.itemWearRecheck, repeat)) return;
+		ItemWearEvent iwe = new ItemWearEvent(player);
+		if (!iwe.isItemWeared(itemStr)) return;
+		Bukkit.getServer().getPluginManager().callEvent(iwe);
+		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemWearCheck(playerName, itemStr, true), 20 * Cfg.itemWearRecheck);
+	}
+
+
+	public static void raiseItemWearEvent(Player player) {
+		final String playerName = player.getName();
+		Bukkit.getScheduler().runTaskLater(plg(), () -> {
+			for (ItemWearActivator iw : Activators.getItemWearActivatos())
+				setFutureItemWearCheck(playerName, iw.getItemStr(), false);
+		}, 1);
+	}
+
+	public static void raiseItemHoldEvent(Player player) {
+		final String playerName = player.getName();
+		Bukkit.getScheduler().runTaskLater(plg(), () -> {
+			for (ItemHoldActivator ih : Activators.getItemHoldActivatos())
+				setFutureItemHoldCheck(playerName, ih.getItemStr(), false);
+		}, 1);
+	}
+
+
+	private static boolean setFutureItemHoldCheck(final String playerName, final String itemStr, boolean repeat) {
+		@SuppressWarnings("deprecation")
+		Player player = Bukkit.getPlayerExact(playerName);
+		if (player == null || !player.isOnline() || player.isDead()) return false;
+		ItemStack itemInHand = player.getInventory().getItemInMainHand();
+		if (itemInHand == null || itemInHand.getType() == Material.AIR) return false;
+		String rg = "ih-" + itemStr;
+		if (!isTimeToRaiseEvent(player, rg, Cfg.itemHoldRecheck, repeat)) return false;
+		if (!ItemUtil.compareItemStr(itemInHand, itemStr)) return false;
+		ItemHoldEvent ihe = new ItemHoldEvent(player);
+		Bukkit.getServer().getPluginManager().callEvent(ihe);
+
+		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemHoldCheck(playerName, itemStr, true), 20 * Cfg.itemHoldRecheck);
+		return true;
+	}
+
+	public static boolean isTimeToRaiseEvent(Player p, String id, int seconds, boolean repeat) {
+		Long curtime = System.currentTimeMillis();
+		Long prevtime = p.hasMetadata("reactions-rchk-" + id) ? p.getMetadata("reactions-rchk-" + id).get(0).asLong() : 0;
+		boolean needUpdate = repeat || ((curtime - prevtime) >= (1000 * seconds));
+		if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(plg(), curtime));
+		return needUpdate;
+	}
+
+	public static boolean raiseMessageEvent(CommandSender sender, MessageActivator.Source source, String message) {
+		Player player = sender != null && (sender instanceof Player) ? (Player) sender : null;
+		for (MessageActivator a : Activators.getMessageActivators()) {
+			if (a.filterMessage(source, message)) {
+				MessageEvent me = new MessageEvent(player, a, message);
+				Bukkit.getServer().getPluginManager().callEvent(me);
+				return me.isCancelled();
+			}
+		}
+		return false;
+	}
+
+	public static void raiseVariableEvent(String var, String playerName, String newValue, String prevValue) {
+		if (newValue.equalsIgnoreCase(prevValue)) return;
+		@SuppressWarnings("deprecation")
+		Player player = Bukkit.getPlayerExact(playerName);
+		if (!playerName.isEmpty() && player == null) return;
+		VariableEvent ve = new VariableEvent(player, var, newValue, prevValue);
+		Bukkit.getServer().getPluginManager().callEvent(ve);
+	}
+
+	public static boolean raiseMobDamageEvent(EntityDamageEvent event, Player damager) {
+		if (damager == null) return false;
+		if (!(event.getEntity() instanceof LivingEntity)) return false;
+		double damage = event.getDamage();
+		MobDamageEvent mde = new MobDamageEvent((LivingEntity) event.getEntity(), damager, damage, event.getCause());
+		Bukkit.getServer().getPluginManager().callEvent(mde);
+		event.setDamage(mde.getDamage());
+		return mde.isCancelled();
+	}
+
+	public static void raiseQuitEvent(PlayerQuitEvent event) {
+		QuitEvent qu = new QuitEvent(event.getPlayer(), event.getQuitMessage());
+		Bukkit.getServer().getPluginManager().callEvent(qu);
+		event.setQuitMessage(qu.getQuitMessage() == null || qu.getQuitMessage().isEmpty() ? null : ChatColor.translateAlternateColorCodes('&', qu.getQuitMessage()));
+	}
+
+	public static boolean raiseBlockClickEvent(PlayerInteractEvent event) {
+		boolean leftClick;
+		if (event.getAction() == Action.RIGHT_CLICK_BLOCK) leftClick = false;
+		else if (event.getAction() == Action.LEFT_CLICK_BLOCK) leftClick = true;
+		else return false;
+		if (event.getHand() != EquipmentSlot.HAND) {
+			return false;
+		}
+		BlockClickEvent e = new BlockClickEvent(event.getPlayer(), event.getClickedBlock(), leftClick);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+	public static boolean raiseInventoryClickEvent(InventoryClickEvent event) {
+		Player p = (Player) event.getWhoClicked();
+		ItemStack oldItem = event.getCurrentItem();
+		PlayerInventoryClickEvent e = new PlayerInventoryClickEvent(p, event.getAction(), event.getClick(), event.getInventory(), event.getSlotType(), event.getCurrentItem(), event.getHotbarButton(), event.getView(), event.getSlot());
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		ItemStack newItemStack = e.getItemStack();
+		if (newItemStack != null) {
+			if (newItemStack.getType() != Material.AIR && newItemStack.getAmount() <= 1 && oldItem != null) {
+				newItemStack.setAmount(oldItem.getAmount());
+			}
+			if (!(event instanceof InventoryCreativeEvent)) event.setCurrentItem(newItemStack);
+		}
+		return e.isCancelled();
+	}
+
+	public static boolean raiseDropEvent(PlayerDropItemEvent event) {
+		Item item = event.getItemDrop();
+		Player player = event.getPlayer();
+		double pickupDelay = item.getPickupDelay();
+		DropEvent e = new DropEvent(player, event.getItemDrop(), pickupDelay);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		e.setPickupDelay(e.getPickupDelay());
+		ItemStack newItemStack = e.getItemStack();
+		if (newItemStack != null && newItemStack.getType() == Material.AIR) {
+			item.remove();
+		} else if (newItemStack != null) {
+			ItemStack itemStack = item.getItemStack();
+			if (newItemStack.getAmount() > 1) {
+				for (int i = 0; i < newItemStack.getAmount(); i++) {
+					item.setItemStack(new ItemStack(newItemStack.clone()));
+				}
+			} else {
+				itemStack.setType(newItemStack.getType());
+				if (newItemStack.getData() != null) itemStack.setData(newItemStack.getData());
+				if (newItemStack.getItemMeta() != null) itemStack.setItemMeta(newItemStack.getItemMeta());
+				ItemUtil.setDurability(itemStack, ItemUtil.getDurability(newItemStack));
+			}
+		}
+		return e.isCancelled();
+	}
+
+	public static boolean raiseFlightEvent(PlayerToggleFlightEvent event) {
+		FlightEvent e = new FlightEvent(event.getPlayer(), event.isFlying());
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+	public static boolean raiseEntityClickEvent(PlayerInteractEntityEvent event) {
+		if (event.getHand() != EquipmentSlot.HAND) return false;
+		EntityClickEvent e = new EntityClickEvent(event.getPlayer(), event.getRightClicked());
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+	public static boolean raiseBlockBreakEvent(BlockBreakEvent event) {
+		boolean isDropItems = event.isDropItems();
+		PlayerBlockBreakEvent e = new PlayerBlockBreakEvent(event.getPlayer(), event.getBlock(), isDropItems);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		event.setDropItems(e.isDropItems());
+		return e.isCancelled();
+	}
+
+	public static boolean raiseSneakEvent(PlayerToggleSneakEvent event) {
+		SneakEvent e = new SneakEvent(event.getPlayer(), event.isSneaking());
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+	public static boolean raisePlayerDamageByMobEvent(EntityDamageByEntityEvent event) {
+		if (!(event.getEntity() instanceof LivingEntity)) return false;
+		DamageByMobEvent dm = new DamageByMobEvent((Player) event.getEntity(), event.getDamager(), event.getDamage(), event.getCause());
+		Bukkit.getServer().getPluginManager().callEvent(dm);
+		event.setDamage(dm.getDamage());
+		return dm.isCancelled();
+	}
+
+	public static boolean raisePlayerDamageByBlockEvent(EntityDamageByBlockEvent event, Block blockDamager) {
+		if (!(event.getEntity() instanceof LivingEntity))
+			return false;
+		double damage = event.getDamage();
+		DamageByBlockEvent db = new DamageByBlockEvent((Player) event.getEntity(), blockDamager, damage, event.getCause());
+		Bukkit.getServer().getPluginManager().callEvent(db);
+		event.setDamage(db.getDamage());
+		return db.isCancelled();
+	}
+
+	public static boolean raisePlayerDamageEvent(EntityDamageEvent event, String source) {
+		if (!(event.getEntity() instanceof LivingEntity))
+			return false;
+		double damage = event.getDamage();
+		DamageEvent de = new DamageEvent((Player) event.getEntity(), damage, event.getCause(), source);
+		Bukkit.getServer().getPluginManager().callEvent(de);
+		event.setDamage(de.getDamage());
+		return de.isCancelled();
+	}
+
+	public static boolean raiseEntityChangeBlockEvent(EntityChangeBlockEvent event) {
+		if (event.getEntity() instanceof FallingBlock) {
+			FallingBlock fb = (FallingBlock) event.getEntity();
+			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+				for (Entity e : p.getNearbyEntities(0.5D, 1.0D, 0.5D)) {
+					if ((e instanceof FallingBlock) && fb == e) {
+						//noinspection deprecation
+						Bukkit.getPluginManager().callEvent(new EntityDamageByEntityEvent(e, p, EntityDamageEvent.DamageCause.FALLING_BLOCK, 0));
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean raiseProjectileHitEvent(ProjectileHitEvent event) {
+		Entity hitEntity = event.getHitEntity();
+		if (hitEntity == null || !(hitEntity instanceof Player))
+			return false;
+		Player player = (Player) hitEntity;
+		Entity entity = event.getEntity();
+		// TODO PlayerProjectileHit activator
+		return false;
+	}
+
+	public static boolean raisePlayerPickupItemEvent(EntityPickupItemEvent event) {
+		Item item = event.getItem();
+		if(event.getEntityType() != EntityType.PLAYER)
+			return false;
+		Player player = (Player) event.getEntity();
+		int pickupDelay = item.getPickupDelay();
+		PickupItemEvent e = new PickupItemEvent(player, event.getItem(), pickupDelay);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		item.setPickupDelay(e.getPickupDelay());
+		ItemStack newItemStack = e.getItemStack();
+		if (newItemStack != null && newItemStack.getType() == Material.AIR) {
+			e.setCancelled(true);
+			item.remove();
+		} else if (newItemStack != null) {
+			ItemStack itemStack = item.getItemStack();
+			if (newItemStack.getAmount() > 1) {
+				e.setCancelled(true);
+				item.remove();
+				ItemUtil.giveItemOrDrop(player, newItemStack);
+			} else {
+				itemStack.setType(newItemStack.getType());
+				if (newItemStack.getData() != null) itemStack.setData(newItemStack.getData());
+				if (newItemStack.getItemMeta() != null) itemStack.setItemMeta(newItemStack.getItemMeta());
+				ItemUtil.setDurability(itemStack, ItemUtil.getDurability(newItemStack));
+			}
+		}
+		return e.isCancelled();
+	}
+
+	public static boolean raisePlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
+		GameModeEvent e = new GameModeEvent(event.getPlayer(), event.getNewGameMode());
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+	public static boolean raisePlayerGodChangeEvent(Player player, boolean god) {
+		GodEvent e = new GodEvent(player, god);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
+
+	public static boolean raiseItemHeldEvent(Player player, int newSlot, int previousSlot) {
+		ItemHeldEvent e = new ItemHeldEvent(player, newSlot, previousSlot);
+		Bukkit.getServer().getPluginManager().callEvent(e);
+		return e.isCancelled();
+	}
 }

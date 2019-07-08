@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -35,19 +35,19 @@ import org.bukkit.entity.Player;
  */
 public class FlagIsFactionRelPlayerAround extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!Externals.isConnectedFactions()) return false;
-        String[] params = param.split("\\s");
-        double radius = Double.valueOf(params[0].trim());
-        String targetRel = params[1].trim();
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!Externals.isConnectedFactions()) return false;
+		String[] params = param.split("\\s");
+		double radius = Double.valueOf(params[0].trim());
+		String targetRel = params[1].trim();
 
-        for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
-            if (!(entity instanceof Player)) continue;
-            String curTargetFaction = RaFactions.getPlayerFaction((Player) entity);
+		for (Entity entity : player.getNearbyEntities(radius, radius, radius)) {
+			if (!(entity instanceof Player)) continue;
+			String curTargetFaction = RaFactions.getPlayerFaction((Player) entity);
 
-            if (RaFactions.getRelationWith(player, curTargetFaction).equalsIgnoreCase(targetRel)) return true;
-        }
-        return false;
-    }
+			if (RaFactions.getRelationWith(player, curTargetFaction).equalsIgnoreCase(targetRel)) return true;
+		}
+		return false;
+	}
 }

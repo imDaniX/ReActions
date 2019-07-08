@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,16 +28,16 @@ import org.bukkit.entity.Player;
 
 public class FlagPvp extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!player.hasMetadata("reactions-pvp-time")) return false;
-        Param params = new Param(param, "time");
-        String timeStr = params.getParam("time");
-        Long delay = Util.parseTime(timeStr);
-        if (delay == 0) return false;
-        Long curtime = System.currentTimeMillis();
-        Long pvptime = player.getMetadata("reactions-pvp-time").get(0).asLong();
-        return ((curtime - pvptime) < delay);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!player.hasMetadata("reactions-pvp-time")) return false;
+		Param params = new Param(param, "time");
+		String timeStr = params.getParam("time");
+		Long delay = Util.parseTime(timeStr);
+		if (delay == 0) return false;
+		Long curtime = System.currentTimeMillis();
+		Long pvptime = player.getMetadata("reactions-pvp-time").get(0).asLong();
+		return ((curtime - pvptime) < delay);
+	}
 
 }

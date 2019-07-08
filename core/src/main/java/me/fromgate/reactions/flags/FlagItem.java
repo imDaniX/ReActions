@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -31,67 +31,67 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class FlagItem extends Flag {
-    private int flagType = 0;
+	private int flagType = 0;
 
-    public FlagItem(int flagType) {
-        this.flagType = flagType;
-    }
+	public FlagItem(int flagType) {
+		this.flagType = flagType;
+	}
 
-    @Override
-    public boolean checkFlag(Player player, String itemStr) {
-        switch (flagType) {
-            case 0:
-                ItemStack inHand = player.getInventory().getItemInMainHand();
-                Variables.setTempVar("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
-                return ItemUtil.compareItemStr(inHand, itemStr, true);
-            case 1:
-                return hasItemInInventory(player, itemStr);
-            case 2:
-                return isItemWeared(player, itemStr);
-            case 3:
-                ItemStack inOffhand = player.getInventory().getItemInOffHand();
-                Variables.setTempVar("item_amount", inOffhand == null ? "0" : String.valueOf(inOffhand.getAmount()));
-                return ItemUtil.compareItemStr(inOffhand, itemStr, true);
-        }
-        return false;
-    }
+	@Override
+	public boolean checkFlag(Player player, String itemStr) {
+		switch (flagType) {
+			case 0:
+				ItemStack inHand = player.getInventory().getItemInMainHand();
+				Variables.setTempVar("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
+				return ItemUtil.compareItemStr(inHand, itemStr, true);
+			case 1:
+				return hasItemInInventory(player, itemStr);
+			case 2:
+				return isItemWeared(player, itemStr);
+			case 3:
+				ItemStack inOffhand = player.getInventory().getItemInOffHand();
+				Variables.setTempVar("item_amount", inOffhand == null ? "0" : String.valueOf(inOffhand.getAmount()));
+				return ItemUtil.compareItemStr(inOffhand, itemStr, true);
+		}
+		return false;
+	}
 
-    public boolean isItemWeared(Player player, String itemStr) {
-        for (ItemStack armour : player.getInventory().getArmorContents())
-            if (ItemUtil.compareItemStr(armour, itemStr)) return true;
-        return false;
-    }
+	public boolean isItemWeared(Player player, String itemStr) {
+		for (ItemStack armour : player.getInventory().getArmorContents())
+			if (ItemUtil.compareItemStr(armour, itemStr)) return true;
+		return false;
+	}
 
-    private boolean hasItemInInventory(Player player, String itemStr) {
-        Param params = new Param(itemStr);
+	private boolean hasItemInInventory(Player player, String itemStr) {
+		Param params = new Param(itemStr);
 
-        if (!params.isParamsExists("slot", "item")) {
-            return ItemUtil.hasItemInInventory(player, itemStr);
-        }
+		if (!params.isParamsExists("slot", "item")) {
+			return ItemUtil.hasItemInInventory(player, itemStr);
+		}
 
-        String slotStr = params.getParam("slot", "");
-        if (slotStr.isEmpty()) return false;
-        int slotNum = Util.isInteger(slotStr) ? Integer.parseInt(slotStr) : -1;
-        if (slotNum >= player.getInventory().getSize()) return false;
+		String slotStr = params.getParam("slot", "");
+		if (slotStr.isEmpty()) return false;
+		int slotNum = Util.isInteger(slotStr) ? Integer.parseInt(slotStr) : -1;
+		if (slotNum >= player.getInventory().getSize()) return false;
 
-        VirtualItem vi = null;
+		VirtualItem vi = null;
 
-        if (slotNum < 0) {
-            if (slotStr.equalsIgnoreCase("helm") || slotStr.equalsIgnoreCase("helmet"))
-                vi = ItemUtil.itemFromItemStack(player.getInventory().getHelmet());
-            else if (slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest"))
-                vi = ItemUtil.itemFromItemStack(player.getInventory().getChestplate());
-            else if (slotStr.equalsIgnoreCase("Leggings") || slotStr.equalsIgnoreCase("Leg"))
-                vi = ItemUtil.itemFromItemStack(player.getInventory().getLeggings());
-            else if (slotStr.equalsIgnoreCase("boot") || slotStr.equalsIgnoreCase("boots"))
-                ItemUtil.itemFromItemStack(player.getInventory().getBoots());
-        } else vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
+		if (slotNum < 0) {
+			if (slotStr.equalsIgnoreCase("helm") || slotStr.equalsIgnoreCase("helmet"))
+				vi = ItemUtil.itemFromItemStack(player.getInventory().getHelmet());
+			else if (slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest"))
+				vi = ItemUtil.itemFromItemStack(player.getInventory().getChestplate());
+			else if (slotStr.equalsIgnoreCase("Leggings") || slotStr.equalsIgnoreCase("Leg"))
+				vi = ItemUtil.itemFromItemStack(player.getInventory().getLeggings());
+			else if (slotStr.equalsIgnoreCase("boot") || slotStr.equalsIgnoreCase("boots"))
+				ItemUtil.itemFromItemStack(player.getInventory().getBoots());
+		} else vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
 
-        // vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
+		// vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
 
-        if (vi == null) return false;
+		if (vi == null) return false;
 
-        return vi.compare(itemStr);
-    }
+		return vi.compare(itemStr);
+	}
 
 }

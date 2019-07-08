@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,49 +29,49 @@ import org.bukkit.util.Vector;
 import java.util.regex.Pattern;
 
 public class ActionVelocity extends Action {
-    private final static Pattern FLOAT = Pattern.compile("-?[0-9]+(\\.?[0-9]*)?");
+	private final static Pattern FLOAT = Pattern.compile("-?[0-9]+(\\.?[0-9]*)?");
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        Vector v = setPlayerVelocity(p, params);
-        if (v == null) return false;
-        this.setMessageParam("[" + v.getBlockX() + ", " + v.getBlockY() + ", " + v.getBlockZ() + "]");
-        return true;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		Vector v = setPlayerVelocity(p, params);
+		if (v == null) return false;
+		this.setMessageParam("[" + v.getBlockX() + ", " + v.getBlockY() + ", " + v.getBlockZ() + "]");
+		return true;
+	}
 
-    private Vector setPlayerVelocity(Player p, Param params) {
-        String velstr;
-        boolean kick = false;
-        if (params.isParamsExists("param")) {
-            velstr = params.getParam("param", "");
-        } else {
-            velstr = params.getParam("vector", "");
-            if (velstr.isEmpty()) velstr = params.getParam("direction", "");
-            kick = params.getParam("kick", false);
-        }
+	private Vector setPlayerVelocity(Player p, Param params) {
+		String velstr;
+		boolean kick = false;
+		if (params.isParamsExists("param")) {
+			velstr = params.getParam("param", "");
+		} else {
+			velstr = params.getParam("vector", "");
+			if (velstr.isEmpty()) velstr = params.getParam("direction", "");
+			kick = params.getParam("kick", false);
+		}
 
-        if (velstr.isEmpty()) return null;
-        Vector v = p.getVelocity();
-        String[] ln = velstr.split(",");
-        if ((ln.length == 1) && (FLOAT.matcher(velstr).matches())) {
-            double power = Double.parseDouble(velstr);
-            v.setY(Math.min(10, kick ? power * p.getVelocity().getY() : power));
-        } else if ((ln.length == 3) &&
-                FLOAT.matcher(ln[0]).matches() &&
-                FLOAT.matcher(ln[1]).matches() &&
-                FLOAT.matcher(ln[2]).matches()) {
-            double powerx = Double.parseDouble(ln[0]);
-            double powery = Double.parseDouble(ln[1]);
-            double powerz = Double.parseDouble(ln[2]);
-            if (kick) {
-                v = p.getLocation().getDirection();
-                v = v.normalize();
-                v = v.multiply(new Vector(powerx, powery, powerz));
-                p.setFallDistance(0);
-            } else v = new Vector(Math.min(10, powerx), Math.min(10, powery), Math.min(10, powerz));
-        }
-        p.setVelocity(v);
-        return v;
-    }
+		if (velstr.isEmpty()) return null;
+		Vector v = p.getVelocity();
+		String[] ln = velstr.split(",");
+		if ((ln.length == 1) && (FLOAT.matcher(velstr).matches())) {
+			double power = Double.parseDouble(velstr);
+			v.setY(Math.min(10, kick ? power * p.getVelocity().getY() : power));
+		} else if ((ln.length == 3) &&
+				FLOAT.matcher(ln[0]).matches() &&
+				FLOAT.matcher(ln[1]).matches() &&
+				FLOAT.matcher(ln[2]).matches()) {
+			double powerx = Double.parseDouble(ln[0]);
+			double powery = Double.parseDouble(ln[1]);
+			double powerz = Double.parseDouble(ln[2]);
+			if (kick) {
+				v = p.getLocation().getDirection();
+				v = v.normalize();
+				v = v.multiply(new Vector(powerx, powery, powerz));
+				p.setFallDistance(0);
+			} else v = new Vector(Math.min(10, powerx), Math.min(10, powery), Math.min(10, powerz));
+		}
+		p.setVelocity(v);
+		return v;
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -25,5 +25,5 @@ package me.fromgate.reactions.flags;
 import org.bukkit.entity.Player;
 
 public abstract class Flag {
-    public abstract boolean checkFlag(Player player, String param);
+	public abstract boolean checkFlag(Player player, String param);
 }

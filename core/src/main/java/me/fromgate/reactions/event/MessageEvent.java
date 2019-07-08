@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,22 +27,22 @@ import me.fromgate.reactions.activators.MessageActivator;
 import org.bukkit.entity.Player;
 
 public class MessageEvent extends RAEvent {
-    MessageActivator activator;
-    String message;
+	MessageActivator activator;
+	String message;
 
 
-    public MessageEvent(Player player, MessageActivator activator, String message) {
-        super(player);
-        this.activator = activator;
-        this.message = message;
-    }
+	public MessageEvent(Player player, MessageActivator activator, String message) {
+		super(player);
+		this.activator = activator;
+		this.message = message;
+	}
 
-    public boolean isForActivator(MessageActivator messageActivator) {
-        return (this.activator.equals(messageActivator));
-    }
+	public boolean isForActivator(MessageActivator messageActivator) {
+		return (this.activator.equals(messageActivator));
+	}
 
-    public String getMessage() {
-        return this.message;
-    }
+	public String getMessage() {
+		return this.message;
+	}
 
 }

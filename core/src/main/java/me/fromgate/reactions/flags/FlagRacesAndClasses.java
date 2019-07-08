@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,16 +27,16 @@ import org.bukkit.entity.Player;
 
 public class FlagRacesAndClasses extends Flag {
 
-    private boolean checkRace;
+	private boolean checkRace;
 
-    public FlagRacesAndClasses(boolean checkRace) {
-        this.checkRace = checkRace;
-    }
+	public FlagRacesAndClasses(boolean checkRace) {
+		this.checkRace = checkRace;
+	}
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!RaRacesAndClasses.isEnabled()) return false;
-        return this.checkRace ? RaRacesAndClasses.checkRace(player, param) : RaRacesAndClasses.checkClass(player, param);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!RaRacesAndClasses.isEnabled()) return false;
+		return this.checkRace ? RaRacesAndClasses.checkRace(player, param) : RaRacesAndClasses.checkClass(player, param);
+	}
 
 }

@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -25,18 +25,18 @@ package me.fromgate.reactions.event;
 import org.bukkit.entity.Player;
 
 public class QuitEvent extends RAEvent {
-    private String quitMessage;
+	private String quitMessage;
 
-    public QuitEvent(Player p, String quitMessage) {
-        super(p);
-        this.quitMessage = quitMessage;
-    }
+	public QuitEvent(Player p, String quitMessage) {
+		super(p);
+		this.quitMessage = quitMessage;
+	}
 
-    public String getQuitMessage() {
-        return this.quitMessage == null ? "" : this.quitMessage;
-    }
+	public String getQuitMessage() {
+		return this.quitMessage == null ? "" : this.quitMessage;
+	}
 
-    public void setQuiteMessage(String quitMessage) {
-        this.quitMessage = quitMessage == null ? "" : quitMessage;
-    }
+	public void setQuiteMessage(String quitMessage) {
+		this.quitMessage = quitMessage == null ? "" : quitMessage;
+	}
 }

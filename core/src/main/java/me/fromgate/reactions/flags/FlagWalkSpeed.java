@@ -8,12 +8,12 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 5/4/2017.
  */
 public class FlagWalkSpeed extends Flag {
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!Util.isInteger(param)) return false;
-        long walkSpeed = Math.round(player.getWalkSpeed() * 10);
-        Variables.setTempVar("walkspeed", Integer.toString((int) walkSpeed));
-        return walkSpeed >= Integer.parseInt(param);
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!Util.isInteger(param)) return false;
+		long walkSpeed = Math.round(player.getWalkSpeed() * 10);
+		Variables.setTempVar("walkspeed", Integer.toString((int) walkSpeed));
+		return walkSpeed >= Integer.parseInt(param);
 
-    }
+	}
 }

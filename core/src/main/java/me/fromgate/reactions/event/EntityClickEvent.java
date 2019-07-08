@@ -8,15 +8,15 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class EntityClickEvent extends RAEvent {
-    private Entity entity;
+	private Entity entity;
 
-    public EntityClickEvent(Player p, Entity entity) {
-        super(p);
-        this.entity = entity;
-    }
+	public EntityClickEvent(Player p, Entity entity) {
+		super(p);
+		this.entity = entity;
+	}
 
-    public Entity getEntity() {
-        return this.entity;
-    }
+	public Entity getEntity() {
+		return this.entity;
+	}
 
 }

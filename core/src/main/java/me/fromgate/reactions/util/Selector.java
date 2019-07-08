@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -29,23 +29,23 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Selector {
-    private static Map<String, Location> locs = new HashMap<>();
+	private static Map<String, Location> locs = new HashMap<>();
 
-    public static void selectLocation(Player p, Location loc) {
-        if (p == null) return;
-        if (loc == null) loc = p.getTargetBlock(null, 100).getLocation();
-        locs.put(p.getName(), loc);
-    }
+	public static void selectLocation(Player p, Location loc) {
+		if (p == null) return;
+		if (loc == null) loc = p.getTargetBlock(null, 100).getLocation();
+		locs.put(p.getName(), loc);
+	}
 
-    public static Location getSelectedLocation(Player p) {
-        if (p != null && locs.containsKey(p.getName())) return locs.get(p.getName());
-        return null;
-    }
+	public static Location getSelectedLocation(Player p) {
+		if (p != null && locs.containsKey(p.getName())) return locs.get(p.getName());
+		return null;
+	}
 
-    public static String getSelectedStrLoc(Player p) {
-        Location loc = getSelectedLocation(p);
-        if (loc == null) return "";
-        return Locator.locationToString(loc);
-    }
+	public static String getSelectedStrLoc(Player p) {
+		Location loc = getSelectedLocation(p);
+		if (loc == null) return "";
+		return Locator.locationToString(loc);
+	}
 
 }

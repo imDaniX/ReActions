@@ -9,15 +9,15 @@ import java.util.Set;
 @SelectorDefine(key = "perm")
 public class PermPlayers extends PlayerSelector {
 
-    @Override
-    public Set<Player> selectPlayers(String param) {
-        Set<Player> players = new HashSet<>();
-        if (param.isEmpty()) return players;
-        String[] perms = param.split(",\\s*");
-        for (Player player : Bukkit.getOnlinePlayers())
-            for (String p : perms)
-                if (player.hasPermission(p)) players.add(player);
-        return players;
-    }
+	@Override
+	public Set<Player> selectPlayers(String param) {
+		Set<Player> players = new HashSet<>();
+		if (param.isEmpty()) return players;
+		String[] perms = param.split(",\\s*");
+		for (Player player : Bukkit.getOnlinePlayers())
+			for (String p : perms)
+				if (player.hasPermission(p)) players.add(player);
+		return players;
+	}
 
 }

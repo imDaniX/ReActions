@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,13 +28,13 @@ import org.bukkit.entity.Player;
 
 public class FlagChance extends Flag {
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        Variables.setTempVar("CHANCE", param + "%");
-        int d = 50;
-        if (Util.isInteger(param)) d = Integer.parseInt(param);
-        d = Math.max(Math.min(d, 100), 0);
-        return Util.rollDiceChance(d);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		Variables.setTempVar("CHANCE", param + "%");
+		int d = 50;
+		if (Util.isInteger(param)) d = Integer.parseInt(param);
+		d = Math.max(Math.min(d, 100), 0);
+		return Util.rollDiceChance(d);
+	}
 
 }

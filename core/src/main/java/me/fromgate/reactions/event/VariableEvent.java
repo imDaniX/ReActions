@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -25,26 +25,26 @@ package me.fromgate.reactions.event;
 import org.bukkit.entity.Player;
 
 public class VariableEvent extends RAEvent {
-    String id;
-    String newValue;
-    String oldValue;
+	String id;
+	String newValue;
+	String oldValue;
 
-    public VariableEvent(Player player, String var, String newValue, String prevValue) {
-        super(player);
-        this.id = var;
-        this.newValue = newValue;
-        this.oldValue = prevValue;
-    }
+	public VariableEvent(Player player, String var, String newValue, String prevValue) {
+		super(player);
+		this.id = var;
+		this.newValue = newValue;
+		this.oldValue = prevValue;
+	}
 
-    public String getVariableId() {
-        return this.id;
-    }
+	public String getVariableId() {
+		return this.id;
+	}
 
-    public String getOldValue() {
-        return this.oldValue;
-    }
+	public String getOldValue() {
+		return this.oldValue;
+	}
 
-    public String getNewValue() {
-        return this.newValue;
-    }
+	public String getNewValue() {
+		return this.newValue;
+	}
 }

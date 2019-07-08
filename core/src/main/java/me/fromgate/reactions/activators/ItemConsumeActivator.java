@@ -35,76 +35,76 @@ import org.bukkit.event.Event;
 
 public class ItemConsumeActivator extends Activator {
 
-    private String item;
+	private String item;
 
 
-    public ItemConsumeActivator(String name, String group, YamlConfiguration cfg) {
-        super(name, group, cfg);
-    }
+	public ItemConsumeActivator(String name, String group, YamlConfiguration cfg) {
+		super(name, group, cfg);
+	}
 
-    public ItemConsumeActivator(String name, String item) {
-        super(name, "activators");
-        this.item = item;
-    }
+	public ItemConsumeActivator(String name, String item) {
+		super(name, "activators");
+		this.item = item;
+	}
 
-    public boolean activate(Event event) {
-        if (!this.item.isEmpty() && ItemUtil.parseItemStack(this.item) != null) {
-            if (event instanceof ItemConsumeEvent) {
-                ItemConsumeEvent ie = (ItemConsumeEvent) event;
-                if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
-                    VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
-                    if (vi != null) {
-                        Variables.setTempVar("item", vi.toString());
-                        Variables.setTempVar("item-str", vi.toDisplayString());
-                    }
+	public boolean activate(Event event) {
+		if (!this.item.isEmpty() && ItemUtil.parseItemStack(this.item) != null) {
+			if (event instanceof ItemConsumeEvent) {
+				ItemConsumeEvent ie = (ItemConsumeEvent) event;
+				if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
+					VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
+					if (vi != null) {
+						Variables.setTempVar("item", vi.toString());
+						Variables.setTempVar("item-str", vi.toDisplayString());
+					}
 
-                    return Actions.executeActivator(ie.getPlayer(), this);
-                }
-            }
+					return Actions.executeActivator(ie.getPlayer(), this);
+				}
+			}
 
-            return false;
-        } else {
-            Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
-            return false;
-        }
-    }
+			return false;
+		} else {
+			Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
+			return false;
+		}
+	}
 
-    public boolean isLocatedAt(Location loc) {
-        return false;
-    }
+	public boolean isLocatedAt(Location loc) {
+		return false;
+	}
 
-    public void save(String root, YamlConfiguration cfg) {
-        cfg.set(root + ".item", this.item);
-    }
+	public void save(String root, YamlConfiguration cfg) {
+		cfg.set(root + ".item", this.item);
+	}
 
-    public void load(String root, YamlConfiguration cfg) {
-        this.item = cfg.getString(root + ".item");
-    }
+	public void load(String root, YamlConfiguration cfg) {
+		this.item = cfg.getString(root + ".item");
+	}
 
-    public ActivatorType getType() {
-        return ActivatorType.ITEM_CONSUME;
-    }
+	public ActivatorType getType() {
+		return ActivatorType.ITEM_CONSUME;
+	}
 
-    @Override
-    public boolean isValid() {
-        return !Util.emptySting(item);
-    }
+	@Override
+	public boolean isValid() {
+		return !Util.emptySting(item);
+	}
 
-    public String toString() {
-        StringBuilder sb = (new StringBuilder(this.name)).append(" [").append(this.getType()).append("]");
-        if (!this.getFlags().isEmpty()) {
-            sb.append(" F:").append(this.getFlags().size());
-        }
+	public String toString() {
+		StringBuilder sb = (new StringBuilder(this.name)).append(" [").append(this.getType()).append("]");
+		if (!this.getFlags().isEmpty()) {
+			sb.append(" F:").append(this.getFlags().size());
+		}
 
-        if (!this.getActions().isEmpty()) {
-            sb.append(" A:").append(this.getActions().size());
-        }
+		if (!this.getActions().isEmpty()) {
+			sb.append(" A:").append(this.getActions().size());
+		}
 
-        if (!this.getReactions().isEmpty()) {
-            sb.append(" R:").append(this.getReactions().size());
-        }
+		if (!this.getReactions().isEmpty()) {
+			sb.append(" R:").append(this.getReactions().size());
+		}
 
-        sb.append(" (").append(this.item).append(")");
-        return sb.toString();
-    }
+		sb.append(" (").append(this.item).append(")");
+		return sb.toString();
+	}
 }

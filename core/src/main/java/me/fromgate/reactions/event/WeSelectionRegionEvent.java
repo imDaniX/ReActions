@@ -6,24 +6,24 @@ import org.bukkit.entity.Player;
 
 public class WeSelectionRegionEvent extends RAEvent {
 
-    private WeSelection selection;
+	private WeSelection selection;
 
-    /*private Region region;
-    private Selection selection; */
+	/*private Region region;
+	private Selection selection; */
 
-    public WeSelectionRegionEvent(Player player, Region selection, Region region) {
-        super(player);
-        // this.selection = selection;
-        // this.region = region;
-    }
+	public WeSelectionRegionEvent(Player player, Region selection, Region region) {
+		super(player);
+		// this.selection = selection;
+		// this.region = region;
+	}
 
-    public WeSelectionRegionEvent(Player player, WeSelection weSelection) {
-        super(player);
-        this.selection = weSelection;
-    }
+	public WeSelectionRegionEvent(Player player, WeSelection weSelection) {
+		super(player);
+		this.selection = weSelection;
+	}
 
-    public WeSelection getSelection() {
-        return this.selection;
-    }
+	public WeSelection getSelection() {
+		return this.selection;
+	}
 
 }

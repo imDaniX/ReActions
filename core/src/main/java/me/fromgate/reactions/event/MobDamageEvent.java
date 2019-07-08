@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,32 +27,32 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class MobDamageEvent extends RAEvent {
-    private LivingEntity mob;
-    private double damage;
-    private DamageCause cause;
+	private LivingEntity mob;
+	private double damage;
+	private DamageCause cause;
 
 
-    public MobDamageEvent(LivingEntity entity, Player damager, double damage, DamageCause cause) {
-        super(damager);
-        this.mob = entity;
-        this.damage = damage;
-        this.cause = cause;
-    }
+	public MobDamageEvent(LivingEntity entity, Player damager, double damage, DamageCause cause) {
+		super(damager);
+		this.mob = entity;
+		this.damage = damage;
+		this.cause = cause;
+	}
 
-    public LivingEntity getMob() {
-        return this.mob;
-    }
+	public LivingEntity getMob() {
+		return this.mob;
+	}
 
-    public double getDamage() {
-        return this.damage;
-    }
+	public double getDamage() {
+		return this.damage;
+	}
 
-    public void setDamage(double damage) {
-        this.damage = damage;
-    }
+	public void setDamage(double damage) {
+		this.damage = damage;
+	}
 
-    public DamageCause getCause() {
-        return this.cause;
-    }
+	public DamageCause getCause() {
+		return this.cause;
+	}
 
 }

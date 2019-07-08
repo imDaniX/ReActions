@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,17 +27,17 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class FlagMoney extends Flag {
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        if (!RaEconomics.isEconomyFound()) return false;
-        Param params = new Param(param, "amount");
-        String amountStr = params.getParam("amount", "a");
-        if (!RaEconomics.isFloat(amountStr)) return false;
-        double amount = Double.parseDouble(amountStr);
-        String account = params.getParam("account", params.getParam("player", player == null ? "" : player.getName()));
-        if (account.isEmpty()) return false;
-        String currency = params.getParam("currency", "");
-        String world = params.getParam("world", "");
-        return RaEconomics.hasMoney(account, amount, currency, world);
-    }
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		if (!RaEconomics.isEconomyFound()) return false;
+		Param params = new Param(param, "amount");
+		String amountStr = params.getParam("amount", "a");
+		if (!RaEconomics.isFloat(amountStr)) return false;
+		double amount = Double.parseDouble(amountStr);
+		String account = params.getParam("account", params.getParam("player", player == null ? "" : player.getName()));
+		if (account.isEmpty()) return false;
+		String currency = params.getParam("currency", "");
+		String world = params.getParam("world", "");
+		return RaEconomics.hasMoney(account, amount, currency, world);
+	}
 }

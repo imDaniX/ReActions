@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,27 +28,27 @@ import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
 public class FlagDelay extends Flag {
-    boolean globalDelay = true;
+	boolean globalDelay = true;
 
-    public FlagDelay(boolean globalDelay) {
-        this.globalDelay = globalDelay;
-    }
+	public FlagDelay(boolean globalDelay) {
+		this.globalDelay = globalDelay;
+	}
 
-    @Override
-    public boolean checkFlag(Player player, String param) {
-        String playerName = this.globalDelay ? "" : (player != null ? player.getName() : "");
-        long updateTime = 0;
-        String id = param;
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		String playerName = this.globalDelay ? "" : (player != null ? player.getName() : "");
+		long updateTime = 0;
+		String id = param;
 
-        Param params = new Param(param);
-        if (params.isParamsExists("id")) {
-            id = params.getParam("id");
-            updateTime = Util.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
-            playerName = params.getParam("player", playerName);
-        }
-        boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);
-        Delayer.setTempPlaceholders(playerName, id);
-        return result;
-    }
+		Param params = new Param(param);
+		if (params.isParamsExists("id")) {
+			id = params.getParam("id");
+			updateTime = Util.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
+			playerName = params.getParam("player", playerName);
+		}
+		boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);
+		Delayer.setTempPlaceholders(playerName, id);
+		return result;
+	}
 
 }

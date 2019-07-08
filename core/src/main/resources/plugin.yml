@@ -8,11 +8,9 @@ softdepend: [Vault,Towny,WorldGuard,RacesAndClasses,PlayEffect,Factions,Craftcon
 commands:
    react:
       aliases: [ra,rea,rct]
-      description: Main command of ReActions 
-      usage: 
-           /react help
+      description: Main command of ReActions
+      usage: /react help
    exec:
       aliases: [run]
-      description: execute EXEC-activator  
-      usage: 
-           /exec <ActivatorId> [player:<PlayerSelector>] [delay:<Time>]
+      description: execute EXEC-activator
+      usage: /exec <ActivatorId> [player:<PlayerSelector>] [delay:<Time>]

@@ -8,29 +8,29 @@ import org.bukkit.inventory.ItemStack;
  * Created by MaxDikiy on 2017-05-01.
  */
 public class DropEvent extends RAEvent {
-    private ItemStack itemStack;
-    private Double pickupDelay;
+	private ItemStack itemStack;
+	private Double pickupDelay;
 
-    public DropEvent(Player p, Item item, double pickupDelay) {
-        super(p);
-        this.itemStack = item.getItemStack();
-        this.pickupDelay = pickupDelay;
-    }
+	public DropEvent(Player p, Item item, double pickupDelay) {
+		super(p);
+		this.itemStack = item.getItemStack();
+		this.pickupDelay = pickupDelay;
+	}
 
-    public ItemStack getItemStack() {
-        return this.itemStack;
-    }
+	public ItemStack getItemStack() {
+		return this.itemStack;
+	}
 
-    public void setItemStack(ItemStack itemStack) {
-        this.itemStack = itemStack;
-    }
+	public void setItemStack(ItemStack itemStack) {
+		this.itemStack = itemStack;
+	}
 
-    public Double getPickupDelay() {
-        return this.pickupDelay;
-    }
+	public Double getPickupDelay() {
+		return this.pickupDelay;
+	}
 
-    public void setPickupDelay(Double pickupDelay) {
-        this.pickupDelay = pickupDelay;
-    }
+	public void setPickupDelay(Double pickupDelay) {
+		this.pickupDelay = pickupDelay;
+	}
 
 }

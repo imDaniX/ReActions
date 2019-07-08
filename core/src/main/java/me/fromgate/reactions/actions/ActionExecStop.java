@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,15 +28,15 @@ import org.bukkit.entity.Player;
 
 public class ActionExecStop extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        String player = params.getParam("player", (p == null ? "" : p.getName()));
-        if (player.isEmpty()) return false;
-        String activator = params.getParam("activator", "");
-        if (activator.isEmpty()) return false;
-        Activators.stopExec(player, activator);
-        setMessageParam(activator);
-        return true;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		String player = params.getParam("player", (p == null ? "" : p.getName()));
+		if (player.isEmpty()) return false;
+		String activator = params.getParam("activator", "");
+		if (activator.isEmpty()) return false;
+		Activators.stopExec(player, activator);
+		setMessageParam(activator);
+		return true;
+	}
 
 }

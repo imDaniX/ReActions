@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -27,15 +27,15 @@ import org.bukkit.entity.Player;
 
 
 public class MobClickEvent extends RAEvent {
-    private LivingEntity entity;
+	private LivingEntity entity;
 
-    public MobClickEvent(Player p, LivingEntity entity) {
-        super(p);
-        this.entity = entity;
-    }
+	public MobClickEvent(Player p, LivingEntity entity) {
+		super(p);
+		this.entity = entity;
+	}
 
-    public LivingEntity getMob() {
-        return this.entity;
-    }
+	public LivingEntity getMob() {
+		return this.entity;
+	}
 
 }

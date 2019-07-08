@@ -2,7 +2,7 @@
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
- *    
+ *
  *  This file is part of ReActions.
  *  
  *  ReActions is free software: you can redistribute it and/or modify
@@ -28,25 +28,25 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class DoorEvent extends RAEvent {
-    private Block doorBlock;
+	private Block doorBlock;
 
-    public DoorEvent(Player p, Block block) {
-        super(p);
-        this.doorBlock = block;
-    }
+	public DoorEvent(Player p, Block block) {
+		super(p);
+		this.doorBlock = block;
+	}
 
-    public Block getDoorBlock() {
-        if (BlockUtil.isOpenable(doorBlock)) return doorBlock;
-        return null;
-    }
+	public Block getDoorBlock() {
+		if (BlockUtil.isOpenable(doorBlock)) return doorBlock;
+		return null;
+	}
 
-    public boolean isDoorOpened() {
-        return BlockUtil.isOpen(doorBlock);
-    }
+	public boolean isDoorOpened() {
+		return BlockUtil.isOpen(doorBlock);
+	}
 
-    public Location getDoorLocation() {
-        return doorBlock.getLocation();
-    }
+	public Location getDoorLocation() {
+		return doorBlock.getLocation();
+	}
 
 
 }

@@ -9,17 +9,17 @@ import java.util.List;
 
 public class ActionWait extends Action {
 
-    @Override
-    public boolean execute(Player p, Param params) {
-        return false;
-    }
+	@Override
+	public boolean execute(Player p, Param params) {
+		return false;
+	}
 
-    public void executeDelayed(Player player, final List<ActVal> actions, final boolean isAction, long time) {
-        if (actions.isEmpty()) return;
-        ActionsWaiter.executeDelayed(player, actions, isAction, time);
+	public void executeDelayed(Player player, final List<ActVal> actions, final boolean isAction, long time) {
+		if (actions.isEmpty()) return;
+		ActionsWaiter.executeDelayed(player, actions, isAction, time);
 
 		/*final String playerStr = player!=null? player.getName() : null;
-        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), new Runnable(){
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), new Runnable(){
 			@Override
 			public void run() {
 				@SuppressWarnings("deprecation")
@@ -29,6 +29,6 @@ public class ActionWait extends Action {
 			}
 		}, time); */
 
-    }
+	}
 
 }

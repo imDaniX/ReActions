@@ -3,12 +3,12 @@ defaultTasks 'clean', 'build'
 version = "1.0-SNAPSHOT"
 group = "me.fromgate.reactions"
 buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
-    }
+	repositories {
+		jcenter()
+	}
+	dependencies {
+		classpath 'com.github.jengelman.gradle.plugins:shadow:5.0.0'
+	}
 }
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'java'
@@ -19,57 +19,57 @@ compileJava.targetCompatibility = 1.8
 
 
 repositories {
-    mavenCentral()
-    maven { url "http://repo.maven.apache.org/maven2" }
-    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
-    maven { url "http://repo.nukkit.ru" }
-    maven { url "http://repo.dmulloy2.net/nexus/repository/public/" }
-    maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" }
-    maven { url "http://cnaude.org/repo/" }
-    maven { url "https://repo.codemc.org/repository/maven-public" }
-    maven { url "http://maven.enginehub.org/repo/" }
-    maven { url "https://jitpack.io" }
+	mavenCentral()
+	maven { url "http://repo.maven.apache.org/maven2" }
+	maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+	maven { url "http://repo.nukkit.ru" }
+	maven { url "http://repo.dmulloy2.net/nexus/repository/public/" }
+	maven { url "http://repo.extendedclip.com/content/repositories/placeholderapi/" }
+	maven { url "http://cnaude.org/repo/" }
+	maven { url "https://repo.codemc.org/repository/maven-public" }
+	maven { url "http://maven.enginehub.org/repo/" }
+	maven { url "https://jitpack.io" }
 }
 
 dependencies {
-    compile group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.2.1'
-    compile group: 'com.massivecraft.massivecore', name: 'massivecore', version: '2.9.9'
-    compile group: 'com.massivecraft.factions', name: 'factions', version: '2.9.0'
-    compile group: 'me.fromgate.playeffect', name: 'PlayEffect', version: '1.0-SNAPSHOT'
-    compile group: 'de.tobiyas.racesandclasses', name: 'RacesAndClasses', version: '1.2.1'
-    compile group: 'com.palmergames.bukkit.towny', name: 'Towny', version: '0.9.1'
-    compile group: 'com.greatmancode', name: 'craftconomy3', version: '3.3', ext: 'jar'
-    compile group: 'org.bukkit', name: 'bukkit', version: '1.13.2-R0.1-SNAPSHOT'
-    compile group: 'me.clip', name: 'placeholderapi', version: '2.9.2'
-    compile group: 'org.bstats', name: 'bstats-bukkit-lite', version: '1.5'
-    compile group: 'com.sk89q.worldedit', name: 'worldedit-bukkit', version: '7.0.0-SNAPSHOT'
-    compile group: 'com.sk89q.worldguard', name: 'worldguard-legacy', version: '7.0.0-SNAPSHOT'
-    compile group: 'com.github.MilkBowl', name: 'VaultAPI', version: '1.7'
+	compile group: 'com.comphenix.protocol', name: 'ProtocolLib-API', version: '4.2.1'
+	compile group: 'com.massivecraft.massivecore', name: 'massivecore', version: '2.9.9'
+	compile group: 'com.massivecraft.factions', name: 'factions', version: '2.9.0'
+	compile group: 'me.fromgate.playeffect', name: 'PlayEffect', version: '1.0-SNAPSHOT'
+	compile group: 'de.tobiyas.racesandclasses', name: 'RacesAndClasses', version: '1.2.1'
+	compile group: 'com.palmergames.bukkit.towny', name: 'Towny', version: '0.9.1'
+	compile group: 'com.greatmancode', name: 'craftconomy3', version: '3.3', ext: 'jar'
+	compile group: 'org.bukkit', name: 'bukkit', version: '1.13.2-R0.1-SNAPSHOT'
+	compile group: 'me.clip', name: 'placeholderapi', version: '2.9.2'
+	compile group: 'org.bstats', name: 'bstats-bukkit-lite', version: '1.5'
+	compile group: 'com.sk89q.worldedit', name: 'worldedit-bukkit', version: '7.0.0-SNAPSHOT'
+	compile group: 'com.sk89q.worldguard', name: 'worldguard-legacy', version: '7.0.0-SNAPSHOT'
+	compile group: 'com.github.MilkBowl', name: 'VaultAPI', version: '1.7'
 }
 
 
 sourceSets {
-    core
-    main {
-        java {
-            srcDir 'core/src/main/java'
-        }
-        resources {
-            srcDirs = ['core/src/main/resources']
-        }
-    }
+	core
+	main {
+		java {
+			srcDir 'core/src/main/java'
+		}
+		resources {
+			srcDirs = ['core/src/main/resources']
+		}
+	}
 }
 
 
 jar {
-    from sourceSets.core.output
+	from sourceSets.core.output
 }
 
 shadowJar {
-    shadowJar.archiveFileName = 'ReActions-1.0-SNAPSHOT.jar'
-    relocate 'org.bstats', 'me.fromgate.reactions.externals.bstats'
-    dependencies {
-        include dependency('org.bstats:bstats-bukkit-lite:1.5')
-        include project(':core')
-    }
+	shadowJar.archiveFileName = 'ReActions-1.0-SNAPSHOT.jar'
+	relocate 'org.bstats', 'me.fromgate.reactions.externals.bstats'
+	dependencies {
+		include dependency('org.bstats:bstats-bukkit-lite:1.5')
+		include project(':core')
+	}
 }
