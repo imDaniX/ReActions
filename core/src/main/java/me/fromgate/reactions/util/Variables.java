@@ -25,6 +25,7 @@ package me.fromgate.reactions.util;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.EventManager;
 import me.fromgate.reactions.util.message.Msg;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -192,7 +193,7 @@ public class Variables {
     }
 
     public static void save(String player) {
-        if (Cfg.playerAsynchSaveSelfVarFile) saveAsynch(player);
+        if (Cfg.playerAsynchSaveSelfVarFile) saveAsync(player);
         else savePlayer(player);
     }
 
@@ -218,7 +219,7 @@ public class Variables {
         }
     }
 
-    public static void saveAsynch(String player) {
+    public static void saveAsync(String player) {
         JavaPlugin pluginInstance = ReActions.instance;
         pluginInstance.getServer().getScheduler().runTaskAsynchronously(pluginInstance, () -> savePlayer(player));
     }
@@ -318,7 +319,7 @@ public class Variables {
     }
 
 
-    public static String replacePlaceholders(Player player, String str) {
+    public static String replacePlaceholders(OfflinePlayer player, String str) {
         if (!VARP.matcher(str).matches()) return str;
 
         String newStr = str;
@@ -326,7 +327,7 @@ public class Variables {
             String replacement = vars.get(key);
             replacement = FLOAT_0.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
             if (key.startsWith("general.")) {
-                String id = id = key.substring(8); // key.replaceFirst("general\\.", "");
+                String id = key.substring(8); // key.replaceFirst("general\\.", "");
                 newStr = newStr.replaceAll("(?i)%var:" + Pattern.quote(id) + "%", replacement);
             } else {
                 if (player != null && key.matches(Util.join("(?i)^", player.getName(), "\\..*"))) {

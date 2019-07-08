@@ -1,6 +1,6 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.externals.RaPlaceholderAPI;
+import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;

@@ -1,5 +1,6 @@
 package me.fromgate.reactions.externals;
 
+import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import org.bukkit.Bukkit;
 
