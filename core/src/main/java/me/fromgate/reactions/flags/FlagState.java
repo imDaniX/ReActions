@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.GodMode;
+import me.fromgate.reactions.util.listeners.GodMode;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 

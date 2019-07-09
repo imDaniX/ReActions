@@ -235,10 +235,10 @@ public class EventManager {
 		return false;
 	}
 
-	public static boolean raiseCommandEvent(Player p, String command, boolean canceled) {
+	public static boolean raiseCommandEvent(Player p, String command, boolean cancelled) {
 		if (command.isEmpty()) return false;
 		String[] args = command.split(" ");
-		CommandEvent ce = new CommandEvent(p, command, args, canceled);
+		CommandEvent ce = new CommandEvent(p, command, args, cancelled);
 		Bukkit.getServer().getPluginManager().callEvent(ce);
 		return ce.isCancelled();
 	}

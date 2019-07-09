@@ -115,17 +115,16 @@ public class CommandActivator extends Activator {
 			Variables.setTempVar("args" + count, argStr);
 			Variables.setTempVar("argscount", Integer.toString(count + 1));
 		}
-
 	}
 
 	@Override
 	public boolean activate(Event event) {
 		if (!(event instanceof CommandEvent)) return false;
 		CommandEvent ce = (CommandEvent) event;
-		if (ce.isParentCanceled() && !this.override) return false;
+		if (ce.isParentCancelled() && !this.override) return false;
 		if (!commandMatches(ce.getCommand())) return false;
 		setTempVars(ce.getCommand(), ce.getArgs());
-		if (!isCommandRegistered() && FakeCmd.registerNewCommand(ce.getCommand())) {
+		if (!isCommandRegistered(ce.getCommand()) && FakeCmd.registerNewCommand(ce.getCommand())) {
 			Msg.CMD_REGISTERED.log(ce.getCommand());
 		}
 		return Actions.executeActivator(ce.getPlayer(), this);

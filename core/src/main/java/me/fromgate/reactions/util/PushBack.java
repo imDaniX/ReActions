@@ -79,11 +79,11 @@ public class PushBack {
 		prevLocs2.remove(player.getName());
 	}
 
-	public static Location getPlayerPrevLoc1(Player player) {
+	private static Location getPlayerPrevLoc1(Player player) {
 		return prevLocs1.getOrDefault(player.getName(), null);
 	}
 
-	public static Location getPlayerPrevLoc2(Player player) {
+	private static Location getPlayerPrevLoc2(Player player) {
 		return prevLocs2.getOrDefault(player.getName(), null);
 	}
 }

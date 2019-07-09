@@ -454,7 +454,7 @@ public enum Msg {
 	ACTIVATOR_GOD("This activators initiates when the player is changing the god mode."),
 	MSG_PLACEHOLDERLISTTITLE("Placeholders"),
 	PLACEHOLDER_TIME_SERVER("Server (system) time"),
-	PLACEHOLDER_TIME_INGAME("In-game time. If player is unknonw will show time in default world"),
+	PLACEHOLDER_TIME_INGAME("In-game time. If player is unknown will show time in default world"),
 	PLACEHOLDER_PLAYER_LOC("Player current location"),
 	PLACEHOLDER_PLAYER_LOC_EYE("Player eye (head) location"),
 	PLACEHOLDER_PLAYER_LOC_VIEW("Player point of view location"),

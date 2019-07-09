@@ -1,7 +1,8 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.listeners;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.util.Cfg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

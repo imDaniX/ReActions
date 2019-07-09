@@ -38,7 +38,7 @@ import java.util.TreeMap;
 
 public class Delayer {
 
-	public static Map<String, Long> delays = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, Long> delays = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	public static void save() {
 		try {

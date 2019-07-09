@@ -28,13 +28,13 @@ import org.bukkit.entity.Player;
 public class CommandEvent extends RAEvent {
 	private String command;
 	private String[] args;
-	private boolean parentEventCanceled;
+	private boolean parentEventCancelled;
 
-	public CommandEvent(Player p, String command, String[] args, boolean canceled) {
+	public CommandEvent(Player p, String command, String[] args, boolean cancelled) {
 		super(p, ActivatorType.COMMAND);
 		this.command = command;
 		this.args = args;
-		this.parentEventCanceled = canceled;
+		this.parentEventCancelled = cancelled;
 	}
 
 	public String getCommand() {
@@ -45,7 +45,7 @@ public class CommandEvent extends RAEvent {
 		return this.args;
 	}
 
-	public boolean isParentCanceled() {
-		return this.parentEventCanceled;
+	public boolean isParentCancelled() {
+		return this.parentEventCancelled;
 	}
 }
