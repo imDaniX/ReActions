@@ -2,6 +2,7 @@ package me.fromgate.reactions.util;
 
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.placeholders.Placeholders;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Cfg {
@@ -60,6 +61,7 @@ public class Cfg {
 		playerAsynchSaveSelfVarFile = config.getBoolean("general.player-asynch-save-self-variable-file", false);
 		playerMoveTaskUse = config.getBoolean("general.player-move-event.use-task", false);
 		playerMoveTaskTick = config.getInt("general.player-move-event.task-tick", 5);
+		Placeholders.updateLimit(config.getInt("general.placeholder-limit", 127));
 		godActivatorEnable = config.getBoolean("reactions.activators.god.enable", true);
 		godActivatorCheckTicks = config.getInt("reactions.activators.god.recheck-ticks", 10);
 		chatLength = config.getInt("reactions.default-chat-line-length", 55);

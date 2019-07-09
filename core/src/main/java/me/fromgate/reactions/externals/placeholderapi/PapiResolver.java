@@ -1,6 +1,7 @@
 package me.fromgate.reactions.externals.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.fromgate.reactions.placeholders.Placeholders;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.OfflinePlayer;
 
@@ -30,12 +31,11 @@ public class PapiResolver extends PlaceholderExpansion {
 
 	@Override
 	public String onRequest(OfflinePlayer player, String s) {
-		if (VARP.matcher(s).find()) {
+		if (Placeholders.countPlaceholder() && VARP.matcher(s).find()) {
 			String placeholder = "%" + s + "%";
 			String result = Variables.replacePlaceholders(player, placeholder);
-			if (!placeholder.equals(result)) {
+			if (!placeholder.equals(result))
 				return result;
-			}
 		}
 		return EMPTY;
 	}

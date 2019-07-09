@@ -13,6 +13,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Placeholders {
+	private static int placeholderCounter = 0;
+	private static int countLimit = 127;
 	private final static Pattern PATTERN_RAW = Pattern.compile("%raw:((%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%))%");
 	private final static Pattern PATTERN_ANY = Pattern.compile("(%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%)");
 
@@ -42,14 +44,14 @@ public class Placeholders {
 		int count = 0;
 		while (matcher.find()) {
 			raws.add(matcher.group().replaceAll("(^%raw:)|(%$)", ""));
-			matcher.appendReplacement(sb, "~~~[[[RAW" + count + "]]]~~~");
+			matcher.appendReplacement(sb, "§~[RAW" + count + "]");
 			count++;
 		}
 		matcher.appendTail(sb);
 		result = replacePlaceholders(player, sb.toString());
 		if (!raws.isEmpty()) {
 			for (int i = 0; i < raws.size(); i++) {
-				result = result.replace("~~~[[[RAW" + i + "]]]~~~", raws.get(i));
+				result = result.replace("§~[RAW" + i + "]", raws.get(i));
 			}
 		}
 		return result;
@@ -63,7 +65,7 @@ public class Placeholders {
 		StringBuffer sb = new StringBuffer();
 		String group;
 		String replacement;
-		while (matcher.find()) {
+		while (countPlaceholder() && matcher.find()) {
 			group = "%" +
 					replacePlaceholders(player,
 							matcher.group().replaceAll("(^%)|(%$)", "")) +
@@ -75,6 +77,7 @@ public class Placeholders {
 		result = sb.toString();
 		if (!string.equals(result)) result = replacePlaceholders(player, result);
 		result = RaPlaceholderAPI.processPlaceholder(player, result);
+		placeholderCounter = 0;
 		return result;
 	}
 
@@ -120,5 +123,16 @@ public class Placeholders {
 		phList.add("&6SIGN_LOC, SIGN_LINE1,.. SIGN_LINE4&3: &a" + Msg.PLACEHOLDER_SIGNACT.getText("NOCOLOR"));
 		phList.add("&6ARG0, ARG1, ARG2...&3: &a" + Msg.PLACEHOLDER_COMMANDACT.getText("NOCOLOR"));
 		Msg.printPage(sender, phList, Msg.MSG_PLACEHOLDERLISTTITLE, pageNum, sender instanceof Player ? 10 : 1000);
+	}
+
+	/**
+	 * @return Is it allowed to process placeholder
+	 */
+	public static boolean countPlaceholder() {
+		return ++placeholderCounter < countLimit;
+	}
+
+	public static void updateLimit(int limit) {
+		countLimit = limit;
 	}
 }
