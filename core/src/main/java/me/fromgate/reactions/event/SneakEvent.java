@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 2017-05-16.
  */
 public class SneakEvent extends RAEvent {
-	private Boolean sneak;
+	private boolean sneak;
 
 	public SneakEvent(Player player, boolean sneak) {
 		super(player, ActivatorType.SNEAK);

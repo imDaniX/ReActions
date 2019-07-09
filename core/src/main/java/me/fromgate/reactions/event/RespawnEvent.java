@@ -27,12 +27,12 @@ import me.fromgate.reactions.activators.PlayerDeathActivator;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class RespawnedEvent extends RAEvent {
+public class RespawnEvent extends RAEvent {
 	private PlayerDeathActivator.DeathCause cause;
 	private LivingEntity killer;
 
 
-	public RespawnedEvent(Player player, LivingEntity killer, PlayerDeathActivator.DeathCause cause) {
+	public RespawnEvent(Player player, LivingEntity killer, PlayerDeathActivator.DeathCause cause) {
 		super(player, ActivatorType.PLAYER_RESPAWN);
 		this.killer = killer;
 		this.cause = cause;

@@ -23,7 +23,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.RespawnedEvent;
+import me.fromgate.reactions.event.RespawnEvent;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -46,8 +46,8 @@ public class PlayerRespawnActivator extends Activator {
 
 	@Override
 	public boolean activate(Event event) {
-		if (!(event instanceof RespawnedEvent)) return false;
-		RespawnedEvent pe = (RespawnedEvent) event;
+		if (!(event instanceof RespawnEvent)) return false;
+		RespawnEvent pe = (RespawnEvent) event;
 		if (this.deathCause != PlayerDeathActivator.DeathCause.ANY && pe.getDeathCause() != this.deathCause)
 			return false;
 		Variables.setTempVar("cause", pe.getDeathCause().name());

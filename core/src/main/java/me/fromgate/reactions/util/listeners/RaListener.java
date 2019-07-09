@@ -57,7 +57,7 @@ import me.fromgate.reactions.event.PickupItemEvent;
 import me.fromgate.reactions.event.PlateEvent;
 import me.fromgate.reactions.event.BlockBreakEvent;
 import me.fromgate.reactions.event.InventoryClickEvent;
-import me.fromgate.reactions.event.RespawnedEvent;
+import me.fromgate.reactions.event.RespawnEvent;
 import me.fromgate.reactions.event.DeathEvent;
 import me.fromgate.reactions.event.PvpKillEvent;
 import me.fromgate.reactions.event.QuitEvent;
@@ -122,7 +122,7 @@ public class RaListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPvpRespawnActivator(RespawnedEvent event) {
+	public void onPvpRespawnActivator(RespawnEvent event) {
 		event.setCancelled(Activators.activate(event));
 	}
 
