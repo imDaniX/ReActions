@@ -48,7 +48,7 @@ public class Activators {
 	private static Set<String> stopexec;
 
 	/**
-	 * Initialize class
+	 * Initialize variables
 	 */
 	public static void init() {
 		activatorsMap = new HashMap<>();
@@ -329,7 +329,7 @@ public class Activators {
 	 * @param group Name of group
 	 */
 	private static void saveActivators(String group) {
-		String g = implode(group.split("\\/"));
+		String g = implode(group.split("/"));
 
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
 		File dir = new File(f.getPath());
@@ -457,7 +457,8 @@ public class Activators {
 	public static Set<String> getActivatorsSet(String sType) {
 		Set<String> set = new HashSet<>();
 		ActivatorType type = ActivatorType.getByName(sType);
-		activatorsMap.get(type).forEach(act -> set.add("&a" + act.toString()));
+		if(type != null)
+			activatorsMap.get(type).forEach(act -> set.add("&a" + act.toString()));
 		return set;
 	}
 
@@ -529,6 +530,7 @@ public class Activators {
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	public static String getGroup(String activator) {
 		if (!contains(activator)) return "activator";
 		return get(activator).getGroup();
@@ -552,7 +554,7 @@ public class Activators {
 		return timeServerAct;
 	} */
 
-
+	@SuppressWarnings("unused")
 	public static boolean stopExec(Player player, String actName) {
 		return stopExec(player == null ? "" : player.getName(), actName);
 	}
