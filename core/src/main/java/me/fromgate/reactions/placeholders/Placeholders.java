@@ -135,4 +135,8 @@ public class Placeholders {
 	public static void updateLimit(int limit) {
 		countLimit = limit;
 	}
+
+	public static int getCountLimit() {
+		return countLimit;
+	}
 }

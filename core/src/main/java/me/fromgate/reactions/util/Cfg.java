@@ -2,6 +2,7 @@ package me.fromgate.reactions.util;
 
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.placeholders.Placeholder;
 import me.fromgate.reactions.placeholders.Placeholders;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -36,6 +37,7 @@ public class Cfg {
 		config.set("general.player-asynch-save-self-variable-file", playerAsynchSaveSelfVarFile);
 		config.set("general.player-move-event.use-task", playerMoveTaskUse);
 		config.set("general.player-move-event.task-tick", playerMoveTaskTick);
+		config.set("general.placeholder-limit", Placeholders.getCountLimit());
 		config.set("reactions.activators.god.enable", godActivatorEnable);
 		config.set("reactions.activators.god.recheck-ticks", godActivatorCheckTicks);
 		config.set("reactions.save-empty-actions-and-flags-sections", saveEmptySections);
