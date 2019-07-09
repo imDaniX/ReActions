@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -32,7 +33,7 @@ public class BlockClickEvent extends RAEvent {
 	private boolean leftClick;
 
 	public BlockClickEvent(Player p, Block block, boolean leftClick) {
-		super(p);
+		super(p, ActivatorType.BLOCK_CLICK);
 		this.block = block;
 		this.leftClick = leftClick;
 	}

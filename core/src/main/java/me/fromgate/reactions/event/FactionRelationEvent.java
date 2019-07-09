@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
+
 public class FactionRelationEvent extends RAEvent {
 	private String faction1;
 	private String faction2;
@@ -29,7 +31,7 @@ public class FactionRelationEvent extends RAEvent {
 	private String newRelation;
 
 	public FactionRelationEvent(String faction1, String faction2, String oldRelation, String newRelation) {
-		super(null);
+		super(null, ActivatorType.FCT_RELATION);
 		this.oldRelation = oldRelation;
 		this.newRelation = newRelation;
 		this.faction1 = faction1;

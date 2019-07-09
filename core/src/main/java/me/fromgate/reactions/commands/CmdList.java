@@ -12,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Set;
 
 
 @CmdDefine(command = "react", description = Msg.CMD_LIST, permission = "reactions.config",
@@ -62,19 +63,19 @@ public class CmdList extends Cmd {
 	}
 
 	public void printAct(CommandSender sender, int page, int lpp) {
-		List<String> ag = Activators.getActivatorsList();
+		Set<String> ag = Activators.getActivatorsSet();
 		Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
 		Msg.MSG_LISTCOUNT.print(sender, Activators.size(), Locator.sizeTpLoc());
 	}
 
 	public void printActGroup(CommandSender sender, String group, int page, int lpp) {
-		List<String> ag = Activators.getActivatorsListGroup(group);
+		Set<String> ag = Activators.getActivatorsSetGroup(group);
 		Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}
 
 	public void printActType(CommandSender sender, String type, int page, int lpp) {
-		List<String> ag = Activators.getActivatorsList(type);
+		Set<String> ag = Activators.getActivatorsSet(type);
 		Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}

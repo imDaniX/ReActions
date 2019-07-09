@@ -23,7 +23,7 @@
 package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.activators.PlayerDeathActivator;
-import me.fromgate.reactions.event.PlayerRespawnedEvent;
+import me.fromgate.reactions.event.RespawnedEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -63,7 +63,7 @@ public class PlayerRespawner {
 		PlayerDeathActivator.DeathCause d = PlayerDeathActivator.DeathCause.OTHER;
 		if (killer != null && killer.getType() == EntityType.PLAYER) d = PlayerDeathActivator.DeathCause.PVP;
 		else if (killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;
-		Bukkit.getServer().getPluginManager().callEvent(new PlayerRespawnedEvent(player, killer, d));
+		Bukkit.getServer().getPluginManager().callEvent(new RespawnedEvent(player, killer, d));
 	}
 
 }

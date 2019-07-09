@@ -22,17 +22,18 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class JoinEvent extends RAEvent {
-	private boolean firstjoin = false;
+	private boolean firstJoin;
 
-	public JoinEvent(Player p, boolean firstjoin) {
-		super(p);
-		this.firstjoin = firstjoin;
+	public JoinEvent(Player p, boolean firstJoin) {
+		super(p, ActivatorType.JOIN);
+		this.firstJoin = firstJoin;
 	}
 
 	public boolean isFirstJoin() {
-		return this.firstjoin;
+		return this.firstJoin;
 	}
 }

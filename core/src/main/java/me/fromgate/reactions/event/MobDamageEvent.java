@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -33,7 +34,7 @@ public class MobDamageEvent extends RAEvent {
 
 
 	public MobDamageEvent(LivingEntity entity, Player damager, double damage, DamageCause cause) {
-		super(damager);
+		super(damager, ActivatorType.MOB_DAMAGE);
 		this.mob = entity;
 		this.damage = damage;
 		this.cause = cause;

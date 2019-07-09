@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class RegionEvent extends RAEvent {
@@ -29,7 +30,7 @@ public class RegionEvent extends RAEvent {
 	private String region;
 
 	public RegionEvent(Player player, String region) {
-		super(player);
+		super(player, ActivatorType.REGION);
 		this.region = region;
 	}
 

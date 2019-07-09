@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -32,7 +33,7 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
 
-public class PlayerInventoryClickEvent extends RAEvent {
+public class InventoryClickEvent extends RAEvent {
 	private InventoryAction action;
 	private ClickType click;
 	private SlotType slotType;
@@ -43,8 +44,8 @@ public class PlayerInventoryClickEvent extends RAEvent {
 	private InventoryView inventoryView;
 	private String inventoryName;
 
-	public PlayerInventoryClickEvent(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType slotType, ItemStack item, Integer numberKey, InventoryView inventoryView, Integer slot) {
-		super(p);
+	public InventoryClickEvent(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType slotType, ItemStack item, Integer numberKey, InventoryView inventoryView, Integer slot) {
+		super(p, ActivatorType.INVENTORY_CLICK);
 		this.inventoryName = inventoryView.getTitle();
 		this.action = action;
 		this.click = click;

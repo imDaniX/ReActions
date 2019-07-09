@@ -3,6 +3,7 @@
  */
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ public class WeChangeEvent extends RAEvent {
 	private Material blockType;
 
 	public WeChangeEvent(Player player, Location location, Material blockType) {
-		super(player);
+		super(player, ActivatorType.WE_CHANGE);
 		this.player = player;
 		this.location = location; //new Location(player.getWorld(), location.getX(), location.getY(), location.getZ());
 		this.blockType = blockType;

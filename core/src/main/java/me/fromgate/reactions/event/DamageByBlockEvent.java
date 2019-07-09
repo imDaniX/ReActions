@@ -1,5 +1,6 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,7 +16,7 @@ public class DamageByBlockEvent extends RAEvent {
 
 
 	public DamageByBlockEvent(Player player, Block blockDamager, double damage, DamageCause cause) {
-		super(player);
+		super(player, ActivatorType.DAMAGE_BY_BLOCK);
 		this.blockDamager = blockDamager;
 		this.damage = damage;
 		this.cause = cause;

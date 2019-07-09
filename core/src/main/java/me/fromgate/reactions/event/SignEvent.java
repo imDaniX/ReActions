@@ -24,6 +24,7 @@
 package me.fromgate.reactions.event;
 
 
+import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.Locator;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -32,10 +33,10 @@ public class SignEvent extends RAEvent {
 
 	private String[] signLines;
 	private Location loc;
-	boolean leftClick;
+	private boolean leftClick;
 
 	public SignEvent(Player player, String[] signLines, Location loc, boolean leftClick) {
-		super(player);
+		super(player, ActivatorType.SIGN);
 		this.signLines = signLines;
 		this.loc = loc;
 		this.leftClick = leftClick;

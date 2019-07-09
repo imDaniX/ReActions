@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
@@ -31,7 +32,7 @@ public class ExecEvent extends RAEvent {
 	private Param tempVars;
 
 	public ExecEvent(Player player, Player targetPlayer, String activator) {
-		super(player);
+		super(player, ActivatorType.EXEC);
 		this.targetPlayer = targetPlayer;
 		this.activator = activator;
 		this.tempVars = null;

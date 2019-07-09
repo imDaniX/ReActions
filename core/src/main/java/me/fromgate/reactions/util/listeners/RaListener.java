@@ -37,7 +37,7 @@ import me.fromgate.reactions.event.EntityClickEvent;
 import me.fromgate.reactions.event.ExecEvent;
 import me.fromgate.reactions.event.FactionCreateEvent;
 import me.fromgate.reactions.event.FactionDisbandEvent;
-import me.fromgate.reactions.event.FactionEvent;
+import me.fromgate.reactions.event.FactionChangeEvent;
 import me.fromgate.reactions.event.FactionRelationEvent;
 import me.fromgate.reactions.event.FlightEvent;
 import me.fromgate.reactions.event.GameModeEvent;
@@ -55,10 +55,10 @@ import me.fromgate.reactions.event.MobDamageEvent;
 import me.fromgate.reactions.event.MobKillEvent;
 import me.fromgate.reactions.event.PickupItemEvent;
 import me.fromgate.reactions.event.PlateEvent;
-import me.fromgate.reactions.event.PlayerBlockBreakEvent;
-import me.fromgate.reactions.event.PlayerInventoryClickEvent;
-import me.fromgate.reactions.event.PlayerRespawnedEvent;
-import me.fromgate.reactions.event.PlayerWasKilledEvent;
+import me.fromgate.reactions.event.BlockBreakEvent;
+import me.fromgate.reactions.event.InventoryClickEvent;
+import me.fromgate.reactions.event.RespawnedEvent;
+import me.fromgate.reactions.event.DeathEvent;
 import me.fromgate.reactions.event.PvpKillEvent;
 import me.fromgate.reactions.event.QuitEvent;
 import me.fromgate.reactions.event.RegionEnterEvent;
@@ -117,12 +117,12 @@ public class RaListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPvpDeathActivator(PlayerWasKilledEvent event) {
+	public void onPvpDeathActivator(DeathEvent event) {
 		event.setCancelled(Activators.activate(event));
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPvpRespawnActivator(PlayerRespawnedEvent event) {
+	public void onPvpRespawnActivator(RespawnedEvent event) {
 		event.setCancelled(Activators.activate(event));
 	}
 
@@ -188,7 +188,7 @@ public class RaListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onFactionEvent(FactionEvent event) {
+	public void onFactionEvent(FactionChangeEvent event) {
 		event.setCancelled(Activators.activate(event));
 	}
 
@@ -218,7 +218,7 @@ public class RaListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onInventoryClickActivator(PlayerInventoryClickEvent event) {
+	public void onInventoryClickActivator(InventoryClickEvent event) {
 		event.setCancelled(Activators.activate(event));
 	}
 
@@ -243,7 +243,7 @@ public class RaListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onBlockBreakActivator(PlayerBlockBreakEvent event) {
+	public void onBlockBreakActivator(BlockBreakEvent event) {
 		event.setCancelled(Activators.activate(event));
 	}
 

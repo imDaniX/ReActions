@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.BlockUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -31,7 +32,7 @@ public class DoorEvent extends RAEvent {
 	private Block doorBlock;
 
 	public DoorEvent(Player p, Block block) {
-		super(p);
+		super(p, ActivatorType.DOOR);
 		this.doorBlock = block;
 	}
 

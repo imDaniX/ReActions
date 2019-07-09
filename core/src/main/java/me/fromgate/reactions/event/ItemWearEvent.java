@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ import org.bukkit.inventory.ItemStack;
 public class ItemWearEvent extends RAEvent {
 
 	public ItemWearEvent(Player p) {
-		super(p);
+		super(p, ActivatorType.ITEM_WEAR);
 	}
 
 	public boolean isItemWeared(String itemStr) {

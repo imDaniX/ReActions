@@ -1,5 +1,6 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +13,7 @@ public class ItemHeldEvent extends RAEvent {
 	private int previousSlot;
 
 	public ItemHeldEvent(Player player, int newSlot, int previousSlot) {
-		super(player);
+		super(player, ActivatorType.ITEM_HELD);
 		this.newSlot = newSlot;
 		this.previousSlot = previousSlot;
 	}

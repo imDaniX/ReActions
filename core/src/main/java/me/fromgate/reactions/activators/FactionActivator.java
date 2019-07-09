@@ -24,7 +24,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.FactionEvent;
+import me.fromgate.reactions.event.FactionChangeEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
@@ -49,8 +49,8 @@ public class FactionActivator extends Activator {
 
 	@Override
 	public boolean activate(Event event) {
-		if (!(event instanceof FactionEvent)) return false;
-		FactionEvent fe = (FactionEvent) event;
+		if (!(event instanceof FactionChangeEvent)) return false;
+		FactionChangeEvent fe = (FactionChangeEvent) event;
 		if (!(newFaction.isEmpty() || newFaction.equalsIgnoreCase("any") || fe.getNewFaction().equalsIgnoreCase(newFaction)))
 			return false;
 		if (!(oldFaction.isEmpty() || oldFaction.equalsIgnoreCase("any") || fe.getOldFaction().equalsIgnoreCase(oldFaction)))

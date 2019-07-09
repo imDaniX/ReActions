@@ -22,15 +22,16 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class VariableEvent extends RAEvent {
-	String id;
-	String newValue;
-	String oldValue;
+	private String id;
+	private String newValue;
+	private String oldValue;
 
 	public VariableEvent(Player player, String var, String newValue, String prevValue) {
-		super(player);
+		super(player, ActivatorType.VARIABLE);
 		this.id = var;
 		this.newValue = newValue;
 		this.oldValue = prevValue;

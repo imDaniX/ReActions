@@ -22,13 +22,14 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class RegionEnterEvent extends RAEvent {
 	private String region;
 
 	public RegionEnterEvent(Player player, String region) {
-		super(player);
+		super(player, ActivatorType.REGION_ENTER);
 		this.region = region;
 
 	}

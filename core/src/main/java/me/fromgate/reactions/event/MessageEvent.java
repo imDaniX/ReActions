@@ -23,16 +23,17 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.MessageActivator;
 import org.bukkit.entity.Player;
 
 public class MessageEvent extends RAEvent {
-	MessageActivator activator;
-	String message;
+	private MessageActivator activator;
+	private String message;
 
 
 	public MessageEvent(Player player, MessageActivator activator, String message) {
-		super(player);
+		super(player, ActivatorType.MESSAGE);
 		this.activator = activator;
 		this.message = message;
 	}

@@ -119,7 +119,7 @@ public class CmdAdd extends Cmd {
 			Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
 			return true;
 		}
-		if (Activators.addActivator(activator)) {
+		if (Activators.add(activator)) {
 			Activators.saveActivators();
 			Msg.CMD_ADDBADDED.print(sender, activator.toString());
 		} else {

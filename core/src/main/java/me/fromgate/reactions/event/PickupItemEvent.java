@@ -1,5 +1,6 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +13,7 @@ public class PickupItemEvent extends RAEvent {
 	private int pickupDelay;
 
 	public PickupItemEvent(Player p, Item item, int pickupDelay) {
-		super(p);
+		super(p, ActivatorType.PICKUP_ITEM);
 		this.itemStack = item.getItemStack();
 		this.pickupDelay = pickupDelay;
 	}

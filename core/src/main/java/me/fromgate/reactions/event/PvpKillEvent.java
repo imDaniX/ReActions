@@ -22,18 +22,19 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class PvpKillEvent extends RAEvent {
-	private Player deadplayer;
+	private Player killedPlayer;
 
-	public PvpKillEvent(Player player, Player killedplayer) {
-		super(player);
-		this.deadplayer = killedplayer;
+	public PvpKillEvent(Player player, Player killedPlayer) {
+		super(player, ActivatorType.PVP_KILL);
+		this.killedPlayer = killedPlayer;
 	}
 
 	public Player getKilledPlayer() {
-		return this.deadplayer;
+		return this.killedPlayer;
 	}
 
 }

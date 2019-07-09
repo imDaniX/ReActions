@@ -53,7 +53,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -61,7 +60,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCreativeEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
@@ -79,6 +77,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 public class EventManager {
 	private static ReActions plg() {
@@ -86,7 +85,7 @@ public class EventManager {
 	}
 
 	public static boolean raiseFactionEvent(Player p, String oldFaction, String newFaction) {
-		FactionEvent e = new FactionEvent(p, oldFaction, newFaction);
+		FactionChangeEvent e = new FactionChangeEvent(p, oldFaction, newFaction);
 		Bukkit.getServer().getPluginManager().callEvent(e);
 		return true;
 	}
@@ -143,7 +142,7 @@ public class EventManager {
 	}
 
 	public static boolean raiseItemConsumeEvent(PlayerItemConsumeEvent event) {
-		ItemConsumeEvent ce = new ItemConsumeEvent(event.getPlayer());
+		ItemConsumeEvent ce = new ItemConsumeEvent(event.getPlayer(), event.getItem(), event.getPlayer().getInventory().getItemInMainHand().equals(event.getItem()));
 		Bukkit.getServer().getPluginManager().callEvent(ce);
 		return ce.isCancelled();
 	}
@@ -199,7 +198,7 @@ public class EventManager {
 		Player deadplayer = event.getEntity();
 		LivingEntity killer = Util.getAnyKiller(deadplayer.getLastDamageCause());
 		PlayerDeathActivator.DeathCause ds = (killer == null) ? PlayerDeathActivator.DeathCause.OTHER : (killer instanceof Player) ? PlayerDeathActivator.DeathCause.PVP : PlayerDeathActivator.DeathCause.PVE;
-		PlayerWasKilledEvent pe = new PlayerWasKilledEvent(killer, deadplayer, ds);
+		DeathEvent pe = new DeathEvent(killer, deadplayer, ds);
 		Bukkit.getServer().getPluginManager().callEvent(pe);
 	}
 
@@ -365,9 +364,8 @@ public class EventManager {
 	}
 
 
-	private static void setFutureItemWearCheck(final String playerName, final String itemStr, boolean repeat) {
-		@SuppressWarnings("deprecation")
-		Player player = Bukkit.getPlayerExact(playerName);
+	private static void setFutureItemWearCheck(final UUID playerId, final String itemStr, boolean repeat) {
+		Player player = Bukkit.getPlayer(playerId);
 		if (player == null) return;
 		if (!player.isOnline()) return;
 		String rg = "iw-" + itemStr;
@@ -375,30 +373,29 @@ public class EventManager {
 		ItemWearEvent iwe = new ItemWearEvent(player);
 		if (!iwe.isItemWeared(itemStr)) return;
 		Bukkit.getServer().getPluginManager().callEvent(iwe);
-		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemWearCheck(playerName, itemStr, true), 20 * Cfg.itemWearRecheck);
+		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
 	}
 
 
 	public static void raiseItemWearEvent(Player player) {
-		final String playerName = player.getName();
+		final UUID playerId = player.getUniqueId();
 		Bukkit.getScheduler().runTaskLater(plg(), () -> {
-			for (ItemWearActivator iw : Activators.getItemWearActivatos())
-				setFutureItemWearCheck(playerName, iw.getItemStr(), false);
+			for (Activator iw : Activators.getActivators(ActivatorType.ITEM_WEAR))
+				setFutureItemWearCheck(playerId, ((ItemWearActivator) iw).getItemStr(), false);
 		}, 1);
 	}
 
 	public static void raiseItemHoldEvent(Player player) {
-		final String playerName = player.getName();
+		final UUID playerId = player.getUniqueId();
 		Bukkit.getScheduler().runTaskLater(plg(), () -> {
-			for (ItemHoldActivator ih : Activators.getItemHoldActivatos())
-				setFutureItemHoldCheck(playerName, ih.getItemStr(), false);
+			for (Activator ih : Activators.getActivators(ActivatorType.ITEM_HOLD))
+				setFutureItemHoldCheck(playerId, ((ItemHoldActivator)ih).getItemStr(), false);
 		}, 1);
 	}
 
 
-	private static boolean setFutureItemHoldCheck(final String playerName, final String itemStr, boolean repeat) {
-		@SuppressWarnings("deprecation")
-		Player player = Bukkit.getPlayerExact(playerName);
+	private static boolean setFutureItemHoldCheck(final UUID playerId, final String itemStr, boolean repeat) {
+		Player player = Bukkit.getPlayer(playerId);
 		if (player == null || !player.isOnline() || player.isDead()) return false;
 		ItemStack itemInHand = player.getInventory().getItemInMainHand();
 		if (itemInHand == null || itemInHand.getType() == Material.AIR) return false;
@@ -408,21 +405,22 @@ public class EventManager {
 		ItemHoldEvent ihe = new ItemHoldEvent(player);
 		Bukkit.getServer().getPluginManager().callEvent(ihe);
 
-		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemHoldCheck(playerName, itemStr, true), 20 * Cfg.itemHoldRecheck);
+		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemHoldCheck(playerId, itemStr, true), 20 * Cfg.itemHoldRecheck);
 		return true;
 	}
 
-	public static boolean isTimeToRaiseEvent(Player p, String id, int seconds, boolean repeat) {
-		Long curtime = System.currentTimeMillis();
-		Long prevtime = p.hasMetadata("reactions-rchk-" + id) ? p.getMetadata("reactions-rchk-" + id).get(0).asLong() : 0;
-		boolean needUpdate = repeat || ((curtime - prevtime) >= (1000 * seconds));
-		if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(plg(), curtime));
+	private static boolean isTimeToRaiseEvent(Player p, String id, int seconds, boolean repeat) {
+		long curTime = System.currentTimeMillis();
+		long prevTime = p.hasMetadata("reactions-rchk-" + id) ? p.getMetadata("reactions-rchk-" + id).get(0).asLong() : 0;
+		boolean needUpdate = repeat || ((curTime - prevTime) >= (1000 * seconds));
+		if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(plg(), curTime));
 		return needUpdate;
 	}
 
 	public static boolean raiseMessageEvent(CommandSender sender, MessageActivator.Source source, String message) {
-		Player player = sender != null && (sender instanceof Player) ? (Player) sender : null;
-		for (MessageActivator a : Activators.getMessageActivators()) {
+		Player player = (sender instanceof Player) ? (Player) sender : null;
+		for (Activator act : Activators.getActivators(ActivatorType.MESSAGE)) {
+			MessageActivator a = (MessageActivator) act;
 			if (a.filterMessage(source, message)) {
 				MessageEvent me = new MessageEvent(player, a, message);
 				Bukkit.getServer().getPluginManager().callEvent(me);
@@ -470,10 +468,10 @@ public class EventManager {
 		return e.isCancelled();
 	}
 
-	public static boolean raiseInventoryClickEvent(InventoryClickEvent event) {
+	public static boolean raiseInventoryClickEvent(org.bukkit.event.inventory.InventoryClickEvent event) {
 		Player p = (Player) event.getWhoClicked();
 		ItemStack oldItem = event.getCurrentItem();
-		PlayerInventoryClickEvent e = new PlayerInventoryClickEvent(p, event.getAction(), event.getClick(), event.getInventory(), event.getSlotType(), event.getCurrentItem(), event.getHotbarButton(), event.getView(), event.getSlot());
+		InventoryClickEvent e = new InventoryClickEvent(p, event.getAction(), event.getClick(), event.getInventory(), event.getSlotType(), event.getCurrentItem(), event.getHotbarButton(), event.getView(), event.getSlot());
 		Bukkit.getServer().getPluginManager().callEvent(e);
 		ItemStack newItemStack = e.getItemStack();
 		if (newItemStack != null) {
@@ -524,9 +522,9 @@ public class EventManager {
 		return e.isCancelled();
 	}
 
-	public static boolean raiseBlockBreakEvent(BlockBreakEvent event) {
+	public static boolean raiseBlockBreakEvent(org.bukkit.event.block.BlockBreakEvent event) {
 		boolean isDropItems = event.isDropItems();
-		PlayerBlockBreakEvent e = new PlayerBlockBreakEvent(event.getPlayer(), event.getBlock(), isDropItems);
+		BlockBreakEvent e = new BlockBreakEvent(event.getPlayer(), event.getBlock(), isDropItems);
 		Bukkit.getServer().getPluginManager().callEvent(e);
 		event.setDropItems(e.isDropItems());
 		return e.isCancelled();

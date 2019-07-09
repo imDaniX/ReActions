@@ -1,5 +1,6 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 /**
@@ -9,7 +10,7 @@ public class GodEvent extends RAEvent {
 	private boolean god;
 
 	public GodEvent(Player player, boolean god) {
-		super(player);
+		super(player, ActivatorType.GOD);
 		this.god = god;
 	}
 

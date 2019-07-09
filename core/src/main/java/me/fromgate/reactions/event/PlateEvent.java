@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public class PlateEvent extends RAEvent {
 	private Location loc = null;
 
 	public PlateEvent(Player p, Location loc) {
-		super(p);
+		super(p, ActivatorType.PLATE);
 		this.loc = loc;
 	}
 

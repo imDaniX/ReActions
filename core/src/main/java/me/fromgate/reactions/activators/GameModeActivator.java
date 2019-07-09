@@ -74,7 +74,7 @@ public class GameModeActivator extends Activator {
 
 	@Override
 	public ActivatorType getType() {
-		return ActivatorType.GAME_MODE;
+		return ActivatorType.GAMEMODE;
 	}
 
 	@Override

@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -30,7 +31,7 @@ public class MobClickEvent extends RAEvent {
 	private LivingEntity entity;
 
 	public MobClickEvent(Player p, LivingEntity entity) {
-		super(p);
+		super(p, ActivatorType.MOB_CLICK);
 		this.entity = entity;
 	}
 

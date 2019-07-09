@@ -1,19 +1,20 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 /**
  * Created by MaxDikiy on 2017-05-16.
  */
 public class SneakEvent extends RAEvent {
-	private Boolean isSneaking;
+	private Boolean sneak;
 
-	public SneakEvent(Player player, Boolean isSneaking) {
-		super(player);
-		this.isSneaking = isSneaking;
+	public SneakEvent(Player player, boolean sneak) {
+		super(player, ActivatorType.SNEAK);
+		this.sneak = sneak;
 	}
 
-	public Boolean getSneak() {
-		return this.isSneaking;
+	public boolean isSneaking() {
+		return this.sneak;
 	}
 }

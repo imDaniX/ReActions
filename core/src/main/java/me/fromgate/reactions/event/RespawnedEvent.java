@@ -22,26 +22,34 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.activators.PlayerDeathActivator;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class FactionEvent extends RAEvent {
+public class RespawnedEvent extends RAEvent {
+	private PlayerDeathActivator.DeathCause cause;
+	private LivingEntity killer;
 
-	private String newFaction;
-	private String oldFaction;
 
-	public FactionEvent(Player player, String oldFaction, String newFaction) {
-		super(player);
-		this.newFaction = newFaction;
-		this.oldFaction = oldFaction;
+	public RespawnedEvent(Player player, LivingEntity killer, PlayerDeathActivator.DeathCause cause) {
+		super(player, ActivatorType.PLAYER_RESPAWN);
+		this.killer = killer;
+		this.cause = cause;
 	}
 
-	public String getOldFaction() {
-		return oldFaction;
+
+	@Override
+	public Player getPlayer() {
+		return this.player;
 	}
 
-	public String getNewFaction() {
-		return newFaction;
+	public LivingEntity getKiller() {
+		return this.killer;
 	}
 
+	public PlayerDeathActivator.DeathCause getDeathCause() {
+		return this.cause;
+	}
 
 }

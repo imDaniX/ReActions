@@ -22,12 +22,13 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemHoldEvent extends RAEvent {
 	public ItemHoldEvent(Player p) {
-		super(p);
+		super(p, ActivatorType.ITEM_HOLD);
 	}
 
 	public ItemStack getItem() {

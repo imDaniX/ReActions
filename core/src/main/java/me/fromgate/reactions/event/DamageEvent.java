@@ -1,5 +1,6 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
@@ -12,7 +13,7 @@ public class DamageEvent extends RAEvent {
 	public String source;
 
 	public DamageEvent(Player player, double damage, DamageCause cause, String source) {
-		super(player);
+		super(player, ActivatorType.DAMAGE);
 		this.damage = damage;
 		this.cause = cause;
 		this.source = source;

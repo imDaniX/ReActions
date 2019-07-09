@@ -1,5 +1,6 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -15,7 +16,7 @@ public class DamageByMobEvent extends RAEvent {
 
 
 	public DamageByMobEvent(Player player, Entity damager, double damage, DamageCause cause) {
-		super(player);
+		super(player, ActivatorType.DAMAGE_BY_MOB);
 		this.damager = damager;
 		this.damage = damage;
 		this.cause = cause;

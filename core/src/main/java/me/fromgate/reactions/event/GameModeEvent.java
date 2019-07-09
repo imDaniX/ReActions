@@ -1,5 +1,6 @@
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
@@ -10,7 +11,7 @@ public class GameModeEvent extends RAEvent {
 	private GameMode gameMode;
 
 	public GameModeEvent(Player player, GameMode gameMode) {
-		super(player);
+		super(player, ActivatorType.GAMEMODE);
 		this.gameMode = gameMode;
 	}
 

@@ -23,7 +23,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.PlayerWasKilledEvent;
+import me.fromgate.reactions.event.DeathEvent;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -47,8 +47,8 @@ public class PlayerDeathActivator extends Activator {
 
 	@Override
 	public boolean activate(Event event) {
-		if (!(event instanceof PlayerWasKilledEvent)) return false;
-		PlayerWasKilledEvent de = (PlayerWasKilledEvent) event;
+		if (!(event instanceof DeathEvent)) return false;
+		DeathEvent de = (DeathEvent) event;
 		if (this.deathCause != DeathCause.ANY && de.getDeathCause() != this.deathCause) return false;
 		Variables.setTempVar("cause", de.getDeathCause().name());
 		if (de.getKiller() != null) {

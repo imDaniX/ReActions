@@ -1,7 +1,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.PlayerInventoryClickEvent;
+import me.fromgate.reactions.event.InventoryClickEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -43,8 +43,8 @@ public class InventoryClickActivator extends Activator {
 
 	@Override
 	public boolean activate(Event event) {
-		if (!(event instanceof PlayerInventoryClickEvent)) return false;
-		PlayerInventoryClickEvent pice = (PlayerInventoryClickEvent) event;
+		if (!(event instanceof InventoryClickEvent)) return false;
+		InventoryClickEvent pice = (InventoryClickEvent) event;
 		if (!inventoryName.isEmpty() && !pice.getInventoryName().equalsIgnoreCase(inventoryName)) return false;
 		if (pice.getClickType() == null) return false;
 		if (!clickCheck(pice.getClickType())) return false;

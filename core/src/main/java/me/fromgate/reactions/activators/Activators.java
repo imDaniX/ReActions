@@ -36,48 +36,49 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class Activators {
-	
-	private static List<Activator> act;
+
+	private static HashMap<ActivatorType, Set<Activator>> activatorsMap;
+	private static Set<Activator> activators;
 	private static Set<String> stopexec;
 
-
+	/**
+	 * Initialize class
+	 */
 	public static void init() {
-		act = new ArrayList<>();
+		activatorsMap = new HashMap<>();
+		for(ActivatorType type : ActivatorType.values())
+			activatorsMap.put(type, new HashSet<>());
+		activators = new HashSet<>();
 		stopexec = new HashSet<>();
 		loadActivators();
 	}
 
+	/**
+	 * Load activators
+	 */
 	public static void loadActivators() {
-		List<String> groups = findGroupsInDirs("");
+		Set<String> groups = findGroupsInDirs("");
 		if (!groups.isEmpty())
 			for (String group : groups)
 				loadActivators(group, false);
-
 		Timers.updateIngameTimers();
 		RaWorldGuard.updateRegionCache();
 	}
 
-	private static List<String> findGroupsInDir() {
-		List<String> grps = new ArrayList<>();
-		File dir = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator);
-		if (!dir.exists()) dir.mkdirs();
-		for (String fstr : dir.list())
-			if (fstr.endsWith(".yml")) {
-				grps.add(fstr.substring(0, fstr.length() - 4));
-			}
-		return grps;
-	}
-
-	private static List<String> findGroupsInDirs(String dir) {
+	/**
+	 * Get file names of activator groups
+	 * @param dir Name of folder
+	 * @return Set of file names
+	 */
+	private static Set<String> findGroupsInDirs(String dir) {
 		dir = ((dir.isEmpty()) ? "" : dir + File.separator);
-		List<String> grps = new ArrayList<>();
+		Set<String> grps = new HashSet<>();
 		File dirs = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + dir);
 		if (!dirs.exists()) dirs.mkdirs();
 		for (File f : dirs.listFiles()) {
@@ -93,62 +94,127 @@ public class Activators {
 		return grps;
 	}
 
-	public static void replace(Activator newAct) {
-		String name = newAct.getName();
-		Iterator<Activator> iterator = act.iterator();
-		while(iterator.hasNext())
-			if(iterator.next().equals(name)) {
-				iterator.remove();
-				break;
-			}
-		act.add(newAct);
-	}
-
-	public static boolean contains(String name) {
-		boolean rst = false;
-		for (Activator a : act)
-			if (a.equals(name)) return true;
-		return rst;
-	}
-
+	/**
+	 * Get total count of activators
+	 * @return Activators count
+	 */
 	public static int size() {
-		return act.size();
+		return activators.size();
 	}
 
+	/**
+	 * Clear all the activators
+	 */
 	public static void clear() {
-		act.clear();
+		for(Set<Activator> acts : activatorsMap.values())
+			acts.clear();
+		activators.clear();
 	}
 
+	/**
+	 * Get all activators in specific location
+	 * @param world World to check
+	 * @param x Coordinate x to check
+	 * @param y Coordinate y to check
+	 * @param z Coordinate z to check
+	 * @return Set of activators in location
+	 */
 	public static Set<Activator> getActivatorInLocation(World world, int x, int y, int z) {
 		return getActivatorInLocation(new Location(world, x, y, z));
 	}
 
+	/**
+	 * Get all activators in specific location
+	 * @param loc Location to check
+	 * @return Set of activators in location
+	 */
 	public static Set<Activator> getActivatorInLocation(Location loc) {
 		Set<Activator> found = new HashSet<>();
-		for (Activator a : act)
-			if (a.isLocatedAt(loc))
-				found.add(a);
+		for (ActivatorType type : ActivatorType.values())
+			if(type.isLocated())
+				activatorsMap.get(type).stream().filter(act -> act.isLocatedAt(loc)).forEach(found::add);
 		return found;
 	}
 
-	public static boolean addActivator(Activator a) {
-		if (contains(a.name)) return false;
-		act.add(a);
+	/**
+	 * Forced activator adding(replacing)
+	 * @param newAct Activator to add(replace)
+	 */
+	public static void replace(Activator newAct) {
+		String name = newAct.getName();
+		Iterator<Activator> iterator = activators.iterator();
+		while(iterator.hasNext())
+			if(iterator.next().getName().equals(name)){
+				iterator.remove();
+				break;
+			}
+		addActivator(newAct);
+	}
+
+	/**
+	 * Add activator if activator with it's name don't exist
+	 * @param act Activator to add
+	 * @return Was activator added
+	 */
+	public static boolean add(Activator act) {
+		if (contains(act.name)) return false;
+		addActivator(act);
 		return true;
 	}
 
-	public static void removeActivator(String name) {
-		if (act.isEmpty()) return;
-		for (int i = act.size() - 1; i >= 0; i--)
-			if (act.get(i).equals(name)) act.remove(i);
+	/**
+	 * Just add activator
+	 * @param act Activator to add
+	 */
+	private static void addActivator(Activator act) {
+		activatorsMap.get(act.getType()).add(act);
+		activators.add(act);
 	}
 
+	/**
+	 * Remove activator by name
+	 * @param name Name of activator to remove
+	 */
+	public static void removeActivator(String name) {
+		for(Set<Activator> acts : activatorsMap.values()) {
+			Iterator<Activator> iterator = acts.iterator();
+			while(iterator.hasNext())
+				if(iterator.next().getName().equals(name)) {
+					iterator.remove();
+					break;
+				}
+		}
+	}
+
+	/**
+	 * Check existing of activator by name
+	 * @param name Name of activator to search
+	 * @return Does activator with this name exist
+	 */
+	public static boolean contains(String name) {
+		for(Activator act : activators)
+			if(act.getName().equals(name))
+				return true;
+		return false;
+	}
+
+	/**
+	 * Get activator by name
+	 * @param name Name of activator to search
+	 * @return Activator or null
+	 */
 	public static Activator get(String name) {
-		for (Activator a : act)
-			if (a.equals(name)) return a;
+		for(Activator act : activators)
+			if(act.getName().equals(name))
+				return act;
 		return null;
 	}
 
+	/**
+	 * Clear flags of activator
+	 * @param name Name of activator
+	 * @return Does activator with this name exist
+	 */
 	public static boolean clearFlags(String name) {
 		Activator a = get(name);
 		if (a == null) return false;
@@ -156,6 +222,11 @@ public class Activators {
 		return true;
 	}
 
+	/**
+	 * Clear actions of activator
+	 * @param name Name of activator
+	 * @return Does activator with this name exist
+	 */
 	public static boolean clearActions(String name) {
 		Activator a = get(name);
 		if (a == null) return false;
@@ -163,6 +234,11 @@ public class Activators {
 		return true;
 	}
 
+	/**
+	 * Clear reactions of activator
+	 * @param name Name of activator
+	 * @return Does activator with this name exist
+	 */
 	public static boolean clearReactions(String name) {
 		Activator a = get(name);
 		if (a == null) return false;
@@ -170,6 +246,14 @@ public class Activators {
 		return true;
 	}
 
+	/**
+	 * Add flag to activator
+	 * @param activator Name of activator
+	 * @param flag Name of flag
+	 * @param param Parameters of flag
+	 * @param not Invert flag
+	 * @return Does activator with this name exist
+	 */
 	public static boolean addFlag(String activator, String flag, String param, boolean not) {
 		Activator a = get(activator);
 		if (a == null) return false;
@@ -177,13 +261,26 @@ public class Activators {
 		return true;
 	}
 
+	/**
+	 * Add action to activator
+	 * @param activator Name of activator
+	 * @param action Name of action
+	 * @param param Parameters of action
+	 * @return Does activator with this name exist
+	 */
 	public static boolean addAction(String activator, String action, String param) {
 		Activator a = get(activator);
 		if (a == null) return false;
 		a.addAction(action, param);
 		return true;
 	}
-
+	/**
+	 * Add reaction to activator
+	 * @param activator Name of activator
+	 * @param action Name of action
+	 * @param param Parameters of action
+	 * @return Does activator with this name exist
+	 */
 	public static boolean addReaction(String activator, String action, String param) {
 		Activator a = get(activator);
 		if (a == null) return false;
@@ -191,8 +288,12 @@ public class Activators {
 		return true;
 	}
 
+	/**
+	 * Delete files in direction (?)
+	 * @param dir Name of direction
+	 */
 	private static void delFiles(String dir) {
-		dir = dir + ((dir.isEmpty()) ? "" : File.separator);
+		dir += dir.isEmpty() ? "" : File.separator;
 		File dirs = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + dir);
 		for (File f : dirs.listFiles())
 			if (f.isDirectory()) {
@@ -203,34 +304,32 @@ public class Activators {
 			}
 	}
 
+	/**
+	 * Save activators
+	 */
 	public static void saveActivators() {
 		delFiles("");
 		for (String group : findGroupsFromActivators())
 			saveActivators(group);
 	}
 
-	public static Set<String> findGroupsFromActivators() {
+	/**
+	 * Get groups of loaded activators
+	 * @return Set of groups
+	 */
+	private static Set<String> findGroupsFromActivators() {
 		Set<String> grps = new HashSet<>();
-		for (Activator a : act)
-			grps.add(a.getGroup());
+		for (Activator act : activators)
+			grps.add(act.getGroup());
 		return grps;
 	}
 
-	public static String implode(String separator, String... data) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < data.length - 1; i++) {
-			//data.length - 1 => to not add separator at the end
-			if (!data[i].matches(" *")) {//empty string are ""; " "; "  "; and so on
-				sb.append(data[i]);
-				sb.append(separator);
-			}
-		}
-		sb.append(data[data.length - 1].trim());
-		return sb.toString();
-	}
-
-	public static void saveActivators(String group) {
-		String g = implode(File.separator, group.split("\\/"));
+	/**
+	 * Save activators of specific group
+	 * @param group Name of group
+	 */
+	private static void saveActivators(String group) {
+		String g = implode(group.split("\\/"));
 
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
 		File dir = new File(f.getPath());
@@ -245,7 +344,7 @@ public class Activators {
 			return;
 		}
 		YamlConfiguration cfg = new YamlConfiguration();
-		for (Activator a : act) {
+		for (Activator a : activators) {
 			if (a.group.equalsIgnoreCase(group)) a.saveActivator(cfg);
 		}
 
@@ -257,6 +356,27 @@ public class Activators {
 		}
 	}
 
+	/**
+	 * Idk yet
+	 */
+	private static String implode(String... data) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < data.length - 1; i++) {
+			//data.length - 1 => to not add separator at the end
+			if (!data[i].matches(" *")) {//empty string are ""; " "; "  "; and so on
+				sb.append(data[i]);
+				sb.append(File.separator);
+			}
+		}
+		sb.append(data[data.length - 1].trim());
+		return sb.toString();
+	}
+
+	/**
+	 * Load activators from files
+	 * @param group Name of group
+	 * @param forced Force to load activators - activators with same names will be overridden
+	 */
 	public static void loadActivators(String group, boolean forced) {
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separatorChar + group + ".yml");
 		if (!f.exists()) return;
@@ -270,24 +390,23 @@ public class Activators {
 		}
 
 		if(!forced)
-			for (String type : cfg.getKeys(false)) {
-				if (!ActivatorType.isValid(type)) continue;
-				ConfigurationSection cs = cfg.getConfigurationSection(type);
-				if (cs == null) continue;
-				for (String name : cs.getKeys(false)) {
-					ActivatorType at = ActivatorType.getByName(type);
-					if (at == null) {
-						Msg.logOnce("cannotcreate" + type + name, "Failed to create new activator. Type: " + type + " Name: " + name);
+			for (String sType : cfg.getKeys(false)) {
+				ActivatorType type = ActivatorType.getByName(sType);
+				ConfigurationSection section = cfg.getConfigurationSection(sType);
+				if (section == null) continue;
+				for (String name : section.getKeys(false)) {
+					if (type == null) {
+						Msg.logOnce("cannotcreate" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
 						continue;
 					}
 
-					Activator a = createActivator(at, name, group, cfg);
+					Activator a = createActivator(type, name, group, cfg);
 					if (a == null) {
-						Msg.logOnce("cannotcreate2" + type + name, "Failed to create new activator. Type: " + type + " Name: " + name);
+						Msg.logOnce("cannotcreate2" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
 						continue;
 					}
-					if (!addActivator(a))
-						Msg.logOnce("cannotcreate3", "Failed to create new activator. Type: " + type + " Name: " + name);
+					if (!add(a))
+						Msg.logOnce("cannotcreate3", "Failed to create new activator. Type: " + sType + " Name: " + name);
 				}
 			}
 		else for (String type : cfg.getKeys(false)) {
@@ -311,6 +430,14 @@ public class Activators {
 		}
 	}
 
+	/**
+	 * Create new activator
+	 * @param type Type of activator
+	 * @param name Name of activator
+	 * @param group Name of group
+	 * @param cfg Config-file of group
+	 * @return New activator
+	 */
 	private static Activator createActivator(ActivatorType type, String name, String group, YamlConfiguration cfg) {
 		try {
 			return type.getActivatorClass().getDeclaredConstructor(String.class, String.class, YamlConfiguration.class).newInstance(name, group, cfg);
@@ -321,43 +448,29 @@ public class Activators {
 		return null;
 	}
 
-	public static List<String> getActivatorsList() {
-		List<String> lst = new ArrayList<>();
-		for (Activator a : act)
-			if (!act.isEmpty())
-				lst.add("&a" + a.toString());
-		return lst;
+	public static Set<String> getActivatorsSet() {
+		Set<String> set = new HashSet<>();
+		activators.forEach(act -> set.add("&a" + act.toString()));
+		return set;
 	}
 
-	public static List<String> getActivatorsList(String type) {
-		List<String> lst = new ArrayList<>();
-		if (!act.isEmpty())
-			for (Activator anAct : act) {
-				if (type.isEmpty() || anAct.isTypeOf(type)) {
-					lst.add("&a" + anAct.toString());
-				}
-			}
-		return lst;
+	public static Set<String> getActivatorsSet(String sType) {
+		Set<String> set = new HashSet<>();
+		ActivatorType type = ActivatorType.getByName(sType);
+		activatorsMap.get(type).forEach(act -> set.add("&a" + act.toString()));
+		return set;
 	}
 
-	public static List<String> getActivatorsListGroup(String group) {
-		List<String> lst = new ArrayList<>();
-		if (!act.isEmpty())
-			for (Activator anAct : act) {
-				if (group.isEmpty() || anAct.getGroup().equalsIgnoreCase(group)) {
-					lst.add("&a" + anAct.toString());
-				}
-			}
-		return lst;
+	public static Set<String> getActivatorsSetGroup(String group) {
+		Set<String> set = new HashSet<>();
+		activators.stream().filter(act -> act.getName().equalsIgnoreCase(group)).forEach(act -> set.add(act.toString()));
+		return set;
 	}
 
 	public static boolean activate(RAEvent event) {
-		if (act.isEmpty()) return false;
 		boolean cancelParentEvent = false;
-		for (Activator a : act) {
-			if (a.getType().getEventClass().isInstance(event)) {
-				if (a.executeActivator(event)) cancelParentEvent = true;
-			}
+		for (Activator act : activatorsMap.get(event.getType())) {
+			if (act.executeActivator(event)) cancelParentEvent = true;
 		}
 		return cancelParentEvent;
 	}
@@ -421,33 +534,8 @@ public class Activators {
 		return get(activator).getGroup();
 	}
 
-	public static List<ItemHoldActivator> getItemHoldActivatos() {
-		List<ItemHoldActivator> ihold = new ArrayList<>();
-		for (Activator a : act)
-			if (a.getType() == ActivatorType.ITEM_HOLD) ihold.add((ItemHoldActivator) a);
-		return ihold;
-	}
-
-	public static List<MessageActivator> getMessageActivators() {
-		List<MessageActivator> list = new ArrayList<>();
-		for (Activator a : act)
-			if (a.getType() == ActivatorType.MESSAGE) list.add((MessageActivator) a);
-		return list;
-	}
-
-
-	public static List<ItemWearActivator> getItemWearActivatos() {
-		List<ItemWearActivator> iwear = new ArrayList<>();
-		for (Activator a : act)
-			if (a.getType() == ActivatorType.ITEM_WEAR) iwear.add((ItemWearActivator) a);
-		return iwear;
-	}
-
-	public static List<Activator> getActivators(ActivatorType type) {
-		List<Activator> activators = new ArrayList<>();
-		for (Activator activator : act)
-			if (activator.getType() == type) activators.add(activator);
-		return activators;
+	public static Set<Activator> getActivators(ActivatorType type) {
+		return activatorsMap.get(type);
 	}
 
 	/* public static List<TimeIngameActivator> getTimeIngameActivators() {

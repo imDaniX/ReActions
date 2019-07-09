@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -29,7 +30,7 @@ public class MobKillEvent extends RAEvent {
 	private LivingEntity mob;
 
 	public MobKillEvent(Player p, LivingEntity mob) {
-		super(p);
+		super(p, ActivatorType.MOB_KILL);
 		this.mob = mob;
 	}
 

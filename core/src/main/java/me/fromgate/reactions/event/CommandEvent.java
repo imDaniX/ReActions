@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class CommandEvent extends RAEvent {
@@ -30,7 +31,7 @@ public class CommandEvent extends RAEvent {
 	private boolean parentEventCanceled;
 
 	public CommandEvent(Player p, String command, String[] args, boolean canceled) {
-		super(p);
+		super(p, ActivatorType.COMMAND);
 		this.command = command;
 		this.args = args;
 		this.parentEventCanceled = canceled;

@@ -28,8 +28,8 @@ public class FlightActivator extends Activator {
 	public boolean activate(Event event) {
 		if (!(event instanceof FlightEvent)) return false;
 		FlightEvent fe = (FlightEvent) event;
-		if (!checkFlight(fe.getFlight())) return false;
-		Variables.setTempVar("flight", fe.getFlight() ? "TRUE" : "FALSE");
+		if (!checkFlight(fe.isFlying())) return false;
+		Variables.setTempVar("flight", fe.isFlying() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(fe.getPlayer(), this);
 	}
 

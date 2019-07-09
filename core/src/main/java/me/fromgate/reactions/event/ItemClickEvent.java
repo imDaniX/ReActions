@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,7 +30,7 @@ public class ItemClickEvent extends RAEvent {
 	private ItemStack item;
 	private boolean mainHand;
 	public ItemClickEvent(Player p, ItemStack item, boolean mainHand) {
-		super(p);
+		super(p, ActivatorType.ITEM_CLICK);
 		this.item = item;
 		this.mainHand = mainHand;
 	}

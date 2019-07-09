@@ -1,7 +1,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.PlayerBlockBreakEvent;
+import me.fromgate.reactions.event.BlockBreakEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
@@ -41,8 +41,8 @@ public class BlockBreakActivator extends Activator {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean activate(Event event) {
-		if (!(event instanceof PlayerBlockBreakEvent)) return false;
-		PlayerBlockBreakEvent bbe = (PlayerBlockBreakEvent) event;
+		if (!(event instanceof BlockBreakEvent)) return false;
+		BlockBreakEvent bbe = (BlockBreakEvent) event;
 		Block brokenBlock = bbe.getBlockBreak();
 		if (brokenBlock == null) return false;
 		if (!isActivatorBlock(brokenBlock)) return false;

@@ -22,18 +22,19 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class PlayerWasKilledEvent extends RAEvent {
+public class DeathEvent extends RAEvent {
 	private LivingEntity killer;
 	private PlayerDeathActivator.DeathCause source;
 
-	public PlayerWasKilledEvent(LivingEntity killer, Player killedplayer, PlayerDeathActivator.DeathCause deathCausee) {
-		super(killedplayer);
+	public DeathEvent(LivingEntity killer, Player player, PlayerDeathActivator.DeathCause deathCause) {
+		super(player, ActivatorType.PLAYER_DEATH);
 		this.killer = killer;
-		this.source = killer != null ? deathCausee : PlayerDeathActivator.DeathCause.OTHER;
+		this.source = killer != null ? deathCause : PlayerDeathActivator.DeathCause.OTHER;
 	}
 
 	@Override

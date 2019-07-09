@@ -22,13 +22,14 @@
 
 package me.fromgate.reactions.event;
 
+import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class QuitEvent extends RAEvent {
 	private String quitMessage;
 
 	public QuitEvent(Player p, String quitMessage) {
-		super(p);
+		super(p, ActivatorType.QUIT);
 		this.quitMessage = quitMessage;
 	}
 

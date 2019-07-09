@@ -30,6 +30,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -813,20 +814,20 @@ public enum Msg {
 		}
 	}
 
-	public static void printPage(Object sender, List<String> lines, Msg title, int pageNum, int linesPerPage) {
+	public static void printPage(Object sender, Collection<String> lines, Msg title, int pageNum, int linesPerPage) {
 		printPage(sender, lines, title, pageNum, linesPerPage, false);
 	}
 
-	public static void printPage(Object sender, List<String> lines, Msg title, int pageNum, int linesPerPage, boolean showNum) {
+	public static void printPage(Object sender, Collection<String> lines, Msg title, int pageNum, int linesPerPage, boolean showNum) {
 		printPage(sender, lines, title, null, pageNum, linesPerPage, showNum);
 	}
 
-	public static void printPage(Object sender, List<String> lines, Msg title, Msg footer, int pageNum, int linesPerPage) {
+	public static void printPage(Object sender, Collection<String> lines, Msg title, Msg footer, int pageNum, int linesPerPage) {
 		printPage(sender, lines, title, footer, pageNum, linesPerPage, false);
 
 	}
 
-	public static void printPage(Object sender, List<String> lines, Msg title, Msg footer, int pageNum, int linesPerPage, boolean showNum) {
+	public static void printPage(Object sender, Collection<String> lines, Msg title, Msg footer, int pageNum, int linesPerPage, boolean showNum) {
 		if (lines == null || lines.isEmpty()) return;
 		List<String> page = new ArrayList<>();
 		if (title != null) page.add(title.getText('e', '6', pluginName));
@@ -836,8 +837,9 @@ public enum Msg {
 
 		int num = pageNum <= pageCount ? pageNum : 1;
 
+		Iterator<String> iterator = lines.iterator();
 		for (int i = linesPerPage * (num - 1); i < Math.min(lines.size(), num * linesPerPage); i++) {
-			page.add((showNum ? (i + 1) : "") + lines.get(i));
+			page.add((showNum ? (i + 1) : "") + iterator.next());
 		}
 		if (footer != null) page.add(footer.getText('e', 'e', num, pageCount));
 		printLines(sender, page);

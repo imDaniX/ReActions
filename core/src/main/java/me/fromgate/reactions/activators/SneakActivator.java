@@ -28,8 +28,8 @@ public class SneakActivator extends Activator {
 	public boolean activate(Event event) {
 		if (!(event instanceof SneakEvent)) return false;
 		SneakEvent se = (SneakEvent) event;
-		if (!checkSneak(se.getSneak())) return false;
-		Variables.setTempVar("sneak", se.getSneak() ? "TRUE" : "FALSE");
+		if (!checkSneak(se.isSneaking())) return false;
+		Variables.setTempVar("sneak", se.isSneaking() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(se.getPlayer(), this);
 	}
 
