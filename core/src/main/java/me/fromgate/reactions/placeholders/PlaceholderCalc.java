@@ -1,6 +1,6 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.util.MathEval;
+import me.fromgate.reactions.util.MathEvaluator;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 
@@ -13,7 +13,7 @@ public class PlaceholderCalc extends Placeholder {
 	@Override
 	public String processPlaceholder(Player player, String key, String param) {
 		String expression = replaceVariablesInExpression(param);
-		MathEval math = new MathEval();
+		MathEvaluator math = new MathEvaluator();
 		try {
 			double result = math.evaluate(expression);
 			return (result == (int) result) ? Integer.toString((int) result) : Double.toString(result);

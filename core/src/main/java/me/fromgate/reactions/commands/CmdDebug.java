@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.util.RaDebug;
+import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.entity.Player;
 

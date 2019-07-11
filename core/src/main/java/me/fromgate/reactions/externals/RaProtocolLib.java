@@ -112,7 +112,7 @@ public class RaProtocolLib {
 	}
 
 
-	public static void initPacketListener() {
+	private static void initPacketListener() {
 		if (!connected) return;
 		ProtocolLibrary.getProtocolManager().addPacketListener(
 				new PacketAdapter(ReActions.instance, PacketType.Play.Server.CHAT) {

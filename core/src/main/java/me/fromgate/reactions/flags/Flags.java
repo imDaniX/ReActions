@@ -33,7 +33,7 @@ import me.fromgate.reactions.flags.worldedit.FlagSuperPickAxe;
 import me.fromgate.reactions.flags.worldedit.FlagToolControl;
 import me.fromgate.reactions.placeholders.Placeholders;
 import me.fromgate.reactions.util.FlagVal;
-import me.fromgate.reactions.util.RaDebug;
+import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
@@ -65,8 +65,8 @@ public enum Flags {
 	REGION_MEMBER("rgmember", false, new FlagRegion(FlagRegion.REGION_MEMBER)),
 	REGION_OWNER("rgowner", false, new FlagRegion(FlagRegion.REGION_OWNER)),
 	REGION_STATE("rgstate", false, new FlagRegion(FlagRegion.REGION_STATE)),
-	GAMEMODE("gamemode", true, new FlagGameMode()),
-	FOODLEVEL("food", true, new FlagFoodlevel()),
+	GAMEMODE("gamemode", true, new FlagGamemode()),
+	FOODLEVEL("food", true, new FlagFoodLevel()),
 	XP("xp", true, new FlagXP()),
 	LEVEL("level", true, new FlagLevel()),
 	HEALTH("hp", true, new FlagHealth()),
@@ -106,7 +106,8 @@ public enum Flags {
 	WE_SEL_BLOCKS("selblocks", true, new FlagSelectionBlocks()),
 	WE_SUPERPICKAXE("superpickaxe", true, new FlagSuperPickAxe()),
 	WE_TOOLCONTROL("toolcontrol", true, new FlagToolControl()),
-	REGION_IN_RADIUS("regioninradius", true, new FlagRegionInRadius());
+	REGION_IN_RADIUS("regioninradius", true, new FlagRegionInRadius()),
+	CHECK_ONLINE("checkonline", false, new FlagCheckOnline());
 
 
 	private String alias;

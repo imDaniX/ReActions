@@ -31,8 +31,8 @@ public class FlagOnline extends Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		if (!Util.isIntegerGZ(param)) return false;
-		int reqplayer = Integer.parseInt(param);
-		return (reqplayer <= Bukkit.getOnlinePlayers().size());
+		int reqPlayer = Integer.parseInt(param);
+		return (reqPlayer <= Bukkit.getOnlinePlayers().size());
 	}
 
 }

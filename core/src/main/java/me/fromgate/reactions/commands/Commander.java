@@ -42,16 +42,12 @@ public class Commander implements CommandExecutor {
 		return plugin;
 	}
 
-	public static boolean addNewCommand(Cmd cmd) {
+	private static boolean addNewCommand(Cmd cmd) {
 		if (cmd.getCommand() == null) return false;
 		if (cmd.getCommand().isEmpty()) return false;
 		plugin.getCommand(cmd.getCommand()).setExecutor(commander);
 		commands.add(cmd);
 		return true;
-	}
-
-	public static boolean isPluginYml(String cmdStr) {
-		return plugin.getDescription().getCommands().containsKey(cmdStr);
 	}
 
 	@Override

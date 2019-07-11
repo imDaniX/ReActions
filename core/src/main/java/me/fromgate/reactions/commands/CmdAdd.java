@@ -36,7 +36,7 @@ public class CmdAdd extends Cmd {
 		}
 		if (ActivatorType.isValid(arg1)) {
 			Block block = player.getTargetBlock(null, 100);
-			return addActivator(sender, player, arg1, arg2, (arg3.isEmpty() ? "" : arg3) + ((arg4.length() == 0) ? "" : " " + arg4), block);
+			return addActivator(sender, arg1, arg2, (arg3.isEmpty() ? "" : arg3) + ((arg4.length() == 0) ? "" : " " + arg4), block);
 		} else if (arg1.equalsIgnoreCase("loc")) {
 			if (player == null) return false;
 			if (!Locator.addTpLoc(arg2, player.getLocation())) return false;
@@ -85,7 +85,7 @@ public class CmdAdd extends Cmd {
 		return true;
 	}
 
-	public boolean addAction(String clicker, String flag, String param) {
+	private boolean addAction(String clicker, String flag, String param) {
 		if (Actions.isValid(flag)) {
 			Activators.addAction(clicker, flag, param);
 			return true;
@@ -93,7 +93,7 @@ public class CmdAdd extends Cmd {
 		return false;
 	}
 
-	public boolean addReAction(String clicker, String flag, String param) {
+	private boolean addReAction(String clicker, String flag, String param) {
 		if (Actions.isValid(flag)) {
 			Activators.addReaction(clicker, flag, param);
 			return true;
@@ -101,17 +101,18 @@ public class CmdAdd extends Cmd {
 		return false;
 	}
 
-	public boolean addFlag(String clicker, String fl, String param) {
+	private boolean addFlag(String clicker, String fl, String param) {
 		String flag = fl.replaceFirst("!", "");
 		boolean not = fl.startsWith("!");
 		if (Flags.isValid(flag)) {
-			Activators.addFlag(clicker, flag, param, not); // все эти проверки вынести в соответствующие классы
+			// TODO: все эти проверки вынести в соответствующие классы
+			Activators.addFlag(clicker, flag, param, not);
 			return true;
 		}
 		return false;
 	}
 
-	private boolean addActivator(CommandSender sender, Player player, String type, String name, String param, Block targetBlock) {
+	private boolean addActivator(CommandSender sender, String type, String name, String param, Block targetBlock) {
 		ActivatorType at = ActivatorType.getByName(type);
 		if (at == null) return false;
 		Activator activator = at.create(name, targetBlock, param);

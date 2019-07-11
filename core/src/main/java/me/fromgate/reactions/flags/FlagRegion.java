@@ -34,7 +34,7 @@ public class FlagRegion extends Flag {
 	final static int REGION_OWNER = 3;
 	final static int REGION_STATE = 4;
 
-	private int flagType = 0;
+	private int flagType;
 
 	public FlagRegion(int flagType) {
 		this.flagType = flagType;

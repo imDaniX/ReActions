@@ -23,27 +23,14 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.util.Util;
-import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class FlagGameMode extends Flag {
+public class FlagFoodLevel extends Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		int g = -1;
-		if (Util.isInteger(param)) g = Integer.parseInt(param);
-		else if (param.equalsIgnoreCase("survival")) g = 0;
-		else if (param.equalsIgnoreCase("creative")) g = 1;
-		else if (param.equalsIgnoreCase("adventure")) g = 2;
-		switch (g) {
-			case 0:
-				return player.getGameMode() == GameMode.SURVIVAL;
-			case 1:
-				return player.getGameMode() == GameMode.CREATIVE;
-			case 2:
-				return player.getGameMode() == GameMode.ADVENTURE;
-		}
-		return false;
+		if (!Util.isInteger(param)) return false;
+		return player.getFoodLevel() >= Integer.parseInt(param);
 	}
 
 }

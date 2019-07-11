@@ -1,5 +1,6 @@
 package me.fromgate.reactions.externals;
 
+import me.fromgate.reactions.externals.factions.RaFactions;
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
@@ -11,7 +12,7 @@ public class Externals {
 	private static boolean factions = false;
 
 	//разные переменные
-	private static boolean townyConected = false;
+	private static boolean townyConnected = false;
 
 	public static void init() {
 		if (Bukkit.getPluginManager().getPlugin("Factions") != null) {
@@ -24,7 +25,7 @@ public class Externals {
 
 		if (Bukkit.getPluginManager().getPlugin("Towny") != null) {
 			try {
-				townyConected = RaTowny.init();
+				townyConnected = RaTowny.init();
 			} catch (Throwable ignore) {
 
 			}
@@ -65,7 +66,7 @@ public class Externals {
 	}
 
 	public static boolean isTownyConnected() {
-		return townyConected;
+		return townyConnected;
 	}
 
 }

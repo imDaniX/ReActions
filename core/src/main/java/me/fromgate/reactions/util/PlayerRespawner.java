@@ -33,33 +33,34 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PlayerRespawner {
-	private static Map<String, LivingEntity> players = new HashMap<>();
-	private static Map<String, Location> deathPoints = new HashMap<>();
+	private static Map<UUID, LivingEntity> players = new HashMap<>();
+	private static Map<UUID, Location> deathPoints = new HashMap<>();
 
 	public static void addPlayerRespawn(PlayerDeathEvent event) {
 		Player deadPlayer = event.getEntity();
-		deathPoints.put(deadPlayer.getName(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
+		deathPoints.put(deadPlayer.getUniqueId(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
 		LivingEntity killer = Util.getAnyKiller(deadPlayer.getLastDamageCause());
-		players.put(deadPlayer.getName(), killer);
+		players.put(deadPlayer.getUniqueId(), killer);
 	}
 
 	public static Location getLastDeathPoint(Player player) {
-		if (deathPoints.containsKey(player.getName())) return deathPoints.get(player.getName());
+		if (deathPoints.containsKey(player.getUniqueId())) return deathPoints.get(player.getUniqueId());
 		return player.getLocation();
 	}
 
 	private static LivingEntity getLastKiller(Player player) {
-		if (players.containsKey(player.getName()))
-			return players.get(player.getName());
+		if (players.containsKey(player.getUniqueId()))
+			return players.get(player.getUniqueId());
 		return null;
 	}
 
 	public static void raisePlayerRespawnEvent(Player player) {
-		if (!players.containsKey(player.getName())) return;
+		if (!players.containsKey(player.getUniqueId())) return;
 		LivingEntity killer = getLastKiller(player);
-		players.remove(player.getName());
+		players.remove(player.getUniqueId());
 		PlayerDeathActivator.DeathCause d = PlayerDeathActivator.DeathCause.OTHER;
 		if (killer != null && killer.getType() == EntityType.PLAYER) d = PlayerDeathActivator.DeathCause.PVP;
 		else if (killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;

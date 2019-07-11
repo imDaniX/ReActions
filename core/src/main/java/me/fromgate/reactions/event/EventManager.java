@@ -570,7 +570,6 @@ public class EventManager {
 			for (Player p : Bukkit.getServer().getOnlinePlayers()) {
 				for (Entity e : p.getNearbyEntities(0.5D, 1.0D, 0.5D)) {
 					if ((e instanceof FallingBlock) && fb == e) {
-						//noinspection deprecation
 						Bukkit.getPluginManager().callEvent(new EntityDamageByEntityEvent(e, p, EntityDamageEvent.DamageCause.FALLING_BLOCK, 0));
 					}
 				}

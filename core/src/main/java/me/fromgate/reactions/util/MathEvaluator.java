@@ -96,7 +96,7 @@ import java.util.TreeSet;
  * @since Build 2008.0426.1016
  */
 
-public class MathEval {
+public class MathEvaluator {
 
 	//*************************************************************************************************
 	//INSTANCE PROPERTIES
@@ -121,7 +121,7 @@ public class MathEval {
 	/**
 	 * Create a math evaluator.
 	 */
-	public MathEval() {
+	public MathEvaluator() {
 		super();
 
 		operators = new Operator[256];
@@ -152,7 +152,7 @@ public class MathEval {
 	/**
 	 * Create a math evaluator with the same constants, variables, function handlers and relaxation setting as the supplied evaluator.
 	 */
-	public MathEval(MathEval oth) {
+	public MathEvaluator(MathEvaluator oth) {
 		super();
 
 		operators = oth.operators;
@@ -198,14 +198,14 @@ public class MathEval {
 	/**
 	 * Set a named constant (constants names are not case-sensitive).  Constants are like variables but are not cleared by clear(). Variables of the same name have precedence over constants.
 	 */
-	public MathEval setConstant(String nam, double val) {
+	public MathEvaluator setConstant(String nam, double val) {
 		return setConstant(nam, Double.valueOf(val));
 	}
 
 	/**
 	 * Set a named constant (constants names are not case-sensitive).  Constants are like variables but are not cleared by clear(). Variables of the same name have precedence over constants.
 	 */
-	public MathEval setConstant(String nam, Double val) {
+	public MathEvaluator setConstant(String nam, Double val) {
 		if (constants.get(nam) != null) {
 			throw new IllegalArgumentException("Constants may not be redefined");
 		}
@@ -217,7 +217,7 @@ public class MathEval {
 	/**
 	 * Set a custom operator, replacing any existing operator with the same symbol. Operators cannot be removed, only replaced.
 	 */
-	public MathEval setOperator(Operator opr) {
+	public MathEvaluator setOperator(Operator opr) {
 		if (opr.symbol >= operators.length) {															  // extend the array if necessary
 			Operator[] noa = new Operator[opr.symbol + (opr.symbol % 255) + 1];								 // use allocation pages of 256
 			System.arraycopy(operators, 0, noa, 0, operators.length);
@@ -232,7 +232,7 @@ public class MathEval {
 	 * <p>
 	 * Pure functions have results which depend purely on their arguments; given constant arguments they will have a constant result.  Impure functions are rare.
 	 */
-	public MathEval setFunctionHandler(String nam, FunctionHandler hdl) {
+	public MathEvaluator setFunctionHandler(String nam, FunctionHandler hdl) {
 		return setFunctionHandler(nam, hdl, false);
 	}
 
@@ -241,7 +241,7 @@ public class MathEval {
 	 * <p>
 	 * Pure functions have results which depend purely on their arguments; given constant arguments they will have a constant result.  Impure functions are rare.
 	 */
-	public MathEval setFunctionHandler(String nam, FunctionHandler hdl, boolean impure) {
+	public MathEvaluator setFunctionHandler(String nam, FunctionHandler hdl, boolean impure) {
 		validateName(nam);
 		if (hdl == null) {
 			pureFunctions.remove(nam);
@@ -275,14 +275,14 @@ public class MathEval {
 	/**
 	 * Set a named variable (variables names are not case-sensitive).
 	 */
-	public MathEval setVariable(String nam, double val) {
+	public MathEvaluator setVariable(String nam, double val) {
 		return setVariable(nam, Double.valueOf(val));
 	}
 
 	/**
 	 * Set a named variable (variables names are not case-sensitive). If the value is null, the variable is removed.
 	 */
-	public MathEval setVariable(String nam, Double val) {
+	public MathEvaluator setVariable(String nam, Double val) {
 		validateName(nam);
 		if (val == null) {
 			variables.remove(nam);
@@ -295,7 +295,7 @@ public class MathEval {
 	/**
 	 * Clear all variables (constants are not affected).
 	 */
-	public MathEval clear() {
+	public MathEvaluator clear() {
 		variables.clear();
 		return this;
 	}
@@ -303,7 +303,7 @@ public class MathEval {
 	/**
 	 * Clear all variables prefixed by the supplied string followed by a dot, such that they match "Prefix.xxx".
 	 */
-	public MathEval clear(String pfx) {
+	public MathEvaluator clear(String pfx) {
 		variables.subMap((pfx + "."), (pfx + "." + Character.MAX_VALUE)).clear();
 		return this;
 	}
@@ -318,7 +318,7 @@ public class MathEval {
 	/**
 	 * Set whether a variable which is used in an expression is required to be explicitly set. If not explicitly set, the value 0.0 is assumed.
 	 */
-	public MathEval setVariableRequired(boolean val) {
+	public MathEvaluator setVariableRequired(boolean val) {
 		relaxed = (!val);
 		return this;
 	}
@@ -954,7 +954,7 @@ public class MathEval {
 		static private final Operator OPR_SUB = new Operator('-', 20, DefaultImpl.INSTANCE); // subtract/unary-negative
 
 		// To add/remove operators change evaluateOperator() and registration
-		static void registerOperators(MathEval tgt) {
+		static void registerOperators(MathEvaluator tgt) {
 			tgt.setOperator(OPR_EQU);
 			tgt.setOperator(OPR_PWR);
 			tgt.setOperator(OPR_NEG);
@@ -970,7 +970,7 @@ public class MathEval {
 		}
 
 		// To add/remove functions change evaluateOperator() and registration
-		static void registerFunctions(MathEval tgt) {
+		static void registerFunctions(MathEvaluator tgt) {
 			tgt.setFunctionHandler("abs", INSTANCE);
 			tgt.setFunctionHandler("acos", INSTANCE);
 			tgt.setFunctionHandler("asin", INSTANCE);

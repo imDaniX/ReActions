@@ -10,7 +10,7 @@ import me.fromgate.reactions.event.EventManager;
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
 import me.fromgate.reactions.util.PlayerRespawner;
-import me.fromgate.reactions.util.RaDebug;
+import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.Teleporter;
 import me.fromgate.reactions.util.TemporaryOp;
 import me.fromgate.reactions.util.UpdateChecker;

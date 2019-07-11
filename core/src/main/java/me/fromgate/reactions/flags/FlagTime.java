@@ -36,7 +36,7 @@ public class FlagTime extends Flag {
 	@Override
 	public boolean checkFlag(Player player, String time) {
 		saveTempVar(time);
-		Long currentTime = Bukkit.getWorlds().get(0).getTime();
+		long currentTime = Bukkit.getWorlds().get(0).getTime();
 		if (player != null) currentTime = player.getWorld().getTime();
 
 		if (time.equalsIgnoreCase("day")) {

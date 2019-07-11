@@ -31,12 +31,11 @@ import org.bukkit.inventory.ItemStack;
 
 public class FlagWalkBlock extends Flag {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		Block walk = player.getLocation().getBlock();
 		if (walk.getType() == Material.AIR) walk = walk.getRelative(BlockFace.DOWN);
-		return ItemUtil.compareItemStr(new ItemStack(walk.getType(), 1, walk.getData()), param);
+		return walk.getType() == ItemUtil.itemFromString(param).getType();
 	}
 
 }

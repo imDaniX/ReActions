@@ -20,26 +20,30 @@
  * 
  */
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.util.Util;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+public class FlagGamemode extends Flag {
 
-public class RaDebug {
-	private static HashMap<String, Boolean> debug = new HashMap<>();
-
-	public static void setPlayerDebug(Player p, boolean debugMode) {
-		debug.put(p.getName(), debugMode);
-	}
-
-	public static void offPlayerDebug(Player p) {
-		debug.remove(p.getName());
-	}
-
-	public static boolean checkFlagAndDebug(Player p, boolean flag) {
-		if ((p != null) && debug.containsKey(p.getName())) return (debug.get(p.getName()));
-		return flag;
+	@Override
+	public boolean checkFlag(Player player, String param) {
+		int g = -1;
+		if (Util.isInteger(param)) g = Integer.parseInt(param);
+		else if (param.equalsIgnoreCase("survival")) g = 0;
+		else if (param.equalsIgnoreCase("creative")) g = 1;
+		else if (param.equalsIgnoreCase("adventure")) g = 2;
+		switch (g) {
+			case 0:
+				return player.getGameMode() == GameMode.SURVIVAL;
+			case 1:
+				return player.getGameMode() == GameMode.CREATIVE;
+			case 2:
+				return player.getGameMode() == GameMode.ADVENTURE;
+		}
+		return false;
 	}
 
 }

@@ -33,11 +33,9 @@ public class FlagPvp extends Flag {
 		if (!player.hasMetadata("reactions-pvp-time")) return false;
 		Param params = new Param(param, "time");
 		String timeStr = params.getParam("time");
-		Long delay = Util.parseTime(timeStr);
+		long delay = Util.parseTime(timeStr);
 		if (delay == 0) return false;
-		Long curtime = System.currentTimeMillis();
-		Long pvptime = player.getMetadata("reactions-pvp-time").get(0).asLong();
-		return ((curtime - pvptime) < delay);
+		return ((System.currentTimeMillis() - player.getMetadata("reactions-pvp-time").get(0).asLong()) < delay);
 	}
 
 }

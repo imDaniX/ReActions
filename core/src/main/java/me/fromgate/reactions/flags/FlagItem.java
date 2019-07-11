@@ -31,7 +31,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class FlagItem extends Flag {
-	private int flagType = 0;
+	private int flagType;
 
 	public FlagItem(int flagType) {
 		this.flagType = flagType;
@@ -56,7 +56,7 @@ public class FlagItem extends Flag {
 		return false;
 	}
 
-	public boolean isItemWeared(Player player, String itemStr) {
+	private boolean isItemWeared(Player player, String itemStr) {
 		for (ItemStack armour : player.getInventory().getArmorContents())
 			if (ItemUtil.compareItemStr(armour, itemStr)) return true;
 		return false;

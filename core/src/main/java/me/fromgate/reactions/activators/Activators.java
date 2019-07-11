@@ -154,7 +154,7 @@ public class Activators {
 	/**
 	 * Add activator if activator with it's name don't exist
 	 * @param act Activator to add
-	 * @return Was activator added
+	 * @return Was activator added or not
 	 */
 	public static boolean add(Activator act) {
 		if (contains(act.name)) return false;
@@ -163,7 +163,7 @@ public class Activators {
 	}
 
 	/**
-	 * Just add activator
+	 * Just adding activator
 	 * @param act Activator to add
 	 */
 	private static void addActivator(Activator act) {

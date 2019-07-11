@@ -37,7 +37,7 @@ public class Placeholders {
 	}
 
 	public static String replacePlaceholderButRaw(Player player, String string) {
-		String result = string;
+		String result = string.replace("$", "\\$");
 		List<String> raws = new ArrayList<>();
 		Matcher matcher = PATTERN_RAW.matcher(result);
 		StringBuffer sb = new StringBuffer();

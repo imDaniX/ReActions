@@ -5,12 +5,12 @@ import org.bukkit.World;
 
 public class WeSelection {
 
-	String selType;
-	World world;
-	String region;
-	Location min;
-	Location max;
-	int area;
+	private String selType;
+	private World world;
+	private String region;
+	private Location min;
+	private Location max;
+	private int area;
 
 	public WeSelection(String typeName, Location minimumPoint, Location maximumPoint, int area, World world, String region) {
 		this.selType = typeName;

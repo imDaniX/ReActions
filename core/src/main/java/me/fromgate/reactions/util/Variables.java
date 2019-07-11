@@ -277,14 +277,15 @@ public class Variables {
 					String fstr = f.getName();
 					if (fstr.endsWith(".yml")) {
 						cfg.load(f);
-						Set<String> keys = cfg.getKeys(true);
-						if(keys.isEmpty()) {
-							deleted++;
-							f.delete();
-						}
-						else for (String key : keys) {
+						int count = 0;
+						for (String key : cfg.getKeys(true)) {
 							if (!key.contains(".")) continue;
 							vars.put(key, cfg.getString(key));
+							count++;
+						}
+						if(count==0) {
+							f.delete();
+							deleted++;
 						}
 					}
 				}

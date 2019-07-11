@@ -63,10 +63,6 @@ public class FlagDirection extends Flag {
 		double angle = (p.getLocation().getYaw() < 0) ? (360 + p.getLocation().getYaw()) : p.getLocation().getYaw();
 		int sector = (int) (angle - ((angle + 22.5) % 45.0) + 22.5);
 		switch (sector) {
-			case 1:
-				return Direction.SOUTH;
-			case 360:
-				return Direction.SOUTH;
 			case 45:
 				return Direction.SOUTHWEST;
 			case 90:
@@ -81,8 +77,9 @@ public class FlagDirection extends Flag {
 				return Direction.EAST;
 			case 315:
 				return Direction.SOUTHEAST;
+			default:
+				return Direction.SOUTH;
 		}
-		return null;
 	}
 
 

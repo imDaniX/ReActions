@@ -21,7 +21,7 @@
  */
 
 
-package me.fromgate.reactions.externals;
+package me.fromgate.reactions.util.message;
 
 import me.fromgate.reactions.activators.MessageActivator;
 import me.fromgate.reactions.event.EventManager;

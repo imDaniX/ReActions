@@ -20,17 +20,26 @@
  * 
  */
 
-package me.fromgate.reactions.flags;
+package me.fromgate.reactions.util.message;
 
-import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
-public class FlagFoodlevel extends Flag {
+import java.util.HashMap;
 
-	@Override
-	public boolean checkFlag(Player player, String param) {
-		if (!Util.isInteger(param)) return false;
-		return player.getFoodLevel() >= Integer.parseInt(param);
+public class RaDebug {
+	private static HashMap<String, Boolean> debug = new HashMap<>();
+
+	public static void setPlayerDebug(Player p, boolean debugMode) {
+		debug.put(p.getName(), debugMode);
+	}
+
+	public static void offPlayerDebug(Player p) {
+		debug.remove(p.getName());
+	}
+
+	public static boolean checkFlagAndDebug(Player p, boolean flag) {
+		if ((p != null) && debug.containsKey(p.getName())) return (debug.get(p.getName()));
+		return flag;
 	}
 
 }

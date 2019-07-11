@@ -399,6 +399,7 @@ public enum Msg {
 	FLAG_WE_SUPERPICKAXE("Checks whether the super pick axe is enabled"),
 	FLAG_WE_TOOLCONTROL("Checks if tool control is enabled"),
 	FLAG_REGION_IN_RADIUS("Checks if exist region in radius from player"),
+	FLAG_CHECK_ONLINE("Checks if player is online"),
 
 	/*
 			ACTIVATORS!

@@ -1,7 +1,7 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.Externals;
-import me.fromgate.reactions.externals.RaFactions;
+import me.fromgate.reactions.externals.factions.RaFactions;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 

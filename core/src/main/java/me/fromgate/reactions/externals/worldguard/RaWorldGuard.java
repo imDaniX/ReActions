@@ -41,7 +41,7 @@ import java.util.Set;
 
 public class RaWorldGuard {
 
-	protected static WGBridge bridge = null;
+	private static WGBridge bridge = null;
 	private static Set<String> regionActivators = null;
 
 	public static void init() {

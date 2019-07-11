@@ -23,7 +23,7 @@
 package me.fromgate.reactions.flags.factions;
 
 import me.fromgate.reactions.externals.Externals;
-import me.fromgate.reactions.externals.RaFactions;
+import me.fromgate.reactions.externals.factions.RaFactions;
 import me.fromgate.reactions.flags.Flag;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

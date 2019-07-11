@@ -20,7 +20,7 @@
  * 
  */
 
-package me.fromgate.reactions.externals;
+package me.fromgate.reactions.externals.factions;
 
 import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsDisband;

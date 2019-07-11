@@ -39,14 +39,13 @@ public class RaWorldEdit {
 	}
 
 	public static void init() {
-		Plugin plugin = null;
 		try {
-			plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+			Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
 			worldedit = (WorldEditPlugin) plugin;
 			worldedit.getWorldEdit().getEventBus().register(new WeListener());
 			connected = true;
 		} catch (Throwable e) {
-			Msg.logMessage("Worledit not found...");
+			Msg.logMessage("WorldEdit not found...");
 			connected = false;
 		}
 	}

@@ -1,7 +1,7 @@
 package me.fromgate.reactions.util.playerselector;
 
 import me.fromgate.reactions.externals.Externals;
-import me.fromgate.reactions.externals.RaFactions;
+import me.fromgate.reactions.externals.factions.RaFactions;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;

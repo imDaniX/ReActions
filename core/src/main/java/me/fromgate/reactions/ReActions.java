@@ -25,7 +25,7 @@ package me.fromgate.reactions;
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.commands.Commander;
 import me.fromgate.reactions.externals.Externals;
-import me.fromgate.reactions.externals.LogHandler;
+import me.fromgate.reactions.util.message.LogHandler;
 import me.fromgate.reactions.externals.RaCraftConomy;
 import me.fromgate.reactions.externals.RaEffects;
 import me.fromgate.reactions.externals.RaRacesAndClasses;
