@@ -274,18 +274,16 @@ public class Variables {
 			if (!dir.exists()) return;
 			for (File f : dir.listFiles()) {
 				if (!f.isDirectory()) {
+					if(f.length() == 0) {
+						f.delete();
+						deleted++;
+						continue;
+					}
 					String fstr = f.getName();
 					if (fstr.endsWith(".yml")) {
 						cfg.load(f);
-						int count = 0;
 						for (String key : cfg.getKeys(true)) {
-							if (!key.contains(".")) continue;
-							vars.put(key, cfg.getString(key));
-							count++;
-						}
-						if(count==0) {
-							f.delete();
-							deleted++;
+							if (key.contains(".")) vars.put(key, cfg.getString(key));
 						}
 					}
 				}
