@@ -44,7 +44,7 @@ public class RaFactions {
 
 	private static boolean enabled = false;
 
-	protected static boolean init() {
+	public static boolean init() {
 		Plugin pf = Bukkit.getServer().getPluginManager().getPlugin("Factions");
 		if (pf == null) return false;
 		try {
