@@ -2,17 +2,17 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.DamageByMobEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import java.util.regex.Pattern;
@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 /**
  * Created by MaxDikiy on 2017-06-25.
  */
+// TODO: Assemble to one activator
 public class DamageByMobActivator extends Activator {
 	private final static Pattern FLOAT = Pattern.compile("[0-9]+(\\.?[0-9]*)?");
 
@@ -52,7 +53,7 @@ public class DamageByMobActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof DamageByMobEvent)) return false;
 		DamageByMobEvent pde = (DamageByMobEvent) event;
 		if (damagerType.isEmpty()) return false;
@@ -122,19 +123,19 @@ public class DamageByMobActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".damager-type", this.damagerType);
-		cfg.set(root + ".damager-name", this.damagerName);
-		cfg.set(root + ".entity-type", this.entityType);
-		cfg.set(root + ".cause", this.damageCause);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("damager-type", this.damagerType);
+		cfg.set("damager-name", this.damagerName);
+		cfg.set("entity-type", this.entityType);
+		cfg.set("cause", this.damageCause);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.damagerType = cfg.getString(root + ".damager-type", "");
-		this.damagerName = cfg.getString(root + ".damager-name", "");
-		this.entityType = cfg.getString(root + ".entity-type", "");
-		this.damageCause = cfg.getString(root + ".cause", "");
+	public void load(ConfigurationSection cfg) {
+		this.damagerType = cfg.getString("damager-type", "");
+		this.damagerName = cfg.getString("damager-name", "");
+		this.entityType = cfg.getString("entity-type", "");
+		this.damageCause = cfg.getString("cause", "");
 	}
 
 	@Override

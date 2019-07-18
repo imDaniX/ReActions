@@ -24,13 +24,14 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.BlockClickEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class BlockClickActivator extends Activator {
 	private String blockType;
@@ -71,7 +72,7 @@ public class BlockClickActivator extends Activator {
 
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof BlockClickEvent)) return false;
 		BlockClickEvent bce = (BlockClickEvent) event;
 		if (bce.getBlockClick() == null) return false;
@@ -108,17 +109,17 @@ public class BlockClickActivator extends Activator {
 
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".block-type", this.blockType);
-		cfg.set(root + ".click-type", click.name());
-		cfg.set(root + ".location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("block-type", this.blockType);
+		cfg.set("click-type", click.name());
+		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.blockType = cfg.getString(root + ".block-type", "");
-		click = ClickType.getByName(cfg.getString(root + ".click-type", "ANY"));
-		this.blockLocation = cfg.getString(root + ".location", "");
+	public void load(ConfigurationSection cfg) {
+		this.blockType = cfg.getString("block-type", "");
+		click = ClickType.getByName(cfg.getString("click-type", "ANY"));
+		this.blockLocation = cfg.getString("location", "");
 	}
 
 	@Override

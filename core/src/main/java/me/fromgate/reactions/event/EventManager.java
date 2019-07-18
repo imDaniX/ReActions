@@ -307,6 +307,10 @@ public class EventManager {
 		return false;
 	}
 
+	public static void raiseCuboidEvent(final Player player) {
+		Bukkit.getServer().getPluginManager().callEvent(new CuboidEvent(player));
+	}
+
 	public static void raiseAllRegionEvents(final Player player, final Location to, final Location from) {
 		if (!RaWorldGuard.isConnected()) return;
 		Bukkit.getScheduler().runTaskLaterAsynchronously(ReActions.instance, () -> {

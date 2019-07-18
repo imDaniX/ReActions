@@ -2,13 +2,14 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.InventoryClickEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -42,7 +43,7 @@ public class InventoryClickActivator extends Activator {
 
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof InventoryClickEvent)) return false;
 		InventoryClickEvent pice = (InventoryClickEvent) event;
 		if (!inventoryName.isEmpty() && !pice.getInventoryName().equalsIgnoreCase(inventoryName)) return false;
@@ -85,27 +86,27 @@ public class InventoryClickActivator extends Activator {
 
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".name", this.inventoryName);
-		cfg.set(root + ".click-type", click.name());
-		cfg.set(root + ".action-type", action.name());
-		cfg.set(root + ".inventory-type", inventory.name());
-		cfg.set(root + ".slot-type", slotType.name());
-		cfg.set(root + ".key", this.numberKey);
-		cfg.set(root + ".slot", this.slotStr);
-		cfg.set(root + ".item", this.itemStr);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("name", this.inventoryName);
+		cfg.set("click-type", click.name());
+		cfg.set("action-type", action.name());
+		cfg.set("inventory-type", inventory.name());
+		cfg.set("slot-type", slotType.name());
+		cfg.set("key", this.numberKey);
+		cfg.set("slot", this.slotStr);
+		cfg.set("item", this.itemStr);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.inventoryName = cfg.getString(root + ".name", "");
-		this.click = ClickType.getByName(cfg.getString(root + ".click-type", "ANY"));
-		this.action = InventoryAction.getByName(cfg.getString(root + ".action-type", "ANY"));
-		this.inventory = InventoryType.getByName(cfg.getString(root + ".inventory-type", "ANY"));
-		this.slotType = SlotType.getByName(cfg.getString(root + ".slot-type", "ANY"));
-		this.numberKey = cfg.getString(root + ".key", "");
-		this.slotStr = cfg.getString(root + ".slot", "");
-		this.itemStr = cfg.getString(root + ".item", "");
+	public void load(ConfigurationSection cfg) {
+		this.inventoryName = cfg.getString("name", "");
+		this.click = ClickType.getByName(cfg.getString("click-type", "ANY"));
+		this.action = InventoryAction.getByName(cfg.getString("action-type", "ANY"));
+		this.inventory = InventoryType.getByName(cfg.getString("inventory-type", "ANY"));
+		this.slotType = SlotType.getByName(cfg.getString("slot-type", "ANY"));
+		this.numberKey = cfg.getString("key", "");
+		this.slotStr = cfg.getString("slot", "");
+		this.itemStr = cfg.getString("item", "");
 	}
 
 	@Override

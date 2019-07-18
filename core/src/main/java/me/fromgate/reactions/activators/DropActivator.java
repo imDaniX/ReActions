@@ -2,14 +2,15 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.DropEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.regex.Pattern;
@@ -33,7 +34,7 @@ public class DropActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof DropEvent)) return false;
 		DropEvent de = (DropEvent) event;
 		if (!checkItem(de.getItemStack())) return false;
@@ -60,13 +61,13 @@ public class DropActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".item", this.itemStr);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("item", this.itemStr);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.itemStr = cfg.getString(root + ".item", "");
+	public void load(ConfigurationSection cfg) {
+		this.itemStr = cfg.getString("item", "");
 	}
 
 	@Override

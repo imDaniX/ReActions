@@ -1,12 +1,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.SneakEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 /**
  * Created by MaxDikiy on 2017-05-16.
@@ -25,7 +26,7 @@ public class SneakActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof SneakEvent)) return false;
 		SneakEvent se = (SneakEvent) event;
 		if (!checkSneak(se.isSneaking())) return false;
@@ -39,13 +40,13 @@ public class SneakActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".sneak", sneak.name());
+	public void save(ConfigurationSection cfg) {
+		cfg.set("sneak", sneak.name());
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		sneak = SneakType.getByName(cfg.getString(root + ".sneak", "ANY"));
+	public void load(ConfigurationSection cfg) {
+		sneak = SneakType.getByName(cfg.getString("sneak", "ANY"));
 	}
 
 	@Override

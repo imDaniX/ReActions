@@ -23,6 +23,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.SignEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
@@ -31,8 +32,8 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,13 +85,13 @@ public class SignActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof SignEvent)) return false;
 		SignEvent signEvent = (SignEvent) event;
 		if (!clickCheck(signEvent.isLeftClicked())) return false;
 		if (!checkMask(signEvent.getSignLines())) return false;
 		for (int i = 0; i < signEvent.getSignLines().length; i++)
-			Variables.setTempVar("sign_line" + Integer.toString(i + 1), signEvent.getSignLines()[i]);
+			Variables.setTempVar("sign_line" + (i + 1), signEvent.getSignLines()[i]);
 		Variables.setTempVar("sign_loc", signEvent.getSignLocation());
 		Variables.setTempVar("click", signEvent.isLeftClicked() ? "left" : "right");
 		return Actions.executeActivator(signEvent.getPlayer(), this);
@@ -102,15 +103,15 @@ public class SignActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".sign-mask", maskLines);
-		cfg.set(root + ".click-type", click.name());
+	public void save(ConfigurationSection cfg) {
+		cfg.set("sign-mask", maskLines);
+		cfg.set("click-type", click.name());
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		maskLines = cfg.getStringList(root + ".sign-mask");
-		click = ClickType.getByName(cfg.getString(root + ".click-type", "RIGHT"));
+	public void load(ConfigurationSection cfg) {
+		maskLines = cfg.getStringList("sign-mask");
+		click = ClickType.getByName(cfg.getString("click-type", "RIGHT"));
 	}
 
 	@Override

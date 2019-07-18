@@ -25,12 +25,13 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.MessageEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 import java.util.regex.Pattern;
 
@@ -41,8 +42,8 @@ public class MessageActivator extends Activator {
 
 
 	Type type;
-	Source source;
-	String mask;
+	private Source source;
+	private String mask;
 
 	public MessageActivator(String name, String group, YamlConfiguration cfg) {
 		super(name, group, cfg);
@@ -57,17 +58,17 @@ public class MessageActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".mask", mask);
-		cfg.set(root + ".type", type.name());
-		cfg.set(root + ".source", source.name());
+	public void save(ConfigurationSection cfg) {
+		cfg.set("mask", mask);
+		cfg.set("type", type.name());
+		cfg.set("source", source.name());
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		mask = cfg.getString(root + ".mask", "Unknown mask");
-		this.type = Type.getByName(cfg.getString(root + ".type", Type.EQUAL.name()));
-		this.source = Source.getByName(cfg.getString(root + ".source", Source.CHAT_INPUT.name()));
+	public void load(ConfigurationSection cfg) {
+		mask = cfg.getString("mask", "Unknown mask");
+		this.type = Type.getByName(cfg.getString("type", Type.EQUAL.name()));
+		this.source = Source.getByName(cfg.getString("source", Source.CHAT_INPUT.name()));
 	}
 
 
@@ -121,7 +122,7 @@ public class MessageActivator extends Activator {
 
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof MessageEvent)) return false;
 		MessageEvent e = (MessageEvent) event;
 		if (!e.isForActivator(this)) return false;

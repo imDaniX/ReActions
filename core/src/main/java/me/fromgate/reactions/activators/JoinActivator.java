@@ -24,9 +24,10 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.JoinEvent;
+import me.fromgate.reactions.event.RAEvent;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class JoinActivator extends Activator {
 
@@ -42,7 +43,7 @@ public class JoinActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (event instanceof JoinEvent) {
 			JoinEvent ce = (JoinEvent) event;
 			if (isJoinActivate(ce.isFirstJoin())) return Actions.executeActivator(ce.getPlayer(), this);
@@ -61,13 +62,13 @@ public class JoinActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".join-state", (firstJoin ? "FIRST" : "ANY"));
+	public void save(ConfigurationSection cfg) {
+		cfg.set("join-state", (firstJoin ? "FIRST" : "ANY"));
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.firstJoin = cfg.getString(root + ".join-state", "ANY").equalsIgnoreCase("first");
+	public void load(ConfigurationSection cfg) {
+		this.firstJoin = cfg.getString("join-state", "ANY").equalsIgnoreCase("first");
 	}
 
 	@Override

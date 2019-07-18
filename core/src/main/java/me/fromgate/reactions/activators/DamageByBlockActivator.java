@@ -2,19 +2,21 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.DamageByBlockEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
  * Created by MaxDikiy on 2017-07-23.
  */
+// TODO: Assemble to one activator
 public class DamageByBlockActivator extends Activator {
 	private String blockStr;
 	private String blockLocation;
@@ -43,7 +45,7 @@ public class DamageByBlockActivator extends Activator {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof DamageByBlockEvent)) return false;
 		DamageByBlockEvent db = (DamageByBlockEvent) event;
 		Block damagerBlock = db.getBlockDamager();
@@ -97,17 +99,17 @@ public class DamageByBlockActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".block", this.blockStr);
-		cfg.set(root + ".location", this.blockLocation.isEmpty() ? null : this.blockLocation);
-		cfg.set(root + ".cause", this.damageCause);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("block", this.blockStr);
+		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+		cfg.set("cause", this.damageCause);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.blockStr = cfg.getString(root + ".block", "");
-		this.blockLocation = cfg.getString(root + ".location", "");
-		this.damageCause = cfg.getString(root + ".cause", "");
+	public void load(ConfigurationSection cfg) {
+		this.blockStr = cfg.getString("block", "");
+		this.blockLocation = cfg.getString("location", "");
+		this.damageCause = cfg.getString("cause", "");
 	}
 
 	@Override

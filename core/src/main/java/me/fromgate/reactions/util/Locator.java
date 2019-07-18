@@ -352,5 +352,4 @@ public class Locator {
 		Msg.printPage(sender, locList, Msg.MSG_LISTLOC, pageNum, linesPerPage, true);
 	}
 
-
 }

@@ -24,16 +24,17 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.MobClickEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 public class MobClickActivator extends Activator {
 	private String mobName;
@@ -62,7 +63,7 @@ public class MobClickActivator extends Activator {
 
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof MobClickEvent)) return false;
 		MobClickEvent me = (MobClickEvent) event;
 		if (mobType.isEmpty()) return false;
@@ -111,17 +112,17 @@ public class MobClickActivator extends Activator {
 
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".mob-type", this.mobType);
-		cfg.set(root + ".mob-name", this.mobName.isEmpty() ? null : this.mobName);
-		cfg.set(root + ".location", this.mobLocation.isEmpty() ? null : this.mobLocation);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("mob-type", this.mobType);
+		cfg.set("mob-name", this.mobName.isEmpty() ? null : this.mobName);
+		cfg.set("location", this.mobLocation.isEmpty() ? null : this.mobLocation);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.mobType = cfg.getString(root + ".mob-type", "");
-		this.mobName = cfg.getString(root + ".mob-name", "");
-		this.mobLocation = cfg.getString(root + ".location", "");
+	public void load(ConfigurationSection cfg) {
+		this.mobType = cfg.getString("mob-type", "");
+		this.mobName = cfg.getString("mob-name", "");
+		this.mobLocation = cfg.getString("location", "");
 	}
 
 	@Override

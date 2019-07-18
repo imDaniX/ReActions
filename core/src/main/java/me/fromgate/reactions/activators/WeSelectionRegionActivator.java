@@ -1,14 +1,15 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.WeSelectionRegionEvent;
 import me.fromgate.reactions.externals.worldedit.WeSelection;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class WeSelectionRegionActivator extends Activator {
 	private int maxBlocks;
@@ -28,7 +29,7 @@ public class WeSelectionRegionActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof WeSelectionRegionEvent)) return false;
 		WeSelectionRegionEvent e = (WeSelectionRegionEvent) event;
 		WeSelection selection = e.getSelection();
@@ -53,7 +54,7 @@ public class WeSelectionRegionActivator extends Activator {
 		return Actions.executeActivator(e.getPlayer(), this);
 	}
 
-	public boolean checkTypeSelection(String selType) {
+	private boolean checkTypeSelection(String selType) {
 		return typeSelection.isEmpty() || typeSelection.equalsIgnoreCase("ANY") || typeSelection.equalsIgnoreCase(selType);
 	}
 
@@ -63,17 +64,17 @@ public class WeSelectionRegionActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".min-blocks", this.minBlocks);
-		cfg.set(root + ".max-blocks", this.maxBlocks);
-		cfg.set(root + ".type", this.typeSelection);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("min-blocks", this.minBlocks);
+		cfg.set("max-blocks", this.maxBlocks);
+		cfg.set("type", this.typeSelection);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.minBlocks = cfg.getInt(root + ".min-blocks", 0);
-		this.maxBlocks = cfg.getInt(root + ".max-blocks", 0);
-		this.typeSelection = cfg.getString(root + ".type", "ANY");
+	public void load(ConfigurationSection cfg) {
+		this.minBlocks = cfg.getInt("min-blocks", 0);
+		this.maxBlocks = cfg.getInt("max-blocks", 0);
+		this.typeSelection = cfg.getString("type", "ANY");
 	}
 
 	@Override

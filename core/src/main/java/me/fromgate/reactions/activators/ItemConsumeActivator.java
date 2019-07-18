@@ -24,19 +24,20 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.ItemConsumeEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class ItemConsumeActivator extends Activator {
 
 	private String item;
-
+	// TODO: Hand option
 
 	public ItemConsumeActivator(String name, String group, YamlConfiguration cfg) {
 		super(name, group, cfg);
@@ -47,7 +48,7 @@ public class ItemConsumeActivator extends Activator {
 		this.item = item;
 	}
 
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!this.item.isEmpty() && ItemUtil.parseItemStack(this.item) != null) {
 			if (event instanceof ItemConsumeEvent) {
 				ItemConsumeEvent ie = (ItemConsumeEvent) event;
@@ -73,12 +74,12 @@ public class ItemConsumeActivator extends Activator {
 		return false;
 	}
 
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".item", this.item);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("item", this.item);
 	}
 
-	public void load(String root, YamlConfiguration cfg) {
-		this.item = cfg.getString(root + ".item");
+	public void load(ConfigurationSection cfg) {
+		this.item = cfg.getString("item");
 	}
 
 	public ActivatorType getType() {

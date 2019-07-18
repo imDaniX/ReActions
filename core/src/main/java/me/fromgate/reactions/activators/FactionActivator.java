@@ -25,11 +25,12 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.FactionChangeEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class FactionActivator extends Activator {
 
@@ -48,7 +49,7 @@ public class FactionActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof FactionChangeEvent)) return false;
 		FactionChangeEvent fe = (FactionChangeEvent) event;
 		if (!(newFaction.isEmpty() || newFaction.equalsIgnoreCase("any") || fe.getNewFaction().equalsIgnoreCase(newFaction)))
@@ -66,15 +67,15 @@ public class FactionActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".new-faction", newFaction.isEmpty() ? "ANY" : newFaction);
-		cfg.set(root + ".old-faction", oldFaction.isEmpty() ? "ANY" : oldFaction);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("new-faction", newFaction.isEmpty() ? "ANY" : newFaction);
+		cfg.set("old-faction", oldFaction.isEmpty() ? "ANY" : oldFaction);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.newFaction = cfg.getString(root + ".new-faction", "ANY");
-		this.oldFaction = cfg.getString(root + ".old-faction", "ANY");
+	public void load(ConfigurationSection cfg) {
+		this.newFaction = cfg.getString("new-faction", "ANY");
+		this.oldFaction = cfg.getString("old-faction", "ANY");
 	}
 
 	@Override

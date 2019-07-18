@@ -24,18 +24,18 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.PlateEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class PlateActivator extends Activator {
-	String world;
-	int x;
-	int y;
-	int z;
+	private String world;
+	private int x;
+	private int y;
+	private int z;
 
 	PlateActivator(String name, String group, YamlConfiguration cfg) {
 		super(name, group, cfg);
@@ -60,7 +60,7 @@ public class PlateActivator extends Activator {
 	 * Очередная залипуха, надо будет потом переделать
 	 */
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof PlateEvent)) return false;
 		PlateEvent be = (PlateEvent) event;
 		if (!isLocatedAt(be.getPlateLocation())) return false;
@@ -77,19 +77,19 @@ public class PlateActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".world", this.world);
-		cfg.set(root + ".x", x);
-		cfg.set(root + ".y", y);
-		cfg.set(root + ".z", z);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("world", this.world);
+		cfg.set("x", x);
+		cfg.set("y", y);
+		cfg.set("z", z);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		world = cfg.getString(root + ".world");
-		x = cfg.getInt(root + ".x");
-		y = cfg.getInt(root + ".y");
-		z = cfg.getInt(root + ".z");
+	public void load(ConfigurationSection cfg) {
+		world = cfg.getString("world");
+		x = cfg.getInt("x");
+		y = cfg.getInt("y");
+		z = cfg.getInt("z");
 	}
 
 	@Override

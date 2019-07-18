@@ -453,4 +453,15 @@ public class Util {
 		return b.toString();
 	}
 
+	public static int[] sortedIntPair(int arg1, int arg2) {
+		int[] pair = new int[2];
+		if(arg1 > arg2) {
+			pair[0] = arg2;
+			pair[1] = arg1;
+		} else {
+			pair[0] = arg1;
+			pair[1] = arg2;
+		}
+		return pair;
+	}
 }

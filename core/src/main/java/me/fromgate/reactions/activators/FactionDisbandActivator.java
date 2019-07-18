@@ -25,10 +25,11 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.FactionDisbandEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class FactionDisbandActivator extends Activator {
 
@@ -41,7 +42,7 @@ public class FactionDisbandActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof FactionDisbandEvent)) return false;
 		FactionDisbandEvent fe = (FactionDisbandEvent) event;
 		Variables.setTempVar("faction", fe.getFaction());
@@ -54,11 +55,11 @@ public class FactionDisbandActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
+	public void save(ConfigurationSection cfg) {
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
+	public void load(ConfigurationSection cfg) {
 	}
 
 	@Override

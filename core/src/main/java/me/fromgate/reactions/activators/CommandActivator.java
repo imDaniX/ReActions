@@ -25,6 +25,7 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.CommandEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.FakeCmd;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -33,8 +34,8 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -118,7 +119,7 @@ public class CommandActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof CommandEvent)) return false;
 		CommandEvent ce = (CommandEvent) event;
 		if (ce.isParentCancelled() && !this.override) return false;
@@ -159,17 +160,17 @@ public class CommandActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".override", this.override);
-		cfg.set(root + ".regex", this.useRegex);
-		cfg.set(root + ".command", command);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("override", this.override);
+		cfg.set("regex", this.useRegex);
+		cfg.set("command", command);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.override = cfg.getBoolean(root + ".override", true);
-		this.useRegex = cfg.getBoolean(root + ".regex", false);
-		this.command = cfg.getString(root + ".command");
+	public void load(ConfigurationSection cfg) {
+		this.override = cfg.getBoolean("override", true);
+		this.useRegex = cfg.getBoolean("regex", false);
+		this.command = cfg.getString("command");
 	}
 
 	@Override

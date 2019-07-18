@@ -76,8 +76,9 @@ public enum ActivatorType {
 	VARIABLE("var", VariableActivator.class),
 	WE_SELECTION_REGION("weselectionregion", WeSelectionRegionActivator.class),
 	WE_CHANGE("wechange", WeChangeActivator.class),
-	GAMEMODE("gamemode", GameModeActivator.class),
-	GOD("god", GodActivator.class);
+	GAMEMODE("gamemode", GamemodeActivator.class),
+	GOD("god", GodActivator.class),
+	CUBOID("cuboid", CuboidActivator.class);
 
 	private String alias;
 	private Class<? extends Activator> aClass;

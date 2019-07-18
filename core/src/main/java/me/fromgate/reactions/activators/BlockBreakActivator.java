@@ -2,14 +2,15 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.BlockBreakEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 /**
  * Created by MaxDikiy on 2017-05-14.
@@ -40,7 +41,7 @@ public class BlockBreakActivator extends Activator {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof BlockBreakEvent)) return false;
 		BlockBreakEvent bbe = (BlockBreakEvent) event;
 		Block brokenBlock = bbe.getBlockBreak();
@@ -83,15 +84,15 @@ public class BlockBreakActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".block", this.blockStr);
-		cfg.set(root + ".location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("block", this.blockStr);
+		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.blockStr = cfg.getString(root + ".block", "");
-		this.blockLocation = cfg.getString(root + ".location", "");
+	public void load(ConfigurationSection cfg) {
+		this.blockStr = cfg.getString("block", "");
+		this.blockLocation = cfg.getString("location", "");
 	}
 
 	@Override

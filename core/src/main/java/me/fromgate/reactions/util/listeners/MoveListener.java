@@ -65,6 +65,7 @@ public class MoveListener implements Listener {
 		PushBack.rememberLocations(player, from, to);
 		if (!BlockUtil.isSameBlock(from, to)) {
 			EventManager.raiseAllRegionEvents(player, to, from);
+			EventManager.raiseCuboidEvent(player);
 		}
 	}
 

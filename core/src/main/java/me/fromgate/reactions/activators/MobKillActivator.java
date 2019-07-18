@@ -24,16 +24,17 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.MobKillEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 public class MobKillActivator extends Activator {
 	private String mobName;
@@ -59,7 +60,7 @@ public class MobKillActivator extends Activator {
 
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof MobKillEvent)) return false;
 		MobKillEvent me = (MobKillEvent) event;
 		if (mobType.isEmpty()) return false;
@@ -97,15 +98,15 @@ public class MobKillActivator extends Activator {
 
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".mob-type", this.mobType);
-		cfg.set(root + ".mob-name", this.mobName);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("mob-type", this.mobType);
+		cfg.set("mob-name", this.mobName);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.mobType = cfg.getString(root + ".mob-type", "");
-		this.mobName = cfg.getString(root + ".mob-name", "");
+	public void load(ConfigurationSection cfg) {
+		this.mobType = cfg.getString("mob-type", "");
+		this.mobName = cfg.getString("mob-name", "");
 	}
 
 	@Override

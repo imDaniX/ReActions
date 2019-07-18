@@ -4,6 +4,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.WeChangeEvent;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Locator;
@@ -12,8 +13,8 @@ import me.fromgate.reactions.util.Variables;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class WeChangeActivator extends Activator {
 	private String blockType;
@@ -32,7 +33,7 @@ public class WeChangeActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof WeChangeEvent)) return false;
 		WeChangeEvent e = (WeChangeEvent) event;
 		String type = e.getBlockType();
@@ -45,17 +46,15 @@ public class WeChangeActivator extends Activator {
 		return Actions.executeActivator(e.getPlayer(), this);
 	}
 
-	public boolean checkBlockType(String blockType) {
+	private boolean checkBlockType(String blockType) {
 		blockType();
 		return blockType.isEmpty() || this.blockType.equalsIgnoreCase("ANY") || this.blockType.equalsIgnoreCase(blockType);
 	}
 
-	public void blockType() {
+	private void blockType() {
 		String bType = blockType.toUpperCase();
 		if (bType.isEmpty()) blockType = "ANY";
 		else if (StringUtils.isNumeric(bType)) {
-			int bTypeID = Integer.parseInt(bType);
-			//noinspection deprecation
 			blockType = Material.getMaterial(bType).name();
 		} else if (!bType.equalsIgnoreCase("ANY") && Material.getMaterial(bType) != null)
 			blockType = Material.getMaterial(bType).name();
@@ -68,15 +67,15 @@ public class WeChangeActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".block-type", this.blockType);
-		cfg.set(root + ".region", this.region);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("block-type", this.blockType);
+		cfg.set("region", this.region);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.blockType = cfg.getString(root + ".block-type", "");
-		this.region = cfg.getString(root + ".region", "");
+	public void load(ConfigurationSection cfg) {
+		this.blockType = cfg.getString("block-type", "");
+		this.region = cfg.getString("region", "");
 	}
 
 	@Override

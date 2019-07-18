@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 @PlaceholderDefine(id = "BasicPlayer", needPlayer = true,
 		keys = {"player_loc", "player_loc_eye", "player_loc_view", "player_name", "player",
 				"player_display", "dplayer", "player_item_hand", "itemplayer", "player_inv", "invplayer",
-				"health", "player_loc_death", "deathpoint"})
+				"health", "player_loc_death", "deathpoint", "player_id", "uuid"})
 public class PlaceholderPlayer extends Placeholder {
 	@Override
 	public String processPlaceholder(Player player, String key, String param) {
@@ -40,6 +40,9 @@ public class PlaceholderPlayer extends Placeholder {
 				return Locator.locationToString(player.getEyeLocation());
 			case "player_loc_view":
 				return Locator.locationToString(getViewLocation(player));
+			case "player_id":
+			case "uuid":
+				return player.getUniqueId().toString();
 			case "player_name":
 			case "player":
 				return player.getName();
@@ -53,9 +56,8 @@ public class PlaceholderPlayer extends Placeholder {
 		return b.getLocation().add(0.5, 0.5, 0.5);
 	}
 
-
 	private String getPlayerItemInHand(Player player) {
-		VirtualItem vi = ItemUtil.itemFromItemStack(player.getInventory().getItemInMainHand()); //VirtualItem.fromItemStack(player.getItemInHand());
+		VirtualItem vi = ItemUtil.itemFromItemStack(player.getInventory().getItemInMainHand());
 		if (vi == null) return "";
 		return vi.toString();
 	}

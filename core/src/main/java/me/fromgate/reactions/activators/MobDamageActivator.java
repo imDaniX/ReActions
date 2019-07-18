@@ -24,6 +24,7 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.MobDamageEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -31,10 +32,10 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
 import java.util.regex.Pattern;
 
@@ -65,7 +66,7 @@ public class MobDamageActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof MobDamageEvent)) return false;
 		MobDamageEvent me = (MobDamageEvent) event;
 		if (mobType.isEmpty()) return false;
@@ -113,17 +114,17 @@ public class MobDamageActivator extends Activator {
 
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".mob-type", this.mobType);
-		cfg.set(root + ".mob-name", this.mobName);
-		cfg.set(root + ".item", this.itemStr);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("mob-type", this.mobType);
+		cfg.set("mob-name", this.mobName);
+		cfg.set("item", this.itemStr);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.mobType = cfg.getString(root + ".mob-type", "");
-		this.mobName = cfg.getString(root + ".mob-name", "");
-		this.itemStr = cfg.getString(root + ".item", "");
+	public void load(ConfigurationSection cfg) {
+		this.mobType = cfg.getString("mob-type", "");
+		this.mobName = cfg.getString("mob-name", "");
+		this.itemStr = cfg.getString("item", "");
 	}
 
 	@Override

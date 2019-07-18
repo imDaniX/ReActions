@@ -24,11 +24,12 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.FactionRelationEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -78,7 +79,7 @@ public class FactionRelationActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof FactionRelationEvent)) return false;
 		FactionRelationEvent fe = (FactionRelationEvent) event;
 		Variables.setTempVar("faction1", fe.getFaction());
@@ -97,20 +98,19 @@ public class FactionRelationActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		List<String> factionList = new ArrayList<>();
-		factionList.addAll(this.factions);
-		cfg.set(root + ".factions", factionList);
-		cfg.set(root + ".old-relation", this.oldRelation);
-		cfg.set(root + ".new-relation", this.newRelation);
+	public void save(ConfigurationSection cfg) {
+		List<String> factionList = new ArrayList<>(this.factions);
+		cfg.set("factions", factionList);
+		cfg.set("old-relation", this.oldRelation);
+		cfg.set("new-relation", this.newRelation);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
+	public void load(ConfigurationSection cfg) {
 		this.factions = new HashSet<>();
-		this.factions.addAll(cfg.getStringList(root + ".factions"));
-		this.oldRelation = cfg.getString(root + ".old-relation", "ANY");
-		this.newRelation = cfg.getString(root + ".new-relation", "ANY");
+		this.factions.addAll(cfg.getStringList("factions"));
+		this.oldRelation = cfg.getString("old-relation", "ANY");
+		this.newRelation = cfg.getString("new-relation", "ANY");
 	}
 
 	@Override

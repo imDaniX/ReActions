@@ -24,10 +24,11 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.PvpKillEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class PvpKillActivator extends Activator {
 	PvpKillActivator(String name) {
@@ -43,7 +44,7 @@ public class PvpKillActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof PvpKillEvent)) return false;
 		PvpKillEvent pe = (PvpKillEvent) event;
 		Variables.setTempVar("targetplayer", pe.getKilledPlayer().getName());
@@ -56,11 +57,11 @@ public class PvpKillActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
+	public void save(ConfigurationSection cfg) {
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
+	public void load(ConfigurationSection cfg) {
 	}
 
 	@Override

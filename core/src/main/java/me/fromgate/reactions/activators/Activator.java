@@ -24,14 +24,15 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.FlagVal;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -155,7 +156,7 @@ public abstract class Activator {
 	 */
 	public void saveActivator(YamlConfiguration cfg) {
 		String key = getType() + "." + this.name;
-		save(key, cfg);
+		save(cfg.getConfigurationSection(key));
 		List<String> flg = new ArrayList<>();
 		for (FlagVal f : flags) flg.add(f.toString());
 		cfg.set(key + ".flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
@@ -169,7 +170,7 @@ public abstract class Activator {
 
 	public void loadActivator(YamlConfiguration cfg) {
 		String key = getType().name() + "." + this.name;
-		load(key, cfg);
+		load(cfg.getConfigurationSection(key));
 		List<String> flg = cfg.getStringList(key + ".flags");
 		for (String flgstr : flg) {
 			String flag = flgstr;
@@ -223,26 +224,22 @@ public abstract class Activator {
 	}
 
 
-	public boolean executeActivator(Event event) {
+	public boolean executeActivator(RAEvent event) {
 		boolean result = activate(event);
 		Variables.clearAllTempVar();
 		return result;
 	}
 
 
-	public abstract boolean activate(Event event); // Наверное всё-таки так
+	public abstract boolean activate(RAEvent event); // Наверное всё-таки так
 
 	public abstract boolean isLocatedAt(Location loc);
 
-	public abstract void save(String root, YamlConfiguration cfg);
+	public abstract void save(ConfigurationSection cfg);
 
-	public abstract void load(String root, YamlConfiguration cfg);
+	public abstract void load(ConfigurationSection cfg);
 
 	public abstract ActivatorType getType();
-
-	public boolean isTypeOf(String str) {
-		return ((getType().name().equalsIgnoreCase(str)) || (getType().getAlias().equalsIgnoreCase(str)));
-	}
 
 	public abstract boolean isValid();
 

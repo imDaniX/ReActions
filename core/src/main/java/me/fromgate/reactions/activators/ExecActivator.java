@@ -26,10 +26,11 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.ExecEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class ExecActivator extends Activator {
 
@@ -38,15 +39,11 @@ public class ExecActivator extends Activator {
 	}
 
 	public ExecActivator(String name, String param) {
-		this(name);
-	}
-
-	ExecActivator(String name) {
 		super(name, "activators");
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (event instanceof ExecEvent) {
 			ExecEvent ce = (ExecEvent) event;
 			if (ce.getActivatorId().equalsIgnoreCase(this.getName())) {
@@ -63,11 +60,11 @@ public class ExecActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
+	public void save(ConfigurationSection cfg) {
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
+	public void load(ConfigurationSection cfg) {
 	}
 
 	@Override

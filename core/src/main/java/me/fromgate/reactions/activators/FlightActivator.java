@@ -2,11 +2,12 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.FlightEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 /**
  * Created by MaxDikiy on 5/2/2017.
@@ -25,7 +26,7 @@ public class FlightActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof FlightEvent)) return false;
 		FlightEvent fe = (FlightEvent) event;
 		if (!checkFlight(fe.isFlying())) return false;
@@ -39,13 +40,13 @@ public class FlightActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".flight", flight.name());
+	public void save(ConfigurationSection cfg) {
+		cfg.set("flight", flight.name());
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		flight = FlightType.getByName(cfg.getString(root + ".flight", "ANY"));
+	public void load(ConfigurationSection cfg) {
+		flight = FlightType.getByName(cfg.getString("flight", "ANY"));
 	}
 
 	@Override

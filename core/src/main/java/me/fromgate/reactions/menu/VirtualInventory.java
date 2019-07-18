@@ -30,9 +30,9 @@ public class VirtualInventory {
 		cfg.set(root + ".size", size);
 		for (int i = 0; i < size; i++) {
 			if (!slots.get(i).isEmpty())
-				cfg.set(root + ".slot" + Integer.toString(i + 1) + ".item", slots.get(i));
+				cfg.set(root + ".slot" + (i + 1) + ".item", slots.get(i));
 			if (!execs.get(i).isEmpty())
-				cfg.set(root + ".slot" + Integer.toString(i + 1) + ".activator", execs.get(i));
+				cfg.set(root + ".slot" + (i + 1) + ".activator", execs.get(i));
 		}
 	}
 
@@ -49,8 +49,8 @@ public class VirtualInventory {
 		this.slots = InventoryMenu.getEmptyList(this.size);
 		this.execs = InventoryMenu.getEmptyList(this.size);
 		for (int i = 1; i <= size; i++) {
-			this.slots.set(i - 1, cfg.getString(root + ".slot" + Integer.toString(i) + ".item", ""));
-			this.execs.set(i - 1, cfg.getString(root + ".slot" + Integer.toString(i) + ".activator", ""));
+			this.slots.set(i - 1, cfg.getString(root + ".slot" + i + ".item", ""));
+			this.execs.set(i - 1, cfg.getString(root + ".slot" + i + ".activator", ""));
 		}
 	}
 
@@ -69,6 +69,7 @@ public class VirtualInventory {
 		return this.execs;
 	}
 
+	@SuppressWarnings("unused")
 	public VirtualInventory(Param params) {
 		title = params.getParam("title", "&4Re&6Actions &eMenu");
 		size = params.getParam("size", 9);
@@ -76,8 +77,8 @@ public class VirtualInventory {
 		slots = new ArrayList<>();
 		execs = new ArrayList<>();
 		for (int i = 1; i <= size; i++) {
-			execs.add(params.getParam("exec" + Integer.toString(i), ""));
-			slots.add(params.getParam("exec" + Integer.toString(i), ""));
+			execs.add(params.getParam("exec" + i, ""));
+			slots.add(params.getParam("exec" + i, ""));
 		}
 	}
 

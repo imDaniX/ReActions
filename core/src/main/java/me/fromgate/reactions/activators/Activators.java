@@ -137,21 +137,6 @@ public class Activators {
 	}
 
 	/**
-	 * Forced activator adding(replacing)
-	 * @param newAct Activator to add(replace)
-	 */
-	public static void replace(Activator newAct) {
-		String name = newAct.getName();
-		Iterator<Activator> iterator = activators.iterator();
-		while(iterator.hasNext())
-			if(iterator.next().getName().equals(name)){
-				iterator.remove();
-				break;
-			}
-		addActivator(newAct);
-	}
-
-	/**
 	 * Add activator if activator with it's name don't exist
 	 * @param act Activator to add
 	 * @return Was activator added or not
@@ -375,9 +360,9 @@ public class Activators {
 	/**
 	 * Load activators from files
 	 * @param group Name of group
-	 * @param forced Force to load activators - activators with same names will be overridden
+	 * @param clear Clear group before load
 	 */
-	public static void loadActivators(String group, boolean forced) {
+	public static void loadActivators(String group, boolean clear) {
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separatorChar + group + ".yml");
 		if (!f.exists()) return;
 		YamlConfiguration cfg = new YamlConfiguration();
@@ -389,43 +374,26 @@ public class Activators {
 			return;
 		}
 
-		if(!forced)
-			for (String sType : cfg.getKeys(false)) {
-				ActivatorType type = ActivatorType.getByName(sType);
-				ConfigurationSection section = cfg.getConfigurationSection(sType);
-				if (section == null) continue;
-				for (String name : section.getKeys(false)) {
-					if (type == null) {
-						Msg.logOnce("cannotcreate" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
-						continue;
-					}
+		if(clear)
+			clearGroup(group);
 
-					Activator a = createActivator(type, name, group, cfg);
-					if (a == null) {
-						Msg.logOnce("cannotcreate2" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
-						continue;
-					}
-					if (!add(a))
-						Msg.logOnce("cannotcreate3", "Failed to create new activator. Type: " + sType + " Name: " + name);
-				}
-			}
-		else for (String type : cfg.getKeys(false)) {
-			if (!ActivatorType.isValid(type)) continue;
-			ConfigurationSection cs = cfg.getConfigurationSection(type);
-			if (cs == null) continue;
-			for (String name : cs.getKeys(false)) {
-				ActivatorType at = ActivatorType.getByName(type);
-				if (at == null) {
-					Msg.logOnce("cannotcreate" + type + name, "Failed to create new activator. Type: " + type + " Name: " + name);
+		for (String sType : cfg.getKeys(false)) {
+			ActivatorType type = ActivatorType.getByName(sType);
+			ConfigurationSection section = cfg.getConfigurationSection(sType);
+			if (section == null) continue;
+			for (String name : section.getKeys(false)) {
+				if (type == null) {
+					Msg.logOnce("cannotcreate" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
 					continue;
 				}
 
-				Activator a = createActivator(at, name, group, cfg);
+				Activator a = createActivator(type, name, group, cfg);
 				if (a == null) {
-					Msg.logOnce("cannotcreate2" + type + name, "Failed to create new activator. Type: " + type + " Name: " + name);
+					Msg.logOnce("cannotcreate2" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
 					continue;
 				}
-				replace(a);
+				if (!add(a))
+					Msg.logOnce("cannotcreate3", "Failed to create new activator. Type: " + sType + " Name: " + name);
 			}
 		}
 	}
@@ -446,6 +414,23 @@ public class Activators {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	/**
+	 * Clear whole group from activators
+	 * @param name Name of group
+	 */
+	private static void clearGroup(String name) {
+		for(ActivatorType type : activatorsMap.keySet()) {
+			Iterator<Activator> iter = activatorsMap.get(type).iterator();
+			while(iter.hasNext()) {
+				Activator act = iter.next();
+				if(!act.getName().equals(name))
+					continue;
+				activators.remove(act);
+				iter.remove();
+			}
+		}
 	}
 
 	public static Set<String> getActivatorsSet() {
@@ -476,20 +461,20 @@ public class Activators {
 		return cancelParentEvent;
 	}
 
-	public static boolean copyAll(String actfrom, String actto) {
-		if (!contains(actfrom)) return false;
-		if (!contains(actto)) return false;
-		copyActions(actfrom, actto);
-		copyReactions(actfrom, actto);
-		copyFlags(actfrom, actto);
+	public static boolean copyAll(String actFrom, String actTo) {
+		if (!contains(actFrom)) return false;
+		if (!contains(actTo)) return false;
+		copyActions(actFrom, actTo);
+		copyReactions(actFrom, actTo);
+		copyFlags(actFrom, actTo);
 		return true;
 	}
 
-	public static boolean copyActions(String actfrom, String actto) {
-		if (!contains(actfrom)) return false;
-		if (!contains(actto)) return false;
-		Activator afrom = get(actfrom);
-		Activator ato = get(actto);
+	public static boolean copyActions(String actFrom, String actTo) {
+		if (!contains(actFrom)) return false;
+		if (!contains(actTo)) return false;
+		Activator afrom = get(actFrom);
+		Activator ato = get(actTo);
 		ato.clearActions();
 		if (!afrom.getActions().isEmpty()) {
 			for (ActVal action : afrom.getActions())
@@ -498,11 +483,11 @@ public class Activators {
 		return true;
 	}
 
-	public static boolean copyReactions(String actfrom, String actto) {
-		if (!contains(actfrom)) return false;
-		if (!contains(actto)) return false;
-		Activator afrom = get(actfrom);
-		Activator ato = get(actto);
+	public static boolean copyReactions(String actFrom, String actTo) {
+		if (!contains(actFrom)) return false;
+		if (!contains(actTo)) return false;
+		Activator afrom = get(actFrom);
+		Activator ato = get(actTo);
 		ato.clearReactions();
 		if (!afrom.getReactions().isEmpty()) {
 			for (ActVal action : afrom.getReactions())
@@ -511,11 +496,11 @@ public class Activators {
 		return true;
 	}
 
-	public static boolean copyFlags(String actfrom, String actto) {
-		if (!contains(actfrom)) return false;
-		if (!contains(actto)) return false;
-		Activator afrom = get(actfrom);
-		Activator ato = get(actto);
+	public static boolean copyFlags(String actFrom, String actTo) {
+		if (!contains(actFrom)) return false;
+		if (!contains(actTo)) return false;
+		Activator afrom = get(actFrom);
+		Activator ato = get(actTo);
 		ato.clearFlags();
 		if (!afrom.getFlags().isEmpty()) {
 			for (FlagVal flag : afrom.getFlags())

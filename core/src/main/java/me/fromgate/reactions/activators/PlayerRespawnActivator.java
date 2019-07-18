@@ -23,12 +23,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.RespawnEvent;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
-import org.bukkit.event.Event;
 
 public class PlayerRespawnActivator extends Activator {
 
@@ -45,7 +46,7 @@ public class PlayerRespawnActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof RespawnEvent)) return false;
 		RespawnEvent pe = (RespawnEvent) event;
 		if (this.deathCause != PlayerDeathActivator.DeathCause.ANY && pe.getDeathCause() != this.deathCause)
@@ -70,13 +71,13 @@ public class PlayerRespawnActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".death-cause", this.deathCause != null ? this.deathCause.name() : "PVP");
+	public void save(ConfigurationSection cfg) {
+		cfg.set("death-cause", this.deathCause != null ? this.deathCause.name() : "PVP");
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		String deathStr = cfg.getString(root + ".death-cause", "PVP");
+	public void load(ConfigurationSection cfg) {
+		String deathStr = cfg.getString("death-cause", "PVP");
 		this.deathCause = PlayerDeathActivator.DeathCause.byName(deathStr);
 		if (this.deathCause == null) this.deathCause = PlayerDeathActivator.DeathCause.PVP;
 		//this.item=cfg.getString(root+".item");

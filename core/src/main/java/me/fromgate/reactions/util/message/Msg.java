@@ -453,6 +453,7 @@ public enum Msg {
 	ACTIVATOR_WE_SELECTION_REGION("This activator is initiates when a player make a select using the WorldEdit plug-in. /react add we_selection_region <id> [min-blocks:<digit>] [max-blocks:<digit>] [type:<selectionType>]"),
 	ACTIVATOR_GAMEMODE("This activators initiates when player's gamemode changed"),
 	ACTIVATOR_GOD("This activators initiates when the player is changing the god mode."),
+	ACTIVATOR_CUBOID("This activators initiates when the player moves to specified cuboid"),
 	MSG_PLACEHOLDERLISTTITLE("Placeholders"),
 	PLACEHOLDER_TIME_SERVER("Server (system) time"),
 	PLACEHOLDER_TIME_INGAME("In-game time. If player is unknown will show time in default world"),

@@ -24,6 +24,7 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.ItemWearEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -31,8 +32,8 @@ import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class ItemWearActivator extends Activator {
 	private String item;
@@ -48,7 +49,7 @@ public class ItemWearActivator extends Activator {
 
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (item.isEmpty() || (ItemUtil.parseItemStack(item) == null)) {
 			Msg.logOnce(this.name + "activatorwearempty", "Failed to parse item of activator " + this.name);
 			return false;
@@ -73,13 +74,13 @@ public class ItemWearActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".item", this.item);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("item", this.item);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.item = cfg.getString(root + ".item");
+	public void load(ConfigurationSection cfg) {
+		this.item = cfg.getString("item");
 	}
 
 	@Override

@@ -2,30 +2,32 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.GameModeEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 /**
  * Created by MaxDikiy on 2017-10-27.
  */
-public class GameModeActivator extends Activator {
+public class GamemodeActivator extends Activator {
 	private GameMode gameMode;
 
-	public GameModeActivator(String name, String param) {
+	public GamemodeActivator(String name, String param) {
 		super(name, "activators");
 		Param params = new Param(param);
-		this.gameMode = GameMode.getByName(params.getParam("gamemode", "ANY"));
+		this.gameMode = GameMode.valueOf(params.getParam("gamemode", "ANY").toUpperCase());
 	}
 
-	public GameModeActivator(String name, String group, YamlConfiguration cfg) {
+	public GamemodeActivator(String name, String group, YamlConfiguration cfg) {
 		super(name, group, cfg);
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof GameModeEvent)) return false;
 		GameModeEvent e = (GameModeEvent) event;
 		if (!gameModeCheck(e.getGameMode())) return false;
@@ -33,27 +35,8 @@ public class GameModeActivator extends Activator {
 		return Actions.executeActivator(e.getPlayer(), this);
 	}
 
-	enum GameMode {
-		SURVIVAL,
-		CREATIVE,
-		ADVENTURE,
-		SPECTATOR,
-		ANY;
-
-		public static GameMode getByName(String gmStr) {
-			if (gmStr != null) {
-				for (GameMode gmType : values()) {
-					if (gmStr.equalsIgnoreCase(gmType.name())) {
-						return gmType;
-					}
-				}
-			}
-			return GameMode.ANY;
-		}
-	}
-
-	private boolean gameModeCheck(org.bukkit.GameMode gm) {
-		if (gameMode.name().equals("ANY")) return true;
+	private boolean gameModeCheck(GameMode gm) {
+		if (gameMode == null) return true;
 		return gm.name().equals(gameMode.name());
 	}
 
@@ -63,13 +46,13 @@ public class GameModeActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".gamemode", gameMode.name());
+	public void save(ConfigurationSection cfg) {
+		cfg.set("gamemode", gameMode.name());
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		gameMode = GameMode.getByName(cfg.getString(root + ".gamemode", "ANY"));
+	public void load(ConfigurationSection cfg) {
+		gameMode = GameMode.valueOf(cfg.getString("gamemode", "ANY").toUpperCase());
 	}
 
 	@Override

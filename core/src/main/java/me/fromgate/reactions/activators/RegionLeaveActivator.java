@@ -23,13 +23,14 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.RegionLeaveEvent;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.externals.worldguard.WGBridge;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 import java.util.List;
 
@@ -47,7 +48,7 @@ public class RegionLeaveActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof RegionLeaveEvent)) return false;
 		RegionLeaveEvent be = (RegionLeaveEvent) event;
 		if (!be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region))) return false;
@@ -63,13 +64,13 @@ public class RegionLeaveActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".region", this.region);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("region", this.region);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.region = cfg.getString(root + ".region");
+	public void load(ConfigurationSection cfg) {
+		this.region = cfg.getString("region");
 	}
 
 	@Override

@@ -25,12 +25,12 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.ButtonEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class ButtonActivator extends Activator {
 	private String world;
@@ -66,7 +66,7 @@ public class ButtonActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof ButtonEvent)) return false;
 		ButtonEvent be = (ButtonEvent) event;
 		if (!isLocatedAt(be.getButtonLocation())) return false;
@@ -83,19 +83,19 @@ public class ButtonActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".world", this.world);
-		cfg.set(root + ".x", x);
-		cfg.set(root + ".y", y);
-		cfg.set(root + ".z", z);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("world", this.world);
+		cfg.set("x", x);
+		cfg.set("y", y);
+		cfg.set("z", z);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		world = cfg.getString(root + ".world");
-		x = cfg.getInt(root + ".x");
-		y = cfg.getInt(root + ".y");
-		z = cfg.getInt(root + ".z");
+	public void load(ConfigurationSection cfg) {
+		world = cfg.getString("world");
+		x = cfg.getInt("x");
+		y = cfg.getInt("y");
+		z = cfg.getInt("z");
 
 	}
 

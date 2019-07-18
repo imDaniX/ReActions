@@ -91,10 +91,10 @@ public class InventoryMenu implements Listener {
 		if (slots.size() < size)
 			for (int i = slots.size(); i < size; i++) slots.add("");
 		for (int i = 1; i <= size; i++) {
-			if (params.isParamsExists("activator" + Integer.toString(i)))
-				activators.set(i - 1, params.getParam("activator" + Integer.toString(i), ""));
-			if (params.isParamsExists("item" + Integer.toString(i)))
-				slots.set(i - 1, params.getParam("item" + Integer.toString(i), ""));
+			if (params.isParamsExists("activator" + i))
+				activators.set(i - 1, params.getParam("activator" + i, ""));
+			if (params.isParamsExists("item" + i))
+				slots.set(i - 1, params.getParam("item" + i, ""));
 		}
 		vi.title = title;
 		vi.size = size;
@@ -112,7 +112,7 @@ public class InventoryMenu implements Listener {
 	}
 
 
-	public static List<String> getActivators(Param param) {
+	private static List<String> getActivators(Param param) {
 		if (param.isParamsExists("menu")) {
 			String id = param.getParam("menu", "");
 			if (menu.containsKey(id)) return menu.get(id).getActivators();
@@ -121,7 +121,7 @@ public class InventoryMenu implements Listener {
 			if (size > 0) {
 				List<String> activators = new ArrayList<>();
 				for (int i = 1; i <= size; i++)
-					activators.add(param.getParam("exec" + Integer.toString(i), ""));
+					activators.add(param.getParam("exec" + i, ""));
 				return activators;
 			}
 		}
@@ -137,11 +137,9 @@ public class InventoryMenu implements Listener {
 			String title = param.getParam("title", "ReActions Menu");
 			int size = param.getParam("size", 9);
 			if (size <= 0) return null;
-			List<String> activators = new ArrayList<>();
 			inv = Bukkit.createInventory(null, size, title);
 			for (int i = 1; i <= size; i++) {
-				activators.add(param.getParam("exec" + Integer.toString(i), ""));
-				String slotStr = "slot" + Integer.toString(i);
+				String slotStr = "slot" + i;
 				if (!param.isParamsExists(slotStr)) continue;
 				ItemStack slotItem = ItemUtil.parseItemStack(param.getParam(slotStr, ""));
 				if (slotItem == null) continue;
@@ -160,24 +158,24 @@ public class InventoryMenu implements Listener {
 		return true;
 	}
 
-	public static void openInventory(final Player player, final Inventory inv) {
+	private static void openInventory(final Player player, final Inventory inv) {
 		Bukkit.getScheduler().runTaskLater(ReActions.instance, () -> {
 			if (player.isOnline()) player.openInventory(inv);
 			else activeMenus.remove(getInventoryCode(player, inv));
 		}, 1);
 	}
 
-	public static boolean isMenu(Inventory inventory) {
+	private static boolean isMenu(Inventory inventory) {
 		return activeMenus.containsKey(getInventoryCode(inventory));
 	}
 
-	public static void removeInventory(Inventory inv) {
+	private static void removeInventory(Inventory inv) {
 		int code = getInventoryCode(inv);
-		if (activeMenus.containsKey(code)) activeMenus.remove(code);
+		activeMenus.remove(code);
 	}
 
 
-	public static List<String> getActivators(Inventory inventory) {
+	private static List<String> getActivators(Inventory inventory) {
 		if (isMenu(inventory)) return activeMenus.get(getInventoryCode(inventory));
 		return new ArrayList<>();
 	}
@@ -200,6 +198,7 @@ public class InventoryMenu implements Listener {
 			}
 		}
 		event.setCancelled(true);
+		// TODO: Do not close menu option?
 		InventoryMenu.removeInventory(event.getInventory());
 		player.closeInventory();
 	}
@@ -245,7 +244,7 @@ public class InventoryMenu implements Listener {
 		Msg.printPage(sender, menuList, Msg.MSG_MENULIST, pageNum, linesPerPage);
 	}
 
-	public static String itemToString(String itemStr) {
+	private static String itemToString(String itemStr) {
 		if (itemStr.isEmpty()) return "AIR";
 		ItemStack item = ItemUtil.parseItemStack(itemStr);
 		if (item == null || item.getType() == Material.AIR) return "AIR";
@@ -254,20 +253,21 @@ public class InventoryMenu implements Listener {
 		return ChatColor.stripColor(returnStr.isEmpty() ? itemTypeData : returnStr + "[" + itemTypeData + "]");
 	}
 
+	@SuppressWarnings("unused")
 	public static int getInventoryCode(InventoryClickEvent event) {
 		if (event.getViewers().size() != 1) return -1;
 		HumanEntity human = event.getViewers().get(0);
 		return getInventoryCode((Player) human, event.getInventory());
 	}
 
-	public static int getInventoryCode(Inventory inv) {
+	private static int getInventoryCode(Inventory inv) {
 		if (inv.getViewers().size() != 1) return -1;
 		HumanEntity human = inv.getViewers().get(0);
 		return getInventoryCode((Player) human, inv);
 	}
 
 	@SuppressWarnings("deprecation")
-	public static int getInventoryCode(Player player, Inventory inv) {
+	private static int getInventoryCode(Player player, Inventory inv) {
 		if (player == null || inv == null) return -1;
 		StringBuilder sb = new StringBuilder();
 		sb.append(player.getName());

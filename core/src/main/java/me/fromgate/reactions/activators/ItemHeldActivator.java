@@ -2,13 +2,14 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.ItemHeldEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -34,14 +35,14 @@ public class ItemHeldActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof ItemHeldEvent)) return false;
 		ItemHeldEvent ihe = (ItemHeldEvent) event;
 		ItemStack itemNew = ihe.getNewItem();
 		ItemStack itemPrev = ihe.getPreviousItem();
-		if (!this.itemNewStr.isEmpty() && (itemNew == null || !ItemUtil.compareItemStr(itemNew, this.itemNewStr)))
+		if (!this.itemNewStr.isEmpty() && (!ItemUtil.compareItemStr(itemNew, this.itemNewStr)))
 			return false;
-		if (!this.itemPrevStr.isEmpty() && (itemPrev == null || !ItemUtil.compareItemStr(itemPrev, this.itemPrevStr)))
+		if (!this.itemPrevStr.isEmpty() && (!ItemUtil.compareItemStr(itemPrev, this.itemPrevStr)))
 			return false;
 		if (newSlot > -1 && newSlot != ihe.getNewSlot()) return false;
 		if (previousSlot > -1 && previousSlot != ihe.getPreviousSlot()) return false;
@@ -70,19 +71,19 @@ public class ItemHeldActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".item-new", this.itemNewStr);
-		cfg.set(root + ".item-prev", this.itemPrevStr);
-		cfg.set(root + ".slot-new", this.newSlot + 1);
-		cfg.set(root + ".slot-prev", this.previousSlot + 1);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("item-new", this.itemNewStr);
+		cfg.set("item-prev", this.itemPrevStr);
+		cfg.set("slot-new", this.newSlot + 1);
+		cfg.set("slot-prev", this.previousSlot + 1);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.itemNewStr = cfg.getString(root + ".item-new");
-		this.itemPrevStr = cfg.getString(root + ".item-prev");
-		this.newSlot = ((cfg.getString(root + ".slot-new").isEmpty()) ? 0 : Integer.parseInt(cfg.getString(root + ".slot-new"))) - 1;
-		this.previousSlot = ((cfg.getString(root + ".slot-prev").isEmpty()) ? 0 : Integer.parseInt(cfg.getString(root + ".slot-prev"))) - 1;
+	public void load(ConfigurationSection cfg) {
+		this.itemNewStr = cfg.getString("item-new");
+		this.itemPrevStr = cfg.getString("item-prev");
+		this.newSlot = ((cfg.getString("slot-new").isEmpty()) ? 0 : Integer.parseInt(cfg.getString("slot-new"))) - 1;
+		this.previousSlot = ((cfg.getString("slot-prev").isEmpty()) ? 0 : Integer.parseInt(cfg.getString("slot-prev"))) - 1;
 	}
 
 	@Override

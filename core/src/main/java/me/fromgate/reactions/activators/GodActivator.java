@@ -2,11 +2,12 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.GodEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 /**
  * Created by MaxDikiy on 2017-10-28.
@@ -25,7 +26,7 @@ public class GodActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof GodEvent)) return false;
 		GodEvent e = (GodEvent) event;
 		if (!checkGod(e.isGod())) return false;
@@ -39,13 +40,13 @@ public class GodActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".god", god.name());
+	public void save(ConfigurationSection cfg) {
+		cfg.set("god", god.name());
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		god = GodType.getByName(cfg.getString(root + ".god", "ANY"));
+	public void load(ConfigurationSection cfg) {
+		god = GodType.getByName(cfg.getString("god", "ANY"));
 	}
 
 	@Override

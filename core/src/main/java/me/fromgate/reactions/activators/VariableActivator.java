@@ -24,13 +24,14 @@ package me.fromgate.reactions.activators;
 
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.VariableEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 
 public class VariableActivator extends Activator {
 	private String id;
@@ -48,7 +49,7 @@ public class VariableActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof VariableEvent)) return false;
 		VariableEvent ve = (VariableEvent) event;
 		if (!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
@@ -61,15 +62,15 @@ public class VariableActivator extends Activator {
 
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".variable-id", id);
-		cfg.set(root + ".personal", personal);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("variable-id", id);
+		cfg.set("personal", personal);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		id = cfg.getString(root + ".variable-id", "UnknownVariable");
-		personal = cfg.getBoolean(root + ".personal", false);
+	public void load(ConfigurationSection cfg) {
+		id = cfg.getString("variable-id", "UnknownVariable");
+		personal = cfg.getBoolean("personal", false);
 	}
 
 	@Override

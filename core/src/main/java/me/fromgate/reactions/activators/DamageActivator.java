@@ -2,16 +2,18 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.DamageEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
  * Created by MaxDikiy on 2017-07-23.
  */
+// TODO: Assemble to one activator
 public class DamageActivator extends Activator {
 	private String damageCause;
 	private SourceType source;
@@ -28,7 +30,7 @@ public class DamageActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof DamageEvent)) return false;
 		DamageEvent de = (DamageEvent) event;
 		if (!damageCauseCheck(de.getCause())) return false;
@@ -84,15 +86,15 @@ public class DamageActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".cause", this.damageCause);
-		cfg.set(root + ".source", this.source.name());
+	public void save(ConfigurationSection cfg) {
+		cfg.set("cause", this.damageCause);
+		cfg.set("source", this.source.name());
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.damageCause = cfg.getString(root + ".cause", "ANY");
-		this.source = SourceType.getByName(cfg.getString(root + ".source", "ANY"));
+	public void load(ConfigurationSection cfg) {
+		this.damageCause = cfg.getString("cause", "ANY");
+		this.source = SourceType.getByName(cfg.getString("source", "ANY"));
 	}
 
 	@Override

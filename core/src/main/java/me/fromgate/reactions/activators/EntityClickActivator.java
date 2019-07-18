@@ -2,12 +2,13 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.EntityClickEvent;
+import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.Event;
 
 /**
  * Created by MaxDikiy on 2017-05-14.
@@ -26,7 +27,7 @@ public class EntityClickActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(Event event) {
+	public boolean activate(RAEvent event) {
 		if (!(event instanceof EntityClickEvent)) return false;
 		EntityClickEvent ece = (EntityClickEvent) event;
 		if (ece.getEntity() == null) return false;
@@ -45,13 +46,13 @@ public class EntityClickActivator extends Activator {
 	}
 
 	@Override
-	public void save(String root, YamlConfiguration cfg) {
-		cfg.set(root + ".entity-type", this.entityType);
+	public void save(ConfigurationSection cfg) {
+		cfg.set("entity-type", this.entityType);
 	}
 
 	@Override
-	public void load(String root, YamlConfiguration cfg) {
-		this.entityType = cfg.getString(root + ".entity-type", "");
+	public void load(ConfigurationSection cfg) {
+		this.entityType = cfg.getString("entity-type", "");
 	}
 
 	@Override
