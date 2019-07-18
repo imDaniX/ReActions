@@ -24,10 +24,9 @@ package me.fromgate.reactions.event;
 
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Lever;
 
 public class LeverEvent extends RAEvent {
 	private Block leverBlock;
@@ -38,12 +37,12 @@ public class LeverEvent extends RAEvent {
 		this.leverBlock = block;
 	}
 
-	public Lever getLever() {
-		return (Lever) leverBlock.getState().getData();
+	public Switch getLever() {
+		return (Switch) leverBlock.getBlockData();
 	}
 
 	public boolean isLeverPowered() {
-		Lever lever = getLever();
+		Switch lever = getLever();
 		if (lever == null) return false;
 		return lever.isPowered();
 	}

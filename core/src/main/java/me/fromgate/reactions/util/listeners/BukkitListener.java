@@ -9,6 +9,7 @@ import me.fromgate.reactions.activators.SignActivator;
 import me.fromgate.reactions.event.EventManager;
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
+import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.PlayerRespawner;
 import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.Teleporter;
@@ -352,8 +353,7 @@ public class BukkitListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onSignClick(PlayerInteractEvent event) {
 		if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-		if ((event.getClickedBlock().getType() != Material.WALL_SIGN) &&
-				(event.getClickedBlock().getType() != Material.SIGN)) return;
+		if (BlockUtil.isSign(event.getClickedBlock())) return;
 		Sign sign = (Sign) event.getClickedBlock().getState();
 		if (sign == null) return;
 		EventManager.raiseSignEvent(event.getPlayer(), sign.getLines(), event.getClickedBlock().getLocation(), event.getAction() == Action.LEFT_CLICK_BLOCK);

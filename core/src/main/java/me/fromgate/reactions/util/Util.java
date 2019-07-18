@@ -464,4 +464,10 @@ public class Util {
 		}
 		return pair;
 	}
+
+	public static List<String> getEmptyList(int size) {
+		List<String> l = new ArrayList<>();
+		for (int i = 0; i < size; i++) l.add("");
+		return l;
+	}
 }

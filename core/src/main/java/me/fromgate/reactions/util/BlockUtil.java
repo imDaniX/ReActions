@@ -10,6 +10,11 @@ import org.bukkit.block.data.Openable;
  * Some helpful methods related to blocks to minify size of code
  */
 public class BlockUtil {
+
+	public static boolean isSign(Block block) {
+		return Tag.SIGNS.isTagged(block.getType());
+	}
+
 	public static boolean isSameBlock(Location loc1, Location loc2) {
 		return loc1.getWorld().equals(loc2.getWorld()) && !(loc1.getBlockX() != loc2.getX()) && !(loc1.getBlockZ() != loc2.getZ()) && !(loc1.getBlockY() != loc2.getY());
 	}

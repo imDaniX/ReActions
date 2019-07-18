@@ -31,7 +31,7 @@ public class FlagHealth extends Flag {
 		double health;
 		try {
 			health = Double.parseDouble(param);
-		} catch (Exception e) {
+		} catch (Exception ignore) {
 			return false;
 		}
 		return player.getHealth() >= health;

@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.HumanEntity;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -209,12 +208,6 @@ public class InventoryMenu implements Listener {
 		event.setCancelled(true);
 	}
 
-	public static List<String> getEmptyList(int size) {
-		List<String> l = new ArrayList<>();
-		for (int i = 0; i < size; i++) l.add("");
-		return l;
-	}
-
 	public static boolean exists(String id) {
 		return menu.containsKey(id);
 	}
@@ -253,25 +246,17 @@ public class InventoryMenu implements Listener {
 		return ChatColor.stripColor(returnStr.isEmpty() ? itemTypeData : returnStr + "[" + itemTypeData + "]");
 	}
 
-	@SuppressWarnings("unused")
-	public static int getInventoryCode(InventoryClickEvent event) {
-		if (event.getViewers().size() != 1) return -1;
-		HumanEntity human = event.getViewers().get(0);
-		return getInventoryCode((Player) human, event.getInventory());
-	}
-
 	private static int getInventoryCode(Inventory inv) {
 		if (inv.getViewers().size() != 1) return -1;
 		HumanEntity human = inv.getViewers().get(0);
 		return getInventoryCode((Player) human, inv);
 	}
 
-	@SuppressWarnings("deprecation")
 	private static int getInventoryCode(Player player, Inventory inv) {
 		if (player == null || inv == null) return -1;
 		StringBuilder sb = new StringBuilder();
 		sb.append(player.getName());
-		sb.append(inv.getName());
+		sb.append(player.getOpenInventory().getTitle());
 		for (ItemStack i : inv.getContents()) {
 			String iStr = "emptyslot";
 			if (i != null && i.getType() != Material.AIR) {

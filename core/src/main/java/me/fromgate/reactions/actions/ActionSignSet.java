@@ -23,13 +23,13 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -46,10 +46,10 @@ public class ActionSignSet extends Action {
 		boolean chunkLoad = params.getParam("loadchunk", false);
 		if (!chunkLoad && !loc.getChunk().isLoaded()) return false;
 		Block block = loc.getBlock();
-		if (block.getType() != Material.SIGN && block.getType() != Material.WALL_SIGN) return false;
+		if (BlockUtil.isSign(block)) return false;
 		Sign sign = (Sign) block.getState();
 		for (int i = 1; i <= 4; i++) {
-			String line = params.getParam("line" + Integer.toString(i), "");
+			String line = params.getParam("line" + i, "");
 			if (line.isEmpty()) continue;
 			if (line.length() > 15) line = line.substring(0, 15);
 			sign.setLine(i - 1, ChatColor.translateAlternateColorCodes('&', line));

@@ -21,10 +21,10 @@ public class FlagGreaterLower extends Flag {
 		float value = params.getParam("value", 0);
 		if (flagType == 0) {
 			Variables.setTempVar("gparam", Double.toString(paramValue));
-			if (paramValue > value) return true;
+			return paramValue > value;
 		} else if (flagType == 1) {
 			Variables.setTempVar("lparam", Double.toString(paramValue));
-			if (paramValue < value) return true;
+			return paramValue < value;
 		}
 		return false;
 	}

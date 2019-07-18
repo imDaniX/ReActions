@@ -25,11 +25,11 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.SignEvent;
+import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
@@ -49,9 +49,8 @@ public class SignActivator extends Activator {
 	public SignActivator(String name, Block targetBlock, String param) {
 		super(name, "activators");
 		Sign sign = null;
-		if (targetBlock != null && (targetBlock.getType() == Material.SIGN || targetBlock.getType() == Material.WALL_SIGN)) {
+		if (targetBlock != null && BlockUtil.isSign(targetBlock))
 			sign = (Sign) targetBlock.getState();
-		}
 		Param params = new Param(param);
 		click = ClickType.getByName(params.getParam("click", "RIGHT"));
 		maskLines = new ArrayList<>();

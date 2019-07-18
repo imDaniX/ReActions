@@ -43,8 +43,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
+import org.bukkit.block.data.type.Switch;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -71,7 +72,6 @@ import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Button;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.HashSet;
@@ -80,9 +80,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public class EventManager {
-	private static ReActions plg() {
-		return ReActions.instance;
-	}
 
 	public static boolean raiseFactionEvent(Player p, String oldFaction, String newFaction) {
 		FactionChangeEvent e = new FactionChangeEvent(p, oldFaction, newFaction);
@@ -207,17 +204,14 @@ public class EventManager {
 		if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK))) {
 			return false;
 		}
-		if (!(event.getClickedBlock().getType().name().endsWith("_BUTTON"))) {
+		if (!Tag.BUTTONS.isTagged(event.getClickedBlock().getType())) {
 			return false;
 		}
 		if (event.getHand() != EquipmentSlot.HAND) {
 			return false;
 		}
-		BlockState state = event.getClickedBlock().getState();
-		if (state.getData() instanceof Button) {
-			Button button = (Button) state.getData();
-			if (button.isPowered()) return false;
-		}
+		Switch button = (Switch) event.getClickedBlock().getBlockData();
+		if (button.isPowered()) return false;
 		ButtonEvent be = new ButtonEvent(event.getPlayer(), event.getClickedBlock().getLocation());
 		Bukkit.getServer().getPluginManager().callEvent(be);
 		return be.isCancelled();
@@ -281,7 +275,7 @@ public class EventManager {
 		if (target.isEmpty() && !param.hasAnyParam(PlayerSelectors.getAllKeys())) target.add(senderPlayer);
 
 		for (int i = 0; i < repeat; i++) {
-			Bukkit.getScheduler().runTaskLater(plg(), () -> {
+			Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
 				for (Player player : target) {
 					if (Activators.isStopped(player, id, true)) continue;
 					ExecEvent ce = new ExecEvent(senderPlayer, player, id, tempVars);
@@ -300,7 +294,7 @@ public class EventManager {
 		}
 		final Player p = event.getPlayer();
 		final Location l = event.getClickedBlock().getLocation();
-		Bukkit.getScheduler().runTaskLater(plg(), () -> {
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
 			PlateEvent pe = new PlateEvent(p, l);
 			Bukkit.getServer().getPluginManager().callEvent(pe);
 		}, 1);
@@ -364,7 +358,7 @@ public class EventManager {
 		RegionEvent wge = new RegionEvent(player, region);
 		Bukkit.getServer().getPluginManager().callEvent(wge);
 
-		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureRegionCheck(playerName, region, true), 20 * Cfg.worldguardRecheck);
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureRegionCheck(playerName, region, true), 20 * Cfg.worldguardRecheck);
 	}
 
 
@@ -377,13 +371,13 @@ public class EventManager {
 		ItemWearEvent iwe = new ItemWearEvent(player);
 		if (!iwe.isItemWeared(itemStr)) return;
 		Bukkit.getServer().getPluginManager().callEvent(iwe);
-		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
 	}
 
 
 	public static void raiseItemWearEvent(Player player) {
 		final UUID playerId = player.getUniqueId();
-		Bukkit.getScheduler().runTaskLater(plg(), () -> {
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
 			for (Activator iw : Activators.getActivators(ActivatorType.ITEM_WEAR))
 				setFutureItemWearCheck(playerId, ((ItemWearActivator) iw).getItemStr(), false);
 		}, 1);
@@ -391,7 +385,7 @@ public class EventManager {
 
 	public static void raiseItemHoldEvent(Player player) {
 		final UUID playerId = player.getUniqueId();
-		Bukkit.getScheduler().runTaskLater(plg(), () -> {
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
 			for (Activator ih : Activators.getActivators(ActivatorType.ITEM_HOLD))
 				setFutureItemHoldCheck(playerId, ((ItemHoldActivator)ih).getItemStr(), false);
 		}, 1);
@@ -409,7 +403,7 @@ public class EventManager {
 		ItemHoldEvent ihe = new ItemHoldEvent(player);
 		Bukkit.getServer().getPluginManager().callEvent(ihe);
 
-		Bukkit.getScheduler().runTaskLater(plg(), () -> setFutureItemHoldCheck(playerId, itemStr, true), 20 * Cfg.itemHoldRecheck);
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureItemHoldCheck(playerId, itemStr, true), 20 * Cfg.itemHoldRecheck);
 		return true;
 	}
 
@@ -417,7 +411,7 @@ public class EventManager {
 		long curTime = System.currentTimeMillis();
 		long prevTime = p.hasMetadata("reactions-rchk-" + id) ? p.getMetadata("reactions-rchk-" + id).get(0).asLong() : 0;
 		boolean needUpdate = repeat || ((curTime - prevTime) >= (1000 * seconds));
-		if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(plg(), curTime));
+		if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(ReActions.getPlugin(), curTime));
 		return needUpdate;
 	}
 

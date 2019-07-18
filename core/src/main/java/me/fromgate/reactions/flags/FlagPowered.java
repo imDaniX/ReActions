@@ -25,10 +25,10 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Powerable;
 import org.bukkit.entity.Player;
-import org.bukkit.material.Lever;
 
 public class FlagPowered extends Flag {
 
@@ -40,10 +40,9 @@ public class FlagPowered extends Flag {
 		Location loc = Locator.parseLocation(locStr, null);
 		if (loc == null) return false;
 		Block b = loc.getBlock();
-		if (b.getType() == Material.LEVER) {
-			Lever lever = (Lever) b.getState().getData();
-			return lever.isPowered();
-		}
+		BlockData data = b.getBlockData();
+		if (data instanceof Powerable)
+			return ((Powerable)data).isPowered();
 		return b.isBlockIndirectlyPowered();
 	}
 

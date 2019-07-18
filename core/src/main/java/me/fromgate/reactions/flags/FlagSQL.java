@@ -27,7 +27,7 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class FlagSQL extends Flag {
-	boolean check;
+	private boolean check;
 
 	public FlagSQL(boolean check) {
 		this.check = check;

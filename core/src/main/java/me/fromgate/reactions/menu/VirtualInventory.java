@@ -1,6 +1,7 @@
 package me.fromgate.reactions.menu;
 
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -21,8 +22,8 @@ public class VirtualInventory {
 	public VirtualInventory(int size, String title) {
 		this.size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 		this.title = title;
-		this.slots = InventoryMenu.getEmptyList(this.size);
-		this.execs = InventoryMenu.getEmptyList(this.size);
+		this.slots = Util.getEmptyList(this.size);
+		this.execs = Util.getEmptyList(this.size);
 	}
 
 	public void save(YamlConfiguration cfg, String root) {
@@ -46,8 +47,8 @@ public class VirtualInventory {
 		this.title = cfg.getString(root + ".title", "&4Re&6Actions menu");
 		this.size = cfg.getInt(root + ".size", 9);
 		size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
-		this.slots = InventoryMenu.getEmptyList(this.size);
-		this.execs = InventoryMenu.getEmptyList(this.size);
+		this.slots = Util.getEmptyList(this.size);
+		this.execs = Util.getEmptyList(this.size);
 		for (int i = 1; i <= size; i++) {
 			this.slots.set(i - 1, cfg.getString(root + ".slot" + i + ".item", ""));
 			this.execs.set(i - 1, cfg.getString(root + ".slot" + i + ".activator", ""));

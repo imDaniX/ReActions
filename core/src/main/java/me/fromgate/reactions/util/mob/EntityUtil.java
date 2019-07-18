@@ -36,15 +36,6 @@ public class EntityUtil {
 		return (LivingEntity)source;
 	}
 
-	/**
-	 * Get {@link LivingEntity} from {@link ProjectileSource}
-	 * @param prj Original source's projectile
-	 * @return LivingEntity or null if shooter was a block
-	 */
-	public static LivingEntity getEntityFromProjectile(Projectile prj) {
-		return getEntityFromProjectile(prj.getShooter());
-	}
-
 	public static List<Entity> getEntities(Location l1, Location l2) {
 		List<Entity> entities = new ArrayList<>();
 		if (!l1.getWorld().equals(l2.getWorld())) return entities;

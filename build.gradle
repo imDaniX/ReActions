@@ -17,6 +17,10 @@ compileJava.options.encoding = 'UTF-8'
 compileJava.sourceCompatibility = 1.8
 compileJava.targetCompatibility = 1.8
 
+tasks.withType(JavaCompile) {
+	options.compilerArgs << '-Xlint:unchecked'
+	options.deprecation = true
+}
 
 repositories {
 	mavenCentral()
@@ -39,7 +43,7 @@ dependencies {
 	compile group: 'de.tobiyas.racesandclasses', name: 'RacesAndClasses', version: '1.2.1'
 	compile group: 'com.palmergames.bukkit.towny', name: 'Towny', version: '0.9.1'
 	compile group: 'com.greatmancode', name: 'craftconomy3', version: '3.3', ext: 'jar'
-	compile group: 'org.bukkit', name: 'bukkit', version: '1.13.2-R0.1-SNAPSHOT'
+	compile group: 'org.bukkit', name: 'bukkit', version: '1.14.3-R0.1-SNAPSHOT'
 	compile group: 'me.clip', name: 'placeholderapi', version: '2.9.2'
 	compile group: 'org.bstats', name: 'bstats-bukkit-lite', version: '1.5'
 	compile group: 'com.sk89q.worldedit', name: 'worldedit-bukkit', version: '7.0.0-SNAPSHOT'
