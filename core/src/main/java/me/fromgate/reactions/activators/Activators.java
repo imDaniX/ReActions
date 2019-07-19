@@ -479,7 +479,7 @@ public class Activators {
 		ato.clearActions();
 		if (!afrom.getActions().isEmpty()) {
 			for (StoredAction action : afrom.getActions())
-				ato.addAction(action.flag, action.value);
+				ato.addAction(action.getAction(), action.getValue());
 		}
 		return true;
 	}
@@ -492,7 +492,7 @@ public class Activators {
 		ato.clearReactions();
 		if (!afrom.getReactions().isEmpty()) {
 			for (StoredAction action : afrom.getReactions())
-				ato.addReaction(action.flag, action.value);
+				ato.addReaction(action.getAction(), action.getValue());
 		}
 		return true;
 	}
@@ -505,7 +505,7 @@ public class Activators {
 		ato.clearFlags();
 		if (!afrom.getFlags().isEmpty()) {
 			for (StoredFlag flag : afrom.getFlags())
-				ato.addFlag(flag.flag, flag.value, flag.not);
+				ato.addFlag(flag.getFlag(), flag.getValue(), flag.isInverted());
 		}
 		return true;
 	}

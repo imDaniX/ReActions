@@ -164,8 +164,8 @@ public enum Flags {
 		if (c.getFlags().size() > 0)
 			for (int i = 0; i < c.getFlags().size(); i++) {
 				StoredFlag f = c.getFlags().get(i);
-				Variables.setTempVar((f.flag + "_flag").toUpperCase(), f.value);
-				if (!checkFlag(p, f.flag, Placeholders.replacePlaceholderButRaw(p, f.value), f.not)) return false;
+				Variables.setTempVar((f.getFlag().name() + "_flag").toUpperCase(), f.getValue());
+				if (!checkFlag(p, f.getFlag().name(), Placeholders.replacePlaceholderButRaw(p, f.getValue()), f.isInverted())) return false;
 			}
 		return true;
 	}

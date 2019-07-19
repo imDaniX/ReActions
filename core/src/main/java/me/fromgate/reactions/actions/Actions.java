@@ -159,12 +159,12 @@ public enum Actions {
 		if (actions == null || actions.isEmpty()) return false;
 		for (int i = 0; i < actions.size(); i++) {
 			StoredAction av = actions.get(i);
-			if (!Actions.isValid(av.flag)) continue;
-			Actions at = Actions.getByName(av.flag);
+			if (av.getAction()==null) continue;
+			Actions at = av.getAction();
 			if (at == Actions.WAIT) {
 				if (i == actions.size() - 1) continue;
 				ActionWait aw = (ActionWait) at.action;
-				Param param = new Param(Placeholders.replacePlaceholderButRaw(player, av.value), "time");
+				Param param = new Param(Placeholders.replacePlaceholderButRaw(player, av.getValue()), "time");
 				String timeStr = param.getParam("time", "0");
 				long time = Util.parseTime(timeStr);
 				if (time == 0) continue;
@@ -172,7 +172,7 @@ public enum Actions {
 				aw.executeDelayed(player, futureList, isAction, time);
 				return cancelParentEvent;
 			}
-			if (at != null && at.performAction(player, isAction, new Param(Placeholders.replacePlaceholderButRaw(player, av.value)))) {
+			if (at != null && at.performAction(player, isAction, new Param(Placeholders.replacePlaceholderButRaw(player, av.getValue())))) {
 				cancelParentEvent = true;
 			}
 		}

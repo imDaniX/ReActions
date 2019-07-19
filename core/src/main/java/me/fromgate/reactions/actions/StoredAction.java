@@ -3,21 +3,29 @@ package me.fromgate.reactions.actions;
 import me.fromgate.reactions.util.Util;
 
 public class StoredAction {
-	public String flag;
-	public String value;
+	private final Actions action;
+	private final String value;
 
-	public StoredAction(String f, String v) {
-		this.flag = f;
+	public StoredAction(String a, String v) {
+		this.action = Actions.getByName(a);
 		this.value = v;
 	}
 
-	public StoredAction(String f) {
-		this.flag = f;
-		this.value = "";
+	public StoredAction(Actions a, String v) {
+		this.action = a;
+		this.value = v;
+	}
+
+	public Actions getAction() {
+		return action;
+	}
+
+	public String getValue() {
+		return value;
 	}
 
 	@Override
 	public String toString() {
-		return Util.join(Actions.getValidName(flag), "=", value);
+		return Util.join(action.name(), "=", value);
 	}
 }

@@ -49,15 +49,15 @@ public class CmdInfo extends Cmd {
 		if (f && (!act.getFlags().isEmpty())) {
 			List<String> flg = new ArrayList<>();
 			for (int i = 0; i < act.getFlags().size(); i++) {
-				flg.add((act.getFlags().get(i).not ? "&4! &e" : "  &e") + act.getFlags().get(i).flag + " &3= &a" + act.getFlags().get(i).value);
+				flg.add((act.getFlags().get(i).isInverted() ? "&4! &e" : "  &e") + act.getFlags().get(i).getFlag().name() + " &3= &a" + act.getFlags().get(i).getValue());
 			}
 			Msg.printPage(sender, flg, Msg.LST_FLAGS, 1, 100, true);
 		}
 		if (a && (!act.getActions().isEmpty())) {
 			List<String> flg = new ArrayList<>();
 			for (int i = 0; i < act.getActions().size(); i++) {
-				String action = act.getActions().get(i).flag;
-				String param = act.getActions().get(i).value;
+				String action = act.getActions().get(i).getAction().name();
+				String param = act.getActions().get(i).getValue();
 				if (action.equalsIgnoreCase("tp")) {
 					Location loc = Locator.parseCoordinates(param);//Util.parseLocation(param);
 					if (loc != null) param = Locator.locationToStringFormated(loc);
@@ -69,8 +69,8 @@ public class CmdInfo extends Cmd {
 		if (r && (!act.getReactions().isEmpty())) {
 			List<String> flg = new ArrayList<>();
 			for (int i = 0; i < act.getReactions().size(); i++) {
-				String action = act.getReactions().get(i).flag;
-				String param = act.getReactions().get(i).value;
+				String action = act.getReactions().get(i).getAction().name();
+				String param = act.getReactions().get(i).getValue();
 				if (action.equalsIgnoreCase("tp")) {
 					Location loc = Locator.parseCoordinates(param);
 					if (loc != null) param = Locator.locationToStringFormated(loc);

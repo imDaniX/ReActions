@@ -61,6 +61,10 @@ public abstract class Activator {
 		flags.add(new StoredFlag(Flags.getValidName(flag), param, not));
 	}
 
+	public void addFlag(Flags flag, String param, boolean not) {
+		flags.add(new StoredFlag(flag, param, not));
+	}
+
 	public boolean removeFlag(int index) {
 		if (flags.size() <= index) return false;
 		flags.remove(index);
@@ -75,6 +79,10 @@ public abstract class Activator {
 		actions.add(new StoredAction(Actions.getValidName(action), param));
 	}
 
+	public void addAction(Actions action, String param) {
+		actions.add(new StoredAction(action, param));
+	}
+
 	public boolean removeAction(int index) {
 		if (actions.size() <= index) return false;
 		actions.remove(index);
@@ -83,6 +91,10 @@ public abstract class Activator {
 
 	public void addReaction(String action, String param) {
 		reactions.add(new StoredAction(Actions.getValidName(action), param));
+	}
+
+	public void addReaction(Actions action, String param) {
+		reactions.add(new StoredAction(action, param));
 	}
 
 	public boolean removeReaction(int index) {

@@ -173,8 +173,8 @@ public class MessageActivator extends Activator {
 		int countNum = 0;
 		if (args != null && args.length > 0) {
 			for (int i = 0; i < args.length; i++) {
-				Variables.setTempVar("word" + Integer.toString(i + 1), args[i]);
-				Variables.setTempVar("wnum" + Integer.toString(i + 1), NOT_D.matcher(args[i]).replaceAll(""));
+				Variables.setTempVar("word" + (i + 1), args[i]);
+				Variables.setTempVar("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
 				if (NUM.matcher(args[i]).matches()) {
 					countInt++;
 					Variables.setTempVar("int" + countInt, args[i]);
