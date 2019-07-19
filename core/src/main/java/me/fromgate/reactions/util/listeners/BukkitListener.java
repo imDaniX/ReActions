@@ -21,7 +21,6 @@ import me.fromgate.reactions.util.mob.EntityUtil;
 import me.fromgate.reactions.util.mob.MobSpawn;
 import me.fromgate.reactions.util.waiter.ActionsWaiter;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.EntityType;
@@ -244,7 +243,7 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onCheckGodEvent(EntityDamageEvent event) {
-		GodMode.cancelGodEvent(event);
+		GodModeListener.cancelGodEvent(event);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)

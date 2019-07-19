@@ -73,6 +73,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
+// Is it good idea to call custom events and listening for them?
 public class RaListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onButton(ButtonEvent event) {

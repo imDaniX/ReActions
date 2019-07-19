@@ -41,7 +41,7 @@ import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.UpdateChecker;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.listeners.BukkitListener;
-import me.fromgate.reactions.util.listeners.GodMode;
+import me.fromgate.reactions.util.listeners.GodModeListener;
 import me.fromgate.reactions.util.listeners.MoveListener;
 import me.fromgate.reactions.util.listeners.RaListener;
 import me.fromgate.reactions.util.message.BukkitMessenger;
@@ -94,7 +94,7 @@ public class ReActions extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new RaListener(), this);
 		getServer().getPluginManager().registerEvents(new BukkitListener(), this);
 		MoveListener.init();
-		GodMode.init();
+		GodModeListener.init();
 
 		new MetricsLite(this);
 	}

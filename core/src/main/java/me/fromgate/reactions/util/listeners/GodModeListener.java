@@ -17,17 +17,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class GodMode implements Listener {
+public class GodModeListener implements Listener {
 
 	private static Set<EntityDamageEvent> godCheckEvents = new HashSet<>();
 
 	public static void init() {
 		if (Cfg.godActivatorEnable) {
-			Bukkit.getPluginManager().registerEvents(new GodMode(), ReActions.getPlugin());
+			Bukkit.getPluginManager().registerEvents(new GodModeListener(), ReActions.getPlugin());
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Bukkit.getOnlinePlayers().forEach(GodMode::setEventGod);
+					Bukkit.getOnlinePlayers().forEach(GodModeListener::setEventGod);
 				}
 			}.runTaskTimer(ReActions.getPlugin(), 30, Cfg.godActivatorCheckTicks);
 		}
@@ -38,12 +38,12 @@ public class GodMode implements Listener {
 		if (event.getEntity().getType() == EntityType.PLAYER) {
 			Player player = (Player) event.getEntity();
 			if (event.isCancelled()) {
-				if (GodMode.checkGod(player) && GodMode.setGod(player)) return;
-				if (GodMode.setGod(player) && EventManager.raisePlayerGodChangeEvent(player, true)) {
-					GodMode.removeGod(player);
+				if (GodModeListener.checkGod(player) && GodModeListener.setGod(player)) return;
+				if (GodModeListener.setGod(player) && EventManager.raisePlayerGodChangeEvent(player, true)) {
+					GodModeListener.removeGod(player);
 				}
-			} else if (GodMode.removeGod(player) && EventManager.raisePlayerGodChangeEvent(player, false)) {
-				GodMode.setGod(player);
+			} else if (GodModeListener.removeGod(player) && EventManager.raisePlayerGodChangeEvent(player, false)) {
+				GodModeListener.setGod(player);
 				event.setCancelled(true);
 			}
 		}
@@ -83,7 +83,6 @@ public class GodMode implements Listener {
 	}
 
 	public static void setEventGod(Player player) {
-		//noinspection deprecation
 		EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(player, player, EntityDamageEvent.DamageCause.CUSTOM, 0);
 		godCheckEvents.add(event);
 		Bukkit.getPluginManager().callEvent(event);

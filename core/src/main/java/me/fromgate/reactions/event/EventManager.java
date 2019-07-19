@@ -79,6 +79,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+// Is it good idea to call custom events and listening for them?
 public class EventManager {
 
 	public static boolean raiseFactionEvent(Player p, String oldFaction, String newFaction) {

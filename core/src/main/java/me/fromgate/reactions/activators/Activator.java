@@ -24,12 +24,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.actions.StoredAction;
-import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.flags.StoredFlag;
+import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -58,11 +59,15 @@ public abstract class Activator {
 	private List<StoredAction> reactions = new ArrayList<>();
 
 	public void addFlag(String flag, String param, boolean not) {
-		flags.add(new StoredFlag(Flags.getValidName(flag), param, not));
+		addFlag(Flags.getByName(flag), param, not);
 	}
 
 	public void addFlag(Flags flag, String param, boolean not) {
-		flags.add(new StoredFlag(flag, param, not));
+		StoredFlag flg = new StoredFlag(flag, param, not);
+		if(flg.getFlag() == null)
+			Msg.logOnce("wrongflagname"+flags.size()+name, "Flag for activator "+ name +" with this name does not exist.");
+		else
+			flags.add(flg);
 	}
 
 	public boolean removeFlag(int index) {
@@ -76,11 +81,15 @@ public abstract class Activator {
 	}
 
 	public void addAction(String action, String param) {
-		actions.add(new StoredAction(Actions.getValidName(action), param));
+		addAction(Actions.getByName(action), param);
 	}
 
 	public void addAction(Actions action, String param) {
-		actions.add(new StoredAction(action, param));
+		StoredAction act = new StoredAction(action, param);
+		if(act.getAction() == null)
+			Msg.logOnce("wrongactopmname"+actions.size()+name, "Flag for activator "+ name +" with this name does not exist.");
+		else
+			actions.add(act);
 	}
 
 	public boolean removeAction(int index) {
@@ -90,7 +99,7 @@ public abstract class Activator {
 	}
 
 	public void addReaction(String action, String param) {
-		reactions.add(new StoredAction(Actions.getValidName(action), param));
+		addReaction(Actions.getByName(action), param);
 	}
 
 	public void addReaction(Actions action, String param) {

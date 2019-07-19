@@ -526,20 +526,6 @@ public class Activators {
 		return activatorsMap.get(type);
 	}
 
-	/* public static List<TimeIngameActivator> getTimeIngameActivators() {
-		List<TimeIngameActivator> timeIngameAct= new ArrayList<TimeIngameActivator>();
-		for (Activator a : act)
-			if (a.getType() == ActivatorType.TIME_INGAME) timeIngameAct.add((TimeIngameActivator) a);
-		return timeIngameAct;
-	}
-
-	public static List<TimeServerActivator> getTimeServerActivators() {
-		List<TimeServerActivator> timeServerAct= new ArrayList<TimeServerActivator>();
-		for (Activator a : act)
-			if (a.getType() == ActivatorType.TIME_SERVER) timeServerAct.add((TimeServerActivator) a);
-		return timeServerAct;
-	} */
-
 	@SuppressWarnings("unused")
 	public static boolean stopExec(Player player, String actName) {
 		return stopExec(player == null ? "" : player.getName(), actName);

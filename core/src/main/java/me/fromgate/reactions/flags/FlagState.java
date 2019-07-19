@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.listeners.GodMode;
+import me.fromgate.reactions.util.listeners.GodModeListener;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
@@ -66,8 +66,8 @@ public class FlagState extends Flag {
 			case GLIDE:
 				if (player.isGliding()) return true;
 			case GOD:
-				GodMode.setCheckGod(player);
-				if (GodMode.isGod(player)) return true;
+				GodModeListener.setCheckGod(player);
+				if (GodModeListener.isGod(player)) return true;
 		}
 		return false;
 	}
