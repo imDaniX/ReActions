@@ -200,20 +200,20 @@ public final class CronExpression implements Serializable, Cloneable {
 
 	private static final long serialVersionUID = 12423409423L;
 
-	protected static final int SECOND = 0;
-	protected static final int MINUTE = 1;
-	protected static final int HOUR = 2;
-	protected static final int DAY_OF_MONTH = 3;
-	protected static final int MONTH = 4;
-	protected static final int DAY_OF_WEEK = 5;
-	protected static final int YEAR = 6;
-	protected static final int ALL_SPEC_INT = 99; // '*'
-	protected static final int NO_SPEC_INT = 98; // '?'
-	protected static final Integer ALL_SPEC = ALL_SPEC_INT;
-	protected static final Integer NO_SPEC = NO_SPEC_INT;
+	private static final int SECOND = 0;
+	private static final int MINUTE = 1;
+	private static final int HOUR = 2;
+	private static final int DAY_OF_MONTH = 3;
+	private static final int MONTH = 4;
+	private static final int DAY_OF_WEEK = 5;
+	private static final int YEAR = 6;
+	private static final int ALL_SPEC_INT = 99; // '*'
+	private static final int NO_SPEC_INT = 98; // '?'
+	private static final Integer ALL_SPEC = ALL_SPEC_INT;
+	private static final Integer NO_SPEC = NO_SPEC_INT;
 
-	protected static final Map<String, Integer> monthMap = new HashMap<String, Integer>(20);
-	protected static final Map<String, Integer> dayMap = new HashMap<String, Integer>(60);
+	private static final Map<String, Integer> monthMap = new HashMap<>(20);
+	private static final Map<String, Integer> dayMap = new HashMap<>(60);
 	static {
 		monthMap.put("JAN", 0);
 		monthMap.put("FEB", 1);
@@ -239,22 +239,22 @@ public final class CronExpression implements Serializable, Cloneable {
 
 	private final String cronExpression;
 	private TimeZone timeZone = null;
-	protected transient TreeSet<Integer> seconds;
-	protected transient TreeSet<Integer> minutes;
-	protected transient TreeSet<Integer> hours;
-	protected transient TreeSet<Integer> daysOfMonth;
-	protected transient TreeSet<Integer> months;
-	protected transient TreeSet<Integer> daysOfWeek;
-	protected transient TreeSet<Integer> years;
+	private transient TreeSet<Integer> seconds;
+	private transient TreeSet<Integer> minutes;
+	private transient TreeSet<Integer> hours;
+	private transient TreeSet<Integer> daysOfMonth;
+	private transient TreeSet<Integer> months;
+	private transient TreeSet<Integer> daysOfWeek;
+	private transient TreeSet<Integer> years;
 
-	protected transient boolean lastdayOfWeek = false;
-	protected transient int nthdayOfWeek = 0;
-	protected transient boolean lastdayOfMonth = false;
-	protected transient boolean nearestWeekday = false;
-	protected transient int lastdayOffset = 0;
-	protected transient boolean expressionParsed = false;
+	private transient boolean lastdayOfWeek = false;
+	private transient int nthdayOfWeek = 0;
+	private transient boolean lastdayOfMonth = false;
+	private transient boolean nearestWeekday = false;
+	private transient int lastdayOffset = 0;
+	private transient boolean expressionParsed = false;
 
-	public static final int MAX_YEAR = Calendar.getInstance().get(Calendar.YEAR) + 100;
+	private static final int MAX_YEAR = Calendar.getInstance().get(Calendar.YEAR) + 100;
 
 	/**
 	 * Constructs a new <CODE>CronExpression</CODE> based on the specified
@@ -440,25 +440,25 @@ public final class CronExpression implements Serializable, Cloneable {
 		try {
 
 			if (seconds == null) {
-				seconds = new TreeSet<Integer>();
+				seconds = new TreeSet<>();
 			}
 			if (minutes == null) {
-				minutes = new TreeSet<Integer>();
+				minutes = new TreeSet<>();
 			}
 			if (hours == null) {
-				hours = new TreeSet<Integer>();
+				hours = new TreeSet<>();
 			}
 			if (daysOfMonth == null) {
-				daysOfMonth = new TreeSet<Integer>();
+				daysOfMonth = new TreeSet<>();
 			}
 			if (months == null) {
-				months = new TreeSet<Integer>();
+				months = new TreeSet<>();
 			}
 			if (daysOfWeek == null) {
-				daysOfWeek = new TreeSet<Integer>();
+				daysOfWeek = new TreeSet<>();
 			}
 			if (years == null) {
-				years = new TreeSet<Integer>();
+				years = new TreeSet<>();
 			}
 
 			int exprOn = SECOND;
