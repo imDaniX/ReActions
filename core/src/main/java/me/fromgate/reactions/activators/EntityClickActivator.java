@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.EntityClickEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.EntityClickStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -26,9 +26,8 @@ public class EntityClickActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof EntityClickEvent)) return false;
-		EntityClickEvent ece = (EntityClickEvent) event;
+	public boolean activate(RAStorage event) {
+		EntityClickStorage ece = (EntityClickStorage) event;
 		if (ece.getEntity() == null) return false;
 		if (!isActivatorEntity(ece.getEntity())) return false;
 		Variables.setTempVar("entitytype", ece.getEntity().getType().name());

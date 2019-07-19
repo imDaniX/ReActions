@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.DamageEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.DamageStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -29,9 +29,8 @@ public class DamageActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof DamageEvent)) return false;
-		DamageEvent de = (DamageEvent) event;
+	public boolean activate(RAStorage event) {
+		DamageStorage de = (DamageStorage) event;
 		if (!damageCauseCheck(de.getCause())) return false;
 		if (!sourceCheck(de.getSource())) return false;
 		Variables.setTempVar("damage", Double.toString(de.getDamage()));

@@ -22,6 +22,7 @@ public class CmdCheck extends Cmd {
 		return true;
 	}
 
+	// TODO: Do it async
 	private void printActivatorsAround(Player player, int radius) {
 		int playerX = player.getLocation().getBlockX();
 		int playerY = player.getLocation().getBlockY();

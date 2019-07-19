@@ -23,7 +23,7 @@
 package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -59,7 +59,7 @@ public class Variables {
 		vars.put(varId(player, var), value);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player);
-		EventManager.raiseVariableEvent(var, player, value, prevVal);
+		StorageManager.raiseVariableEvent(var, player, value, prevVal);
 	}
 
 	public static void setVar(Player player, String var, String value) {
@@ -67,7 +67,7 @@ public class Variables {
 		vars.put(varId(player, var), value);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player.getName());
-		EventManager.raiseVariableEvent(var, player == null ? "" : player.getName(), value, prevVal);
+		StorageManager.raiseVariableEvent(var, player == null ? "" : player.getName(), value, prevVal);
 	}
 
 	public static void clearVar(Player player, String var) {
@@ -76,7 +76,7 @@ public class Variables {
 		vars.remove(id);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player.getName());
-		EventManager.raiseVariableEvent(var, player == null ? "" : player.getName(), "", prevVal);
+		StorageManager.raiseVariableEvent(var, player == null ? "" : player.getName(), "", prevVal);
 	}
 
 	public static boolean clearVar(String player, String var) {
@@ -86,7 +86,7 @@ public class Variables {
 		vars.remove(id);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player);
-		EventManager.raiseVariableEvent(var, player, "", prevVal);
+		StorageManager.raiseVariableEvent(var, player, "", prevVal);
 		return true;
 	}
 

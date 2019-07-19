@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.GameModeEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.GameModeStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.GameMode;
@@ -26,9 +26,8 @@ public class GamemodeActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof GameModeEvent)) return false;
-		GameModeEvent e = (GameModeEvent) event;
+	public boolean activate(RAStorage event) {
+		GameModeStorage e = (GameModeStorage) event;
 		if (!gameModeCheck(e.getGameMode())) return false;
 		Variables.setTempVar("gamemode", e.getGameMode().toString());
 		return Actions.executeActivator(e.getPlayer(), this);

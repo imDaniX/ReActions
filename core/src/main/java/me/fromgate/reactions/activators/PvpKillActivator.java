@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.PvpKillEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.PvpKillStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -43,9 +43,8 @@ public class PvpKillActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof PvpKillEvent)) return false;
-		PvpKillEvent pe = (PvpKillEvent) event;
+	public boolean activate(RAStorage event) {
+		PvpKillStorage pe = (PvpKillStorage) event;
 		Variables.setTempVar("targetplayer", pe.getKilledPlayer().getName());
 		return Actions.executeActivator(pe.getPlayer(), this);
 	}

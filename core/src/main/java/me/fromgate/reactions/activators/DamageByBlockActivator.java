@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.DamageByBlockEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.DamageByBlockStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
@@ -45,9 +45,8 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof DamageByBlockEvent)) return false;
-		DamageByBlockEvent db = (DamageByBlockEvent) event;
+	public boolean activate(RAStorage event) {
+		DamageByBlockStorage db = (DamageByBlockStorage) event;
 		Block damagerBlock = db.getBlockDamager();
 		if (damagerBlock == null) return false;
 		if (!isActivatorBlock(damagerBlock)) return false;

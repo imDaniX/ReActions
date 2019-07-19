@@ -24,8 +24,8 @@ package me.fromgate.reactions.activators;
 
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.MessageEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.MessageStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
@@ -119,9 +119,8 @@ public class MessageActivator extends Activator {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof MessageEvent)) return false;
-		MessageEvent e = (MessageEvent) event;
+	public boolean activate(RAStorage event) {
+		MessageStorage e = (MessageStorage) event;
 		if (!e.isForActivator(this)) return false;
 		setTempVars(e.getMessage());
 		return Actions.executeActivator(e.getPlayer(), this);

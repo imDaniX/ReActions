@@ -6,9 +6,9 @@ import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.activators.MessageActivator;
 import me.fromgate.reactions.activators.SignActivator;
-import me.fromgate.reactions.event.EventManager;
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.PlayerRespawner;
 import me.fromgate.reactions.util.Teleporter;
@@ -74,13 +74,13 @@ public class BukkitListener implements Listener {
 	public void onPlayerInteractAtEntityEvent(PlayerInteractAtEntityEvent event) {
 		if (event.getHand() != EquipmentSlot.HAND) return;
 		if (event.getRightClicked().getType() != EntityType.ARMOR_STAND) return;
-		EventManager.raiseMobClickEvent(event.getPlayer(), (LivingEntity) event.getRightClicked());
+		StorageManager.raiseMobClickEvent(event.getPlayer(), (LivingEntity) event.getRightClicked());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onChatCommand(AsyncPlayerChatEvent event) {
 		Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
-			if (EventManager.raiseMessageEvent(event.getPlayer(), MessageActivator.Source.CHAT_INPUT, event.getMessage())) {
+			if (StorageManager.raiseMessageEvent(event.getPlayer(), MessageActivator.Source.CHAT_INPUT, event.getMessage())) {
 				event.setCancelled(true);
 			}
 		});
@@ -88,8 +88,8 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onServerCommandEvent(ServerCommandEvent event) {
-		EventManager.raiseMessageEvent(Bukkit.getConsoleSender(), MessageActivator.Source.CONSOLE_INPUT, event.getCommand());
-		if (EventManager.raiseCommandEvent(null, event.getCommand(), event.isCancelled())) {
+		StorageManager.raiseMessageEvent(Bukkit.getConsoleSender(), MessageActivator.Source.CONSOLE_INPUT, event.getCommand());
+		if (StorageManager.raiseCommandEvent(null, event.getCommand(), event.isCancelled())) {
 			event.setCancelled(true);
 		}
 	}
@@ -108,57 +108,57 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerItemHeldEvent(PlayerItemHeldEvent event) {
-		EventManager.raiseItemHoldEvent(event.getPlayer());
-		EventManager.raiseItemWearEvent(event.getPlayer());
-		if (EventManager.raiseItemHeldEvent(event.getPlayer(), event.getNewSlot(), event.getPreviousSlot()))
+		StorageManager.raiseItemHoldEvent(event.getPlayer());
+		StorageManager.raiseItemWearEvent(event.getPlayer());
+		if (StorageManager.raiseItemHeldEvent(event.getPlayer(), event.getNewSlot(), event.getPreviousSlot()))
 			event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onInventoryInteractEvent(InventoryInteractEvent event) {
-		EventManager.raiseItemHoldEvent((Player) event.getWhoClicked());
-		EventManager.raiseItemWearEvent((Player) event.getWhoClicked());
+		StorageManager.raiseItemHoldEvent((Player) event.getWhoClicked());
+		StorageManager.raiseItemWearEvent((Player) event.getWhoClicked());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onInventoryCloseEvent(InventoryCloseEvent event) {
-		EventManager.raiseItemHoldEvent((Player) event.getPlayer());
-		EventManager.raiseItemWearEvent((Player) event.getPlayer());
+		StorageManager.raiseItemHoldEvent((Player) event.getPlayer());
+		StorageManager.raiseItemWearEvent((Player) event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerPickupItemEvent(EntityPickupItemEvent event) {
 		if(event.getEntityType() != EntityType.PLAYER) return;
 		Player player = (Player) event.getEntity();
-		EventManager.raiseItemHoldEvent(player);
-		EventManager.raiseItemWearEvent(player);
+		StorageManager.raiseItemHoldEvent(player);
+		StorageManager.raiseItemWearEvent(player);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		PlayerRespawner.addPlayerRespawn(event);
-		EventManager.raisePvpKillEvent(event);
-		EventManager.raisePvpDeathEvent(event);
+		StorageManager.raisePvpKillEvent(event);
+		StorageManager.raisePvpDeathEvent(event);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
-		event.setCancelled(EventManager.raiseItemConsumeEvent(event));
+		event.setCancelled(StorageManager.raiseItemConsumeEvent(event));
 	}
 
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerClickMob(PlayerInteractEntityEvent event) {
-		EventManager.raiseItemClickEvent(event);
+		StorageManager.raiseItemClickEvent(event);
 		if (!(event.getRightClicked() instanceof LivingEntity)) return;
 		if (event.getHand() != EquipmentSlot.HAND) return;
-		EventManager.raiseMobClickEvent(event.getPlayer(), (LivingEntity) event.getRightClicked());
+		StorageManager.raiseMobClickEvent(event.getPlayer(), (LivingEntity) event.getRightClicked());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		PlayerRespawner.raisePlayerRespawnEvent(event.getPlayer());
-		EventManager.raiseAllRegionEvents(event.getPlayer(), event.getRespawnLocation(), event.getPlayer().getLocation());
+		StorageManager.raiseAllRegionEvents(event.getPlayer(), event.getRespawnLocation(), event.getPlayer().getLocation());
 	}
 
 
@@ -192,8 +192,8 @@ public class BukkitListener implements Listener {
 
 		if (event.getEntity().hasMetadata("ReActions-activator") && (killer != null)) {
 			String exec = event.getEntity().getMetadata("ReActions-activator").get(0).asString();
-			EventManager.raiseExecEvent(killer, exec + " player:" + killer.getName());
-		} else EventManager.raiseMobKillEvent(killer, event.getEntity());
+			StorageManager.raiseExecEvent(killer, exec + " player:" + killer.getName());
+		} else StorageManager.raiseMobKillEvent(killer, event.getEntity());
 
 	}
 
@@ -223,7 +223,7 @@ public class BukkitListener implements Listener {
 		LivingEntity damager = EntityUtil.getDamagerEntity(evdmg);
 		if (damager == null) return;
 		if (damager.getType() != EntityType.PLAYER) return;
-		if (EventManager.raiseMobDamageEvent(event, (Player) damager)) event.setCancelled(true);
+		if (StorageManager.raiseMobDamageEvent(event, (Player) damager)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -258,18 +258,18 @@ public class BukkitListener implements Listener {
 		if ((event instanceof EntityDamageByEntityEvent)) {
 			source = "ENTITY";
 			EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-			if (EventManager.raisePlayerDamageByMobEvent(evdmg))
+			if (StorageManager.raisePlayerDamageByMobEvent(evdmg))
 				event.setCancelled(true);
 		} else if ((event instanceof EntityDamageByBlockEvent)) {
 			source = "BLOCK";
 			EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
 			Block blockDamager = evdmg.getDamager();
-			if (EventManager.raisePlayerDamageByBlockEvent(evdmg, blockDamager)) event.setCancelled(true);
+			if (StorageManager.raisePlayerDamageByBlockEvent(evdmg, blockDamager)) event.setCancelled(true);
 		} else {
 			source = "OTHER";
 		}
 
-		if (EventManager.raisePlayerDamageEvent(event, source)) event.setCancelled(true);
+		if (StorageManager.raisePlayerDamageEvent(event, source)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
@@ -280,12 +280,12 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
-		if (EventManager.raiseEntityChangeBlockEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseEntityChangeBlockEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onProjectileHitEvent(ProjectileHitEvent event) {
-		EventManager.raiseProjectileHitEvent(event);
+		StorageManager.raiseProjectileHitEvent(event);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -334,7 +334,7 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		if (EventManager.raiseCommandEvent(event.getPlayer(), event.getMessage().replaceFirst("/", ""), event.isCancelled())) {
+		if (StorageManager.raiseCommandEvent(event.getPlayer(), event.getMessage().replaceFirst("/", ""), event.isCancelled())) {
 			event.setCancelled(true);
 		}
 	}
@@ -355,85 +355,85 @@ public class BukkitListener implements Listener {
 		if (BlockUtil.isSign(event.getClickedBlock())) return;
 		Sign sign = (Sign) event.getClickedBlock().getState();
 		if (sign == null) return;
-		EventManager.raiseSignEvent(event.getPlayer(), sign.getLines(), event.getClickedBlock().getLocation(), event.getAction() == Action.LEFT_CLICK_BLOCK);
+		StorageManager.raiseSignEvent(event.getPlayer(), sign.getLines(), event.getClickedBlock().getLocation(), event.getAction() == Action.LEFT_CLICK_BLOCK);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		EventManager.raiseItemClickEvent(event);
-		EventManager.raiseItemWearEvent(event.getPlayer());
-		if (EventManager.raiseBlockClickEvent(event)) event.setCancelled(true);
-		if (EventManager.raiseButtonEvent(event)) event.setCancelled(true);
-		EventManager.raisePlateEvent(event);
-		if (EventManager.raiseLeverEvent(event)) event.setCancelled(true);
-		if (EventManager.raiseDoorEvent(event)) event.setCancelled(true);
+		StorageManager.raiseItemClickEvent(event);
+		StorageManager.raiseItemWearEvent(event.getPlayer());
+		if (StorageManager.raiseBlockClickEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseButtonEvent(event)) event.setCancelled(true);
+		StorageManager.raisePlateEvent(event);
+		if (StorageManager.raiseLeverEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseDoorEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 		Teleporter.startTeleport(event);
-		EventManager.raiseAllRegionEvents(event.getPlayer(), event.getTo(), event.getFrom());
+		StorageManager.raiseAllRegionEvents(event.getPlayer(), event.getTo(), event.getFrom());
 		Teleporter.stopTeleport(event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInventoryClick(InventoryClickEvent event) {
-		if (EventManager.raiseInventoryClickEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseInventoryClickEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerInventoryClick(InventoryCreativeEvent event) {
-		if (EventManager.raiseInventoryClickEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseInventoryClickEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onDrop(PlayerDropItemEvent event) {
-		if (EventManager.raiseDropEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseDropEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFlight(PlayerToggleFlightEvent event) {
-		if (EventManager.raiseFlightEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseFlightEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onEntityClick(PlayerInteractEntityEvent event) {
-		if (EventManager.raiseEntityClickEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseEntityClickEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onBlockBreak(BlockBreakEvent event) {
-		if (EventManager.raiseBlockBreakEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseBlockBreakEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onSneak(PlayerToggleSneakEvent event) {
-		if (EventManager.raiseSneakEvent(event)) event.setCancelled(true);
+		if (StorageManager.raiseSneakEvent(event)) event.setCancelled(true);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onPlayerPickupItem(EntityPickupItemEvent event) {
-		if (EventManager.raisePlayerPickupItemEvent(event)) event.setCancelled(true);
+		if (StorageManager.raisePlayerPickupItemEvent(event)) event.setCancelled(true);
 	}
 
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerJoinActivators(PlayerJoinEvent event) {
-		EventManager.raiseJoinEvent(event.getPlayer(), !event.getPlayer().hasPlayedBefore());
-		EventManager.raiseAllRegionEvents(event.getPlayer(), event.getPlayer().getLocation(), null);
-		EventManager.raiseItemHoldEvent(event.getPlayer());
-		EventManager.raiseItemWearEvent(event.getPlayer());
+		StorageManager.raiseJoinEvent(event.getPlayer(), !event.getPlayer().hasPlayedBefore());
+		StorageManager.raiseAllRegionEvents(event.getPlayer(), event.getPlayer().getLocation(), null);
+		StorageManager.raiseItemHoldEvent(event.getPlayer());
+		StorageManager.raiseItemWearEvent(event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerQuitActivators(PlayerQuitEvent event) {
 		TemporaryOp.removeTempOp(event.getPlayer());
-		EventManager.raiseQuitEvent(event);
+		StorageManager.raiseQuitEvent(event);
 		MoveListener.removeLocation(event.getPlayer());
 	}
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerGameModeChangeEvent(PlayerGameModeChangeEvent event) {
-		if (EventManager.raisePlayerGameModeChangeEvent(event)) event.setCancelled(true);
+		if (StorageManager.raisePlayerGameModeChangeEvent(event)) event.setCancelled(true);
 	}
 }

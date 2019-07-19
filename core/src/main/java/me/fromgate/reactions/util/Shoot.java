@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.util;
 
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -81,7 +81,7 @@ public class Shoot {
 			tempVars.set("shooter", shooter.getName());
 			tempVars.set("shooterloc", Locator.locationToString(shooter.getLocation()));
 		}
-		EventManager.raiseExecEvent(shooter, param, tempVars);
+		StorageManager.raiseExecEvent(shooter, param, tempVars);
 	}
 
 	private static List<Block> getBeam(LivingEntity p, int distance) {

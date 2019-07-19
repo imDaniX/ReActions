@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.FactionRelationEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.FactionRelationStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -58,18 +58,18 @@ public class FactionRelationActivator extends Activator {
 	}
 
 
-	public boolean mustExecute(String faction1, String faction2, String oldRelation, String newRelation) {
+	private boolean mustExecute(String faction1, String faction2, String oldRelation, String newRelation) {
 		if (!isFactionRelated(faction1, faction2)) return false;
 		return isRelation(this.oldRelation, oldRelation) && isRelation(this.newRelation, newRelation);
 	}
 
-	public boolean isRelation(String relation1, String relation2) {
+	private boolean isRelation(String relation1, String relation2) {
 		if (relation1.isEmpty()) return true;
 		if (relation1.equalsIgnoreCase("any")) return true;
 		return relation1.equalsIgnoreCase(relation2);
 	}
 
-	public boolean isFactionRelated(String faction1, String faction2) {
+	private boolean isFactionRelated(String faction1, String faction2) {
 		if (factions.isEmpty()) return true;
 		if ((factions.size() == 1) && factions.contains("ANY")) return true;
 		if (!factions.contains("ANY"))
@@ -78,9 +78,8 @@ public class FactionRelationActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof FactionRelationEvent)) return false;
-		FactionRelationEvent fe = (FactionRelationEvent) event;
+	public boolean activate(RAStorage event) {
+		FactionRelationStorage fe = (FactionRelationStorage) event;
 		Variables.setTempVar("faction1", fe.getFaction());
 		Variables.setTempVar("faction2", fe.getOtherFaction());
 		Variables.setTempVar("oldrelation", fe.getOldRelation());

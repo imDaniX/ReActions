@@ -1,7 +1,7 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -27,7 +27,7 @@ public class CuboidActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
+	public boolean activate(RAStorage event) {
 		Player player = event.getPlayer();
 		UUID id = player.getUniqueId();
 		boolean inCuboid = checkInCuboid(player.getLocation(), true);

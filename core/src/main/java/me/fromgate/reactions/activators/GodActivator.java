@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.GodEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.GodStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,9 +25,8 @@ public class GodActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof GodEvent)) return false;
-		GodEvent e = (GodEvent) event;
+	public boolean activate(RAStorage event) {
+		GodStorage e = (GodStorage) event;
 		if (!checkGod(e.isGod())) return false;
 		Variables.setTempVar("god", e.isGod() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(e.getPlayer(), this);

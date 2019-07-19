@@ -23,7 +23,7 @@
 package me.fromgate.reactions.util.listeners;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.PushBack;
@@ -64,8 +64,8 @@ public class MoveListener implements Listener {
 	private static void processMove(Player player, Location from, Location to) {
 		PushBack.rememberLocations(player, from, to);
 		if (!BlockUtil.isSameBlock(from, to)) {
-			EventManager.raiseAllRegionEvents(player, to, from);
-			EventManager.raiseCuboidEvent(player);
+			StorageManager.raiseAllRegionEvents(player, to, from);
+			StorageManager.raiseCuboidEvent(player);
 		}
 	}
 

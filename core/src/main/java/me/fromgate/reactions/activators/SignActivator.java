@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.RAEvent;
-import me.fromgate.reactions.event.SignEvent;
+import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storage.SignStorage;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
@@ -83,9 +83,8 @@ public class SignActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof SignEvent)) return false;
-		SignEvent signEvent = (SignEvent) event;
+	public boolean activate(RAStorage event) {
+		SignStorage signEvent = (SignStorage) event;
 		if (!clickCheck(signEvent.isLeftClicked())) return false;
 		if (!checkMask(signEvent.getSignLines())) return false;
 		for (int i = 0; i < signEvent.getSignLines().length; i++)

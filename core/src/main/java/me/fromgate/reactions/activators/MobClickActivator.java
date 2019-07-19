@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.MobClickEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.MobClickStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -63,9 +63,8 @@ public class MobClickActivator extends Activator implements Locatable {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof MobClickEvent)) return false;
-		MobClickEvent me = (MobClickEvent) event;
+	public boolean activate(RAStorage event) {
+		MobClickStorage me = (MobClickStorage) event;
 		if (mobType.isEmpty()) return false;
 		if (me.getMob() == null) return false;
 

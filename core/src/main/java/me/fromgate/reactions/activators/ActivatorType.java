@@ -74,7 +74,7 @@ public enum ActivatorType {
 	DAMAGE_BY_MOB("damagebymob", DamageByMobActivator.class),
 	DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator.class, true, true),
 	VARIABLE("var", VariableActivator.class),
-	WE_SELECTION_REGION("weselectionregion", WeSelectionRegionActivator.class),
+	WE_SELECTION_REGION("weselectionregion", WeSelectionActivator.class),
 	WE_CHANGE("wechange", WeChangeActivator.class),
 	GAMEMODE("gamemode", GamemodeActivator.class),
 	GOD("god", GodActivator.class),

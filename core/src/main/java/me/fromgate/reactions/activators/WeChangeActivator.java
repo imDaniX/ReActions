@@ -4,9 +4,9 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.RAEvent;
-import me.fromgate.reactions.event.WeChangeEvent;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
+import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storage.WeChangeStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
@@ -32,9 +32,8 @@ public class WeChangeActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof WeChangeEvent)) return false;
-		WeChangeEvent e = (WeChangeEvent) event;
+	public boolean activate(RAStorage event) {
+		WeChangeStorage e = (WeChangeStorage) event;
 		String type = e.getBlockType();
 		Variables.setTempVar("blocktype", type);
 		if (!checkBlockType(type)) return false;

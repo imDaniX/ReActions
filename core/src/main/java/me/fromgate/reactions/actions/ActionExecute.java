@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
@@ -38,7 +38,7 @@ public class ActionExecute extends Action {
 		String id = params.getParam("activator", "");
 		if (id.isEmpty()) return false;
 		setMessageParam(id);
-		return EventManager.raiseExecEvent(player, params, Variables.getTempVars());
+		return StorageManager.raiseExecEvent(player, params, Variables.getTempVars());
 	}
 
 }

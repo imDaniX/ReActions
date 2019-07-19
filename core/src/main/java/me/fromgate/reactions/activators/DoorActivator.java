@@ -24,8 +24,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.DoorEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.DoorStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -56,9 +56,8 @@ public class DoorActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof DoorEvent)) return false;
-		DoorEvent de = (DoorEvent) event;
+	public boolean activate(RAStorage event) {
+		DoorStorage de = (DoorStorage) event;
 		if (de.getDoorBlock() == null) return false;
 		if (!isLocatedAt(de.getDoorLocation())) return false;
 		if (this.state.equalsIgnoreCase("open") && de.isDoorOpened()) return false;

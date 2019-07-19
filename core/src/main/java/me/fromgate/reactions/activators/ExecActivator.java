@@ -25,8 +25,8 @@ package me.fromgate.reactions.activators;
 
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.ExecEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.ExecStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -42,13 +42,11 @@ public class ExecActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (event instanceof ExecEvent) {
-			ExecEvent ce = (ExecEvent) event;
-			if (ce.getActivatorId().equalsIgnoreCase(this.getName())) {
-				Variables.setTempVars(ce.getTempVars());
-				return Actions.executeActivator(ce.getTargetPlayer(), this);
-			}
+	public boolean activate(RAStorage event) {
+		ExecStorage ce = (ExecStorage) event;
+		if (ce.getActivatorId().equalsIgnoreCase(this.getName())) {
+			Variables.setTempVars(ce.getTempVars());
+			return Actions.executeActivator(ce.getTargetPlayer(), this);
 		}
 		return false;
 	}

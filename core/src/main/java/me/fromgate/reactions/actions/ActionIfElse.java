@@ -1,6 +1,6 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
@@ -54,7 +54,7 @@ public class ActionIfElse extends Action {
 		param.set("player", p == null ? "null" : p.getName());
 		Param tempVars = new Param();
 		tempVars.set("condition", condition);
-		EventManager.raiseExecEvent(p, param, tempVars);
+		StorageManager.raiseExecEvent(p, param, tempVars);
 		return true;
 	}
 

@@ -24,9 +24,9 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.StoredAction;
-import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.flags.StoredFlag;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.timer.Timers;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
@@ -454,7 +454,7 @@ public class Activators {
 		return set;
 	}
 
-	public static boolean activate(RAEvent event) {
+	public static boolean activate(RAStorage event) {
 		boolean cancelParentEvent = false;
 		for (Activator act : activatorsMap.get(event.getType())) {
 			if (act.executeActivator(event)) cancelParentEvent = true;

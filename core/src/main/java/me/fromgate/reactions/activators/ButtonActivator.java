@@ -24,8 +24,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.ButtonEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.ButtonStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Tag;
@@ -66,9 +66,8 @@ public class ButtonActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof ButtonEvent)) return false;
-		ButtonEvent be = (ButtonEvent) event;
+	public boolean activate(RAStorage event) {
+		ButtonStorage be = (ButtonStorage) event;
 		if (!isLocatedAt(be.getButtonLocation())) return false;
 		return Actions.executeActivator(be.getPlayer(), this);
 	}

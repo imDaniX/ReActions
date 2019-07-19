@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.MobDamageEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.MobDamageStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -61,9 +61,8 @@ public class MobDamageActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof MobDamageEvent)) return false;
-		MobDamageEvent me = (MobDamageEvent) event;
+	public boolean activate(RAStorage event) {
+		MobDamageStorage me = (MobDamageStorage) event;
 		if (mobType.isEmpty()) return false;
 		if (me.getMob() == null) return false;
 		if (!isActivatorMob(me.getMob())) return false;

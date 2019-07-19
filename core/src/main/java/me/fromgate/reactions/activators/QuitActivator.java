@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.QuitEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.QuitStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,15 +45,12 @@ public class QuitActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (event instanceof QuitEvent) {
-			QuitEvent ce = (QuitEvent) event;
-			Variables.setTempVar("quit-message", ce.getQuitMessage());
-			boolean result = Actions.executeActivator(ce.getPlayer(), this);
-			ce.setQuiteMessage(Variables.getTempVar("quit-message"));
-			return result;
-		}
-		return false;
+	public boolean activate(RAStorage event) {
+		QuitStorage ce = (QuitStorage) event;
+		Variables.setTempVar("quit-message", ce.getQuitMessage());
+		boolean result = Actions.executeActivator(ce.getPlayer(), this);
+		ce.setQuiteMessage(Variables.getTempVar("quit-message"));
+		return result;
 	}
 
 	@Override

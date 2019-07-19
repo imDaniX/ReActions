@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.DropEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.DropStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -31,9 +31,8 @@ public class DropActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof DropEvent)) return false;
-		DropEvent de = (DropEvent) event;
+	public boolean activate(RAStorage event) {
+		DropStorage de = (DropStorage) event;
 		if (!checkItem(de.getItemStack())) return false;
 		Variables.setTempVar("droplocation", Locator.locationToString(de.getPlayer().getLocation()));
 		Variables.setTempVar("pickupDelay", Double.toString(de.getPickupDelay()));

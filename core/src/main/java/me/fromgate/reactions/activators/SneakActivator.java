@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.RAEvent;
-import me.fromgate.reactions.event.SneakEvent;
+import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storage.SneakStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,9 +25,8 @@ public class SneakActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof SneakEvent)) return false;
-		SneakEvent se = (SneakEvent) event;
+	public boolean activate(RAStorage event) {
+		SneakStorage se = (SneakStorage) event;
 		if (!checkSneak(se.isSneaking())) return false;
 		Variables.setTempVar("sneak", se.isSneaking() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(se.getPlayer(), this);

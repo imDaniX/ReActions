@@ -24,8 +24,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.FactionDisbandEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.FactionDisbandStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,9 +41,8 @@ public class FactionDisbandActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof FactionDisbandEvent)) return false;
-		FactionDisbandEvent fe = (FactionDisbandEvent) event;
+	public boolean activate(RAStorage event) {
+		FactionDisbandStorage fe = (FactionDisbandStorage) event;
 		Variables.setTempVar("faction", fe.getFaction());
 		return Actions.executeActivator(fe.getPlayer(), this);
 	}

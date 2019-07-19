@@ -26,7 +26,7 @@ import com.massivecraft.factions.event.EventFactionsCreate;
 import com.massivecraft.factions.event.EventFactionsDisband;
 import com.massivecraft.factions.event.EventFactionsMembershipChange;
 import com.massivecraft.factions.event.EventFactionsRelationChange;
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,7 +36,7 @@ public class FactionListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFactionChange(EventFactionsMembershipChange event) {
-		EventManager.raiseFactionEvent(event.getMPlayer().getPlayer(),
+		StorageManager.raiseFactionEvent(event.getMPlayer().getPlayer(),
 				event.getMPlayer().getFaction().isDefault() ? "default" : event.getMPlayer().getFactionName(),
 				event.getNewFaction().isDefault() ? "default" : event.getNewFaction().getName());
 	}
@@ -44,20 +44,20 @@ public class FactionListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFactionCreate(EventFactionsCreate event) {
-		EventManager.raiseFactionCreateEvent(event.getFactionName(),
+		StorageManager.raiseFactionCreateEvent(event.getFactionName(),
 				(event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFactionDisband(EventFactionsDisband event) {
-		EventManager.raiseFactionDisbandEvent(event.getFaction().getName(),
+		StorageManager.raiseFactionDisbandEvent(event.getFaction().getName(),
 				(event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
 	}
 
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onRelationChange(EventFactionsRelationChange event) {
-		EventManager.raiseFactionRelationEvent(event.getFaction().getName(),
+		StorageManager.raiseFactionRelationEvent(event.getFaction().getName(),
 				event.getOtherFaction().getName(),
 				event.getFaction().getRelationWish(event.getOtherFaction()).name(),
 				event.getNewRelation().name());

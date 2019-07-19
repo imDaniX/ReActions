@@ -25,9 +25,9 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
-import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.flags.StoredFlag;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
@@ -57,10 +57,22 @@ public abstract class Activator {
 	private List<StoredAction> actions = new ArrayList<>();
 	private List<StoredAction> reactions = new ArrayList<>();
 
+	/**
+	 * Add flag to activator
+	 * @param flag Name of flag to add
+	 * @param param Parameters of flag
+	 * @param not Is indentation needed
+	 */
 	public void addFlag(String flag, String param, boolean not) {
 		addFlag(Flags.getByName(flag), param, not);
 	}
 
+	/**
+	 * Add flag to activator
+	 * @param flag Fkag to add
+	 * @param param Parameters of flag
+	 * @param not Is indentation needed
+	 */
 	public void addFlag(Flags flag, String param, boolean not) {
 		StoredFlag flg = new StoredFlag(flag, param, not);
 		if(flg.getFlag() == null)
@@ -69,20 +81,39 @@ public abstract class Activator {
 			flags.add(flg);
 	}
 
+	/**
+	 * Remove flag from activator
+	 * @param index Index of flag
+	 * @return Is there flag with this index
+	 */
 	public boolean removeFlag(int index) {
 		if (flags.size() <= index) return false;
 		flags.remove(index);
 		return true;
 	}
 
+	/**
+	 * Get list of all flags
+	 * @return List of flags
+	 */
 	public List<StoredFlag> getFlags() {
 		return flags;
 	}
 
+	/**
+	 * Add action to activator
+	 * @param action Name of action to add
+	 * @param param Parameters of action
+	 */
 	public void addAction(String action, String param) {
 		addAction(Actions.getByName(action), param);
 	}
 
+	/**
+	 * Add action to activator
+	 * @param action Action to add
+	 * @param param Parameters of action
+	 */
 	public void addAction(Actions action, String param) {
 		StoredAction act = new StoredAction(action, param);
 		if(act.getAction() == null)
@@ -91,43 +122,79 @@ public abstract class Activator {
 			actions.add(act);
 	}
 
+	/**
+	 * Remove action from activator
+	 * @param index Index of action
+	 * @return Is there action with this index
+	 */
 	public boolean removeAction(int index) {
 		if (actions.size() <= index) return false;
 		actions.remove(index);
 		return true;
 	}
 
+	/**
+	 * Add reaction to activator
+	 * @param action Name of action to add
+	 * @param param Parameters of action
+	 */
 	public void addReaction(String action, String param) {
 		addReaction(Actions.getByName(action), param);
 	}
 
+	/**
+	 * Add reaction to activator
+	 * @param action Action to add
+	 * @param param Parameters of action
+	 */
 	public void addReaction(Actions action, String param) {
 		reactions.add(new StoredAction(action, param));
 	}
 
+	/**
+	 * Remove reaction from activator
+	 * @param index Index of action
+	 * @return Is there action with this index
+	 */
 	public boolean removeReaction(int index) {
 		if (reactions.size() <= index) return false;
 		reactions.remove(index);
 		return true;
 	}
 
+	/**
+	 * Get list of all actions
+	 * @return List of actions
+	 */
 	public List<StoredAction> getActions() {
 		return actions;
 	}
 
+	/**
+	 * Get list of all reactions
+	 * @return List of actions
+	 */
 	public List<StoredAction> getReactions() {
 		return reactions;
 	}
 
-
+	/**
+	 * Clear flags of activator
+	 */
 	public void clearFlags() {
 		flags.clear();
 	}
 
+	/**
+	 * Clear actions of activator
+	 */
 	public void clearActions() {
 		actions.clear();
 	}
 
+	/**
+	 * Clear reactions of activator
+	 */
 	public void clearReactions() {
 		reactions.clear();
 	}
@@ -141,34 +208,10 @@ public abstract class Activator {
 		return sb.toString();
 	}
 
-
-	@Override
-	public int hashCode() {
-		 return group.hashCode()*31 + name.hashCode()*7;
-	}
-
-	public boolean equals(String name) {
-		if (name == null) return false;
-		if (name.isEmpty()) return false;
-		return this.name.equalsIgnoreCase(name);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (!(obj instanceof Activator))
-			return false;
-		Activator other = (Activator) obj;
-		if (name == null)
-			return other.name == null;
-		if (group == null)
-			return other.group == null;
-		return this.name.equals(other.name) && this.group.equals(other.group);
-	}
-
+	/**
+	 * Save activator to config
+	 * @param cfg Config for activator
+	 */
 	public void saveActivator(YamlConfiguration cfg) {
 		String key = getType() + "." + this.name;
 		save(cfg.getConfigurationSection(key));
@@ -183,6 +226,10 @@ public abstract class Activator {
 		cfg.set(key + ".reactions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
 	}
 
+	/**
+	 * Load activator from config
+	 * @param cfg Config for activator
+	 */
 	public void loadActivator(YamlConfiguration cfg) {
 		String key = getType().name() + "." + this.name;
 		load(cfg.getConfigurationSection(key));
@@ -226,28 +273,53 @@ public abstract class Activator {
 		}
 	}
 
+	/**
+	 * Set group of activator
+	 * @param group Group to set
+	 */
 	public void setGroup(String group) {
 		this.group = group;
 	}
 
+	/**
+	 * Get group of activator
+	 * @return Group of activator
+	 */
 	public String getGroup() {
 		return this.group;
 	}
 
+	/**
+	 * Get name of activator
+	 * @return Name of activator
+	 */
 	public String getName() {
 		return this.name;
 	}
 
-
-	public boolean executeActivator(RAEvent event) {
-		boolean result = activate(event);
+	/**
+	 * Execution of activator
+	 * @param storage Storage with data for activator
+	 * @return Cancel original event or not
+	 */
+	public boolean executeActivator(RAStorage storage) {
+		boolean result = activate(storage);
 		Variables.clearAllTempVar();
 		return result;
 	}
 
 
-	public abstract boolean activate(RAEvent event); // Наверное всё-таки так
+	/**
+	 * Execution of activator
+	 * @param storage Storage with data for activator
+	 * @return Cancel original event or not
+	 */
+	public abstract boolean activate(RAStorage storage); // Наверное всё-таки так
 
+	/**
+	 * Save activator to config
+	 * @param cfg Section of activator
+	 */
 	public abstract void save(ConfigurationSection cfg);
 
 	/**
@@ -268,4 +340,30 @@ public abstract class Activator {
 	 */
 	public abstract boolean isValid();
 
+	@Override
+	public int hashCode() {
+		return group.hashCode()*31 + name.hashCode()*7;
+	}
+
+	public boolean equals(String name) {
+		if (name == null) return false;
+		if (name.isEmpty()) return false;
+		return this.name.equalsIgnoreCase(name);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Activator))
+			return false;
+		Activator other = (Activator) obj;
+		if (name == null)
+			return other.name == null;
+		if (group == null)
+			return other.group == null;
+		return this.name.equals(other.name) && this.group.equals(other.group);
+	}
 }

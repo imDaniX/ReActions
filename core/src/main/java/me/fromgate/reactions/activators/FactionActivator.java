@@ -24,8 +24,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.FactionChangeEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.FactionChangeStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -48,9 +48,8 @@ public class FactionActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof FactionChangeEvent)) return false;
-		FactionChangeEvent fe = (FactionChangeEvent) event;
+	public boolean activate(RAStorage event) {
+		FactionChangeStorage fe = (FactionChangeStorage) event;
 		if (!(newFaction.isEmpty() || newFaction.equalsIgnoreCase("any") || fe.getNewFaction().equalsIgnoreCase(newFaction)))
 			return false;
 		if (!(oldFaction.isEmpty() || oldFaction.equalsIgnoreCase("any") || fe.getOldFaction().equalsIgnoreCase(oldFaction)))

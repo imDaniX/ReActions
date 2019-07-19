@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.ItemClickEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.ItemClickStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -48,25 +48,22 @@ public class ItemClickActivator extends Activator {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
+	public boolean activate(RAStorage event) {
 		if (item.isEmpty() || (ItemUtil.parseItemStack(item) == null)) {
 			Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
 			return false;
 		}
-		if (event instanceof ItemClickEvent) {
-			ItemClickEvent ie = (ItemClickEvent) event;
-			if(ie.isMainHand() != mainHand)
-				return false;
-			if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
-				VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
-				if (vi != null) {
-					Variables.setTempVar("item", vi.toString());
-					Variables.setTempVar("item-str", vi.toDisplayString());
-				}
-				Variables.setTempVar("hand", ie.isMainHand() ? "MAIN" : "OFF");
-				return Actions.executeActivator(ie.getPlayer(), this);
+		ItemClickStorage ie = (ItemClickStorage) event;
+		if(ie.isMainHand() != mainHand)
+			return false;
+		if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
+			VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
+			if (vi != null) {
+				Variables.setTempVar("item", vi.toString());
+				Variables.setTempVar("item-str", vi.toDisplayString());
 			}
-
+			Variables.setTempVar("hand", ie.isMainHand() ? "MAIN" : "OFF");
+			return Actions.executeActivator(ie.getPlayer(), this);
 		}
 		return false;
 	}

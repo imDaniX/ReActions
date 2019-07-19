@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.PickupItemEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.PickupItemStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -31,9 +31,8 @@ public class PickupItemActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof PickupItemEvent)) return false;
-		PickupItemEvent pie = (PickupItemEvent) event;
+	public boolean activate(RAStorage event) {
+		PickupItemStorage pie = (PickupItemStorage) event;
 		if (!checkItem(pie.getItemStack())) return false;
 		Variables.setTempVar("droplocation", Locator.locationToString(pie.getPlayer().getLocation()));
 		Variables.setTempVar("pickupDelay", Double.toString(pie.getPickupDelay()));

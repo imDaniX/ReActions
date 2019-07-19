@@ -24,8 +24,8 @@ package me.fromgate.reactions.activators;
 
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.RAEvent;
-import me.fromgate.reactions.event.VariableEvent;
+import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storage.VariableStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
@@ -48,9 +48,8 @@ public class VariableActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof VariableEvent)) return false;
-		VariableEvent ve = (VariableEvent) event;
+	public boolean activate(RAStorage event) {
+		VariableStorage ve = (VariableStorage) event;
 		if (!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
 		if (personal && ve.getPlayer() != null) return false;
 		Variables.setTempVar("var-id", ve.getVariableId());

@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.BlockClickEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.BlockClickStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
@@ -72,9 +72,8 @@ public class BlockClickActivator extends Activator implements Locatable {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof BlockClickEvent)) return false;
-		BlockClickEvent bce = (BlockClickEvent) event;
+	public boolean activate(RAStorage event) {
+		BlockClickStorage bce = (BlockClickStorage) event;
 		if (bce.getBlockClick() == null) return false;
 		if (!isActivatorBlock(bce.getBlockClick())) return false;
 		if (!clickCheck(bce.isLeftClicked())) return false;

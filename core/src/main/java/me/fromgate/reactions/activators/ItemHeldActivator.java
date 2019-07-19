@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.ItemHeldEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.ItemHeldStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -34,9 +34,8 @@ public class ItemHeldActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof ItemHeldEvent)) return false;
-		ItemHeldEvent ihe = (ItemHeldEvent) event;
+	public boolean activate(RAStorage event) {
+		ItemHeldStorage ihe = (ItemHeldStorage) event;
 		ItemStack itemNew = ihe.getNewItem();
 		ItemStack itemPrev = ihe.getPreviousItem();
 		if (!this.itemNewStr.isEmpty() && (!ItemUtil.compareItemStr(itemNew, this.itemNewStr)))

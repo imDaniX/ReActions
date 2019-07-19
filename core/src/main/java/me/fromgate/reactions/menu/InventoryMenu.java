@@ -1,7 +1,7 @@
 package me.fromgate.reactions.menu;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.Msg;
@@ -193,7 +193,7 @@ public class InventoryMenu implements Listener {
 		if (activators.size() > clickedSlot) {
 			String activator = activators.get(clickedSlot);
 			if (!activator.isEmpty()) {
-				EventManager.raiseExecEvent(player, new Param(activator, "activator"), tempvars);
+				StorageManager.raiseExecEvent(player, new Param(activator, "activator"), tempvars);
 			}
 		}
 		event.setCancelled(true);

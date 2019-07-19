@@ -23,7 +23,7 @@
 package me.fromgate.reactions.timer;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
@@ -197,7 +197,7 @@ public class Timers {
 			for (String key : timers.keySet()) {
 				Timer timer = timers.get(key);
 				if (timer.isTimeToRun()) {
-					EventManager.raiseExecEvent(null, timer.getParams());
+					StorageManager.raiseExecEvent(null, timer.getParams());
 				}
 			}
 		}, 1, 4); //1 По идее так не упустим, хотя.... ;)
@@ -208,7 +208,7 @@ public class Timers {
 		serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.instance, () -> {
 			for (Timer timer : getServerTimers().values()) {
 				if (timer.isTimeToRun()) {
-					EventManager.raiseExecEvent(null, timer.getParams());
+					StorageManager.raiseExecEvent(null, timer.getParams());
 				}
 			}
 		}, 1, 20);

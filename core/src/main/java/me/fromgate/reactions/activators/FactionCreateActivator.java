@@ -24,8 +24,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.FactionCreateEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.FactionCreateStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,9 +41,8 @@ public class FactionCreateActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof FactionCreateEvent)) return false;
-		FactionCreateEvent fe = (FactionCreateEvent) event;
+	public boolean activate(RAStorage event) {
+		FactionCreateStorage fe = (FactionCreateStorage) event;
 		Variables.setTempVar("faction", fe.getFaction());
 		return Actions.executeActivator(fe.getPlayer(), this);
 	}

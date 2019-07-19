@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.JoinEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.JoinStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -42,11 +42,9 @@ public class JoinActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (event instanceof JoinEvent) {
-			JoinEvent ce = (JoinEvent) event;
-			if (isJoinActivate(ce.isFirstJoin())) return Actions.executeActivator(ce.getPlayer(), this);
-		}
+	public boolean activate(RAStorage event) {
+		JoinStorage ce = (JoinStorage) event;
+		if (isJoinActivate(ce.isFirstJoin())) return Actions.executeActivator(ce.getPlayer(), this);
 		return false;
 	}
 

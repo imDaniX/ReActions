@@ -28,7 +28,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.MessageActivator.Source;
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONArray;
@@ -129,7 +129,7 @@ public class RaProtocolLib {
 							if (jsonMessage != null) message = textToString(jsonMessage);
 						}
 						if (message.isEmpty()) return;
-						if (EventManager.raiseMessageEvent(event.getPlayer(), Source.CHAT_OUTPUT, message))
+						if (StorageManager.raiseMessageEvent(event.getPlayer(), Source.CHAT_OUTPUT, message))
 							event.setCancelled(true);
 
 					}

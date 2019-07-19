@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -204,7 +204,7 @@ public class ActionItems extends Action {
 		if (itemStr.isEmpty()) return false;
 		if (!itemStr.equalsIgnoreCase("offhand")) return false;
 		player.getInventory().setItemInOffHand(item);
-		EventManager.raiseItemWearEvent(player);
+		StorageManager.raiseItemWearEvent(player);
 		return true;
 	}
 
@@ -223,7 +223,7 @@ public class ActionItems extends Action {
 				player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
 			}
 		}
-		EventManager.raiseItemWearEvent(player);
+		StorageManager.raiseItemWearEvent(player);
 		return true;
 	}
 
@@ -306,7 +306,7 @@ public class ActionItems extends Action {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plg(), () -> {
 			for (ItemStack i : items)
 				ItemUtil.giveItemOrDrop(p, i);
-			EventManager.raiseItemHoldEvent(p);
+			StorageManager.raiseItemHoldEvent(p);
 		}, 1);
 		return true;
 	}

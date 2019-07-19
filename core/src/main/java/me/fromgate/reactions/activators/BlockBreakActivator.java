@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.BlockBreakEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.BlockBreakStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
@@ -41,9 +41,8 @@ public class BlockBreakActivator extends Activator implements Locatable {
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof BlockBreakEvent)) return false;
-		BlockBreakEvent bbe = (BlockBreakEvent) event;
+	public boolean activate(RAStorage event) {
+		BlockBreakStorage bbe = (BlockBreakStorage) event;
 		Block brokenBlock = bbe.getBlockBreak();
 		if (brokenBlock == null) return false;
 		if (!isActivatorBlock(brokenBlock)) return false;

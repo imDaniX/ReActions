@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.LeverEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.LeverStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,9 +59,8 @@ public class LeverActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof LeverEvent)) return false;
-		LeverEvent le = (LeverEvent) event;
+	public boolean activate(RAStorage event) {
+		LeverStorage le = (LeverStorage) event;
 		if (le.getLever() == null) return false;
 		if (!isLocatedAt(le.getLeverLocation())) return false;
 		if (this.state.equalsIgnoreCase("on") && le.isLeverPowered()) return false;

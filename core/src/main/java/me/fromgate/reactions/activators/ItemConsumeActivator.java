@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.ItemConsumeEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.ItemConsumeStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -47,26 +47,21 @@ public class ItemConsumeActivator extends Activator {
 		this.item = item;
 	}
 
-	public boolean activate(RAEvent event) {
-		if (!this.item.isEmpty() && ItemUtil.parseItemStack(this.item) != null) {
-			if (event instanceof ItemConsumeEvent) {
-				ItemConsumeEvent ie = (ItemConsumeEvent) event;
-				if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
-					VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
-					if (vi != null) {
-						Variables.setTempVar("item", vi.toString());
-						Variables.setTempVar("item-str", vi.toDisplayString());
-					}
-
-					return Actions.executeActivator(ie.getPlayer(), this);
-				}
-			}
-
-			return false;
-		} else {
+	public boolean activate(RAStorage event) {
+		if (this.item.isEmpty() || ItemUtil.parseItemStack(this.item) == null) {
 			Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
 			return false;
 		}
+		ItemConsumeStorage ie = (ItemConsumeStorage) event;
+		if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
+			VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
+			if (vi != null) {
+				Variables.setTempVar("item", vi.toString());
+				Variables.setTempVar("item-str", vi.toDisplayString());
+			}
+			return Actions.executeActivator(ie.getPlayer(), this);
+		}
+		return false;
 	}
 
 	public void save(ConfigurationSection cfg) {

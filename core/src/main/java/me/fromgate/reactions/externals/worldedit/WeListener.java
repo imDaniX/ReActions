@@ -32,8 +32,9 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.event.WeChangeEvent;
-import me.fromgate.reactions.event.WeSelectionRegionEvent;
+import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.storage.WeChangeStorage;
+import me.fromgate.reactions.storage.WeSelectionRegionStorage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -103,15 +104,14 @@ public class WeListener {
 		WeSelection weSelection = new WeSelection(getRegionSelector(player).getTypeName(),
 				BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()), BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
 				selection.getArea(), BukkitAdapter.adapt(selection.getWorld()), region.toString());
-		WeSelectionRegionEvent e = new WeSelectionRegionEvent(player, weSelection);
-		Bukkit.getServer().getPluginManager().callEvent(e);
+		WeSelectionRegionStorage e = new WeSelectionRegionStorage(player, weSelection);
+		Activators.activate(e);
 		return e.isCancelled();
 	}
 
-	@SuppressWarnings("deprecation")
 	public static boolean raiseWEChangeEvent(Player player, Location location, Material blockType) {
-		WeChangeEvent e = new WeChangeEvent(player, location, blockType);
-		Bukkit.getServer().getPluginManager().callEvent(e);
+		WeChangeStorage e = new WeChangeStorage(player, location, blockType);
+		Activators.activate(e);
 		return e.isCancelled();
 	}
 

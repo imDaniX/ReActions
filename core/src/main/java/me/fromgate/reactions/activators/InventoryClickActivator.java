@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.InventoryClickEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.InventoryClickStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -42,9 +42,8 @@ public class InventoryClickActivator extends Activator {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof InventoryClickEvent)) return false;
-		InventoryClickEvent pice = (InventoryClickEvent) event;
+	public boolean activate(RAStorage event) {
+		InventoryClickStorage pice = (InventoryClickStorage) event;
 		if (!inventoryName.isEmpty() && !pice.getInventoryName().equalsIgnoreCase(inventoryName)) return false;
 		if (pice.getClickType() == null) return false;
 		if (!clickCheck(pice.getClickType())) return false;

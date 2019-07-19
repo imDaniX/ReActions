@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.DeathEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.DeathStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -46,9 +46,8 @@ public class PlayerDeathActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof DeathEvent)) return false;
-		DeathEvent de = (DeathEvent) event;
+	public boolean activate(RAStorage event) {
+		DeathStorage de = (DeathStorage) event;
 		if (this.deathCause != DeathCause.ANY && de.getDeathCause() != this.deathCause) return false;
 		Variables.setTempVar("cause", de.getDeathCause().name());
 		if (de.getKiller() != null) {

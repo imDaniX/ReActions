@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.MobKillEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.MobKillStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -59,9 +59,8 @@ public class MobKillActivator extends Activator {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof MobKillEvent)) return false;
-		MobKillEvent me = (MobKillEvent) event;
+	public boolean activate(RAStorage event) {
+		MobKillStorage me = (MobKillStorage) event;
 		if (mobType.isEmpty()) return false;
 		if (me.getMob() == null) return false;
 		if (!isActivatorMob(me.getMob())) return false;

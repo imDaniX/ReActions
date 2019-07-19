@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.PlateEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.PlateStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -60,9 +60,8 @@ public class PlateActivator extends Activator implements Locatable {
 	 * Очередная залипуха, надо будет потом переделать
 	 */
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof PlateEvent)) return false;
-		PlateEvent be = (PlateEvent) event;
+	public boolean activate(RAStorage event) {
+		PlateStorage be = (PlateStorage) event;
 		if (!isLocatedAt(be.getPlateLocation())) return false;
 		return Actions.executeActivator(be.getPlayer(), this);
 	}

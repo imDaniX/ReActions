@@ -23,8 +23,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.ItemWearEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.ItemWearStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -48,21 +48,19 @@ public class ItemWearActivator extends Activator {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
+	public boolean activate(RAStorage event) {
 		if (item.isEmpty() || (ItemUtil.parseItemStack(item) == null)) {
 			Msg.logOnce(this.name + "activatorwearempty", "Failed to parse item of activator " + this.name);
 			return false;
 		}
-		if (event instanceof ItemWearEvent) {
-			ItemWearEvent iw = (ItemWearEvent) event;
-			if (iw.isItemWeared(this.item)) {
-				VirtualItem vi = ItemUtil.itemFromItemStack(iw.getFoundedItem(this.item));
-				if (vi != null && vi.getType() != Material.AIR) {
-					Variables.setTempVar("item", vi.toString());
-					Variables.setTempVar("item-str", vi.toDisplayString());
-				}
-				return Actions.executeActivator(iw.getPlayer(), this);
+		ItemWearStorage iw = (ItemWearStorage) event;
+		if (iw.isItemWeared(this.item)) {
+			VirtualItem vi = ItemUtil.itemFromItemStack(iw.getFoundedItem(this.item));
+			if (vi != null && vi.getType() != Material.AIR) {
+				Variables.setTempVar("item", vi.toString());
+				Variables.setTempVar("item-str", vi.toDisplayString());
 			}
+			return Actions.executeActivator(iw.getPlayer(), this);
 		}
 		return false;
 	}

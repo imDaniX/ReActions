@@ -1,8 +1,8 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.FlightEvent;
-import me.fromgate.reactions.event.RAEvent;
+import me.fromgate.reactions.storage.FlightStorage;
+import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,9 +25,8 @@ public class FlightActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof FlightEvent)) return false;
-		FlightEvent fe = (FlightEvent) event;
+	public boolean activate(RAStorage event) {
+		FlightStorage fe = (FlightStorage) event;
 		if (!checkFlight(fe.isFlying())) return false;
 		Variables.setTempVar("flight", fe.isFlying() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(fe.getPlayer(), this);

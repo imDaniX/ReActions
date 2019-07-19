@@ -23,10 +23,10 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.event.RAEvent;
-import me.fromgate.reactions.event.RegionEnterEvent;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.externals.worldguard.WGBridge;
+import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storage.RegionEnterStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -49,9 +49,8 @@ public class RegionEnterActivator extends Activator implements Locatable {
 
 
 	@Override
-	public boolean activate(RAEvent event) {
-		if (!(event instanceof RegionEnterEvent)) return false;
-		RegionEnterEvent be = (RegionEnterEvent) event;
+	public boolean activate(RAStorage event) {
+		RegionEnterStorage be = (RegionEnterStorage) event;
 		if (!be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region))) return false;
 		return Actions.executeActivator(be.getPlayer(), this);
 	}
