@@ -70,7 +70,7 @@ jar {
 }
 
 shadowJar {
-	shadowJar.archiveFileName = 'ReActions-1.0-SNAPSHOT.jar'
+	shadowJar.archiveFileName = 'ReActions.jar'
 	relocate 'org.bstats', 'me.fromgate.reactions.externals.bstats'
 	dependencies {
 		include dependency('org.bstats:bstats-bukkit-lite:1.5')
