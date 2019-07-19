@@ -1,6 +1,7 @@
 package me.fromgate.reactions.util.item;
 
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,15 +16,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 public class ItemUtil {
 
-	private static Random random = new Random();
-
-	private final static Pattern INT_GZ = Pattern.compile("[1-9]+[0-9]*");
-	private final static Pattern D = Pattern.compile("\\d+");
 	private final static Pattern ITEM_D = Pattern.compile("item\\d+|ITEM\\d+");
 	private final static Pattern SET_D = Pattern.compile("set\\d+|SET\\d+");
 
@@ -36,8 +32,11 @@ public class ItemUtil {
 
 	public static void setDurability(ItemStack item, int durability) {
 		ItemMeta meta = item.getItemMeta();
-		if(meta instanceof Damageable)
-			((Damageable)meta).setDamage(durability);
+		if(meta instanceof Damageable) {
+			Damageable dmg = (Damageable) meta;
+			dmg.setDamage(durability);
+			item.setItemMeta(meta);
+		}
 	}
 
 	public static void giveItemOrDrop(Player player, ItemStack item) {
@@ -136,7 +135,7 @@ public class ItemUtil {
 	private static int getAmount(String itemStr) {
 		Map<String, String> itemMap = VirtualItem.parseParams(itemStr);
 		String amountStr = VirtualItem.getParam(itemMap, "amount", "1");
-		if (D.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
+		if (Util.INT_NOTZERO.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
 		return 1;
 	}
 
@@ -199,7 +198,7 @@ public class ItemUtil {
 		String[] ln = str.split(",");
 		if (ln.length == 0) return new ItemStack(Material.AIR);
 
-		ItemStack item = ItemUtil.parseItemStack(ln[tryChance(ln.length)]);
+		ItemStack item = ItemUtil.parseItemStack(ln[Util.tryChance(ln.length)]);
 
 		if (item == null) return new ItemStack(Material.AIR);
 		item.setAmount(1);
@@ -284,7 +283,7 @@ public class ItemUtil {
 			}
 			int eqperc = (nochcount * 100) / sets.size();
 			maxChance = maxChance + eqperc * nochcount;
-			int rnd = tryChance(maxChance);
+			int rnd = Util.tryChance(maxChance);
 			int curchance = 0;
 			for (List<ItemStack> stack : sets.keySet()) {
 				curchance = curchance + (sets.get(stack) < 0 ? eqperc : sets.get(stack));
@@ -318,7 +317,7 @@ public class ItemUtil {
 				String stacks = ln[0];
 				if (stacks.isEmpty()) continue;
 				int chance = -1;
-				if ((ln.length == 2) && (INT_GZ.matcher(ln[1]).matches())) {
+				if ((ln.length == 2) && (Util.INT_NOTZERO.matcher(ln[1]).matches())) {
 					chance = Integer.parseInt(ln[1]);
 					maxchance += chance;
 				} else nochcount++;
@@ -328,17 +327,13 @@ public class ItemUtil {
 		if (drops.isEmpty()) return "";
 		int eqperc = (nochcount * 100) / drops.size();
 		maxchance = maxchance + eqperc * nochcount;
-		int rnd = tryChance(maxchance);
+		int rnd = Util.tryChance(maxchance);
 		int curchance = 0;
 		for (String stack : drops.keySet()) {
 			curchance = curchance + (drops.get(stack) < 0 ? eqperc : drops.get(stack));
 			if (rnd <= curchance) return stack;
 		}
 		return "";
-	}
-
-	private static int tryChance(int chance) {
-		return random.nextInt(chance);
 	}
 
 	public static String toDisplayString(String itemStr) {
@@ -355,4 +350,26 @@ public class ItemUtil {
 		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
 	}
 
+	/*
+	 * Функция проверяет входит есть ли item (блок) с заданным id и data в списке,
+	 * представленным в виде строки вида id1:data1,id2:data2,MATERIAL_NAME:data
+	 * При этом если data может быть опущена
+	 */
+	public static boolean isItemInList(Material type, int data, String str) {
+		String[] ln = str.split(",");
+		if (ln.length > 0)
+			for (String itemInList : ln) {
+				if (compareItemIdDataStr(type, data, itemInList)) return true;
+			}
+
+		return false;
+	}
+
+	public static boolean compareItemIdDataStr(Material type, int data, String itemStr) {
+		ItemStack item = parseItemStack(itemStr);
+		if (item == null) return false;
+		if (item.getType() != type) return false;
+		if (data < 0) return true;
+		return data == getDurability(item);
+	}
 }

@@ -5,6 +5,9 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ThrownPotion;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.projectiles.BlockProjectileSource;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -62,5 +65,23 @@ public class EntityUtil {
 			}
 		}
 		return entities;
+	}
+
+	public static LivingEntity getDamagerEntity(EntityDamageEvent event) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
+			if (evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+				Projectile prj = (Projectile) evdmg.getDamager();
+				return getEntityFromProjectile(prj.getShooter());
+			} else if (evdmg.getCause() == EntityDamageEvent.DamageCause.MAGIC) {
+				Entity entityDamager = evdmg.getDamager();
+				LivingEntity shooterEntity = null;
+				if (entityDamager instanceof ThrownPotion)
+					shooterEntity = getEntityFromProjectile(((ThrownPotion) entityDamager).getShooter());
+				return shooterEntity;
+			} else if (evdmg.getDamager() instanceof LivingEntity)
+				return (LivingEntity) evdmg.getDamager();
+		}
+		return null;
 	}
 }

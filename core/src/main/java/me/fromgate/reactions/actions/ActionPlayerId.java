@@ -13,48 +13,25 @@ import java.util.UUID;
  * Created by MaxDikiy on 5/6/2017.
  */
 public class ActionPlayerId extends Action {
-	private boolean isOnlineMode;
-
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute(Player p, Param params) {
 		String playerName = params.getParam("player", "");
-		this.isOnlineMode = params.getParam("online", false);
 		String varID = params.getParam("varid", "");
 		String varName = params.getParam("varname", "");
 
-		UUID uniqueID = null;
+		UUID uniqueID;
 		String uuid;
 		String pName;
 
 		if (playerName.isEmpty()) {
-			uniqueID = getUUID(p);
+			uniqueID = Util.getUUID(p);
 			uuid = uniqueID.toString();
 			pName = p.getName();
 		} else {
-			Player player;
-			String[] components = playerName.split("-");
-			if (components.length == 5) uniqueID = UUID.fromString(playerName);
-			if (uniqueID == null) {
-				player = Bukkit.getPlayer(playerName);
-			} else {
-				player = Bukkit.getPlayer(uniqueID);
-			}
-			if (player != null) {
-				pName = player.getName();
-				if (uniqueID == null) uniqueID = getUUID(player);
-			} else {
-				OfflinePlayer offPlayer;
-				if (uniqueID == null) {
-					//noinspection deprecation
-					offPlayer = Bukkit.getOfflinePlayer(playerName);
-				} else {
-					offPlayer = Bukkit.getOfflinePlayer(uniqueID);
-				}
-				pName = offPlayer.getName();
-				if (uniqueID == null) uniqueID = getUUID(offPlayer);
-			}
-			uuid = uniqueID.toString();
+			OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(playerName);
+			uuid = Util.getUUID(offPlayer).toString();
+			pName = offPlayer.getName();
 		}
 		if (pName == null) pName = "";
 		Variables.setVar(playerName, varID, uuid);
@@ -62,11 +39,6 @@ public class ActionPlayerId extends Action {
 		Variables.setTempVar("playerid", uuid);
 		Variables.setTempVar("playername", pName);
 		return true;
-	}
-
-
-	private UUID getUUID(OfflinePlayer p) {
-		return Util.getUUID(p, p.getName(), isOnlineMode);
 	}
 
 }

@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
@@ -58,7 +59,7 @@ public class ActionPlayerPotion extends Action {
 			} else peffstr = param;
 		} else {
 			peffstr = params.getParam("type", "");
-			duration = Util.safeLongToInt(Util.timeToTicks(Util.parseTime(params.getParam("time", "3s"))));
+			duration = Util.safeLongToInt(Time.timeToTicks(Time.parseTime(params.getParam("time", "3s"))));
 			amplifier = Math.max(params.getParam("level", 1) - 1, 0);
 			ambient = params.getParam("ambient", false);
 		}

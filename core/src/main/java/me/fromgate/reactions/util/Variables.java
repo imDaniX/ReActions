@@ -35,7 +35,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
 import java.util.regex.Pattern;
@@ -46,8 +45,6 @@ public class Variables {
 	private static Map<String, String> tempvars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	private final static Pattern VARP = Pattern.compile("(?i).*%varp?:\\S+%.*");
-	private final static Pattern FLOAT_0 = Pattern.compile("^[0-9]+\\.0$");
-	private final static Pattern NUMBER = Pattern.compile("-?[0-9]+(.[0-9]+)?");
 
 	private static String varId(Player player, String var) {
 		return (player == null ? "general." + var : player.getName() + "." + var);
@@ -324,7 +321,7 @@ public class Variables {
 		String newStr = str;
 		for (String key : vars.keySet()) {
 			String replacement = vars.get(key);
-			replacement = FLOAT_0.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
+			replacement = Util.FLOAT_ZERO.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
 			if (key.startsWith("general.")) {
 				String id = key.substring(8); // key.replaceFirst("general\\.", "");
 				newStr = newStr.replaceAll("(?i)%var:" + Pattern.quote(id) + "%", replacement);
@@ -348,7 +345,7 @@ public class Variables {
 		String newStr = str;
 		for (String key : tempvars.keySet()) {
 			String replacement = tempvars.get(key);
-			replacement = FLOAT_0.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
+			replacement = Util.FLOAT_ZERO.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
 			newStr = newStr.replaceAll("(?i)%" + key + "%", replacement);
 		}
 		return newStr;
@@ -396,7 +393,7 @@ public class Variables {
 	public static boolean isNumber(String... str) {
 		if (str.length == 0) return false;
 		for (String s : str)
-			if (!NUMBER.matcher(s).matches()) return false;
+			if (!Util.FLOAT_NEG.matcher(s).matches()) return false;
 		return true;
 	}
 

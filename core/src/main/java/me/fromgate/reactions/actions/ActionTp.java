@@ -36,7 +36,7 @@ public class ActionTp extends Action {
 	@Override
 	public boolean execute(Player p, Param params) {
 		Location loc = teleportPlayer(p, params);
-		if (loc != null) this.setMessageParam(Locator.locationToStringFormated(loc));
+		if (loc != null) this.setMessageParam(Locator.locationToStringFormatted(loc));
 		return (loc != null);
 	}
 
@@ -64,9 +64,9 @@ public class ActionTp extends Action {
 			}
 
 			Variables.setTempVar("loc-from", Locator.locationToString(p.getLocation()));
-			Variables.setTempVar("loc-from-str", Locator.locationToStringFormated(p.getLocation()));
+			Variables.setTempVar("loc-from-str", Locator.locationToStringFormatted(p.getLocation()));
 			Variables.setTempVar("loc-to", Locator.locationToString(loc));
-			Variables.setTempVar("loc-to-str", Locator.locationToStringFormated(loc));
+			Variables.setTempVar("loc-to-str", Locator.locationToStringFormatted(loc));
 			Teleporter.teleport(p, loc);
 			String playeffect = params.getParam("effect", "");
 			if (!playeffect.isEmpty()) {

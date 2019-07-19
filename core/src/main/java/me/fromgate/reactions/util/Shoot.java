@@ -23,6 +23,7 @@
 package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.event.EventManager;
+import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;
@@ -112,7 +113,7 @@ public class Shoot {
 	@SuppressWarnings("deprecation")
 	private static boolean isEmpty(Block b, LivingEntity shooter) {
 		if (!b.getType().isSolid()) return true;
-		if (Util.isItemInList(b.getType(), b.getData(), actionShootThrough)) return true;
+		if (ItemUtil.isItemInList(b.getType(), b.getData(), actionShootThrough)) return true;
 		if ((shooter instanceof Player) && (isShotAndBreak(b, (Player) shooter))) {
 			b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
 			b.breakNaturally();
@@ -130,7 +131,7 @@ public class Shoot {
 
 	@SuppressWarnings("deprecation")
 	private static boolean isShotAndBreak(Block b, Player p) {
-		if (Util.isItemInList(b.getType(), b.getData(), actionShootBreak)) return breakBlock(b, p);
+		if (ItemUtil.isItemInList(b.getType(), b.getData(), actionShootBreak)) return breakBlock(b, p);
 		return false;
 	}
 

@@ -26,6 +26,7 @@ import me.fromgate.reactions.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.placeholders.Placeholders;
+import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
@@ -166,7 +167,7 @@ public enum Actions {
 				ActionWait aw = (ActionWait) at.action;
 				Param param = new Param(Placeholders.replacePlaceholderButRaw(player, av.getValue()), "time");
 				String timeStr = param.getParam("time", "0");
-				long time = Util.parseTime(timeStr);
+				long time = Time.parseTime(timeStr);
 				if (time == 0) continue;
 				List<StoredAction> futureList = new ArrayList<>(actions.subList(i + 1, actions.size()));
 				aw.executeDelayed(player, futureList, isAction, time);

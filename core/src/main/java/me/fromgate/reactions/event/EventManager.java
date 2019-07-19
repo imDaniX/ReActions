@@ -32,6 +32,7 @@ import me.fromgate.reactions.activators.MessageActivator;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.activators.SignActivator;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
+import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
@@ -264,7 +265,7 @@ public class EventManager {
 
 		int repeat = Math.min(param.getParam("repeat", 1), 1);
 
-		long delay = Util.timeToTicks(Util.parseTime(param.getParam("delay", "1t")));
+		long delay = Time.timeToTicks(Time.parseTime(param.getParam("delay", "1t")));
 
 		final Set<Player> target = new HashSet<>();
 

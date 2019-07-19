@@ -13,8 +13,6 @@ public class Param {
 	private final static Pattern PARAM_PATTERN = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");
 	private final static Pattern PARAM_BRACKET = Pattern.compile("\\{.*\\}");
 	private final static Pattern PARAM_BRACKET_SE = Pattern.compile("^\\{.*\\}$");
-	private final static Pattern INT = Pattern.compile("-?[1-9]+[0-9]*");
-	private final static Pattern FLOAT = Pattern.compile("-?[0-9]+\\.?[0-9]*");
 	private final static Pattern BOOLEAN = Pattern.compile("(?i)true|on|yes");
 
 	public Param(String param) {
@@ -90,7 +88,7 @@ public class Param {
 	public int getParam(String key, int defParam) {
 		if (!params.containsKey(key)) return defParam;
 		String str = params.get(key);
-		if (!INT.matcher(str).matches()) return defParam;
+		if (!Util.INT_NOTZERO_NEG.matcher(str).matches()) return defParam;
 		return Integer.parseInt(str);
 	}
 
@@ -98,14 +96,14 @@ public class Param {
 	public float getParam(String key, float defParam) {
 		if (!params.containsKey(key)) return defParam;
 		String str = params.get(key);
-		if (!FLOAT.matcher(str).matches()) return defParam;
+		if (!Util.FLOAT_NEG.matcher(str).matches()) return defParam;
 		return Float.parseFloat(str);
 	}
 
 	public double getParam(String key, double defParam) {
 		if (!params.containsKey(key)) return defParam;
 		String str = params.get(key);
-		if (!FLOAT.matcher(str).matches()) return defParam;
+		if (!Util.FLOAT_NEG.matcher(str).matches()) return defParam;
 		return Double.parseDouble(str);
 	}
 

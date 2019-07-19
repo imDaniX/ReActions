@@ -1,6 +1,6 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -20,7 +20,7 @@ public class PlaceholderDamage extends Placeholder {
 
 	public String getDamager(EntityDamageEvent de, boolean damagerName) {
 		if (de == null) return null;
-		LivingEntity e = Util.getDamagerEntity(de);
+		LivingEntity e = EntityUtil.getDamagerEntity(de);
 		String type = e.getType().name();
 		String name = (e instanceof Player) ? e.getName() : (e.getCustomName() != null ? e.getCustomName() : type);
 		return damagerName ? name : type;

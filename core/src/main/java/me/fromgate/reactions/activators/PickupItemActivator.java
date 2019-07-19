@@ -5,6 +5,7 @@ import me.fromgate.reactions.event.PickupItemEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Material;
@@ -12,13 +13,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.regex.Pattern;
-
 /**
  * Created by MaxDikiy on 2017-09-04.
  */
 public class PickupItemActivator extends Activator {
-	private final static Pattern FLOAT = Pattern.compile("\\d+\\.?\\d*");
 
 	private String itemStr;
 
@@ -42,7 +40,7 @@ public class PickupItemActivator extends Activator {
 		Variables.setTempVar("item", ItemUtil.itemToString(pie.getItemStack()));
 		boolean result = Actions.executeActivator(pie.getPlayer(), this);
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
-		if (FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
+		if (Util.FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "0");

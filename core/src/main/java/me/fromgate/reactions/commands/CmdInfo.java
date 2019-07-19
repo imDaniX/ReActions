@@ -60,7 +60,7 @@ public class CmdInfo extends Cmd {
 				String param = act.getActions().get(i).getValue();
 				if (action.equalsIgnoreCase("tp")) {
 					Location loc = Locator.parseCoordinates(param);//Util.parseLocation(param);
-					if (loc != null) param = Locator.locationToStringFormated(loc);
+					if (loc != null) param = Locator.locationToStringFormatted(loc);
 				}
 				flg.add("  &e" + action + " &3= &a" + param);
 			}
@@ -73,7 +73,7 @@ public class CmdInfo extends Cmd {
 				String param = act.getReactions().get(i).getValue();
 				if (action.equalsIgnoreCase("tp")) {
 					Location loc = Locator.parseCoordinates(param);
-					if (loc != null) param = Locator.locationToStringFormated(loc);
+					if (loc != null) param = Locator.locationToStringFormatted(loc);
 				}
 				flg.add("  &e" + action + " &3= &a" + param);
 			}

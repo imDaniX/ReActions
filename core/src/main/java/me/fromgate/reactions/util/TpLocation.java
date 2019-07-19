@@ -25,16 +25,19 @@ package me.fromgate.reactions.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 import java.text.DecimalFormat;
 
+// Maybe use it in activators?
 public class TpLocation {
-	public String world;
-	public double x;
-	public double y;
-	public double z;
-	public float yaw;
-	public float pitch;
+	private static final DecimalFormat FORMAT = new DecimalFormat("####0.##");
+	private String world;
+	private double x;
+	private double y;
+	private double z;
+	private float yaw;
+	private float pitch;
 
 	public TpLocation(Location loc) {
 		this.world = loc.getWorld().getName();
@@ -55,7 +58,8 @@ public class TpLocation {
 	}
 
 	public Location getLocation() {
-		return new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch);
+		World world = Bukkit.getWorld(this.world);
+		return world == null ? new Location(Bukkit.getWorlds().get(0), x, y, z, yaw, pitch) : new Location(world, x, y, z, yaw, pitch);
 	}
 
 	public boolean equalToLoc(Location loc) {
@@ -65,10 +69,33 @@ public class TpLocation {
 				(Math.round(loc.getZ()) == Math.round(z)));
 	}
 
+	public String getWorld() {
+		return world;
+	}
+
+	public double getX() {
+		return x;
+	}
+
+	public double getY() {
+		return y;
+	}
+
+	public double getZ() {
+		return z;
+	}
+
+	public float getPitch() {
+		return pitch;
+	}
+
+	public float getYaw() {
+		return yaw;
+	}
+
 	@Override
 	public String toString() {
-		DecimalFormat fmt = new DecimalFormat("####0.##");
-		return "[" + this.world + "] " + fmt.format(x) + ", " + fmt.format(y) + ", " + fmt.format(z);
+		return "[" + this.world + "] " + FORMAT.format(x) + ", " + FORMAT.format(y) + ", " + FORMAT.format(z);
 	}
 
 

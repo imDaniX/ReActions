@@ -5,6 +5,7 @@ import me.fromgate.reactions.event.DamageByMobEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,14 +15,11 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import java.util.regex.Pattern;
-
 /**
  * Created by MaxDikiy on 2017-06-25.
  */
 // TODO: Assemble to one activator
 public class DamageByMobActivator extends Activator {
-	private final static Pattern FLOAT = Pattern.compile("[0-9]+(\\.?[0-9]*)?");
 
 	private String damagerName;
 	private String damagerType;
@@ -69,7 +67,7 @@ public class DamageByMobActivator extends Activator {
 		Variables.setTempVar("cause", pde.getCause().name());
 		boolean result = Actions.executeActivator(pde.getPlayer(), this);
 		String dmgStr = Variables.getTempVar("damage");
-		if (FLOAT.matcher(dmgStr).matches()) pde.setDamage(Double.parseDouble(dmgStr));
+		if (Util.FLOAT.matcher(dmgStr).matches()) pde.setDamage(Double.parseDouble(dmgStr));
 		return result;
 	}
 

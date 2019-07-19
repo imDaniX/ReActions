@@ -28,6 +28,7 @@ import me.fromgate.reactions.event.ButtonEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
+import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -52,8 +53,7 @@ public class ButtonActivator extends Activator implements Locatable {
 
 	public ButtonActivator(String name, Block targetBlock) {
 		super(name, "activators");
-		if (targetBlock != null &&
-				(targetBlock.getType().name().endsWith("_BUTTON"))) {
+		if (targetBlock != null && Tag.BUTTONS.isTagged(targetBlock.getType())) {
 			this.world = targetBlock.getWorld().getName();
 			this.x = targetBlock.getX();
 			this.y = targetBlock.getY();

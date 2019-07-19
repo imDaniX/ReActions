@@ -9,34 +9,20 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class WeChangeEvent extends RAEvent {
-	private Player player;
 	private Location location;
 	private Material blockType;
 
 	public WeChangeEvent(Player player, Location location, Material blockType) {
 		super(player, ActivatorType.WE_CHANGE);
-		this.player = player;
-		this.location = location; //new Location(player.getWorld(), location.getX(), location.getY(), location.getZ());
+		this.location = location;
 		this.blockType = blockType;
 
-	}
-
-	public Player getPlayer() {
-		return player;
 	}
 
 	public Location getLocation() {
 		return location;
 	}
 
-	/*  public BaseBlock getBlock() {
-		  return block;
-	  }
-
-	  public void setBlock(BaseBlock block) {
-		  this.block = block;
-	  }
-  */
 	public String getBlockType() {
 		return blockType.name();
 	}

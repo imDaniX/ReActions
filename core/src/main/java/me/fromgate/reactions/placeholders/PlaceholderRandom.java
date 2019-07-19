@@ -5,11 +5,9 @@ import org.bukkit.entity.Player;
 
 import java.util.regex.Pattern;
 
-@PlaceholderDefine(id = "Random", needPlayer = false, keys = {"RANDOM", "rnd"})
+@PlaceholderDefine(id = "Random", keys = {"RANDOM", "rnd"})
 public class PlaceholderRandom extends Placeholder {
 
-	private final static Pattern INT = Pattern.compile("\\d+");
-	private final static Pattern INT_MIN_MAX = Pattern.compile("\\d+\\-\\d+");
 	private final static Pattern WORD_LIST = Pattern.compile("[\\S,]*[\\S]");
 
 
@@ -20,12 +18,12 @@ public class PlaceholderRandom extends Placeholder {
 
 
 	private String random(String rndStr) {
-		if (INT.matcher(rndStr).matches()) {
+		if (Util.INT.matcher(rndStr).matches())
 			return Integer.toString(Util.getRandomInt(Integer.parseInt(rndStr)));
-		}
-		if (INT_MIN_MAX.matcher(rndStr).matches()) {
+
+		if (Util.INT_MIN_MAX.matcher(rndStr).matches())
 			return Integer.toString(Util.getMinMaxRandom(rndStr));
-		}
+
 		if (WORD_LIST.matcher(rndStr).matches()) {
 			String[] ln = rndStr.split(",");
 			if (ln.length == 0) return rndStr;

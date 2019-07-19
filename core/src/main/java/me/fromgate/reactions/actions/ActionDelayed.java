@@ -1,7 +1,7 @@
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.waiter.ActionsWaiter;
 import org.bukkit.entity.Player;
@@ -10,7 +10,7 @@ public class ActionDelayed extends Action {
 
 	@Override
 	public boolean execute(Player p, Param params) {
-		long delay = Util.parseTime(params.getParam("time", "0"));
+		long delay = Time.parseTime(params.getParam("time", "0"));
 		if (delay == 0) return false;
 
 		String actionSource = params.getParam("action", "");

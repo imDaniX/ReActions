@@ -5,6 +5,7 @@ import me.fromgate.reactions.event.DropEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Material;
@@ -12,13 +13,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.regex.Pattern;
-
 /**
  * Created by MaxDikiy on 2017-05-01.
  */
 public class DropActivator extends Activator {
-	private final static Pattern FLOAT = Pattern.compile("\\d+\\.?\\d*");
 
 	private String itemStr;
 
@@ -41,7 +39,7 @@ public class DropActivator extends Activator {
 		Variables.setTempVar("pickupDelay", Double.toString(de.getPickupDelay()));
 		boolean result = Actions.executeActivator(de.getPlayer(), this);
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
-		if (FLOAT.matcher(pickupDelayStr).matches()) de.setPickupDelay(Double.parseDouble(pickupDelayStr));
+		if (Util.FLOAT.matcher(pickupDelayStr).matches()) de.setPickupDelay(Double.parseDouble(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "0");

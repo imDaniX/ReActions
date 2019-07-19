@@ -5,7 +5,6 @@ import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Delayer;
 import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
@@ -35,7 +34,7 @@ public class CmdSet extends Cmd {
 			boolean add = params.getParam("add", false);
 			String player = params.getParam("player", "");
 			if (player.equalsIgnoreCase("%player%") && (p != null)) player = p.getName();
-			Long time = /*System.currentTimeMillis()+*/Util.parseTime(params.getParam("delay", "3s")); //дефолтная задержка три секунды
+			Long time = /*System.currentTimeMillis()+*/Time.parseTime(params.getParam("delay", "3s")); //дефолтная задержка три секунды
 			if (player.isEmpty()) Delayer.setDelay(id, time, add);
 			else Delayer.setPersonalDelay(player, id, time, add);
 			Msg.printMSG(sender, "cmd_delayset", player.isEmpty() ? id : player + "." + id, Time.fullTimeToString(System.currentTimeMillis() + time));

@@ -3,6 +3,7 @@ package me.fromgate.reactions.util.waiter;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
+import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -29,7 +30,7 @@ public class Task implements Runnable {
 		this.isAction = isAction;
 		this.isExecuted = false;
 		this.executionTime = System.currentTimeMillis() + time;
-		task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, Util.timeToTicks(time));
+		task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, Time.timeToTicks(time));
 	}
 
 	public String getId() {
@@ -42,7 +43,7 @@ public class Task implements Runnable {
 		long time = this.executionTime - System.currentTimeMillis();
 		if (time < 0) this.execute();
 		else
-			task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, Util.timeToTicks(time));
+			task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, Time.timeToTicks(time));
 	}
 
 	@Override

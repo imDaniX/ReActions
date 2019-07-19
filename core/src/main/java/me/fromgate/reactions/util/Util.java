@@ -23,26 +23,21 @@
 package me.fromgate.reactions.util;
 
 import com.google.common.base.Charsets;
-import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.ChatPaginator;
 import org.bukkit.util.ChatPaginator.ChatPage;
@@ -54,27 +49,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Util {
-	private final static Pattern INT_GZ = Pattern.compile("[1-9]+[0-9]*");
-	private final static Pattern INT_LGZ = Pattern.compile("-?[0-9]+[0-9]*");
-	private final static Pattern INT = Pattern.compile("[0-9]+[0-9]*");
-	private final static Pattern FLOAT = Pattern.compile("([0-9]+\\.[0-9]+)|([0-9]+)");
-	private final static Pattern NUM = Pattern.compile("[0-9]*");
 
-	private final static Pattern TIME_HH_MM = Pattern.compile("^[0-5][0-9]:[0-5][0-9]$");
-	private final static Pattern TIME_HH_MM_SS = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$");
-	private final static Pattern TIME_X_MSDHMST = Pattern.compile("\\d+(ms|d|h|m|s|t)");
-	private final static Pattern TIME_X_MS = Pattern.compile("^\\d+ms$");
-	private final static Pattern TIME_X_D = Pattern.compile("^\\d+d$");
-	private final static Pattern TIME_X_H = Pattern.compile("^\\d+h$");
-	private final static Pattern TIME_X_M = Pattern.compile("^\\d+m$");
-	private final static Pattern TIME_X_S = Pattern.compile("^\\d+s$");
-	private final static Pattern TIME_X_T = Pattern.compile("^\\d+t$");
+	public final static Pattern BYTE = Pattern.compile("(1[1-2][1-7]|\\d{1,2})");
 
-	private static ThreadLocalRandom random = ThreadLocalRandom.current();
+	public final static Pattern INT = Pattern.compile("\\d+");
+	public final static Pattern INT_NEG = Pattern.compile("-?\\d+");
+	public final static Pattern INT_MIN_MAX = Pattern.compile("\\d+(-\\d+)?");
+	public final static Pattern INT_NOTZERO = Pattern.compile("[1-9]\\d*");
+	public final static Pattern INT_NOTZERO_NEG = Pattern.compile("-?[1-9]\\d*");
+
+	public final static Pattern FLOAT = Pattern.compile("\\d+(\\.\\d+)?");
+	public final static Pattern FLOAT_ZERO = Pattern.compile("^\\d+\\.0$");
+	public final static Pattern FLOAT_NEG = Pattern.compile("-?\\d+(\\.\\d+)?");
+
+	private final static ThreadLocalRandom random = ThreadLocalRandom.current();
 
 	public static int getMinMaxRandom(String minmaxstr) {
 		int min = 0;
@@ -86,9 +77,9 @@ public class Util {
 			strmin = minmaxstr.substring(0, minmaxstr.indexOf("-"));
 			strmax = minmaxstr.substring(minmaxstr.indexOf("-") + 1);
 		}
-		if (INT_GZ.matcher(strmin).matches()) min = Integer.parseInt(strmin);
+		if (INT_NOTZERO.matcher(strmin).matches()) min = Integer.parseInt(strmin);
 		max = min;
-		if (INT_GZ.matcher(strmax).matches()) max = Integer.parseInt(strmax);
+		if (INT_NOTZERO.matcher(strmax).matches()) max = Integer.parseInt(strmax);
 		if (max > min) return min + tryChance(1 + max - min);
 		else return min;
 	}
@@ -206,24 +197,6 @@ public class Util {
 	}
 
 
-	public static LivingEntity getDamagerEntity(EntityDamageEvent event) {
-		if (event instanceof EntityDamageByEntityEvent) {
-			EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-			if (evdmg.getCause() == DamageCause.PROJECTILE) {
-				Projectile prj = (Projectile) evdmg.getDamager();
-				return EntityUtil.getEntityFromProjectile(prj.getShooter());
-			} else if (evdmg.getCause() == DamageCause.MAGIC) {
-				Entity entityDamager = evdmg.getDamager();
-				LivingEntity shooterEntity = null;
-				if (entityDamager instanceof ThrownPotion)
-					shooterEntity = EntityUtil.getEntityFromProjectile(((ThrownPotion) entityDamager).getShooter());
-				return shooterEntity;
-			} else if (evdmg.getDamager() instanceof LivingEntity)
-				return (LivingEntity) evdmg.getDamager();
-		}
-		return null;
-	}
-
 	public static boolean isAnyParamExist(Map<String, String> params, String... param) {
 		for (String key : params.keySet())
 			for (String prm : param) {
@@ -283,29 +256,6 @@ public class Util {
 		return false;
 	}
 
-	/*
-	 * Функция проверяет входит есть ли item (блок) с заданным id и data в списке,
-	 * представленным в виде строки вида id1:data1,id2:data2,MATERIAL_NAME:data
-	 * При этом если data может быть опущена
-	 */
-	public static boolean isItemInList(Material type, int data, String str) {
-		String[] ln = str.split(",");
-		if (ln.length > 0)
-			for (String itemInList : ln) {
-				if (compareItemIdDataStr(type, data, itemInList)) return true;
-			}
-
-		return false;
-	}
-
-	public static boolean compareItemIdDataStr(Material type, int data, String itemStr) {
-		ItemStack item = ItemUtil.parseItemStack(itemStr);
-		if (item == null) return false;
-		if (item.getType() != type) return false;
-		if (data < 0) return true;
-		return data == ItemUtil.getDurability(item);
-	}
-
 	public static boolean rollDiceChance(int chance) {
 		return (random.nextInt(100) < chance);
 	}
@@ -323,7 +273,7 @@ public class Util {
 	public static boolean isIntegerSigned(String... str) {
 		if (str.length == 0) return false;
 		for (String s : str)
-			if (!INT_LGZ.matcher(s).matches()) return false;
+			if (!INT_NEG.matcher(s).matches()) return false;
 		return true;
 	}
 
@@ -340,58 +290,14 @@ public class Util {
 
 
 	public static boolean isIntegerGZ(String str) {
-		return INT_GZ.matcher(str).matches();
+		return INT_NOTZERO.matcher(str).matches();
 	}
 
 	public static boolean isIntegerGZ(String... str) {
 		if (str.length == 0) return false;
 		for (String s : str)
-			if (!INT_GZ.matcher(s).matches()) return false;
+			if (!INT_NOTZERO.matcher(s).matches()) return false;
 		return true;
-	}
-
-	public static long timeToTicks(Long time) {
-		//1000 ms = 20 ticks
-		return Math.max(1, (time / 50));
-	}
-
-	public static long parseTime(String time) {
-		int dd = 0; // дни
-		int hh = 0; // часы
-		int mm = 0; // минуты
-		int ss = 0; // секунды
-		int tt = 0; // тики
-		int ms = 0; // миллисекунды
-		if (isInteger(time)) {
-			ss = Integer.parseInt(time);
-		} else if (TIME_HH_MM.matcher(time).matches()) {
-			String[] ln = time.split(":");
-			if (isInteger(ln[0])) mm = Integer.parseInt(ln[0]);
-			if (isInteger(ln[1])) ss = Integer.parseInt(ln[1]);
-		} else if (TIME_HH_MM_SS.matcher(time).matches()) {
-			String[] ln = time.split(":");
-			if (isInteger(ln[0])) hh = Integer.parseInt(ln[0]);
-			if (isInteger(ln[1])) mm = Integer.parseInt(ln[1]);
-			if (isInteger(ln[2])) ss = Integer.parseInt(ln[2]);
-		} else {
-			Matcher matcher = TIME_X_MSDHMST.matcher(time);
-			while (matcher.find()) {
-				String foundTime = matcher.group();
-				if (TIME_X_MS.matcher(foundTime).matches())
-					ms = Integer.parseInt(time.substring(0, time.length()-2));
-				else if (TIME_X_D.matcher(foundTime).matches())
-					dd = Integer.parseInt(time.substring(0, time.length()-1));
-				else if (TIME_X_H.matcher(foundTime).matches())
-					hh = Integer.parseInt(time.substring(0, time.length()-1));
-				else if (TIME_X_M.matcher(foundTime).matches())
-					mm = Integer.parseInt(time.substring(0, time.length()-1));
-				else if (TIME_X_S.matcher(foundTime).matches())
-					ss = Integer.parseInt(time.substring(0, time.length()-1));
-				else if (TIME_X_T.matcher(foundTime).matches())
-					tt = Integer.parseInt(time.substring(0, time.length()-1));
-			}
-		}
-		return (dd * 86400000L) + (hh * 3600000L) + (mm * 60000L) + (ss * 1000L) + (tt * 50L) + ms;
 	}
 
 	public static int safeLongToInt(long l) {
@@ -400,16 +306,10 @@ public class Util {
 		return (int) l;
 	}
 
-	public static UUID getUUID(OfflinePlayer player, String playerName, Boolean isOnlineMode) {
-		if (!isOnlineMode) {
-			return UUID.nameUUIDFromBytes(("OfflinePlayer:" + playerName).getBytes(Charsets.UTF_8));
-		}
-		return player.getUniqueId();
-	}
-
 	public static UUID getUUID(OfflinePlayer player) {
-		boolean isOnlineMode = Bukkit.getOnlineMode();
-		return getUUID(player, player.getName(), isOnlineMode);
+		return Bukkit.getOnlineMode() ?
+				player.getUniqueId() :
+				UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(Charsets.UTF_8));
 	}
 
 	@SuppressWarnings("deprecation")

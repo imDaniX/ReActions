@@ -10,9 +10,9 @@ import org.bukkit.entity.Player;
  */
 public class BlockBreakEvent extends RAEvent {
 	private Block block;
-	private Boolean isDropItems;
+	private boolean isDropItems;
 
-	public BlockBreakEvent(Player p, Block block, Boolean isDropItems) {
+	public BlockBreakEvent(Player p, Block block, boolean isDropItems) {
 		super(p, ActivatorType.BLOCK_BREAK);
 		this.block = block;
 		this.isDropItems = isDropItems;

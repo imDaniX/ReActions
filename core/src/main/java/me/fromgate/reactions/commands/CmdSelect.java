@@ -11,7 +11,7 @@ public class CmdSelect extends Cmd {
 	@Override
 	public boolean execute(Player player, String[] args) {
 		Selector.selectLocation(player, null);
-		Msg.CMD_SELECTED.print(player, Locator.locationToStringFormated(Selector.getSelectedLocation(player)));
+		Msg.CMD_SELECTED.print(player, Locator.locationToStringFormatted(Selector.getSelectedLocation(player)));
 		return true;
 	}
 }

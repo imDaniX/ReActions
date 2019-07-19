@@ -36,8 +36,6 @@ import java.util.regex.Pattern;
 
 public class MessageActivator extends Activator {
 	private final static Pattern NOT_D = Pattern.compile("\\D+");
-	private final static Pattern NUM = Pattern.compile("-?[0-9]+");
-	private final static Pattern FLOAT = Pattern.compile("-?[0-9]+\\.?[0-9]*");
 
 
 	Type type;
@@ -169,11 +167,11 @@ public class MessageActivator extends Activator {
 			for (int i = 0; i < args.length; i++) {
 				Variables.setTempVar("word" + (i + 1), args[i]);
 				Variables.setTempVar("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
-				if (NUM.matcher(args[i]).matches()) {
+				if (Util.INT_NEG.matcher(args[i]).matches()) {
 					countInt++;
 					Variables.setTempVar("int" + countInt, args[i]);
 				}
-				if (FLOAT.matcher(args[i]).matches()) {
+				if (Util.FLOAT_NEG.matcher(args[i]).matches()) {
 					countNum++;
 					Variables.setTempVar("num" + countNum, args[i]);
 				}

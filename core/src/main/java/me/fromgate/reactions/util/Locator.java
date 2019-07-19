@@ -41,11 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.regex.Pattern;
 
 public class Locator {
-	private final static Pattern FLOAT = Pattern.compile("-?[0-9]+\\.?[0-9]*");
-
 	private static Map<String, TpLocation> tports = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 
@@ -55,7 +52,7 @@ public class Locator {
 	 * @param param		   - String that contains parameters:
 	 *						parameter1:value1 parameter2:value2 ... parameterN:valueN
 	 *						Parameters:
-	 *						<WorldName,X,Y,Z[,Yaw,Pitch]> - defaut, simplest way to define location
+	 *						<WorldName,X,Y,Z[,Yaw,Pitch]> - default, simplest way to define location
 	 *						loc:<WorldName,X,Y,Z[,Yaw,Pitch]> - same as previous
 	 *						<p>
 	 *						loc:<WorldName,X,Y,Z[,Yaw,Pitch]> radius:<Radius> - find random location around the defined block
@@ -64,8 +61,8 @@ public class Locator {
 	 *						<p>
 	 *						Additional parameters:
 	 *						land:true - forces to find location in point where player can stay (solid block with two blocks above it)
-	 *						add-vector:<X,Y,Z> - allows to modify result of locations selections. For examample,
-	 *						loc:world,10,10,10 add-vector:0,5,0 will point to ation world,10,15,10.
+	 *						add-vector:<X,Y,Z> - allows to modify result of locations selections. For example,
+	 *						loc:world,10,10,10 add-vector:0,5,0 will point to action world,10,15,10.
 	 * @param defaultLocation - default location, used when definitions of locations is wrong or missed
 	 * @return Location
 	 */
@@ -180,7 +177,7 @@ public class Locator {
 		World w = Bukkit.getWorld(ln[0]);
 		if (w == null) return null;
 		for (int i = 1; i < ln.length; i++) {
-			if (!FLOAT.matcher(ln[i]).matches()) return null;
+			if (!Util.FLOAT_NEG.matcher(ln[i]).matches()) return null;
 		}
 		loc = new Location(w, Double.parseDouble(ln[1]), Double.parseDouble(ln[2]), Double.parseDouble(ln[3]));
 		if (ln.length == 6) {
@@ -195,7 +192,7 @@ public class Locator {
 		String[] ln = vectorStr.split(",");
 		if (ln.length != 3) return null;
 		for (String s : ln) {
-			if (!FLOAT.matcher(s).matches()) return null;
+			if (!Util.FLOAT_NEG.matcher(s).matches()) return null;
 		}
 		return new Vector(Double.parseDouble(ln[0]), Double.parseDouble(ln[1]), Double.parseDouble(ln[2]));
 	}
@@ -241,7 +238,7 @@ public class Locator {
 		return getEmptyOrLandedLocations(locations, land);
 	}
 
-	public static String locationToStringFormated(Location loc) {
+	public static String locationToStringFormatted(Location loc) {
 		if (loc == null) return "";
 		DecimalFormat fmt = new DecimalFormat("####0.##");
 		String lstr = loc.toString();
@@ -284,12 +281,13 @@ public class Locator {
 				f.createNewFile();
 				YamlConfiguration lcs = new YamlConfiguration();
 				for (String key : tports.keySet()) {
-					lcs.set(key + ".world", tports.get(key).world);
-					lcs.set(key + ".x", tports.get(key).x);
-					lcs.set(key + ".y", tports.get(key).y);
-					lcs.set(key + ".z", tports.get(key).z);
-					lcs.set(key + ".yaw", tports.get(key).yaw);
-					lcs.set(key + ".pitch", tports.get(key).pitch);
+					TpLocation tploc = tports.get(key);
+					lcs.set(key + ".world", tports.get(key).getWorld());
+					lcs.set(key + ".x", tports.get(key).getX());
+					lcs.set(key + ".y", tports.get(key).getY());
+					lcs.set(key + ".z", tports.get(key).getZ());
+					lcs.set(key + ".yaw", tports.get(key).getYaw());
+					lcs.set(key + ".pitch", tports.get(key).getPitch());
 				}
 				lcs.save(f);
 			}

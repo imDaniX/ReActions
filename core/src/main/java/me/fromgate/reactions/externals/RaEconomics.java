@@ -22,17 +22,15 @@
 
 package me.fromgate.reactions.externals;
 
+import me.fromgate.reactions.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 
 public class RaEconomics {
-	private final static Pattern FLOAT = Pattern.compile("[0-9]+(\\.?[0-9]*)?");
-
 	public static boolean isEconomyFound() {
 		if (RaCraftConomy.isEnabled()) return true;
 		return RaVault.isEconomyConnected();
@@ -74,7 +72,7 @@ public class RaEconomics {
 	}
 
 	public static boolean isFloat(String numStr) {
-		return FLOAT.matcher(numStr).matches();
+		return Util.FLOAT.matcher(numStr).matches();
 	}
 
 	public static Map<String, String> getBalances(Player p) {
