@@ -26,9 +26,9 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.util.ActVal;
+import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.util.Cfg;
-import me.fromgate.reactions.util.FlagVal;
+import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,12 +53,12 @@ public abstract class Activator {
 		this.group = group;
 	}
 
-	private List<FlagVal> flags = new ArrayList<>();
-	private List<ActVal> actions = new ArrayList<>();
-	private List<ActVal> reactions = new ArrayList<>();
+	private List<StoredFlag> flags = new ArrayList<>();
+	private List<StoredAction> actions = new ArrayList<>();
+	private List<StoredAction> reactions = new ArrayList<>();
 
 	public void addFlag(String flag, String param, boolean not) {
-		flags.add(new FlagVal(Flags.getValidName(flag), param, not));
+		flags.add(new StoredFlag(Flags.getValidName(flag), param, not));
 	}
 
 	public boolean removeFlag(int index) {
@@ -67,12 +67,12 @@ public abstract class Activator {
 		return true;
 	}
 
-	public List<FlagVal> getFlags() {
+	public List<StoredFlag> getFlags() {
 		return flags;
 	}
 
 	public void addAction(String action, String param) {
-		actions.add(new ActVal(Actions.getValidName(action), param));
+		actions.add(new StoredAction(Actions.getValidName(action), param));
 	}
 
 	public boolean removeAction(int index) {
@@ -82,7 +82,7 @@ public abstract class Activator {
 	}
 
 	public void addReaction(String action, String param) {
-		reactions.add(new ActVal(Actions.getValidName(action), param));
+		reactions.add(new StoredAction(Actions.getValidName(action), param));
 	}
 
 	public boolean removeReaction(int index) {
@@ -91,11 +91,11 @@ public abstract class Activator {
 		return true;
 	}
 
-	public List<ActVal> getActions() {
+	public List<StoredAction> getActions() {
 		return actions;
 	}
 
-	public List<ActVal> getReactions() {
+	public List<StoredAction> getReactions() {
 		return reactions;
 	}
 
@@ -124,11 +124,7 @@ public abstract class Activator {
 
 	@Override
 	public int hashCode() {
-		 // TODO: Надо будет переделать так чтобы получалась сортировка по алфавиту, хм.. и группировка по группам сразу...
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		 return group.hashCode()*31 + name.hashCode()*7;
 	}
 
 	public boolean equals(String name) {
@@ -148,23 +144,22 @@ public abstract class Activator {
 		Activator other = (Activator) obj;
 		if (name == null)
 			return other.name == null;
-		return this.name.equals(other.name);
+		if (group == null)
+			return other.group == null;
+		return this.name.equals(other.name) && this.group.equals(other.group);
 	}
 
-	/*
-	 *  Группу по идее дублировать не надо... т.е. она должна выставляться "из вне"...
-	 */
 	public void saveActivator(YamlConfiguration cfg) {
 		String key = getType() + "." + this.name;
 		save(cfg.getConfigurationSection(key));
 		List<String> flg = new ArrayList<>();
-		for (FlagVal f : flags) flg.add(f.toString());
+		for (StoredFlag f : flags) flg.add(f.toString());
 		cfg.set(key + ".flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
 		flg = new ArrayList<>();
-		for (ActVal a : actions) flg.add(a.toString());
+		for (StoredAction a : actions) flg.add(a.toString());
 		cfg.set(key + ".actions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
 		flg = new ArrayList<>();
-		for (ActVal a : reactions) flg.add(a.toString());
+		for (StoredAction a : reactions) flg.add(a.toString());
 		cfg.set(key + ".reactions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
 	}
 
@@ -179,7 +174,7 @@ public abstract class Activator {
 			if (flgstr.contains("=")) {
 				flag = flgstr.substring(0, flgstr.indexOf("="));
 				if (flgstr.indexOf("=") < flgstr.length())
-					param = flgstr.substring(flgstr.indexOf("=") + 1, flgstr.length());
+					param = flgstr.substring(flgstr.indexOf("=") + 1);
 			}
 			if (flag.startsWith("!")) {
 				flag = flag.replaceFirst("!", "");

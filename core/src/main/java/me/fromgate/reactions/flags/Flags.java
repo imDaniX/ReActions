@@ -32,7 +32,6 @@ import me.fromgate.reactions.flags.worldedit.FlagSelectionBlocks;
 import me.fromgate.reactions.flags.worldedit.FlagSuperPickAxe;
 import me.fromgate.reactions.flags.worldedit.FlagToolControl;
 import me.fromgate.reactions.placeholders.Placeholders;
-import me.fromgate.reactions.util.FlagVal;
 import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
@@ -164,7 +163,7 @@ public enum Flags {
 	public static boolean checkAllFlags(Player p, Activator c) {
 		if (c.getFlags().size() > 0)
 			for (int i = 0; i < c.getFlags().size(); i++) {
-				FlagVal f = c.getFlags().get(i);
+				StoredFlag f = c.getFlags().get(i);
 				Variables.setTempVar((f.flag + "_flag").toUpperCase(), f.value);
 				if (!checkFlag(p, f.flag, Placeholders.replacePlaceholderButRaw(p, f.value), f.not)) return false;
 			}

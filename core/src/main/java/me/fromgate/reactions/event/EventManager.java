@@ -345,8 +345,8 @@ public class EventManager {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void setFutureRegionCheck(final String playerName, final String region, boolean repeat) {
-		@SuppressWarnings("deprecation")
 		Player player = Bukkit.getPlayerExact(playerName);
 		if (player == null) return;
 		if (!player.isOnline()) return;
@@ -578,7 +578,7 @@ public class EventManager {
 
 	public static boolean raiseProjectileHitEvent(ProjectileHitEvent event) {
 		Entity hitEntity = event.getHitEntity();
-		if (hitEntity == null || !(hitEntity instanceof Player))
+		if (!(hitEntity instanceof Player))
 			return false;
 		Player player = (Player) hitEntity;
 		Entity entity = event.getEntity();

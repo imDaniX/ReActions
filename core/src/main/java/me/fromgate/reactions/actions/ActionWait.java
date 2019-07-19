@@ -1,6 +1,5 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.waiter.ActionsWaiter;
 import org.bukkit.entity.Player;
@@ -14,7 +13,7 @@ public class ActionWait extends Action {
 		return false;
 	}
 
-	public void executeDelayed(Player player, final List<ActVal> actions, final boolean isAction, long time) {
+	public void executeDelayed(Player player, final List<StoredAction> actions, final boolean isAction, long time) {
 		if (actions.isEmpty()) return;
 		ActionsWaiter.executeDelayed(player, actions, isAction, time);
 

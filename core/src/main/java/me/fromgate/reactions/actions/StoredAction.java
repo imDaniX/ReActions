@@ -1,17 +1,17 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.util.Util;
 
-public class ActVal {
+public class StoredAction {
 	public String flag;
 	public String value;
 
-	public ActVal(String f, String v) {
+	public StoredAction(String f, String v) {
 		this.flag = f;
 		this.value = v;
 	}
 
-	public ActVal(String f) {
+	public StoredAction(String f) {
 		this.flag = f;
 		this.value = "";
 	}

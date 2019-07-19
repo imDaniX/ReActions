@@ -1,7 +1,7 @@
 package me.fromgate.reactions.util.waiter;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.util.ActVal;
+import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,14 +24,14 @@ public class ActionsWaiter {
 		load();
 	}
 
-	public static void executeDelayed(Player player, ActVal action, boolean isAction, long time) {
+	public static void executeDelayed(Player player, StoredAction action, boolean isAction, long time) {
 		if (action == null) return;
-		List<ActVal> actions = new ArrayList<>();
+		List<StoredAction> actions = new ArrayList<>();
 		actions.add(action);
 		executeDelayed(player, actions, isAction, time);
 	}
 
-	public static void executeDelayed(Player player, List<ActVal> actions, boolean isAction, long time) {
+	public static void executeDelayed(Player player, List<StoredAction> actions, boolean isAction, long time) {
 		if (actions.isEmpty()) return;
 		String playerStr = player != null ? player.getName() : null;
 		Task task = new Task(playerStr, actions, isAction, time);

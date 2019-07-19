@@ -1,13 +1,11 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.flags.Flags;
-
-public class FlagVal {
+public class StoredFlag {
 	public String flag;
 	public String value;
 	public boolean not;
 
-	public FlagVal(String f, String v, boolean not) {
+	public StoredFlag(String f, String v, boolean not) {
 		this.flag = f;
 		this.value = v;
 		this.not = not;

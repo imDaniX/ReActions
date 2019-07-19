@@ -2,7 +2,7 @@ package me.fromgate.reactions.util.waiter;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.util.ActVal;
+import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,13 +16,13 @@ import java.util.UUID;
 public class Task implements Runnable {
 	private String taskId;
 	private String playerName;
-	private List<ActVal> actions;
+	private List<StoredAction> actions;
 	private boolean isAction;
 	private boolean isExecuted;
 	private long executionTime;
 	private BukkitTask task;
 
-	public Task(String playerName, List<ActVal> actions, boolean isAction, long time) {
+	public Task(String playerName, List<StoredAction> actions, boolean isAction, long time) {
 		this.taskId = UUID.randomUUID().toString();
 		this.playerName = playerName;
 		this.actions = actions;
@@ -82,7 +82,7 @@ public class Task implements Runnable {
 		cfg.set(Util.join(this.taskId, ".execution-time"), this.executionTime);
 		cfg.set(Util.join(this.taskId, ".actions.action"), this.isAction);
 		List<String> actionList = new ArrayList<>();
-		for (ActVal a : this.actions) {
+		for (StoredAction a : this.actions) {
 			actionList.add(a.toString());
 		}
 		cfg.set(Util.join(this.taskId, ".actions.list"), actionList);
@@ -99,7 +99,7 @@ public class Task implements Runnable {
 				if (a.contains("=")) {
 					String av = a.substring(0, a.indexOf("="));
 					String vv = a.substring(a.indexOf("=") + 1, a.length());
-					this.actions.add(new ActVal(av, vv));
+					this.actions.add(new StoredAction(av, vv));
 				}
 			}
 	}

@@ -26,7 +26,6 @@ import me.fromgate.reactions.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.placeholders.Placeholders;
-import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
@@ -150,16 +149,16 @@ public enum Actions {
 
 	public static boolean executeActivator(Player player, Activator act) {
 		boolean isAction = Flags.checkFlags(player, act);
-		List<ActVal> actions = isAction ? act.getActions() : act.getReactions();
+		List<StoredAction> actions = isAction ? act.getActions() : act.getReactions();
 		if (actions.isEmpty()) return false;
 		return executeActions(player, actions, isAction);
 	}
 
-	public static boolean executeActions(Player player, List<ActVal> actions, boolean isAction) {
+	public static boolean executeActions(Player player, List<StoredAction> actions, boolean isAction) {
 		boolean cancelParentEvent = false;
 		if (actions == null || actions.isEmpty()) return false;
 		for (int i = 0; i < actions.size(); i++) {
-			ActVal av = actions.get(i);
+			StoredAction av = actions.get(i);
 			if (!Actions.isValid(av.flag)) continue;
 			Actions at = Actions.getByName(av.flag);
 			if (at == Actions.WAIT) {
@@ -169,7 +168,7 @@ public enum Actions {
 				String timeStr = param.getParam("time", "0");
 				long time = Util.parseTime(timeStr);
 				if (time == 0) continue;
-				List<ActVal> futureList = new ArrayList<>(actions.subList(i + 1, actions.size()));
+				List<StoredAction> futureList = new ArrayList<>(actions.subList(i + 1, actions.size()));
 				aw.executeDelayed(player, futureList, isAction, time);
 				return cancelParentEvent;
 			}

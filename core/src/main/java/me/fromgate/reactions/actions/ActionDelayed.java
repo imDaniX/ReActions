@@ -1,6 +1,5 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
@@ -29,7 +28,7 @@ public class ActionDelayed extends Action {
 			return false;
 		}
 
-		ActVal av = new ActVal(actionStr, paramStr);
+		StoredAction av = new StoredAction(actionStr, paramStr);
 		ActionsWaiter.executeDelayed(p, av, this.isAction(), delay);
 		return false;
 	}

@@ -1,7 +1,6 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.event.EventManager;
-import me.fromgate.reactions.util.ActVal;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
@@ -60,7 +59,7 @@ public class ActionIfElse extends Action {
 	}
 
 	private Boolean executeActions(Player p, String paramStr) {
-		List<ActVal> actions = new ArrayList<>();
+		List<StoredAction> actions = new ArrayList<>();
 		Param params = Param.parseParams(paramStr);
 		if (!params.hasAnyParam("run")) return false;
 		params = Param.parseParams(params.getParam("run"));
@@ -75,7 +74,7 @@ public class ActionIfElse extends Action {
 
 			String flag = action.substring(0, action.indexOf("="));
 			String param = action.substring(action.indexOf("=") + 1);
-			actions.add(new ActVal(Actions.getValidName(flag), param));
+			actions.add(new StoredAction(Actions.getValidName(flag), param));
 		}
 
 		if (actions.isEmpty()) return false;

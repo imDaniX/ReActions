@@ -26,8 +26,8 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.timer.Timers;
-import me.fromgate.reactions.util.ActVal;
-import me.fromgate.reactions.util.FlagVal;
+import me.fromgate.reactions.actions.StoredAction;
+import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -408,6 +408,7 @@ public class Activators {
 	 */
 	private static Activator createActivator(ActivatorType type, String name, String group, YamlConfiguration cfg) {
 		try {
+			// I don't like it
 			return type.getActivatorClass().getDeclaredConstructor(String.class, String.class, YamlConfiguration.class).newInstance(name, group, cfg);
 		} catch (Exception e) {
 			Msg.logOnce("cannotcreate" + name, "Failed to create new activator. Name: " + name);
@@ -477,7 +478,7 @@ public class Activators {
 		Activator ato = get(actTo);
 		ato.clearActions();
 		if (!afrom.getActions().isEmpty()) {
-			for (ActVal action : afrom.getActions())
+			for (StoredAction action : afrom.getActions())
 				ato.addAction(action.flag, action.value);
 		}
 		return true;
@@ -490,7 +491,7 @@ public class Activators {
 		Activator ato = get(actTo);
 		ato.clearReactions();
 		if (!afrom.getReactions().isEmpty()) {
-			for (ActVal action : afrom.getReactions())
+			for (StoredAction action : afrom.getReactions())
 				ato.addReaction(action.flag, action.value);
 		}
 		return true;
@@ -503,7 +504,7 @@ public class Activators {
 		Activator ato = get(actTo);
 		ato.clearFlags();
 		if (!afrom.getFlags().isEmpty()) {
-			for (FlagVal flag : afrom.getFlags())
+			for (StoredFlag flag : afrom.getFlags())
 				ato.addFlag(flag.flag, flag.value, flag.not);
 		}
 		return true;
