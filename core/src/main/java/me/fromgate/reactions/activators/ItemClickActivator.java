@@ -30,7 +30,6 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -69,11 +68,6 @@ public class ItemClickActivator extends Activator {
 			}
 
 		}
-		return false;
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
 		return false;
 	}
 

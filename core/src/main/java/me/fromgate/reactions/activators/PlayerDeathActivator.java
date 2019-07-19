@@ -26,7 +26,6 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.DeathEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
@@ -63,11 +62,6 @@ public class PlayerDeathActivator extends Activator {
 			}
 		}
 		return Actions.executeActivator(de.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

@@ -33,7 +33,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class BlockClickActivator extends Activator {
+public class BlockClickActivator extends Activator implements Locatable {
 	private String blockType;
 	private String blockLocation;
 	private ClickType click;

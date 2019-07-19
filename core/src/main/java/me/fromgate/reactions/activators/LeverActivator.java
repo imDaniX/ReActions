@@ -32,7 +32,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class LeverActivator extends Activator {
+public class LeverActivator extends Activator implements Locatable {
 
 	private String state; //on, off
 	private String world;

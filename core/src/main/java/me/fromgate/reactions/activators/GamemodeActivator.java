@@ -6,7 +6,6 @@ import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -38,11 +37,6 @@ public class GamemodeActivator extends Activator {
 	private boolean gameModeCheck(GameMode gm) {
 		if (gameMode == null) return true;
 		return gm.name().equals(gameMode.name());
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

@@ -34,7 +34,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.List;
 
-public class RegionLeaveActivator extends Activator {
+public class RegionLeaveActivator extends Activator implements Locatable {
 
 	private String region;
 

@@ -14,7 +14,7 @@ import java.util.UUID;
 
 // TODO: Cuboid flag
 // TODO: Command to create cuboid activator
-public class CuboidActivator extends Activator {
+public class CuboidActivator extends Activator implements Locatable {
 	private String world;
 	private CuboidMode mode;
 	private int xMin, yMin, zMin;

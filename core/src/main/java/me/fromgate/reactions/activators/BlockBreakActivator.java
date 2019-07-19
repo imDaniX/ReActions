@@ -15,7 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 /**
  * Created by MaxDikiy on 2017-05-14.
  */
-public class BlockBreakActivator extends Activator {
+public class BlockBreakActivator extends Activator implements Locatable {
 	private String blockStr;
 	private String blockLocation;
 

@@ -28,7 +28,6 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.ExecEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -51,11 +50,6 @@ public class ExecActivator extends Activator {
 				return Actions.executeActivator(ce.getTargetPlayer(), this);
 			}
 		}
-		return false;
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
 		return false;
 	}
 

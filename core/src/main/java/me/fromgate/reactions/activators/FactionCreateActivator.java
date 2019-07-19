@@ -27,7 +27,6 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.FactionCreateEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -47,11 +46,6 @@ public class FactionCreateActivator extends Activator {
 		FactionCreateEvent fe = (FactionCreateEvent) event;
 		Variables.setTempVar("faction", fe.getFaction());
 		return Actions.executeActivator(fe.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import me.fromgate.reactions.event.WeSelectionRegionEvent;
 import me.fromgate.reactions.externals.worldedit.WeSelection;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -56,11 +55,6 @@ public class WeSelectionRegionActivator extends Activator {
 
 	private boolean checkTypeSelection(String selType) {
 		return typeSelection.isEmpty() || typeSelection.equalsIgnoreCase("ANY") || typeSelection.equalsIgnoreCase(selType);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

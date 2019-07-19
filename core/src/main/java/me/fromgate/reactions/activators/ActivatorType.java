@@ -34,8 +34,8 @@ import java.util.List;
 
 public enum ActivatorType {
 	// алиас, класс активатора, блокозависимый, локационный
-	BUTTON("b", ButtonActivator.class, true),
-	PLATE("plt", PlateActivator.class, true),
+	BUTTON("b", ButtonActivator.class, true, true),
+	PLATE("plt", PlateActivator.class, true, true),
 	REGION("rg", RegionActivator.class, false, true),
 	REGION_ENTER("rgenter", RegionEnterActivator.class, false, true),
 	REGION_LEAVE("rgleave", RegionLeaveActivator.class, false, true),
@@ -49,7 +49,7 @@ public enum ActivatorType {
 	DOOR("door", DoorActivator.class, true, true),
 	JOIN("join", JoinActivator.class),
 	QUIT("quit", QuitActivator.class),
-	MOB_CLICK("mobclick", MobClickActivator.class),
+	MOB_CLICK("mobclick", MobClickActivator.class, false, true),
 	MOB_KILL("mobkill", MobKillActivator.class),
 	MOB_DAMAGE("mobdamage", MobDamageActivator.class),
 	ITEM_CLICK("itemclick", ItemClickActivator.class),
@@ -72,13 +72,13 @@ public enum ActivatorType {
 	SNEAK("sneak", SneakActivator.class),
 	DAMAGE("damage", DamageActivator.class),
 	DAMAGE_BY_MOB("damagebymob", DamageByMobActivator.class),
-	DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator.class, true),
+	DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator.class, true, true),
 	VARIABLE("var", VariableActivator.class),
 	WE_SELECTION_REGION("weselectionregion", WeSelectionRegionActivator.class),
 	WE_CHANGE("wechange", WeChangeActivator.class),
 	GAMEMODE("gamemode", GamemodeActivator.class),
 	GOD("god", GodActivator.class),
-	CUBOID("cuboid", CuboidActivator.class);
+	CUBOID("cuboid", CuboidActivator.class, false, true);
 
 	private String alias;
 	private Class<? extends Activator> aClass;

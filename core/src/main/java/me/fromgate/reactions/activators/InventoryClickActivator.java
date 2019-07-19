@@ -6,7 +6,6 @@ import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -77,11 +76,6 @@ public class InventoryClickActivator extends Activator {
 			}
 		}
 		return result;
-	}
-
-	@Override
-	public boolean isLocatedAt(Location l) {
-		return false;
 	}
 
 

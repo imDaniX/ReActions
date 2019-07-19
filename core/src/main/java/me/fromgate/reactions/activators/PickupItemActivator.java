@@ -7,7 +7,6 @@ import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,11 +53,6 @@ public class PickupItemActivator extends Activator {
 			}
 		}
 		return result;
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

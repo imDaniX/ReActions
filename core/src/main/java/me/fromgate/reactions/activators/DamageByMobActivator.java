@@ -7,7 +7,6 @@ import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -88,11 +87,6 @@ public class DamageByMobActivator extends Activator {
 
 	private String getMobName(Entity mob) {
 		return mob.getCustomName() == null ? "" : mob.getCustomName();
-	}
-
-	@Override
-	public boolean isLocatedAt(Location l) {
-		return false;
 	}
 
 	private static String getCauseByName(String damageCauseStr) {

@@ -23,11 +23,11 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.timer.Timers;
-import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.flags.StoredFlag;
+import me.fromgate.reactions.timer.Timers;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -132,7 +132,7 @@ public class Activators {
 		Set<Activator> found = new HashSet<>();
 		for (ActivatorType type : ActivatorType.values())
 			if(type.isLocated())
-				activatorsMap.get(type).stream().filter(act -> act.isLocatedAt(loc)).forEach(found::add);
+				activatorsMap.get(type).stream().filter(act -> ((Locatable)act).isLocatedAt(loc)).forEach(found::add);
 		return found;
 	}
 

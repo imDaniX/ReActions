@@ -36,7 +36,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-public class MobClickActivator extends Activator {
+public class MobClickActivator extends Activator implements Locatable {
 	private String mobName;
 	private String mobType;
 	private String mobLocation;

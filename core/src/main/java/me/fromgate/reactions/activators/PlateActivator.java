@@ -31,7 +31,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class PlateActivator extends Activator {
+public class PlateActivator extends Activator implements Locatable {
 	private String world;
 	private int x;
 	private int y;

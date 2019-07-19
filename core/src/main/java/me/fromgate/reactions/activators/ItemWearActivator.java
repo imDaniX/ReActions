@@ -30,7 +30,6 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -65,11 +64,6 @@ public class ItemWearActivator extends Activator {
 				return Actions.executeActivator(iw.getPlayer(), this);
 			}
 		}
-		return false;
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
 		return false;
 	}
 

@@ -35,7 +35,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.List;
 
 // TODO: Maybe it should work like Cuboid activator instead of using different activators just for one check
-public class RegionActivator extends Activator {
+public class RegionActivator extends Activator implements Locatable {
 
 	private String region;
 

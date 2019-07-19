@@ -5,7 +5,6 @@ import me.fromgate.reactions.event.GodEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -32,11 +31,6 @@ public class GodActivator extends Activator {
 		if (!checkGod(e.isGod())) return false;
 		Variables.setTempVar("god", e.isGod() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(e.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

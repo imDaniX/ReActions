@@ -29,7 +29,6 @@ import me.fromgate.reactions.event.VariableEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -71,11 +70,6 @@ public class VariableActivator extends Activator {
 	public void load(ConfigurationSection cfg) {
 		id = cfg.getString("variable-id", "UnknownVariable");
 		personal = cfg.getBoolean("personal", false);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

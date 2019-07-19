@@ -32,7 +32,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class ButtonActivator extends Activator {
+public class ButtonActivator extends Activator implements Locatable {
 	private String world;
 	private int x;
 	private int y;

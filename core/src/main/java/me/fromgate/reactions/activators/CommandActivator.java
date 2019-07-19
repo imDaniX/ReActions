@@ -32,7 +32,6 @@ import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -152,11 +151,6 @@ public class CommandActivator extends Activator {
 		if (cmd.isEmpty()) return false;
 		Command cmm = Bukkit.getServer().getPluginCommand(cmd);
 		return (cmm != null);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

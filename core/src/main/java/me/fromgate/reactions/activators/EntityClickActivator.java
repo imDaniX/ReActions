@@ -5,7 +5,6 @@ import me.fromgate.reactions.event.EntityClickEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
@@ -38,11 +37,6 @@ public class EntityClickActivator extends Activator {
 
 	private boolean isActivatorEntity(Entity entity) {
 		return this.entityType.isEmpty() || entity.getType().toString().equalsIgnoreCase(this.entityType);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

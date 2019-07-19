@@ -31,7 +31,6 @@ import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -105,11 +104,6 @@ public class MobDamageActivator extends Activator {
 	private String getMobName(LivingEntity mob) {
 		if (mob.getCustomName() == null) return "";
 		return mob.getCustomName();
-	}
-
-	@Override
-	public boolean isLocatedAt(Location l) {
-		return false;
 	}
 
 

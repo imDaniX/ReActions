@@ -5,7 +5,6 @@ import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.event.SneakEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -32,11 +31,6 @@ public class SneakActivator extends Activator {
 		if (!checkSneak(se.isSneaking())) return false;
 		Variables.setTempVar("sneak", se.isSneaking() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(se.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

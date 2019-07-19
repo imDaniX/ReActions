@@ -26,7 +26,6 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.QuitEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -54,12 +53,6 @@ public class QuitActivator extends Activator {
 			ce.setQuiteMessage(Variables.getTempVar("quit-message"));
 			return result;
 		}
-		return false;
-	}
-
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
 		return false;
 	}
 

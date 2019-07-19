@@ -7,7 +7,6 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -63,11 +62,6 @@ public class ItemHeldActivator extends Activator {
 		Variables.setTempVar("slotNew", Integer.toString(ihe.getNewSlot() + 1));
 		Variables.setTempVar("slotPrev", Integer.toString(ihe.getPreviousSlot() + 1));
 		return Actions.executeActivator(ihe.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

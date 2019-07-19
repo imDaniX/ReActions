@@ -5,7 +5,6 @@ import me.fromgate.reactions.event.DamageEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -78,11 +77,6 @@ public class DamageActivator extends Activator {
 	private boolean sourceCheck(String st) {
 		if (source.name().equals("ANY")) return true;
 		return st.equals(source.name());
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

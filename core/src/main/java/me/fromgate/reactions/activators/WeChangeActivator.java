@@ -11,7 +11,6 @@ import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -59,11 +58,6 @@ public class WeChangeActivator extends Activator {
 		} else if (!bType.equalsIgnoreCase("ANY") && Material.getMaterial(bType) != null)
 			blockType = Material.getMaterial(bType).name();
 		else blockType = "ANY";
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

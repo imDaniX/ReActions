@@ -30,7 +30,6 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -68,10 +67,6 @@ public class ItemConsumeActivator extends Activator {
 			Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
 			return false;
 		}
-	}
-
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	public void save(ConfigurationSection cfg) {

@@ -32,7 +32,7 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class DoorActivator extends Activator {
+public class DoorActivator extends Activator implements Locatable {
 	private String state; //open, close
 	//координаты нижнего блока двери
 	private String world;

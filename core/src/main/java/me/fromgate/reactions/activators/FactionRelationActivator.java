@@ -27,7 +27,6 @@ import me.fromgate.reactions.event.FactionRelationEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -89,11 +88,6 @@ public class FactionRelationActivator extends Activator {
 		if (this.mustExecute(fe.getFaction(), fe.getOtherFaction(), fe.getOldRelation(), fe.getNewRelation())) {
 			return Actions.executeActivator(null, this);
 		}
-		return false;
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
 		return false;
 	}
 

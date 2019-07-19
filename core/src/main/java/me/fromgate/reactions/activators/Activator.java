@@ -31,7 +31,6 @@ import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -249,14 +248,24 @@ public abstract class Activator {
 
 	public abstract boolean activate(RAEvent event); // Наверное всё-таки так
 
-	public abstract boolean isLocatedAt(Location loc);
-
 	public abstract void save(ConfigurationSection cfg);
 
+	/**
+	 * Load activator from config
+	 * @param cfg Section of activator
+	 */
 	public abstract void load(ConfigurationSection cfg);
 
+	/**
+	 * Get type of activator
+	 * @return Type of activator
+	 */
 	public abstract ActivatorType getType();
 
+	/**
+	 * Check if activator is valid
+	 * @return Is activator valid
+	 */
 	public abstract boolean isValid();
 
 }

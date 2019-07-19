@@ -5,7 +5,6 @@ import me.fromgate.reactions.event.FlightEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -32,11 +31,6 @@ public class FlightActivator extends Activator {
 		if (!checkFlight(fe.isFlying())) return false;
 		Variables.setTempVar("flight", fe.isFlying() ? "TRUE" : "FALSE");
 		return Actions.executeActivator(fe.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

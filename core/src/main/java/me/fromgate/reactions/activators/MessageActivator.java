@@ -29,7 +29,6 @@ import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -128,11 +127,6 @@ public class MessageActivator extends Activator {
 		if (!e.isForActivator(this)) return false;
 		setTempVars(e.getMessage());
 		return Actions.executeActivator(e.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

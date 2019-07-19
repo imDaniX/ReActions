@@ -17,7 +17,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
  * Created by MaxDikiy on 2017-07-23.
  */
 // TODO: Assemble to one activator
-public class DamageByBlockActivator extends Activator {
+public class DamageByBlockActivator extends Activator implements Locatable {
 	private String blockStr;
 	private String blockLocation;
 	private String damageCause;

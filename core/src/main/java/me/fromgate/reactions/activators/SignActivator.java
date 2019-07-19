@@ -29,7 +29,6 @@ import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
@@ -94,11 +93,6 @@ public class SignActivator extends Activator {
 		Variables.setTempVar("sign_loc", signEvent.getSignLocation());
 		Variables.setTempVar("click", signEvent.isLeftClicked() ? "left" : "right");
 		return Actions.executeActivator(signEvent.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

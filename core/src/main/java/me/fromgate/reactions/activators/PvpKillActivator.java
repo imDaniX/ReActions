@@ -26,7 +26,6 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.PvpKillEvent;
 import me.fromgate.reactions.event.RAEvent;
 import me.fromgate.reactions.util.Variables;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -49,11 +48,6 @@ public class PvpKillActivator extends Activator {
 		PvpKillEvent pe = (PvpKillEvent) event;
 		Variables.setTempVar("targetplayer", pe.getKilledPlayer().getName());
 		return Actions.executeActivator(pe.getPlayer(), this);
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override

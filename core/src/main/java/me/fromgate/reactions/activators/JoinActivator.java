@@ -25,7 +25,6 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.event.JoinEvent;
 import me.fromgate.reactions.event.RAEvent;
-import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -54,11 +53,6 @@ public class JoinActivator extends Activator {
 	private boolean isJoinActivate(boolean join_first_time) {
 		if (this.firstJoin) return join_first_time;
 		return true;
-	}
-
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		return false;
 	}
 
 	@Override
