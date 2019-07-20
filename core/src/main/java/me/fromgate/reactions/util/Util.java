@@ -239,7 +239,7 @@ public class Util {
 		int actualPageNumber = pageNumber <= totalPages ? pageNumber : totalPages;
 		int from = (actualPageNumber - 1) * pageHeight;
 		int to = from + pageHeight <= lines.size() ? from + pageHeight : lines.size();
-		String[] selectedLines = Arrays.copyOfRange(lines.toArray(new String[lines.size()]), from, to);
+		String[] selectedLines = Arrays.copyOfRange(lines.toArray(new String[0]), from, to);
 		return new ChatPage(selectedLines, actualPageNumber, totalPages);
 	}
 

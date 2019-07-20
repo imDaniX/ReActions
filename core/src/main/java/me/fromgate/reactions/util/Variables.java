@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
 public class Variables {
 
 	private static Map<String, String> vars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	// TODO: I think it would be better to store and transfer temp variables inside Activator and Action classes
 	private static Map<String, String> tempvars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	private final static Pattern VARP = Pattern.compile("(?i).*%varp?:\\S+%.*");

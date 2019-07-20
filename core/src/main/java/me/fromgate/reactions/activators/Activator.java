@@ -342,7 +342,7 @@ public abstract class Activator {
 
 	@Override
 	public int hashCode() {
-		return group.hashCode()*31 + name.hashCode()*7;
+		return group.hashCode()*1291 + name.hashCode()/20;
 	}
 
 	public boolean equals(String name) {

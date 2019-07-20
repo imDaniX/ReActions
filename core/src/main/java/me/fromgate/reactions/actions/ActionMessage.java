@@ -23,6 +23,7 @@
 package me.fromgate.reactions.actions;
 
 import com.google.common.base.Joiner;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
@@ -81,7 +82,7 @@ public class ActionMessage extends Action {
 			if ((player.getMetadata(key).get(0).asLong() - System.currentTimeMillis()) > 0)
 				return false;
 		}
-		player.setMetadata(key, new FixedMetadataValue(plg(), System.currentTimeMillis() + time));
+		player.setMetadata(key, new FixedMetadataValue(ReActions.getPlugin(), System.currentTimeMillis() + time));
 		return true;
 	}
 }

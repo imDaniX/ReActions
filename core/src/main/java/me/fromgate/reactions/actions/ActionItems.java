@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
@@ -303,7 +304,7 @@ public class ActionItems extends Action {
 		String actionItems = ItemUtil.toDisplayString(items);
 		setMessageParam(actionItems);
 		Variables.setTempVar("item_str", actionItems);
-		Bukkit.getScheduler().scheduleSyncDelayedTask(plg(), () -> {
+		Bukkit.getScheduler().scheduleSyncDelayedTask(ReActions.getPlugin(), () -> {
 			for (ItemStack i : items)
 				ItemUtil.giveItemOrDrop(p, i);
 			StorageManager.raiseItemHoldEvent(p);
