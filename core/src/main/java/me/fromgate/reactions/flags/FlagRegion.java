@@ -26,7 +26,7 @@ import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
-public class FlagRegion extends Flag {
+public class FlagRegion implements Flag {
 
 	final static int REGION = 0;
 	final static int REGION_PLAYERS = 1;

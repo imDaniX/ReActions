@@ -27,7 +27,7 @@ import me.fromgate.reactions.util.Delayer;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
-public class FlagDelay extends Flag {
+public class FlagDelay implements Flag {
 	private boolean globalDelay;
 
 	public FlagDelay(boolean globalDelay) {

@@ -25,7 +25,7 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.timer.Timers;
 import org.bukkit.entity.Player;
 
-public class FlagTimerActive extends Flag {
+public class FlagTimerActive implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

@@ -30,7 +30,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Powerable;
 import org.bukkit.entity.Player;
 
-public class FlagPowered extends Flag {
+public class FlagPowered implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

@@ -8,6 +8,7 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -16,21 +17,21 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * Created by MaxDikiy on 2017-05-14.
  */
 public class BlockBreakActivator extends Activator implements Locatable {
-	private String blockStr;
+	private Material blockType;
 	private String blockLocation;
 
 	public BlockBreakActivator(String name, Block targetBlock, String param) {
 		super(name, "activators");
 		this.blockLocation = "";
-		this.blockStr = "";
+		this.blockType = null;
 		Param params = new Param(param);
 		if (targetBlock != null) {
 			this.blockLocation = Locator.locationToString(targetBlock.getLocation());
-			this.blockStr = (targetBlock.getType()).toString();
+			this.blockType = targetBlock.getType();
 		}
 		String bt = params.getParam("block", "");
-		if (this.blockStr.isEmpty() || this.blockStr.equals("AIR") || !bt.isEmpty() && !this.blockStr.equalsIgnoreCase(bt)) {
-			this.blockStr = bt;
+		if (this.blockType == null || this.blockType == Material.AIR || !bt.isEmpty() && !this.blockType.name().equalsIgnoreCase(bt)) {
+			this.blockType = ItemUtil.getMaterial(bt);
 			this.blockLocation = params.getParam("loc", "");
 		}
 	}
@@ -39,7 +40,6 @@ public class BlockBreakActivator extends Activator implements Locatable {
 		super(name, group, cfg);
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean activate(RAStorage event) {
 		BlockBreakStorage bbe = (BlockBreakStorage) event;
@@ -48,7 +48,6 @@ public class BlockBreakActivator extends Activator implements Locatable {
 		if (!isActivatorBlock(brokenBlock)) return false;
 		Variables.setTempVar("blocklocation", Locator.locationToString(bbe.getBlockBreakLocation()));
 		Variables.setTempVar("blocktype", brokenBlock.getType().name());
-		Variables.setTempVar("blockdata", String.valueOf(brokenBlock.getData()));
 		Variables.setTempVar("block", ItemUtil.itemFromBlock(brokenBlock).toString());
 
 		Variables.setTempVar("is_drop", bbe.isDropItems().toString());
@@ -66,8 +65,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 	}
 
 	private boolean isActivatorBlock(Block block) {
-		//if (this.blockStr.isEmpty()) return false;
-		if (!this.blockStr.isEmpty() && !ItemUtil.compareItemStr(block, this.blockStr)) return false;
+		if (this.blockType != null && blockType != block.getType()) return false;
 		return checkLocations(block);
 	}
 
@@ -84,13 +82,13 @@ public class BlockBreakActivator extends Activator implements Locatable {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("block", this.blockStr);
+		cfg.set("block", this.blockType.name());
 		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
 	}
 
 	@Override
 	public void load(ConfigurationSection cfg) {
-		this.blockStr = cfg.getString("block", "");
+		this.blockType = ItemUtil.getMaterial(cfg.getString("block", ""));
 		this.blockLocation = cfg.getString("location", "");
 	}
 
@@ -106,7 +104,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
-		sb.append("block:").append(blockStr.isEmpty() ? "-" : blockStr);
+		sb.append("block:").append(blockType == null ? "-" : blockType);
 		sb.append(" loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
 		sb.append(")");
 		return sb.toString();

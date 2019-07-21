@@ -8,7 +8,6 @@ import org.bukkit.Bukkit;
 
 public class Externals {
 
-
 	private static boolean factions = false;
 
 	//разные переменные

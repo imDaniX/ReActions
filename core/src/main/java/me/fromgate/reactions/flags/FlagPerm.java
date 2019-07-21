@@ -24,7 +24,7 @@ package me.fromgate.reactions.flags;
 
 import org.bukkit.entity.Player;
 
-public class FlagPerm extends Flag {
+public class FlagPerm implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

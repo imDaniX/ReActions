@@ -32,7 +32,7 @@ import org.bukkit.entity.Player;
  * Параметры: <отношение>
  * Список отношений: LEADER, OFFICER, MEMBER, RECRUIT, ALLY, TRUCE, NEUTRAL, ENEMY
  */
-public class FlagAtFactionZoneRel extends Flag {
+public class FlagAtFactionZoneRel implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

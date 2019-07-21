@@ -26,7 +26,7 @@ import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 
-public class FlagChance extends Flag {
+public class FlagChance implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

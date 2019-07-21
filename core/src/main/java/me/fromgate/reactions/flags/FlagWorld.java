@@ -26,7 +26,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-public class FlagWorld extends Flag {
+public class FlagWorld implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

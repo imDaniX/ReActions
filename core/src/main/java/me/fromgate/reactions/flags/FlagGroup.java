@@ -25,7 +25,7 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.externals.RaVault;
 import org.bukkit.entity.Player;
 
-public class FlagGroup extends Flag {
+public class FlagGroup implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

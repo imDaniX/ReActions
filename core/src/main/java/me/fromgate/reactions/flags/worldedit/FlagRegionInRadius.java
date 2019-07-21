@@ -26,7 +26,7 @@ import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.flags.Flag;
 import org.bukkit.entity.Player;
 
-public class FlagRegionInRadius extends Flag {
+public class FlagRegionInRadius implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		int radius = 0;

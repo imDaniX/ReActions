@@ -27,7 +27,7 @@ import me.fromgate.reactions.util.Variables;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class FlagTime extends Flag {
+public class FlagTime implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String time) {

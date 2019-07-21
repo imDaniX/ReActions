@@ -23,7 +23,7 @@ public class ActionIfElse extends Action {
 
 	@Override
 	public boolean execute(Player p, Param params) {
-		if (params.isParamsExists("if")&&params.hasAnyParam("then", "else")) {
+		if (params.isParamsExists("if") && params.hasAnyParam("then", "else")) {
 			final ScriptContext context = new SimpleScriptContext();
 			context.setBindings(new SimpleBindings(), ScriptContext.ENGINE_SCOPE);
 
@@ -33,7 +33,7 @@ public class ActionIfElse extends Action {
 			String suffix = params.getParam("suffix", "");
 
 			try {
-				Boolean result = (Boolean) engine.eval(condition, context);
+				boolean result = (boolean) engine.eval(condition, context);
 				if (!executeActivator(p, condition, (result) ? then_ : else_)
 						&& !executeActions(p, (result) ? then_ : else_))
 					Variables.setTempVar("ifelseresult" + suffix, (result) ? then_ : else_);
@@ -46,7 +46,7 @@ public class ActionIfElse extends Action {
 		return false;
 	}
 
-	private static Boolean executeActivator(Player p, String condition, String paramStr) {
+	private static boolean executeActivator(Player p, String condition, String paramStr) {
 		Param param = Param.parseParams(paramStr);
 		if (!param.hasAnyParam("run")) return false;
 		param = Param.parseParams(param.getParam("run"));

@@ -34,7 +34,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-
+// TODO: PlayEffect is outdated
 public class RaEffects {
 
 
@@ -59,7 +59,7 @@ public class RaEffects {
 	private static boolean isPlayEffectInstalled() {
 		Plugin pe = Bukkit.getServer().getPluginManager().getPlugin("PlayEffect");
 		if (pe == null) return false;
-		return pe.getClass().getName().matches("^(me\\.fromgate\\.playeffect\\.PlayEffect){1}(Plugin){0,1}$");
+		return pe.getClass().getName().matches("^(me\\.fromgate\\.playeffect\\.PlayEffect)(Plugin)?$");
 	}
 
 	private static Effect getEffectByName(String name) {
@@ -82,7 +82,7 @@ public class RaEffects {
 			playPlayEffect(eff, params);
 		} else {
 			int data = params.isParamsExists("wind") ? parseSmokeDirection(params.getParam("wind")) : 9;
-			playStandartEffect(loc, eff, data);
+			playStandardEffect(loc, eff, data);
 		}
 	}
 
@@ -92,12 +92,12 @@ public class RaEffects {
 			params.set("loc", Locator.locationToString(loc));
 			playPlayEffect(eff, params);
 		} else {
-			playStandartEffect(loc, eff, data);
+			playStandardEffect(loc, eff, data);
 		}
 
 	}
 
-	public static void playStandartEffect(Location loc, String eff, int data) {
+	public static void playStandardEffect(Location loc, String eff, int data) {
 		int mod = data;
 		World w = loc.getWorld();
 		Effect effect = getEffectByName(eff);
@@ -139,49 +139,49 @@ public class RaEffects {
 			radius = params.getParam("radius", 0);
 			boolean land = params.getParam("land", "true").equalsIgnoreCase("false");
 			if (radius > 0) loc = Locator.getRadiusLocation(loc, radius, land);
-			playStandartEffect(loc, eff, modifier);
+			playStandardEffect(loc, eff, modifier);
 		}
 	}
 
-	private static int parseSmokeDirection(String dir_str) {
+	private static int parseSmokeDirection(String dirStr) {
 		int d = 10;
-		if (dir_str.equalsIgnoreCase("n")) {
+		if (dirStr.equalsIgnoreCase("n")) {
 			d = 7;
 		}
-		if (dir_str.equalsIgnoreCase("nw")) {
+		if (dirStr.equalsIgnoreCase("nw")) {
 			d = 8;
 		}
-		if (dir_str.equalsIgnoreCase("ne")) {
+		if (dirStr.equalsIgnoreCase("ne")) {
 			d = 6;
 		}
-		if (dir_str.equalsIgnoreCase("s")) {
+		if (dirStr.equalsIgnoreCase("s")) {
 			d = 1;
 		}
-		if (dir_str.equalsIgnoreCase("sw")) {
+		if (dirStr.equalsIgnoreCase("sw")) {
 			d = 2;
 		}
-		if (dir_str.equalsIgnoreCase("se")) {
+		if (dirStr.equalsIgnoreCase("se")) {
 			d = 0;
 		}
-		if (dir_str.equalsIgnoreCase("w")) {
+		if (dirStr.equalsIgnoreCase("w")) {
 			d = 5;
 		}
-		if (dir_str.equalsIgnoreCase("e")) {
+		if (dirStr.equalsIgnoreCase("e")) {
 			d = 3;
 		}
-		if (dir_str.equalsIgnoreCase("calm")) {
+		if (dirStr.equalsIgnoreCase("calm")) {
 			d = 4;
 		}
-		if (dir_str.equalsIgnoreCase("up")) {
+		if (dirStr.equalsIgnoreCase("up")) {
 			d = 4;
 		}
-		if (dir_str.equalsIgnoreCase("all")) {
+		if (dirStr.equalsIgnoreCase("all")) {
 			d = 9;
 		}
-		if (dir_str.equalsIgnoreCase("rnd")) {
+		if (dirStr.equalsIgnoreCase("rnd")) {
 			d = 10;
 		}
-		if (dir_str.equalsIgnoreCase("random")) {
+		if (dirStr.equalsIgnoreCase("random")) {
 			d = 10;
 		}
 		return d;

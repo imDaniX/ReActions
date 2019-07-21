@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-@PlaceholderDefine(id = "BasicPlayer", needPlayer = true,
+@PlaceholderDefine(id = "BasicPlayer",
 		keys = {"player_loc", "player_loc_eye", "player_loc_view", "player_name", "player",
 				"player_display", "dplayer", "player_item_hand", "itemplayer", "player_inv", "invplayer",
 				"health", "player_loc_death", "deathpoint", "player_id", "uuid"})

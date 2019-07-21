@@ -157,10 +157,9 @@ public class ItemUtil {
 		return countItemsInventory(inventory, itemMap);
 	}
 
-	@SuppressWarnings("deprecation")
 	public static VirtualItem itemFromBlock(Block block) {
 		if (block == null) return itemFromString("AIR");
-		return itemFromItemStack(new ItemStack(block.getType(), 1, block.getData()));
+		return itemFromItemStack(new ItemStack(block.getType(), 1));
 	}
 
 	public static VirtualItem itemFromItemStack(ItemStack item) {
@@ -171,10 +170,9 @@ public class ItemUtil {
 		return itemFromString(string);
 	}
 
-	@SuppressWarnings("deprecation")
 	public static boolean compareItemStr(Block block, String itemStr) {
 		if (block == null || block.getType() == Material.AIR) return false;
-		ItemStack item = new ItemStack(block.getType(), 1, block.getData());
+		ItemStack item = new ItemStack(block.getType(), 1);
 		return compareItemStr(item, itemStr);
 	}
 
@@ -371,5 +369,11 @@ public class ItemUtil {
 		if (item.getType() != type) return false;
 		if (data < 0) return true;
 		return data == getDurability(item);
+	}
+
+	public static Material getMaterial(String name) {
+		name = name.toUpperCase();
+		Material material = Material.getMaterial(name, false);
+		return material == null ? Material.getMaterial(name, true) : material;
 	}
 }

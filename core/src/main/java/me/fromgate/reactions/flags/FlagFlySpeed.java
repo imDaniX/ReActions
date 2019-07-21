@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 /**
  * Created by MaxDikiy on 5/4/2017.
  */
-public class FlagFlySpeed extends Flag {
+public class FlagFlySpeed implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		if (!Util.isInteger(param)) return false;

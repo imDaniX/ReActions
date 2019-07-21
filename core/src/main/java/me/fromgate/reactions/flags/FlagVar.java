@@ -26,7 +26,7 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 
-public class FlagVar extends Flag {
+public class FlagVar implements Flag {
 	private int flagType;
 	private boolean personalVar;
 

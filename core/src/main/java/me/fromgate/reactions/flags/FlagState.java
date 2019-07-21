@@ -26,7 +26,7 @@ import me.fromgate.reactions.util.listeners.GodModeListener;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-public class FlagState extends Flag {
+public class FlagState implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

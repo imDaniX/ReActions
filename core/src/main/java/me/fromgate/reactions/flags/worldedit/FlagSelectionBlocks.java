@@ -29,7 +29,7 @@ import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class FlagSelectionBlocks extends Flag {
+public class FlagSelectionBlocks implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		int selectionBlocks = RaWorldEdit.getArea(player);

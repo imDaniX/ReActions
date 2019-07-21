@@ -25,7 +25,7 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.externals.RaRacesAndClasses;
 import org.bukkit.entity.Player;
 
-public class FlagRacesAndClasses extends Flag {
+public class FlagRacesAndClasses implements Flag {
 
 	private boolean checkRace;
 

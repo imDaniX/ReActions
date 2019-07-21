@@ -25,7 +25,7 @@ package me.fromgate.reactions.flags;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
-public class FlagBiome extends Flag {
+public class FlagBiome implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

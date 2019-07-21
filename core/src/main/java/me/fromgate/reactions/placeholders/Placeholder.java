@@ -5,14 +5,12 @@ import org.bukkit.entity.Player;
 public abstract class Placeholder {
 
 	private String id = "UNKNOWN";
-	private boolean needPlayer = false;
 	private String[] keys = {};
 
 	public Placeholder() {
 		if (this.getClass().isAnnotationPresent(PlaceholderDefine.class)) {
 			PlaceholderDefine pd = this.getClass().getAnnotation(PlaceholderDefine.class);
 			this.id = pd.id();
-			this.needPlayer = pd.needPlayer();
 			this.keys = pd.keys();
 		}
 	}
@@ -20,10 +18,6 @@ public abstract class Placeholder {
 
 	public String getId() {
 		return id;
-	}
-
-	public boolean playerRequired() {
-		return this.needPlayer;
 	}
 
 	public String[] getKeys() {

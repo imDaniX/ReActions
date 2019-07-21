@@ -24,7 +24,7 @@ package me.fromgate.reactions.flags;
 
 import org.bukkit.entity.Player;
 
-public class FlagWeather extends Flag {
+public class FlagWeather implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		if (param.equalsIgnoreCase("rain")) return !player.getWorld().isThundering() && player.getWorld().hasStorm();

@@ -27,9 +27,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-public class FlagWalkBlock extends Flag {
+public class FlagWalkBlock implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

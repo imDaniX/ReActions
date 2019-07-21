@@ -9,7 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class FlagBlock extends Flag {
+public class FlagBlock implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

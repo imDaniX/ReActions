@@ -5,7 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-@PlaceholderDefine(id = "Damage", needPlayer = true, keys = {"DAMAGE", "DAMAGER", "DAMAGER_NAME"})
+@PlaceholderDefine(id = "Damage", keys = {"DAMAGE", "DAMAGER", "DAMAGER_NAME"})
 public class PlaceholderDamage extends Placeholder {
 
 	@Override

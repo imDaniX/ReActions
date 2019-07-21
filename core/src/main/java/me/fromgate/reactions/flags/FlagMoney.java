@@ -26,7 +26,7 @@ import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
-public class FlagMoney extends Flag {
+public class FlagMoney implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		if (!RaEconomics.isEconomyFound()) return false;

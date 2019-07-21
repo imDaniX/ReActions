@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FlagFlagSet extends Flag {
+public class FlagFlagSet implements Flag {
 
 	private final static Pattern BRACES = Pattern.compile("(^\\{\\s*)|(\\s*}$)");
 	private final static Pattern BRACES_GROUP = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");

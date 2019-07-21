@@ -27,14 +27,16 @@ import me.fromgate.reactions.storage.BlockClickStorage;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class BlockClickActivator extends Activator implements Locatable {
-	private String blockType;
+	private Material blockType;
 	private String blockLocation;
 	private ClickType click;
 
@@ -42,7 +44,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 	public BlockClickActivator(String name, Block targetBlock, String param) {
 		super(name, "activators");
 		this.blockLocation = "";
-		this.blockType = "";
+		this.blockType = null;
 		/*
 		if (targetBlock != null && blockLocation != null && !blockLocation.isEmpty()) {
 			blockLocation = Locator.locationToString(targetBlock.getLocation());
@@ -56,11 +58,11 @@ public class BlockClickActivator extends Activator implements Locatable {
 		Param params = new Param(param);
 		if (targetBlock != null) {
 			this.blockLocation = Locator.locationToString(targetBlock.getLocation());
-			this.blockType = (targetBlock.getType()).toString();
+			this.blockType = targetBlock.getType();
 		}
 		String bt = params.getParam("type", "");
-		if (this.blockType.isEmpty() || this.blockType.equals("AIR") || !bt.isEmpty() && !this.blockType.equalsIgnoreCase(bt)) {
-			this.blockType = bt;
+		if (this.blockType == null || this.blockType == Material.AIR || !bt.isEmpty() && !this.blockType.name().equalsIgnoreCase(bt)) {
+			this.blockType = ItemUtil.getMaterial(bt);
 			this.blockLocation = params.getParam("loc", "");
 		}
 		this.click = ClickType.getByName(params.getParam("click", "ANY"));
@@ -89,7 +91,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 	}
 
 	private boolean isActivatorBlock(Block block) {
-		if (!(this.blockType).isEmpty() && !(block.getType()).toString().equalsIgnoreCase(this.blockType)) return false;
+		if (this.blockType != null && block.getType() != this.blockType) return false;
 		return checkLocations(block);
 	}
 
@@ -116,7 +118,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 
 	@Override
 	public void load(ConfigurationSection cfg) {
-		this.blockType = cfg.getString("block-type", "");
+		this.blockType = ItemUtil.getMaterial(cfg.getString("block-type", ""));
 		click = ClickType.getByName(cfg.getString("click-type", "ANY"));
 		this.blockLocation = cfg.getString("location", "");
 	}
@@ -157,7 +159,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
-		sb.append("type:").append(blockType.isEmpty() ? "-" : blockType.toUpperCase());
+		sb.append("type:").append(blockType == null ? "-" : blockType);
 		sb.append(" click:").append(this.click.name());
 		sb.append(" loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
 		sb.append(")");

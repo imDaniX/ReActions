@@ -35,7 +35,7 @@ import org.bukkit.entity.Player;
  * Список отношений: LEADER, OFFICER, MEMBER, RECRUIT, ALLY, TRUCE, NEUTRAL, ENEMY
  */
 
-public class FlagPlayersInRel extends Flag {
+public class FlagPlayersInRel implements Flag {
 	@SuppressWarnings("deprecation")
 	@Override
 	public boolean checkFlag(Player player, String param) {

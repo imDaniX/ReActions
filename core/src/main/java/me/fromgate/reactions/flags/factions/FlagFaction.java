@@ -27,7 +27,7 @@ import me.fromgate.reactions.externals.factions.RaFactions;
 import me.fromgate.reactions.flags.Flag;
 import org.bukkit.entity.Player;
 
-public class FlagFaction extends Flag {
+public class FlagFaction implements Flag {
 
 
 	@Override

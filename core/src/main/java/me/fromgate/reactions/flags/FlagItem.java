@@ -30,7 +30,7 @@ import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class FlagItem extends Flag {
+public class FlagItem implements Flag {
 	private int flagType;
 
 	public FlagItem(int flagType) {

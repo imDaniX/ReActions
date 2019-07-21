@@ -26,7 +26,7 @@ import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
-public class FlagPvp extends Flag {
+public class FlagPvp implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

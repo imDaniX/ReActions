@@ -7,7 +7,5 @@ import java.lang.annotation.RetentionPolicy;
 public @interface PlaceholderDefine {
 	String id();
 
-	boolean needPlayer() default false;
-
 	String[] keys();
 }

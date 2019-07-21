@@ -5,8 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-
-@PlaceholderDefine(id = "Money", needPlayer = true, keys = {"MONEY"})
+@PlaceholderDefine(id = "Money", keys = {"MONEY"})
 public class PlaceholderMoney extends Placeholder {
 
 	@Override

@@ -26,7 +26,7 @@ import me.fromgate.reactions.sql.SQLManager;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
-public class FlagSQL extends Flag {
+public class FlagSQL implements Flag {
 	private boolean check;
 
 	public FlagSQL(boolean check) {

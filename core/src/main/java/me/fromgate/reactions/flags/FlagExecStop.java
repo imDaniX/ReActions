@@ -25,7 +25,7 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.activators.Activators;
 import org.bukkit.entity.Player;
 
-public class FlagExecStop extends Flag {
+public class FlagExecStop implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

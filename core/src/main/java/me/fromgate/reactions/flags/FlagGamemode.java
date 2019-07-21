@@ -25,7 +25,7 @@ package me.fromgate.reactions.flags;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class FlagGamemode extends Flag {
+public class FlagGamemode implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {

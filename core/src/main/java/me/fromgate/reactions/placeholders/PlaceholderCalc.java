@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@PlaceholderDefine(id = "Calculate", needPlayer = false, keys = {"CALC", "calculate", "expression"})
+@PlaceholderDefine(id = "Calculate", keys = {"CALC", "calculate", "expression"})
 public class PlaceholderCalc extends Placeholder {
 
 	@Override
