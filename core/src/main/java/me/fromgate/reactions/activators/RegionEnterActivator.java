@@ -29,6 +29,7 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.storage.RegionEnterStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -61,6 +62,11 @@ public class RegionEnterActivator extends Activator implements Locatable {
 		List<String> rgs = RaWorldGuard.getRegions(loc);
 		if (rgs.isEmpty()) return false;
 		return rgs.contains(this.region);
+	}
+
+	@Override
+	public boolean isLocatedAt(World world, int x, int y, int z) {
+		return isLocatedAt(new Location(world, x, y, z));
 	}
 
 	@Override

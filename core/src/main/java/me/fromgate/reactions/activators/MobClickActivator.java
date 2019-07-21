@@ -31,6 +31,7 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
@@ -109,6 +110,10 @@ public class MobClickActivator extends Activator implements Locatable {
 				l.getBlockZ() == loc.getBlockZ();
 	}
 
+	@Override
+	public boolean isLocatedAt(World world, int x, int y, int z) {
+		return isLocatedAt(new Location(world, x, y, z));
+	}
 
 	@Override
 	public void save(ConfigurationSection cfg) {

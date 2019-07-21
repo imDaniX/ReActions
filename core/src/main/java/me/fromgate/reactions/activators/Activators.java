@@ -120,7 +120,11 @@ public class Activators {
 	 * @return Set of activators in location
 	 */
 	public static Set<Activator> getActivatorInLocation(World world, int x, int y, int z) {
-		return getActivatorInLocation(new Location(world, x, y, z));
+		Set<Activator> found = new HashSet<>();
+		for (ActivatorType type : ActivatorType.values())
+			if(type.isLocated())
+				activatorsMap.get(type).stream().filter(act -> ((Locatable)act).isLocatedAt(world, x, y, z)).forEach(found::add);
+		return found;
 	}
 
 	/**
@@ -128,6 +132,7 @@ public class Activators {
 	 * @param loc Location to check
 	 * @return Set of activators in location
 	 */
+	@SuppressWarnings("unused")
 	public static Set<Activator> getActivatorInLocation(Location loc) {
 		Set<Activator> found = new HashSet<>();
 		for (ActivatorType type : ActivatorType.values())

@@ -233,8 +233,8 @@ public abstract class Activator {
 	public void loadActivator(YamlConfiguration cfg) {
 		String key = getType().name() + "." + this.name;
 		load(cfg.getConfigurationSection(key));
-		List<String> flg = cfg.getStringList(key + ".flags");
-		for (String flgstr : flg) {
+		List<String> data = cfg.getStringList(key + ".flags");
+		for (String flgstr : data) {
 			String flag = flgstr;
 			String param = "";
 			boolean not = false;
@@ -250,24 +250,24 @@ public abstract class Activator {
 			addFlag(flag, param, not);
 		}
 
-		flg = cfg.getStringList(key + ".actions");
-		for (String flgstr : flg) {
-			String flag = flgstr;
+		data = cfg.getStringList(key + ".actions");
+		for (String actstr : data) {
+			String flag = actstr;
 			String param = "";
-			if (flgstr.contains("=")) {
-				flag = flgstr.substring(0, flgstr.indexOf("="));
-				param = flgstr.substring(flgstr.indexOf("=") + 1);
+			if (actstr.contains("=")) {
+				flag = actstr.substring(0, actstr.indexOf("="));
+				param = actstr.substring(actstr.indexOf("=") + 1);
 			}
 			addAction(flag, param);
 		}
 
-		flg = cfg.getStringList(key + ".reactions");
-		for (String flgstr : flg) {
-			String flag = flgstr;
+		data = cfg.getStringList(key + ".reactions");
+		for (String rctstr : data) {
+			String flag = rctstr;
 			String param = "";
-			if (flgstr.contains("=")) {
-				flag = flgstr.substring(0, flgstr.indexOf("="));
-				param = flgstr.substring(flgstr.indexOf("=") + 1);
+			if (rctstr.contains("=")) {
+				flag = rctstr.substring(0, rctstr.indexOf("="));
+				param = rctstr.substring(rctstr.indexOf("=") + 1);
 			}
 			addReaction(flag, param);
 		}

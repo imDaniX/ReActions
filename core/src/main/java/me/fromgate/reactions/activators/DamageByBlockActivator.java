@@ -8,6 +8,7 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -79,6 +80,11 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 				l.getBlockX() == loc.getBlockX() &&
 				l.getBlockY() == loc.getBlockY() &&
 				l.getBlockZ() == loc.getBlockZ();
+	}
+
+	@Override
+	public boolean isLocatedAt(World world, int x, int y, int z) {
+		return isLocatedAt(new Location(world, x, y, z));
 	}
 
 	private static String getCauseByName(String damageCauseStr) {

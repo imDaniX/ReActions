@@ -1,14 +1,16 @@
 package me.fromgate.reactions.commands;
 
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @CmdDefine(command = "react", description = Msg.CMD_CHECK, permission = "reactions.config",
@@ -22,23 +24,23 @@ public class CmdCheck extends Cmd {
 		return true;
 	}
 
-	// TODO: Do it async
 	private void printActivatorsAround(Player player, int radius) {
 		int playerX = player.getLocation().getBlockX();
 		int playerY = player.getLocation().getBlockY();
 		int playerZ = player.getLocation().getBlockZ();
-		Set<String> set = new HashSet<>();
-		for (int x = playerX - radius; x <= playerX + radius; x++) {
-			for (int y = playerY - radius; y <= playerY + radius; y++) {
-				for (int z = playerZ - radius; z <= playerZ + radius; z++) {
-					Set<Activator> found = Activators.getActivatorInLocation(player.getWorld(), x, y, z);
-					if (found.isEmpty()) continue;
-					for (Activator aFound : found)
-						set.add(aFound.toString());
+		World world = player.getWorld();
+		Bukkit.getScheduler().runTaskAsynchronously(ReActions.getPlugin(), () -> {
+			Set<String> set = new HashSet<>();
+			for (int x = playerX - radius; x <= playerX + radius; x++) {
+				for (int y = playerY - radius; y <= playerY + radius; y++) {
+					for (int z = playerZ - radius; z <= playerZ + radius; z++) {
+						Set<Activator> found = Activators.getActivatorInLocation(world, x, y, z);
+						if (found.isEmpty()) continue;
+						found.forEach(a -> set.add(a.toString()));
+					}
 				}
 			}
-		}
-		List<String> plst = new ArrayList<>(set);
-		Msg.printPage(player, plst, Msg.MSG_CHECK, 1, 100, true);
+			Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Msg.printPage(player, new ArrayList<>(set), Msg.MSG_CHECK, 1, 100, true));
+		});
 	}
 }

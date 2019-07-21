@@ -78,7 +78,7 @@ public enum ActivatorType {
 	WE_CHANGE("wechange", WeChangeActivator.class),
 	GAMEMODE("gamemode", GamemodeActivator.class),
 	GOD("god", GodActivator.class),
-	CUBOID("cuboid", CuboidActivator.class, false, true);
+	CUBOID("cube", CuboidActivator.class, false, true);
 
 	private String alias;
 	private Class<? extends Activator> aClass;

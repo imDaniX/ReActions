@@ -4,6 +4,7 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -51,6 +52,11 @@ public class CuboidActivator extends Activator implements Locatable {
 	@Override
 	public boolean isLocatedAt(Location loc) {
 		return checkInCuboid(loc, false);
+	}
+
+	@Override
+	public boolean isLocatedAt(World world, int x, int y, int z) {
+		return isLocatedAt(new Location(world, x, y, z));
 	}
 
 	@Override

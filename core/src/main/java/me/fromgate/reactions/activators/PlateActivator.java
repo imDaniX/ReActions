@@ -27,6 +27,7 @@ import me.fromgate.reactions.storage.PlateStorage;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -73,6 +74,14 @@ public class PlateActivator extends Activator implements Locatable {
 		if (x != l.getBlockX()) return false;
 		if (y != l.getBlockY()) return false;
 		return (z == l.getBlockZ());
+	}
+
+	@Override
+	public boolean isLocatedAt(World world, int x, int y, int z) {
+		return this.world.equals(world.getName()) &&
+				this.x == x &&
+				this.y == y &&
+				this.z == z;
 	}
 
 	@Override

@@ -28,6 +28,7 @@ import me.fromgate.reactions.storage.DoorStorage;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -74,6 +75,13 @@ public class DoorActivator extends Activator implements Locatable {
 		return (z == l.getBlockZ());
 	}
 
+	@Override
+	public boolean isLocatedAt(World world, int x, int y, int z) {
+		return this.world.equals(world.getName()) &&
+				this.x == x &&
+				this.y == y &&
+				this.z == z;
+	}
 
 	@Override
 	public void save(ConfigurationSection cfg) {
