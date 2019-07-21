@@ -79,6 +79,7 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onChatCommand(AsyncPlayerChatEvent event) {
+		// TODO: That's not really good solution
 		Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
 			if (StorageManager.raiseMessageEvent(event.getPlayer(), MessageActivator.Source.CHAT_INPUT, event.getMessage())) {
 				event.setCancelled(true);
