@@ -24,12 +24,12 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storage.StorageManager;
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
+import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;

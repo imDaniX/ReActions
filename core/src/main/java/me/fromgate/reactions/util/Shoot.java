@@ -24,6 +24,7 @@ package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;

@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SelectorDefine(key = "world")
-public class WorldsPlayers extends PlayerSelector {
+public class WorldSelector implements Selector {
 
 	@Override
 	public Set<Player> selectPlayers(String worldNames) {

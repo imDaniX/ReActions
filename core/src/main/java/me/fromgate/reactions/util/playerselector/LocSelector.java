@@ -1,7 +1,7 @@
 package me.fromgate.reactions.util.playerselector;
 
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -10,7 +10,7 @@ import java.util.Set;
 
 
 @SelectorDefine(key = "loc")
-public class LocSelector extends PlayerSelector {
+public class LocSelector implements Selector {
 	@Override
 	public Set<Player> selectPlayers(String param) {
 		Set<Player> players = new HashSet<>();

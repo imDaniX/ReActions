@@ -27,7 +27,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.playerselector.PlayerSelectors;
+import me.fromgate.reactions.util.playerselector.SelectorsManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -101,7 +101,7 @@ public class ActionLog extends Action {
 	private String removeParams(String message) {
 		//noinspection StringBufferReplaceableByString
 		StringBuilder sb = new StringBuilder("(?i)(");
-		sb.append(Joiner.on("|").join(PlayerSelectors.getAllKeys()));
+		sb.append(Joiner.on("|").join(SelectorsManager.getAllKeys()));
 		sb.append("|hide|prefix|color|file):(\\{.*\\}|\\S+)\\s{0,1}");
 		return message.replaceAll(sb.toString(), "");
 

@@ -45,26 +45,22 @@ import static me.fromgate.reactions.externals.worldedit.RaWorldEdit.*;
 public class WeListener {
 	private static Region regionSelection = null;
 
-	private static ReActions plg() {
-		return ReActions.instance;
-	}
-
 	@Subscribe
 	public void onEditSessionEvent(EditSessionEvent event) {
 		Actor actor = event.getActor();
 		if (actor != null && actor.isPlayer()) {
 			Player player = Bukkit.getPlayer(actor.getUniqueId());
-			Bukkit.getScheduler().runTaskLater(plg(), () -> {
+			Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
 				Region selection = getSelection(player);
 				if (selection != null) {
-					Region region = null;
+					Region region;
 					try {
 						region = getRegion(player);
 						if (region != null) {
 							// Check Region Selection
 							checkChangeSelectionRegion(player, selection, region);
 						}
-					} catch (IncompleteRegionException ignored) {
+					} catch (IncompleteRegionException ignore) {
 						// e.printStackTrace();
 					}
 				}
@@ -89,7 +85,7 @@ public class WeListener {
 		}
 	}
 
-	public void checkChangeSelectionRegion(Player player, Region selection, Region region) {
+	private void checkChangeSelectionRegion(Player player, Region selection, Region region) {
 		if (regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
 			regionSelection = region.clone();
 			if (raiseChangeSelectionRegionEvent(player, selection, regionSelection)) {

@@ -69,7 +69,7 @@ public abstract class Activator {
 
 	/**
 	 * Add flag to activator
-	 * @param flag Fkag to add
+	 * @param flag Flag to add
 	 * @param param Parameters of flag
 	 * @param not Is indentation needed
 	 */
@@ -308,7 +308,6 @@ public abstract class Activator {
 		return result;
 	}
 
-
 	/**
 	 * Execution of activator
 	 * @param storage Storage with data for activator
@@ -355,8 +354,6 @@ public abstract class Activator {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
 		if (!(obj instanceof Activator))
 			return false;
 		Activator other = (Activator) obj;

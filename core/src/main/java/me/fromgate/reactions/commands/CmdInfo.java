@@ -2,8 +2,9 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.menu.InventoryMenu;
-import me.fromgate.reactions.util.Locator;
+import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -49,7 +50,8 @@ public class CmdInfo extends Cmd {
 		if (f && (!act.getFlags().isEmpty())) {
 			List<String> flg = new ArrayList<>();
 			for (int i = 0; i < act.getFlags().size(); i++) {
-				flg.add((act.getFlags().get(i).isInverted() ? "&4! &e" : "  &e") + act.getFlags().get(i).getFlag().name() + " &3= &a" + act.getFlags().get(i).getValue());
+				StoredFlag flag = act.getFlags().get(i);
+				flg.add((flag.isInverted() ? "&4! &e" : "  &e") + flag.getFlagName() + " &3= &a" + flag.getValue());
 			}
 			Msg.printPage(sender, flg, Msg.LST_FLAGS, 1, 100, true);
 		}

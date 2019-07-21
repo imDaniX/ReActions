@@ -39,7 +39,7 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.playerselector.PlayerSelectors;
+import me.fromgate.reactions.util.playerselector.SelectorsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -269,11 +269,11 @@ public class StorageManager {
 		final Set<Player> target = new HashSet<>();
 
 		if (param.isParamsExists("player")) {
-			target.addAll(PlayerSelectors.getPlayerList(new Param(param.getParam("player"), "player")));
+			target.addAll(SelectorsManager.getPlayerList(new Param(param.getParam("player"), "player")));
 		}
-		target.addAll(PlayerSelectors.getPlayerList(param));   // Оставляем для совместимости со старым вариантом
+		target.addAll(SelectorsManager.getPlayerList(param));   // Оставляем для совместимости со старым вариантом
 
-		if (target.isEmpty() && !param.hasAnyParam(PlayerSelectors.getAllKeys())) target.add(senderPlayer);
+		if (target.isEmpty() && !param.hasAnyParam(SelectorsManager.getAllKeys())) target.add(senderPlayer);
 
 		for (int i = 0; i < repeat; i++) {
 			Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
@@ -308,12 +308,12 @@ public class StorageManager {
 
 	public static void raiseAllRegionEvents(final Player player, final Location to, final Location from) {
 		if (!RaWorldGuard.isConnected()) return;
-		Bukkit.getScheduler().runTaskLaterAsynchronously(ReActions.instance, () -> {
+		Bukkit.getScheduler().runTaskLaterAsynchronously(ReActions.getPlugin(), () -> {
 
 			final List<String> regionsTo = RaWorldGuard.getRegions(to);
 			final List<String> regionsFrom = RaWorldGuard.getRegions(from);
 
-			Bukkit.getScheduler().runTask(ReActions.instance, () -> {
+			Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
 				raiseRegionEvent(player, regionsTo);
 				raiseRgEnterEvent(player, regionsTo, regionsFrom);
 				raiseRgLeaveEvent(player, regionsTo, regionsFrom);

@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SelectorDefine(key = "perm")
-public class PermPlayers extends PlayerSelector {
+public class PermSelector implements Selector {
 
 	@Override
 	public Set<Player> selectPlayers(String param) {

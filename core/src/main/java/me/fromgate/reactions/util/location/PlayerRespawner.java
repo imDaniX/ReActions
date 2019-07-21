@@ -20,11 +20,12 @@
  * 
  */
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.location;
 
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.storage.RespawnStorage;
+import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;

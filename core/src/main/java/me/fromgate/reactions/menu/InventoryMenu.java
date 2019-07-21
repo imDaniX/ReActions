@@ -40,7 +40,7 @@ public class InventoryMenu implements Listener {
 	}
 
 	public static void save() {
-		File f = new File(ReActions.instance.getDataFolder() + File.separator + "menu.yml");
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
 		if (f.exists()) f.delete();
 		YamlConfiguration cfg = new YamlConfiguration();
 		for (String key : menu.keySet()) {
@@ -55,7 +55,7 @@ public class InventoryMenu implements Listener {
 
 	public static void load() {
 		menu.clear();
-		File f = new File(ReActions.instance.getDataFolder() + File.separator + "menu.yml");
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
 		if (!f.exists()) return;
 		YamlConfiguration cfg = new YamlConfiguration();
 		try {
@@ -158,7 +158,7 @@ public class InventoryMenu implements Listener {
 	}
 
 	private static void openInventory(final Player player, final Inventory inv) {
-		Bukkit.getScheduler().runTaskLater(ReActions.instance, () -> {
+		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
 			if (player.isOnline()) player.openInventory(inv);
 			else activeMenus.remove(getInventoryCode(player, inv));
 		}, 1);

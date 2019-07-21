@@ -32,10 +32,10 @@ import me.fromgate.reactions.flags.worldedit.FlagSelectionBlocks;
 import me.fromgate.reactions.flags.worldedit.FlagSuperPickAxe;
 import me.fromgate.reactions.flags.worldedit.FlagToolControl;
 import me.fromgate.reactions.placeholders.Placeholders;
-import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.message.RaDebug;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -164,8 +164,8 @@ public enum Flags {
 		if (c.getFlags().size() > 0)
 			for (int i = 0; i < c.getFlags().size(); i++) {
 				StoredFlag f = c.getFlags().get(i);
-				Variables.setTempVar((f.getFlag().name() + "_flag").toUpperCase(), f.getValue());
-				if (!checkFlag(p, f.getFlag().name(), Placeholders.replacePlaceholderButRaw(p, f.getValue()), f.isInverted())) return false;
+				Variables.setTempVar((f.getFlagName() + "_flag").toUpperCase(), f.getValue());
+				if (!checkFlag(p, f.getFlagName(), Placeholders.replacePlaceholderButRaw(p, f.getValue()), f.isInverted())) return false;
 			}
 		return true;
 	}

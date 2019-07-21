@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SelectorDefine(key = "group")
-public class GroupPlayers extends PlayerSelector {
+public class GroupSelector implements Selector {
 
 	@Override
 	public Set<Player> selectPlayers(String param) {

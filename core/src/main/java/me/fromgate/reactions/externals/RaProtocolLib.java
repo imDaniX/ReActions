@@ -55,11 +55,11 @@ public class RaProtocolLib {
 			}
 		} catch (Throwable e) {
 			connected = false;
-			ReActions.instance.getLogger().info("Failed to connect to ProtocolLib. MESSAGE activator will not be able to handle chat-messages.");
+			ReActions.getPlugin().getLogger().info("Failed to connect to ProtocolLib. MESSAGE activator will not be able to handle chat-messages.");
 			return;
 		}
 		initPacketListener();
-		ReActions.instance.getLogger().info("ProtocolLib connected");
+		ReActions.getPlugin().getLogger().info("ProtocolLib connected");
 
 	}
 
@@ -115,7 +115,7 @@ public class RaProtocolLib {
 	private static void initPacketListener() {
 		if (!connected) return;
 		ProtocolLibrary.getProtocolManager().addPacketListener(
-				new PacketAdapter(ReActions.instance, PacketType.Play.Server.CHAT) {
+				new PacketAdapter(ReActions.getPlugin(), PacketType.Play.Server.CHAT) {
 					@Override
 					public void onPacketSending(PacketEvent event) {
 						String message = "";

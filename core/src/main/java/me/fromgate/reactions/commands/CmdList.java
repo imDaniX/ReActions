@@ -4,14 +4,13 @@ import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.timer.Timers;
 import me.fromgate.reactions.util.Delayer;
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Set;
 
 

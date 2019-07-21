@@ -1,10 +1,10 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.util.Locator;
-import me.fromgate.reactions.util.PlayerRespawner;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
+import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.PlayerRespawner;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

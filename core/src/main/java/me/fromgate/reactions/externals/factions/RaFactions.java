@@ -48,7 +48,7 @@ public class RaFactions {
 		Plugin pf = Bukkit.getServer().getPluginManager().getPlugin("Factions");
 		if (pf == null) return false;
 		try {
-			Bukkit.getPluginManager().registerEvents(new FactionListener(), ReActions.instance);
+			Bukkit.getPluginManager().registerEvents(new FactionListener(), ReActions.getPlugin());
 			Msg.logMessage("Factions found");
 			enabled = true;
 		} catch (Throwable t) {

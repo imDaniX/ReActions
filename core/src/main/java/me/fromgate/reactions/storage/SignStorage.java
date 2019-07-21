@@ -25,7 +25,7 @@ package me.fromgate.reactions.storage;
 
 
 import me.fromgate.reactions.activators.ActivatorType;
-import me.fromgate.reactions.util.Locator;
+import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

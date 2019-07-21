@@ -21,7 +21,7 @@
  */
 
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.location;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -39,7 +39,7 @@ public class Teleporter {
 	}
 
 	public static void stopTeleport(Player player) {
-		if (events.containsKey(player)) events.remove(player);
+		events.remove(player);
 	}
 
 	public static void teleport(Player player, Location location) {

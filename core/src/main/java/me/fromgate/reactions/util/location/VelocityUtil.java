@@ -1,4 +1,4 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.location;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;

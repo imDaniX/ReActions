@@ -24,10 +24,10 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;

@@ -3,7 +3,7 @@ package me.fromgate.reactions.actions;
 import com.google.common.base.Joiner;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.playerselector.PlayerSelectors;
+import me.fromgate.reactions.util.playerselector.SelectorsManager;
 import org.bukkit.entity.Player;
 
 import java.util.regex.Matcher;
@@ -41,7 +41,7 @@ public class ActionRegex extends Action {
 	}
 
 	private String removeParams(String message) {
-		String sb = "(?i)(" + Joiner.on("|").join(PlayerSelectors.getAllKeys()) +
+		String sb = "(?i)(" + Joiner.on("|").join(SelectorsManager.getAllKeys()) +
 				"|hide|regex|prefix):(\\{.*\\}|\\S+)\\s{0,1}";
 		return message.replaceAll(sb, "");
 

@@ -23,6 +23,7 @@
 package me.fromgate.reactions.util;
 
 import com.google.common.base.Charsets;
+import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;

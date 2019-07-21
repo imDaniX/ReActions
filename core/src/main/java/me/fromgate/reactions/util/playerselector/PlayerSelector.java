@@ -1,16 +1,30 @@
 package me.fromgate.reactions.util.playerselector;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.HashSet;
 import java.util.Set;
 
-public abstract class PlayerSelector {
-	public String getKey() {
-		if (!this.getClass().isAnnotationPresent(SelectorDefine.class)) return null;
-		SelectorDefine sd = this.getClass().getAnnotation(SelectorDefine.class);
-		return sd.key();
+@SelectorDefine(key = "player")
+public class PlayerSelector implements Selector {
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public Set<Player> selectPlayers(String param) {
+		Set<Player> players = new HashSet<>();
+		if (param.isEmpty()) return players;
+		if (param.equalsIgnoreCase("null!")) {
+			players.add(null);
+		} else if (param.equalsIgnoreCase("all")) {
+			players.addAll(Bukkit.getOnlinePlayers());
+		} else {
+			String[] arrPlayers = param.split(",\\s*");
+			for (String playerName : arrPlayers) {
+				Player targetPlayer = Bukkit.getPlayerExact(playerName);
+				if ((targetPlayer != null) && (targetPlayer.isOnline())) players.add(targetPlayer);
+			}
+		}
+		return players;
 	}
-
-	public abstract Set<Player> selectPlayers(String param);
-
 }

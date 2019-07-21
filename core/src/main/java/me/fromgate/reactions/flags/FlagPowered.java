@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;

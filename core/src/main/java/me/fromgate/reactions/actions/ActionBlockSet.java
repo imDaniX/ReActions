@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.Material;

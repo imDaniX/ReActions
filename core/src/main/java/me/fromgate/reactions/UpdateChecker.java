@@ -1,4 +1,4 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions;
 
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;

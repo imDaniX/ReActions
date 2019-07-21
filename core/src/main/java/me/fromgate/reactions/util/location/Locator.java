@@ -21,10 +21,12 @@
  */
 
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.location;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
+import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -275,7 +277,7 @@ public class Locator {
 	/////////////////////////////////
 	public static void saveLocs() {
 		try {
-			File f = new File(ReActions.instance.getDataFolder() + File.separator + "locations.yml");
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
 			if (f.exists()) f.delete();
 			if (tports.size() > 0) {
 				f.createNewFile();
@@ -298,7 +300,7 @@ public class Locator {
 	public static void loadLocs() {
 		tports.clear();
 		try {
-			File f = new File(ReActions.instance.getDataFolder() + File.separator + "locations.yml");
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
 			if (f.exists()) {
 				YamlConfiguration lcs = new YamlConfiguration();
 				lcs.load(f);

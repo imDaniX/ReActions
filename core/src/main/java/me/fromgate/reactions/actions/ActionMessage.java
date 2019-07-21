@@ -27,7 +27,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.timer.Time;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.playerselector.PlayerSelectors;
+import me.fromgate.reactions.util.playerselector.SelectorsManager;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -43,7 +43,7 @@ public class ActionMessage extends Action {
 	}
 
 	private String removeParams(String message) {
-		String sb = "(?i)(" + Joiner.on("|").join(PlayerSelectors.getAllKeys()) +
+		String sb = "(?i)(" + Joiner.on("|").join(SelectorsManager.getAllKeys()) +
 				"|hide):(\\{.*\\}|\\S+)\\s{0,1}";
 		return message.replaceAll(sb, "");
 		//String message = params.getParam("text", params.getParam("param-line").replaceAll("(?i)(region|loc|radius|rgplayer|player|world|faction|group|perm):(\\{.*\\}|\\S+)\\s{0,1}", ""));
@@ -52,10 +52,10 @@ public class ActionMessage extends Action {
 
 	private void sendMessage(Player player, Param params) {
 		Set<Player> players = new HashSet<>();
-		if (params.hasAnyParam(PlayerSelectors.getAllKeys())) {
-			players.addAll(PlayerSelectors.getPlayerList(params));
+		if (params.hasAnyParam(SelectorsManager.getAllKeys())) {
+			players.addAll(SelectorsManager.getPlayerList(params));
 			if (players.isEmpty() && params.isParamsExists("player")) {
-				players.addAll(PlayerSelectors.getPlayerList(new Param(params.getParam("player"))));
+				players.addAll(SelectorsManager.getPlayerList(new Param(params.getParam("player"))));
 			}
 		} else if (player != null) {
 			players.add(player);

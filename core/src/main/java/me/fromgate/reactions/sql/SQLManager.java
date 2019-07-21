@@ -58,22 +58,22 @@ public class SQLManager {
 
 
 	public static void loadCfg() {
-		serverAddress = ReActions.instance.getConfig().getString("MySQL.server", "localhost");
-		port = ReActions.instance.getConfig().getString("MySQL.port", "3306");
-		dataBase = ReActions.instance.getConfig().getString("MySQL.database", "ReActions");
-		userName = ReActions.instance.getConfig().getString("MySQL.username", "root");
-		password = ReActions.instance.getConfig().getString("MySQL.password", "password");
-		codepage = ReActions.instance.getConfig().getString("MySQL.codepage", "UTF-8");
+		serverAddress = ReActions.getPlugin().getConfig().getString("MySQL.server", "localhost");
+		port = ReActions.getPlugin().getConfig().getString("MySQL.port", "3306");
+		dataBase = ReActions.getPlugin().getConfig().getString("MySQL.database", "ReActions");
+		userName = ReActions.getPlugin().getConfig().getString("MySQL.username", "root");
+		password = ReActions.getPlugin().getConfig().getString("MySQL.password", "password");
+		codepage = ReActions.getPlugin().getConfig().getString("MySQL.codepage", "UTF-8");
 	}
 
 	public static void saveCfg() {
-		ReActions.instance.getConfig().set("MySQL.server", serverAddress);
-		ReActions.instance.getConfig().set("MySQL.port", port);
-		ReActions.instance.getConfig().set("MySQL.database", dataBase);
-		ReActions.instance.getConfig().set("MySQL.username", userName);
-		ReActions.instance.getConfig().set("MySQL.password", password);
-		ReActions.instance.getConfig().set("MySQL.codepage", codepage);
-		ReActions.instance.saveConfig();
+		ReActions.getPlugin().getConfig().set("MySQL.server", serverAddress);
+		ReActions.getPlugin().getConfig().set("MySQL.port", port);
+		ReActions.getPlugin().getConfig().set("MySQL.database", dataBase);
+		ReActions.getPlugin().getConfig().set("MySQL.username", userName);
+		ReActions.getPlugin().getConfig().set("MySQL.password", password);
+		ReActions.getPlugin().getConfig().set("MySQL.codepage", codepage);
+		ReActions.getPlugin().saveConfig();
 	}
 
 

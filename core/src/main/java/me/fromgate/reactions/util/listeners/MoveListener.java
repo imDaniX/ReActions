@@ -26,7 +26,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Cfg;
-import me.fromgate.reactions.util.PushBack;
+import me.fromgate.reactions.util.location.PushBack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

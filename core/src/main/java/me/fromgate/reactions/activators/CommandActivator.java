@@ -24,9 +24,9 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.commands.FakeCmd;
 import me.fromgate.reactions.storage.CommandStorage;
 import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.FakeCmd;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;

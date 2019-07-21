@@ -43,7 +43,7 @@ public class Delayer {
 	public static void save() {
 		try {
 			YamlConfiguration cfg = new YamlConfiguration();
-			File f = new File(ReActions.instance.getDataFolder() + File.separator + "delay.yml");
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
 			if (f.exists()) f.delete();
 			f.createNewFile();
 			for (String key : delays.keySet()) {
@@ -60,7 +60,7 @@ public class Delayer {
 		delays.clear();
 		try {
 			YamlConfiguration cfg = new YamlConfiguration();
-			File f = new File(ReActions.instance.getDataFolder() + File.separator + "delay.yml");
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
 			if (!f.exists()) return;
 			cfg.load(f);
 			for (String key : cfg.getKeys(true)) {

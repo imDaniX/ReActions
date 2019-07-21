@@ -23,9 +23,9 @@
 package me.fromgate.reactions.externals;
 
 import me.fromgate.playeffect.PlayEffect;
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;

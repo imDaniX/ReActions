@@ -4,26 +4,24 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class PlayerSelectors {
-	private static List<PlayerSelector> selectors;
+public class SelectorsManager {
+	private static Set<Selector> selectors;
 
 	public static void init() {
-		selectors = new ArrayList<>();
-		addSelector(new Players());
-		addSelector(new WorldsPlayers());
+		selectors = new HashSet<>();
+		addSelector(new PlayerSelector());
+		addSelector(new WorldSelector());
 		addSelector(new LocSelector());
-		addSelector(new GroupPlayers());
-		addSelector(new PermPlayers());
-		addSelector(new RegionsPlayers());
-		addSelector(new FactionsPlayers());
+		addSelector(new GroupSelector());
+		addSelector(new PermSelector());
+		addSelector(new RegionSelector());
+		addSelector(new FactionSelector());
 	}
 
-	public static void addSelector(PlayerSelector selector) {
+	public static void addSelector(Selector selector) {
 		if (selector == null) return;
 		if (selector.getKey() == null) return;
 		selectors.add(selector);
@@ -31,7 +29,7 @@ public class PlayerSelectors {
 
 	public static Set<Player> getPlayerList(Param param) {
 		Set<Player> players = new HashSet<>();
-		for (PlayerSelector selector : selectors) {
+		for (Selector selector : selectors) {
 			String selectorParam = param.getParam(selector.getKey());
 			if (selector.getKey().equalsIgnoreCase("loc") && param.isParamsExists("radius"))
 				selectorParam = Util.join("loc:", selectorParam, " ", "radius:", param.getParam("radius", "1"));
@@ -43,7 +41,7 @@ public class PlayerSelectors {
 	public static String[] getAllKeys() {
 		String[] keys = new String[selectors.size()];
 		int i = 0;
-		for (PlayerSelector s : selectors) {
+		for (Selector s : selectors) {
 			keys[i] = s.getKey();
 			i++;
 		}

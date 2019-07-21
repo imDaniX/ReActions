@@ -188,7 +188,7 @@ public class Timers {
 
 	public static void initIngameTimer() {
 		if (ingameTimer != null) return;
-		ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.instance, () -> {
+		ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
 			String currentTime = Time.currentIngameTime();
 			if (currentIngameTime.equalsIgnoreCase(currentTime)) return;
 			currentIngameTime = currentTime;
@@ -205,7 +205,7 @@ public class Timers {
 
 	public static void initServerTimer() {
 		if (serverTimer != null) return;
-		serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.instance, () -> {
+		serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
 			for (Timer timer : getServerTimers().values()) {
 				if (timer.isTimeToRun()) {
 					StorageManager.raiseExecEvent(null, timer.getParams());
@@ -227,7 +227,7 @@ public class Timers {
 	public static void load() {
 		timers.clear();
 		YamlConfiguration cfg = new YamlConfiguration();
-		File f = new File(ReActions.instance.getDataFolder() + File.separator + "timers.yml");
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "timers.yml");
 		if (!f.exists()) return;
 		try {
 			cfg.load(f);
@@ -255,7 +255,7 @@ public class Timers {
 
 	public static void save() {
 		YamlConfiguration cfg = new YamlConfiguration();
-		File f = new File(ReActions.instance.getDataFolder() + File.separator + "timers.yml");
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "timers.yml");
 		if (f.exists()) f.delete();
 		for (String name : timers.keySet()) {
 			Timer timer = timers.get(name);

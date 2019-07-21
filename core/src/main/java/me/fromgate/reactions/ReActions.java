@@ -24,6 +24,7 @@ package me.fromgate.reactions;
 
 import me.fromgate.reactions.activators.Activators;
 import me.fromgate.reactions.commands.Commander;
+import me.fromgate.reactions.commands.FakeCmd;
 import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.RaCraftConomy;
 import me.fromgate.reactions.externals.RaEffects;
@@ -35,17 +36,15 @@ import me.fromgate.reactions.sql.SQLManager;
 import me.fromgate.reactions.timer.Timers;
 import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Delayer;
-import me.fromgate.reactions.util.FakeCmd;
-import me.fromgate.reactions.util.Locator;
-import me.fromgate.reactions.util.UpdateChecker;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.listeners.BukkitListener;
 import me.fromgate.reactions.util.listeners.GodModeListener;
 import me.fromgate.reactions.util.listeners.MoveListener;
+import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.LogHandler;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.playerselector.PlayerSelectors;
+import me.fromgate.reactions.util.playerselector.SelectorsManager;
 import me.fromgate.reactions.util.waiter.ActionsWaiter;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
@@ -54,7 +53,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReActions extends JavaPlugin {
 
-	public static ReActions instance;
+	private static ReActions instance;
 
 	public static JavaPlugin getPlugin() {
 		return instance;
@@ -62,6 +61,8 @@ public class ReActions extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
+		// TODO: More OOP style
+
 		instance = this;
 		Cfg.load();
 		Cfg.save();
@@ -70,12 +71,11 @@ public class ReActions extends JavaPlugin {
 
 		if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
-
 		Commander.init(this);
 		Timers.init();
 		Activators.init();
 		Bukkit.getScheduler().runTaskLater(this, FakeCmd::init, 1);
-		PlayerSelectors.init();
+		SelectorsManager.init();
 		RaEffects.init();
 		RaRacesAndClasses.init();
 		Externals.init();

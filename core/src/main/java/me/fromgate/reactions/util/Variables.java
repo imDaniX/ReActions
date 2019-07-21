@@ -180,7 +180,7 @@ public class Variables {
 	public static void save() {
 		try {
 			YamlConfiguration cfg = new YamlConfiguration();
-			File f = new File(ReActions.instance.getDataFolder() + File.separator + "variables.yml");
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml");
 			if (f.exists()) f.delete();
 			f.createNewFile();
 			for (String key : vars.keySet())
@@ -198,7 +198,7 @@ public class Variables {
 	public static void savePlayer(String player) {
 		try {
 			YamlConfiguration cfg = new YamlConfiguration();
-			String varDir = ReActions.instance.getDataFolder() + File.separator + "variables";
+			String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
 			File dir = new File(varDir);
 			if (!dir.exists() && !dir.mkdirs()) return;
 			saveGeneral();
@@ -218,14 +218,14 @@ public class Variables {
 	}
 
 	public static void saveAsync(String player) {
-		JavaPlugin pluginInstance = ReActions.instance;
+		JavaPlugin pluginInstance = ReActions.getPlugin();
 		pluginInstance.getServer().getScheduler().runTaskAsynchronously(pluginInstance, () -> savePlayer(player));
 	}
 
 	private static void saveGeneral() {
 		try {
 			YamlConfiguration cfg = new YamlConfiguration();
-			String varDir = ReActions.instance.getDataFolder() + File.separator + "variables";
+			String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
 			File f = new File(varDir + File.separator + "general.yml");
 			if (f.exists()) f.delete();
 			f.createNewFile();
@@ -241,7 +241,7 @@ public class Variables {
 		vars.clear();
 		try {
 			YamlConfiguration cfg = new YamlConfiguration();
-			File f = new File(ReActions.instance.getDataFolder() + File.separator + "variables.yml");
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml");
 			if (!f.exists()) return;
 			cfg.load(f);
 			for (String key : cfg.getKeys(true)) {
@@ -250,7 +250,7 @@ public class Variables {
 			}
 			if (!Cfg.playerSelfVarFile) {
 				loadVars();
-				File dir = new File(ReActions.instance.getDataFolder() + File.separator + "variables");
+				File dir = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables");
 				if (!dir.exists() || !dir.isDirectory()) return;
 				String[] files = dir.list();
 				for (String file : files) {
@@ -268,7 +268,7 @@ public class Variables {
 		try {
 			int deleted = 0;
 			YamlConfiguration cfg = new YamlConfiguration();
-			File dir = new File(ReActions.instance.getDataFolder() + File.separator + "variables");
+			File dir = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables");
 			if (!dir.exists()) return;
 			for (File f : dir.listFiles()) {
 				if (!f.isDirectory()) {
@@ -294,7 +294,7 @@ public class Variables {
 		try {
 			Map<String, String> vars_tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 			YamlConfiguration cfg = new YamlConfiguration();
-			String fileName = ReActions.instance.getDataFolder() + File.separator + "variables.yml";
+			String fileName = ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml";
 			File f = new File(fileName);
 			if (!f.exists()) return;
 			cfg.load(f);

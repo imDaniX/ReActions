@@ -6,9 +6,8 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @SelectorDefine(key = "region")
-public class RegionsPlayers extends PlayerSelector {
+public class RegionSelector implements Selector {
 
 	@Override
 	public Set<Player> selectPlayers(String regionStr) {

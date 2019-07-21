@@ -1,4 +1,4 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.Activator;

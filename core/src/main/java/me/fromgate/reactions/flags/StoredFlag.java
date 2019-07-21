@@ -21,6 +21,10 @@ public class StoredFlag {
 		return flag;
 	}
 
+	public String getFlagName() {
+		return flag == null ? "UNKNOWN" : flag.name();
+	}
+
 	public String getValue() {
 		return value;
 	}
@@ -31,7 +35,7 @@ public class StoredFlag {
 
 	@Override
 	public String toString() {
-		String str = flag.name() + "=" + value;
+		String str = this.getFlagName() + "=" + value;
 		if (this.not) str = "!" + str;
 		return str;
 	}

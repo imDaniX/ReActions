@@ -24,10 +24,10 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaEffects;
 import me.fromgate.reactions.util.Cfg;
-import me.fromgate.reactions.util.Locator;
 import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.Teleporter;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.Teleporter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @SelectorDefine(key = "faction")
-public class FactionsPlayers extends PlayerSelector {
+public class FactionSelector implements Selector {
 
 	@Override
 	public Set<Player> selectPlayers(String factionNames) {

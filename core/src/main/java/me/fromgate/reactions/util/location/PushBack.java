@@ -20,8 +20,9 @@
  * 
  */
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.location;
 
+import me.fromgate.reactions.util.Cfg;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

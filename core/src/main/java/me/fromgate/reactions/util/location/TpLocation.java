@@ -21,7 +21,7 @@
  */
 
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.location;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

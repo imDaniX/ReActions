@@ -1,6 +1,7 @@
 package me.fromgate.reactions.util.listeners;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.UpdateChecker;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.Activators;
@@ -10,11 +11,10 @@ import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
 import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.PlayerRespawner;
-import me.fromgate.reactions.util.Teleporter;
 import me.fromgate.reactions.util.TemporaryOp;
-import me.fromgate.reactions.util.UpdateChecker;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.location.PlayerRespawner;
+import me.fromgate.reactions.util.location.Teleporter;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.mob.EntityUtil;

@@ -55,7 +55,7 @@ public class GodModeListener implements Listener {
 
 	public static boolean setGod(Player player) {
 		if (!isGod(player)) {
-			player.setMetadata("reactions-god", new FixedMetadataValue(ReActions.instance, true));
+			player.setMetadata("reactions-god", new FixedMetadataValue(ReActions.getPlugin(), true));
 			return true;
 		}
 		return false;
@@ -63,21 +63,21 @@ public class GodModeListener implements Listener {
 
 	public static boolean removeGod(Player player) {
 		if (isGod(player)) {
-			player.removeMetadata("reactions-god", ReActions.instance);
+			player.removeMetadata("reactions-god", ReActions.getPlugin());
 			return true;
 		}
 		return false;
 	}
 
 	public static void setCheckGod(Player player) {
-		player.setMetadata("reactions-god-check", new FixedMetadataValue(ReActions.instance, true));
+		player.setMetadata("reactions-god-check", new FixedMetadataValue(ReActions.getPlugin(), true));
 	}
 
 	public static boolean checkGod(Player player) {
 		boolean result = false;
 		if (player.hasMetadata("reactions-god-check")) {
 			result = player.getMetadata("reactions-god-check").get(0).asBoolean();
-			player.removeMetadata("reactions-god-check", ReActions.instance);
+			player.removeMetadata("reactions-god-check", ReActions.getPlugin());
 		}
 		return result;
 	}
