@@ -110,18 +110,18 @@ public enum Flags {
 
 
 	private String alias;
-	private boolean require_player = true;
+	private boolean requirePlayer;
 	private Flag flag;
 
 
-	Flags(String alias, boolean needplayer, Flag flag) {
+	Flags(String alias, boolean requirePlayer, Flag flag) {
 		this.alias = alias;
-		this.require_player = needplayer;
+		this.requirePlayer = requirePlayer;
 		this.flag = flag;
 	}
 
 	public boolean check(Player player, String param) {
-		if (this.require_player && (player == null)) return false;
+		if (this.requirePlayer && (player == null)) return false;
 		return flag.checkFlag(player, param);
 	}
 
@@ -170,6 +170,7 @@ public enum Flags {
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	public static String getFtypes() {
 		String str = "";
 		for (Flags f : Flags.values()) {
@@ -179,6 +180,7 @@ public enum Flags {
 		return str;
 	}
 
+	@SuppressWarnings("unused")
 	public static String getValidName(String flag) {
 		for (Flags f : Flags.values())
 			if (f.getAlias().equalsIgnoreCase(flag)) return f.name();

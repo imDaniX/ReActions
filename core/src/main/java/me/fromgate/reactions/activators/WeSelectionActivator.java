@@ -10,7 +10,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-// TODO: Flag to check selection size of player
 public class WeSelectionActivator extends Activator {
 	private int maxBlocks;
 	private int minBlocks;

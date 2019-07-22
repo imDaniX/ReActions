@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Created by MaxDikiy on 2017-04-29.
  */
+// TODO: Regex flag
 public class ActionRegex extends Action {
 
 	@Override
@@ -42,7 +43,7 @@ public class ActionRegex extends Action {
 
 	private String removeParams(String message) {
 		String sb = "(?i)(" + Joiner.on("|").join(SelectorsManager.getAllKeys()) +
-				"|hide|regex|prefix):(\\{.*\\}|\\S+)\\s{0,1}";
+				"|hide|regex|prefix):(\\{.*\\}|\\S+)\\s?";
 		return message.replaceAll(sb, "");
 
 	}

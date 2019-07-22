@@ -6,14 +6,26 @@ import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.location.PlayerRespawner;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @PlaceholderDefine(id = "BasicPlayer",
 		keys = {"player_loc", "player_loc_eye", "player_loc_view", "player_name", "player",
 				"player_display", "dplayer", "player_item_hand", "itemplayer", "player_inv", "invplayer",
 				"health", "player_loc_death", "deathpoint", "player_id", "uuid"})
 public class PlaceholderPlayer extends Placeholder {
+
+	private static final Set<Material> NON_SOLID;
+	static {
+		NON_SOLID = new HashSet<>();
+		for(Material mat : Material.values())
+			if(!mat.isSolid()) NON_SOLID.add(mat);
+	}
+
 	@Override
 	public String processPlaceholder(Player player, String key, String param) {
 		if (player == null) return null;
@@ -25,7 +37,10 @@ public class PlaceholderPlayer extends Placeholder {
 				return getPlayerInventory(player, param);
 			case "player_item_hand":
 			case "itemplayer":
-				return getPlayerItemInHand(player);
+				return getPlayerItemInHand(player, false);
+			case "player_item_offhand":
+			case "offitemplayer":
+				return getPlayerItemInHand(player, true);
 			case "player_display":
 			case "dplayer":
 				return player.getDisplayName();
@@ -39,10 +54,15 @@ public class PlaceholderPlayer extends Placeholder {
 			case "player_loc_eye":
 				return Locator.locationToString(player.getEyeLocation());
 			case "player_loc_view":
-				return Locator.locationToString(getViewLocation(player));
+				return Locator.locationToString(getViewLocation(player, false));
+			case "player_loc_view_solid":
+				return Locator.locationToString(getViewLocation(player, true));
 			case "player_id":
 			case "uuid":
 				return player.getUniqueId().toString();
+			case "player_ip":
+			case "ip_address":
+				return player.getAddress().getAddress().getHostAddress();
 			case "player_name":
 			case "player":
 				return player.getName();
@@ -50,14 +70,26 @@ public class PlaceholderPlayer extends Placeholder {
 		return null;
 	}
 
-	private Location getViewLocation(Player p) {
-		Block b = p.getTargetBlock(null, 100);
+	/**
+	 * Get location that player is looking for
+	 * @param p Player to use
+	 * @param solid Search for only solid blocks or not
+	 * @return Location of block
+	 */
+	private Location getViewLocation(Player p, boolean solid) {
+		Block b = p.getTargetBlock(solid ? NON_SOLID : null, 100);
 		if (b == null) return p.getLocation();
 		return b.getLocation().add(0.5, 0.5, 0.5);
 	}
 
-	private String getPlayerItemInHand(Player player) {
-		VirtualItem vi = ItemUtil.itemFromItemStack(player.getInventory().getItemInMainHand());
+	/**
+	 * Get item in hand
+	 * @param player Player to use
+	 * @param offhand Check offhand or not
+	 * @return Item string
+	 */
+	private String getPlayerItemInHand(Player player, boolean offhand) {
+		VirtualItem vi = ItemUtil.itemFromItemStack(offhand ? player.getInventory().getItemInOffHand() : player.getInventory().getItemInMainHand());
 		if (vi == null) return "";
 		return vi.toString();
 	}
@@ -72,10 +104,9 @@ public class PlaceholderPlayer extends Placeholder {
 			switch (value.toLowerCase()) {
 				case "mainhand":
 				case "hand":
-					return getPlayerItemInHand(player);
+					return getPlayerItemInHand(player, false);
 				case "offhand":
-					vi = ItemUtil.itemFromItemStack(player.getInventory().getItemInOffHand());
-					break;
+					return getPlayerItemInHand(player, true);
 				case "head":
 				case "helm":
 				case "helmet":
