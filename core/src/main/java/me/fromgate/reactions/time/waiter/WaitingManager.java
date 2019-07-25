@@ -64,7 +64,7 @@ public class WaitingManager {
 			WaitTask t = new WaitTask(cfg, key);
 			tasks.add(t);
 		}
-		Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), WaitingManager::refresh, 30, 900);
+		Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), WaitingManager::refresh, 30, 900);
 	}
 
 	public static void refreshPlayer(Player player) {

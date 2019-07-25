@@ -16,7 +16,6 @@ import java.util.Arrays;
 @CmdDefine(command = "react", description = Msg.CMD_SET, permission = "reactions.config", subCommands = {"set"}, allowConsole = true, shortDescription = "&3/react set delay|var id:<id> player:<player> delay:<time>")
 public class CmdSet extends Cmd {
 
-
 	@Override
 	public boolean execute(CommandSender sender, String[] args) {
 		if (args.length == 1) return false;
@@ -34,7 +33,7 @@ public class CmdSet extends Cmd {
 			boolean add = params.getParam("add", false);
 			String player = params.getParam("player", "");
 			if (player.equalsIgnoreCase("%player%") && (p != null)) player = p.getName();
-			Long time = /*System.currentTimeMillis()+*/TimeUtil.parseTime(params.getParam("delay", "3s")); //дефолтная задержка три секунды
+			long time = /*System.currentTimeMillis()+*/TimeUtil.parseTime(params.getParam("delay", "3s")); //дефолтная задержка три секунды
 			if (player.isEmpty()) Delayer.setDelay(id, time, add);
 			else Delayer.setPersonalDelay(player, id, time, add);
 			Msg.printMSG(sender, "cmd_delayset", player.isEmpty() ? id : player + "." + id, TimeUtil.fullTimeToString(System.currentTimeMillis() + time));
