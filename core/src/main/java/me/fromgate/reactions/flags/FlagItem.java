@@ -31,9 +31,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class FlagItem implements Flag {
-	private int flagType;
+	private final byte flagType;
 
-	public FlagItem(int flagType) {
+	public FlagItem(byte flagType) {
 		this.flagType = flagType;
 	}
 

@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.timer.Time;
+import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
@@ -33,7 +33,7 @@ public class FlagPvp implements Flag {
 		if (!player.hasMetadata("reactions-pvp-time")) return false;
 		Param params = new Param(param, "time");
 		String timeStr = params.getParam("time");
-		long delay = Time.parseTime(timeStr);
+		long delay = TimeUtil.parseTime(timeStr);
 		if (delay == 0) return false;
 		return ((System.currentTimeMillis() - player.getMetadata("reactions-pvp-time").get(0).asLong()) < delay);
 	}

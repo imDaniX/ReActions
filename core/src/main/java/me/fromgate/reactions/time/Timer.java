@@ -20,7 +20,7 @@
  * 
  */
 
-package me.fromgate.reactions.timer;
+package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
@@ -90,7 +90,7 @@ public class Timer {
 	}
 
 	private boolean isIngameTimeToRun() {
-		return timerType && timesIngame.contains(Time.currentIngameTime());
+		return timerType && timesIngame.contains(TimeUtil.currentIngameTime());
 	}
 
 	public boolean isIngameTimer() {

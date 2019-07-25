@@ -32,7 +32,7 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.storage.WeChangeStorage;
 import me.fromgate.reactions.storage.WeSelectionRegionStorage;
 import org.bukkit.Bukkit;
@@ -88,7 +88,7 @@ public class WeListener {
 	private void checkChangeSelectionRegion(Player player, Region selection, Region region) {
 		if (regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
 			regionSelection = region.clone();
-			if (raiseChangeSelectionRegionEvent(player, selection, regionSelection)) {
+			if (raiseChangeSelectionRegionActivator(player, selection, regionSelection)) {
 				regionSelection = null;
 				RegionSelector rs = getRegionSelector(player);
 				if (rs != null) rs.clear();
@@ -96,18 +96,18 @@ public class WeListener {
 		}
 	}
 
-	public static boolean raiseChangeSelectionRegionEvent(Player player, Region selection, Region region) {
+	public static boolean raiseChangeSelectionRegionActivator(Player player, Region selection, Region region) {
 		WeSelection weSelection = new WeSelection(getRegionSelector(player).getTypeName(),
 				BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()), BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
 				selection.getArea(), BukkitAdapter.adapt(selection.getWorld()), region.toString());
 		WeSelectionRegionStorage e = new WeSelectionRegionStorage(player, weSelection);
-		Activators.activate(e);
+		ActivatorsManager.activate(e);
 		return e.isCancelled();
 	}
 
-	public static boolean raiseWEChangeEvent(Player player, Location location, Material blockType) {
+	public static boolean raiseWEChangeActivator(Player player, Location location, Material blockType) {
 		WeChangeStorage e = new WeChangeStorage(player, location, blockType);
-		Activators.activate(e);
+		ActivatorsManager.activate(e);
 		return e.isCancelled();
 	}
 

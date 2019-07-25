@@ -27,7 +27,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class MobKillStorage extends RAStorage {
-	private LivingEntity mob;
+	private final LivingEntity mob;
 
 	public MobKillStorage(Player p, LivingEntity mob) {
 		super(p, ActivatorType.MOB_KILL);

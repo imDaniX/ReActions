@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.timer.Time;
-import me.fromgate.reactions.util.Delayer;
+import me.fromgate.reactions.time.Delayer;
+import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
@@ -60,7 +60,7 @@ public class ActionDelay extends Action {
 
 		if (timeStr.isEmpty()) return false;
 		if (variableId.isEmpty()) return false;
-		setDelay(playerName, variableId, Time.parseTime(timeStr), add);
+		setDelay(playerName, variableId, TimeUtil.parseTime(timeStr), add);
 		Delayer.setTempPlaceholders(playerName, variableId);
 		setMessageParam(Variables.getTempVar("delay-left-hms", timeStr));
 		return true;

@@ -3,7 +3,7 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.ActivatorType;
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.activators.CommandActivator;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
@@ -28,9 +28,9 @@ public class FakeCmd implements CommandExecutor {
 
 	public static void updateAllCommands() {
 		StringBuilder commands = new StringBuilder();
-		for (Activator a : Activators.getActivators(ActivatorType.COMMAND)) {
+		for (Activator a : ActivatorsManager.getActivators(ActivatorType.COMMAND)) {
 			CommandActivator c = (CommandActivator) a;
-			if (c.useRegex()) continue; // Пропускаем, эти команды будут регистрироваться в реальном времени
+			if (c.useRegex()) continue;
 			if (!c.isCommandRegistered() && registerNewCommand(c.getCommand())) {
 				if (commands.length() > 0) commands.append(", ");
 				commands.append(c.getCommand());

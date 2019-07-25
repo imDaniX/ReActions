@@ -9,7 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 public class EntityClickStorage extends RAStorage {
-	private Entity entity;
+	private final Entity entity;
 
 	public EntityClickStorage(Player p, Entity entity) {
 		super(p, ActivatorType.ENTITY_CLICK);

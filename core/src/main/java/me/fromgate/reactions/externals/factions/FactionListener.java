@@ -36,7 +36,7 @@ public class FactionListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFactionChange(EventFactionsMembershipChange event) {
-		StorageManager.raiseFactionEvent(event.getMPlayer().getPlayer(),
+		StorageManager.raiseFactionActivator(event.getMPlayer().getPlayer(),
 				event.getMPlayer().getFaction().isDefault() ? "default" : event.getMPlayer().getFactionName(),
 				event.getNewFaction().isDefault() ? "default" : event.getNewFaction().getName());
 	}
@@ -44,24 +44,23 @@ public class FactionListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFactionCreate(EventFactionsCreate event) {
-		StorageManager.raiseFactionCreateEvent(event.getFactionName(),
+		StorageManager.raiseFactionCreateActivator(event.getFactionName(),
 				(event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onFactionDisband(EventFactionsDisband event) {
-		StorageManager.raiseFactionDisbandEvent(event.getFaction().getName(),
+		StorageManager.raiseFactionDisbandActivator(event.getFaction().getName(),
 				(event.getSender() != null && event.getSender() instanceof Player) ? (Player) event.getSender() : null);
 	}
 
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onRelationChange(EventFactionsRelationChange event) {
-		StorageManager.raiseFactionRelationEvent(event.getFaction().getName(),
+		StorageManager.raiseFactionRelationActivator(event.getFaction().getName(),
 				event.getOtherFaction().getName(),
 				event.getFaction().getRelationWish(event.getOtherFaction()).name(),
 				event.getNewRelation().name());
-
 	}
 
 }

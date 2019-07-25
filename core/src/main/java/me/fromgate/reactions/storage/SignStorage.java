@@ -32,8 +32,8 @@ import org.bukkit.entity.Player;
 public class SignStorage extends RAStorage {
 
 	private String[] signLines;
-	private Location loc;
-	private boolean leftClick;
+	private final Location loc;
+	private final boolean leftClick;
 
 	public SignStorage(Player player, String[] signLines, Location loc, boolean leftClick) {
 		super(player, ActivatorType.SIGN);

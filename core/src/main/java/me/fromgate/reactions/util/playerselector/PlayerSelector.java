@@ -1,5 +1,6 @@
 package me.fromgate.reactions.util.playerselector;
 
+import me.fromgate.reactions.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -9,7 +10,6 @@ import java.util.Set;
 @SelectorDefine(key = "player")
 public class PlayerSelector implements Selector {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public Set<Player> selectPlayers(String param) {
 		Set<Player> players = new HashSet<>();
@@ -21,7 +21,7 @@ public class PlayerSelector implements Selector {
 		} else {
 			String[] arrPlayers = param.split(",\\s*");
 			for (String playerName : arrPlayers) {
-				Player targetPlayer = Bukkit.getPlayerExact(playerName);
+				Player targetPlayer = Util.getPlayerExact(playerName);
 				if ((targetPlayer != null) && (targetPlayer.isOnline())) players.add(targetPlayer);
 			}
 		}

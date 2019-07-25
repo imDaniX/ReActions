@@ -27,8 +27,8 @@ import org.bukkit.entity.Player;
 
 public class FactionChangeStorage extends RAStorage {
 
-	private String newFaction;
-	private String oldFaction;
+	private final String newFaction;
+	private final String oldFaction;
 
 	public FactionChangeStorage(Player player, String oldFaction, String newFaction) {
 		super(player, ActivatorType.FCT_CHANGE);

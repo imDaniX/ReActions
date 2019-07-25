@@ -54,15 +54,15 @@ public class SignActivator extends Activator {
 		click = ClickType.getByName(params.getParam("click", "RIGHT"));
 		maskLines = new ArrayList<>();
 		if (sign == null) {
-			maskLines.add(params.getParam("line1", sign.getLine(0)));
-			maskLines.add(params.getParam("line2", sign.getLine(1)));
-			maskLines.add(params.getParam("line3", sign.getLine(2)));
-			maskLines.add(params.getParam("line4", sign.getLine(3)));
-		} else {
 			maskLines.add(params.getParam("line1", ""));
 			maskLines.add(params.getParam("line2", ""));
 			maskLines.add(params.getParam("line3", ""));
 			maskLines.add(params.getParam("line4", ""));
+		} else {
+			maskLines.add(params.getParam("line1", sign.getLine(0)));
+			maskLines.add(params.getParam("line2", sign.getLine(1)));
+			maskLines.add(params.getParam("line3", sign.getLine(2)));
+			maskLines.add(params.getParam("line4", sign.getLine(3)));
 		}
 	}
 

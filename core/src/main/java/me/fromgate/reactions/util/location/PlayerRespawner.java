@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.util.location;
 
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.storage.RespawnStorage;
 import me.fromgate.reactions.util.Util;
@@ -58,14 +58,14 @@ public class PlayerRespawner {
 		return null;
 	}
 
-	public static void raisePlayerRespawnEvent(Player player) {
+	public static void raisePlayerRespawnActivator(Player player) {
 		if (!players.containsKey(player.getUniqueId())) return;
 		LivingEntity killer = getLastKiller(player);
 		players.remove(player.getUniqueId());
 		PlayerDeathActivator.DeathCause d = PlayerDeathActivator.DeathCause.OTHER;
 		if (killer != null && killer.getType() == EntityType.PLAYER) d = PlayerDeathActivator.DeathCause.PVP;
 		else if (killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;
-		Activators.activate(new RespawnStorage(player, killer, d));
+		ActivatorsManager.activate(new RespawnStorage(player, killer, d));
 	}
 
 }

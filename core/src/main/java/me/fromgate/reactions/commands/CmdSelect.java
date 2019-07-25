@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.util.Selector;
 import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.Selector;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.entity.Player;
 

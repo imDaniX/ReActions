@@ -3,11 +3,11 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.ActivatorType;
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.menu.InventoryMenu;
-import me.fromgate.reactions.timer.Timers;
+import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.location.Locator;
@@ -43,7 +43,7 @@ public class CmdAdd extends Cmd {
 			Msg.CMD_ADDTPADDED.print(sender, arg2);
 		} else if (arg1.equalsIgnoreCase("timer")) {
 			Param params = Param.parseParams((arg3.isEmpty() ? "" : arg3) + ((arg4.length() == 0) ? "" : " " + arg4));
-			return Timers.addTimer(sender, arg2, params, true);
+			return TimersManager.addTimer(sender, arg2, params, true);
 		} else if (arg1.equalsIgnoreCase("menu")) {
 			// /react add menu id size sdjkf
 			if (InventoryMenu.add(arg2, Util.isInteger(arg3) ? Integer.parseInt(arg3) : 9, ((Util.isInteger(arg3) ? "" : arg3 + " ") + ((arg4.length() == 0) ? "" : arg4.toString())).trim())) {
@@ -51,11 +51,11 @@ public class CmdAdd extends Cmd {
 			} else {
 				Msg.CMD_ADDMENUADDFAIL.print(sender, arg2);
 			}
-		} else if (Activators.contains(arg1)) {
+		} else if (ActivatorsManager.contains(arg1)) {
 			String param = Util.replaceStandardLocations(player, arg4.toString()); // используется в addActions
 			if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
 				if (addAction(arg1, arg3, param)) {
-					Activators.saveActivators();
+					ActivatorsManager.saveActivators();
 					Msg.CMD_ACTADDED.print(sender, arg3 + " (" + param + ")"); //TODO~
 					return true;
 				} else {
@@ -63,14 +63,14 @@ public class CmdAdd extends Cmd {
 				}
 			} else if (arg2.equalsIgnoreCase("r") || arg2.equalsIgnoreCase("reaction")) {
 				if (addReAction(arg1, arg3, param)) {
-					Activators.saveActivators();
+					ActivatorsManager.saveActivators();
 					return Msg.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
 				} else {
 					Msg.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
 				}
 			} else if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
 				if (addFlag(arg1, arg3, param)) {
-					Activators.saveActivators();
+					ActivatorsManager.saveActivators();
 					return Msg.CMD_FLAGADDED.print(sender, arg3 + " (" + param + ")");
 				} else {
 					Msg.CMD_FLAGNOTADDED.print(sender, arg3 + " (" + arg4 + ")");
@@ -86,7 +86,7 @@ public class CmdAdd extends Cmd {
 
 	private boolean addAction(String clicker, String flag, String param) {
 		if (Actions.isValid(flag)) {
-			Activators.addAction(clicker, flag, param);
+			ActivatorsManager.addAction(clicker, flag, param);
 			return true;
 		}
 		return false;
@@ -94,7 +94,7 @@ public class CmdAdd extends Cmd {
 
 	private boolean addReAction(String clicker, String flag, String param) {
 		if (Actions.isValid(flag)) {
-			Activators.addReaction(clicker, flag, param);
+			ActivatorsManager.addReaction(clicker, flag, param);
 			return true;
 		}
 		return false;
@@ -105,7 +105,7 @@ public class CmdAdd extends Cmd {
 		boolean not = fl.startsWith("!");
 		if (Flags.isValid(flag)) {
 			// TODO: все эти проверки вынести в соответствующие классы
-			Activators.addFlag(clicker, flag, param, not);
+			ActivatorsManager.addFlag(clicker, flag, param, not);
 			return true;
 		}
 		return false;
@@ -119,8 +119,8 @@ public class CmdAdd extends Cmd {
 			Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
 			return true;
 		}
-		if (Activators.add(activator)) {
-			Activators.saveActivators();
+		if (ActivatorsManager.add(activator)) {
+			ActivatorsManager.saveActivators();
 			Msg.CMD_ADDBADDED.print(sender, activator.toString());
 		} else {
 			Msg.CMD_NOTADDBADDED.print(sender, activator.toString());

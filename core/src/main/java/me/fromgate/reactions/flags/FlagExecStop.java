@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import org.bukkit.entity.Player;
 
 public class FlagExecStop implements Flag {
@@ -30,7 +30,7 @@ public class FlagExecStop implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		if (param.isEmpty()) return false;
-		return Activators.isStopped(player, param, false);
+		return ActivatorsManager.isStopped(player, param, false);
 	}
 
 }

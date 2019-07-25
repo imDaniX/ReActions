@@ -22,14 +22,14 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.timer.Timers;
+import me.fromgate.reactions.time.TimersManager;
 import org.bukkit.entity.Player;
 
 public class FlagTimerActive implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		return Timers.isTimerWorking(param);
+		return TimersManager.isTimerWorking(param);
 	}
 
 }

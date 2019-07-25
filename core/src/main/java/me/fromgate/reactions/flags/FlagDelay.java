@@ -22,13 +22,13 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.timer.Time;
-import me.fromgate.reactions.util.Delayer;
+import me.fromgate.reactions.time.Delayer;
+import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class FlagDelay implements Flag {
-	private boolean globalDelay;
+	private final boolean globalDelay;
 
 	public FlagDelay(boolean globalDelay) {
 		this.globalDelay = globalDelay;
@@ -43,7 +43,7 @@ public class FlagDelay implements Flag {
 		Param params = new Param(param);
 		if (params.isParamsExists("id")) {
 			id = params.getParam("id");
-			updateTime = Time.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
+			updateTime = TimeUtil.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
 			playerName = params.getParam("player", playerName);
 		}
 		boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);

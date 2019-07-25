@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 public class WeSelectionRegionStorage extends RAStorage {
 
-	private WeSelection selection;
+	private final WeSelection selection;
 
 	public WeSelectionRegionStorage(Player player, WeSelection weSelection) {
 		super(player, ActivatorType.WE_SELECTION_REGION);

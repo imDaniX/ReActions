@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 public class FlightStorage extends RAStorage {
 	private boolean flying;
 
-	public FlightStorage(Player p, boolean isFlying) {
+	public FlightStorage(Player p, boolean flying) {
 		super(p, ActivatorType.FLIGHT);
-		this.flying = isFlying;
+		this.flying = flying;
 	}
 
 	public boolean isFlying() {

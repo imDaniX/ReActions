@@ -43,7 +43,7 @@ public class CommandActivator extends Activator {
 
 	private boolean checkExact;
 	private String command;
-	private Param arguments = new Param();
+	private Param arguments;
 	private boolean useRegex;
 	boolean override;
 

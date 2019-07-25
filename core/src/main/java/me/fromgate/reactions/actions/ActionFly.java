@@ -1,16 +1,15 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Param;
-import org.bukkit.Bukkit;
+import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
 public class ActionFly extends Action {
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute(Player p, Param params) {
 		Player player;
 		String playerName = params.getParam("player", p != null ? p.getName() : "");
-		player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
+		player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
 		AllowFly allow = AllowFly.NONE;
 		AllowFly fly = AllowFly.NONE;
 		if (params.hasAnyParam("allow")) {
@@ -31,7 +30,7 @@ public class ActionFly extends Action {
 		NONE
 	}
 
-	public boolean flyPlayer(Player player, AllowFly allow, AllowFly fly) {
+	private boolean flyPlayer(Player player, AllowFly allow, AllowFly fly) {
 		if (player == null || player.isDead() || !player.isOnline()) return false;
 
 		if (allow == AllowFly.TRUE && fly == AllowFly.TRUE || allow == AllowFly.FALSE && fly == AllowFly.FALSE) {

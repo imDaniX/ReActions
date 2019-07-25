@@ -23,12 +23,12 @@
 
 package me.fromgate.reactions.activators;
 
+import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.configuration.ConfigurationSection;

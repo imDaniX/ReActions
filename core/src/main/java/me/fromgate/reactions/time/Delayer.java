@@ -20,10 +20,10 @@
  * 
  */
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.timer.Time;
+import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -106,7 +106,7 @@ public class Delayer {
 			if (delaytime < System.currentTimeMillis()) continue;
 			String[] ln = key.split("\\.", 2);
 			if (ln.length != 2) continue;
-			lst.add("[" + ln[0] + "] " + ln[1] + ": " + Time.fullTimeToString(delays.get(key)));
+			lst.add("[" + ln[0] + "] " + ln[1] + ": " + TimeUtil.fullTimeToString(delays.get(key)));
 		}
 		Collections.sort(lst);
 		Msg.printPage(sender, lst, Msg.MSG_LISTDELAY, pageNum, linePerPage, true);
@@ -118,8 +118,8 @@ public class Delayer {
 		if (!delays.containsKey(fullId)) return null;
 		long time = delays.get(fullId);
 		String[] times = new String[8];
-		times[0] = Time.fullTimeToString(time, "dd-MM-YYYY HH:mm:ss");
-		times[1] = Time.fullTimeToString(time, "HH:mm:ss");
+		times[0] = TimeUtil.fullTimeToString(time, "dd-MM-YYYY HH:mm:ss");
+		times[1] = TimeUtil.fullTimeToString(time, "HH:mm:ss");
 		time = time - System.currentTimeMillis();
 
 		int sec = (int) (time / 1000);

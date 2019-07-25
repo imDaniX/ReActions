@@ -20,7 +20,7 @@
  * 
  */
 
-package me.fromgate.reactions.timer;
+package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Time {
+public class TimeUtil {
 
 	private final static Pattern TIME_HH_MM = Pattern.compile("^[0-5][0-9]:[0-5][0-9]$");
 	private final static Pattern TIME_HH_MM_SS = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$");
@@ -60,7 +60,7 @@ public class Time {
 		int hours = (int) ((time / 1000 + 6) % 24);
 		int minutes = (int) (60 * (time % 1000) / 1000);
 		timeStr = String.format("%02d:%02d", hours, minutes);
-		if (showms && (time < 1000)) timeStr = Long.toString(time) + "ms";
+		if (showms && (time < 1000)) timeStr = time + "ms";
 		return timeStr;
 	}
 

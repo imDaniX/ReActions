@@ -40,8 +40,7 @@ import java.util.Map;
 
 public class BukkitMessenger implements Messenger {
 
-	private JavaPlugin plugin;
-
+	private final JavaPlugin plugin;
 
 	public BukkitMessenger(JavaPlugin plugin) {
 		this.plugin = plugin;

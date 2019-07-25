@@ -6,6 +6,7 @@ import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import org.bukkit.Bukkit;
 
+// TODO: Externals system looks weird, should be more complex
 public class Externals {
 
 	private static boolean factions = false;
@@ -58,6 +59,8 @@ public class Externals {
 			} catch (Throwable ignore) {
 			}
 		}
+
+		// TODO: Essentials support (homes, warps, native god check)
 	}
 
 	public static boolean isConnectedFactions() {

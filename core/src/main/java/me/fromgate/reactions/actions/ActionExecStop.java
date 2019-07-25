@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
@@ -34,7 +34,7 @@ public class ActionExecStop extends Action {
 		if (player.isEmpty()) return false;
 		String activator = params.getParam("activator", "");
 		if (activator.isEmpty()) return false;
-		Activators.stopExec(player, activator);
+		ActivatorsManager.stopExec(player, activator);
 		setMessageParam(activator);
 		return true;
 	}

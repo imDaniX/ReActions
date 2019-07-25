@@ -20,9 +20,8 @@
  * 
  */
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.location;
 
-import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -39,8 +38,7 @@ public class Selector {
 	}
 
 	public static Location getSelectedLocation(Player p) {
-		if (p != null && locs.containsKey(p.getName())) return locs.get(p.getName());
-		return null;
+		return locs.get(p.getName());
 	}
 
 	public static String getSelectedStrLoc(Player p) {

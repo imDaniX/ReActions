@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.activators.Activator;
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.util.location.Locator;
@@ -20,7 +20,7 @@ public class CmdInfo extends Cmd {
 		String id = args.length > 1 ? args[1] : "";
 		if (id.isEmpty()) return false;
 		String far = args.length > 2 ? args[2] : "";
-		if (Activators.contains(id)) {
+		if (ActivatorsManager.contains(id)) {
 			printActInfo(sender, id, far);
 		} else if (id.equalsIgnoreCase("menu")) {
 			InventoryMenu.printMenu(sender, far);
@@ -30,7 +30,7 @@ public class CmdInfo extends Cmd {
 
 
 	private void printActInfo(CommandSender sender, String activatorName, String far) {
-		Activator act = Activators.get(activatorName);
+		Activator act = ActivatorsManager.get(activatorName);
 		boolean f;
 		boolean a;
 		boolean r;

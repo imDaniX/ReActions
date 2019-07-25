@@ -25,10 +25,10 @@ package me.fromgate.reactions.storage;
 import me.fromgate.reactions.activators.ActivatorType;
 
 public class FactionRelationStorage extends RAStorage {
-	private String faction1;
-	private String faction2;
-	private String oldRelation;
-	private String newRelation;
+	private final String faction1;
+	private final String faction2;
+	private final String oldRelation;
+	private final String newRelation;
 
 	public FactionRelationStorage(String faction1, String faction2, String oldRelation, String newRelation) {
 		super(null, ActivatorType.FCT_RELATION);

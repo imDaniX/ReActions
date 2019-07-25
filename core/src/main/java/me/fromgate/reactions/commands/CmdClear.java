@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
@@ -12,21 +12,21 @@ public class CmdClear extends Cmd {
 		String activatorId = args.length >= 2 ? args[1] : "";
 		if (activatorId.isEmpty()) return false;
 		String arg2 = args.length >= 3 ? args[2] : "";
-		if (Activators.contains(activatorId)) {
+		if (ActivatorsManager.contains(activatorId)) {
 			if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
-				Activators.clearFlags(activatorId);
-				Activators.saveActivators();
+				ActivatorsManager.clearFlags(activatorId);
+				ActivatorsManager.saveActivators();
 				Msg.MSG_CLEARFLAG.print(sender, activatorId);
 			} else if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
-				Activators.clearActions(activatorId);
+				ActivatorsManager.clearActions(activatorId);
 				Msg.MSG_CLEARACT.print(sender, activatorId);
-				Activators.saveActivators();
+				ActivatorsManager.saveActivators();
 			} else if (arg2.equalsIgnoreCase("r") || arg2.equalsIgnoreCase("reaction")) {
-				Activators.clearReactions(activatorId);
+				ActivatorsManager.clearReactions(activatorId);
 				Msg.MSG_CLEARREACT.print(sender, activatorId);
-				Activators.saveActivators();
+				ActivatorsManager.saveActivators();
 			}
-			Activators.saveActivators();
+			ActivatorsManager.saveActivators();
 		} else return Msg.CMD_UNKNOWNBUTTON.print(sender, activatorId);
 		return false;
 	}

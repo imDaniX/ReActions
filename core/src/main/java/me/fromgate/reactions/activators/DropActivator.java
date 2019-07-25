@@ -38,7 +38,7 @@ public class DropActivator extends Activator {
 		Variables.setTempVar("pickupDelay", Double.toString(de.getPickupDelay()));
 		boolean result = Actions.executeActivator(de.getPlayer(), this);
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
-		if (Util.FLOAT.matcher(pickupDelayStr).matches()) de.setPickupDelay(Double.parseDouble(pickupDelayStr));
+		if (Util.INT.matcher(pickupDelayStr).matches()) de.setPickupDelay(Integer.parseInt(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "0");

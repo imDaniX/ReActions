@@ -27,7 +27,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class PlateStorage extends RAStorage {
-	private Location loc = null;
+	private final Location loc;
 
 	public PlateStorage(Player p, Location loc) {
 		super(p, ActivatorType.PLATE);

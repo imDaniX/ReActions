@@ -26,7 +26,7 @@ import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class RegionLeaveStorage extends RAStorage {
-	private String region;
+	private final String region;
 
 	public RegionLeaveStorage(Player player, String region) {
 		super(player, ActivatorType.REGION_LEAVE);

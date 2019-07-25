@@ -2,14 +2,13 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.util.Param;
-import org.bukkit.Bukkit;
+import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
 /**
  * Created by MaxDikiy on 18/10/2017.
  */
 public class ActionWeToolControl extends Action {
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute(Player p, Param params) {
 		Player player = p;
@@ -17,7 +16,7 @@ public class ActionWeToolControl extends Action {
 		if (params.hasAnyParam("value", "player")) {
 			String playerName = params.getParam("player", p != null ? p.getName() : "");
 			isToolControl = params.getParam("value", false);
-			player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
+			player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
 		} else isToolControl = params.getParam("param-line", false);
 
 		RaWorldEdit.getSession(player).setToolControl(isToolControl);

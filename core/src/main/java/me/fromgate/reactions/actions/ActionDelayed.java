@@ -1,16 +1,16 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.timer.Time;
+import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.waiter.ActionsWaiter;
 import org.bukkit.entity.Player;
 
 public class ActionDelayed extends Action {
 
 	@Override
 	public boolean execute(Player p, Param params) {
-		long delay = Time.parseTime(params.getParam("time", "0"));
+		long delay = TimeUtil.parseTime(params.getParam("time", "0"));
 		if (delay == 0) return false;
 
 		String actionSource = params.getParam("action", "");
@@ -29,7 +29,7 @@ public class ActionDelayed extends Action {
 		}
 
 		StoredAction av = new StoredAction(actionStr, paramStr);
-		ActionsWaiter.executeDelayed(p, av, this.isAction(), delay);
+		WaitingManager.executeDelayed(p, av, this.isAction(), delay);
 		return false;
 	}
 

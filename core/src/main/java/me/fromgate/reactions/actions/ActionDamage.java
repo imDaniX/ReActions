@@ -23,20 +23,19 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Param;
-import org.bukkit.Bukkit;
+import me.fromgate.reactions.util.Util;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.Player;
 
 public class ActionDamage extends Action {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute(Player p, Param params) {
 		Player player = p;
 		double damage = 0;
 		if (params.hasAnyParam("damage", "player")) {
 			String playerName = params.getParam("player", p != null ? p.getName() : "");
-			player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
+			player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
 			damage = params.getParam("damage", 0);
 		} else params.getParam("param-line", 0);
 		return damagePlayer(player, damage);

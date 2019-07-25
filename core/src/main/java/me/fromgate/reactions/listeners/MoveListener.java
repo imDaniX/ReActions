@@ -20,12 +20,12 @@
  *
  */
 
-package me.fromgate.reactions.util.listeners;
+package me.fromgate.reactions.listeners;
 
+import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.location.PushBack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -44,15 +44,13 @@ public class MoveListener implements Listener {
 
 	public static void init() {
 		if (Cfg.playerMoveTaskUse) {
-			Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> {
-				Bukkit.getOnlinePlayers().forEach(player -> {
-					Location from = prevLocations.getOrDefault(player.getName(), null);
-					Location to = player.getLocation();
-					if (!to.getWorld().equals(from.getWorld())) from = null;
-					processMove(player, from, to);
-					prevLocations.put(player.getName(), to);
-				});
-			}, 30, Cfg.playerMoveTaskTick);
+			Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(pl -> {
+				Location from = prevLocations.getOrDefault(pl.getName(), null);
+				Location to = pl.getLocation();
+				if (!to.getWorld().equals(from.getWorld())) from = null;
+				processMove(pl, from, to);
+				prevLocations.put(pl.getName(), to);
+			}), 30, Cfg.playerMoveTaskTick);
 		} else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
 	}
 
@@ -64,8 +62,8 @@ public class MoveListener implements Listener {
 	private static void processMove(Player player, Location from, Location to) {
 		PushBack.rememberLocations(player, from, to);
 		if (!BlockUtil.isSameBlock(from, to)) {
-			StorageManager.raiseAllRegionEvents(player, to, from);
-			StorageManager.raiseCuboidEvent(player);
+			StorageManager.raiseAllRegionActivators(player, to, from);
+			StorageManager.raiseCuboidActivator(player);
 		}
 	}
 

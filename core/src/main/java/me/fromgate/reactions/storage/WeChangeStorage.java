@@ -9,8 +9,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class WeChangeStorage extends RAStorage {
-	private Location location;
-	private Material blockType;
+	private final Location location;
+	private final Material blockType;
 
 	public WeChangeStorage(Player player, Location location, Material blockType) {
 		super(player, ActivatorType.WE_CHANGE);

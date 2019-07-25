@@ -23,14 +23,12 @@
 package me.fromgate.reactions.storage;
 
 import me.fromgate.reactions.activators.ActivatorType;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-
 public class BlockClickStorage extends RAStorage {
-	private Block block;
-	private boolean leftClick;
+	private final Block block;
+	private final boolean leftClick;
 
 	public BlockClickStorage(Player p, Block block, boolean leftClick) {
 		super(p, ActivatorType.BLOCK_CLICK);
@@ -40,10 +38,6 @@ public class BlockClickStorage extends RAStorage {
 
 	public Block getBlockClick() {
 		return this.block;
-	}
-
-	public Location getBlockClickLocation() {
-		return block.getLocation();
 	}
 
 	public boolean isLeftClicked() {

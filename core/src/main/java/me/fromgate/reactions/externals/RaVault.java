@@ -75,21 +75,18 @@ public class RaVault {
 
 
 	@Deprecated
-	@SuppressWarnings("deprecation")
 	public static double getBalance(String account) {
 		if (!isEconomyConnected()) return 0;
 		return economy.getBalance(account);
 	}
 
 	@Deprecated
-	@SuppressWarnings("deprecation")
 	public static void withdrawPlayer(String account, double amount) {
 		if (!isEconomyConnected()) return;
 		economy.withdrawPlayer(account, amount);
 	}
 
 	@Deprecated
-	@SuppressWarnings("deprecation")
 	public static void depositPlayer(String account, double amount) {
 		if (!isEconomyConnected()) return;
 		economy.depositPlayer(account, amount);

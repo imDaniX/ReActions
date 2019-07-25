@@ -38,7 +38,7 @@ public class ActionExecute extends Action {
 		String id = params.getParam("activator", "");
 		if (id.isEmpty()) return false;
 		setMessageParam(id);
-		return StorageManager.raiseExecEvent(player, params, Variables.getTempVars());
+		return StorageManager.raiseExecActivator(player, params, Variables.getTempVars());
 	}
 
 }

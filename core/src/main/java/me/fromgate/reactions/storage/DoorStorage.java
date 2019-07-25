@@ -29,7 +29,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class DoorStorage extends RAStorage {
-	private Block doorBlock;
+	private final Block doorBlock;
 
 	public DoorStorage(Player p, Block block) {
 		super(p, ActivatorType.DOOR);

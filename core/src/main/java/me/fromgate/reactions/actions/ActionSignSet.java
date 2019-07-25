@@ -46,7 +46,7 @@ public class ActionSignSet extends Action {
 		boolean chunkLoad = params.getParam("loadchunk", false);
 		if (!chunkLoad && !loc.getChunk().isLoaded()) return false;
 		Block block = loc.getBlock();
-		if (BlockUtil.isSign(block)) return false;
+		if (!BlockUtil.isSign(block)) return false;
 		Sign sign = (Sign) block.getState();
 		for (int i = 1; i <= 4; i++) {
 			String line = params.getParam("line" + i, "");

@@ -46,10 +46,10 @@ public enum Flags {
 	GROUP("group", true, new FlagGroup()),
 	PERM("perm", true, new FlagPerm()),
 	TIME("time", false, new FlagTime()),
-	ITEM("item", true, new FlagItem(0)),
-	ITEM_INVENTORY("invitem", true, new FlagItem(1)),
-	ITEM_WEAR("invwear", true, new FlagItem(2)),
-	ITEM_OFFHAND("itemoffhand", true, new FlagItem(3)),
+	ITEM("item", true, new FlagItem((byte) 0)),
+	ITEM_INVENTORY("invitem", true, new FlagItem((byte) 1)),
+	ITEM_WEAR("invwear", true, new FlagItem((byte) 2)),
+	ITEM_OFFHAND("itemoffhand", true, new FlagItem((byte) 3)),
 	BLOCK("blockcheck", false, new FlagBlock()),
 	TOWN("town", true, new FlagTown()),
 	MONEY("money", false, new FlagMoney()),
@@ -77,16 +77,16 @@ public enum Flags {
 	DIRECTION("dir", true, new FlagDirection()),
 	FLAG_SET("flagset", false, new FlagFlagSet()),
 	EXECUTE_STOP("stopped", false, new FlagExecStop()),
-	VAR_EXIST("varexist", false, new FlagVar(0, false)),
-	VAR_PLAYER_EXIST("varpexist", true, new FlagVar(0, true)),
-	VAR_COMPARE("varcmp", false, new FlagVar(1, false)),
-	VAR_PLAYER_COMPARE("varpcmp", true, new FlagVar(1, true)),
-	VAR_GREATER("vargrt", false, new FlagVar(2, false)),
-	VAR_PLAYER_GREATER("varpgrt", true, new FlagVar(2, true)),
-	VAR_LOWER("varlwr", false, new FlagVar(3, false)),
-	VAR_PLAYER_LOWER("varplwr", true, new FlagVar(3, true)),
-	VAR_MATCH("varmatch", false, new FlagVar(4, false)),
-	VAR_PLAYER_MATCH("varpmatch", true, new FlagVar(4, true)),
+	VAR_EXIST("varexist", false, new FlagVar((byte) 0, false)),
+	VAR_PLAYER_EXIST("varpexist", true, new FlagVar((byte) 0, true)),
+	VAR_COMPARE("varcmp", false, new FlagVar((byte) 1, false)),
+	VAR_PLAYER_COMPARE("varpcmp", true, new FlagVar((byte) 1, true)),
+	VAR_GREATER("vargrt", false, new FlagVar((byte) 2, false)),
+	VAR_PLAYER_GREATER("varpgrt", true, new FlagVar((byte) 2, true)),
+	VAR_LOWER("varlwr", false, new FlagVar((byte) 3, false)),
+	VAR_PLAYER_LOWER("varplwr", true, new FlagVar((byte) 3, true)),
+	VAR_MATCH("varmatch", false, new FlagVar((byte) 4, false)),
+	VAR_PLAYER_MATCH("varpmatch", true, new FlagVar((byte) 4, true)),
 	COMPARE("cmp", false, new FlagCompare()),
 	RNC_RACE("rncrace", true, new FlagRacesAndClasses(true)),
 	RNC_CLASS("rncclass", true, new FlagRacesAndClasses(false)),
@@ -100,8 +100,8 @@ public enum Flags {
 	SQL_RESULT("sqlhasresult", false, new FlagSQL(false)),
 	FLY_SPEED("flyspeed", true, new FlagFlySpeed()),
 	WALK_SPEED("walkspeed", true, new FlagWalkSpeed()),
-	GREATER("greater", false, new FlagGreaterLower(0)),
-	LOWER("lower", false, new FlagGreaterLower(1)),
+	GREATER("greater", false, new FlagGreaterLower((byte) 0)),
+	LOWER("lower", false, new FlagGreaterLower((byte) 1)),
 	WE_SEL_BLOCKS("selblocks", true, new FlagSelectionBlocks()),
 	WE_SUPERPICKAXE("superpickaxe", true, new FlagSuperPickAxe()),
 	WE_TOOLCONTROL("toolcontrol", true, new FlagToolControl()),
@@ -109,9 +109,9 @@ public enum Flags {
 	CHECK_ONLINE("checkonline", false, new FlagCheckOnline());
 
 
-	private String alias;
-	private boolean requirePlayer;
-	private Flag flag;
+	private final String alias;
+	private final boolean requirePlayer;
+	private final Flag flag;
 
 
 	Flags(String alias, boolean requirePlayer, Flag flag) {

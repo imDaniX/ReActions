@@ -26,7 +26,7 @@ import me.fromgate.reactions.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.placeholders.Placeholders;
-import me.fromgate.reactions.timer.Time;
+import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
@@ -38,7 +38,6 @@ import java.util.List;
 
 
 public enum Actions {
-	//"tp,velocity,sound,potion,rmvpot,grpadd,grprmv,msg,dmg,townset,townkick,itemrmv,invitemrmv,itemgive,cmdplr,cmdop,cmdsrv,moneypay,moneygive,delay,pdelay,back,mob,effect,run,rgclear";
 	TP("tp", true, new ActionTp()),
 	VELOCITY("velocity", true, new ActionVelocity()),
 	VELOCITY_JUMP("jump", true, new ActionVelocityJump()),
@@ -167,7 +166,7 @@ public enum Actions {
 				ActionWait aw = (ActionWait) at.action;
 				Param param = new Param(Placeholders.replacePlaceholderButRaw(player, av.getValue()), "time");
 				String timeStr = param.getParam("time", "0");
-				long time = Time.parseTime(timeStr);
+				long time = TimeUtil.parseTime(timeStr);
 				if (time == 0) continue;
 				List<StoredAction> futureList = new ArrayList<>(actions.subList(i + 1, actions.size()));
 				aw.executeDelayed(player, futureList, isAction, time);

@@ -25,20 +25,21 @@ package me.fromgate.reactions.util.message;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 public class RaDebug {
-	private static HashMap<String, Boolean> debug = new HashMap<>();
+	private static HashMap<UUID, Boolean> debug = new HashMap<>();
 
 	public static void setPlayerDebug(Player p, boolean debugMode) {
-		debug.put(p.getName(), debugMode);
+		debug.put(p.getUniqueId(), debugMode);
 	}
 
 	public static void offPlayerDebug(Player p) {
-		debug.remove(p.getName());
+		debug.remove(p.getUniqueId());
 	}
 
 	public static boolean checkFlagAndDebug(Player p, boolean flag) {
-		if ((p != null) && debug.containsKey(p.getName())) return (debug.get(p.getName()));
+		if ((p != null) && debug.containsKey(p.getUniqueId())) return (debug.get(p.getUniqueId()));
 		return flag;
 	}
 

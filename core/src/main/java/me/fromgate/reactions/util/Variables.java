@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.util;
 
+import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storage.StorageManager;
 import me.fromgate.reactions.util.message.Msg;
@@ -43,6 +44,7 @@ public class Variables {
 
 	private static Map<String, String> vars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	// TODO: I think it would be better to store and transfer temp variables inside Activator and Action classes
+	// TODO: Use some action instead temp variables to change event's data, like damage in MobDamage
 	private static Map<String, String> tempvars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	private final static Pattern VARP = Pattern.compile("(?i).*%varp?:\\S+%.*");
@@ -60,7 +62,7 @@ public class Variables {
 		vars.put(varId(player, var), value);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player);
-		StorageManager.raiseVariableEvent(var, player, value, prevVal);
+		StorageManager.raiseVariableActivator(var, player, value, prevVal);
 	}
 
 	public static void setVar(Player player, String var, String value) {
@@ -68,7 +70,7 @@ public class Variables {
 		vars.put(varId(player, var), value);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player.getName());
-		StorageManager.raiseVariableEvent(var, player == null ? "" : player.getName(), value, prevVal);
+		StorageManager.raiseVariableActivator(var, player == null ? "" : player.getName(), value, prevVal);
 	}
 
 	public static void clearVar(Player player, String var) {
@@ -77,7 +79,7 @@ public class Variables {
 		vars.remove(id);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player.getName());
-		StorageManager.raiseVariableEvent(var, player == null ? "" : player.getName(), "", prevVal);
+		StorageManager.raiseVariableActivator(var, player == null ? "" : player.getName(), "", prevVal);
 	}
 
 	public static boolean clearVar(String player, String var) {
@@ -87,7 +89,7 @@ public class Variables {
 		vars.remove(id);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player);
-		StorageManager.raiseVariableEvent(var, player, "", prevVal);
+		StorageManager.raiseVariableActivator(var, player, "", prevVal);
 		return true;
 	}
 

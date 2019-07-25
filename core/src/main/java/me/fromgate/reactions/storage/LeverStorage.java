@@ -29,8 +29,7 @@ import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
 
 public class LeverStorage extends RAStorage {
-	private Block leverBlock;
-
+	private final Block leverBlock;
 
 	public LeverStorage(Player p, Block block) {
 		super(p, ActivatorType.LEVER);

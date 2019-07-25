@@ -31,8 +31,7 @@ public class FlagWorld implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		World w = Bukkit.getWorld(param);
-		if (w == null) return false;
-		return player.getWorld().equals(w);
+		return w != null && player.getWorld().equals(w);
 	}
 
 }

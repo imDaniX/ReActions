@@ -31,7 +31,7 @@
 package me.fromgate.reactions.util.item;
 
 import com.google.common.base.Joiner;
-import me.fromgate.reactions.timer.Time;
+import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
@@ -66,7 +66,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,7 +74,6 @@ public class VirtualItem extends ItemStack {
 	private static boolean ALLOW_RANDOM = true;
 	private static boolean TRY_OLD_ITEM_PARSE = true;
 	private static boolean ADD_REGEX = true;
-	private static ThreadLocalRandom random = ThreadLocalRandom.current();
 	private final static String DIVIDER = "\\n";
 	private final static Pattern AMOUNT_RANDOM = Pattern.compile("<\\d+|>\\d+|<=\\d+|>=\\d+");
 	private final static Pattern BYTES_RGB = Pattern.compile("^[0-9]{1,3},[0-9]{1,3},[0-9]{1,3}$");
@@ -94,9 +92,9 @@ public class VirtualItem extends ItemStack {
 	/**
 	 * Constructor Create new VirtualItem object
 	 *
-	 * @param type   - Item material
-	 * @param damage - Durability
-	 * @param amount - Amount
+	 * @param type Item material
+	 * @param damage Durability
+	 * @param amount Amount
 	 */
 	public VirtualItem(Material type, int damage, int amount) {
 		super(type);
@@ -107,7 +105,7 @@ public class VirtualItem extends ItemStack {
 	/**
 	 * Constructor Create new VirtualItem object based on ItemStack
 	 *
-	 * @param item   - Base ItemStack
+	 * @param item Base ItemStack
 	 */
 	public VirtualItem(ItemStack item) {
 		super(item);
@@ -304,7 +302,7 @@ public class VirtualItem extends ItemStack {
 			if (pType == null)
 				continue;
 			int amplifier = (ln.length > 1 && Util.INT_MIN_MAX.matcher(ln[1]).matches()) ? getNumber(ln[1]) : 0;
-			int duration = (ln.length > 2) ? (int)(Time.parseTime(ln[2])/50) : Integer.MAX_VALUE;
+			int duration = (ln.length > 2) ? (int)(TimeUtil.parseTime(ln[2])/50) : Integer.MAX_VALUE;
 			pm.addCustomEffect(new PotionEffect(pType, duration, amplifier, true), true);
 		}
 		this.setItemMeta(pm);
@@ -867,7 +865,7 @@ public class VirtualItem extends ItemStack {
 		if (Util.INT.matcher(strMax).matches())
 			max = Integer.parseInt(strMax);
 		if (max > min)
-			return min + random.nextInt(1 + max - min);
+			return min + Util.getRandomInt(1 + max - min);
 		else
 			return min;
 	}

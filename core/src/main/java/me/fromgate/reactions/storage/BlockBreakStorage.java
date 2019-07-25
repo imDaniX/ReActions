@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 2017-05-14.
  */
 public class BlockBreakStorage extends RAStorage {
-	private Block block;
+	private final Block block;
 	private boolean isDropItems;
 
 	public BlockBreakStorage(Player p, Block block, boolean isDropItems) {
@@ -22,11 +22,11 @@ public class BlockBreakStorage extends RAStorage {
 		return this.block;
 	}
 
-	public Boolean isDropItems() {
+	public boolean isDropItems() {
 		return this.isDropItems;
 	}
 
-	public void setDropItems(Boolean isDropItems) {
+	public void setDropItems(boolean isDropItems) {
 		this.isDropItems = isDropItems;
 	}
 

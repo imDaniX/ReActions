@@ -25,6 +25,9 @@ package me.fromgate.reactions.storage;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
+/**
+ * Storages are used to transfer some data to activators
+ */
 public class RAStorage {
 
 	protected final Player player;

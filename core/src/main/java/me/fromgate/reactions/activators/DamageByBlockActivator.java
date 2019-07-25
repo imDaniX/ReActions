@@ -44,7 +44,6 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 		this.damageCause = getCauseByName(params.getParam("cause", "ANY"));
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean activate(RAStorage event) {
 		DamageByBlockStorage db = (DamageByBlockStorage) event;
@@ -54,7 +53,6 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 		if (!damageCauseCheck(db.getCause())) return false;
 		Variables.setTempVar("blocklocation", Locator.locationToString(db.getBlockBreakLocation()));
 		Variables.setTempVar("blocktype", damagerBlock.getType().name());
-		Variables.setTempVar("blockdata", String.valueOf(damagerBlock.getData()));
 		Variables.setTempVar("block", ItemUtil.itemFromBlock(damagerBlock).toString());
 		Variables.setTempVar("damage", Double.toString(db.getDamage()));
 		Variables.setTempVar("cause", db.getCause().name());

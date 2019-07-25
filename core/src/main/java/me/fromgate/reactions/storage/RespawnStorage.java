@@ -28,8 +28,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class RespawnStorage extends RAStorage {
-	private PlayerDeathActivator.DeathCause cause;
-	private LivingEntity killer;
+	private final PlayerDeathActivator.DeathCause cause;
+	private final LivingEntity killer;
 
 
 	public RespawnStorage(Player player, LivingEntity killer, PlayerDeathActivator.DeathCause cause) {

@@ -27,8 +27,8 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class ExecStorage extends RAStorage {
-	private String activator;
-	private Player targetPlayer;
+	private final String activator;
+	private final Player targetPlayer;
 	private Param tempVars;
 
 	public ExecStorage(Player player, Player targetPlayer, String activator) {

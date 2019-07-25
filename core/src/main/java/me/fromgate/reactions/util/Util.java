@@ -23,7 +23,9 @@
 package me.fromgate.reactions.util;
 
 import com.google.common.base.Charsets;
+import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.Selector;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;
@@ -54,7 +56,7 @@ import java.util.regex.Pattern;
 
 public class Util {
 
-	public final static Pattern BYTE = Pattern.compile("(1[1-2][1-7]|\\d{1,2})");
+	public final static Pattern BYTE = Pattern.compile("(2[1-5][1-6]|\\d{1,2})");
 
 	public final static Pattern INT = Pattern.compile("\\d+");
 	public final static Pattern INT_NEG = Pattern.compile("-?\\d+");
@@ -68,6 +70,11 @@ public class Util {
 
 	private final static ThreadLocalRandom random = ThreadLocalRandom.current();
 
+	/**
+	 * Get random value by min and max values
+	 * @param minmaxstr String with min-max values or just max value(e.g. "2-47", "76")
+	 * @return Random value
+	 */
 	public static int getMinMaxRandom(String minmaxstr) {
 		int min = 0;
 		int max;
@@ -85,6 +92,12 @@ public class Util {
 		else return min;
 	}
 
+	/**
+	 * Play sound on location
+	 * @param loc Location where sound should be played
+	 * @param params Parameters of sound
+	 * @return Name of played sound
+	 */
 	public static String soundPlay(Location loc, Param params) {
 		if (params.isEmpty()) return "";
 		Location soundLoc = loc;
@@ -118,6 +131,12 @@ public class Util {
 		return sound.name();
 	}
 
+	/**
+	 * Play sound on location
+	 * @param loc Location where sound should be played
+	 * @param param Parameters of sound
+	 * @return Name of played sound
+	 */
 	public static void soundPlay(Location loc, String param) {
 		if (param.isEmpty()) return;
 		/*Map<String,String> params = new HashMap<String,String>();
@@ -126,7 +145,11 @@ public class Util {
 		soundPlay(loc, params);
 	}
 
-
+	/**
+	 * Get Sound from string
+	 * @param param Name of sound
+	 * @return Sound from name or Sound.UI_BUTTON_CLICK
+	 */
 	private static Sound getSoundStr(String param) {
 		try {
 			return Sound.valueOf(param.toUpperCase());
@@ -315,7 +338,7 @@ public class Util {
 
 	@SuppressWarnings("deprecation")
 	public static UUID getUUID(String player) {
-		Player p = Bukkit.getServer().getPlayer(player);
+		Player p = getPlayerExact(player);
 		if (p == null) {
 			OfflinePlayer offP = Bukkit.getOfflinePlayer(player);
 			if (offP != null) return getUUID(offP);
@@ -334,6 +357,11 @@ public class Util {
 		return locs;
 	}
 
+	/**
+	 * Escape java symbols
+	 * @param doco String to escape
+	 * @return Escaped string
+	 */
 	public static String escapeJava(String doco) {
 		if (doco == null)
 			return "";
@@ -354,6 +382,12 @@ public class Util {
 		return b.toString();
 	}
 
+	/**
+	 * Get array of integers sorted by value
+	 * @param arg1 First integer
+	 * @param arg2 Second integer
+	 * @return Array of integers, where first value is minimal
+	 */
 	public static int[] sortedIntPair(int arg1, int arg2) {
 		int[] pair = new int[2];
 		if(arg1 > arg2) {
@@ -366,9 +400,26 @@ public class Util {
 		return pair;
 	}
 
+	/**
+	 * Generate list with empty strings
+	 * @param size Size of list
+	 * @return List with specified size
+	 */
 	public static List<String> getEmptyList(int size) {
 		List<String> l = new ArrayList<>();
 		for (int i = 0; i < size; i++) l.add("");
 		return l;
+	}
+
+	/**
+	 * Actually {@link Bukkit#getPlayerExact(String)}, but *not* deprecated
+	 * @param name Nickname of player
+	 * @return Player with specified name or null
+	 */
+	public static Player getPlayerExact(String name) {
+		if(name != null)
+			for(Player player : Bukkit.getOnlinePlayers())
+				if(player.getName().equalsIgnoreCase(name)) return player;
+		return null;
 	}
 }

@@ -25,6 +25,7 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
+// TODO: Action to set level
 public class FlagLevel implements Flag {
 
 	@Override

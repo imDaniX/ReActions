@@ -46,7 +46,7 @@ public interface Messenger {
 
 	Map<String, String> load(String language);
 
-	void save(String langugage, Map<String, String> message);
+	void save(String language, Map<String, String> message);
 
 	boolean isValidSender(Object send);
 

@@ -1,21 +1,20 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Param;
-import org.bukkit.Bukkit;
+import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
 /**
  * Created by MaxDikiy on 2017-05-16.
  */
 public class ActionFlySpeed extends Action {
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute(Player p, Param params) {
 		Player player = p;
 		double speed;
 		if (params.hasAnyParam("speed", "player")) {
 			String playerName = params.getParam("player", p != null ? p.getName() : "");
-			player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
+			player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
 			speed = params.getParam("speed", 0);
 		} else speed = params.getParam("param-line", 0);
 		return flySpeedPlayer(player, speed / 10);

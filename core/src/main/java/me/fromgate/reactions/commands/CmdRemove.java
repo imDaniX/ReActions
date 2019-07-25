@@ -1,9 +1,9 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.activators.Activator;
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.menu.InventoryMenu;
-import me.fromgate.reactions.timer.Timers;
+import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
@@ -29,10 +29,10 @@ public class CmdRemove extends Cmd {
 		}
 		if (arg2.isEmpty()) return false;
 		if (arg1.equalsIgnoreCase("act") || arg1.equalsIgnoreCase("activator")) {
-			if (Activators.contains(arg2)) {
-				Activators.removeActivator(arg2);
+			if (ActivatorsManager.contains(arg2)) {
+				ActivatorsManager.removeActivator(arg2);
 				Msg.printMSG(sender, "msg_removebok", arg2);
-				Activators.saveActivators();
+				ActivatorsManager.saveActivators();
 			} else Msg.printMSG(sender, "msg_removebnf", arg2);
 		} else if (arg1.equalsIgnoreCase("loc")) {
 			if (Locator.removeTpLoc(arg2)) {
@@ -40,14 +40,14 @@ public class CmdRemove extends Cmd {
 				Locator.saveLocs();
 			} else Msg.printMSG(sender, "msg_removelocnf", arg2);
 		} else if (arg1.equalsIgnoreCase("timer") || arg1.equalsIgnoreCase("tmr")) {
-			Timers.removeTimer(sender, arg2);
+			TimersManager.removeTimer(sender, arg2);
 		} else if (arg1.equalsIgnoreCase("var") || arg1.equalsIgnoreCase("variable") || arg1.equalsIgnoreCase("variables")) {
 			removeVariable(sender, arg2 + ((arg3.length() == 0) ? "" : " " + arg3));
 		} else if (arg1.equalsIgnoreCase("menu") || arg1.equalsIgnoreCase("m")) {
 			if (InventoryMenu.remove(arg2)) Msg.printMSG(sender, "msg_removemenu", arg2);
 			else Msg.printMSG(sender, "msg_removemenufail", 'c', '4', arg2);
-		} else if (Activators.contains(arg1)) {
-			Activator act = Activators.get(arg1);
+		} else if (ActivatorsManager.contains(arg1)) {
+			Activator act = ActivatorsManager.get(arg1);
 			if (Util.isIntegerGZ(arg3.toString())) {
 				int num = Integer.parseInt(arg3.toString());
 				if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
@@ -63,13 +63,13 @@ public class CmdRemove extends Cmd {
 						Msg.printMSG(sender, "msg_reactionremoved", act.getName(), num);
 					else Msg.printMSG(sender, "msg_failedtoremovereaction", act.getName(), num);
 				} else return false;
-				Activators.saveActivators();
+				ActivatorsManager.saveActivators();
 			} else Msg.printMSG(sender, "msg_wrongnumber", arg3.toString());
 		}
 		return true;
 	}
 
-	public boolean removeVariable(CommandSender sender, String param) {
+	private boolean removeVariable(CommandSender sender, String param) {
 		Player p = (sender instanceof Player) ? (Player) sender : null;
 		Param params = new Param(param);
 		String player = params.getParam("player", "");

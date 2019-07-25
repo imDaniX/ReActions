@@ -10,9 +10,9 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
  * Created by MaxDikiy on 2017-07-23.
  */
 public class DamageByBlockStorage extends RAStorage {
-	private Block blockDamager;
+	private final Block blockDamager;
 	private double damage;
-	private DamageCause cause;
+	private final DamageCause cause;
 
 
 	public DamageByBlockStorage(Player player, Block blockDamager, double damage, DamageCause cause) {

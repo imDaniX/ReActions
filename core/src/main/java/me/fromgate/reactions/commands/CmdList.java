@@ -1,9 +1,9 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.menu.InventoryMenu;
-import me.fromgate.reactions.timer.Timers;
-import me.fromgate.reactions.util.Delayer;
+import me.fromgate.reactions.time.Delayer;
+import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.Locator;
@@ -44,7 +44,7 @@ public class CmdList extends Cmd {
 				case "group":
 					printActGroup(sender, mask, page, lpp);
 				case "timer": case "timers":
-					Timers.listTimers(sender, page);
+					TimersManager.listTimers(sender, page);
 				case "delay": case "delays":
 					Delayer.printDelayList(sender, page, lpp);
 				case "loc": case "location":
@@ -61,19 +61,19 @@ public class CmdList extends Cmd {
 	}
 
 	private void printAct(CommandSender sender, int page, int lpp) {
-		Set<String> ag = Activators.getActivatorsSet();
+		Set<String> ag = ActivatorsManager.getActivatorsSet();
 		Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
-		Msg.MSG_LISTCOUNT.print(sender, Activators.size(), Locator.sizeTpLoc());
+		Msg.MSG_LISTCOUNT.print(sender, ActivatorsManager.size(), Locator.sizeTpLoc());
 	}
 
 	private void printActGroup(CommandSender sender, String group, int page, int lpp) {
-		Set<String> ag = Activators.getActivatorsSetGroup(group);
+		Set<String> ag = ActivatorsManager.getActivatorsSetGroup(group);
 		Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}
 
 	private void printActType(CommandSender sender, String type, int page, int lpp) {
-		Set<String> ag = Activators.getActivatorsSet(type);
+		Set<String> ag = ActivatorsManager.getActivatorsSet(type);
 		Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}

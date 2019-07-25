@@ -9,8 +9,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
  */
 public class DamageStorage extends RAStorage {
 	private double damage;
-	private DamageCause cause;
-	public String source;
+	private final DamageCause cause;
+	public final String source;
 
 	public DamageStorage(Player player, double damage, DamageCause cause, String source) {
 		super(player, ActivatorType.DAMAGE);

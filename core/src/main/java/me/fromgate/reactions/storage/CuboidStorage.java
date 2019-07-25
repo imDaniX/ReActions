@@ -4,7 +4,7 @@ import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 /**
- * Actually move event
+ * Actually move storage
  */
 public class CuboidStorage extends RAStorage {
 	public CuboidStorage(Player player) {

@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.externals.RaEffects;
-import me.fromgate.reactions.util.Cfg;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.Locator;
@@ -60,8 +60,7 @@ public class ActionTp extends Action {
 			}
 			try {
 				while (!loc.getChunk().isLoaded()) loc.getChunk().load();
-			} catch (Exception ignored) {
-			}
+			} catch (Exception ignore) {}
 
 			Variables.setTempVar("loc-from", Locator.locationToString(p.getLocation()));
 			Variables.setTempVar("loc-from-str", Locator.locationToStringFormatted(p.getLocation()));

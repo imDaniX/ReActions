@@ -28,8 +28,8 @@ import me.fromgate.reactions.activators.MessageActivator;
 import org.bukkit.entity.Player;
 
 public class MessageStorage extends RAStorage {
-	private MessageActivator activator;
-	private String message;
+	private final MessageActivator activator;
+	private final String message;
 
 
 	public MessageStorage(Player player, MessageActivator activator, String message) {

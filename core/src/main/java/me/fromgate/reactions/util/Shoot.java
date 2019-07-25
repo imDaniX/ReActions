@@ -82,7 +82,7 @@ public class Shoot {
 			tempVars.set("shooter", shooter.getName());
 			tempVars.set("shooterloc", Locator.locationToString(shooter.getLocation()));
 		}
-		StorageManager.raiseExecEvent(shooter, param, tempVars);
+		StorageManager.raiseExecActivator(shooter, param, tempVars);
 	}
 
 	private static List<Block> getBeam(LivingEntity p, int distance) {
@@ -111,10 +111,9 @@ public class Shoot {
 		return list;
 	}
 
-	@SuppressWarnings("deprecation")
 	private static boolean isEmpty(Block b, LivingEntity shooter) {
 		if (!b.getType().isSolid()) return true;
-		if (ItemUtil.isItemInList(b.getType(), b.getData(), actionShootThrough)) return true;
+		if (ItemUtil.isItemInList(b.getType(), 0, actionShootThrough)) return true;
 		if ((shooter instanceof Player) && (isShotAndBreak(b, (Player) shooter))) {
 			b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
 			b.breakNaturally();
@@ -130,9 +129,8 @@ public class Shoot {
 		return !event.isCancelled();
 	}
 
-	@SuppressWarnings("deprecation")
 	private static boolean isShotAndBreak(Block b, Player p) {
-		if (ItemUtil.isItemInList(b.getType(), b.getData(), actionShootBreak)) return breakBlock(b, p);
+		if (ItemUtil.isItemInList(b.getType(), 0, actionShootBreak)) return breakBlock(b, p);
 		return false;
 	}
 

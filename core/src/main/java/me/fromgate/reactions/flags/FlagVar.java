@@ -27,10 +27,10 @@ import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 
 public class FlagVar implements Flag {
-	private int flagType;
-	private boolean personalVar;
+	private final byte flagType;
+	private final boolean personalVar;
 
-	public FlagVar(int flagType, boolean personalVar) {
+	public FlagVar(byte flagType, boolean personalVar) {
 		this.flagType = flagType;
 		this.personalVar = personalVar;
 	}

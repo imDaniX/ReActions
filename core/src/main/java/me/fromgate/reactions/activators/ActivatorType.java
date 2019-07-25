@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public enum ActivatorType {
-	// алиас, класс активатора, блокозависимый, локационный
+	// alias, activator class, need target block, can be located
 	BUTTON("b", ButtonActivator.class, true, true),
 	PLATE("plt", PlateActivator.class, true, true),
 	REGION("rg", RegionActivator.class, false, true),
@@ -78,7 +78,8 @@ public enum ActivatorType {
 	WE_CHANGE("wechange", WeChangeActivator.class),
 	GAMEMODE("gamemode", GamemodeActivator.class),
 	GOD("god", GodActivator.class),
-	CUBOID("cube", CuboidActivator.class, false, true);
+	CUBOID("cube", CuboidActivator.class, false, true),
+	PROJECTILE_HIT("projhit", ProjectileHitActivator.class);
 
 	private String alias;
 	private Class<? extends Activator> aClass;

@@ -54,7 +54,7 @@ public class ActionIfElse extends Action {
 		param.set("player", p == null ? "null" : p.getName());
 		Param tempVars = new Param();
 		tempVars.set("condition", condition);
-		StorageManager.raiseExecEvent(p, param, tempVars);
+		StorageManager.raiseExecActivator(p, param, tempVars);
 		return true;
 	}
 

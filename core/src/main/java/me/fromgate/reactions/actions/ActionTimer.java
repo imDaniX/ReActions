@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.timer.Timers;
+import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
@@ -40,7 +40,7 @@ public class ActionTimer extends Action {
 	public boolean execute(Player p, Param params) {
 		String timer = params.getParam("timer", "");
 		if (timer.isEmpty()) return false;
-		return Timers.setPause(timer, pauseTimer);
+		return TimersManager.setPause(timer, pauseTimer);
 	}
 
 }

@@ -28,8 +28,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class DeathStorage extends RAStorage {
-	private LivingEntity killer;
-	private PlayerDeathActivator.DeathCause source;
+	private final LivingEntity killer;
+	private final PlayerDeathActivator.DeathCause source;
 
 	public DeathStorage(LivingEntity killer, Player player, PlayerDeathActivator.DeathCause deathCause) {
 		super(player, ActivatorType.PLAYER_DEATH);

@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.util.location;
 
-import me.fromgate.reactions.util.Cfg;
+import me.fromgate.reactions.Cfg;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 

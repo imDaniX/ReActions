@@ -39,12 +39,13 @@ public class InventoryClickStorage extends RAStorage {
 	private SlotType slotType;
 	private InventoryType inventory;
 	private ItemStack item;
-	private Integer numberKey;
-	private Integer slot;
+	private int numberKey;
+	private int slot;
 	private InventoryView inventoryView;
 	private String inventoryName;
 
-	public InventoryClickStorage(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType slotType, ItemStack item, Integer numberKey, InventoryView inventoryView, Integer slot) {
+	public InventoryClickStorage(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType
+									slotType, ItemStack item, int numberKey, InventoryView inventoryView, int slot) {
 		super(p, ActivatorType.INVENTORY_CLICK);
 		this.inventoryName = inventoryView.getTitle();
 		this.action = action;
@@ -85,11 +86,11 @@ public class InventoryClickStorage extends RAStorage {
 		this.item = itemStack;
 	}
 
-	public Integer getNumberKey() {
+	public int getNumberKey() {
 		return this.numberKey;
 	}
 
-	public Integer getSlot() {
+	public int getSlot() {
 		return this.slot;
 	}
 

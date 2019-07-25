@@ -258,10 +258,10 @@ public class ItemUtil {
 		return items;
 	}
 
-	/*
-	 * set1:{item1:{}  item2:{} item3:{} chance:50}  set2:{item1:{}  item2:{} item3:{} chance:50}
-	 *
-	 *
+	/**
+	 * Get list of items from random set
+	 * @param items Set of items, e.g set1:{item1:{}  item2:{} item3:{} chance:50}  set2:{item1:{}  item2:{} item3:{} chance:50}
+	 * @return List of items
 	 */
 	public static List<ItemStack> parseRandomItemsStr(String items) {
 		Param params = new Param(items);
@@ -303,6 +303,7 @@ public class ItemUtil {
 
 
 	//id:data*amount@enchant:level,color;id:data*amount%chance/id:data*amount@enchant:level,color;id:data*amount%chance
+	@SuppressWarnings("unused")
 	public static String parseRandomItemsStrOld(String items) {
 		if (items.isEmpty()) return "";
 		String[] loots = items.split("/");
@@ -353,27 +354,41 @@ public class ItemUtil {
 	 * представленным в виде строки вида id1:data1,id2:data2,MATERIAL_NAME:data
 	 * При этом если data может быть опущена
 	 */
-	public static boolean isItemInList(Material type, int data, String str) {
+	public static boolean isItemInList(Material type, int durability, String str) {
 		String[] ln = str.split(",");
 		if (ln.length > 0)
 			for (String itemInList : ln) {
-				if (compareItemIdDataStr(type, data, itemInList)) return true;
+				if (compareItemIdDataStr(type, durability, itemInList)) return true;
 			}
 
 		return false;
 	}
 
-	public static boolean compareItemIdDataStr(Material type, int data, String itemStr) {
+	public static boolean compareItemIdDataStr(Material type, int durability, String itemStr) {
 		ItemStack item = parseItemStack(itemStr);
 		if (item == null) return false;
 		if (item.getType() != type) return false;
-		if (data < 0) return true;
-		return data == getDurability(item);
+		if (durability < 0) return true;
+		return durability == getDurability(item);
 	}
 
+	/**
+	 * Get material from name
+	 * @param name Name of material
+	 * @return Material (may be legacy)
+	 */
 	public static Material getMaterial(String name) {
 		name = name.toUpperCase();
 		Material material = Material.getMaterial(name, false);
 		return material == null ? Material.getMaterial(name, true) : material;
+	}
+
+	/**
+	 * Is item actually exist
+	 * @param item Item to check
+	 * @return Is item not null and not air
+	 */
+	public static boolean isExist(ItemStack item) {
+		return item != null && item.getType() != Material.AIR;
 	}
 }

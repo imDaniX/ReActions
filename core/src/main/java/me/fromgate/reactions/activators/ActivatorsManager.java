@@ -27,7 +27,7 @@ import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.timer.Timers;
+import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -41,7 +41,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class Activators {
+public class ActivatorsManager {
 
 	private static HashMap<ActivatorType, Set<Activator>> activatorsMap;
 	private static Set<Activator> activators;
@@ -67,7 +67,7 @@ public class Activators {
 		if (!groups.isEmpty())
 			for (String group : groups)
 				loadActivators(group, false);
-		Timers.updateIngameTimers();
+		TimersManager.updateIngameTimers();
 		RaWorldGuard.updateRegionCache();
 	}
 

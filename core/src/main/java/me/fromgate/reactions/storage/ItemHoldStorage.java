@@ -27,12 +27,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemHoldStorage extends RAStorage {
-	public ItemHoldStorage(Player p) {
+	private ItemStack item;
+	private final boolean mainHand;
+
+	public ItemHoldStorage(Player p, ItemStack item, boolean mainHand) {
 		super(p, ActivatorType.ITEM_HOLD);
+		this.item = item;
+		this.mainHand = mainHand;
 	}
 
 	public ItemStack getItem() {
-		return this.getPlayer().getInventory().getItemInMainHand();
+		return item;
+	}
+
+	public boolean isMainHand() {
+		return mainHand;
 	}
 
 }

@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 10/1/2017.
  */
 public class FlagGreaterLower implements Flag {
-	private int flagType;
+	private final byte flagType;
 
-	public FlagGreaterLower(int flagType) {
+	public FlagGreaterLower(byte flagType) {
 		this.flagType = flagType;
 	}
 

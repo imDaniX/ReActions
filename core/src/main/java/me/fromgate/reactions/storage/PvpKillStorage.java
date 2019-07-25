@@ -26,7 +26,7 @@ import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class PvpKillStorage extends RAStorage {
-	private Player killedPlayer;
+	private final Player killedPlayer;
 
 	public PvpKillStorage(Player player, Player killedPlayer) {
 		super(player, ActivatorType.PVP_KILL);

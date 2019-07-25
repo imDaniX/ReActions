@@ -27,15 +27,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class ButtonStorage extends RAStorage {
-	private Location button_loc;
+	private final Location buttonLoc;
 
 	public ButtonStorage(Player p, Location loc) {
 		super(p, ActivatorType.BUTTON);
-		this.button_loc = loc;
+		this.buttonLoc = loc;
 	}
 
 	public Location getButtonLocation() {
-		return this.button_loc;
+		return this.buttonLoc;
 	}
 
 }

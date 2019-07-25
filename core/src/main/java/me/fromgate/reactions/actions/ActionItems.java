@@ -205,7 +205,7 @@ public class ActionItems extends Action {
 		if (itemStr.isEmpty()) return false;
 		if (!itemStr.equalsIgnoreCase("offhand")) return false;
 		player.getInventory().setItemInOffHand(item);
-		StorageManager.raiseItemWearEvent(player);
+		StorageManager.raiseItemWearActivator(player);
 		return true;
 	}
 
@@ -224,7 +224,7 @@ public class ActionItems extends Action {
 				player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
 			}
 		}
-		StorageManager.raiseItemWearEvent(player);
+		StorageManager.raiseItemWearActivator(player);
 		return true;
 	}
 
@@ -307,7 +307,7 @@ public class ActionItems extends Action {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(ReActions.getPlugin(), () -> {
 			for (ItemStack i : items)
 				ItemUtil.giveItemOrDrop(p, i);
-			StorageManager.raiseItemHoldEvent(p);
+			StorageManager.raiseItemHoldActivator(p);
 		}, 1);
 		return true;
 	}

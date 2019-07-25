@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 2017-05-16.
  */
 public class SneakStorage extends RAStorage {
-	private boolean sneak;
+	private final boolean sneak;
 
 	public SneakStorage(Player player, boolean sneak) {
 		super(player, ActivatorType.SNEAK);

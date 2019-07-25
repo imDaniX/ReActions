@@ -28,7 +28,7 @@ import org.bukkit.entity.Player;
 
 
 public class MobClickStorage extends RAStorage {
-	private LivingEntity entity;
+	private final LivingEntity entity;
 
 	public MobClickStorage(Player p, LivingEntity entity) {
 		super(p, ActivatorType.MOB_CLICK);

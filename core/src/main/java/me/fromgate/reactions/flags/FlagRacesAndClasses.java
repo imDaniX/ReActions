@@ -27,7 +27,7 @@ import org.bukkit.entity.Player;
 
 public class FlagRacesAndClasses implements Flag {
 
-	private boolean checkRace;
+	private final boolean checkRace;
 
 	public FlagRacesAndClasses(boolean checkRace) {
 		this.checkRace = checkRace;

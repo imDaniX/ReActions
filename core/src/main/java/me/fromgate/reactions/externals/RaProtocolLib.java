@@ -129,7 +129,7 @@ public class RaProtocolLib {
 							if (jsonMessage != null) message = textToString(jsonMessage);
 						}
 						if (message.isEmpty()) return;
-						if (StorageManager.raiseMessageEvent(event.getPlayer(), Source.CHAT_OUTPUT, message))
+						if (StorageManager.raiseMessageActivator(event.getPlayer(), Source.CHAT_OUTPUT, message))
 							event.setCancelled(true);
 
 					}

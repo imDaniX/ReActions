@@ -26,7 +26,7 @@ import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class JoinStorage extends RAStorage {
-	private boolean firstJoin;
+	private final boolean firstJoin;
 
 	public JoinStorage(Player p, boolean firstJoin) {
 		super(p, ActivatorType.JOIN);

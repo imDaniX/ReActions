@@ -1,4 +1,4 @@
-package me.fromgate.reactions.util.waiter;
+package me.fromgate.reactions.time.waiter;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.StoredAction;
@@ -10,17 +10,18 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class ActionsWaiter {
+public class WaitingManager {
 
-	private static Set<Task> tasks;
+	private static Set<WaitTask> tasks;
+	private static long timeLimit;
 
 	public static void init() {
-		tasks = Collections.newSetFromMap(new ConcurrentHashMap<Task, Boolean>()); //new HashSet<>();
+		tasks = Collections.newSetFromMap(new ConcurrentHashMap<>()); //new HashSet<>();
 		load();
 	}
 
@@ -34,19 +35,19 @@ public class ActionsWaiter {
 	public static void executeDelayed(Player player, List<StoredAction> actions, boolean isAction, long time) {
 		if (actions.isEmpty()) return;
 		String playerStr = player != null ? player.getName() : null;
-		Task task = new Task(playerStr, actions, isAction, time);
+		WaitTask task = new WaitTask(playerStr, actions, isAction, time);
 		tasks.add(task);
 		save();
 	}
 
-	public static void remove(Task task) {
+	public static void remove(WaitTask task) {
 		tasks.remove(task);
 		save();
 	}
 
 	public static void load() {
 		if (!tasks.isEmpty()) {
-			for (Task t : tasks) {
+			for (WaitTask t : tasks) {
 				t.stop();
 			}
 		}
@@ -60,23 +61,39 @@ public class ActionsWaiter {
 			return;
 		}
 		for (String key : cfg.getKeys(false)) {
-			Task t = new Task(cfg, key);
+			WaitTask t = new WaitTask(cfg, key);
 			tasks.add(t);
 		}
+		Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), WaitingManager::refresh, 30, 900);
+	}
+
+	public static void refreshPlayer(Player player) {
+		refreshPlayer(player.getName());
+	}
+
+	// TODO: Use UUIDs
+	public static void refreshPlayer(String player) {
+		if (tasks.isEmpty()) return;
+		int before = tasks.size();
+		Iterator<WaitTask> iter = tasks.iterator();
+		while(iter.hasNext()) {
+			WaitTask t = iter.next();
+			if (player.equals(t.getPlayerName()) && t.isTimePassed()) t.execute();
+			if (t.isExecuted()) iter.remove();
+		}
+		if (tasks.size() != before) save();
 	}
 
 	public static void refresh() {
-		Set<Task> toRemove = new HashSet<>();
 		if (tasks.isEmpty()) return;
-		for (Task t : tasks) {
+		int before = tasks.size();
+		Iterator<WaitTask> iter = tasks.iterator();
+		while(iter.hasNext()) {
+			WaitTask t = iter.next();
 			if (t.isTimePassed()) t.execute();
-			if (t.isExecuted()) toRemove.add(t);
+			if (t.isExecuted()) iter.remove();
 		}
-		if (toRemove.isEmpty()) return;
-		for (Task t : toRemove) {
-			tasks.remove(t);
-		}
-		save();
+		if (tasks.size() != before) save();
 	}
 
 	public static void save() {
@@ -84,7 +101,7 @@ public class ActionsWaiter {
 			YamlConfiguration cfg = new YamlConfiguration();
 			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
 			if (f.exists()) f.delete();
-			for (Task t : tasks) {
+			for (WaitTask t : tasks) {
 				if (!t.isExecuted()) t.save(cfg);
 			}
 			try {
@@ -93,5 +110,13 @@ public class ActionsWaiter {
 				Msg.logMessage("Failed to save delayed actions");
 			}
 		}, 1);
+	}
+
+	public static void updateLimit(int hours) {
+		timeLimit = hours * 3600000;
+	}
+
+	public static int getTimeLimit() {
+		return (int) (timeLimit / 3600000);
 	}
 }

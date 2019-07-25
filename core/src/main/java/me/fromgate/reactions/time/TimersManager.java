@@ -20,7 +20,7 @@
  * 
  */
 
-package me.fromgate.reactions.timer;
+package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storage.StorageManager;
@@ -41,7 +41,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class Timers {
+public class TimersManager {
 	/*
 		Command example:
 		/react add timer <name> activator:<exec> time:<HH:MM,HH:MM|0_0/5_*_*_*_?> [player:<player>] [world:<world>]
@@ -189,7 +189,7 @@ public class Timers {
 	public static void initIngameTimer() {
 		if (ingameTimer != null) return;
 		ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
-			String currentTime = Time.currentIngameTime();
+			String currentTime = TimeUtil.currentIngameTime();
 			if (currentIngameTime.equalsIgnoreCase(currentTime)) return;
 			currentIngameTime = currentTime;
 			if (!timersIngame.contains(currentIngameTime)) return;
@@ -197,7 +197,7 @@ public class Timers {
 			for (String key : timers.keySet()) {
 				Timer timer = timers.get(key);
 				if (timer.isTimeToRun()) {
-					StorageManager.raiseExecEvent(null, timer.getParams());
+					StorageManager.raiseExecActivator(null, timer.getParams());
 				}
 			}
 		}, 1, 4); //1 По идее так не упустим, хотя.... ;)
@@ -208,7 +208,7 @@ public class Timers {
 		serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
 			for (Timer timer : getServerTimers().values()) {
 				if (timer.isTimeToRun()) {
-					StorageManager.raiseExecEvent(null, timer.getParams());
+					StorageManager.raiseExecActivator(null, timer.getParams());
 				}
 			}
 		}, 1, 20);

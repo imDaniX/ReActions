@@ -22,8 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.listeners.GodModeListener;
-import org.bukkit.entity.EntityType;
+import me.fromgate.reactions.listeners.GodModeListener;
 import org.bukkit.entity.Player;
 
 public class FlagState implements Flag {
@@ -41,6 +40,8 @@ public class FlagState implements Flag {
 				return player.isSprinting();
 			case VEHICLE:
 				return player.isInsideVehicle();
+			case SLEEP:
+				return player.isSleeping();
 			case STAND:
 				if (player.isSleeping()) return false;
 				if (player.isSneaking()) return false;
@@ -49,22 +50,13 @@ public class FlagState implements Flag {
 				return !player.isInsideVehicle();
 			case OP:
 				return player.isOp();
-			case VEHICLE_BOAT:
+			case VEHICLE_TYPED:
 				if (!player.isInsideVehicle()) return false;
-				return player.getVehicle().getType() == EntityType.BOAT;
-			case VEHICLE_HORSE:
-				if (!player.isInsideVehicle()) return false;
-				return player.getVehicle().getType() == EntityType.HORSE;
-			case VEHICLE_MINECART:
-				if (!player.isInsideVehicle()) return false;
-				return player.getVehicle().getType() == EntityType.MINECART;
-			case VEHICLE_PIG:
-				if (!player.isInsideVehicle()) return false;
-				return player.getVehicle().getType() == EntityType.PIG;
+				return player.getVehicle().getType().name().equalsIgnoreCase(param.split("_")[1]);
 			case SPECTATOR_TARGET:
-				if (player.getSpectatorTarget() != null) return true;
+				return player.getSpectatorTarget() != null;
 			case GLIDE:
-				if (player.isGliding()) return true;
+				return player.isGliding();
 			case GOD:
 				GodModeListener.setCheckGod(player);
 				if (GodModeListener.isGod(player)) return true;
@@ -72,15 +64,13 @@ public class FlagState implements Flag {
 		return false;
 	}
 
-	enum Posture {
+	private enum Posture {
 		SNEAK,
 		SPRINT,
 		STAND,
 		VEHICLE,
-		VEHICLE_MINECART,
-		VEHICLE_BOAT,
-		VEHICLE_PIG,
-		VEHICLE_HORSE,
+		VEHICLE_TYPED,
+		SLEEP,
 		FLY,
 		OP,
 		SPECTATOR_TARGET,
@@ -88,6 +78,8 @@ public class FlagState implements Flag {
 		GOD;
 
 		public static Posture getByName(String name) {
+			if(name.startsWith("VEHICLE_"))
+				return VEHICLE_TYPED;
 			for (Posture pt : Posture.values())
 				if (pt.name().equalsIgnoreCase(name)) return pt;
 			return null;

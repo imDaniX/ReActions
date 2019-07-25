@@ -193,7 +193,7 @@ public class InventoryMenu implements Listener {
 		if (activators.size() > clickedSlot) {
 			String activator = activators.get(clickedSlot);
 			if (!activator.isEmpty()) {
-				StorageManager.raiseExecEvent(player, new Param(activator, "activator"), tempvars);
+				StorageManager.raiseExecActivator(player, new Param(activator, "activator"), tempvars);
 			}
 		}
 		event.setCancelled(true);

@@ -51,7 +51,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 		Variables.setTempVar("blocktype", brokenBlock.getType().name());
 		Variables.setTempVar("block", ItemUtil.itemFromBlock(brokenBlock).toString());
 
-		Variables.setTempVar("is_drop", bbe.isDropItems().toString());
+		Variables.setTempVar("is_drop", Boolean.toString(bbe.isDropItems()));
 		boolean result = Actions.executeActivator(bbe.getPlayer(), this);
 		String isDropItem = Variables.getTempVar("is_drop");
 		if (isDropItem.equalsIgnoreCase("true") || isDropItem.equalsIgnoreCase("false")) {

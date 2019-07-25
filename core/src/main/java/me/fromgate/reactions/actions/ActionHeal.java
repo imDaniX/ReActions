@@ -24,13 +24,12 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaEffects;
 import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.mob.EntityUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class ActionHeal extends Action {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public boolean execute(Player p, Param params) {
 		Player player;
@@ -38,7 +37,7 @@ public class ActionHeal extends Action {
 		boolean playhearts = params.getParam("hearts", true);
 		if (params.isParamsExists("params")) hp = params.getParam("params", 0);
 		String playerName = params.getParam("player", p != null ? p.getName() : "");
-		player = playerName.isEmpty() ? null : Bukkit.getPlayerExact(playerName);
+		player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
 		if (player == null) return false;
 		double health = player.getHealth();
 		double healthMax = EntityUtil.getMaxHealth(player);

@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @SelectorDefine(key = "loc")
 public class LocSelector implements Selector {
 	@Override
@@ -24,8 +23,9 @@ public class LocSelector implements Selector {
 		loc.setY(loc.getBlockY() + 0.5);
 		loc.setZ(loc.getBlockZ() + 0.5);
 		double radius = params.getParam("radius", 1.0);
+		radius *= radius;
 		for (Player player : loc.getWorld().getPlayers())
-			if (player.getLocation().distance(loc) <= radius) players.add(player);
+			if (player.getLocation().distanceSquared(loc) <= radius) players.add(player);
 		return players;
 	}
 

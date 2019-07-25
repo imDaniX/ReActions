@@ -1,9 +1,9 @@
-package me.fromgate.reactions.util.waiter;
+package me.fromgate.reactions.time.waiter;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
-import me.fromgate.reactions.timer.Time;
+import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,36 +14,40 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Task implements Runnable {
+public class WaitTask implements Runnable {
 	private String taskId;
 	private String playerName;
 	private List<StoredAction> actions;
 	private boolean isAction;
-	private boolean isExecuted;
+	private boolean executed;
 	private long executionTime;
 	private BukkitTask task;
 
-	public Task(String playerName, List<StoredAction> actions, boolean isAction, long time) {
+	public WaitTask(String playerName, List<StoredAction> actions, boolean isAction, long time) {
 		this.taskId = UUID.randomUUID().toString();
 		this.playerName = playerName;
 		this.actions = actions;
 		this.isAction = isAction;
-		this.isExecuted = false;
+		this.executed = false;
 		this.executionTime = System.currentTimeMillis() + time;
-		task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, Time.timeToTicks(time));
+		task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
 	}
 
-	public String getId() {
-		return this.taskId;
-	}
-
-	public Task(YamlConfiguration cfg, String taskId) {
+	public WaitTask(YamlConfiguration cfg, String taskId) {
 		this.taskId = taskId;
 		this.load(cfg, taskId);
 		long time = this.executionTime - System.currentTimeMillis();
 		if (time < 0) this.execute();
 		else
-			task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, Time.timeToTicks(time));
+			task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public String getId() {
+		return this.taskId;
 	}
 
 	@Override
@@ -53,12 +57,11 @@ public class Task implements Runnable {
 
 	public void execute() {
 		if (this.isExecuted()) return;
-		@SuppressWarnings("deprecation")
-		Player p = playerName == null ? null : Bukkit.getPlayerExact(playerName);
+		Player p = playerName == null ? null : Util.getPlayerExact(playerName);
+		if (System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
 		if (p == null && playerName != null) return;
 		Actions.executeActions(p, actions, isAction);
-		this.isExecuted = true;
-		ActionsWaiter.remove(this);
+		this.executed = true;
 	}
 
 	public void stop() {
@@ -75,7 +78,7 @@ public class Task implements Runnable {
 	}
 
 	public boolean isExecuted() {
-		return this.isExecuted;
+		return this.executed;
 	}
 
 	public void save(YamlConfiguration cfg) {
@@ -99,7 +102,7 @@ public class Task implements Runnable {
 			for (String a : actionList) {
 				if (a.contains("=")) {
 					String av = a.substring(0, a.indexOf("="));
-					String vv = a.substring(a.indexOf("=") + 1, a.length());
+					String vv = a.substring(a.indexOf("=") + 1);
 					this.actions.add(new StoredAction(av, vv));
 				}
 			}

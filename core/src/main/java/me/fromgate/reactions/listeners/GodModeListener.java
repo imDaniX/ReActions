@@ -1,8 +1,8 @@
-package me.fromgate.reactions.util.listeners;
+package me.fromgate.reactions.listeners;
 
+import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storage.StorageManager;
-import me.fromgate.reactions.util.Cfg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -39,10 +39,10 @@ public class GodModeListener implements Listener {
 			Player player = (Player) event.getEntity();
 			if (event.isCancelled()) {
 				if (GodModeListener.checkGod(player) && GodModeListener.setGod(player)) return;
-				if (GodModeListener.setGod(player) && StorageManager.raisePlayerGodChangeEvent(player, true)) {
+				if (GodModeListener.setGod(player) && StorageManager.raiseGodActivator(player, true)) {
 					GodModeListener.removeGod(player);
 				}
-			} else if (GodModeListener.removeGod(player) && StorageManager.raisePlayerGodChangeEvent(player, false)) {
+			} else if (GodModeListener.removeGod(player) && StorageManager.raiseGodActivator(player, false)) {
 				GodModeListener.setGod(player);
 				event.setCancelled(true);
 			}

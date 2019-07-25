@@ -28,15 +28,15 @@ import org.bukkit.entity.Player;
 
 public class FlagRegion implements Flag {
 
-	final static int REGION = 0;
-	final static int REGION_PLAYERS = 1;
-	final static int REGION_MEMBER = 2;
-	final static int REGION_OWNER = 3;
-	final static int REGION_STATE = 4;
+	final static byte REGION = 0;
+	final static byte REGION_PLAYERS = 1;
+	final static byte REGION_MEMBER = 2;
+	final static byte REGION_OWNER = 3;
+	final static byte REGION_STATE = 4;
 
 	private int flagType;
 
-	public FlagRegion(int flagType) {
+	public FlagRegion(byte flagType) {
 		this.flagType = flagType;
 	}
 

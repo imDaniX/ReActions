@@ -26,9 +26,9 @@ import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class CommandStorage extends RAStorage {
-	private String command;
+	private final String command;
 	private String[] args;
-	private boolean parentEventCancelled;
+	private final boolean parentEventCancelled;
 
 	public CommandStorage(Player p, String command, String[] args, boolean cancelled) {
 		super(p, ActivatorType.COMMAND);

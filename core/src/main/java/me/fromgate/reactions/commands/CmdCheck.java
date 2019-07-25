@@ -2,7 +2,7 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.Activator;
-import me.fromgate.reactions.activators.Activators;
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
@@ -34,7 +34,7 @@ public class CmdCheck extends Cmd {
 			for (int x = playerX - radius; x <= playerX + radius; x++) {
 				for (int y = playerY - radius; y <= playerY + radius; y++) {
 					for (int z = playerZ - radius; z <= playerZ + radius; z++) {
-						Set<Activator> found = Activators.getActivatorInLocation(world, x, y, z);
+						Set<Activator> found = ActivatorsManager.getActivatorInLocation(world, x, y, z);
 						if (found.isEmpty()) continue;
 						found.forEach(a -> set.add(a.toString()));
 					}

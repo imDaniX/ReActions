@@ -28,7 +28,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class ItemClickStorage extends RAStorage {
 	private ItemStack item;
-	private boolean mainHand;
+	private final boolean mainHand;
+
 	public ItemClickStorage(Player p, ItemStack item, boolean mainHand) {
 		super(p, ActivatorType.ITEM_CLICK);
 		this.item = item;
@@ -38,6 +39,7 @@ public class ItemClickStorage extends RAStorage {
 	public ItemStack getItem() {
 		return item;
 	}
+
 	public boolean isMainHand() {return mainHand;}
 
 }

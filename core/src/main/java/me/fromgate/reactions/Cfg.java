@@ -1,9 +1,9 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions;
 
 
-import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.placeholders.Placeholder;
 import me.fromgate.reactions.placeholders.Placeholders;
+import me.fromgate.reactions.time.waiter.WaitingManager;
+import me.fromgate.reactions.util.Shoot;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Cfg {
@@ -38,6 +38,7 @@ public class Cfg {
 		config.set("general.player-move-event.use-task", playerMoveTaskUse);
 		config.set("general.player-move-event.task-tick", playerMoveTaskTick);
 		config.set("general.placeholder-limit", Placeholders.getCountLimit());
+		config.set("general.waiter-hours-limit", WaitingManager.getTimeLimit());
 		config.set("reactions.activators.god.enable", godActivatorEnable);
 		config.set("reactions.activators.god.recheck-ticks", godActivatorCheckTicks);
 		config.set("reactions.save-empty-actions-and-flags-sections", saveEmptySections);
@@ -64,6 +65,7 @@ public class Cfg {
 		playerMoveTaskUse = config.getBoolean("general.player-move-event.use-task", false);
 		playerMoveTaskTick = config.getInt("general.player-move-event.task-tick", 5);
 		Placeholders.updateLimit(config.getInt("general.placeholder-limit", 127));
+		WaitingManager.updateLimit(config.getInt("general.waiter-hours-limit", 720));
 		godActivatorEnable = config.getBoolean("reactions.activators.god.enable", true);
 		godActivatorCheckTicks = config.getInt("reactions.activators.god.recheck-ticks", 10);
 		chatLength = config.getInt("reactions.default-chat-line-length", 55);

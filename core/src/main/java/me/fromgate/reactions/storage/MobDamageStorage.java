@@ -28,9 +28,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class MobDamageStorage extends RAStorage {
-	private LivingEntity mob;
+	private final LivingEntity mob;
 	private double damage;
-	private DamageCause cause;
+	private final DamageCause cause;
 
 
 	public MobDamageStorage(LivingEntity entity, Player damager, double damage, DamageCause cause) {
