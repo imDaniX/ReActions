@@ -214,7 +214,7 @@ public abstract class Activator {
 	 */
 	public void saveActivator(YamlConfiguration cfg) {
 		String key = getType() + "." + this.name;
-		save(cfg.getConfigurationSection(key));
+		save(cfg.createSection(key));
 		List<String> flg = new ArrayList<>();
 		for (StoredFlag f : flags) flg.add(f.toString());
 		cfg.set(key + ".flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
