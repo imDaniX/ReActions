@@ -22,30 +22,19 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class CommandStorage extends RAStorage {
-	private final String command;
-	private String[] args;
-	private final boolean parentEventCancelled;
+	@Getter private final String command;
+	@Getter private String[] args;
+	@Getter private final boolean parentCancelled;
 
 	public CommandStorage(Player p, String command, String[] args, boolean cancelled) {
 		super(p, ActivatorType.COMMAND);
 		this.command = command;
 		this.args = args;
-		this.parentEventCancelled = cancelled;
-	}
-
-	public String getCommand() {
-		return this.command;
-	}
-
-	public String[] getArgs() {
-		return this.args;
-	}
-
-	public boolean isParentCancelled() {
-		return this.parentEventCancelled;
+		this.parentCancelled = cancelled;
 	}
 }

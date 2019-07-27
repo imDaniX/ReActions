@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
+import lombok.Setter;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
@@ -31,12 +32,8 @@ import org.bukkit.entity.Player;
 
 public abstract class Action {
 	private Actions type = null;
-	private String messageParam = "";
+	@Setter private String messageParam = "";
 	private boolean actionExecuting = true;
-
-	public void setMessageParam(String msgparam) {
-		this.messageParam = msgparam;
-	}
 
 	public void init(Actions at) {
 		this.type = at;

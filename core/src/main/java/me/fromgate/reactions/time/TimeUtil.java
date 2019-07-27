@@ -43,6 +43,7 @@ public class TimeUtil {
 	private final static Pattern TIME_X_S = Pattern.compile("^\\d+s$");
 	private final static Pattern TIME_X_T = Pattern.compile("^\\d+t$");
 
+	@SuppressWarnings("unused")
 	public static long getIngameTime() {
 		return Bukkit.getWorlds().get(0).getTime();
 	}

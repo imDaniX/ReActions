@@ -22,22 +22,16 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class QuitStorage extends RAStorage {
-	private String quitMessage;
+	@Getter @Setter private String quitMessage;
 
 	public QuitStorage(Player p, String quitMessage) {
 		super(p, ActivatorType.QUIT);
 		this.quitMessage = quitMessage;
-	}
-
-	public String getQuitMessage() {
-		return this.quitMessage == null ? "" : this.quitMessage;
-	}
-
-	public void setQuiteMessage(String quitMessage) {
-		this.quitMessage = quitMessage == null ? "" : quitMessage;
 	}
 }

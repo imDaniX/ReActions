@@ -1,5 +1,6 @@
 package me.fromgate.reactions.time.waiter;
 
+import lombok.Getter;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
@@ -15,11 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 public class WaitTask implements Runnable {
-	private String taskId;
-	private String playerName;
+	@Getter private String taskId;
+	@Getter private String playerName;
+	@Getter private boolean executed;
 	private List<StoredAction> actions;
 	private boolean isAction;
-	private boolean executed;
 	private long executionTime;
 	private BukkitTask task;
 
@@ -42,14 +43,6 @@ public class WaitTask implements Runnable {
 			task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
 	}
 
-	public String getPlayerName() {
-		return playerName;
-	}
-
-	public String getId() {
-		return this.taskId;
-	}
-
 	@Override
 	public void run() {
 		execute();
@@ -69,16 +62,8 @@ public class WaitTask implements Runnable {
 		this.task = null;
 	}
 
-	public long getExecutionTime() {
-		return this.executionTime;
-	}
-
 	public boolean isTimePassed() {
 		return this.executionTime < System.currentTimeMillis();
-	}
-
-	public boolean isExecuted() {
-		return this.executed;
 	}
 
 	public void save(YamlConfiguration cfg) {

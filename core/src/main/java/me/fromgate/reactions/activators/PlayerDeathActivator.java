@@ -48,8 +48,8 @@ public class PlayerDeathActivator extends Activator {
 	@Override
 	public boolean activate(RAStorage event) {
 		DeathStorage de = (DeathStorage) event;
-		if (this.deathCause != DeathCause.ANY && de.getDeathCause() != this.deathCause) return false;
-		Variables.setTempVar("cause", de.getDeathCause().name());
+		if (this.deathCause != DeathCause.ANY && de.getCause() != this.deathCause) return false;
+		Variables.setTempVar("cause", de.getCause().name());
 		if (de.getKiller() != null) {
 			Variables.setTempVar("killer-type", de.getKiller().getType().name());
 			if (de.getKiller().getType() == EntityType.PLAYER) {

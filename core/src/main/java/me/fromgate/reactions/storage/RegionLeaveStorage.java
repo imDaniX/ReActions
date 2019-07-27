@@ -22,18 +22,15 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class RegionLeaveStorage extends RAStorage {
-	private final String region;
+	@Getter private final String region;
 
 	public RegionLeaveStorage(Player player, String region) {
 		super(player, ActivatorType.REGION_LEAVE);
 		this.region = region;
-	}
-
-	public String getRegion() {
-		return this.region;
 	}
 }

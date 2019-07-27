@@ -51,7 +51,6 @@ public class MobSpawn {
 
 	private static Map<LivingEntity, List<ItemStack>> drops = new HashMap<>();
 
-
 	public static void mobSpawn(Player p, Param params) {
 		String mob = params.getParam("type", "").toUpperCase();
 		if (mob.isEmpty()) {

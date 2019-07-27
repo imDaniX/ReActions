@@ -23,13 +23,14 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.MessageActivator;
 import org.bukkit.entity.Player;
 
 public class MessageStorage extends RAStorage {
+	@Getter private final String message;
 	private final MessageActivator activator;
-	private final String message;
 
 
 	public MessageStorage(Player player, MessageActivator activator, String message) {
@@ -39,11 +40,7 @@ public class MessageStorage extends RAStorage {
 	}
 
 	public boolean isForActivator(MessageActivator messageActivator) {
-		return (this.activator.equals(messageActivator));
-	}
-
-	public String getMessage() {
-		return this.message;
+		return this.activator.equals(messageActivator);
 	}
 
 }

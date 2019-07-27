@@ -44,7 +44,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 	@Override
 	public boolean activate(RAStorage event) {
 		BlockBreakStorage bbe = (BlockBreakStorage) event;
-		Block brokenBlock = bbe.getBlockBreak();
+		Block brokenBlock = bbe.getBlock();
 		if (brokenBlock == null) return false;
 		if (!isActivatorBlock(brokenBlock)) return false;
 		Variables.setTempVar("blocklocation", Locator.locationToString(bbe.getBlockBreakLocation()));

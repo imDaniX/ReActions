@@ -15,20 +15,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualInventory {
-	@Getter @Setter
-	private int size;
-	@Getter @Setter
-	private String title;
-	@Getter @Setter
-	private List<String> slots;
-	@Getter @Setter
-	private List<String> activators;
+	@Getter @Setter private int size;
+	@Getter @Setter private String title;
+	@Getter @Setter private List<String> slots;
+	@Getter @Setter private List<String> activators;
 
 	public VirtualInventory(int size, String title) {
 		this.size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 		this.title = title;
 		this.slots = Util.getEmptyList(this.size);
 		this.activators = Util.getEmptyList(this.size);
+	}
+
+	public VirtualInventory(YamlConfiguration cfg, String root) {
+		this(9, "&4Re&6Actions menu");
+		load(cfg, root);
 	}
 
 	public void save(YamlConfiguration cfg, String root) {
@@ -41,12 +42,6 @@ public class VirtualInventory {
 				cfg.set(root + ".slot" + (i + 1) + ".activator", activators.get(i));
 		}
 	}
-
-	public VirtualInventory(YamlConfiguration cfg, String root) {
-		this(9, "&4Re&6Actions menu");
-		load(cfg, root);
-	}
-
 
 	public void load(YamlConfiguration cfg, String root) {
 		this.title = cfg.getString(root + ".title", "&4Re&6Actions menu");

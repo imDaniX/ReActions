@@ -51,7 +51,7 @@ public class WeDelegateExtent extends AbstractDelegateExtent {
 	@Override
 	public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 vector, T block) throws WorldEditException {
 		Location loc = new Location(player.getWorld(), vector.getX(), vector.getY(), vector.getZ());
-		Material blockType = Material.AIR; //Material.getMaterial(block.getId());
+		Material blockType = Material.AIR; //Material.getMaterial(block.getVariableId());
 		return !WeListener.raiseWEChangeActivator(player, loc, blockType) && super.setBlock(vector, block);
 	}
 

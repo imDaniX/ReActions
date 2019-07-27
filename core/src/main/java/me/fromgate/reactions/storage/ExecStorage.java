@@ -22,36 +22,25 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class ExecStorage extends RAStorage {
-	private final String activator;
-	private final Player targetPlayer;
-	private Param tempVars;
+	@Getter private final String activatorId;
+	@Getter private final Player targetPlayer;
+	@Getter private Param tempVars;
 
-	public ExecStorage(Player player, Player targetPlayer, String activator) {
+	public ExecStorage(Player player, Player targetPlayer, String activatorId) {
 		super(player, ActivatorType.EXEC);
 		this.targetPlayer = targetPlayer;
-		this.activator = activator;
+		this.activatorId = activatorId;
 		this.tempVars = null;
 	}
 
-	public ExecStorage(Player p, Player targetPlayer, String activator, Param tempVars) {
-		this(p, targetPlayer, activator);
+	public ExecStorage(Player p, Player targetPlayer, String activatorId, Param tempVars) {
+		this(p, targetPlayer, activatorId);
 		this.tempVars = tempVars;
-	}
-
-	public String getActivatorId() {
-		return this.activator;
-	}
-
-	public Player getTargetPlayer() {
-		return this.targetPlayer;
-	}
-
-	public Param getTempVars() {
-		return this.tempVars;
 	}
 }

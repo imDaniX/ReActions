@@ -1,42 +1,32 @@
 package me.fromgate.reactions.flags;
 
+import lombok.Getter;
+
 public class StoredFlag {
-	private final Flags flag;
-	private final String value;
-	private final boolean not;
+	@Getter private final Flags flag;
+	@Getter private final String value;
+	@Getter private final boolean inverted;
 
 	public StoredFlag(String f, String v, boolean not) {
 		this.flag = Flags.getByName(f);
 		this.value = v;
-		this.not = not;
+		this.inverted = not;
 	}
 
 	public StoredFlag(Flags f, String v, boolean not) {
 		this.flag = f;
 		this.value = v;
-		this.not = not;
-	}
-
-	public Flags getFlag() {
-		return flag;
+		this.inverted = not;
 	}
 
 	public String getFlagName() {
 		return flag == null ? "UNKNOWN" : flag.name();
 	}
 
-	public String getValue() {
-		return value;
-	}
-
-	public boolean isInverted() {
-		return not;
-	}
-
 	@Override
 	public String toString() {
 		String str = this.getFlagName() + "=" + value;
-		if (this.not) str = "!" + str;
+		if (this.inverted) str = "!" + str;
 		return str;
 	}
 }

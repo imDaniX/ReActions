@@ -22,32 +22,19 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.PlayerDeathActivator;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class DeathStorage extends RAStorage {
-	private final LivingEntity killer;
-	private final PlayerDeathActivator.DeathCause source;
+	@Getter private final LivingEntity killer;
+	@Getter private final PlayerDeathActivator.DeathCause cause;
 
 	public DeathStorage(LivingEntity killer, Player player, PlayerDeathActivator.DeathCause deathCause) {
 		super(player, ActivatorType.PLAYER_DEATH);
 		this.killer = killer;
-		this.source = killer != null ? deathCause : PlayerDeathActivator.DeathCause.OTHER;
+		this.cause = killer != null ? deathCause : PlayerDeathActivator.DeathCause.OTHER;
 	}
-
-	@Override
-	public Player getPlayer() {
-		return this.player;
-	}
-
-	public LivingEntity getKiller() {
-		return killer;
-	}
-
-	public PlayerDeathActivator.DeathCause getDeathCause() {
-		return this.source;
-	}
-
 }

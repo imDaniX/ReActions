@@ -81,10 +81,10 @@ public enum ActivatorType {
 	CUBOID("cube", CuboidActivator.class, false, true),
 	PROJECTILE_HIT("projhit", ProjectileHitActivator.class);
 
-	private String alias;
-	private Class<? extends Activator> aClass;
-	private boolean needTargetBlock;
-	private boolean located;
+	private final String alias;
+	private final Class<? extends Activator> aClass;
+	private final boolean needTargetBlock;
+	private final boolean located;
 
 	ActivatorType(String alias, Class<? extends Activator> aClass, boolean needTargetBlock, boolean located) {
 		this.alias = alias;

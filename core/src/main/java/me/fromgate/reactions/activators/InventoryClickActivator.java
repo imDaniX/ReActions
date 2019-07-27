@@ -51,7 +51,7 @@ public class InventoryClickActivator extends Activator {
 		if (!inventoryCheck(pice.getInventoryType())) return false;
 		if (!slotTypeCheck(pice.getSlotType())) return false;
 		Integer key = pice.getNumberKey();
-		if (!checkItem(pice.getItemStack(), key, pice.getBottomInventory())) return false;
+		if (!checkItem(pice.getItem(), key, pice.getBottomInventory())) return false;
 		if (!checkNumberKey(key)) return false;
 		Integer slot = pice.getSlot();
 		if (!checkSlot(slot)) return false;
@@ -60,7 +60,7 @@ public class InventoryClickActivator extends Activator {
 		Variables.setTempVar("action", pice.getAction().toString());
 		Variables.setTempVar("slotType", pice.getSlotType().toString());
 		Variables.setTempVar("inventory", pice.getInventoryType().toString());
-		Variables.setTempVar("item", ItemUtil.itemToString(pice.getItemStack()));
+		Variables.setTempVar("item", ItemUtil.itemToString(pice.getItem()));
 		Variables.setTempVar("key", Integer.toString(key + 1));
 		Variables.setTempVar("itemkey", (key > -1) ? ItemUtil.itemToString(pice.getBottomInventory().getItem(key)) : "");
 		Variables.setTempVar("slot", Integer.toString(slot));
@@ -69,9 +69,9 @@ public class InventoryClickActivator extends Activator {
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "0");
 			if (itemType.equalsIgnoreCase("AIR") || itemType.equalsIgnoreCase("null") || itemType.equalsIgnoreCase("0") || itemType.isEmpty()) {
-				pice.setItemStack(new ItemStack(Material.getMaterial("AIR"), 1));
+				pice.setItem(new ItemStack(Material.getMaterial("AIR"), 1));
 			} else {
-				pice.setItemStack(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
+				pice.setItem(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
 			}
 		}
 		return result;

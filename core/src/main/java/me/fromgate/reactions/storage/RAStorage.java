@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
@@ -30,28 +32,12 @@ import org.bukkit.entity.Player;
  */
 public class RAStorage {
 
-	protected final Player player;
-	private final ActivatorType type;
-	private boolean cancelled = false;
-
-	public Player getPlayer() {
-		return this.player;
-	}
+	@Getter protected final Player player;
+	@Getter private final ActivatorType type;
+	@Getter @Setter private boolean cancelled = false;
 
 	public RAStorage(Player player, ActivatorType type) {
 		this.player = player;
 		this.type = type;
-	}
-
-	public ActivatorType getType() {
-		return type;
-	}
-
-	public boolean isCancelled() {
-		return this.cancelled;
-	}
-
-	public void setCancelled(boolean cancel) {
-		this.cancelled = cancel;
 	}
 }

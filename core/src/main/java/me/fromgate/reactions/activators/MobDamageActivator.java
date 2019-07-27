@@ -64,16 +64,16 @@ public class MobDamageActivator extends Activator {
 	public boolean activate(RAStorage event) {
 		MobDamageStorage me = (MobDamageStorage) event;
 		if (mobType.isEmpty()) return false;
-		if (me.getMob() == null) return false;
-		if (!isActivatorMob(me.getMob())) return false;
+		if (me.getEntity() == null) return false;
+		if (!isActivatorMob(me.getEntity())) return false;
 		if (!checkItem(me.getPlayer())) return false;
-		Variables.setTempVar("moblocation", Locator.locationToString(me.getMob().getLocation()));
+		Variables.setTempVar("moblocation", Locator.locationToString(me.getEntity().getLocation()));
 		Variables.setTempVar("mobdamager", me.getPlayer() == null ? "" : me.getPlayer().getName());
-		Variables.setTempVar("mobtype", me.getMob().getType().name());
-		LivingEntity mob = me.getMob();
+		Variables.setTempVar("mobtype", me.getEntity().getType().name());
+		LivingEntity mob = me.getEntity();
 		Player player = mob instanceof Player ? (Player) mob : null;
-		String mobName = (player == null) ? me.getMob().getCustomName() : player.getName();
-		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getMob().getType().name());
+		String mobName = (player == null) ? me.getEntity().getCustomName() : player.getName();
+		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getEntity().getType().name());
 		Variables.setTempVar("damage", Double.toString(me.getDamage()));
 		boolean result = Actions.executeActivator(me.getPlayer(), this);
 		String dmgStr = Variables.getTempVar("damage");

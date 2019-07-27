@@ -22,18 +22,15 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class JoinStorage extends RAStorage {
-	private final boolean firstJoin;
+	@Getter private final boolean firstJoin;
 
 	public JoinStorage(Player p, boolean firstJoin) {
 		super(p, ActivatorType.JOIN);
 		this.firstJoin = firstJoin;
-	}
-
-	public boolean isFirstJoin() {
-		return this.firstJoin;
 	}
 }

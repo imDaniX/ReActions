@@ -87,7 +87,7 @@ public class FlagItem implements Flag {
 				ItemUtil.itemFromItemStack(player.getInventory().getBoots());
 		} else vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
 
-		// vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
+		// vi = ItemUtil.itemFromItemStack(player.getInventoryType().getItem(slotNum));
 
 		if (vi == null) return false;
 

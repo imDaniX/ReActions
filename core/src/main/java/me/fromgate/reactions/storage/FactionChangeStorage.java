@@ -22,27 +22,18 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class FactionChangeStorage extends RAStorage {
 
-	private final String newFaction;
-	private final String oldFaction;
+	@Getter private final String newFaction;
+	@Getter private final String oldFaction;
 
 	public FactionChangeStorage(Player player, String oldFaction, String newFaction) {
 		super(player, ActivatorType.FCT_CHANGE);
 		this.newFaction = newFaction;
 		this.oldFaction = oldFaction;
 	}
-
-	public String getOldFaction() {
-		return oldFaction;
-	}
-
-	public String getNewFaction() {
-		return newFaction;
-	}
-
-
 }

@@ -49,7 +49,7 @@ public class QuitActivator extends Activator {
 		QuitStorage ce = (QuitStorage) event;
 		Variables.setTempVar("quit-message", ce.getQuitMessage());
 		boolean result = Actions.executeActivator(ce.getPlayer(), this);
-		ce.setQuiteMessage(Variables.getTempVar("quit-message"));
+		ce.setQuitMessage(Variables.getTempVar("quit-message"));
 		return result;
 	}
 

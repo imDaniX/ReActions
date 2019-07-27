@@ -63,7 +63,7 @@ public class PlateActivator extends Activator implements Locatable {
 	@Override
 	public boolean activate(RAStorage event) {
 		PlateStorage be = (PlateStorage) event;
-		if (!isLocatedAt(be.getPlateLocation())) return false;
+		if (!isLocatedAt(be.getLocation())) return false;
 		return Actions.executeActivator(be.getPlayer(), this);
 	}
 

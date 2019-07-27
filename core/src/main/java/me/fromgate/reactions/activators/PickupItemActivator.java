@@ -33,10 +33,10 @@ public class PickupItemActivator extends Activator {
 	@Override
 	public boolean activate(RAStorage event) {
 		PickupItemStorage pie = (PickupItemStorage) event;
-		if (!checkItem(pie.getItemStack())) return false;
+		if (!checkItem(pie.getItem())) return false;
 		Variables.setTempVar("droplocation", Locator.locationToString(pie.getPlayer().getLocation()));
 		Variables.setTempVar("pickupDelay", Double.toString(pie.getPickupDelay()));
-		Variables.setTempVar("item", ItemUtil.itemToString(pie.getItemStack()));
+		Variables.setTempVar("item", ItemUtil.itemToString(pie.getItem()));
 		boolean result = Actions.executeActivator(pie.getPlayer(), this);
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
 		if (Util.FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
@@ -44,9 +44,9 @@ public class PickupItemActivator extends Activator {
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "0");
 			if (itemType.equalsIgnoreCase("AIR") || itemType.equalsIgnoreCase("null") || itemType.equalsIgnoreCase("0") || itemType.isEmpty()) {
-				pie.setItemStack(new ItemStack(Material.getMaterial("AIR"), 1));
+				pie.setItem(new ItemStack(Material.getMaterial("AIR"), 1));
 			} else {
-				pie.setItemStack(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
+				pie.setItem(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
 			}
 		}
 		return result;

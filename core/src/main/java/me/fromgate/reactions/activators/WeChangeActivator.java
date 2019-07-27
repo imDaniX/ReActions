@@ -34,7 +34,7 @@ public class WeChangeActivator extends Activator {
 	@Override
 	public boolean activate(RAStorage event) {
 		WeChangeStorage e = (WeChangeStorage) event;
-		String type = e.getBlockType();
+		String type = e.getBlockType().toString();
 		Variables.setTempVar("blocktype", type);
 		if (!checkBlockType(type)) return false;
 		Variables.setTempVar("blocklocation", Locator.locationToString(e.getLocation()));

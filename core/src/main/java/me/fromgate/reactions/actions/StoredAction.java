@@ -1,10 +1,11 @@
 package me.fromgate.reactions.actions;
 
+import lombok.Getter;
 import me.fromgate.reactions.util.Util;
 
 public class StoredAction {
-	private final Actions action;
-	private final String value;
+	@Getter private final Actions action;
+	@Getter private final String value;
 
 	public StoredAction(String a, String v) {
 		this.action = Actions.getByName(a);
@@ -14,14 +15,6 @@ public class StoredAction {
 	public StoredAction(Actions a, String v) {
 		this.action = a;
 		this.value = v;
-	}
-
-	public Actions getAction() {
-		return action;
-	}
-
-	public String getValue() {
-		return value;
 	}
 
 	@Override

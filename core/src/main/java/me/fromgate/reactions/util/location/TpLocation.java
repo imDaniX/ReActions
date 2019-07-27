@@ -23,6 +23,7 @@
 
 package me.fromgate.reactions.util.location;
 
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -32,12 +33,12 @@ import java.text.DecimalFormat;
 // Maybe use it in activators?
 public class TpLocation {
 	private static final DecimalFormat FORMAT = new DecimalFormat("####0.##");
-	private String world;
-	private double x;
-	private double y;
-	private double z;
-	private float yaw;
-	private float pitch;
+	@Getter private final String world;
+	@Getter private final double x;
+	@Getter private final double y;
+	@Getter private final double z;
+	@Getter private final float yaw;
+	@Getter private final float pitch;
 
 	public TpLocation(Location loc) {
 		this.world = loc.getWorld().getName();
@@ -62,35 +63,12 @@ public class TpLocation {
 		return world == null ? new Location(Bukkit.getWorlds().get(0), x, y, z, yaw, pitch) : new Location(world, x, y, z, yaw, pitch);
 	}
 
-	public boolean equalToLoc(Location loc) {
+	@SuppressWarnings("unused")
+	public boolean equalsToLoc(Location loc) {
 		return (loc.getWorld().getName().equalsIgnoreCase(this.world) &&
 				(Math.round(loc.getX()) == Math.round(x)) &&
 				(Math.round(loc.getY()) == Math.round(y)) &&
 				(Math.round(loc.getZ()) == Math.round(z)));
-	}
-
-	public String getWorld() {
-		return world;
-	}
-
-	public double getX() {
-		return x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public double getZ() {
-		return z;
-	}
-
-	public float getPitch() {
-		return pitch;
-	}
-
-	public float getYaw() {
-		return yaw;
 	}
 
 	@Override

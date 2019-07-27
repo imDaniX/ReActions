@@ -1,27 +1,22 @@
 package me.fromgate.reactions.placeholders;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 public abstract class Placeholder {
 
-	private String id = "UNKNOWN";
-	private String[] keys = {};
+	@Getter private final String id;
+	@Getter private final String[] keys;
 
 	public Placeholder() {
 		if (this.getClass().isAnnotationPresent(PlaceholderDefine.class)) {
 			PlaceholderDefine pd = this.getClass().getAnnotation(PlaceholderDefine.class);
 			this.id = pd.id();
 			this.keys = pd.keys();
+		} else {
+			id = "UNKNOWN";
+			keys = new String[]{};
 		}
-	}
-
-
-	public String getId() {
-		return id;
-	}
-
-	public String[] getKeys() {
-		return keys;
 	}
 
 	protected boolean equalsIgnoreCase(String key, String... values) {
@@ -36,7 +31,6 @@ public abstract class Placeholder {
 		}
 		return false;
 	}
-
 
 	/**
 	 * Замена ключеового слова

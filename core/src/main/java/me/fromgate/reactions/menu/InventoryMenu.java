@@ -97,8 +97,8 @@ public class InventoryMenu implements Listener {
 		}
 		vi.setTitle(title);
 		vi.setSize(size);
-		vi.setSlots(slots);
-		vi.setActivators(activators);
+		// vi.setSlots(slots);
+		// vi.setActivators(activators);
 		menu.put(id, vi);
 		save();
 		return true;

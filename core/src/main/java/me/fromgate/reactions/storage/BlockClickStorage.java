@@ -22,26 +22,18 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class BlockClickStorage extends RAStorage {
-	private final Block block;
-	private final boolean leftClick;
+	@Getter private final Block block;
+	@Getter private final boolean leftClick;
 
 	public BlockClickStorage(Player p, Block block, boolean leftClick) {
 		super(p, ActivatorType.BLOCK_CLICK);
 		this.block = block;
 		this.leftClick = leftClick;
 	}
-
-	public Block getBlockClick() {
-		return this.block;
-	}
-
-	public boolean isLeftClicked() {
-		return leftClick;
-	}
-
 }

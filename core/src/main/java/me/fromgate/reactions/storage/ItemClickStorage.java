@@ -22,24 +22,18 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class ItemClickStorage extends RAStorage {
-	private ItemStack item;
-	private final boolean mainHand;
+	@Getter private final boolean mainHand;
+	@Getter private ItemStack item;
 
 	public ItemClickStorage(Player p, ItemStack item, boolean mainHand) {
 		super(p, ActivatorType.ITEM_CLICK);
 		this.item = item;
 		this.mainHand = mainHand;
 	}
-
-	public ItemStack getItem() {
-		return item;
-	}
-
-	public boolean isMainHand() {return mainHand;}
-
 }

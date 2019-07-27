@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -34,64 +36,28 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class InventoryClickStorage extends RAStorage {
-	private InventoryAction action;
-	private ClickType click;
-	private SlotType slotType;
-	private InventoryType inventory;
-	private ItemStack item;
-	private int numberKey;
-	private int slot;
+	@Getter @Setter private ItemStack item;
+	@Getter private InventoryAction action;
+	@Getter private ClickType clickType;
+	@Getter private SlotType slotType;
+	@Getter private InventoryType inventoryType;
+	@Getter private int numberKey;
+	@Getter private int slot;
+	@Getter private String inventoryName;
 	private InventoryView inventoryView;
-	private String inventoryName;
 
-	public InventoryClickStorage(Player p, InventoryAction action, ClickType click, Inventory inventory, SlotType
+	public InventoryClickStorage(Player p, InventoryAction action, ClickType clickType, Inventory inventory, SlotType
 									slotType, ItemStack item, int numberKey, InventoryView inventoryView, int slot) {
 		super(p, ActivatorType.INVENTORY_CLICK);
 		this.inventoryName = inventoryView.getTitle();
 		this.action = action;
-		this.click = click;
-		this.inventory = inventory.getType();
+		this.clickType = clickType;
+		this.inventoryType = inventory.getType();
 		this.slotType = slotType;
 		this.item = item;
 		this.numberKey = numberKey;
 		this.slot = slot;
 		this.inventoryView = inventoryView;
-	}
-
-	public String getInventoryName() {
-		return this.inventoryName;
-	}
-
-	public InventoryAction getAction() {
-		return this.action;
-	}
-
-	public ClickType getClickType() {
-		return this.click;
-	}
-
-	public InventoryType getInventoryType() {
-		return this.inventory;
-	}
-
-	public SlotType getSlotType() {
-		return this.slotType;
-	}
-
-	public ItemStack getItemStack() {
-		return this.item;
-	}
-
-	public void setItemStack(ItemStack itemStack) {
-		this.item = itemStack;
-	}
-
-	public int getNumberKey() {
-		return this.numberKey;
-	}
-
-	public int getSlot() {
-		return this.slot;
 	}
 
 	public Inventory getBottomInventory() {

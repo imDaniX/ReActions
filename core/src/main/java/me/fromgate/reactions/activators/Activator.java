@@ -23,6 +23,8 @@
 
 package me.fromgate.reactions.activators;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
@@ -40,7 +42,10 @@ import java.util.List;
 public abstract class Activator {
 
 	String name;
-	String group;
+	@Getter @Setter private String group;
+	@Getter private List<StoredFlag> flags = new ArrayList<>();
+	@Getter private List<StoredAction> actions = new ArrayList<>();
+	@Getter private List<StoredAction> reactions = new ArrayList<>();
 
 	public Activator(String name, String group) {
 		this.name = name;
@@ -53,9 +58,6 @@ public abstract class Activator {
 		this.group = group;
 	}
 
-	private List<StoredFlag> flags = new ArrayList<>();
-	private List<StoredAction> actions = new ArrayList<>();
-	private List<StoredAction> reactions = new ArrayList<>();
 
 	/**
 	 * Add flag to activator
@@ -90,14 +92,6 @@ public abstract class Activator {
 		if (flags.size() <= index) return false;
 		flags.remove(index);
 		return true;
-	}
-
-	/**
-	 * Get list of all flags
-	 * @return List of flags
-	 */
-	public List<StoredFlag> getFlags() {
-		return flags;
 	}
 
 	/**
@@ -160,22 +154,6 @@ public abstract class Activator {
 		if (reactions.size() <= index) return false;
 		reactions.remove(index);
 		return true;
-	}
-
-	/**
-	 * Get list of all actions
-	 * @return List of actions
-	 */
-	public List<StoredAction> getActions() {
-		return actions;
-	}
-
-	/**
-	 * Get list of all reactions
-	 * @return List of actions
-	 */
-	public List<StoredAction> getReactions() {
-		return reactions;
 	}
 
 	/**
@@ -271,22 +249,6 @@ public abstract class Activator {
 			}
 			addReaction(flag, param);
 		}
-	}
-
-	/**
-	 * Set group of activator
-	 * @param group Group to set
-	 */
-	public void setGroup(String group) {
-		this.group = group;
-	}
-
-	/**
-	 * Get group of activator
-	 * @return Group of activator
-	 */
-	public String getGroup() {
-		return this.group;
 	}
 
 	/**

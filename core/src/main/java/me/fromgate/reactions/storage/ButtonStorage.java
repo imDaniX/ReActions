@@ -22,20 +22,16 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class ButtonStorage extends RAStorage {
-	private final Location buttonLoc;
+	@Getter private final Location buttonLocation;
 
 	public ButtonStorage(Player p, Location loc) {
 		super(p, ActivatorType.BUTTON);
-		this.buttonLoc = loc;
+		this.buttonLocation = loc;
 	}
-
-	public Location getButtonLocation() {
-		return this.buttonLoc;
-	}
-
 }

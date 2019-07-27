@@ -22,30 +22,19 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class VariableStorage extends RAStorage {
-	private String id;
-	private String newValue;
-	private String oldValue;
+	@Getter final private String variableId;
+	@Getter final private String newValue;
+	@Getter final private String oldValue;
 
 	public VariableStorage(Player player, String var, String newValue, String prevValue) {
 		super(player, ActivatorType.VARIABLE);
-		this.id = var;
+		this.variableId = var;
 		this.newValue = newValue;
 		this.oldValue = prevValue;
-	}
-
-	public String getVariableId() {
-		return this.id;
-	}
-
-	public String getOldValue() {
-		return this.oldValue;
-	}
-
-	public String getNewValue() {
-		return this.newValue;
 	}
 }

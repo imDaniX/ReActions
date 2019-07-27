@@ -85,12 +85,12 @@ public class SignActivator extends Activator {
 	@Override
 	public boolean activate(RAStorage event) {
 		SignStorage signEvent = (SignStorage) event;
-		if (!clickCheck(signEvent.isLeftClicked())) return false;
+		if (!clickCheck(signEvent.isLeftClick())) return false;
 		if (!checkMask(signEvent.getSignLines())) return false;
 		for (int i = 0; i < signEvent.getSignLines().length; i++)
 			Variables.setTempVar("sign_line" + (i + 1), signEvent.getSignLines()[i]);
 		Variables.setTempVar("sign_loc", signEvent.getSignLocation());
-		Variables.setTempVar("click", signEvent.isLeftClicked() ? "left" : "right");
+		Variables.setTempVar("click", signEvent.isLeftClick() ? "left" : "right");
 		return Actions.executeActivator(signEvent.getPlayer(), this);
 	}
 

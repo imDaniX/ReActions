@@ -77,12 +77,12 @@ public class BlockClickActivator extends Activator implements Locatable {
 	@Override
 	public boolean activate(RAStorage event) {
 		BlockClickStorage bce = (BlockClickStorage) event;
-		if (bce.getBlockClick() == null) return false;
-		if (!isActivatorBlock(bce.getBlockClick())) return false;
-		if (!clickCheck(bce.isLeftClicked())) return false;
-		Variables.setTempVar("blocklocation", Locator.locationToString(bce.getBlockClick().getLocation()));
-		Variables.setTempVar("blocktype", bce.getBlockClick().getType().name());
-		Variables.setTempVar("click", bce.isLeftClicked() ? "left" : "right");
+		if (bce.getBlock() == null) return false;
+		if (!isActivatorBlock(bce.getBlock())) return false;
+		if (!clickCheck(bce.isLeftClick())) return false;
+		Variables.setTempVar("blocklocation", Locator.locationToString(bce.getBlock().getLocation()));
+		Variables.setTempVar("blocktype", bce.getBlock().getType().name());
+		Variables.setTempVar("click", bce.isLeftClick() ? "left" : "right");
 		return Actions.executeActivator(bce.getPlayer(), this);
 	}
 

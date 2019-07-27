@@ -22,19 +22,15 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 public class PvpKillStorage extends RAStorage {
-	private final Player killedPlayer;
+	@Getter private final Player killedPlayer;
 
 	public PvpKillStorage(Player player, Player killedPlayer) {
 		super(player, ActivatorType.PVP_KILL);
 		this.killedPlayer = killedPlayer;
 	}
-
-	public Player getKilledPlayer() {
-		return this.killedPlayer;
-	}
-
 }

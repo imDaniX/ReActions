@@ -22,38 +22,20 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 
 public class FactionRelationStorage extends RAStorage {
-	private final String faction1;
-	private final String faction2;
-	private final String oldRelation;
-	private final String newRelation;
+	@Getter private final String faction;
+	@Getter private final String otherFaction;
+	@Getter private final String oldRelation;
+	@Getter private final String newRelation;
 
-	public FactionRelationStorage(String faction1, String faction2, String oldRelation, String newRelation) {
+	public FactionRelationStorage(String faction, String otherFaction, String oldRelation, String newRelation) {
 		super(null, ActivatorType.FCT_RELATION);
 		this.oldRelation = oldRelation;
 		this.newRelation = newRelation;
-		this.faction1 = faction1;
-		this.faction2 = faction2;
+		this.faction = faction;
+		this.otherFaction = otherFaction;
 	}
-
-
-	public String getFaction() {
-		return this.faction1;
-	}
-
-	public String getOtherFaction() {
-		return this.faction2;
-	}
-
-	public String getOldRelation() {
-		return this.oldRelation;
-	}
-
-	public String getNewRelation() {
-		return this.newRelation;
-	}
-
-
 }

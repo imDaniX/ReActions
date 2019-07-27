@@ -41,6 +41,7 @@ public class Selector {
 		return locs.get(p.getName());
 	}
 
+	@SuppressWarnings("unused")
 	public static String getSelectedStrLoc(Player p) {
 		Location loc = getSelectedLocation(p);
 		if (loc == null) return "";

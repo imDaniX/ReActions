@@ -22,38 +22,23 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 public class MobDamageStorage extends RAStorage {
-	private final LivingEntity mob;
-	private double damage;
-	private final DamageCause cause;
+	@Getter private final LivingEntity entity;
+	@Getter private final DamageCause cause;
+	@Getter @Setter private double damage;
 
 
 	public MobDamageStorage(LivingEntity entity, Player damager, double damage, DamageCause cause) {
 		super(damager, ActivatorType.MOB_DAMAGE);
-		this.mob = entity;
+		this.entity = entity;
 		this.damage = damage;
 		this.cause = cause;
 	}
-
-	public LivingEntity getMob() {
-		return this.mob;
-	}
-
-	public double getDamage() {
-		return this.damage;
-	}
-
-	public void setDamage(double damage) {
-		this.damage = damage;
-	}
-
-	public DamageCause getCause() {
-		return this.cause;
-	}
-
 }

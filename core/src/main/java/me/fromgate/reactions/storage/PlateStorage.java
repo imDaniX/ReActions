@@ -22,19 +22,16 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class PlateStorage extends RAStorage {
-	private final Location loc;
+	@Getter private final Location location;
 
 	public PlateStorage(Player p, Location loc) {
 		super(p, ActivatorType.PLATE);
-		this.loc = loc;
-	}
-
-	public Location getPlateLocation() {
-		return this.loc;
+		this.location = loc;
 	}
 }

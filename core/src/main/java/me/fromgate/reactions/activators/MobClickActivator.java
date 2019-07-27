@@ -67,15 +67,15 @@ public class MobClickActivator extends Activator implements Locatable {
 	public boolean activate(RAStorage event) {
 		MobClickStorage me = (MobClickStorage) event;
 		if (mobType.isEmpty()) return false;
-		if (me.getMob() == null) return false;
+		if (me.getEntity() == null) return false;
 
-		if (!isActivatorMob(me.getMob())) return false;
-		Variables.setTempVar("moblocation", Locator.locationToString(me.getMob().getLocation()));
-		Variables.setTempVar("mobtype", me.getMob().getType().name());
-		LivingEntity mob = me.getMob();
+		if (!isActivatorMob(me.getEntity())) return false;
+		Variables.setTempVar("moblocation", Locator.locationToString(me.getEntity().getLocation()));
+		Variables.setTempVar("mobtype", me.getEntity().getType().name());
+		LivingEntity mob = me.getEntity();
 		Player player = mob instanceof Player ? (Player) mob : null;
-		String mobName = (player == null) ? me.getMob().getCustomName() : player.getName();
-		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getMob().getType().name());
+		String mobName = (player == null) ? me.getEntity().getCustomName() : player.getName();
+		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getEntity().getType().name());
 		return Actions.executeActivator(me.getPlayer(), this);
 	}
 

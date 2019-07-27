@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.BlockUtil;
 import org.bukkit.Location;
@@ -29,16 +30,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class DoorStorage extends RAStorage {
-	private final Block doorBlock;
+	@Getter private final Block doorBlock;
 
 	public DoorStorage(Player p, Block block) {
 		super(p, ActivatorType.DOOR);
 		this.doorBlock = block;
-	}
-
-	public Block getDoorBlock() {
-		if (BlockUtil.isOpenable(doorBlock)) return doorBlock;
-		return null;
 	}
 
 	public boolean isDoorOpened() {

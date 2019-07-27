@@ -172,7 +172,7 @@ public class TimersManager {
 		Map<String, Timer> ingame = getIngameTimers();
 		for (String key : ingame.keySet()) {
 			Timer timer = ingame.get(key);
-			timersIngame.addAll(timer.getIngameTimes());
+			timersIngame.addAll(timer.getTimesIngame());
 		}
 	}
 
@@ -285,10 +285,10 @@ public class TimersManager {
 		if (!(timerName.equalsIgnoreCase("all") || isTimerExists(timerName))) return false;
 		if (timerName.equalsIgnoreCase("all")) {
 			for (Timer timer : timers.values())
-				timer.setPause(pause);
+				timer.setPaused(pause);
 		} else {
 			Timer timer = timers.get(timerName);
-			timer.setPause(pause);
+			timer.setPaused(pause);
 		}
 		return true;
 	}

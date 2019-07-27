@@ -22,21 +22,17 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 
 public class MobClickStorage extends RAStorage {
-	private final LivingEntity entity;
+	@Getter private final LivingEntity entity;
 
 	public MobClickStorage(Player p, LivingEntity entity) {
 		super(p, ActivatorType.MOB_CLICK);
 		this.entity = entity;
 	}
-
-	public LivingEntity getMob() {
-		return this.entity;
-	}
-
 }

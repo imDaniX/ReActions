@@ -1,5 +1,7 @@
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -8,9 +10,9 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
  * Created by MaxDikiy on 2017-07-23.
  */
 public class DamageStorage extends RAStorage {
-	private double damage;
-	private final DamageCause cause;
-	public final String source;
+	@Getter private final DamageCause cause;
+	@Getter private final String source;
+	@Getter @Setter private double damage;
 
 	public DamageStorage(Player player, double damage, DamageCause cause, String source) {
 		super(player, ActivatorType.DAMAGE);
@@ -18,21 +20,4 @@ public class DamageStorage extends RAStorage {
 		this.cause = cause;
 		this.source = source;
 	}
-
-	public double getDamage() {
-		return this.damage;
-	}
-
-	public void setDamage(double damage) {
-		this.damage = damage;
-	}
-
-	public DamageCause getCause() {
-		return this.cause;
-	}
-
-	public String getSource() {
-		return this.source;
-	}
-
 }

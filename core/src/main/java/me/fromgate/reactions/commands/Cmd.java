@@ -1,12 +1,13 @@
 package me.fromgate.reactions.commands;
 
+import lombok.Getter;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
 public abstract class Cmd {
-	private String command;
+	@Getter private String command;
 	private String[] subCommands;
 	private String permission;
 	private boolean allowConsole;
@@ -33,12 +34,9 @@ public abstract class Cmd {
 		return player.hasPermission(this.permission);
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isValidCommand() {
 		return (this.getCommand() != null && !this.getCommand().isEmpty());
-	}
-
-	public String getCommand() {
-		return this.command;
 	}
 
 	public boolean checkParams(String[] params) {

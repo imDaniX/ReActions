@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.time;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
 import org.quartz.CronExpression;
@@ -34,35 +36,24 @@ import java.util.Set;
 
 public class Timer {
 
-	private boolean timerType;
-	private Set<String> timesIngame;
+	@Getter @Setter private boolean paused;
+	@Getter private boolean ingameTimer;
+	@Getter private Param params;
+	@Getter private Set<String> timesIngame;
 	private CronExpression timeServer;
-	private Param params;
-	private boolean pause;
 
 	public Timer(Param params2) {
 		this.timesIngame = new HashSet<>();
 		this.params = params2;
-		this.timerType = params2.getParam("timer-type", "ingame").equalsIgnoreCase("ingame");
-		this.pause = params2.getParam("paused", false);
-		params2.set("paused", String.valueOf(this.pause));
+		this.ingameTimer = params2.getParam("timer-type", "ingame").equalsIgnoreCase("ingame");
+		this.paused = params2.getParam("paused", false);
+		params2.set("paused", String.valueOf(this.paused));
 		this.parseTime();
 
 	}
 
-	/**
-	 * @return true = ingame, false - server
-	 */
-	public boolean getTimerType() {
-		return this.timerType;
-	}
-
-	public Param getParams() {
-		return this.params;
-	}
-
 	public void parseTime() {
-		if (this.timerType) {
+		if (this.ingameTimer) {
 			this.timesIngame = new HashSet<>();
 			this.timesIngame.addAll(Arrays.asList(params.getParam("time", "").split(",\\S*")));
 		} else {
@@ -80,37 +71,21 @@ public class Timer {
 
 	public boolean isTimeToRun() {
 		if (isPaused()) return false;
-		return this.timerType ? isIngameTimeToRun() : isServerTimeToRun();
+		return this.ingameTimer ? isIngameTimeToRun() : isServerTimeToRun();
 	}
 
 	private boolean isServerTimeToRun() {
-		if (this.timerType) return false;
+		if (this.ingameTimer) return false;
 		if (this.timeServer == null) return false;
 		return (this.timeServer.isSatisfiedBy(new Date()));
 	}
 
 	private boolean isIngameTimeToRun() {
-		return timerType && timesIngame.contains(TimeUtil.currentIngameTime());
+		return ingameTimer && timesIngame.contains(TimeUtil.currentIngameTime());
 	}
 
-	public boolean isIngameTimer() {
-		return this.timerType;
-	}
-
-	public Set<String> getIngameTimes() {
-		return this.timesIngame;
-	}
-
+	@Override
 	public String toString() {
 		return params.getParam("activator", "Undefined") + " : " + params.getParam("time", "Undefined") + (this.isIngameTimer() ? " (ingame)" : " (server)");
 	}
-
-	public boolean isPaused() {
-		return this.pause;
-	}
-
-	public void setPause(boolean pause) {
-		this.pause = pause;
-	}
-
 }

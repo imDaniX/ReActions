@@ -337,7 +337,7 @@ public class ActivatorsManager {
 		}
 		YamlConfiguration cfg = new YamlConfiguration();
 		for (Activator a : activators) {
-			if (a.group.equalsIgnoreCase(group)) a.saveActivator(cfg);
+			if (a.getGroup().equalsIgnoreCase(group)) a.saveActivator(cfg);
 		}
 
 		try {

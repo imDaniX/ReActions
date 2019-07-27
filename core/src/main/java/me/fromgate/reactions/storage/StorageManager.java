@@ -471,7 +471,7 @@ public class StorageManager {
 		ItemStack oldItem = event.getCurrentItem();
 		InventoryClickStorage e = new InventoryClickStorage(p, event.getAction(), event.getClick(), event.getInventory(), event.getSlotType(), event.getCurrentItem(), event.getHotbarButton(), event.getView(), event.getSlot());
 		ActivatorsManager.activate(e);
-		ItemStack newItemStack = e.getItemStack();
+		ItemStack newItemStack = e.getItem();
 		if (newItemStack != null) {
 			if (newItemStack.getType() != Material.AIR && newItemStack.getAmount() <= 1 && oldItem != null) {
 				newItemStack.setAmount(oldItem.getAmount());
@@ -595,7 +595,7 @@ public class StorageManager {
 		PickupItemStorage e = new PickupItemStorage(player, event.getItem(), pickupDelay);
 		ActivatorsManager.activate(e);
 		item.setPickupDelay(e.getPickupDelay());
-		ItemStack newItemStack = e.getItemStack();
+		ItemStack newItemStack = e.getItem();
 		if (newItemStack != null && newItemStack.getType() == Material.AIR) {
 			e.setCancelled(true);
 			item.remove();

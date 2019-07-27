@@ -22,20 +22,16 @@
 
 package me.fromgate.reactions.storage;
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class MobKillStorage extends RAStorage {
-	private final LivingEntity mob;
+	@Getter private final LivingEntity entity;
 
-	public MobKillStorage(Player p, LivingEntity mob) {
+	public MobKillStorage(Player p, LivingEntity entity) {
 		super(p, ActivatorType.MOB_KILL);
-		this.mob = mob;
+		this.entity = entity;
 	}
-
-	public LivingEntity getMob() {
-		return this.mob;
-	}
-
 }

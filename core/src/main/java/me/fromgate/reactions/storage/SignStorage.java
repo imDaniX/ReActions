@@ -24,6 +24,7 @@
 package me.fromgate.reactions.storage;
 
 
+import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Location;
@@ -31,28 +32,18 @@ import org.bukkit.entity.Player;
 
 public class SignStorage extends RAStorage {
 
-	private String[] signLines;
-	private final Location loc;
-	private final boolean leftClick;
+	@Getter private String[] signLines;
+	@Getter private final boolean leftClick;
+	private final Location location;
 
 	public SignStorage(Player player, String[] signLines, Location loc, boolean leftClick) {
 		super(player, ActivatorType.SIGN);
 		this.signLines = signLines;
-		this.loc = loc;
+		this.location = loc;
 		this.leftClick = leftClick;
 	}
 
-	public String[] getSignLines() {
-		return this.signLines;
-	}
-
 	public String getSignLocation() {
-		return Locator.locationToString(this.loc);
+		return Locator.locationToString(this.location);
 	}
-
-	public boolean isLeftClicked() {
-		return leftClick;
-	}
-
-
 }
