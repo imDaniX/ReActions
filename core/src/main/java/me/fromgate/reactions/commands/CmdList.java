@@ -11,7 +11,7 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Set;
+import java.util.List;
 
 
 @CmdDefine(command = "react", description = Msg.CMD_LIST, permission = "reactions.config",
@@ -61,19 +61,19 @@ public class CmdList extends Cmd {
 	}
 
 	private void printAct(CommandSender sender, int page, int lpp) {
-		Set<String> ag = ActivatorsManager.getActivatorsSet();
+		List<String> ag = ActivatorsManager.getActivatorsList();
 		Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
 		Msg.MSG_LISTCOUNT.print(sender, ActivatorsManager.size(), Locator.sizeTpLoc());
 	}
 
 	private void printActGroup(CommandSender sender, String group, int page, int lpp) {
-		Set<String> ag = ActivatorsManager.getActivatorsSetGroup(group);
+		List<String> ag = ActivatorsManager.getActivatorsListGroup(group);
 		Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}
 
 	private void printActType(CommandSender sender, String type, int page, int lpp) {
-		Set<String> ag = ActivatorsManager.getActivatorsSet(type);
+		List<String> ag = ActivatorsManager.getActivatorsList(type);
 		Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}

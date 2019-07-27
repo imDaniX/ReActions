@@ -36,9 +36,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class ActivatorsManager {
@@ -439,24 +441,24 @@ public class ActivatorsManager {
 		}
 	}
 
-	public static Set<String> getActivatorsSet() {
-		Set<String> set = new HashSet<>();
-		activators.forEach(act -> set.add("&a" + act.toString()));
-		return set;
+	public static List<String> getActivatorsList() {
+		List<String> list = new ArrayList<>();
+		activators.forEach(act -> list.add("&a" + act.toString()));
+		return list;
 	}
 
-	public static Set<String> getActivatorsSet(String sType) {
-		Set<String> set = new HashSet<>();
+	public static List<String> getActivatorsList(String sType) {
+		List<String> list = new ArrayList<>();
 		ActivatorType type = ActivatorType.getByName(sType);
 		if(type != null)
-			activatorsMap.get(type).forEach(act -> set.add("&a" + act.toString()));
-		return set;
+			activatorsMap.get(type).forEach(act -> list.add("&a" + act.toString()));
+		return list;
 	}
 
-	public static Set<String> getActivatorsSetGroup(String group) {
-		Set<String> set = new HashSet<>();
-		activators.stream().filter(act -> act.getName().equalsIgnoreCase(group)).forEach(act -> set.add(act.toString()));
-		return set;
+	public static List<String> getActivatorsListGroup(String group) {
+		List<String> list = new ArrayList<>();
+		activators.stream().filter(act -> act.getName().equalsIgnoreCase(group)).forEach(act -> list.add(act.toString()));
+		return list;
 	}
 
 	public static boolean activate(RAStorage event) {
