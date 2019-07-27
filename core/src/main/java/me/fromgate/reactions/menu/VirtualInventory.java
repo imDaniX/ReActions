@@ -1,5 +1,7 @@
 package me.fromgate.reactions.menu;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -13,17 +15,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VirtualInventory {
-
-	int size;
-	String title;
-	List<String> slots;
-	List<String> execs;
+	@Getter @Setter
+	private int size;
+	@Getter @Setter
+	private String title;
+	@Getter @Setter
+	private List<String> slots;
+	@Getter @Setter
+	private List<String> activators;
 
 	public VirtualInventory(int size, String title) {
 		this.size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 		this.title = title;
 		this.slots = Util.getEmptyList(this.size);
-		this.execs = Util.getEmptyList(this.size);
+		this.activators = Util.getEmptyList(this.size);
 	}
 
 	public void save(YamlConfiguration cfg, String root) {
@@ -32,8 +37,8 @@ public class VirtualInventory {
 		for (int i = 0; i < size; i++) {
 			if (!slots.get(i).isEmpty())
 				cfg.set(root + ".slot" + (i + 1) + ".item", slots.get(i));
-			if (!execs.get(i).isEmpty())
-				cfg.set(root + ".slot" + (i + 1) + ".activator", execs.get(i));
+			if (!activators.get(i).isEmpty())
+				cfg.set(root + ".slot" + (i + 1) + ".activator", activators.get(i));
 		}
 	}
 
@@ -48,10 +53,10 @@ public class VirtualInventory {
 		this.size = cfg.getInt(root + ".size", 9);
 		size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 		this.slots = Util.getEmptyList(this.size);
-		this.execs = Util.getEmptyList(this.size);
+		this.activators = Util.getEmptyList(this.size);
 		for (int i = 1; i <= size; i++) {
 			this.slots.set(i - 1, cfg.getString(root + ".slot" + i + ".item", ""));
-			this.execs.set(i - 1, cfg.getString(root + ".slot" + i + ".activator", ""));
+			this.activators.set(i - 1, cfg.getString(root + ".slot" + i + ".activator", ""));
 		}
 	}
 
@@ -66,21 +71,16 @@ public class VirtualInventory {
 		return inv;
 	}
 
-	public List<String> getActivators() {
-		return this.execs;
-	}
-
 	@SuppressWarnings("unused")
 	public VirtualInventory(Param params) {
 		title = params.getParam("title", "&4Re&6Actions &eMenu");
 		size = params.getParam("size", 9);
 		size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 		slots = new ArrayList<>();
-		execs = new ArrayList<>();
+		activators = new ArrayList<>();
 		for (int i = 1; i <= size; i++) {
-			execs.add(params.getParam("exec" + i, ""));
+			activators.add(params.getParam("exec" + i, ""));
 			slots.add(params.getParam("exec" + i, ""));
 		}
 	}
-
 }

@@ -79,14 +79,14 @@ public class InventoryMenu implements Listener {
 	public static boolean set(String id, Param params) {
 		if (!menu.keySet().contains(id)) return false;
 		VirtualInventory vi = menu.get(id);
-		String title = params.getParam("title", vi.title);
-		int size = params.getParam("size", vi.size);
+		String title = params.getParam("title", vi.getTitle());
+		int size = params.getParam("size", vi.getSize());
 		size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 
-		List<String> activators = vi.execs;
+		List<String> activators = vi.getActivators();
 		if (activators.size() < size)
 			for (int i = activators.size(); i < size; i++) activators.add("");
-		List<String> slots = vi.slots;
+		List<String> slots = vi.getSlots();
 		if (slots.size() < size)
 			for (int i = slots.size(); i < size; i++) slots.add("");
 		for (int i = 1; i <= size; i++) {
@@ -95,10 +95,10 @@ public class InventoryMenu implements Listener {
 			if (params.isParamsExists("item" + i))
 				slots.set(i - 1, params.getParam("item" + i, ""));
 		}
-		vi.title = title;
-		vi.size = size;
-		vi.slots = slots;
-		vi.execs = activators;
+		vi.setTitle(title);
+		vi.setSize(size);
+		vi.setSlots(slots);
+		vi.setActivators(activators);
 		menu.put(id, vi);
 		save();
 		return true;
@@ -217,10 +217,10 @@ public class InventoryMenu implements Listener {
 	public static void printMenu(CommandSender sender, String id) {
 		if (menu.containsKey(id)) {
 			VirtualInventory vi = menu.get(id);
-			Msg.printMSG(sender, "msg_menuinfotitle", 'e', '6', id, vi.size, vi.title);
-			for (int i = 0; i < vi.size; i++) {
-				String exec = vi.execs.get(i);
-				String slot = vi.slots.get(i);
+			Msg.printMSG(sender, "msg_menuinfotitle", 'e', '6', id, vi.getSize(), vi.getTitle());
+			for (int i = 0; i < vi.getSize(); i++) {
+				String exec = vi.getActivators().get(i);
+				String slot = vi.getSlots().get(i);
 				if (exec.isEmpty() && slot.isEmpty()) continue;
 				slot = itemToString(slot);
 				Msg.printMSG(sender, "msg_menuinfoslot", i + 1, exec.isEmpty() ? "N/A" : exec, slot.isEmpty() ? "AIR" : slot);
@@ -233,7 +233,7 @@ public class InventoryMenu implements Listener {
 		List<String> menuList = new ArrayList<>();
 		for (String id : menu.keySet()) {
 			if (mask.isEmpty() || id.toLowerCase().contains(mask.toLowerCase())) {
-				menuList.add(id + " : " + menu.get(id).title);
+				menuList.add(id + " : " + menu.get(id).getTitle());
 			}
 		}
 		Msg.printPage(sender, menuList, Msg.MSG_MENULIST, pageNum, linesPerPage);
