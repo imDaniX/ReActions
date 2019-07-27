@@ -159,7 +159,10 @@ public class InventoryMenu implements Listener {
 
 	private static void openInventory(final Player player, final Inventory inv) {
 		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
-			if (player.isOnline()) player.openInventory(inv);
+			if (player.isOnline()) {
+				player.closeInventory();
+				player.openInventory(inv);
+			}
 			else activeMenus.remove(getInventoryCode(player, inv));
 		}, 1);
 	}
@@ -204,8 +207,7 @@ public class InventoryMenu implements Listener {
 
 	@EventHandler
 	public void onInventoryMove(InventoryDragEvent event) {
-		if (!InventoryMenu.isMenu(event.getInventory())) return;
-		event.setCancelled(true);
+		if (InventoryMenu.isMenu(event.getInventory())) event.setCancelled(true);
 	}
 
 	public static boolean exists(String id) {

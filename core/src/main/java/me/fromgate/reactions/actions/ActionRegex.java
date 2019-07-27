@@ -12,7 +12,6 @@ import java.util.regex.Pattern;
 /**
  * Created by MaxDikiy on 2017-04-29.
  */
-// TODO: Regex flag
 public class ActionRegex extends Action {
 
 	@Override

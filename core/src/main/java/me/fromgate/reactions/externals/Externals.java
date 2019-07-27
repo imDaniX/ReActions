@@ -46,6 +46,7 @@ public class Externals {
 			}
 		}
 
+		// TODO: Actions with WorldEdit API - placing blocks, working with schematics
 		if (Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
 			try {
 				RaWorldEdit.init();

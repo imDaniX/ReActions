@@ -106,8 +106,8 @@ public enum Flags {
 	WE_SUPERPICKAXE("superpickaxe", true, new FlagSuperPickAxe()),
 	WE_TOOLCONTROL("toolcontrol", true, new FlagToolControl()),
 	REGION_IN_RADIUS("regioninradius", true, new FlagRegionInRadius()),
-	CHECK_ONLINE("checkonline", false, new FlagCheckOnline());
-
+	CHECK_ONLINE("checkonline", false, new FlagCheckOnline()),
+	REGEX("regex", false, new FlagRegex());
 
 	private final String alias;
 	private final boolean requirePlayer;
