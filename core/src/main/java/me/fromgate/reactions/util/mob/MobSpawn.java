@@ -218,10 +218,11 @@ public class MobSpawn {
 
 
 	private static void setMobHealth(LivingEntity e, double health) {
-		if (health > 0)
+		if (health > 0) {
 			if (health > e.getHealth())
 				e.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
-			e.setHealth(health);
+		} else health = e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
+		e.setHealth(health);
 	}
 
 	private static void setMobEquipment(LivingEntity e, String equip) {
