@@ -38,7 +38,7 @@ public class MessageActivator extends Activator {
 	private final static Pattern NOT_D = Pattern.compile("\\D+");
 
 
-	Type type;
+	private CheckType type;
 	private Source source;
 	private String mask;
 
@@ -49,7 +49,7 @@ public class MessageActivator extends Activator {
 	public MessageActivator(String name, String param) {
 		super(name, "activators");
 		Param params = new Param(param, "mask");
-		this.type = Type.getByName(params.getParam("type", "EQUAL"));
+		this.type = CheckType.getByName(params.getParam("type", "EQUAL"));
 		this.source = Source.getByName(params.getParam("source", "CHAT_MESSAGE"));
 		this.mask = params.getParam("mask", params.getParam("message", "<message mask>"));
 	}
@@ -64,29 +64,29 @@ public class MessageActivator extends Activator {
 	@Override
 	public void load(ConfigurationSection cfg) {
 		mask = cfg.getString("mask", "Unknown mask");
-		this.type = Type.getByName(cfg.getString("type", Type.EQUAL.name()));
+		this.type = CheckType.getByName(cfg.getString("type", CheckType.EQUAL.name()));
 		this.source = Source.getByName(cfg.getString("source", Source.CHAT_INPUT.name()));
 	}
 
 
-	public enum Type {
+	public enum CheckType {
 		REGEX,
 		CONTAINS,
 		EQUAL,
 		START,
 		END;
 
-		public static Type getByName(String name) {
-			if (name.equalsIgnoreCase("contain")) return Type.CONTAINS;
-			if (name.equalsIgnoreCase("equals")) return Type.EQUAL;
-			for (Type t : Type.values()) {
+		public static CheckType getByName(String name) {
+			if (name.equalsIgnoreCase("contain")) return CheckType.CONTAINS;
+			if (name.equalsIgnoreCase("equals")) return CheckType.EQUAL;
+			for (CheckType t : CheckType.values()) {
 				if (t.name().equalsIgnoreCase(name)) return t;
 			}
-			return Type.EQUAL;
+			return CheckType.EQUAL;
 		}
 
 		public static boolean isValid(String name) {
-			for (Type t : Type.values()) {
+			for (CheckType t : CheckType.values()) {
 				if (t.name().equalsIgnoreCase(name)) return true;
 			}
 			return false;

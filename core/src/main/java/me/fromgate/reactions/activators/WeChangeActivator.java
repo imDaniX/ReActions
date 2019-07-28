@@ -10,7 +10,6 @@ import me.fromgate.reactions.storage.WeChangeStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.Locator;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -51,10 +50,7 @@ public class WeChangeActivator extends Activator {
 
 	private void blockType() {
 		String bType = blockType.toUpperCase();
-		if (bType.isEmpty()) blockType = "ANY";
-		else if (StringUtils.isNumeric(bType)) {
-			blockType = Material.getMaterial(bType).name();
-		} else if (!bType.equalsIgnoreCase("ANY") && Material.getMaterial(bType) != null)
+		if (!bType.equalsIgnoreCase("ANY") && Material.getMaterial(bType) != null)
 			blockType = Material.getMaterial(bType).name();
 		else blockType = "ANY";
 	}
