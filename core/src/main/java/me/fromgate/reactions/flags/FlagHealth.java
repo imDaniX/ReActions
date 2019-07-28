@@ -22,18 +22,13 @@
 
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
 public class FlagHealth implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		double health;
-		try {
-			health = Double.parseDouble(param);
-		} catch (Exception ignore) {
-			return false;
-		}
-		return player.getHealth() >= health;
+		return Util.FLOAT.matcher(param).matches() && player.getHealth() >= Double.parseDouble(param);
 	}
 }

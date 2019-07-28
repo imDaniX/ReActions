@@ -107,7 +107,8 @@ public enum Flags {
 	WE_TOOLCONTROL("toolcontrol", true, new FlagToolControl()),
 	REGION_IN_RADIUS("regioninradius", true, new FlagRegionInRadius()),
 	CHECK_ONLINE("checkonline", false, new FlagCheckOnline()),
-	REGEX("regex", false, new FlagRegex());
+	REGEX("regex", false, new FlagRegex()),
+	HELD_SLOT("slot", true, new FlagHeldSlot());
 
 	private final String alias;
 	private final boolean requirePlayer;

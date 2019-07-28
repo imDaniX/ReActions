@@ -16,7 +16,8 @@ import java.util.Set;
 @PlaceholderDefine(id = "BasicPlayer",
 		keys = {"player_loc", "player_loc_eye", "player_loc_view", "player_name", "player",
 				"player_display", "dplayer", "player_item_hand", "itemplayer", "player_inv", "invplayer",
-				"health", "player_loc_death", "deathpoint", "player_id", "uuid", "player_level", "level"})
+				"health", "player_loc_death", "deathpoint", "player_id", "uuid", "player_level", "level",
+				"player_held_slot", "slot"})
 public class PlaceholderPlayer extends Placeholder {
 
 	private static final Set<Material> NON_SOLID;
@@ -30,6 +31,9 @@ public class PlaceholderPlayer extends Placeholder {
 	public String processPlaceholder(Player player, String key, String param) {
 		if (player == null) return null;
 		switch (key.toLowerCase()) {
+			case "player_name":
+			case "player":
+				return player.getName();
 			case "health":
 				return Double.toString(player.getHealth());
 			case "player_inv":
@@ -66,9 +70,9 @@ public class PlaceholderPlayer extends Placeholder {
 			case "player_ip":
 			case "ip_address":
 				return player.getAddress().getAddress().getHostAddress();
-			case "player_name":
-			case "player":
-				return player.getName();
+			case "player_held_slot":
+			case "slot":
+				return Integer.toString(player.getInventory().getHeldItemSlot());
 		}
 		return null;
 	}

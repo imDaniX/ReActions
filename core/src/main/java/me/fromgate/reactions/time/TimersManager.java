@@ -69,12 +69,7 @@ public class TimersManager {
 
 	 */
 
-	/*
-	 * TODO
-	 * нужно будет добавить поддержку временных поясов
-	 * 	
-	 */
-
+	 // TODO: Timezones support
 
 	private static BukkitTask ingameTimer = null;
 	private static String currentIngameTime;

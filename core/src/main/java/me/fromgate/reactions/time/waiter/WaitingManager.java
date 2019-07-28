@@ -71,7 +71,6 @@ public class WaitingManager {
 		refreshPlayer(player.getName());
 	}
 
-	// TODO: Use UUIDs
 	public static void refreshPlayer(String player) {
 		if (tasks.isEmpty()) return;
 		int before = tasks.size();
