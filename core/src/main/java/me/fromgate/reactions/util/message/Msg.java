@@ -37,6 +37,7 @@ import java.util.Map;
 import java.util.Set;
 
 public enum Msg {
+	// TODO: Clean freaking up
 
 	//Default (lang) messages
 	LNG_LOAD_FAIL("Failed to load languages from file. Default message used"),
@@ -105,10 +106,11 @@ public enum Msg {
 	CMD_FLAGNOTADDED("Flag was not added: %1%"),
 	CMD_UNKNOWNBUTTON("Activator %1% was not found"),
 	LOC_UNKNOWN("Unknown location"),
-	CMD_ADD("%1% - main command to add new activator, locations, add flags, actions and reactions to activator"),
+	CMD_ADD("%1% - add new locations, add flags, actions or reactions to activator"),
+	CMD_CREATE("%1% - create new location, timer, menu activator"),
 	CMD_SET("%1% - set delay that could be checked with DELAY and DELAY_PLAYER flags"),
-	CMD_RUN("%1% - Execute the <exec-activator> for a defined player after <delay>"),
-	CMD_LIST("%1% - display list of activators (all, groupped by type or group name), list of stored locations"),
+	CMD_RUN("%1% - execute the <exec-activator> for a defined player after <delay>"),
+	CMD_LIST("%1% - display list of activators (all, grouped by type or group name), list of stored locations"),
 	CMD_INFO("%1% - display full info about activator (or display flags, actions and reactions of it)"),
 	CMD_REMOVE("%1% - remove stored activator or location"),
 	CMD_CLEAR("%1% - clear flags/actions/reactions bounded with activator with defined id"),

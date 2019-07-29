@@ -1,24 +1,16 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.activators.Activator;
-import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.menu.InventoryMenu;
-import me.fromgate.reactions.time.TimersManager;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @CmdDefine(command = "react", description = Msg.CMD_ADD, permission = "reactions.config",
 		subCommands = {"add"}, allowConsole = true,
-		shortDescription = "&3/react add [<activator> <Id>|loc <Id>|<Id> f <flag> <param>|<Id> <a|r> <action> <param>")
+		shortDescription = "&3/react add <Id> [f <flag> <param> | <a|r> <action> <param>")
 public class CmdAdd extends Cmd {
 	@Override
 	public boolean execute(CommandSender sender, String[] args) {
@@ -33,25 +25,7 @@ public class CmdAdd extends Cmd {
 				arg4.append(" ").append(args[i]);
 			arg4 = new StringBuilder(arg4.toString().trim());
 		}
-		if (ActivatorType.isValid(arg1)) {
-			Block block = player.getTargetBlock(null, 100);
-			return addActivator(sender, arg1, arg2, (arg3.isEmpty() ? "" : arg3) + ((arg4.length() == 0) ? "" : " " + arg4), block);
-		} else if (arg1.equalsIgnoreCase("loc")) {
-			if (player == null) return false;
-			if (!Locator.addTpLoc(arg2, player.getLocation())) return false;
-			Locator.saveLocs();
-			Msg.CMD_ADDTPADDED.print(sender, arg2);
-		} else if (arg1.equalsIgnoreCase("timer")) {
-			Param params = Param.parseParams((arg3.isEmpty() ? "" : arg3) + ((arg4.length() == 0) ? "" : " " + arg4));
-			return TimersManager.addTimer(sender, arg2, params, true);
-		} else if (arg1.equalsIgnoreCase("menu")) {
-			// /react add menu id size sdjkf
-			if (InventoryMenu.add(arg2, Util.isInteger(arg3) ? Integer.parseInt(arg3) : 9, ((Util.isInteger(arg3) ? "" : arg3 + " ") + ((arg4.length() == 0) ? "" : arg4.toString())).trim())) {
-				Msg.CMD_ADDMENUADDED.print(sender, arg2);
-			} else {
-				Msg.CMD_ADDMENUADDFAIL.print(sender, arg2);
-			}
-		} else if (ActivatorsManager.contains(arg1)) {
+		if (ActivatorsManager.contains(arg1)) {
 			String param = Util.replaceStandardLocations(player, arg4.toString()); // используется в addActions
 			if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
 				if (addAction(arg1, arg3, param)) {
@@ -110,25 +84,4 @@ public class CmdAdd extends Cmd {
 		}
 		return false;
 	}
-
-	private boolean addActivator(CommandSender sender, String type, String name, String param, Block targetBlock) {
-		ActivatorType at = ActivatorType.getByName(type);
-		if (at == null) return false;
-		Activator activator = at.create(name, targetBlock, param);
-		if (activator == null || !activator.isValid()) {
-			Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
-			return true;
-		}
-		if (ActivatorsManager.add(activator)) {
-			ActivatorsManager.saveActivators();
-			Msg.CMD_ADDBADDED.print(sender, activator.toString());
-		} else {
-			Msg.CMD_NOTADDBADDED.print(sender, activator.toString());
-		}
-		FakeCmd.updateAllCommands();
-		RaWorldGuard.updateRegionCache();
-		return true;
-	}
-
-
 }

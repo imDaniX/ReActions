@@ -31,14 +31,9 @@ public class ActionExecute extends Action {
 
 	@Override
 	public boolean execute(Player player, Param params) {
-		return execActivator(player, params);
-	}
-
-	private boolean execActivator(Player player, Param params) {
 		String id = params.getParam("activator", "");
 		if (id.isEmpty()) return false;
 		setMessageParam(id);
 		return StorageManager.raiseExecActivator(player, params, Variables.getTempVars());
 	}
-
 }

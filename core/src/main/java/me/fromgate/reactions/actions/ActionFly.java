@@ -24,7 +24,7 @@ public class ActionFly extends Action {
 		return flyPlayer(player, allow, fly);
 	}
 
-	enum AllowFly {
+	private enum AllowFly {
 		TRUE,
 		FALSE,
 		NONE

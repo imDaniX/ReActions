@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 
 public class ActionLog extends Action {
 
-	private Logger log = Logger.getLogger("Minecraft");
+	private final Logger log = Logger.getLogger("Minecraft");
 
 	public void saveToFile(String fileName, String message) {
 		File path = new File("");

@@ -21,9 +21,11 @@ public class Commander implements CommandExecutor {
 	public static void init(JavaPlugin plg) {
 		plugin = plg;
 		commander = new Commander();
+		// TODO: All the commands should be redesigned
 		addNewCommand(new CmdHelp());
 		addNewCommand(new CmdRun());
 		addNewCommand(new CmdAdd());
+		addNewCommand(new CmdCreate());
 		addNewCommand(new CmdSet());
 		addNewCommand(new CmdCopy());
 		addNewCommand(new CmdList());

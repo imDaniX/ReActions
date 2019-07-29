@@ -27,7 +27,7 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class ActionRacesAndClasses extends Action {
-	private boolean setRace;
+	private final boolean setRace;
 
 	public ActionRacesAndClasses(boolean setRace) {
 		this.setRace = setRace;

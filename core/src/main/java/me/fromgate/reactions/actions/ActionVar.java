@@ -28,8 +28,8 @@ import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 
 public class ActionVar extends Action {
-	private int actType;
-	private boolean personalVar;
+	private final int actType;
+	private final boolean personalVar;
 
 	public ActionVar(int actType, boolean personalVar) {
 		this.actType = actType;

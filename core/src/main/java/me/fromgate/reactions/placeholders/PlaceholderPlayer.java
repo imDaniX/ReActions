@@ -78,7 +78,7 @@ public class PlaceholderPlayer extends Placeholder {
 	}
 
 	/**
-	 * Get location that player is looking for
+	 * Get location that player is looking on
 	 * @param p Player to use
 	 * @param solid Search for only solid blocks or not
 	 * @return Location of block
@@ -86,6 +86,7 @@ public class PlaceholderPlayer extends Placeholder {
 	private Location getViewLocation(Player p, boolean solid) {
 		Block b = p.getTargetBlock(solid ? NON_SOLID : null, 100);
 		if (b == null) return p.getLocation();
+		// Does it work ok on negative coordinates?
 		return b.getLocation().add(0.5, 0.5, 0.5);
 	}
 

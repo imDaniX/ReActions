@@ -40,7 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class ActionItems extends Action {
-	private ItemActionType actionType;
+	private final ItemActionType actionType;
 
 	public ActionItems(ItemActionType actionType) {
 		this.actionType = actionType;

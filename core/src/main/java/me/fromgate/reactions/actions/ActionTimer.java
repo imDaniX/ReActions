@@ -27,7 +27,7 @@ import me.fromgate.reactions.util.Param;
 import org.bukkit.entity.Player;
 
 public class ActionTimer extends Action {
-	private boolean pauseTimer;
+	private final boolean pauseTimer;
 	/*	TIMER_STOP("timerstop",false,new ActionTimer(false)),
 	TIMER_RESUME("timerresume",false,new ActionTimer(true));
 	*/

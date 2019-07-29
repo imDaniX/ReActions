@@ -10,7 +10,6 @@ public class PlaceholderRandom extends Placeholder {
 
 	private final static Pattern WORD_LIST = Pattern.compile("[\\S,]*[\\S]");
 
-
 	@Override
 	public String processPlaceholder(Player player, String key, String param) {
 		return random(param);
