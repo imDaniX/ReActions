@@ -89,7 +89,7 @@ public class BukkitListener implements Listener {
 			if (StorageManager.raiseMessageActivator(event.getPlayer(), MessageActivator.Source.CHAT_INPUT, event.getMessage())) {
 				event.setCancelled(true);
 			}
-		} catch(Exception ignore) {
+		} catch(IllegalStateException ignore) {
 			Msg.logOnce("asyncchat", "Chat is in async thread. Because of that you should use " +
 					"additional EXEC activator in some cases, like teleportation, setting blocks etc.");
 		}
