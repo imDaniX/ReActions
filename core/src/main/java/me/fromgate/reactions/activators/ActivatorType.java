@@ -34,12 +34,12 @@ import java.util.List;
 
 public enum ActivatorType {
 	// alias, activator class, need target block, can be located
-	EXEC("exe", Activator.class),
 	BUTTON("b", ButtonActivator.class, true, true),
 	PLATE("plt", PlateActivator.class, true, true),
 	REGION("rg", RegionActivator.class, false, true),
 	REGION_ENTER("rgenter", RegionEnterActivator.class, false, true),
 	REGION_LEAVE("rgleave", RegionLeaveActivator.class, false, true),
+	EXEC("exe", ExecActivator.class),
 	COMMAND("cmd", CommandActivator.class),
 	MESSAGE("msg", MessageActivator.class),
 	PVP_KILL("pvpkill", PvpKillActivator.class),

@@ -30,7 +30,6 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.flags.StoredFlag;
-import me.fromgate.reactions.storage.ExecStorage;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
@@ -40,7 +39,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Activator {
+public abstract class Activator {
 
 	String name;
 	@Getter @Setter private String group;
@@ -276,42 +275,31 @@ public class Activator {
 	 * @param storage Storage with data for activator
 	 * @return Cancel original event or not
 	 */
-	public boolean activate(RAStorage storage) {
-		ExecStorage ce = (ExecStorage) storage;
-		if (ce.getActivatorId().equalsIgnoreCase(this.getName())) {
-			Variables.setTempVars(ce.getTempVars());
-			return Actions.executeActivator(ce.getTargetPlayer(), this);
-		}
-		return false;
-	}
+	public abstract boolean activate(RAStorage storage); // Наверное всё-таки так
 
 	/**
 	 * Save activator to config
 	 * @param cfg Section of activator
 	 */
-	public void save(ConfigurationSection cfg) {}
+	public abstract void save(ConfigurationSection cfg);
 
 	/**
 	 * Load activator from config
 	 * @param cfg Section of activator
 	 */
-	public void load(ConfigurationSection cfg) {}
+	public abstract void load(ConfigurationSection cfg);
 
 	/**
 	 * Get type of activator
 	 * @return Type of activator
 	 */
-	public ActivatorType getType() {
-		return ActivatorType.EXEC;
-	}
+	public abstract ActivatorType getType();
 
 	/**
 	 * Check if activator is valid
 	 * @return Is activator valid
 	 */
-	public boolean isValid() {
-		return true;
-	}
+	public abstract boolean isValid();
 
 	@Override
 	public int hashCode() {
