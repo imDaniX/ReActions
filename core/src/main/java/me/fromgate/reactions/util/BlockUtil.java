@@ -12,7 +12,8 @@ import org.bukkit.block.data.Openable;
 public class BlockUtil {
 
 	public static boolean isSign(Block block) {
-		return Tag.SIGNS.isTagged(block.getType());
+		try {return Tag.SIGNS.isTagged(block.getType());}
+		catch(NoSuchFieldError e) {return block.getType().name().contains("SIGN");}
 	}
 
 	public static boolean isSameBlock(Location loc1, Location loc2) {
