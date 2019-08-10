@@ -20,7 +20,6 @@ public class ActionFile extends Action {
 		String fileNameTo = params.getParam("fileNameTo", "");
 		if (action.isEmpty() || fileName.isEmpty()) return false;
 
-
 		File path = new File("");
 		String dir = path.getAbsolutePath();
 
