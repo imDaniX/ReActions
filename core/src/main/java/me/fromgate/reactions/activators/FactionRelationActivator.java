@@ -28,7 +28,6 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,23 +37,17 @@ import java.util.Set;
 
 public class FactionRelationActivator extends Activator {
 
-	private Set<String> factions;
-	private String oldRelation;
-	private String newRelation;
+	private final Set<String> factions;
+	private final String oldRelation;
+	private final String newRelation;
 
-	public FactionRelationActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public FactionRelationActivator(String name, String param) {
-		super(name, "activators");
+	public FactionRelationActivator(ActivatorBase base, String faction, String otherFaction, String oldRelation, String newRelation) {
+		super(base);
 		this.factions = new HashSet<>();
-		Param params = new Param(param, "newrelation");
-		this.factions.add(params.getParam("faction", params.getParam("faction1", "ANY")).toUpperCase());
-		this.factions.add(params.getParam("faction2", params.getParam("otherfaction", "ANY")).toUpperCase());
-		this.newRelation = params.getParam("faction2", "ANY");
-		this.newRelation = params.getParam("newrelation", "ANY");
-		this.oldRelation = params.getParam("oldrelation", "ANY");
+		this.factions.add(faction.toUpperCase());
+		this.factions.add(otherFaction.toUpperCase());
+		this.oldRelation = oldRelation;
+		this.newRelation = newRelation;
 	}
 
 
@@ -85,7 +78,7 @@ public class FactionRelationActivator extends Activator {
 		Variables.setTempVar("oldrelation", fe.getOldRelation());
 		Variables.setTempVar("newrelation", fe.getNewRelation());
 		if (this.mustExecute(fe.getFaction(), fe.getOtherFaction(), fe.getOldRelation(), fe.getNewRelation())) {
-			return Actions.executeActivator(null, this);
+			return Actions.executeActivator(null, getBase());
 		}
 		return false;
 	}
@@ -99,21 +92,22 @@ public class FactionRelationActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.factions = new HashSet<>();
-		this.factions.addAll(cfg.getStringList("factions"));
-		this.oldRelation = cfg.getString("old-relation", "ANY");
-		this.newRelation = cfg.getString("new-relation", "ANY");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.FCT_RELATION;
 	}
 
-	@Override
-	public boolean isValid() {
-		return true;
+	public static FactionRelationActivator create(ActivatorBase base, Param param) {
+		String faction = param.getParam("faction", param.getParam("faction1", "ANY"));
+		String otherFaction = param.getParam("faction2", "ANY");
+		String oldRelation = param.getParam("oldrelation", "ANY");
+		String newRelation = param.getParam("newrelation", "ANY");
+		return new FactionRelationActivator(base, faction, otherFaction, oldRelation, newRelation);
 	}
 
+	public static FactionRelationActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		List<String> factions = cfg.getStringList("factions");
+		String oldRelation = cfg.getString("old-relation", "ANY");
+		String newRelation = cfg.getString("new-relation", "ANY");
+		return new FactionRelationActivator(base, factions.isEmpty()?"UNKNOWN":factions.get(0), factions.size()<2?"UNKNOWN":factions.get(1), oldRelation, newRelation);
+	}
 }

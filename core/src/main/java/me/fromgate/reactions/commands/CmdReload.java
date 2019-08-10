@@ -22,7 +22,7 @@ public class CmdReload extends Cmd {
 		if(params.length >= 2) {
 			String check = params[1].toLowerCase();
 			if(check.contains("g") && params.length > 2) {
-				ActivatorsManager.loadActivators(params[2].replace('/', File.separatorChar).replace('\\', File.separatorChar), true);
+				ActivatorsManager.loadActivators(params[2].replace('/', File.separatorChar), true);
 			} else
 			if(check.contains("a")) {
 				ActivatorsManager.clear();

@@ -49,6 +49,7 @@ public class ItemUtil {
 		return VirtualItem.fromString(itemStr);
 	}
 
+	@SuppressWarnings("unused")
 	public static void giveItemOrDrop(Player player, String itemStr) {
 		VirtualItem vi = itemFromString(itemStr);
 		if (vi == null) return;
@@ -89,7 +90,7 @@ public class ItemUtil {
 		//if (amountToRemove>countItems) return false;
 		for (int i = 0; i < inventory.getSize(); i++) {
 			if (inventory.getItem(i) == null || inventory.getItem(i).getType() == Material.AIR) continue;
-			VirtualItem vi = ItemUtil.itemFromItemStack(inventory.getItem(i));
+			VirtualItem vi = VirtualItem.fromItemStack(inventory.getItem(i));
 			if (!vi.compare(itemParams, 1)) continue;
 			if (vi.getAmount() <= amountToRemove) {
 				amountToRemove -= vi.getAmount();
@@ -108,7 +109,7 @@ public class ItemUtil {
 		int count = 0;
 		for (ItemStack slot : inventory) {
 			if (slot == null || slot.getType() == Material.AIR) continue;
-			VirtualItem vi = ItemUtil.itemFromItemStack(slot);
+			VirtualItem vi = VirtualItem.fromItemStack(slot);
 			if (!vi.compare(itemParams, 1)) continue;
 			count += slot.getAmount();
 		}
@@ -159,11 +160,7 @@ public class ItemUtil {
 
 	public static VirtualItem itemFromBlock(Block block) {
 		if (block == null) return itemFromString("AIR");
-		return itemFromItemStack(new ItemStack(block.getType(), 1));
-	}
-
-	public static VirtualItem itemFromItemStack(ItemStack item) {
-		return VirtualItem.fromItemStack(item);
+		return VirtualItem.fromItemStack(new ItemStack(block.getType(), 1));
 	}
 
 	public static ItemStack parseItemStack(String string) {
@@ -178,7 +175,7 @@ public class ItemUtil {
 
 	public static boolean compareItemStr(ItemStack item, String itemStr) {
 		if (item == null || item.getType() == Material.AIR) return false;
-		return itemFromItemStack(item).compare(itemStr);
+		return VirtualItem.fromItemStack(item).compare(itemStr);
 	}
 
 	public static boolean compareItemStr(ItemStack item, String itemStr, boolean allowHand) {
@@ -220,7 +217,7 @@ public class ItemUtil {
 
 
 	public static String itemToString(ItemStack item) {
-		VirtualItem vi = itemFromItemStack(item);
+		VirtualItem vi = VirtualItem.fromItemStack(item);
 		return vi == null ? "" : vi.toString();
 	}
 

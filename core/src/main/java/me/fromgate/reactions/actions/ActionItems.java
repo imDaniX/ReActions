@@ -371,14 +371,14 @@ public class ActionItems extends Action {
 		if (slot == -1 && !itemStr.isEmpty()) {
 			for (int i = 0; i < armor.length; i++) {
 				if (ItemUtil.compareItemStr(armor[i], itemStr)) {
-					vi = ItemUtil.itemFromItemStack(armor[i]);
+					vi = VirtualItem.fromItemStack(armor[i]);
 					slot = i;
 				}
 			}
 		} else if (slot >= 0) {
 			ItemStack itemSlot = armor[slot];
 			if (itemStr.isEmpty() || ItemUtil.compareItemStr(itemSlot, itemStr))
-				vi = ItemUtil.itemFromItemStack(itemSlot);
+				vi = VirtualItem.fromItemStack(itemSlot);
 		}
 		if (vi == null || vi.getType() == Material.AIR) return false;
 		armor[slot] = null;

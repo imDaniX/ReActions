@@ -1,15 +1,34 @@
 package me.fromgate.reactions.util;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Openable;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Some helpful methods related to blocks to minify size of code
  */
 public class BlockUtil {
+	private final static Set<Material> PLATES = new HashSet<>();
+	static {
+		for(Material mat : Material.values())
+			if(mat.name().endsWith("PRESSURE_PLATE")) PLATES.add(mat);
+	}
+
+	public static BlockFace getFaceByName(String name) {
+		for(BlockFace face : BlockFace.values())
+			if(face.name().equalsIgnoreCase(name)) return face;
+		return null;
+	}
+
+	public static boolean isPlate(Block block) {
+		return PLATES.contains(block.getType());
+	}
 
 	public static boolean isSign(Block block) {
 		try {return Tag.SIGNS.isTagged(block.getType());}

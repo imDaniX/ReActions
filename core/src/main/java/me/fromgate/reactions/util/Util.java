@@ -24,8 +24,8 @@ package me.fromgate.reactions.util;
 
 import com.google.common.base.Charsets;
 import me.fromgate.reactions.Cfg;
+import me.fromgate.reactions.util.location.Holder;
 import me.fromgate.reactions.util.location.Locator;
-import me.fromgate.reactions.util.location.Selector;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Bukkit;
@@ -172,9 +172,9 @@ public class Util {
 		locs.put("%head%", p.getEyeLocation());
 		locs.put("%viewpoint%", targetBlock);
 		locs.put("%view%", targetBlock);
-		locs.put("%selection%", Selector.getSelectedLocation(p));
-		locs.put("%select%", Selector.getSelectedLocation(p));
-		locs.put("%sel%", Selector.getSelectedLocation(p));
+		locs.put("%selection%", Holder.getHeldLocation(p));
+		locs.put("%select%", Holder.getHeldLocation(p));
+		locs.put("%sel%", Holder.getHeldLocation(p));
 		String newparam = param;
 		for (String key : locs.keySet()) {
 			Location l = locs.get(key);
@@ -236,7 +236,7 @@ public class Util {
 		return sb.toString();
 	}
 
-	public static boolean emptySting(String str) {
+	public static boolean emptyString(String str) {
 		return str == null || str.isEmpty();
 	}
 
@@ -420,6 +420,13 @@ public class Util {
 		if(name != null)
 			for(Player player : Bukkit.getOnlinePlayers())
 				if(player.getName().equalsIgnoreCase(name)) return player;
+		return null;
+	}
+
+	public static Boolean getBoolean(String str) {
+		str = str.toLowerCase();
+		if(str.equals("true")||str.equals("on")||str.equals("yes")) return Boolean.TRUE;
+		if(str.equals("false")||str.equals("off")||str.equals("no")) return Boolean.FALSE;
 		return null;
 	}
 }

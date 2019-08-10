@@ -23,9 +23,9 @@
 package me.fromgate.reactions.util.location;
 
 import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.storage.RespawnStorage;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.simpledata.DeathCause;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -62,9 +62,9 @@ public class PlayerRespawner {
 		if (!players.containsKey(player.getUniqueId())) return;
 		LivingEntity killer = getLastKiller(player);
 		players.remove(player.getUniqueId());
-		PlayerDeathActivator.DeathCause d = PlayerDeathActivator.DeathCause.OTHER;
-		if (killer != null && killer.getType() == EntityType.PLAYER) d = PlayerDeathActivator.DeathCause.PVP;
-		else if (killer instanceof LivingEntity) d = PlayerDeathActivator.DeathCause.PVE;
+		DeathCause d = DeathCause.OTHER;
+		if (killer != null && killer.getType() == EntityType.PLAYER) d = DeathCause.PVP;
+		else if (killer instanceof LivingEntity) d = DeathCause.PVE;
 		ActivatorsManager.activate(new RespawnStorage(player, killer, d));
 	}
 

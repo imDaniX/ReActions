@@ -8,36 +8,31 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class InventoryClickActivator extends Activator {
+	// That's pretty freaky stuff
 	private String inventoryName;
 	private ClickType click;
 	private InventoryAction action;
 	private InventoryType inventory;
 	private SlotType slotType;
-	private String itemStr;
 	private String numberKey;
 	private String slotStr;
+	private String itemStr;
 
-
-	public InventoryClickActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.inventoryName = params.getParam("name", "");
-		this.click = ClickType.getByName(params.getParam("click", "ANY"));
-		this.action = InventoryAction.getByName(params.getParam("action", "ANY"));
-		this.inventory = InventoryType.getByName(params.getParam("inventory", "ANY"));
-		this.slotType = SlotType.getByName(params.getParam("slotType", "ANY"));
-		this.numberKey = getNumberKeyByName(params.getParam("key", "ANY"));
-		this.slotStr = getSlotByName(params.getParam("slot", "ANY"));
-		this.itemStr = params.getParam("item");
-	}
-
-	public InventoryClickActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public InventoryClickActivator(ActivatorBase base, String inventoryName, ClickType click, InventoryAction action,
+								   InventoryType inventory, SlotType slotType, String numberKey, String slotStr, String itemStr) {
+		super(base);
+		this.inventoryName = inventoryName;
+		this.click = click;
+		this.action = action;
+		this.inventory = inventory;
+		this.slotType = slotType;
+		this.numberKey = numberKey;
+		this.slotStr = slotStr;
+		this.itemStr = itemStr;
 	}
 
 
@@ -50,10 +45,10 @@ public class InventoryClickActivator extends Activator {
 		if (!actionCheck(pice.getAction())) return false;
 		if (!inventoryCheck(pice.getInventoryType())) return false;
 		if (!slotTypeCheck(pice.getSlotType())) return false;
-		Integer key = pice.getNumberKey();
+		int key = pice.getNumberKey();
 		if (!checkItem(pice.getItem(), key, pice.getBottomInventory())) return false;
 		if (!checkNumberKey(key)) return false;
-		Integer slot = pice.getSlot();
+		int slot = pice.getSlot();
 		if (!checkSlot(slot)) return false;
 		Variables.setTempVar("name", pice.getInventoryName());
 		Variables.setTempVar("click", pice.getClickType().toString());
@@ -88,18 +83,6 @@ public class InventoryClickActivator extends Activator {
 		cfg.set("key", this.numberKey);
 		cfg.set("slot", this.slotStr);
 		cfg.set("item", this.itemStr);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.inventoryName = cfg.getString("name", "");
-		this.click = ClickType.getByName(cfg.getString("click-type", "ANY"));
-		this.action = InventoryAction.getByName(cfg.getString("action-type", "ANY"));
-		this.inventory = InventoryType.getByName(cfg.getString("inventory-type", "ANY"));
-		this.slotType = SlotType.getByName(cfg.getString("slot-type", "ANY"));
-		this.numberKey = cfg.getString("key", "");
-		this.slotStr = cfg.getString("slot", "");
-		this.itemStr = cfg.getString("item", "");
 	}
 
 	@Override
@@ -224,7 +207,7 @@ public class InventoryClickActivator extends Activator {
 
 	private static String getNumberKeyByName(String keyStr) {
 		if (keyStr.equalsIgnoreCase("ANY")) return "ANY";
-		Integer key = Integer.parseInt(keyStr);
+		int key = Integer.parseInt(keyStr);
 		if (key > 0) {
 			for (int i = 1; i < 10; i++) {
 				if (key == i) return String.valueOf(i);
@@ -234,7 +217,7 @@ public class InventoryClickActivator extends Activator {
 	}
 
 	private static String getSlotByName(String slotStr) {
-		Integer slot = Integer.parseInt(slotStr);
+		int slot = Integer.parseInt(slotStr);
 		if (slot > -1) {
 			for (int i = 0; i < 36; i++) {
 				if (slot == i) return String.valueOf(i);
@@ -265,7 +248,7 @@ public class InventoryClickActivator extends Activator {
 
 	private boolean checkItem(ItemStack item, Integer key, Inventory bottomInventory) {
 		if (this.itemStr.isEmpty()) return true;
-		Boolean result = ItemUtil.compareItemStr(item, this.itemStr, true);
+		boolean result = ItemUtil.compareItemStr(item, this.itemStr, true);
 		if (!result && key > -1) return ItemUtil.compareItemStr(bottomInventory.getItem(key), this.itemStr, true);
 		return result;
 	}
@@ -288,18 +271,37 @@ public class InventoryClickActivator extends Activator {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
 		sb.append("name:").append(this.inventoryName);
-		sb.append(" click:").append(this.click.name());
-		sb.append(" action:").append(this.action.name());
-		sb.append(" inventory:").append(this.inventory.name());
-		sb.append(" slotType:").append(this.slotType.name());
-		sb.append(" key:").append(this.numberKey);
-		sb.append(" slot:").append(this.slotStr);
+		sb.append("; click:").append(this.click.name());
+		sb.append("; action:").append(this.action.name());
+		sb.append("; inventory:").append(this.inventory.name());
+		sb.append("; slotType:").append(this.slotType.name());
+		sb.append("; key:").append(this.numberKey);
+		sb.append("; slot:").append(this.slotStr);
 		sb.append(")");
 		return sb.toString();
 	}
 
-	@Override
-	public boolean isValid() {
-		return true;
+	public static InventoryClickActivator create(ActivatorBase base, Param param) {
+		String inventoryName = param.getParam("name", "");
+		ClickType click = ClickType.getByName(param.getParam("click", "ANY"));
+		InventoryAction action = InventoryAction.getByName(param.getParam("action", "ANY"));
+		InventoryType inventory = InventoryType.getByName(param.getParam("inventory", "ANY"));
+		SlotType slotType = SlotType.getByName(param.getParam("slotType", "ANY"));
+		String numberKey = getNumberKeyByName(param.getParam("key", "ANY"));
+		String slotStr = getSlotByName(param.getParam("slot", "ANY"));
+		String itemStr = param.getParam("item");
+		return new InventoryClickActivator(base, inventoryName, click, action, inventory, slotType, numberKey, slotStr, itemStr);
+	}
+
+	public static InventoryClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String inventoryName = cfg.getString("name", "");
+		ClickType click = ClickType.getByName(cfg.getString("click-type", "ANY"));
+		InventoryAction action = InventoryAction.getByName(cfg.getString("action-type", "ANY"));
+		InventoryType inventory = InventoryType.getByName(cfg.getString("inventory-type", "ANY"));
+		SlotType slotType = SlotType.getByName(cfg.getString("slot-type", "ANY"));
+		String numberKey = cfg.getString("key", "");
+		String slotStr = cfg.getString("slot", "");
+		String itemStr = cfg.getString("item", "");
+		return new InventoryClickActivator(base, inventoryName, click, action, inventory, slotType, numberKey, slotStr, itemStr);
 	}
 }

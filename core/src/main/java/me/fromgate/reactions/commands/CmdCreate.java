@@ -52,15 +52,16 @@ public class CmdCreate extends Cmd {
 				Msg.CMD_ADDMENUADDFAIL.print(sender, id);
 				return false;
 			default:
-				Block block = player.getTargetBlock(null, 100);
-				return addActivator(sender, type, id, param.toString(), block);
+				return addActivator(sender, type, id, param.toString());
 		}
 	}
 
-	private boolean addActivator(CommandSender sender, String type, String name, String param, Block targetBlock) {
+	private boolean addActivator(CommandSender sender, String type, String name, String param) {
+		Block targetBlock = null;
+		if(sender instanceof Player) targetBlock = ((Player)sender).getTargetBlock(null, 100);
 		ActivatorType at = ActivatorType.getByName(type);
 		if (at == null) return false;
-		Activator activator = at.create(name, targetBlock, param);
+		Activator activator = at.create(name, "activators", at.isNeedTargetBlock() ? new Param(param, targetBlock) : new Param(param));
 		if (activator == null || !activator.isValid()) {
 			Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
 			return true;

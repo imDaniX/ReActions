@@ -28,11 +28,11 @@ import me.fromgate.reactions.storage.SignStorage;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.simpledata.ClickType;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,29 +41,10 @@ public class SignActivator extends Activator {
 	private List<String> maskLines;
 	private ClickType click;
 
-	public SignActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public SignActivator(String name, Block targetBlock, String param) {
-		super(name, "activators");
-		Sign sign = null;
-		if (targetBlock != null && BlockUtil.isSign(targetBlock))
-			sign = (Sign) targetBlock.getState();
-		Param params = new Param(param);
-		click = ClickType.getByName(params.getParam("click", "RIGHT"));
-		maskLines = new ArrayList<>();
-		if (sign == null) {
-			maskLines.add(params.getParam("line1", ""));
-			maskLines.add(params.getParam("line2", ""));
-			maskLines.add(params.getParam("line3", ""));
-			maskLines.add(params.getParam("line4", ""));
-		} else {
-			maskLines.add(params.getParam("line1", sign.getLine(0)));
-			maskLines.add(params.getParam("line2", sign.getLine(1)));
-			maskLines.add(params.getParam("line3", sign.getLine(2)));
-			maskLines.add(params.getParam("line4", sign.getLine(3)));
-		}
+	public SignActivator(ActivatorBase base, ClickType click, List<String> maskLines) {
+		super(base);
+		this.click = click;
+		this.maskLines = maskLines;
 	}
 
 	public boolean checkMask(String[] sign) {
@@ -85,7 +66,7 @@ public class SignActivator extends Activator {
 	@Override
 	public boolean activate(RAStorage event) {
 		SignStorage signEvent = (SignStorage) event;
-		if (!clickCheck(signEvent.isLeftClick())) return false;
+		if (click.checkRight(signEvent.isLeftClick())) return false;
 		if (!checkMask(signEvent.getSignLines())) return false;
 		for (int i = 0; i < signEvent.getSignLines().length; i++)
 			Variables.setTempVar("sign_line" + (i + 1), signEvent.getSignLines()[i]);
@@ -98,12 +79,6 @@ public class SignActivator extends Activator {
 	public void save(ConfigurationSection cfg) {
 		cfg.set("sign-mask", maskLines);
 		cfg.set("click-type", click.name());
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		maskLines = cfg.getStringList("sign-mask");
-		click = ClickType.getByName(cfg.getString("click-type", "RIGHT"));
 	}
 
 	@Override
@@ -125,30 +100,6 @@ public class SignActivator extends Activator {
 		return emptyLines > 0;
 	}
 
-	enum ClickType {
-		RIGHT,
-		LEFT,
-		ANY;
-
-		public static ClickType getByName(String clickStr) {
-			if (clickStr.equalsIgnoreCase("left")) return ClickType.LEFT;
-			if (clickStr.equalsIgnoreCase("any")) return ClickType.ANY;
-			return ClickType.RIGHT;
-		}
-	}
-
-	private boolean clickCheck(boolean leftClick) {
-		switch (click) {
-			case ANY:
-				return true;
-			case LEFT:
-				return leftClick;
-			case RIGHT:
-				return !leftClick;
-		}
-		return false;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
@@ -167,4 +118,30 @@ public class SignActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static SignActivator create(ActivatorBase base, Param param) {
+		Block targetBlock = param.getBlock();
+		Sign sign = null;
+		if (targetBlock != null && BlockUtil.isSign(targetBlock))
+			sign = (Sign) targetBlock.getState();
+		ClickType click = ClickType.getByName(param.getParam("click", "RIGHT"));
+		List<String> maskLines = new ArrayList<>();
+		if (sign == null) {
+			maskLines.add(param.getParam("line1", ""));
+			maskLines.add(param.getParam("line2", ""));
+			maskLines.add(param.getParam("line3", ""));
+			maskLines.add(param.getParam("line4", ""));
+		} else {
+			maskLines.add(param.getParam("line1", sign.getLine(0)));
+			maskLines.add(param.getParam("line2", sign.getLine(1)));
+			maskLines.add(param.getParam("line3", sign.getLine(2)));
+			maskLines.add(param.getParam("line4", sign.getLine(3)));
+		}
+		return new SignActivator(base, click, maskLines);
+	}
+
+	public static SignActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		ClickType click = ClickType.getByName(cfg.getString("click-type", "RIGHT"));
+		List<String> maskLines = cfg.getStringList("sign-mask");
+		return new SignActivator(base, click, maskLines);
+	}
 }

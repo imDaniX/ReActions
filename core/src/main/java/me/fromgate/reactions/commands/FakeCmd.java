@@ -18,6 +18,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 public class FakeCmd implements CommandExecutor {
+	// TODO: Some redesign
 
 	private static FakeCmd fakeCmd;
 
@@ -45,13 +46,13 @@ public class FakeCmd implements CommandExecutor {
 		if (cmd == null) return false;
 		CommandMap commandMap = getCommandMap();
 		if (commandMap == null) return false;
-		commandMap.register(commandStr.toLowerCase(), cmd);
+		boolean register = commandMap.register(commandStr.toLowerCase(), cmd);
 		try {
 			ReActions.getPlugin().getCommand(commandStr).setExecutor(fakeCmd);
-			return true;
-		} catch (Exception ignored) {
+			return register;
+		} catch (Exception ignore) {
+			return false;
 		}
-		return false;
 	}
 
 	@Override

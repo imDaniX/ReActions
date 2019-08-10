@@ -6,22 +6,16 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Created by MaxDikiy on 2017-10-28.
  */
 public class GodActivator extends Activator {
-	private GodType god;
+	private final GodType god;
 
-	public GodActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.god = GodType.getByName(params.getParam("god", "ANY"));
-	}
-
-	public GodActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public GodActivator(ActivatorBase base, GodType type) {
+		super(base);
+		this.god = type;
 	}
 
 	@Override
@@ -38,21 +32,11 @@ public class GodActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		god = GodType.getByName(cfg.getString("god", "ANY"));
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.GOD;
 	}
 
-	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	private boolean checkGod(Boolean isGod) {
+	private boolean checkGod(boolean isGod) {
 		switch (god) {
 			case ANY:
 				return true;
@@ -64,7 +48,7 @@ public class GodActivator extends Activator {
 		return false;
 	}
 
-	enum GodType {
+	private enum GodType {
 		TRUE,
 		FALSE,
 		ANY;
@@ -88,4 +72,13 @@ public class GodActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static GodActivator create(ActivatorBase base, Param param) {
+		GodType type = GodType.getByName(param.getParam("god", "ANY"));
+		return new GodActivator(base, type);
+	}
+
+	public static GodActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		GodType type =  GodType.getByName(cfg.getString("god", "ANY"));
+		return new GodActivator(base, type);
+	}
 }

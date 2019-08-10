@@ -10,7 +10,6 @@ import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -20,14 +19,9 @@ public class PickupItemActivator extends Activator {
 
 	private String itemStr;
 
-	public PickupItemActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.itemStr = params.getParam("item");
-	}
-
-	public PickupItemActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public PickupItemActivator(ActivatorBase base, String item) {
+		super(base);
+		this.itemStr = item;
 	}
 
 	@Override
@@ -42,9 +36,9 @@ public class PickupItemActivator extends Activator {
 		if (Util.FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
 		if (!itemParam.isEmpty()) {
-			String itemType = itemParam.getParam("type", "0");
-			if (itemType.equalsIgnoreCase("AIR") || itemType.equalsIgnoreCase("null") || itemType.equalsIgnoreCase("0") || itemType.isEmpty()) {
-				pie.setItem(new ItemStack(Material.getMaterial("AIR"), 1));
+			String itemType = itemParam.getParam("type", "AIR");
+			if (itemType.isEmpty() || itemType.equalsIgnoreCase("AIR")) {
+				pie.setItem(new ItemStack(Material.getMaterial("AIR")));
 			} else {
 				pie.setItem(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
 			}
@@ -55,11 +49,6 @@ public class PickupItemActivator extends Activator {
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("item", this.itemStr);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.itemStr = cfg.getString("item", "");
 	}
 
 	@Override
@@ -87,5 +76,15 @@ public class PickupItemActivator extends Activator {
 		sb.append("item:").append(this.itemStr);
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public static PickupItemActivator create(ActivatorBase base, Param param) {
+		String item = param.getParam("item", param.toString());
+		return new PickupItemActivator(base, item);
+	}
+
+	public static PickupItemActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String item = cfg.getString("item", "");
+		return new PickupItemActivator(base, item);
 	}
 }

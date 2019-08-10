@@ -34,47 +34,33 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public class CommandActivator extends Activator {
 
-	private boolean checkExact;
-	private String command;
-	private Param arguments;
-	private boolean useRegex;
-	boolean override;
+	private final boolean checkExact;
+	private final String command;
+	private final Param arguments;
+	private final boolean useRegex;
+	final boolean override;
 
-	public void init() {
-		if (command == null) return;
+	public CommandActivator(ActivatorBase base, String command, boolean useRegex, boolean override) {
+		super(base);
+		this.command = command == null ? "unknown" : command;
+		this.useRegex = useRegex;
+		this.override = override;
+
 		Param params = new Param(command);
 		if (params.isParamsExists("cmd")) {
-			checkExact = true;
-			arguments = params;
+			this.checkExact = true;
+			this.arguments = params;
+		} else {
+			this.checkExact = false;
+			this.arguments = new Param();
 		}
 		params.remove("param-line");
-	}
-
-	CommandActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-		init();
-	}
-
-	public CommandActivator(String name, String param) {
-		super(name, "activators");
-		Param cmdParam = new Param(param);
-		if (cmdParam.isParamsExists("command")) {
-			command = cmdParam.getParam("command");
-			override = cmdParam.getParam("override", true);
-			useRegex = cmdParam.getParam("regex", false);
-		} else {
-			command = param;
-			override = true;
-			useRegex = false;
-		}
-		init();
 	}
 
 	private boolean checkLine(String line) {
@@ -82,7 +68,7 @@ public class CommandActivator extends Activator {
 		return line.toLowerCase().startsWith(command.toLowerCase());
 	}
 
-	public boolean commandMatches(String line) {
+	private boolean commandMatches(String line) {
 		if (!this.checkExact) return checkLine(line);
 		String[] cmdLn = line.replaceFirst("/", "").split(" ");
 		if (cmdLn.length == 0) return false;
@@ -160,31 +146,23 @@ public class CommandActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.override = cfg.getBoolean("override", true);
-		this.useRegex = cfg.getBoolean("regex", false);
-		this.command = cfg.getString("command");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.COMMAND;
 	}
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(command);
+		return !Util.emptyString(command);
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-		sb.append(" (override:").append(this.override);
-		if (this.useRegex) sb.append(" regex:true");
-		sb.append(" command:").append(this.command).append(")");
+		StringBuilder sb = new StringBuilder(super.toString());
+		sb.append(" (");
+		sb.append("override:").append(this.override);
+		sb.append("; regex:").append(this.useRegex);
+		sb.append("; command:").append(this.command);
+		sb.append(")");
 		return sb.toString();
 	}
 
@@ -192,4 +170,17 @@ public class CommandActivator extends Activator {
 		return this.useRegex;
 	}
 
+	public static CommandActivator create(ActivatorBase base, Param param) {
+		String command = param.getParam("command", param.toString());
+		boolean override = param.getParam("override", true);
+		boolean useRegex = param.getParam("regex", false);
+		return new CommandActivator(base, command, useRegex, override);
+	}
+
+	public static CommandActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String command = cfg.getString("command");
+		boolean override = cfg.getBoolean("override", true);
+		boolean useRegex = cfg.getBoolean("regex", false);
+		return new CommandActivator(base, command, useRegex, override);
+	}
 }

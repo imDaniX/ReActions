@@ -25,41 +25,28 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.PlateStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class PlateActivator extends Activator implements Locatable {
-	private String world;
-	private int x;
-	private int y;
-	private int z;
+	private final String world;
+	private final int x;
+	private final int y;
+	private final int z;
 
-	PlateActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public PlateActivator(ActivatorBase base, String world, int x, int y, int z) {
+		super(base);
+		this.world = world;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
-	PlateActivator(String name, Block targetBlock) {
-		super(name, "activators");
-		if (targetBlock != null && (targetBlock.getType().name().endsWith("PRESSURE_PLATE"))) {
-			this.world = targetBlock.getWorld().getName();
-			this.x = targetBlock.getX();
-			this.y = targetBlock.getY();
-			this.z = targetBlock.getZ();
-		}
-	}
-
-	public PlateActivator(String name, Block targetBlock, String param) {
-		this(name, targetBlock);
-	}
-
-
-	/*
-	 * Очередная залипуха, надо будет потом переделать
-	 */
 	@Override
 	public boolean activate(RAStorage event) {
 		PlateStorage be = (PlateStorage) event;
@@ -93,21 +80,13 @@ public class PlateActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		world = cfg.getString("world");
-		x = cfg.getInt("x");
-		y = cfg.getInt("y");
-		z = cfg.getInt("z");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.PLATE;
 	}
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(world);
+		return !Util.emptyString(world);
 	}
 
 	@Override
@@ -120,4 +99,22 @@ public class PlateActivator extends Activator implements Locatable {
 		return sb.toString();
 	}
 
+	public static PlateActivator create(ActivatorBase base, Param param) {
+		Block targetBlock = param.getBlock();
+		if (targetBlock != null && BlockUtil.isPlate(targetBlock)) {
+			String world = targetBlock.getWorld().getName();
+			int x = targetBlock.getX();
+			int y = targetBlock.getY();
+			int z = targetBlock.getZ();
+			return new PlateActivator(base, world, x, y, z);
+		} return null;
+	}
+
+	public static PlateActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String world = cfg.getString("world");
+		int x = cfg.getInt("x");
+		int y = cfg.getInt("y");
+		int z = cfg.getInt("z");
+		return new PlateActivator(base, world, x, y, z);
+	}
 }

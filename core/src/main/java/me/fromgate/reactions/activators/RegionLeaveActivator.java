@@ -22,29 +22,24 @@
 
 package me.fromgate.reactions.activators;
 
+import lombok.Getter;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.externals.worldguard.WGBridge;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.storage.RegionLeaveStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import java.util.List;
 
 public class RegionLeaveActivator extends Activator implements Locatable {
 
-	private String region;
+	@Getter private final String region;
 
-	RegionLeaveActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public RegionLeaveActivator(String name, String region) {
-		super(name, "activators");
+	public RegionLeaveActivator(ActivatorBase base, String region) {
+		super(base);
 		this.region = region;
 	}
 
@@ -58,9 +53,7 @@ public class RegionLeaveActivator extends Activator implements Locatable {
 	@Override
 	public boolean isLocatedAt(Location loc) {
 		if (!RaWorldGuard.isConnected()) return false;
-		List<String> rgs = RaWorldGuard.getRegions(loc);
-		if (rgs.isEmpty()) return false;
-		return rgs.contains(this.region);
+		return RaWorldGuard.isLocationInRegion(loc, this.region);
 	}
 
 	@Override
@@ -74,22 +67,13 @@ public class RegionLeaveActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.region = cfg.getString("region");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.REGION_LEAVE;
 	}
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(region);
-	}
-
-	public String getRegion() {
-		return this.region;
+		return !Util.emptyString(region);
 	}
 
 	@Override
@@ -102,6 +86,16 @@ public class RegionLeaveActivator extends Activator implements Locatable {
 		sb.append("region:").append(this.region);
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public static RegionLeaveActivator create(ActivatorBase base, Param param) {
+		String region = param.getParam("region", param.getParam("param-line"));
+		return new RegionLeaveActivator(base, region);
+	}
+
+	public static RegionLeaveActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String region = cfg.getString("region", "region");
+		return new RegionLeaveActivator(base, region);
 	}
 
 }

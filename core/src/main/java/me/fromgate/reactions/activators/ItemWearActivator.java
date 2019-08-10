@@ -25,6 +25,7 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.ItemWearStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -32,30 +33,24 @@ import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ItemWearActivator extends Activator {
 	private String item;
 
-	public ItemWearActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public ItemWearActivator(String name, String item) {
-		super(name, "activators");
+	public ItemWearActivator(ActivatorBase base, String item) {
+		super(base);
 		this.item = item;
 	}
-
 
 	@Override
 	public boolean activate(RAStorage event) {
 		if (item.isEmpty() || (ItemUtil.parseItemStack(item) == null)) {
-			Msg.logOnce(this.name + "activatorwearempty", "Failed to parse item of activator " + this.name);
+			Msg.logOnce(getBase().getName() + "activatorwearempty", "Failed to parse item of activator " + getBase().getName());
 			return false;
 		}
 		ItemWearStorage iw = (ItemWearStorage) event;
 		if (iw.isItemWeared(this.item)) {
-			VirtualItem vi = ItemUtil.itemFromItemStack(iw.getFoundedItem(this.item));
+			VirtualItem vi = VirtualItem.fromItemStack(iw.getFoundedItem(this.item));
 			if (vi != null && vi.getType() != Material.AIR) {
 				Variables.setTempVar("item", vi.toString());
 				Variables.setTempVar("item-str", vi.toDisplayString());
@@ -68,11 +63,6 @@ public class ItemWearActivator extends Activator {
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("item", this.item);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.item = cfg.getString("item");
 	}
 
 	@Override
@@ -96,7 +86,17 @@ public class ItemWearActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(item);
+		return !Util.emptyString(item);
+	}
+
+	public static ItemWearActivator create(ActivatorBase base, Param param) {
+		String item = param.getParam("item", "param-line");
+		return new ItemWearActivator(base, item);
+	}
+
+	public static ItemWearActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String item = cfg.getString("item");
+		return new ItemWearActivator(base, item);
 	}
 }
 

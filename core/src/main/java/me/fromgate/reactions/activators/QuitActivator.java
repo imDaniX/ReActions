@@ -25,23 +25,14 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.QuitStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class QuitActivator extends Activator {
 
-
-	QuitActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	QuitActivator(String name) {
-		super(name, "activators");
-	}
-
-	public QuitActivator(String name, String param) {
-		this(name);
+	public QuitActivator(ActivatorBase base) {
+		super(base);
 	}
 
 	@Override
@@ -54,21 +45,8 @@ public class QuitActivator extends Activator {
 	}
 
 	@Override
-	public void save(ConfigurationSection cfg) {
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.QUIT;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	@Override
@@ -80,4 +58,11 @@ public class QuitActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static QuitActivator create(ActivatorBase base, Param ignore) {
+		return new QuitActivator(base);
+	}
+
+	public static QuitActivator load(ActivatorBase base, ConfigurationSection ignore) {
+		return new QuitActivator(base);
+	}
 }

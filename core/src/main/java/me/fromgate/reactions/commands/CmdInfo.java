@@ -31,6 +31,7 @@ public class CmdInfo extends Cmd {
 
 	private void printActInfo(CommandSender sender, String activatorName, String far) {
 		Activator act = ActivatorsManager.get(activatorName);
+		ActivatorBase base = act.getBase();
 		boolean f;
 		boolean a;
 		boolean r;
@@ -45,21 +46,21 @@ public class CmdInfo extends Cmd {
 		}
 
 		Msg.printMSG(sender, "&5☆ &d&l" + Msg.MSG_ACTINFOTITLE.getText("NOCOLOR") + " &r&5☆");
-		Msg.printMSG(sender, "msg_actinfo", act.getName(), act.getType(), act.getGroup());
-		Msg.printMSG(sender, "msg_actinfo2", act.getFlags().size(), act.getActions().size(), act.getReactions().size());
-		if (f && (!act.getFlags().isEmpty())) {
+		Msg.printMSG(sender, "msg_actinfo", base.getName(), act.getType(), base.getGroup());
+		Msg.printMSG(sender, "msg_actinfo2", base.getFlags().size(), base.getActions().size(), base.getReactions().size());
+		if (f && (!base.getFlags().isEmpty())) {
 			List<String> flg = new ArrayList<>();
-			for (int i = 0; i < act.getFlags().size(); i++) {
-				StoredFlag flag = act.getFlags().get(i);
+			for (int i = 0; i < base.getFlags().size(); i++) {
+				StoredFlag flag = base.getFlags().get(i);
 				flg.add((flag.isInverted() ? "&4! &e" : "  &e") + flag.getFlagName() + " &3= &a" + flag.getValue());
 			}
 			Msg.printPage(sender, flg, Msg.LST_FLAGS, 1, 100, true);
 		}
-		if (a && (!act.getActions().isEmpty())) {
+		if (a && (!base.getActions().isEmpty())) {
 			List<String> flg = new ArrayList<>();
-			for (int i = 0; i < act.getActions().size(); i++) {
-				String action = act.getActions().get(i).getAction().name();
-				String param = act.getActions().get(i).getValue();
+			for (int i = 0; i < base.getActions().size(); i++) {
+				String action = base.getActions().get(i).getActionName();
+				String param = base.getActions().get(i).getValue();
 				if (action.equalsIgnoreCase("tp")) {
 					Location loc = Locator.parseCoordinates(param);//Util.parseLocation(param);
 					if (loc != null) param = Locator.locationToStringFormatted(loc);
@@ -68,11 +69,11 @@ public class CmdInfo extends Cmd {
 			}
 			Msg.printPage(sender, flg, Msg.LST_ACTIONS, 1, 100, true);
 		}
-		if (r && (!act.getReactions().isEmpty())) {
+		if (r && (!base.getReactions().isEmpty())) {
 			List<String> flg = new ArrayList<>();
-			for (int i = 0; i < act.getReactions().size(); i++) {
-				String action = act.getReactions().get(i).getAction().name();
-				String param = act.getReactions().get(i).getValue();
+			for (int i = 0; i < base.getReactions().size(); i++) {
+				String action = base.getReactions().get(i).getActionName();
+				String param = base.getReactions().get(i).getValue();
 				if (action.equalsIgnoreCase("tp")) {
 					Location loc = Locator.parseCoordinates(param);
 					if (loc != null) param = Locator.locationToStringFormatted(loc);

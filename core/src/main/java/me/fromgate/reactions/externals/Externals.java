@@ -6,7 +6,8 @@ import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import org.bukkit.Bukkit;
 
-// TODO: Externals system looks weird, should be more complex
+// TODO: Externals system looks terrible, should be more complex
+// Maybe external jar modules, that will be registered from folder?
 public class Externals {
 
 	private static boolean factions = false;
@@ -18,9 +19,7 @@ public class Externals {
 		if (Bukkit.getPluginManager().getPlugin("Factions") != null) {
 			try {
 				factions = RaFactions.init();
-			} catch (Throwable ignore) {
-
-			}
+			} catch (Throwable ignore) {}
 		}
 
 		if (Bukkit.getPluginManager().getPlugin("Towny") != null) {

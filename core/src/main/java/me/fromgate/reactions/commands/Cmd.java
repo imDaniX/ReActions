@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
-public abstract class Cmd {
+public class Cmd {
 	@Getter private String command;
 	private String[] subCommands;
 	private String permission;
@@ -70,6 +70,5 @@ public abstract class Cmd {
 		return this.description.getText(this.shortDescription);
 
 	}
-
 
 }

@@ -26,18 +26,14 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.FactionCreateStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class FactionCreateActivator extends Activator {
 
-	public FactionCreateActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public FactionCreateActivator(String name, String param) {
-		super(name, "activators");
+	public FactionCreateActivator(ActivatorBase base) {
+		super(base);
 	}
 
 	@Override
@@ -48,20 +44,15 @@ public class FactionCreateActivator extends Activator {
 	}
 
 	@Override
-	public void save(ConfigurationSection cfg) {
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.FCT_CREATE;
 	}
 
-	@Override
-	public boolean isValid() {
-		return true;
+	public static FactionCreateActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		return new FactionCreateActivator(base);
+	}
+
+	public static FactionCreateActivator create(ActivatorBase base, Param param) {
+		return new FactionCreateActivator(base);
 	}
 }

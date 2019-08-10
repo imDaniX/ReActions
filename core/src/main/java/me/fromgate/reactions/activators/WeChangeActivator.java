@@ -9,33 +9,26 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.storage.WeChangeStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class WeChangeActivator extends Activator {
-	private String blockType;
-	private String region;
+	private final Material blockType;
+	private final String region;
 
-	public WeChangeActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		blockType = params.getParam("block-type");
-		region = params.getParam("region", "");
-		blockType();
-	}
-
-	public WeChangeActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public WeChangeActivator(ActivatorBase base, Material blockType, String region) {
+		super(base);
+		this.blockType = blockType;
+		this.region = region;
 	}
 
 	@Override
 	public boolean activate(RAStorage event) {
 		WeChangeStorage e = (WeChangeStorage) event;
-		String type = e.getBlockType().toString();
-		Variables.setTempVar("blocktype", type);
-		if (!checkBlockType(type)) return false;
+		if (!checkBlockType(e.getBlockType())) return false;
+		Variables.setTempVar("blocktype", e.getBlockType().name());
 		Variables.setTempVar("blocklocation", Locator.locationToString(e.getLocation()));
 
 		if (!region.isEmpty() && !RaWorldGuard.isLocationInRegion(e.getLocation(), region)) return false;
@@ -43,28 +36,14 @@ public class WeChangeActivator extends Activator {
 		return Actions.executeActivator(e.getPlayer(), this);
 	}
 
-	private boolean checkBlockType(String blockType) {
-		blockType();
-		return blockType.isEmpty() || this.blockType.equalsIgnoreCase("ANY") || this.blockType.equalsIgnoreCase(blockType);
-	}
-
-	private void blockType() {
-		String bType = blockType.toUpperCase();
-		if (!bType.equalsIgnoreCase("ANY") && Material.getMaterial(bType) != null)
-			blockType = Material.getMaterial(bType).name();
-		else blockType = "ANY";
+	private boolean checkBlockType(Material check) {
+		return blockType == null || blockType == check;
 	}
 
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("block-type", this.blockType);
 		cfg.set("region", this.region);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.blockType = cfg.getString("block-type", "");
-		this.region = cfg.getString("region", "");
 	}
 
 	@Override
@@ -84,9 +63,21 @@ public class WeChangeActivator extends Activator {
 		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
-		sb.append("block-type:").append(blockType.isEmpty() ? "ANY" : blockType.toUpperCase());
+		sb.append("block-type:").append(blockType!=null ? "ANY" : blockType);
 		sb.append(" region:").append(region.isEmpty() ? "-" : region.toUpperCase());
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public static WeChangeActivator create(ActivatorBase base, Param param) {
+		Material blockType = ItemUtil.getMaterial(param.getParam("blocktype"));
+		String region = param.getParam("region", "");
+		return new WeChangeActivator(base, blockType, region);
+	}
+
+	public static WeChangeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		Material blockType = ItemUtil.getMaterial(cfg.getString("block-type").toUpperCase());
+		String region = cfg.getString("region", "");
+		return new WeChangeActivator(base, blockType, region);
 	}
 }

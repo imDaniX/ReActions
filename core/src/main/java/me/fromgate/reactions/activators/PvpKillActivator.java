@@ -25,21 +25,13 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.PvpKillStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class PvpKillActivator extends Activator {
-	PvpKillActivator(String name) {
-		super(name, "activators");
-	}
-
-	public PvpKillActivator(String name, String param) {
-		this(name);
-	}
-
-	public PvpKillActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public PvpKillActivator(ActivatorBase base) {
+		super(base);
 	}
 
 	@Override
@@ -50,26 +42,15 @@ public class PvpKillActivator extends Activator {
 	}
 
 	@Override
-	public void save(ConfigurationSection cfg) {
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.PVP_KILL;
 	}
 
-	@Override
-	public boolean isValid() {
-		return true;
+	public static PvpKillActivator create(ActivatorBase base, Param ignore) {
+		return new PvpKillActivator(base);
 	}
 
-	/*
-	@Override
-	public String getTargetPlayer(){
-		return targetplayer;
-	}*/
+	public static PvpKillActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		return new PvpKillActivator(base);
+	}
 }

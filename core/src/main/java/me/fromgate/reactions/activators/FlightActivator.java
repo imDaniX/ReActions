@@ -6,22 +6,16 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Created by MaxDikiy on 5/2/2017.
  */
 public class FlightActivator extends Activator {
-	private FlightType flight;
+	private final FlightType flight;
 
-	public FlightActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.flight = FlightType.getByName(params.getParam("flight", "ANY"));
-	}
-
-	public FlightActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public FlightActivator(ActivatorBase base, FlightType type) {
+		super(base);
+		this.flight = type;
 	}
 
 	@Override
@@ -38,18 +32,8 @@ public class FlightActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		flight = FlightType.getByName(cfg.getString("flight", "ANY"));
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.FLIGHT;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	private boolean checkFlight(Boolean isFlight) {
@@ -64,7 +48,7 @@ public class FlightActivator extends Activator {
 		return false;
 	}
 
-	enum FlightType {
+	private enum FlightType {
 		TRUE,
 		FALSE,
 		ANY;
@@ -86,6 +70,16 @@ public class FlightActivator extends Activator {
 		sb.append("flight:").append(this.flight.name());
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public static FlightActivator create(ActivatorBase base, Param param) {
+		FlightType type = FlightType.getByName(param.getParam("flight", "ANY"));
+		return new FlightActivator(base, type);
+	}
+
+	public static FlightActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		FlightType type = FlightType.getByName(cfg.getString("flight", "ANY"));
+		return new FlightActivator(base, type);
 	}
 
 }

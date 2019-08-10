@@ -31,32 +31,18 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class MobKillActivator extends Activator {
-	private String mobName;
-	private String mobType;
+	private final String mobType;
+	private final String mobName;
 
-	public MobKillActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public MobKillActivator(ActivatorBase base, String type, String name) {
+		super(base);
+		this.mobType = type;
+		this.mobName = name;
 	}
-
-	public MobKillActivator(String name, String param) {
-		super(name, "activators");
-		this.mobType = param;
-		this.mobName = "";
-		Param params = new Param(param);
-		if (params.isParamsExists("type")) {
-			this.mobType = params.getParam("type");
-			this.mobName = params.getParam("name");
-		} else if (param.contains("$")) {
-			this.mobName = this.mobType.substring(0, this.mobType.indexOf("$"));
-			this.mobType = this.mobType.substring(this.mobName.length() + 1);
-		}
-	}
-
 
 	@Override
 	public boolean activate(RAStorage event) {
@@ -89,17 +75,10 @@ public class MobKillActivator extends Activator {
 		return mob.getCustomName();
 	}
 
-
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("mob-type", this.mobType);
 		cfg.set("mob-name", this.mobName);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.mobType = cfg.getString("mob-type", "");
-		this.mobName = cfg.getString("mob-name", "");
 	}
 
 	@Override
@@ -109,7 +88,7 @@ public class MobKillActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(mobType);
+		return !Util.emptyString(mobType);
 	}
 
 	@Override
@@ -123,5 +102,24 @@ public class MobKillActivator extends Activator {
 		sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public static MobKillActivator create(ActivatorBase base, Param param) {
+		String type = param.toString();
+		String name = "";
+		if (param.isParamsExists("type")) {
+			type = param.getParam("type");
+			name = param.getParam("name");
+		} else if (param.toString().contains("$")) {
+			name = type.substring(0, type.indexOf("$"));
+			type = type.substring(name.length() + 1);
+		}
+		return new MobKillActivator(base, type, name);
+	}
+
+	public static MobKillActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String type = cfg.getString("mob-type", "");
+		String name = cfg.getString("mob-name", "");
+		return new MobKillActivator(base, type, name);
 	}
 }

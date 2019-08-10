@@ -96,11 +96,6 @@ public class DamageActivator extends Activator {
 	}
 
 	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
 		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
@@ -108,9 +103,20 @@ public class DamageActivator extends Activator {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
 		sb.append("cause:").append(this.damageCause);
-		sb.append(" source:").append(this.source.name());
+		sb.append("; source:").append(this.source.name());
 		sb.append(")");
 		return sb.toString();
 	}
 
+	public static DamageActivator create(ActivatorBase base, Param param) {
+		String cause = param.getParam("cause", "ANY");
+		SourceType source = SourceType.getByName(param.getParam("source", "ANY"));
+		return new DamageActivator(base, cause, source);
+	}
+
+	public static DamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String cause = cfg.getString("cause", "ANY");
+		SourceType source = SourceType.getByName(cfg.getString("source", "ANY"));
+		return new DamageActivator(base, cause, source);
+	}
 }

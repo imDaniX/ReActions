@@ -28,24 +28,23 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Selector {
+public class Holder {
 	private static Map<String, Location> locs = new HashMap<>();
 
-	public static void selectLocation(Player p, Location loc) {
+	public static void holdLocation(Player p, Location loc) {
 		if (p == null) return;
 		if (loc == null) loc = p.getTargetBlock(null, 100).getLocation();
 		locs.put(p.getName(), loc);
 	}
 
-	public static Location getSelectedLocation(Player p) {
+	public static Location getHeldLocation(Player p) {
 		return locs.get(p.getName());
 	}
 
 	@SuppressWarnings("unused")
-	public static String getSelectedStrLoc(Player p) {
-		Location loc = getSelectedLocation(p);
-		if (loc == null) return "";
-		return Locator.locationToString(loc);
+	public static String getHeldStrLoc(Player p) {
+		Location loc = getHeldLocation(p);
+		return loc == null ? "" : Locator.locationToString(loc);
 	}
 
 }

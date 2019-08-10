@@ -24,15 +24,15 @@ package me.fromgate.reactions.storage;
 
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
-import me.fromgate.reactions.activators.PlayerDeathActivator;
+import me.fromgate.reactions.util.simpledata.DeathCause;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class RespawnStorage extends RAStorage {
-	@Getter private final PlayerDeathActivator.DeathCause deathCause;
+	@Getter private final DeathCause deathCause;
 	@Getter private final LivingEntity killer;
 
-	public RespawnStorage(Player player, LivingEntity killer, PlayerDeathActivator.DeathCause cause) {
+	public RespawnStorage(Player player, LivingEntity killer, DeathCause cause) {
 		super(player, ActivatorType.PLAYER_RESPAWN);
 		this.killer = killer;
 		this.deathCause = cause;

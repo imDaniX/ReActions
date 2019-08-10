@@ -25,24 +25,19 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.DeathStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.simpledata.DeathCause;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 
 public class PlayerDeathActivator extends Activator {
 
-	private DeathCause deathCause;
+	private final DeathCause deathCause;
 
-
-	public PlayerDeathActivator(String name, String param) {
-		super(name, "activators");
-		DeathCause ds = DeathCause.byName(param);
-		this.deathCause = ds == null ? DeathCause.PVP : ds;
-	}
-
-	public PlayerDeathActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public PlayerDeathActivator(ActivatorBase base, DeathCause cause) {
+		super(base);
+		this.deathCause = cause;
 	}
 
 	@Override
@@ -69,34 +64,8 @@ public class PlayerDeathActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		String deathStr = cfg.getString("death-cause", "PVP");
-		this.deathCause = DeathCause.byName(deathStr);
-		if (this.deathCause == null) this.deathCause = DeathCause.PVP;
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.PLAYER_DEATH;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	public enum DeathCause {
-		PVP,
-		PVE,
-		OTHER,
-		ANY;
-
-		public static DeathCause byName(String name) {
-			for (DeathCause d : DeathCause.values()) {
-				if (d.name().equalsIgnoreCase(name)) return d;
-			}
-			return null;
-		}
 	}
 
 	@Override
@@ -107,5 +76,15 @@ public class PlayerDeathActivator extends Activator {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append("(").append(this.deathCause.name()).append(")");
 		return sb.toString();
+	}
+
+	public static PlayerDeathActivator create(ActivatorBase base, Param param) {
+		DeathCause cause = DeathCause.getByName(param.getParam("cause", param.toString()));
+		return new PlayerDeathActivator(base, cause);
+	}
+
+	public static PlayerDeathActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		DeathCause cause = DeathCause.getByName(cfg.getString("death-cause"));
+		return new PlayerDeathActivator(base, cause);
 	}
 }

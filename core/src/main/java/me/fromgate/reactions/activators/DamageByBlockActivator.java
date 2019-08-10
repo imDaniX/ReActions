@@ -51,7 +51,7 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 		if (damagerBlock == null) return false;
 		if (!isActivatorBlock(damagerBlock)) return false;
 		if (!damageCauseCheck(db.getCause())) return false;
-		Variables.setTempVar("blocklocation", Locator.locationToString(db.getBlockBreakLocation()));
+		Variables.setTempVar("blocklocation", Locator.locationToString(db.getBlockLocation()));
 		Variables.setTempVar("blocktype", damagerBlock.getType().name());
 		Variables.setTempVar("block", ItemUtil.itemFromBlock(damagerBlock).toString());
 		Variables.setTempVar("damage", Double.toString(db.getDamage()));
@@ -121,11 +121,6 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean isValid() {
-		return true;
-	}
-
-	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
 		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
@@ -133,10 +128,24 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
 		sb.append("block:").append(blockStr.isEmpty() ? "-" : blockStr);
-		sb.append(" loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
-		sb.append(" cause:").append(damageCause);
+		sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
+		sb.append("; cause:").append(damageCause);
 		sb.append(")");
 		return sb.toString();
 	}
 
+	public static DamageByBlockActivator create(ActivatorBase base, Param param) {
+		String block = param.getParam("block", "");
+		String location = param.getParam("loc", "");
+		String cause = param.getParam("cause", "ANY");
+		return new DamageByBlockActivator(base, block, location, cause);
+	}
+
+	public static DamageByBlockActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String block = cfg.getString("block", "");
+		String location = cfg.getString("loc", "");
+		String cause = cfg.getString("cause", "ANY");
+		return new DamageByBlockActivator(base, block, location, cause);
+		
+	}
 }

@@ -30,7 +30,6 @@ import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.activators.ItemHoldActivator;
 import me.fromgate.reactions.activators.ItemWearActivator;
 import me.fromgate.reactions.activators.MessageActivator;
-import me.fromgate.reactions.activators.PlayerDeathActivator;
 import me.fromgate.reactions.activators.SignActivator;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.time.TimeUtil;
@@ -40,6 +39,7 @@ import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.playerselector.SelectorsManager;
+import me.fromgate.reactions.util.simpledata.DeathCause;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -77,7 +77,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -196,7 +195,7 @@ public class StorageManager {
 	public static void raisePvpDeathActivator(PlayerDeathEvent event) {
 		Player deadplayer = event.getEntity();
 		LivingEntity killer = Util.getAnyKiller(deadplayer.getLastDamageCause());
-		PlayerDeathActivator.DeathCause ds = (killer == null) ? PlayerDeathActivator.DeathCause.OTHER : (killer instanceof Player) ? PlayerDeathActivator.DeathCause.PVP : PlayerDeathActivator.DeathCause.PVE;
+		DeathCause ds = (killer == null) ? DeathCause.OTHER : (killer instanceof Player) ? DeathCause.PVP : DeathCause.PVE;
 		DeathStorage pe = new DeathStorage(killer, deadplayer, ds);
 		ActivatorsManager.activate(pe);
 	}
@@ -311,8 +310,8 @@ public class StorageManager {
 		if (!RaWorldGuard.isConnected()) return;
 		Bukkit.getScheduler().runTaskLaterAsynchronously(ReActions.getPlugin(), () -> {
 
-			final List<String> regionsTo = RaWorldGuard.getRegions(to);
-			final List<String> regionsFrom = RaWorldGuard.getRegions(from);
+			final Set<String> regionsTo = RaWorldGuard.getRegions(to);
+			final Set<String> regionsFrom = RaWorldGuard.getRegions(from);
 
 			Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
 				raiseRegionActivator(player, regionsTo);
@@ -322,7 +321,7 @@ public class StorageManager {
 		}, 1);
 	}
 
-	private static void raiseRgEnterActivator(Player player, List<String> regionTo, List<String> regionFrom) {
+	private static void raiseRgEnterActivator(Player player, Set<String> regionTo, Set<String> regionFrom) {
 		if (regionTo.isEmpty()) return;
 		for (String rg : regionTo)
 			if (!regionFrom.contains(rg)) {
@@ -331,7 +330,7 @@ public class StorageManager {
 			}
 	}
 
-	private static void raiseRgLeaveActivator(Player player, List<String> regionTo, List<String> regionFrom) {
+	private static void raiseRgLeaveActivator(Player player, Set<String> regionTo, Set<String> regionFrom) {
 		if (regionFrom.isEmpty()) return;
 		for (String rg : regionFrom)
 			if (!regionTo.contains(rg)) {
@@ -340,7 +339,7 @@ public class StorageManager {
 			}
 	}
 
-	private static void raiseRegionActivator(Player player, List<String> to) {
+	private static void raiseRegionActivator(Player player, Set<String> to) {
 		if (to.isEmpty()) return;
 		for (String region : to) {
 			setFutureRegionCheck(player.getName(), region, false);

@@ -7,22 +7,16 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Created by MaxDikiy on 2017-10-27.
  */
 public class GamemodeActivator extends Activator {
-	private GameMode gameMode;
+	private final GameMode gameMode;
 
-	public GamemodeActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.gameMode = GameMode.valueOf(params.getParam("gamemode", "ANY").toUpperCase());
-	}
-
-	public GamemodeActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public GamemodeActivator(ActivatorBase base, GameMode gameMode) {
+		super(base);
+		this.gameMode = gameMode;
 	}
 
 	@Override
@@ -35,27 +29,17 @@ public class GamemodeActivator extends Activator {
 
 	private boolean gameModeCheck(GameMode gm) {
 		if (gameMode == null) return true;
-		return gm.name().equals(gameMode.name());
+		return gm == gameMode;
 	}
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("gamemode", gameMode.name());
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		gameMode = GameMode.valueOf(cfg.getString("gamemode", "ANY").toUpperCase());
+		cfg.set("gamemode", gameMode == null ? "ANY": gameMode.name());
 	}
 
 	@Override
 	public ActivatorType getType() {
 		return ActivatorType.GAMEMODE;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	@Override
@@ -65,9 +49,25 @@ public class GamemodeActivator extends Activator {
 		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
-		sb.append("gamemode:").append(this.gameMode.name());
+		sb.append("gamemode:").append(gameMode == null ? "ANY": gameMode.name());
 		sb.append(")");
 		return sb.toString();
 	}
 
+	private static GameMode getGameModeByName(String name) {
+		name = name.toUpperCase();
+		for(GameMode gm : GameMode.values())
+			if(gm.name().equals(name)) return gm;
+		return null;
+	}
+
+	public static GamemodeActivator create(ActivatorBase base, Param param) {
+		GameMode gameMode = getGameModeByName(param.getParam("gamemode", "ANY"));
+		return new GamemodeActivator(base, gameMode);
+	}
+
+	public static GamemodeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		GameMode gameMode = getGameModeByName(cfg.getString("gamemode", "ANY"));
+		return new GamemodeActivator(base, gameMode);
+	}
 }

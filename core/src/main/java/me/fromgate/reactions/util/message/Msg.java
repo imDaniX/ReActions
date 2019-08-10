@@ -422,7 +422,7 @@ public enum Msg {
 	ACTIVATOR_PVP_RESPAWN("This activator is activating after respawn of dead player if he was murdered by another player. Command: /react add pvp_respawn <id>"),
 	ACTIVATOR_LEVER("This activator is linked to lever block and executing when player triggers this lever. It supports lever states - \"on\" and \"off\". Command: /react add lever <id> [ON/OFF/ANY]"),
 	ACTIVATOR_DOOR("This activators could be linked to any kind of doors (wooden door, fence gates and trap doors). Command: /react add door <id> [OPEN/CLOSE/ANY]"),
-	ACTIVATOR_JOIN("This activator is executing when player joins ther server. Command: /react add join <id> [FIRST]"),
+	ACTIVATOR_JOIN("This activator is executing when player joins ther server. Command: /react add join <id> [RIGHT]"),
 	ACTIVATOR_QUIT("This activator is executing when player leaves the server. Command: /react add join <id>"),
 	ACTIVATOR_MOB_CLICK("This activator is executing when player right-clicking mob. You can define mob type (name supported too) for this activators. Command: /react add mobclick <id> &6Mob_Name$MOB_TYPE"),
 	ACTIVATOR_MOB_KILL("This activator is executing when player killing the mob. You can define mob type (name supported too) for this activators. Command: /react add  mobclick <id> Mob_Name$MOB_TYPE"),

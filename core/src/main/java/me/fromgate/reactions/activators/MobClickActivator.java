@@ -29,37 +29,24 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class MobClickActivator extends Activator implements Locatable {
-	private String mobName;
-	private String mobType;
-	private String mobLocation;
+	private final String mobType;
+	private final String mobName;
+	private final String mobLocation;
 
-	public MobClickActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public MobClickActivator(String name, String param) {
-		super(name, "activators");
-		this.mobType = param;
-		this.mobName = "";
-		this.mobLocation = "";
-		Param params = new Param(param);
-		if (params.isParamsExists("type")) {
-			this.mobType = params.getParam("type");
-			this.mobName = params.getParam("name");
-			this.mobLocation = params.getParam("loc");
-		} else if (param.contains("$")) {
-			this.mobName = this.mobType.substring(0, this.mobType.indexOf("$"));
-			this.mobType = this.mobType.substring(this.mobName.length() + 1);
-		}
+	public MobClickActivator(ActivatorBase base, String type, String name, String location) {
+		super(base);
+		this.mobType = type;
+		this.mobName = name;
+		this.mobLocation = location;
 	}
 
 
@@ -87,16 +74,10 @@ public class MobClickActivator extends Activator implements Locatable {
 	private boolean isActivatorMob(LivingEntity mob) {
 		if (!mob.getType().name().equalsIgnoreCase(this.mobType)) return false;
 		if (!mobName.isEmpty()) {
-			if (!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
+			if (!ChatColor.translateAlternateColorCodes('&', mobName).equals(EntityUtil.getMobName(mob)))
 				return false;
-		} else if (!getMobName(mob).isEmpty()) return false;
+		} else if (!EntityUtil.getMobName(mob).isEmpty()) return false;
 		return checkLocations(mob);
-	}
-
-
-	private String getMobName(LivingEntity mob) {
-		if (mob.getCustomName() == null) return "";
-		return mob.getCustomName();
 	}
 
 	@Override
@@ -123,20 +104,13 @@ public class MobClickActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.mobType = cfg.getString("mob-type", "");
-		this.mobName = cfg.getString("mob-name", "");
-		this.mobLocation = cfg.getString("location", "");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.MOB_CLICK;
 	}
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(mobType);
+		return !Util.emptyString(mobType);
 	}
 
 	@Override
@@ -153,4 +127,25 @@ public class MobClickActivator extends Activator implements Locatable {
 		return sb.toString();
 	}
 
+	public static MobClickActivator create(ActivatorBase base, Param param) {
+		String type = param.toString();
+		String name = "";
+		String location = "";
+		if (param.isParamsExists("type")) {
+			type = param.getParam("type");
+			name = param.getParam("name");
+			location = param.getParam("loc");
+		} else if (param.toString().contains("$")) {
+			name = type.substring(0, type.indexOf("$"));
+			type = type.substring(name.length() + 1);
+		}
+		return new MobClickActivator(base, type, name, location);
+	}
+
+	public static MobClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String type = cfg.getString("mob-type", "");
+		String name = cfg.getString("mob-name", "");
+		String location = cfg.getString("location", "");
+		return new MobClickActivator(base, type, name, location);
+	}
 }

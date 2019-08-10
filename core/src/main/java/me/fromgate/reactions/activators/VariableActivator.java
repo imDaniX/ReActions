@@ -30,21 +30,15 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class VariableActivator extends Activator {
-	private String id;
-	private boolean personal;
+	private final String id;
+	private final boolean personal;
 
-	public VariableActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public VariableActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param, "id");
-		id = params.getParam("id", "UnknownVariable");
-		personal = params.getParam("personal", false);
+	public VariableActivator(ActivatorBase base, String id, boolean personal) {
+		super(base);
+		this.id = id;
+		this.personal = personal;
 	}
 
 	@Override
@@ -58,17 +52,10 @@ public class VariableActivator extends Activator {
 		return Actions.executeActivator(ve.getPlayer(), this);
 	}
 
-
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("variable-id", id);
 		cfg.set("personal", personal);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		id = cfg.getString("variable-id", "UnknownVariable");
-		personal = cfg.getBoolean("personal", false);
 	}
 
 	@Override
@@ -78,7 +65,7 @@ public class VariableActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(id);
+		return !Util.emptyString(id);
 	}
 
 	@Override
@@ -94,4 +81,15 @@ public class VariableActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static VariableActivator create(ActivatorBase base, Param param) {
+		String id = param.getParam("id", "UnknownVariable");
+		boolean personal = param.getParam("personal", false);
+		return new VariableActivator(base, id, personal);
+	}
+
+	public static VariableActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String id = cfg.getString("variable-id", "UnknownVariable");
+		boolean personal = cfg.getBoolean("personal", false);
+		return new VariableActivator(base, id, personal);
+	}
 }

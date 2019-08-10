@@ -8,23 +8,17 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class WeSelectionActivator extends Activator {
-	private int maxBlocks;
-	private int minBlocks;
-	private String typeSelection;
+	private final int maxBlocks;
+	private final int minBlocks;
+	private final String typeSelection;
 
-	public WeSelectionActivator(String name, String param) {
-		super(name, "activators");
-	   Param params = new Param(param);
-		minBlocks = params.getParam("minblocks", 0);
-		maxBlocks = params.getParam("maxblocks", 0);
-		typeSelection = params.getParam("type", "ANY");
-	}
-
-	public WeSelectionActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public WeSelectionActivator(ActivatorBase base, int maxBlocks, int minBlocks, String typeSelection) {
+		super(base);
+		this.maxBlocks = maxBlocks;
+		this.minBlocks = minBlocks;
+		this.typeSelection = typeSelection;
 	}
 
 	@Override
@@ -64,13 +58,6 @@ public class WeSelectionActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.minBlocks = cfg.getInt("min-blocks", 0);
-		this.maxBlocks = cfg.getInt("max-blocks", 0);
-		this.typeSelection = cfg.getString("type", "ANY");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.WE_SELECTION_REGION;
 	}
@@ -88,9 +75,23 @@ public class WeSelectionActivator extends Activator {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
 		sb.append("minblocks:").append(minBlocks);
-		sb.append(" maxblocks:").append(maxBlocks);
-		sb.append(" type:").append(typeSelection);
+		sb.append("; maxblocks:").append(maxBlocks);
+		sb.append("; type:").append(typeSelection);
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public static WeSelectionActivator create(ActivatorBase base, Param param) {
+		int minBlocks = param.getParam("minblocks", 0);
+		int maxBlocks = param.getParam("maxblocks", Integer.MAX_VALUE);
+		String typeSelection = param.getParam("type", "ANY");
+		return new WeSelectionActivator(base, minBlocks, maxBlocks, typeSelection);
+	}
+
+	public static WeSelectionActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		int minBlocks = cfg.getInt("min-blocks", 0);
+		int maxBlocks = cfg.getInt("max-blocks", Integer.MAX_VALUE);
+		String typeSelection = cfg.getString("type", "ANY");
+		return new WeSelectionActivator(base, minBlocks, maxBlocks, typeSelection);
 	}
 }

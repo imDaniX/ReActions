@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands;
 
+import me.fromgate.reactions.util.location.Holder;
 import me.fromgate.reactions.util.location.Locator;
-import me.fromgate.reactions.util.location.Selector;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.entity.Player;
 
@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 public class CmdSelect extends Cmd {
 	@Override
 	public boolean execute(Player player, String[] args) {
-		Selector.selectLocation(player, null);
-		Msg.CMD_SELECTED.print(player, Locator.locationToStringFormatted(Selector.getSelectedLocation(player)));
+		Holder.holdLocation(player, null);
+		Msg.CMD_SELECTED.print(player, Locator.locationToStringFormatted(Holder.getHeldLocation(player)));
 		return true;
 	}
 }

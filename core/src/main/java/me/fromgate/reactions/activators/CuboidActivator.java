@@ -16,12 +16,12 @@ import java.util.UUID;
 // TODO: Cuboid flag
 // TODO: Command to create cuboid activator
 public class CuboidActivator extends Activator implements Locatable {
-	private String world;
-	private CuboidMode mode;
-	private int xMin, yMin, zMin;
-	private int xMax, yMax, zMax;
-	private boolean twoDimensional;
-	private Set<UUID> within = new HashSet<>();
+	private final String world;
+	private final CuboidMode mode;
+	private final int xMin, yMin, zMin;
+	private final int xMax, yMax, zMax;
+	private final boolean twoDimensional;
+	private final Set<UUID> within = new HashSet<>();
 
 	public CuboidActivator(String name, String group, YamlConfiguration cfg) {
 		super(name, group, cfg);
@@ -111,9 +111,9 @@ public class CuboidActivator extends Activator implements Locatable {
 		CHECK,ENTER,LEAVE;
 		static CuboidMode getByName(String name) {
 			switch(name.toUpperCase()) {
-				case "ENTER": return ENTER;
+				case "CHECK": return CHECK;
 				case "LEAVE": return LEAVE;
-				default: return CHECK;
+				default: return ENTER;
 			}
 		}
 	}

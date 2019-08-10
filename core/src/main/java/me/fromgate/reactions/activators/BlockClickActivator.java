@@ -29,6 +29,7 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.simpledata.ClickType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -79,7 +80,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 		BlockClickStorage bce = (BlockClickStorage) event;
 		if (bce.getBlock() == null) return false;
 		if (!isActivatorBlock(bce.getBlock())) return false;
-		if (!clickCheck(bce.isLeftClick())) return false;
+		if (click.checkRight(bce.isLeftClick())) return false;
 		Variables.setTempVar("blocklocation", Locator.locationToString(bce.getBlock().getLocation()));
 		Variables.setTempVar("blocktype", bce.getBlock().getType().name());
 		Variables.setTempVar("click", bce.isLeftClick() ? "left" : "right");
@@ -133,30 +134,6 @@ public class BlockClickActivator extends Activator implements Locatable {
 		return ActivatorType.BLOCK_CLICK;
 	}
 
-	enum ClickType {
-		RIGHT,
-		LEFT,
-		ANY;
-
-		public static ClickType getByName(String clickStr) {
-			if (clickStr.equalsIgnoreCase("left")) return ClickType.LEFT;
-			if (clickStr.equalsIgnoreCase("any")) return ClickType.ANY;
-			return ClickType.RIGHT;
-		}
-	}
-
-	private boolean clickCheck(boolean leftClick) {
-		switch (click) {
-			case ANY:
-				return true;
-			case LEFT:
-				return leftClick;
-			case RIGHT:
-				return !leftClick;
-		}
-		return false;
-	}
-
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
@@ -165,8 +142,8 @@ public class BlockClickActivator extends Activator implements Locatable {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
 		sb.append("type:").append(blockType == null ? "-" : blockType);
-		sb.append(" click:").append(this.click.name());
-		sb.append(" loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
+		sb.append("; click:").append(this.click.name());
+		sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
 		sb.append(")");
 		return sb.toString();
 	}

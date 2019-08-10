@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class DropActivator extends Activator {
 
-	private String itemStr;
+	private final String itemStr;
 
 	public DropActivator(String name, String param) {
 		super(name, "activators");
@@ -64,11 +64,6 @@ public class DropActivator extends Activator {
 	@Override
 	public ActivatorType getType() {
 		return ActivatorType.DROP;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	private boolean checkItem(ItemStack item) {

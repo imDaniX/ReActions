@@ -25,29 +25,25 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.storage.RespawnStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.simpledata.DeathCause;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 
 public class PlayerRespawnActivator extends Activator {
 
-	private PlayerDeathActivator.DeathCause deathCause;
+	private final DeathCause deathCause;
 
-	public PlayerRespawnActivator(String name, String param) {
-		super(name, "activators");
-		PlayerDeathActivator.DeathCause ds = PlayerDeathActivator.DeathCause.byName(param);
-		this.deathCause = ds == null ? PlayerDeathActivator.DeathCause.PVP : ds;
-	}
-
-	public PlayerRespawnActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public PlayerRespawnActivator(ActivatorBase base, DeathCause cause) {
+		super(base);
+		this.deathCause = cause;
 	}
 
 	@Override
 	public boolean activate(RAStorage event) {
 		RespawnStorage pe = (RespawnStorage) event;
-		if (this.deathCause != PlayerDeathActivator.DeathCause.ANY && pe.getDeathCause() != this.deathCause)
+		if (this.deathCause != DeathCause.ANY && pe.getDeathCause() != this.deathCause)
 			return false;
 		Variables.setTempVar("cause", pe.getDeathCause().name());
 		if (pe.getKiller() != null) {
@@ -65,25 +61,12 @@ public class PlayerRespawnActivator extends Activator {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("death-cause", this.deathCause != null ? this.deathCause.name() : "PVP");
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		String deathStr = cfg.getString("death-cause", "PVP");
-		this.deathCause = PlayerDeathActivator.DeathCause.byName(deathStr);
-		if (this.deathCause == null) this.deathCause = PlayerDeathActivator.DeathCause.PVP;
-		//this.item=cfg.getString(root+".item");
+		cfg.set("death-cause", deathCause.name());
 	}
 
 	@Override
 	public ActivatorType getType() {
 		return ActivatorType.PLAYER_RESPAWN;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	@Override
@@ -94,5 +77,15 @@ public class PlayerRespawnActivator extends Activator {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append("(").append(this.deathCause.name()).append(")");
 		return sb.toString();
+	}
+
+	public static PlayerRespawnActivator create(ActivatorBase base, Param param) {
+		DeathCause cause = DeathCause.getByName(param.getParam("cause", param.toString()));
+		return new PlayerRespawnActivator(base, cause);
+	}
+
+	public static PlayerRespawnActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		DeathCause cause = DeathCause.getByName(cfg.getString("death-cause", "ANY"));
+		return new PlayerRespawnActivator(base, cause);
 	}
 }

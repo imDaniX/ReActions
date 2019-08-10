@@ -111,7 +111,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
 		sb.append("block:").append(blockType == null ? "-" : blockType);
-		sb.append(" loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
+		sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
 		sb.append(")");
 		return sb.toString();
 	}

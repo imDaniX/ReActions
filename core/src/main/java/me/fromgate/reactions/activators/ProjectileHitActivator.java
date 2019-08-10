@@ -1,10 +1,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.EntityType;
 
 // TODO
@@ -16,12 +18,13 @@ public class ProjectileHitActivator extends Activator {
 
 	private HitType hitType;
 
-	public ProjectileHitActivator(String name, String group) {
-		super(name, group);
-	}
-
-	public ProjectileHitActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public ProjectileHitActivator(ActivatorBase base, EntityType projType, Material hitBlock, BlockFace hitFace, EntityType hitEntity, HitType hitType) {
+		super(base);
+		this.projType = projType;
+		this.hitBlock = hitBlock;
+		this.hitBlock = hitBlock;
+		this.hitEntity = hitEntity;
+		this.hitType = hitType;
 	}
 
 	@Override
@@ -31,11 +34,6 @@ public class ProjectileHitActivator extends Activator {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
 
 	}
 
@@ -50,6 +48,30 @@ public class ProjectileHitActivator extends Activator {
 	}
 
 	private enum HitType {
-		ENTITY,BLOCK,ANY
+		ENTITY,BLOCK,ANY;
+
+		public static HitType getByName(String name) {
+			if(name.equalsIgnoreCase("ENTITY")) return ENTITY;
+			if(name.equalsIgnoreCase("BLOCK")) return BLOCK;
+			return ANY;
+		}
+	}
+
+	public static ProjectileHitActivator create(ActivatorBase base, Param param) {
+		EntityType projType = EntityUtil.getEntityByName(param.getParam("projectile", "ARROW"));
+		Material hitBlock = Material.getMaterial(param.getParam("block", ""));
+		BlockFace hitFace = BlockUtil.getFaceByName(param.getParam("face", ""));
+		EntityType hitEntity = EntityUtil.getEntityByName(param.getParam("entity", ""));
+		HitType hitType = HitType.getByName(param.getParam("hit", "ANY"));
+		return new ProjectileHitActivator(base, projType, hitBlock, hitFace, hitEntity, hitType);
+	}
+
+	public static ProjectileHitActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		EntityType projType = EntityUtil.getEntityByName(cfg.getString("projectile-type", "ARROW"));
+		Material hitBlock = Material.getMaterial(cfg.getString("block-type", ""));
+		BlockFace hitFace = BlockUtil.getFaceByName(cfg.getString("block=face", ""));
+		EntityType hitEntity = EntityUtil.getEntityByName(cfg.getString("entity-type", ""));
+		HitType hitType = HitType.getByName(cfg.getString("hit", "ANY"));
+		return new ProjectileHitActivator(base, projType, hitBlock, hitFace, hitEntity, hitType);
 	}
 }

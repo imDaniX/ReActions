@@ -25,36 +25,32 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.ItemConsumeStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ItemConsumeActivator extends Activator {
 
 	private String item;
 	// TODO: Hand option
 
-	public ItemConsumeActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public ItemConsumeActivator(String name, String item) {
-		super(name, "activators");
+	public ItemConsumeActivator(ActivatorBase base, String item) {
+		super(base);
 		this.item = item;
 	}
 
 	public boolean activate(RAStorage event) {
 		if (this.item.isEmpty() || ItemUtil.parseItemStack(this.item) == null) {
-			Msg.logOnce(this.name + "activatoritemempty", "Failed to parse item of activator " + this.name);
+			Msg.logOnce(getBase().getName() + "activatoritemempty", "Failed to parse item of activator " + getBase().getName());
 			return false;
 		}
 		ItemConsumeStorage ie = (ItemConsumeStorage) event;
 		if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
-			VirtualItem vi = ItemUtil.itemFromItemStack(ie.getItem());
+			VirtualItem vi = VirtualItem.fromItemStack(ie.getItem());
 			if (vi != null) {
 				Variables.setTempVar("item", vi.toString());
 				Variables.setTempVar("item-str", vi.toDisplayString());
@@ -68,17 +64,13 @@ public class ItemConsumeActivator extends Activator {
 		cfg.set("item", this.item);
 	}
 
-	public void load(ConfigurationSection cfg) {
-		this.item = cfg.getString("item");
-	}
-
 	public ActivatorType getType() {
 		return ActivatorType.ITEM_CONSUME;
 	}
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(item);
+		return !Util.emptyString(item);
 	}
 
 	public String toString() {
@@ -97,5 +89,15 @@ public class ItemConsumeActivator extends Activator {
 
 		sb.append(" (").append(this.item).append(")");
 		return sb.toString();
+	}
+
+	public static ItemConsumeActivator create(ActivatorBase base, Param param) {
+		String item = param.getParam("item", param.getParam("param-line"));
+		return new ItemConsumeActivator(base, item);
+	}
+
+	public static ItemConsumeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String item = cfg.getString("item", "");
+		return new ItemConsumeActivator(base, item);
 	}
 }

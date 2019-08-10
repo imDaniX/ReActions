@@ -26,18 +26,14 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.FactionDisbandStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class FactionDisbandActivator extends Activator {
 
-	public FactionDisbandActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public FactionDisbandActivator(String name, String param) {
-		super(name, "activators");
+	public FactionDisbandActivator(ActivatorBase base) {
+		super(base);
 	}
 
 	@Override
@@ -48,20 +44,15 @@ public class FactionDisbandActivator extends Activator {
 	}
 
 	@Override
-	public void save(ConfigurationSection cfg) {
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.FCT_DISBAND;
 	}
 
-	@Override
-	public boolean isValid() {
-		return true;
+	public static FactionDisbandActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		return new FactionDisbandActivator(base);
+	}
+
+	public static FactionDisbandActivator create(ActivatorBase base, Param param) {
+		return new FactionDisbandActivator(base);
 	}
 }

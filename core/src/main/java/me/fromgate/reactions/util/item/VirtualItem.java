@@ -69,6 +69,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/*
+ 	TODO: Should not extend ItemStack
+	New VirtualItem is generated on every check of item-related activators(and even flags)
+	It would be better to some custom implementation of item that will be stored in Activators
+*/
+
 public class VirtualItem extends ItemStack {
 
 	private static boolean ALLOW_RANDOM = true;

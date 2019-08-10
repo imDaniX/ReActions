@@ -1,13 +1,14 @@
 name: ReActions
 api-version: 1.13
 main: me.fromgate.reactions.ReActions
-version: 0.12.10
+version: 0.12.11
 website: http://fromgate.me
 author: fromgate, fromgate@gmail.com
 softdepend: [Vault,Towny,WorldGuard,RacesAndClasses,PlayEffect,Factions,Craftconomy3,ProtocolLib,PlaceholderAPI]
+description: Simplest scripting engine for Bukkit
 commands:
    react:
-      aliases: [ra,rea,rct,reactions]
+      aliases: [ra,rea,reactions]
       description: Main command of ReActions
       usage: /react help
    exec:

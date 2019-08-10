@@ -21,32 +21,17 @@ import org.bukkit.event.entity.EntityDamageEvent;
 // TODO: Assemble to one activator
 public class DamageByMobActivator extends Activator {
 
-	private String damagerName;
-	private String damagerType;
-	private String entityType;
-	private String damageCause;
-
-	public DamageByMobActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public DamageByMobActivator(String name, String param) {
-		super(name, "activators");
-		this.damagerType = param;
-		this.damagerName = "";
-		Param params = new Param(param);
-		if (params.isParamsExists("type")) {
-			this.damagerType = getDamagerTypeByName(params.getParam("type", "ANY"));
-			this.damagerName = params.getParam("name");
-		} else if (param.contains("$")) {
-			this.damagerName = getDamagerTypeByName(this.damagerType.substring(0, this.damagerType.indexOf("$")));
-			this.damagerType = this.damagerType.substring(this.damagerName.length() + 1);
-		} else {
-			this.damagerType = getDamagerTypeByName(params.getParam("type", "ANY"));
-		}
-		this.damagerName = ChatColor.translateAlternateColorCodes('&', damagerName.replace("\\_", " "));
-		this.entityType = getDamagerTypeByName(params.getParam("etype", "ANY"));
-		this.damageCause = getCauseByName(params.getParam("cause", "ANY"));
+	private final String damagerName;
+	private final String damagerType;
+	private final String entityType;
+	private final String damageCause;
+	
+	public DamageByMobActivator(ActivatorBase base, String damagerName, String damagerType, String entityType, String damageCause) {
+		super(base);
+		this.damagerName = damagerName;
+		this.damagerType = damagerType;
+		this.entityType = entityType;
+		this.damageCause = damageCause;
 	}
 
 	@Override
@@ -136,7 +121,7 @@ public class DamageByMobActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return true;//!Util.emptySting(damagerType);
+		return true;//!Util.emptyString(damagerType);
 	}
 
 	@Override
@@ -147,9 +132,9 @@ public class DamageByMobActivator extends Activator {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (");
 		sb.append("type:").append(damagerType.isEmpty() ? "-" : damagerType.toUpperCase());
-		sb.append(" name:").append(damagerName.isEmpty() ? "-" : damagerName);
-		sb.append(" etype:").append(entityType.isEmpty() ? "-" : entityType.toUpperCase());
-		sb.append(" cause:").append(damageCause);
+		sb.append("; name:").append(damagerName.isEmpty() ? "-" : damagerName);
+		sb.append("; etype:").append(entityType.isEmpty() ? "-" : entityType.toUpperCase());
+		sb.append("; cause:").append(damageCause);
 		sb.append(")");
 		return sb.toString();
 	}

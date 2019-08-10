@@ -77,7 +77,7 @@ public class BukkitListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onChatCommand(AsyncPlayerChatEvent event) {
+	public void onChat(AsyncPlayerChatEvent event) {
 		// TODO: That's not really good solution
 		/*
 		Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
@@ -90,7 +90,7 @@ public class BukkitListener implements Listener {
 				event.setCancelled(true);
 			}
 		} catch(IllegalStateException ignore) {
-			Msg.logOnce("asyncchat", "Chat is in async thread. Because of that you should use " +
+			Msg.logOnce("asyncchaterror", "Chat is in async thread. Because of that you should use " +
 					"additional EXEC activator in some cases, like teleportation, setting blocks etc.");
 		}
 	}
@@ -103,13 +103,20 @@ public class BukkitListener implements Listener {
 		}
 	}
 
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
+		if (StorageManager.raiseCommandActivator(event.getPlayer(), event.getMessage().replaceFirst("/", ""), event.isCancelled())) {
+			event.setCancelled(true);
+		}
+	}
+
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onSignChange(SignChangeEvent event) {
 		for (Activator activator : ActivatorsManager.getActivators(ActivatorType.SIGN)) {
 			SignActivator signAct = (SignActivator) activator;
 			if (!signAct.checkMask(event.getLines())) continue;
-			if (event.getPlayer().hasPermission("reactions.sign." + signAct.getName().toLowerCase())) return;
-			Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getName());
+			if (event.getPlayer().hasPermission("reactions.sign." + signAct.getBase().getName().toLowerCase())) return;
+			Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getBase().getName());
 			event.setCancelled(true);
 			return;
 		}
@@ -209,7 +216,8 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onMobGrowl(EntityDamageEvent event) {
-		if ((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) && (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE)) return;
+		if ((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) &&
+				(event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE)) return;
 		if (event.getEntityType() != EntityType.PLAYER) return;
 		if (!(event instanceof EntityDamageByEntityEvent)) return;
 		EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
@@ -225,8 +233,9 @@ public class BukkitListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void onMobDamageByPlayer(EntityDamageEvent event) {
-		if ((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) && (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE) && (event.getCause() != EntityDamageEvent.DamageCause.MAGIC))
-			return;
+		if ((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) &&
+				(event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE) &&
+				(event.getCause() != EntityDamageEvent.DamageCause.MAGIC)) return;
 		if (!(event instanceof EntityDamageByEntityEvent)) return;
 		EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
 		LivingEntity damager = EntityUtil.getDamagerEntity(evdmg);
@@ -342,20 +351,12 @@ public class BukkitListener implements Listener {
 	}
 
 
-	@EventHandler(priority = EventPriority.HIGH)
-	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		if (StorageManager.raiseCommandActivator(event.getPlayer(), event.getMessage().replaceFirst("/", ""), event.isCancelled())) {
-			event.setCancelled(true);
-		}
-	}
-
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
 		WaitingManager.refreshPlayer(player);
 		TemporaryOp.removeTempOp(player);
 		RaDebug.offPlayerDebug(player);
-		UpdateChecker.updateMsg(player);
 		MoveListener.initLocation(player);
 
 		StorageManager.raiseJoinActivator(player, !player.hasPlayedBefore());

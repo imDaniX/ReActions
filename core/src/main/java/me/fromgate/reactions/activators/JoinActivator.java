@@ -25,20 +25,16 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.JoinStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class JoinActivator extends Activator {
 
-	private boolean firstJoin;
+	private final boolean firstJoin;
 
-	JoinActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public JoinActivator(String name, String join) {
-		super(name, "activators");
-		this.firstJoin = join.equalsIgnoreCase("first") || join.equalsIgnoreCase("firstjoin");
+	public JoinActivator(ActivatorBase base, boolean firstJoin) {
+		super(base);
+		this.firstJoin = firstJoin;
 	}
 
 	@Override
@@ -55,22 +51,12 @@ public class JoinActivator extends Activator {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("join-state", (firstJoin ? "FIRST" : "ANY"));
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.firstJoin = cfg.getString("join-state", "ANY").equalsIgnoreCase("first");
+		cfg.set("join-state", (firstJoin ? "TRUE" : "ANY"));
 	}
 
 	@Override
 	public ActivatorType getType() {
 		return ActivatorType.JOIN;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	@Override
@@ -81,6 +67,16 @@ public class JoinActivator extends Activator {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (first join:").append(this.firstJoin).append(")");
 		return sb.toString();
+	}
+
+	public static JoinActivator create(ActivatorBase base, Param param) {
+		boolean firstJoin = param.toString().contains("first");
+		return new JoinActivator(base, firstJoin);
+	}
+
+	public static JoinActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		boolean firstJoin = cfg.getString("join-state", "ANY").equalsIgnoreCase("first");
+		return new JoinActivator(base, firstJoin);
 	}
 
 }

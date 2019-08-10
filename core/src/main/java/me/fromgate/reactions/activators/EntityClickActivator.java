@@ -6,23 +6,17 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 
 /**
  * Created by MaxDikiy on 2017-05-14.
  */
 public class EntityClickActivator extends Activator {
-	private String entityType;
+	private final String entityType;
 
-	public EntityClickActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.entityType = params.getParam("type", "");
-	}
-
-	public EntityClickActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public EntityClickActivator(ActivatorBase base, String entityType) {
+		super(base);
+		this.entityType = entityType;
 	}
 
 	@Override
@@ -41,11 +35,6 @@ public class EntityClickActivator extends Activator {
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("entity-type", this.entityType);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.entityType = cfg.getString("entity-type", "");
 	}
 
 	@Override
@@ -68,5 +57,15 @@ public class EntityClickActivator extends Activator {
 	@Override
 	public boolean isValid() {
 		return true;
+	}
+
+	public static EntityClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String entityType = cfg.getString("entity-type");
+		return new EntityClickActivator(base, entityType);
+	}
+
+	public static EntityClickActivator create(ActivatorBase base, Param param) {
+		String entityType = param.getParam("type", "");
+		return new EntityClickActivator(base, entityType);
 	}
 }

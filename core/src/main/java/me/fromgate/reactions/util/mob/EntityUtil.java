@@ -3,6 +3,7 @@ package me.fromgate.reactions.util.mob;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
@@ -37,6 +38,13 @@ public class EntityUtil {
 		if(source instanceof BlockProjectileSource)
 			return null;
 		return (LivingEntity)source;
+	}
+
+	public static EntityType getEntityByName(String type) {
+		type = type.toUpperCase();
+		for(EntityType eType : EntityType.values())
+			if(eType.name().equals(type)) return eType;
+		return null;
 	}
 
 	public static List<Entity> getEntities(Location l1, Location l2) {
@@ -83,5 +91,9 @@ public class EntityUtil {
 				return (LivingEntity) evdmg.getDamager();
 		}
 		return null;
+	}
+
+	public static String getMobName(LivingEntity mob) {
+		return mob.getCustomName() == null ? "" : mob.getCustomName();
 	}
 }

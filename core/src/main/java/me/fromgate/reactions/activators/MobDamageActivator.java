@@ -32,32 +32,19 @@ import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class MobDamageActivator extends Activator {
-	private String mobName;
-	private String mobType;
-	private String itemStr;
+	private final String mobName;
+	private final String mobType;
+	private final String itemStr;
 
-	public MobDamageActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public MobDamageActivator(String name, String param) {
-		super(name, "activators");
-		this.mobType = param;
-		this.mobName = "";
-		Param params = new Param(param);
-		if (params.isParamsExists("type")) {
-			this.mobType = params.getParam("type");
-			this.mobName = params.getParam("name");
-			this.itemStr = params.getParam("item");
-		} else if (param.contains("$")) {
-			this.mobName = this.mobType.substring(0, this.mobType.indexOf("$"));
-			this.mobType = this.mobType.substring(this.mobName.length() + 1);
-		}
+	public MobDamageActivator(ActivatorBase base, String type, String name, String item) {
+		super(base);
+		this.mobType = type;
+		this.mobName = name;
+		this.itemStr = item;
 	}
 
 	@Override
@@ -109,20 +96,13 @@ public class MobDamageActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.mobType = cfg.getString("mob-type", "");
-		this.mobName = cfg.getString("mob-name", "");
-		this.itemStr = cfg.getString("item", "");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.MOB_DAMAGE;
 	}
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(mobType);
+		return !Util.emptyString(mobType);
 	}
 
 	@Override
@@ -138,4 +118,25 @@ public class MobDamageActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static MobDamageActivator create(ActivatorBase base, Param param) {
+		String type = param.toString();
+		String name = "";
+		String itemStr = "";
+		if (param.isParamsExists("type")) {
+			type = param.getParam("type");
+			name = param.getParam("name");
+			itemStr = param.getParam("item");
+		} else if (param.toString().contains("$")) {
+			name = type.substring(0, type.indexOf("$"));
+			type = type.substring(name.length() + 1);
+		}
+		return new MobDamageActivator(base, type, name, itemStr);
+	}
+
+	public static MobDamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String type = cfg.getString("mob-type", "");
+		String name = cfg.getString("mob-name", "");
+		String itemStr = cfg.getString("item", "");
+		return new MobDamageActivator(base, type, name, itemStr);
+	}
 }

@@ -26,6 +26,7 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.ButtonStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.Tag;
@@ -114,7 +115,7 @@ public class ButtonActivator extends Activator implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(world);
+		return !Util.emptyString(world);
 	}
 
 	@Override
@@ -125,6 +126,22 @@ public class ButtonActivator extends Activator implements Locatable {
 		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
 		sb.append(" (").append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z).append(")");
 		return sb.toString();
+	}
+
+	public static ButtonActivator create(ActivatorBase base, Param param) {
+		int x = param.getParam("x", 0);
+		int y = param.getParam("y", 0);
+		int z = param.getParam("z", 0);
+		String world = param.getParam("world", Bukkit.getWorlds().get(0).getName());
+		return new ButtonActivator(base, world, x, y, z);
+	}
+
+	public static ButtonActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		int x = cfg.getInt("x", 0);
+		int y = cfg.getInt("y", 0);
+		int z = cfg.getInt("z", 0);
+		String world = cfg.getString("world", Bukkit.getWorlds().get(0).getName());
+		return new ButtonActivator(base, world, x, y, z);
 	}
 
 }

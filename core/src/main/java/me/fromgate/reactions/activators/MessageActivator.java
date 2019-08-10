@@ -30,28 +30,21 @@ import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.util.regex.Pattern;
 
 public class MessageActivator extends Activator {
 	private final static Pattern NOT_D = Pattern.compile("\\D+");
 
-
 	private CheckType type;
 	private Source source;
 	private String mask;
 
-	public MessageActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public MessageActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param, "mask");
-		this.type = CheckType.getByName(params.getParam("type", "EQUAL"));
-		this.source = Source.getByName(params.getParam("source", "CHAT_MESSAGE"));
-		this.mask = params.getParam("mask", params.getParam("message", "<message mask>"));
+	public MessageActivator(ActivatorBase base, CheckType type, Source source, String mask) {
+		super(base);
+		this.type = type;
+		this.source = source;
+		this.mask = mask;
 	}
 
 	@Override
@@ -60,14 +53,6 @@ public class MessageActivator extends Activator {
 		cfg.set("type", type.name());
 		cfg.set("source", source.name());
 	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		mask = cfg.getString("mask", "Unknown mask");
-		this.type = CheckType.getByName(cfg.getString("type", CheckType.EQUAL.name()));
-		this.source = Source.getByName(cfg.getString("source", Source.CHAT_INPUT.name()));
-	}
-
 
 	public enum CheckType {
 		REGEX,
@@ -133,7 +118,7 @@ public class MessageActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(mask);
+		return !Util.emptyString(mask);
 	}
 
 	public boolean filterMessage(Source source, String message) {
@@ -196,5 +181,17 @@ public class MessageActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static MessageActivator create(ActivatorBase base, Param param) {
+		CheckType type = CheckType.getByName(param.getParam("type", "EQUAL"));
+		Source source = Source.getByName(param.getParam("source", "CHAT_MESSAGE"));
+		String mask = param.getParam("mask", param.getParam("message", "Message mask"));
+		return new MessageActivator(base, type, source, mask);
+	}
 
+	public static MessageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		CheckType type = CheckType.getByName(cfg.getString("type", "EQUAL"));
+		Source source = Source.getByName(cfg.getString("source", "CHAT_INPUT"));
+		String mask = cfg.getString("mask", "Message mask");
+		return new MessageActivator(base, type, source, mask);
+	}
 }

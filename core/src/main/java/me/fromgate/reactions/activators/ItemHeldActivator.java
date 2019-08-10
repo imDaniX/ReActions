@@ -8,29 +8,23 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * Created by MaxDikiy on 2017-11-11.
  */
 public class ItemHeldActivator extends Activator {
-	private int previousSlot;
-	private int newSlot;
-	private String itemNewStr;
-	private String itemPrevStr;
+	private final int previousSlot;
+	private final int newSlot;
+	private final String itemNewStr;
+	private final String itemPrevStr;
 
-	public ItemHeldActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		itemNewStr = params.getParam("itemnew", "");
-		itemPrevStr = params.getParam("itemprev", "");
-		newSlot = params.getParam("slotnew", 0) - 1;
-		previousSlot = params.getParam("slotprev", 0) - 1;
-	}
-
-	public ItemHeldActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public ItemHeldActivator(ActivatorBase base, String itemPrevStr, String itemNewStr, int previousSlot, int newSlot) {
+		super(base);
+		this.itemNewStr = itemNewStr;
+		this.itemPrevStr = itemPrevStr;
+		this.previousSlot = previousSlot;
+		this.newSlot = newSlot;
 	}
 
 	@Override
@@ -45,14 +39,14 @@ public class ItemHeldActivator extends Activator {
 		if (newSlot > -1 && newSlot != ihe.getNewSlot()) return false;
 		if (previousSlot > -1 && previousSlot != ihe.getPreviousSlot()) return false;
 		if (itemNew != null) {
-			VirtualItem vi = ItemUtil.itemFromItemStack(itemNew);
+			VirtualItem vi = VirtualItem.fromItemStack(itemNew);
 			if (vi != null) {
 				Variables.setTempVar("itemnew", vi.toString());
 				Variables.setTempVar("itemnew-str", vi.toDisplayString());
 			}
 		}
 		if (itemPrev != null) {
-			VirtualItem vi = ItemUtil.itemFromItemStack(itemPrev);
+			VirtualItem vi = VirtualItem.fromItemStack(itemPrev);
 			if (vi != null) {
 				Variables.setTempVar("itemprev", vi.toString());
 				Variables.setTempVar("itemprev-str", vi.toDisplayString());
@@ -69,14 +63,6 @@ public class ItemHeldActivator extends Activator {
 		cfg.set("item-prev", this.itemPrevStr);
 		cfg.set("slot-new", this.newSlot + 1);
 		cfg.set("slot-prev", this.previousSlot + 1);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		this.itemNewStr = cfg.getString("item-new");
-		this.itemPrevStr = cfg.getString("item-prev");
-		this.newSlot = ((cfg.getString("slot-new").isEmpty()) ? 0 : Integer.parseInt(cfg.getString("slot-new"))) - 1;
-		this.previousSlot = ((cfg.getString("slot-prev").isEmpty()) ? 0 : Integer.parseInt(cfg.getString("slot-prev"))) - 1;
 	}
 
 	@Override
@@ -102,5 +88,21 @@ public class ItemHeldActivator extends Activator {
 		sb.append(" slotprev:").append(previousSlot + 1);
 		sb.append(")");
 		return sb.toString();
+	}
+
+	public static ItemHeldActivator create(ActivatorBase base, Param param) {
+		String itemNewStr = param.getParam("itemnew", "");
+		String itemPrevStr = param.getParam("itemprev", "");
+		int newSlot = param.getParam("slotnew", 1);
+		int previousSlot = param.getParam("slotprev", 1);
+		return new ItemHeldActivator(base, itemPrevStr, itemNewStr, --newSlot, --previousSlot);
+	}
+
+	public static ItemHeldActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String itemNewStr = cfg.getString("item-new");
+		String itemPrevStr = cfg.getString("item-prev");
+		int newSlot = cfg.getInt("slot-new", 1);
+		int previousSlot = cfg.getInt("slot-prev", 1);
+		return new ItemHeldActivator(base, itemPrevStr, itemNewStr, --newSlot, --previousSlot);
 	}
 }

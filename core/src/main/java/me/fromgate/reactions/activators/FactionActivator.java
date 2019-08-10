@@ -29,22 +29,16 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class FactionActivator extends Activator {
 
-	private String newFaction;
-	private String oldFaction;
+	private final String newFaction;
+	private final String oldFaction;
 
-	public FactionActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public FactionActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param, "newfaction");
-		this.newFaction = params.getParam("newfaction", params.getParam("faction", "ANY"));
-		this.oldFaction = params.getParam("oldfaction", "ANY");
+	public FactionActivator(ActivatorBase base, String newFaction, String oldFaction) {
+		super(base);
+		this.newFaction = newFaction;
+		this.oldFaction = oldFaction;
 	}
 
 	@Override
@@ -66,19 +60,8 @@ public class FactionActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.newFaction = cfg.getString("new-faction", "ANY");
-		this.oldFaction = cfg.getString("old-faction", "ANY");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.FCT_CHANGE;
-	}
-
-	@Override
-	public boolean isValid() {
-		return true;
 	}
 
 	@Override
@@ -91,5 +74,15 @@ public class FactionActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static FactionActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String newFaction = cfg.getString("new-faction", "ANY");
+		String oldFaction = cfg.getString("old-faction", "ANY");
+		return new FactionActivator(base, newFaction, oldFaction);
+	}
 
+	public static FactionActivator create(ActivatorBase base, Param param) {
+		String newFaction = param.getParam("newfaction", param.getParam("faction", "ANY"));
+		String oldFaction = param.getParam("oldfaction", "ANY");
+		return new FactionActivator(base, newFaction, oldFaction);
+	}
 }

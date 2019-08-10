@@ -25,117 +25,112 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
 public enum ActivatorType {
-	// alias, activator class, need target block, can be located
-	BUTTON("b", ButtonActivator.class, true, true),
-	PLATE("plt", PlateActivator.class, true, true),
-	REGION("rg", RegionActivator.class, false, true),
-	REGION_ENTER("rgenter", RegionEnterActivator.class, false, true),
-	REGION_LEAVE("rgleave", RegionLeaveActivator.class, false, true),
-	EXEC("exe", ExecActivator.class),
-	COMMAND("cmd", CommandActivator.class),
-	MESSAGE("msg", MessageActivator.class),
-	PVP_KILL("pvpkill", PvpKillActivator.class),
-	PLAYER_DEATH("PVP_DEATH", PlayerDeathActivator.class),
-	PLAYER_RESPAWN("PVP_RESPAWN", PlayerRespawnActivator.class),
-	LEVER("lvr", LeverActivator.class, true, true),
-	DOOR("door", DoorActivator.class, true, true),
-	JOIN("join", JoinActivator.class),
-	QUIT("quit", QuitActivator.class),
-	MOB_CLICK("mobclick", MobClickActivator.class, false, true),
-	MOB_KILL("mobkill", MobKillActivator.class),
-	MOB_DAMAGE("mobdamage", MobDamageActivator.class),
-	ITEM_CLICK("itemclick", ItemClickActivator.class),
-	ITEM_CONSUME("consume", ItemConsumeActivator.class),
-	ITEM_HOLD("itemhold", ItemHoldActivator.class),
-	ITEM_HELD("itemheld", ItemHeldActivator.class),
-	ITEM_WEAR("itemwear", ItemWearActivator.class),
-	FCT_CHANGE("faction", FactionActivator.class),
-	FCT_RELATION("fctrelation", FactionRelationActivator.class),
-	FCT_CREATE("fctcreate", FactionCreateActivator.class),
-	FCT_DISBAND("fctdisband", FactionDisbandActivator.class),
-	SIGN("sign", SignActivator.class, true, true),
-	BLOCK_CLICK("blockclick", BlockClickActivator.class, true, true),
-	INVENTORY_CLICK("inventoryclick", InventoryClickActivator.class),
-	DROP("drop", DropActivator.class),
-	PICKUP_ITEM("pickupitem", PickupItemActivator.class),
-	FLIGHT("flight", FlightActivator.class),
-	ENTITY_CLICK("entityclick", EntityClickActivator.class),
-	BLOCK_BREAK("blockbreak", BlockBreakActivator.class, true, true),
-	SNEAK("sneak", SneakActivator.class),
-	DAMAGE("damage", DamageActivator.class),
-	DAMAGE_BY_MOB("damagebymob", DamageByMobActivator.class),
-	DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator.class, true, true),
-	VARIABLE("var", VariableActivator.class),
-	WE_SELECTION_REGION("weselectionregion", WeSelectionActivator.class),
-	WE_CHANGE("wechange", WeChangeActivator.class),
-	GAMEMODE("gamemode", GamemodeActivator.class),
-	GOD("god", GodActivator.class),
-	CUBOID("cube", CuboidActivator.class, false, true),
-	PROJECTILE_HIT("projhit", ProjectileHitActivator.class);
+	// Actually all the constructors can be private. Maybe use factory instead of lambda'n'interface abuse?
+	// alias, create method, load method, can be located, need target block
+	EXEC("exe", Activator::create, Activator::load),
+	BUTTON("b", ButtonActivator::create, ButtonActivator::load, true, true),
+	PLATE("plt", PlateActivator::create, PlateActivator::load, true, true),
+	COMMAND("cmd", CommandActivator::create, CommandActivator::load),
+	MESSAGE("msg", MessageActivator::create, MessageActivator::load),
+	PVP_KILL("pvpkill", PvpKillActivator::create, PvpKillActivator::load),
+	PLAYER_DEATH("PVP_DEATH", PlayerDeathActivator::create, PlayerDeathActivator::load),
+	PLAYER_RESPAWN("PVP_RESPAWN", PlayerRespawnActivator::create, PlayerRespawnActivator::load),
+	LEVER("lvr", LeverActivator::create, LeverActivator::load, true, true),
+	DOOR("door", DoorActivator::create, DoorActivator::load, true, true),
+	JOIN("join", JoinActivator::create, JoinActivator::load),
+	QUIT("quit", QuitActivator::create, QuitActivator::load),
+	MOB_CLICK("mobclick", MobClickActivator::create, MobClickActivator::load, true),
+	MOB_KILL("mobkill", MobKillActivator::create, MobKillActivator::load),
+	MOB_DAMAGE("mobdamage", MobDamageActivator::create, MobDamageActivator::load),
+	ITEM_CLICK("itemclick", ItemClickActivator::create, ItemClickActivator::load),
+	ITEM_CONSUME("consume", ItemConsumeActivator::create, ItemConsumeActivator::load),
+	ITEM_HOLD("itemhold", ItemHoldActivator::create, ItemHoldActivator::load),
+	ITEM_HELD("itemheld", ItemHeldActivator::create, ItemHeldActivator::load),
+	ITEM_WEAR("itemwear", ItemWearActivator::create, ItemWearActivator::load),
+	SIGN("sign", SignActivator::create, SignActivator::load, true, true),
+	BLOCK_CLICK("blockclick", BlockClickActivator::create, BlockClickActivator::load, true, true),
+	INVENTORY_CLICK("inventoryclick", InventoryClickActivator::create, InventoryClickActivator::load),
+	DROP("drop", DropActivator::create, DropActivator::load),
+	PICKUP_ITEM("pickupitem", PickupItemActivator::create, PickupItemActivator::load),
+	FLIGHT("flight", FlightActivator::create, FlightActivator::load),
+	ENTITY_CLICK("entityclick", EntityClickActivator::create, EntityClickActivator::load),
+	BLOCK_BREAK("blockbreak", BlockBreakActivator::create, BlockBreakActivator::load, true, true),
+	SNEAK("sneak", SneakActivator::create, SneakActivator::load),
+	DAMAGE("damage", DamageActivator::create, DamageActivator::load),
+	DAMAGE_BY_MOB("damagebymob", DamageByMobActivator::create, DamageByMobActivator::load),
+	DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator::create, DamageByBlockActivator::load, true, true),
+	VARIABLE("var", VariableActivator::create, VariableActivator::load),
+	GAMEMODE("gamemode", GamemodeActivator::create, GamemodeActivator::load),
+	GOD("god", GodActivator::create, GodActivator::load),
+	CUBOID("cube", CuboidActivator::create, CuboidActivator::load, true),
+	PROJECTILE_HIT("projhit", ProjectileHitActivator::create, ProjectileHitActivator::load),
+	/* WorldGuard */
+	REGION("rg", RegionActivator::create, RegionActivator::load, true),
+	REGION_ENTER("rgenter", RegionEnterActivator::create, RegionEnterActivator::load, true),
+	REGION_LEAVE("rgleave", RegionLeaveActivator::create, RegionLeaveActivator::load, true),
+	/* WorldEdit */
+	WE_SELECTION_REGION("weselectionregion", WeSelectionActivator::create, WeSelectionActivator::load),
+	WE_CHANGE("wechange", WeChangeActivator::create, WeChangeActivator::load),
+	/* Factions */
+	FCT_CHANGE("faction", FactionActivator::create, FactionActivator::load),
+	FCT_RELATION("fctrelation", FactionRelationActivator::create, FactionRelationActivator::load),
+	FCT_CREATE("fctcreate", FactionCreateActivator::create, FactionCreateActivator::load),
+	FCT_DISBAND("fctdisband", FactionDisbandActivator::create, FactionDisbandActivator::load);
 
 	private final String alias;
-	private final Class<? extends Activator> aClass;
-	private final boolean needTargetBlock;
-	private final boolean located;
+	private final RaSupplier<Param> create;
+	private final RaSupplier<ConfigurationSection> load;
+	@Getter private final boolean needTargetBlock;
+	@Getter private final boolean located;
 
-	ActivatorType(String alias, Class<? extends Activator> aClass, boolean needTargetBlock, boolean located) {
-		this.alias = alias;
-		this.aClass = aClass;
+	ActivatorType(String alias, RaSupplier<Param> create, RaSupplier<ConfigurationSection> load, boolean located, boolean needTargetBlock) {
+		this.alias = alias.toUpperCase();
+		this.create = create;
+		this.load = load;
 		this.needTargetBlock = needTargetBlock;
 		this.located = located;
 	}
 
-	ActivatorType(String alias, Class<? extends Activator> aClass, boolean needTargetBlock) {
-		this(alias, aClass, needTargetBlock, false);
+	ActivatorType(String alias, RaSupplier<Param> create, RaSupplier<ConfigurationSection> load, boolean located) {
+		this(alias, create, load, located, false);
 	}
 
-	ActivatorType(String alias, Class<? extends Activator> aClass) {
-		this(alias, aClass, false);
+	ActivatorType(String alias, RaSupplier<Param> create, RaSupplier<ConfigurationSection> load) {
+		this(alias, create, load, false);
 	}
 
-	public Class<? extends Activator> getActivatorClass() {
-		return aClass;
+	public Activator create(String name, String group, Param param) {
+		ActivatorBase base = new ActivatorBase(name, group);
+		return create.get(base, param);
 	}
 
-	public Activator create(String name, Block targetBlock, String param) {
-		Constructor<? extends Activator> constructor;
-		Activator activator = null;
-		try {
-			if (this.needTargetBlock) {
-				constructor = aClass.getConstructor(String.class, Block.class, String.class);
-				activator = constructor.newInstance(name, targetBlock, param);
-			} else {
-				constructor = aClass.getConstructor(String.class, String.class);
-				activator = constructor.newInstance(name, param);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return activator;
+	public Activator load(String name, String group, ConfigurationSection cfg) {
+		ActivatorBase base = new ActivatorBase(name, group, cfg);
+		return load.get(base, cfg);
 	}
-
 
 	public String getAlias() {
 		return this.alias;
 	}
 
 	public static boolean isValid(String str) {
+		str = str.toUpperCase();
 		for (ActivatorType at : ActivatorType.values())
-			if (at.name().equalsIgnoreCase(str) || at.alias.equalsIgnoreCase(str)) return true;
+			if (at.name().equals(str) || at.alias.equals(str)) return true;
 		return false;
 	}
 
 	public static ActivatorType getByName(String name) {
+		name = name.toUpperCase();
 		for (ActivatorType at : ActivatorType.values())
-			if (at.name().equalsIgnoreCase(name) || at.getAlias().equalsIgnoreCase(name)) return at;
+			if (at.name().equals(name) || at.getAlias().equals(name)) return at;
 		return null;
 	}
 

@@ -281,7 +281,7 @@ public abstract class Activator {
 	 * Save activator to config
 	 * @param cfg Section of activator
 	 */
-	public abstract void save(ConfigurationSection cfg);
+	public void save(ConfigurationSection cfg) {}
 
 	/**
 	 * Load activator from config
@@ -293,13 +293,17 @@ public abstract class Activator {
 	 * Get type of activator
 	 * @return Type of activator
 	 */
-	public abstract ActivatorType getType();
+	public ActivatorType getType() {
+		return ActivatorType.EXEC;
+	}
 
 	/**
 	 * Check if activator is valid
 	 * @return Is activator valid
 	 */
-	public abstract boolean isValid();
+	public boolean isValid() {
+		return true;
+	}
 
 	@Override
 	public int hashCode() {
@@ -313,16 +317,17 @@ public abstract class Activator {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!(obj instanceof Activator))
-			return false;
-		Activator other = (Activator) obj;
-		if (name == null)
-			return other.name == null;
-		if (group == null)
-			return other.group == null;
-		return this.name.equals(other.name) && this.group.equals(other.group);
+	public String toString() {
+		StringBuilder sb = new StringBuilder(base.getGroup()).append(", ").append(base.getName()).append(" [").append(getType()).append("]");
+		sb.append(base.toString());
+		return sb.toString();
+	}
+
+	public static Activator create(ActivatorBase base, Param param) {
+		return new Activator(base);
+	}
+
+	public static Activator load(ActivatorBase base, ConfigurationSection cfg) {
+		return new Activator(base);
 	}
 }

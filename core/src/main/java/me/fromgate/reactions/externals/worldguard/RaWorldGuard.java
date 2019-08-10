@@ -65,8 +65,12 @@ public class RaWorldGuard {
 		}
 	}
 
-	public static List<String> getRegions(Location loc) {
-		List<String> regions = new ArrayList<>();
+	public static boolean containsRegion(Location loc, String region) {
+		return bridge.isLocationInRegion(loc, region);
+	}
+
+	public static Set<String> getRegions(Location loc) {
+		Set<String> regions = new HashSet<>();
 		for (String rg : regionActivators) {
 			if (bridge.isLocationInRegion(loc, rg))
 				regions.add(WGBridge7x.getFullRegionName(rg));
@@ -74,7 +78,7 @@ public class RaWorldGuard {
 		return regions;
 	}
 
-	public static List<String> getRegions(Player p) {
+	public static Set<String> getRegions(Player p) {
 		return getRegions(p.getLocation());
 	}
 

@@ -1,5 +1,8 @@
 package me.fromgate.reactions.util;
 
+import lombok.Getter;
+import org.bukkit.block.Block;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -9,17 +12,29 @@ import java.util.regex.Pattern;
 public class Param {
 	private String paramStr;
 	private Map<String, String> params = new HashMap<>();
+	@Getter private final Block block;
 
 	private final static Pattern PARAM_PATTERN = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");
 	private final static Pattern PARAM_BRACKET = Pattern.compile("\\{.*\\}");
 	private final static Pattern PARAM_BRACKET_SE = Pattern.compile("^\\{.*\\}$");
 	private final static Pattern BOOLEAN = Pattern.compile("(?i)true|on|yes");
 
+	public Param(String param, Block block) {
+		this.block = block;
+		this.paramStr = param;
+		this.params = parseParams(param, "param");
+		this.params.put("param-line", this.paramStr);
+	}
+
 	public Param(String param) {
-		this(param, "param");
+		this.block = null;
+		this.paramStr = param;
+		this.params = parseParams(param, "param");
+		this.params.put("param-line", this.paramStr);
 	}
 
 	public Param(String param, String defaultKey) {
+		this.block = null;
 		this.paramStr = param;
 		this.params = parseParams(param, defaultKey);
 		this.params.put("param-line", this.paramStr); // очередная залипуха
@@ -31,6 +46,7 @@ public class Param {
 
 
 	public Param(Map<String, String> params) {
+		this.block = null;
 		this.params.putAll(params);
 		StringBuilder sb = new StringBuilder();
 		for (String key : params.keySet()) {
@@ -46,6 +62,7 @@ public class Param {
 
 
 	public Param() {
+		this.block = null;
 		this.params = new HashMap<>();
 		this.paramStr = "";
 	}

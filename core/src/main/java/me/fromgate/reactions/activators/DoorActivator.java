@@ -26,6 +26,8 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.DoorStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -34,12 +36,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class DoorActivator extends Activator implements Locatable {
-	private String state; //open, close
+	private final String state; //open, close
 	//координаты нижнего блока двери
-	private String world;
-	private int x;
-	private int y;
-	private int z;
+	private final String world;
+	private final int x;
+	private final int y;
+	private final int z;
 
 	public DoorActivator(String name, String group, YamlConfiguration cfg) {
 		super(name, group, cfg);
@@ -110,18 +112,30 @@ public class DoorActivator extends Activator implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptySting(world);
+		return !Util.emptyString(world);
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-		sb.append(" (").append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
-		sb.append(" state:").append(this.state.toUpperCase()).append(")");
+		StringBuilder sb = new StringBuilder(super.toString());
+		sb.append(" (");
+		sb.append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
+		sb.append("; state:").append(this.state.toUpperCase());
+		sb.append(")");
 		return sb.toString();
+	}
+
+	public static DoorActivator create(ActivatorBase base, Param param) {
+		Block targetBlock = param.getBlock();
+		if(targetBlock == null || BlockUtil.isOpenable(targetBlock)) {
+			String state = param.getParam("state", "ANY");
+			if (!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
+			String world = targetBlock.getWorld().getName();
+			int x = targetBlock.getX();
+			int y = targetBlock.getY();
+			int z = targetBlock.getZ();
+			return new DoorActivator(base, state, world, x, y, z);
+		} else return null;
 	}
 
 

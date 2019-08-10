@@ -6,22 +6,16 @@ import me.fromgate.reactions.storage.SneakStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * Created by MaxDikiy on 2017-05-16.
  */
 public class SneakActivator extends Activator {
-	private SneakType sneak;
+	private final SneakType sneak;
 
-	public SneakActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.sneak = SneakType.getByName(params.getParam("sneak", "ANY"));
-	}
-
-	public SneakActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public SneakActivator(ActivatorBase base, SneakType sneak) {
+		super(base);
+		this.sneak = sneak;
 	}
 
 	@Override
@@ -35,11 +29,6 @@ public class SneakActivator extends Activator {
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("sneak", sneak.name());
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		sneak = SneakType.getByName(cfg.getString("sneak", "ANY"));
 	}
 
 	@Override
@@ -88,4 +77,13 @@ public class SneakActivator extends Activator {
 		return sb.toString();
 	}
 
+	public static SneakActivator create(ActivatorBase base, Param param) {
+		SneakType sneak = SneakType.getByName(param.getParam("sneak", "ANY"));
+		return new SneakActivator(base, sneak);
+	}
+
+	public static SneakActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		SneakType sneak = SneakType.getByName(cfg.getString("sneak", "ANY"));
+		return new SneakActivator(base, sneak);
+	}
 }

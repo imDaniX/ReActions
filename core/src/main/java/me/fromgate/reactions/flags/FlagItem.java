@@ -78,16 +78,16 @@ public class FlagItem implements Flag {
 
 		if (slotNum < 0) {
 			if (slotStr.equalsIgnoreCase("helm") || slotStr.equalsIgnoreCase("helmet"))
-				vi = ItemUtil.itemFromItemStack(player.getInventory().getHelmet());
+				vi = VirtualItem.fromItemStack(player.getInventory().getHelmet());
 			else if (slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest"))
-				vi = ItemUtil.itemFromItemStack(player.getInventory().getChestplate());
+				vi = VirtualItem.fromItemStack(player.getInventory().getChestplate());
 			else if (slotStr.equalsIgnoreCase("Leggings") || slotStr.equalsIgnoreCase("Leg"))
-				vi = ItemUtil.itemFromItemStack(player.getInventory().getLeggings());
+				vi = VirtualItem.fromItemStack(player.getInventory().getLeggings());
 			else if (slotStr.equalsIgnoreCase("boot") || slotStr.equalsIgnoreCase("boots"))
-				ItemUtil.itemFromItemStack(player.getInventory().getBoots());
-		} else vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
+				VirtualItem.fromItemStack(player.getInventory().getBoots());
+		} else vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));
 
-		// vi = ItemUtil.itemFromItemStack(player.getInventoryType().getItem(slotNum));
+		// vi = VirtualItem.fromItemStack(player.getInventoryType().getItem(slotNum));
 
 		if (vi == null) return false;
 

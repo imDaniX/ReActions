@@ -17,6 +17,10 @@ public class StoredAction {
 		this.value = v;
 	}
 
+	public String getActionName() {
+		return action == null ? "UNKNOWN" : action.name();
+	}
+
 	@Override
 	public String toString() {
 		return Util.join(action.name(), "=", value);

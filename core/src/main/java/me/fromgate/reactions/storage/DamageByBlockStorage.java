@@ -24,7 +24,7 @@ public class DamageByBlockStorage extends RAStorage {
 		this.cause = cause;
 	}
 
-	public Location getBlockBreakLocation() {
+	public Location getBlockLocation() {
 		return blockDamager.getLocation();
 	}
 }

@@ -394,7 +394,7 @@ public class ActivatorsManager {
 					continue;
 				}
 
-				Activator a = createActivator(type, name, group, cfg);
+				Activator a = loadActivator(type, name, group, cfg);
 				if (a == null) {
 					Msg.logOnce("cannotcreate2" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
 					continue;
@@ -413,15 +413,8 @@ public class ActivatorsManager {
 	 * @param cfg Config-file of group
 	 * @return New activator
 	 */
-	private static Activator createActivator(ActivatorType type, String name, String group, YamlConfiguration cfg) {
-		try {
-			// I don't like it
-			return type.getActivatorClass().getDeclaredConstructor(String.class, String.class, YamlConfiguration.class).newInstance(name, group, cfg);
-		} catch (Exception e) {
-			Msg.logOnce("cannotcreate" + name, "Failed to create new activator. Name: " + name);
-			e.printStackTrace();
-		}
-		return null;
+	private static Activator loadActivator(ActivatorType type, String name, String group, YamlConfiguration cfg) {
+		return type.load(name, group, cfg.getConfigurationSection(type + "." + name));
 	}
 
 	/**

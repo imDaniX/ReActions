@@ -1,7 +1,6 @@
 package me.fromgate.reactions.placeholders;
 
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.location.PlayerRespawner;
@@ -97,7 +96,7 @@ public class PlaceholderPlayer extends Placeholder {
 	 * @return Item string
 	 */
 	private String getPlayerItemInHand(Player player, boolean offhand) {
-		VirtualItem vi = ItemUtil.itemFromItemStack(offhand ? player.getInventory().getItemInOffHand() : player.getInventory().getItemInMainHand());
+		VirtualItem vi = VirtualItem.fromItemStack(offhand ? player.getInventory().getItemInOffHand() : player.getInventory().getItemInMainHand());
 		if (vi == null) return "";
 		return vi.toString();
 	}
@@ -107,7 +106,7 @@ public class PlaceholderPlayer extends Placeholder {
 		if (Util.isInteger(value)) {
 			int slotNum = Integer.parseInt(value);
 			if (slotNum < 0 || slotNum >= player.getInventory().getSize()) return "";
-			vi = ItemUtil.itemFromItemStack(player.getInventory().getItem(slotNum));
+			vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));
 		} else {
 			switch (value.toLowerCase()) {
 				case "mainhand":
@@ -118,19 +117,19 @@ public class PlaceholderPlayer extends Placeholder {
 				case "head":
 				case "helm":
 				case "helmet":
-					vi = ItemUtil.itemFromItemStack(player.getInventory().getHelmet());
+					vi = VirtualItem.fromItemStack(player.getInventory().getHelmet());
 					break;
 				case "chestplate":
 				case "chest":
-					vi = ItemUtil.itemFromItemStack(player.getInventory().getChestplate());
+					vi = VirtualItem.fromItemStack(player.getInventory().getChestplate());
 					break;
 				case "leggings":
 				case "legs":
-					vi = ItemUtil.itemFromItemStack(player.getInventory().getLeggings());
+					vi = VirtualItem.fromItemStack(player.getInventory().getLeggings());
 					break;
 				case "boots":
 				case "boot":
-					vi = ItemUtil.itemFromItemStack(player.getInventory().getBoots());
+					vi = VirtualItem.fromItemStack(player.getInventory().getBoots());
 					break;
 			}
 		}
