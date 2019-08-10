@@ -38,7 +38,7 @@ public class PvpKillActivator extends Activator {
 	public boolean activate(RAStorage event) {
 		PvpKillStorage pe = (PvpKillStorage) event;
 		Variables.setTempVar("targetplayer", pe.getKilledPlayer().getName());
-		return Actions.executeActivator(pe.getPlayer(), this);
+		return Actions.executeActivator(pe.getPlayer(), getBase());
 	}
 
 	@Override

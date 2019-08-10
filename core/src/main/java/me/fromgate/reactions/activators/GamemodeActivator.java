@@ -24,7 +24,7 @@ public class GamemodeActivator extends Activator {
 		GameModeStorage e = (GameModeStorage) event;
 		if (!gameModeCheck(e.getGameMode())) return false;
 		Variables.setTempVar("gamemode", e.getGameMode().toString());
-		return Actions.executeActivator(e.getPlayer(), this);
+		return Actions.executeActivator(e.getPlayer(), getBase());
 	}
 
 	private boolean gameModeCheck(GameMode gm) {
@@ -44,10 +44,7 @@ public class GamemodeActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("gamemode:").append(gameMode == null ? "ANY": gameMode.name());
 		sb.append(")");

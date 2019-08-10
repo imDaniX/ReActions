@@ -55,7 +55,7 @@ public class ItemConsumeActivator extends Activator {
 				Variables.setTempVar("item", vi.toString());
 				Variables.setTempVar("item-str", vi.toDisplayString());
 			}
-			return Actions.executeActivator(ie.getPlayer(), this);
+			return Actions.executeActivator(ie.getPlayer(), getBase());
 		}
 		return false;
 	}
@@ -74,20 +74,10 @@ public class ItemConsumeActivator extends Activator {
 	}
 
 	public String toString() {
-		StringBuilder sb = (new StringBuilder(this.name)).append(" [").append(this.getType()).append("]");
-		if (!this.getFlags().isEmpty()) {
-			sb.append(" F:").append(this.getFlags().size());
-		}
-
-		if (!this.getActions().isEmpty()) {
-			sb.append(" A:").append(this.getActions().size());
-		}
-
-		if (!this.getReactions().isEmpty()) {
-			sb.append(" R:").append(this.getReactions().size());
-		}
-
-		sb.append(" (").append(this.item).append(")");
+		StringBuilder sb = new StringBuilder(super.toString());
+		sb.append(" (");
+		sb.append(this.item);
+		sb.append(")");
 		return sb.toString();
 	}
 

@@ -57,7 +57,7 @@ public class MobKillActivator extends Activator {
 		Player player = mob instanceof Player ? (Player) mob : null;
 		String mobName = (player == null) ? me.getEntity().getCustomName() : player.getName();
 		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getEntity().getType().name());
-		return Actions.executeActivator(me.getPlayer(), this);
+		return Actions.executeActivator(me.getPlayer(), getBase());
 	}
 
 
@@ -93,10 +93,7 @@ public class MobKillActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
 		sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());

@@ -1,6 +1,7 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.activators.Activator;
+import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.menu.InventoryMenu;

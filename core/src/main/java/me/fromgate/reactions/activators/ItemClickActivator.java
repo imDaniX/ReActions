@@ -59,7 +59,7 @@ public class ItemClickActivator extends Activator {
 				Variables.setTempVar("item-str", vi.toDisplayString());
 			}
 			Variables.setTempVar("hand", ie.isMainHand() ? "MAIN" : "OFF");
-			return Actions.executeActivator(ie.getPlayer(), this);
+			return Actions.executeActivator(ie.getPlayer(), getBase());
 		}
 		return false;
 	}
@@ -82,11 +82,11 @@ public class ItemClickActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-		sb.append(" (").append(this.item).append(")");
+		StringBuilder sb = new StringBuilder(super.toString());
+		sb.append(" (");
+		sb.append(this.item);
+		sb.append("; hand:").append(hand);
+		sb.append(")");
 		return sb.toString();
 	}
 

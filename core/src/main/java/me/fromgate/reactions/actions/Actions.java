@@ -23,7 +23,7 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.actions.ActionItems.ItemActionType;
-import me.fromgate.reactions.activators.Activator;
+import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.placeholders.Placeholders;
 import me.fromgate.reactions.time.TimeUtil;
@@ -147,7 +147,7 @@ public enum Actions {
 		return name;
 	}
 
-	public static boolean executeActivator(Player player, Activator act) {
+	public static boolean executeActivator(Player player, ActivatorBase act) {
 		boolean isAction = Flags.checkFlags(player, act);
 		List<StoredAction> actions = isAction ? act.getActions() : act.getReactions();
 		if (actions.isEmpty()) return false;

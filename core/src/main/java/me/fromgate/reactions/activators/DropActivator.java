@@ -10,7 +10,6 @@ import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -20,14 +19,9 @@ public class DropActivator extends Activator {
 
 	private final String itemStr;
 
-	public DropActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.itemStr = params.getParam("item");
-	}
-
-	public DropActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public DropActivator(ActivatorBase base, String itemStr) {
+		super(base);
+		this.itemStr = itemStr;
 	}
 
 	@Override
@@ -36,7 +30,7 @@ public class DropActivator extends Activator {
 		if (!checkItem(de.getItemStack())) return false;
 		Variables.setTempVar("droplocation", Locator.locationToString(de.getPlayer().getLocation()));
 		Variables.setTempVar("pickupDelay", Double.toString(de.getPickupDelay()));
-		boolean result = Actions.executeActivator(de.getPlayer(), this);
+		boolean result = Actions.executeActivator(de.getPlayer(), getBase());
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
 		if (Util.INT.matcher(pickupDelayStr).matches()) de.setPickupDelay(Integer.parseInt(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
@@ -57,11 +51,6 @@ public class DropActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.itemStr = cfg.getString("item", "");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.DROP;
 	}
@@ -69,5 +58,15 @@ public class DropActivator extends Activator {
 	private boolean checkItem(ItemStack item) {
 		if (this.itemStr.isEmpty()) return true;
 		return ItemUtil.compareItemStr(item, this.itemStr, true);
+	}
+
+	public static DropActivator create(ActivatorBase base, Param param) {
+		String itemStr = param.getParam("item", param.toString());
+		return new DropActivator(base, itemStr);
+	}
+
+	public static DropActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String itemStr = cfg.getString("item", "");
+		return new DropActivator(base, itemStr);
 	}
 }

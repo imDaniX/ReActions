@@ -54,7 +54,7 @@ public class ItemHeldActivator extends Activator {
 		}
 		Variables.setTempVar("slotNew", Integer.toString(ihe.getNewSlot() + 1));
 		Variables.setTempVar("slotPrev", Integer.toString(ihe.getPreviousSlot() + 1));
-		return Actions.executeActivator(ihe.getPlayer(), this);
+		return Actions.executeActivator(ihe.getPlayer(), getBase());
 	}
 
 	@Override
@@ -77,10 +77,7 @@ public class ItemHeldActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("itemnew:").append(itemNewStr.isEmpty() ? "-" : itemNewStr);
 		sb.append(" itemprev:").append(itemPrevStr.isEmpty() ? "-" : itemPrevStr);

@@ -43,7 +43,7 @@ public class WeSelectionActivator extends Activator {
 		Variables.setTempVar("world", (world != null) ? world.getName() : "");
 
 		Variables.setTempVar("region", region);
-		return Actions.executeActivator(e.getPlayer(), this);
+		return Actions.executeActivator(e.getPlayer(), getBase());
 	}
 
 	private boolean checkTypeSelection(String selType) {
@@ -69,10 +69,7 @@ public class WeSelectionActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("minblocks:").append(minBlocks);
 		sb.append("; maxblocks:").append(maxBlocks);

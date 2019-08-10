@@ -40,7 +40,7 @@ public class FactionCreateActivator extends Activator {
 	public boolean activate(RAStorage event) {
 		FactionCreateStorage fe = (FactionCreateStorage) event;
 		Variables.setTempVar("faction", fe.getFaction());
-		return Actions.executeActivator(fe.getPlayer(), this);
+		return Actions.executeActivator(fe.getPlayer(), getBase());
 	}
 
 	@Override

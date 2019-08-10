@@ -49,7 +49,7 @@ public class VariableActivator extends Activator {
 		Variables.setTempVar("var-id", ve.getVariableId());
 		Variables.setTempVar("var-old", ve.getOldValue());
 		Variables.setTempVar("var-new", ve.getNewValue());
-		return Actions.executeActivator(ve.getPlayer(), this);
+		return Actions.executeActivator(ve.getPlayer(), getBase());
 	}
 
 	@Override
@@ -70,10 +70,7 @@ public class VariableActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("variable id:").append(this.id);
 		if (this.personal) sb.append(" personal:true");

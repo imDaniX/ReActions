@@ -11,7 +11,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
@@ -19,29 +18,15 @@ import org.bukkit.event.entity.EntityDamageEvent;
  */
 // TODO: Assemble to one activator
 public class DamageByBlockActivator extends Activator implements Locatable {
-	private String blockStr;
-	private String blockLocation;
-	private String damageCause;
-
-	public DamageByBlockActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public DamageByBlockActivator(String name, Block targetBlock, String param) {
-		super(name, "activators");
-		this.blockLocation = "";
-		this.blockStr = "";
-		Param params = new Param(param);
-		if (targetBlock != null) {
-			this.blockLocation = Locator.locationToString(targetBlock.getLocation());
-			this.blockStr = (targetBlock.getType()).toString();
-		}
-		String bt = params.getParam("block", "");
-		if (this.blockStr.isEmpty() || this.blockStr.equals("AIR") || !bt.isEmpty() && !this.blockStr.equalsIgnoreCase(bt)) {
-			this.blockStr = bt;
-			this.blockLocation = params.getParam("loc", "");
-		}
-		this.damageCause = getCauseByName(params.getParam("cause", "ANY"));
+	private final String blockStr;
+	private final String blockLocation;
+	private final String damageCause;
+	
+	public DamageByBlockActivator(ActivatorBase base, String block, String location, String cause) {
+		super(base);
+		this.blockStr = block;
+		this.blockLocation = location;
+		this.damageCause = cause;
 	}
 
 	@Override
@@ -56,7 +41,7 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 		Variables.setTempVar("block", ItemUtil.itemFromBlock(damagerBlock).toString());
 		Variables.setTempVar("damage", Double.toString(db.getDamage()));
 		Variables.setTempVar("cause", db.getCause().name());
-		return Actions.executeActivator(db.getPlayer(), this);
+		return Actions.executeActivator(db.getPlayer(), getBase());
 	}
 
 	private boolean checkLocations(Block block) {
@@ -109,23 +94,13 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.blockStr = cfg.getString("block", "");
-		this.blockLocation = cfg.getString("location", "");
-		this.damageCause = cfg.getString("cause", "");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.DAMAGE_BY_BLOCK;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("block:").append(blockStr.isEmpty() ? "-" : blockStr);
 		sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);

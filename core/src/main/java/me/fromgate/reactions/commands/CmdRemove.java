@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.activators.Activator;
+import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
@@ -47,7 +47,7 @@ public class CmdRemove extends Cmd {
 			if (InventoryMenu.remove(arg2)) Msg.printMSG(sender, "msg_removemenu", arg2);
 			else Msg.printMSG(sender, "msg_removemenufail", 'c', '4', arg2);
 		} else if (ActivatorsManager.contains(arg1)) {
-			Activator act = ActivatorsManager.get(arg1);
+			ActivatorBase act = ActivatorsManager.get(arg1).getBase();
 			if (Util.isIntegerGZ(arg3.toString())) {
 				int num = Integer.parseInt(arg3.toString());
 				if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {

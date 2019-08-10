@@ -33,7 +33,7 @@ public class WeChangeActivator extends Activator {
 
 		if (!region.isEmpty() && !RaWorldGuard.isLocationInRegion(e.getLocation(), region)) return false;
 
-		return Actions.executeActivator(e.getPlayer(), this);
+		return Actions.executeActivator(e.getPlayer(), getBase());
 	}
 
 	private boolean checkBlockType(Material check) {
@@ -58,10 +58,7 @@ public class WeChangeActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("block-type:").append(blockType!=null ? "ANY" : blockType);
 		sb.append(" region:").append(region.isEmpty() ? "-" : region.toUpperCase());

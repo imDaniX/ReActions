@@ -40,7 +40,7 @@ public class JoinActivator extends Activator {
 	@Override
 	public boolean activate(RAStorage event) {
 		JoinStorage ce = (JoinStorage) event;
-		if (isJoinActivate(ce.isFirstJoin())) return Actions.executeActivator(ce.getPlayer(), this);
+		if (isJoinActivate(ce.isFirstJoin())) return Actions.executeActivator(ce.getPlayer(), getBase());
 		return false;
 	}
 
@@ -61,10 +61,7 @@ public class JoinActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (first join:").append(this.firstJoin).append(")");
 		return sb.toString();
 	}

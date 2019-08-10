@@ -23,7 +23,7 @@ public class FlightActivator extends Activator {
 		FlightStorage fe = (FlightStorage) event;
 		if (!checkFlight(fe.isFlying())) return false;
 		Variables.setTempVar("flight", fe.isFlying() ? "TRUE" : "FALSE");
-		return Actions.executeActivator(fe.getPlayer(), this);
+		return Actions.executeActivator(fe.getPlayer(), getBase());
 	}
 
 	@Override
@@ -62,10 +62,7 @@ public class FlightActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("flight:").append(this.flight.name());
 		sb.append(")");

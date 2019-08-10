@@ -9,7 +9,6 @@ import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.Locator;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -49,7 +48,7 @@ public class DamageByMobActivator extends Activator {
 		Variables.setTempVar("damagername", damagerName != null && !damagerName.isEmpty() ? damagerName : ((damager != null) ? damager.getType().name() : ""));
 		Variables.setTempVar("damage", Double.toString(pde.getDamage()));
 		Variables.setTempVar("cause", pde.getCause().name());
-		boolean result = Actions.executeActivator(pde.getPlayer(), this);
+		boolean result = Actions.executeActivator(pde.getPlayer(), getBase());
 		String dmgStr = Variables.getTempVar("damage");
 		if (Util.FLOAT.matcher(dmgStr).matches()) pde.setDamage(Double.parseDouble(dmgStr));
 		return result;
@@ -82,12 +81,12 @@ public class DamageByMobActivator extends Activator {
 		return "ANY";
 	}
 
-	private static String getDamagerTypeByName(String damagerTypeStr) {
-		if (damagerTypeStr != null) {
-			for (EntityType damager : EntityType.values()) {
-				if (damagerTypeStr.equalsIgnoreCase(damager.name())) {
-					return damager.name();
-				}
+	private static String getEntityTypeByName(String sType) {
+		if (sType != null) {
+			sType = sType.toUpperCase();
+			for (EntityType type : EntityType.values()) {
+				if (sType.equals(type.name()))
+					return type.name();
 			}
 		}
 		return "ANY";
@@ -107,14 +106,6 @@ public class DamageByMobActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.damagerType = cfg.getString("damager-type", "");
-		this.damagerName = cfg.getString("damager-name", "");
-		this.entityType = cfg.getString("entity-type", "");
-		this.damageCause = cfg.getString("cause", "");
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.DAMAGE_BY_MOB;
 	}
@@ -126,10 +117,7 @@ public class DamageByMobActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("type:").append(damagerType.isEmpty() ? "-" : damagerType.toUpperCase());
 		sb.append("; name:").append(damagerName.isEmpty() ? "-" : damagerName);
@@ -137,6 +125,30 @@ public class DamageByMobActivator extends Activator {
 		sb.append("; cause:").append(damageCause);
 		sb.append(")");
 		return sb.toString();
+	}
+	
+	public static DamageByMobActivator create(ActivatorBase base, Param param) {
+		String damagerType = param.toString();
+		String damagerName;
+		if (damagerType.contains("$")) {
+			damagerName = getEntityTypeByName(damagerType.substring(0, damagerType.indexOf("$")));
+			damagerType = damagerType.substring(damagerName.length() + 1);
+		} else {
+			damagerType = getEntityTypeByName(param.getParam("type", "ANY"));
+			damagerName = param.getParam("name");
+		}
+		damagerName = ChatColor.translateAlternateColorCodes('&', damagerName.replace("\\_", " "));
+		String entityType = getEntityTypeByName(param.getParam("etype", "ANY"));
+		String damageCause = getCauseByName(param.getParam("cause", "ANY"));
+		return new DamageByMobActivator(base, damagerType, damagerName, entityType, damageCause);
+	}
+	
+	public static DamageByMobActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String damagerType = cfg.getString("damager-type", "");
+		String damagerName = cfg.getString("damager-name", "");
+		String entityType = cfg.getString("entity-type", "");
+		String cause = cfg.getString("cause", "");
+		return new DamageByMobActivator(base, damagerType, damagerName, entityType, cause);
 	}
 
 }

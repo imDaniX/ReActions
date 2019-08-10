@@ -33,7 +33,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class DoorActivator extends Activator implements Locatable {
 	private final String state; //open, close
@@ -43,19 +42,13 @@ public class DoorActivator extends Activator implements Locatable {
 	private final int y;
 	private final int z;
 
-	public DoorActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public DoorActivator(String name, Block b, String param) {
-		super(name, "activators");
-		this.state = "ANY";
-		if (param.equalsIgnoreCase("open")) state = "OPEN";
-		if (param.equalsIgnoreCase("close")) state = "CLOSE";
-		this.world = b.getWorld().getName();
-		this.x = b.getX();
-		this.y = b.getY();
-		this.z = b.getZ();
+	public DoorActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
+		super(base);
+		this.state = state;
+		this.world = world;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	@Override
@@ -65,7 +58,7 @@ public class DoorActivator extends Activator implements Locatable {
 		if (!isLocatedAt(de.getDoorLocation())) return false;
 		if (this.state.equalsIgnoreCase("open") && de.isDoorOpened()) return false;
 		if (this.state.equalsIgnoreCase("close") && (!de.isDoorOpened())) return false;
-		return Actions.executeActivator(de.getPlayer(), this);
+		return Actions.executeActivator(de.getPlayer(), getBase());
 	}
 
 	@Override
@@ -95,15 +88,6 @@ public class DoorActivator extends Activator implements Locatable {
 		cfg.set("lever-state", null);
 	}
 
-	@Override
-	public void load(ConfigurationSection cfg) {
-		world = cfg.getString("world");
-		x = cfg.getInt("x");
-		y = cfg.getInt("y");
-		z = cfg.getInt("z");
-		this.state = cfg.getString("state", cfg.getString("lever-state", "ANY"));
-		if ((!this.state.equalsIgnoreCase("open")) && (!state.equalsIgnoreCase("close"))) state = "ANY";
-	}
 
 	@Override
 	public ActivatorType getType() {
@@ -138,5 +122,13 @@ public class DoorActivator extends Activator implements Locatable {
 		} else return null;
 	}
 
-
+	public static DoorActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		String state = cfg.getString("state", "ANY");
+		if (!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
+		String world = cfg.getString("world");
+		int x = cfg.getInt("x");
+		int y = cfg.getInt("y");
+		int z = cfg.getInt("z");
+		return new DoorActivator(base, state, world, x, y, z);
+	}
 }

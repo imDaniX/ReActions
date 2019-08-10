@@ -25,7 +25,7 @@ public class EntityClickActivator extends Activator {
 		if (ece.getEntity() == null) return false;
 		if (!isActivatorEntity(ece.getEntity())) return false;
 		Variables.setTempVar("entitytype", ece.getEntity().getType().name());
-		return Actions.executeActivator(ece.getPlayer(), this);
+		return Actions.executeActivator(ece.getPlayer(), getBase());
 	}
 
 	private boolean isActivatorEntity(Entity entity) {
@@ -44,10 +44,7 @@ public class EntityClickActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("type:").append(entityType.isEmpty() ? "-" : entityType.toUpperCase());
 		sb.append(")");

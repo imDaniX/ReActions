@@ -23,7 +23,7 @@ public class GodActivator extends Activator {
 		GodStorage e = (GodStorage) event;
 		if (!checkGod(e.isGod())) return false;
 		Variables.setTempVar("god", e.isGod() ? "TRUE" : "FALSE");
-		return Actions.executeActivator(e.getPlayer(), this);
+		return Actions.executeActivator(e.getPlayer(), getBase());
 	}
 
 	@Override
@@ -62,10 +62,7 @@ public class GodActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("god:").append(this.god.name());
 		sb.append(")");

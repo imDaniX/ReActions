@@ -9,7 +9,9 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Param {
+// Functionality is very similar to ConfigurationSection. Implement it?
+// Is so, Activators creation will be a little more simple
+public class Param  {
 	private String paramStr;
 	private Map<String, String> params = new HashMap<>();
 	@Getter private final Block block;
@@ -130,6 +132,7 @@ public class Param {
 		return (BOOLEAN.matcher(str).matches());
 	}
 
+	@Override
 	public String toString() {
 		return this.paramStr;
 	}

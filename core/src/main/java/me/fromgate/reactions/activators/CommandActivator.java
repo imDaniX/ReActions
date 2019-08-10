@@ -112,7 +112,7 @@ public class CommandActivator extends Activator {
 		if (!isCommandRegistered(ce.getCommand()) && FakeCmd.registerNewCommand(ce.getCommand())) {
 			Msg.CMD_REGISTERED.log(ce.getCommand());
 		}
-		return Actions.executeActivator(ce.getPlayer(), this);
+		return Actions.executeActivator(ce.getPlayer(), getBase());
 	}
 
 	public String getCommand() {

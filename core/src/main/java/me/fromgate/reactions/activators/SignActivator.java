@@ -72,7 +72,7 @@ public class SignActivator extends Activator {
 			Variables.setTempVar("sign_line" + (i + 1), signEvent.getSignLines()[i]);
 		Variables.setTempVar("sign_loc", signEvent.getSignLocation());
 		Variables.setTempVar("click", signEvent.isLeftClick() ? "left" : "right");
-		return Actions.executeActivator(signEvent.getPlayer(), this);
+		return Actions.executeActivator(signEvent.getPlayer(), getBase());
 	}
 
 	@Override
@@ -102,10 +102,7 @@ public class SignActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("click:").append(this.click.name());
 		sb.append(" sign:");

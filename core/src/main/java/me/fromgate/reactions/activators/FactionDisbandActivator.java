@@ -40,7 +40,7 @@ public class FactionDisbandActivator extends Activator {
 	public boolean activate(RAStorage event) {
 		FactionDisbandStorage fe = (FactionDisbandStorage) event;
 		Variables.setTempVar("faction", fe.getFaction());
-		return Actions.executeActivator(fe.getPlayer(), this);
+		return Actions.executeActivator(fe.getPlayer(), getBase());
 	}
 
 	@Override

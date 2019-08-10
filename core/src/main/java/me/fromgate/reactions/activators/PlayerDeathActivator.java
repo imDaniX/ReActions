@@ -55,7 +55,7 @@ public class PlayerDeathActivator extends Activator {
 				Variables.setTempVar("killer-name", mobName == null || mobName.isEmpty() ? de.getKiller().getType().name() : mobName);
 			}
 		}
-		return Actions.executeActivator(de.getPlayer(), this);
+		return Actions.executeActivator(de.getPlayer(), getBase());
 	}
 
 	@Override
@@ -70,10 +70,7 @@ public class PlayerDeathActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append("(").append(this.deathCause.name()).append(")");
 		return sb.toString();
 	}

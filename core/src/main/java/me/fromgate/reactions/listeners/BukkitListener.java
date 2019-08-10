@@ -1,7 +1,6 @@
 package me.fromgate.reactions.listeners;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.UpdateChecker;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.ActivatorsManager;

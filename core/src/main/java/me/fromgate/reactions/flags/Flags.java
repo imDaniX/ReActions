@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.activators.Activator;
+import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.flags.factions.FlagAtFactionZoneRel;
 import me.fromgate.reactions.flags.factions.FlagFaction;
 import me.fromgate.reactions.flags.factions.FlagIsFactionRelPlayerAround;
@@ -157,11 +157,11 @@ public enum Flags {
 		return check;
 	}
 
-	public static boolean checkFlags(Player p, Activator c) {
+	public static boolean checkFlags(Player p, ActivatorBase c) {
 		return RaDebug.checkFlagAndDebug(p, checkAllFlags(p, c));
 	}
 
-	public static boolean checkAllFlags(Player p, Activator c) {
+	public static boolean checkAllFlags(Player p, ActivatorBase c) {
 		if (c.getFlags().size() > 0)
 			for (int i = 0; i < c.getFlags().size(); i++) {
 				StoredFlag f = c.getFlags().get(i);

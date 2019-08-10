@@ -23,7 +23,7 @@ public class SneakActivator extends Activator {
 		SneakStorage se = (SneakStorage) event;
 		if (!checkSneak(se.isSneaking())) return false;
 		Variables.setTempVar("sneak", se.isSneaking() ? "TRUE" : "FALSE");
-		return Actions.executeActivator(se.getPlayer(), this);
+		return Actions.executeActivator(se.getPlayer(), getBase());
 	}
 
 	@Override
@@ -67,10 +67,7 @@ public class SneakActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("sneak:").append(this.sneak.name());
 		sb.append(")");

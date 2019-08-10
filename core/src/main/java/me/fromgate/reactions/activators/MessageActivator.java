@@ -108,7 +108,7 @@ public class MessageActivator extends Activator {
 		MessageStorage e = (MessageStorage) event;
 		if (!e.isForActivator(this)) return false;
 		setTempVars(e.getMessage());
-		return Actions.executeActivator(e.getPlayer(), this);
+		return Actions.executeActivator(e.getPlayer(), getBase());
 	}
 
 	@Override
@@ -169,10 +169,7 @@ public class MessageActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("type:").append(this.type.name());
 		sb.append(" source:").append(this.source.name());

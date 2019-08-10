@@ -56,7 +56,7 @@ public class PlayerRespawnActivator extends Activator {
 				Variables.setTempVar("killer-name", mobName == null || mobName.isEmpty() ? pe.getKiller().getType().name() : mobName);
 			}
 		}
-		return Actions.executeActivator(pe.getPlayer(), this);
+		return Actions.executeActivator(pe.getPlayer(), getBase());
 	}
 
 	@Override
@@ -71,10 +71,7 @@ public class PlayerRespawnActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append("(").append(this.deathCause.name()).append(")");
 		return sb.toString();
 	}

@@ -28,50 +28,30 @@ import me.fromgate.reactions.storage.ButtonStorage;
 import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Tag;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
 public class ButtonActivator extends Activator implements Locatable {
-	private String world;
-	private int x;
-	private int y;
-	private int z;
+	private final String world;
+	private final int x;
+	private final int y;
+	private final int z;
 
-	ButtonActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public ButtonActivator(String name, String group, Block b) {
-		super(name, group);
-		this.world = b.getWorld().getName();
-		this.x = b.getX();
-		this.y = b.getY();
-		this.z = b.getZ();
-	}
-
-	public ButtonActivator(String name, Block targetBlock) {
-		super(name, "activators");
-		if (targetBlock != null && Tag.BUTTONS.isTagged(targetBlock.getType())) {
-			this.world = targetBlock.getWorld().getName();
-			this.x = targetBlock.getX();
-			this.y = targetBlock.getY();
-			this.z = targetBlock.getZ();
-		}
-	}
-
-	public ButtonActivator(String name, Block b, String param) {
-		this(name, b);
+	public ButtonActivator(ActivatorBase base, String world, int x, int y, int z) {
+		super(base);
+		this.world = world;
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	@Override
 	public boolean activate(RAStorage event) {
 		ButtonStorage be = (ButtonStorage) event;
 		if (!isLocatedAt(be.getButtonLocation())) return false;
-		return Actions.executeActivator(be.getPlayer(), this);
+		return Actions.executeActivator(be.getPlayer(), getBase());
 	}
 
 	@Override
@@ -100,15 +80,6 @@ public class ButtonActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		world = cfg.getString("world");
-		x = cfg.getInt("x");
-		y = cfg.getInt("y");
-		z = cfg.getInt("z");
-
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.BUTTON;
 	}
@@ -120,11 +91,10 @@ public class ButtonActivator extends Activator implements Locatable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-		sb.append(" (").append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z).append(")");
+		StringBuilder sb = new StringBuilder(super.toString());
+		sb.append(" (");
+		sb.append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
+		sb.append(")");
 		return sb.toString();
 	}
 

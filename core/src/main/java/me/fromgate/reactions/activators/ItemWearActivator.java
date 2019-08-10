@@ -55,7 +55,7 @@ public class ItemWearActivator extends Activator {
 				Variables.setTempVar("item", vi.toString());
 				Variables.setTempVar("item-str", vi.toDisplayString());
 			}
-			return Actions.executeActivator(iw.getPlayer(), this);
+			return Actions.executeActivator(iw.getPlayer(), getBase());
 		}
 		return false;
 	}
@@ -76,10 +76,7 @@ public class ItemWearActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (").append(this.item).append(")");
 		return sb.toString();
 	}

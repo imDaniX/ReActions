@@ -2,11 +2,13 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.location.BlockLocation;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -23,8 +25,21 @@ public class CuboidActivator extends Activator implements Locatable {
 	private final boolean twoDimensional;
 	private final Set<UUID> within = new HashSet<>();
 
-	public CuboidActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
+	public CuboidActivator(ActivatorBase base, BlockLocation loc1, BlockLocation loc2, CuboidMode mode, boolean twoDimensional) {
+		super(base);
+		this.world = loc1.getWorld();
+		this.mode = mode;
+		int[] pair = Util.sortedIntPair(loc1.getX(), loc2.getX());
+		xMin = pair[0]; xMax = pair[1];
+		pair = Util.sortedIntPair(loc1.getZ(), loc2.getZ());
+		zMin = pair[0]; zMax = pair[1];
+		this.twoDimensional = twoDimensional;
+		if(!twoDimensional) {
+			pair = Util.sortedIntPair(loc1.getY(), loc2.getY());
+			yMin = pair[0]; yMax = pair[1];
+		} else {
+			yMin = 0; yMax = 256;
+		}
 	}
 
 	@Override
@@ -35,15 +50,15 @@ public class CuboidActivator extends Activator implements Locatable {
 		switch(mode) {
 			case CHECK:
 				if(inCuboid)
-					Actions.executeActivator(player, this);
+					Actions.executeActivator(player, getBase());
 				break;
 			case ENTER:
 				if(inCuboid && within.add(id))
-					Actions.executeActivator(player, this);
+					Actions.executeActivator(player, getBase());
 				break;
 			case LEAVE:
 				if(!inCuboid && within.remove(id))
-					Actions.executeActivator(player, this);
+					Actions.executeActivator(player, getBase());
 				break;
 		}
 		return false;
@@ -67,21 +82,6 @@ public class CuboidActivator extends Activator implements Locatable {
 		cfg.set("loc1.x", xMin); cfg.set("loc2.x", xMax);
 		cfg.set("loc1.y", yMin); cfg.set("loc2.y", yMax);
 		cfg.set("loc1.z", zMin); cfg.set("loc2.z", zMax);
-	}
-
-	@Override
-	public void load(ConfigurationSection cfg) {
-		world = cfg.getString("world");
-		twoDimensional = cfg.getBoolean("two_dimensional", false);
-		mode = CuboidMode.getByName(cfg.getString("mode"));
-		int[] pair = Util.sortedIntPair(cfg.getInt("loc1.x", 0), cfg.getInt("loc2.x", 0));
-		xMin = pair[0]; xMax = pair[1];
-		pair = Util.sortedIntPair(cfg.getInt("loc1.z", 0), cfg.getInt("loc2.z"));
-		zMin = pair[0]; zMax = pair[1];
-		if(!twoDimensional) {
-			pair = Util.sortedIntPair(cfg.getInt("loc1.y"), cfg.getInt("loc2.y"));
-			yMin = pair[0]; yMax = pair[1];
-		}
 	}
 
 	@Override
@@ -116,5 +116,25 @@ public class CuboidActivator extends Activator implements Locatable {
 				default: return ENTER;
 			}
 		}
+	}
+
+	// TODO: toString method
+	
+	public static CuboidActivator create(ActivatorBase base, Param param) {
+		CuboidMode mode = CuboidMode.getByName(param.getParam("mode"));
+		boolean twoDimensional = param.getParam("two_dimensional", true);
+		String world = param.getParam("world", Bukkit.getWorlds().get(0).getName());
+		BlockLocation loc1 = new BlockLocation(world, param.getParam("loc1.x", 0), param.getParam("loc1.y", 0), param.getParam("loc1.z", 0));
+		BlockLocation loc2 = new BlockLocation(world, param.getParam("loc2.x", 0), param.getParam("loc2.y", 0), param.getParam("loc2.z", 0));
+		return new CuboidActivator(base, loc1, loc2, mode, twoDimensional);
+	}
+	
+	public static CuboidActivator load(ActivatorBase base, ConfigurationSection cfg) {
+		CuboidMode mode = CuboidMode.getByName(cfg.getString("mode"));
+		boolean twoDimensional = cfg.getBoolean("two_dimensional");
+		String world = cfg.getString("world");
+		BlockLocation loc1 = new BlockLocation(world, cfg.getInt("loc1.x"), cfg.getInt("loc1.y"), cfg.getInt("loc1.z"));
+		BlockLocation loc2 = new BlockLocation(world, cfg.getInt("loc2.x"), cfg.getInt("loc2.y"), cfg.getInt("loc2.z"));
+		return new CuboidActivator(base, loc1, loc2, mode, twoDimensional);
 	}
 }

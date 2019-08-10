@@ -62,7 +62,7 @@ public class MobDamageActivator extends Activator {
 		String mobName = (player == null) ? me.getEntity().getCustomName() : player.getName();
 		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getEntity().getType().name());
 		Variables.setTempVar("damage", Double.toString(me.getDamage()));
-		boolean result = Actions.executeActivator(me.getPlayer(), this);
+		boolean result = Actions.executeActivator(me.getPlayer(), getBase());
 		String dmgStr = Variables.getTempVar("damage");
 		if (Util.FLOAT.matcher(dmgStr).matches()) me.setDamage(Double.parseDouble(dmgStr));
 		return result;
@@ -107,10 +107,7 @@ public class MobDamageActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
 		sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());

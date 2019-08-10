@@ -6,7 +6,6 @@ import me.fromgate.reactions.storage.RAStorage;
 import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
@@ -14,18 +13,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
  */
 // TODO: Assemble to one activator
 public class DamageActivator extends Activator {
-	private String damageCause;
-	private SourceType source;
+	private final String damageCause;
+	private final SourceType source;
 
-	public DamageActivator(String name, String group, YamlConfiguration cfg) {
-		super(name, group, cfg);
-	}
-
-	public DamageActivator(String name, String param) {
-		super(name, "activators");
-		Param params = new Param(param);
-		this.damageCause = getCauseByName(params.getParam("cause", "ANY"));
-		this.source = SourceType.getByName(params.getParam("source", "ANY"));
+	public DamageActivator(ActivatorBase base, String cause, SourceType source) {
+		super(base);
+		this.damageCause = cause;
+		this.source = source;
 	}
 
 	@Override
@@ -36,7 +30,7 @@ public class DamageActivator extends Activator {
 		Variables.setTempVar("damage", Double.toString(de.getDamage()));
 		Variables.setTempVar("cause", de.getCause().name());
 		Variables.setTempVar("source", de.getSource());
-		return Actions.executeActivator(de.getPlayer(), this);
+		return Actions.executeActivator(de.getPlayer(), getBase());
 	}
 
 	private static String getCauseByName(String damageCauseStr) {
@@ -85,22 +79,13 @@ public class DamageActivator extends Activator {
 	}
 
 	@Override
-	public void load(ConfigurationSection cfg) {
-		this.damageCause = cfg.getString("cause", "ANY");
-		this.source = SourceType.getByName(cfg.getString("source", "ANY"));
-	}
-
-	@Override
 	public ActivatorType getType() {
 		return ActivatorType.DAMAGE;
 	}
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("cause:").append(this.damageCause);
 		sb.append("; source:").append(this.source.name());

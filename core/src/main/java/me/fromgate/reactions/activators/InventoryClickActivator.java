@@ -59,7 +59,7 @@ public class InventoryClickActivator extends Activator {
 		Variables.setTempVar("key", Integer.toString(key + 1));
 		Variables.setTempVar("itemkey", (key > -1) ? ItemUtil.itemToString(pice.getBottomInventory().getItem(key)) : "");
 		Variables.setTempVar("slot", Integer.toString(slot));
-		boolean result = Actions.executeActivator(pice.getPlayer(), this);
+		boolean result = Actions.executeActivator(pice.getPlayer(), getBase());
 		Param itemParam = new Param(Variables.getTempVar("item"));
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "0");
@@ -265,10 +265,7 @@ public class InventoryClickActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("name:").append(this.inventoryName);
 		sb.append("; click:").append(this.click.name());

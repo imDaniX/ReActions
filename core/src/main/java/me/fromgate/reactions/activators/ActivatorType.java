@@ -23,6 +23,8 @@
 package me.fromgate.reactions.activators;
 
 
+import lombok.Getter;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
@@ -149,7 +151,8 @@ public enum ActivatorType {
 		Util.printPage(sender, activatorList, Msg.MSG_ACTIVATORLISTTITLE, pageNum);
 	}
 
-	public boolean isLocated() {
-		return located;
+	@FunctionalInterface
+	public interface RaSupplier<T> {
+		Activator get(ActivatorBase base, T t);
 	}
 }

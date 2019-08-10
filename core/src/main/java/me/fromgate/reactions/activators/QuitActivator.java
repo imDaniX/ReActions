@@ -39,7 +39,7 @@ public class QuitActivator extends Activator {
 	public boolean activate(RAStorage event) {
 		QuitStorage ce = (QuitStorage) event;
 		Variables.setTempVar("quit-message", ce.getQuitMessage());
-		boolean result = Actions.executeActivator(ce.getPlayer(), this);
+		boolean result = Actions.executeActivator(ce.getPlayer(), getBase());
 		ce.setQuitMessage(Variables.getTempVar("quit-message"));
 		return result;
 	}
@@ -51,10 +51,7 @@ public class QuitActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		return sb.toString();
 	}
 

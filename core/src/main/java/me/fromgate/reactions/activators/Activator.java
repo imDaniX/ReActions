@@ -1,262 +1,17 @@
-/*  
- *  ReActions, Minecraft bukkit plugin
- *  (c)2012-2017, fromgate, fromgate@gmail.com
- *  http://dev.bukkit.org/server-mods/reactions/
- *
- *  This file is part of ReActions.
- *  
- *  ReActions is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  ReActions is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
- */
-
-
 package me.fromgate.reactions.activators;
 
-import lombok.Getter;
-import lombok.Setter;
-import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.actions.StoredAction;
-import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.flags.StoredFlag;
+import me.fromgate.reactions.storage.ExecStorage;
 import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Activator {
+	private final ActivatorBase base;
 
-public abstract class Activator {
-
-	String name;
-	@Getter @Setter private String group;
-	@Getter private List<StoredFlag> flags = new ArrayList<>();
-	@Getter private List<StoredAction> actions = new ArrayList<>();
-	@Getter private List<StoredAction> reactions = new ArrayList<>();
-
-	public Activator(String name, String group) {
-		this.name = name;
-		this.group = group;
-	}
-
-	public Activator(String name, String group, YamlConfiguration cfg) {
-		this.name = name;
-		this.loadActivator(cfg);
-		this.group = group;
-	}
-
-
-	/**
-	 * Add flag to activator
-	 * @param flag Name of flag to add
-	 * @param param Parameters of flag
-	 * @param not Is indentation needed
-	 */
-	public void addFlag(String flag, String param, boolean not) {
-		addFlag(Flags.getByName(flag), param, not);
-	}
-
-	/**
-	 * Add flag to activator
-	 * @param flag Flag to add
-	 * @param param Parameters of flag
-	 * @param not Is indentation needed
-	 */
-	public void addFlag(Flags flag, String param, boolean not) {
-		StoredFlag flg = new StoredFlag(flag, param, not);
-		if(flg.getFlag() == null)
-			Msg.logOnce("wrongflagname"+flags.size()+name, "Flag for activator "+ name +" with this name does not exist.");
-		else
-			flags.add(flg);
-	}
-
-	/**
-	 * Remove flag from activator
-	 * @param index Index of flag
-	 * @return Is there flag with this index
-	 */
-	public boolean removeFlag(int index) {
-		if (flags.size() <= index) return false;
-		flags.remove(index);
-		return true;
-	}
-
-	/**
-	 * Add action to activator
-	 * @param action Name of action to add
-	 * @param param Parameters of action
-	 */
-	public void addAction(String action, String param) {
-		addAction(Actions.getByName(action), param);
-	}
-
-	/**
-	 * Add action to activator
-	 * @param action Action to add
-	 * @param param Parameters of action
-	 */
-	public void addAction(Actions action, String param) {
-		StoredAction act = new StoredAction(action, param);
-		if(act.getAction() == null)
-			Msg.logOnce("wrongactopmname"+actions.size()+name, "Flag for activator "+ name +" with this name does not exist.");
-		else
-			actions.add(act);
-	}
-
-	/**
-	 * Remove action from activator
-	 * @param index Index of action
-	 * @return Is there action with this index
-	 */
-	public boolean removeAction(int index) {
-		if (actions.size() <= index) return false;
-		actions.remove(index);
-		return true;
-	}
-
-	/**
-	 * Add reaction to activator
-	 * @param action Name of action to add
-	 * @param param Parameters of action
-	 */
-	public void addReaction(String action, String param) {
-		addReaction(Actions.getByName(action), param);
-	}
-
-	/**
-	 * Add reaction to activator
-	 * @param action Action to add
-	 * @param param Parameters of action
-	 */
-	public void addReaction(Actions action, String param) {
-		reactions.add(new StoredAction(action, param));
-	}
-
-	/**
-	 * Remove reaction from activator
-	 * @param index Index of action
-	 * @return Is there action with this index
-	 */
-	public boolean removeReaction(int index) {
-		if (reactions.size() <= index) return false;
-		reactions.remove(index);
-		return true;
-	}
-
-	/**
-	 * Clear flags of activator
-	 */
-	public void clearFlags() {
-		flags.clear();
-	}
-
-	/**
-	 * Clear actions of activator
-	 */
-	public void clearActions() {
-		actions.clear();
-	}
-
-	/**
-	 * Clear reactions of activator
-	 */
-	public void clearReactions() {
-		reactions.clear();
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
-		return sb.toString();
-	}
-
-	/**
-	 * Save activator to config
-	 * @param cfg Config for activator
-	 */
-	public void saveActivator(YamlConfiguration cfg) {
-		String key = getType() + "." + this.name;
-		save(cfg.createSection(key));
-		List<String> flg = new ArrayList<>();
-		for (StoredFlag f : flags) flg.add(f.toString());
-		cfg.set(key + ".flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
-		flg = new ArrayList<>();
-		for (StoredAction a : actions) flg.add(a.toString());
-		cfg.set(key + ".actions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
-		flg = new ArrayList<>();
-		for (StoredAction a : reactions) flg.add(a.toString());
-		cfg.set(key + ".reactions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
-	}
-
-	/**
-	 * Load activator from config
-	 * @param cfg Config for activator
-	 */
-	public void loadActivator(YamlConfiguration cfg) {
-		String key = getType().name() + "." + this.name;
-		load(cfg.getConfigurationSection(key));
-		List<String> data = cfg.getStringList(key + ".flags");
-		for (String flgstr : data) {
-			String flag = flgstr;
-			String param = "";
-			boolean not = false;
-			if (flgstr.contains("=")) {
-				flag = flgstr.substring(0, flgstr.indexOf("="));
-				if (flgstr.indexOf("=") < flgstr.length())
-					param = flgstr.substring(flgstr.indexOf("=") + 1);
-			}
-			if (flag.startsWith("!")) {
-				flag = flag.replaceFirst("!", "");
-				not = true;
-			}
-			addFlag(flag, param, not);
-		}
-
-		data = cfg.getStringList(key + ".actions");
-		for (String actstr : data) {
-			String flag = actstr;
-			String param = "";
-			if (actstr.contains("=")) {
-				flag = actstr.substring(0, actstr.indexOf("="));
-				param = actstr.substring(actstr.indexOf("=") + 1);
-			}
-			addAction(flag, param);
-		}
-
-		data = cfg.getStringList(key + ".reactions");
-		for (String rctstr : data) {
-			String flag = rctstr;
-			String param = "";
-			if (rctstr.contains("=")) {
-				flag = rctstr.substring(0, rctstr.indexOf("="));
-				param = rctstr.substring(rctstr.indexOf("=") + 1);
-			}
-			addReaction(flag, param);
-		}
-	}
-
-	/**
-	 * Get name of activator
-	 * @return Name of activator
-	 */
-	public String getName() {
-		return this.name;
+	public Activator(ActivatorBase base) {
+		this.base = base;
 	}
 
 	/**
@@ -271,23 +26,41 @@ public abstract class Activator {
 	}
 
 	/**
+	 * Get base of activator
+	 * @return Related ActivatorBase
+	 */
+	public ActivatorBase getBase() {
+		return base;
+	}
+
+	/**
 	 * Execution of activator
 	 * @param storage Storage with data for activator
-	 * @return Cancel original event or not
+	 * @return Do we need to cancel original event (actually used just for action CANCEL_EVENT)
 	 */
-	public abstract boolean activate(RAStorage storage); // Наверное всё-таки так
+	public boolean activate(RAStorage storage) {
+		ExecStorage ce = (ExecStorage) storage;
+		if (ce.getActivatorId().equalsIgnoreCase(getBase().getName())) {
+			Variables.setTempVars(ce.getTempVars());
+			return Actions.executeActivator(ce.getTargetPlayer(), getBase());
+		}
+		return false;
+	}
+
+	/**
+	 * Save activator to config with actions, reactions and flags
+	 * @param cfg Section of activator
+	 */
+	public void saveActivator(ConfigurationSection cfg) {
+		base.saveBase(cfg);
+		save(cfg);
+	}
 
 	/**
 	 * Save activator to config
 	 * @param cfg Section of activator
 	 */
 	public void save(ConfigurationSection cfg) {}
-
-	/**
-	 * Load activator from config
-	 * @param cfg Section of activator
-	 */
-	public abstract void load(ConfigurationSection cfg);
 
 	/**
 	 * Get type of activator
@@ -307,13 +80,7 @@ public abstract class Activator {
 
 	@Override
 	public int hashCode() {
-		return group.hashCode()*1291 + name.hashCode()/20;
-	}
-
-	public boolean equals(String name) {
-		if (name == null) return false;
-		if (name.isEmpty()) return false;
-		return this.name.equalsIgnoreCase(name);
+		return base.hashCode();
 	}
 
 	@Override

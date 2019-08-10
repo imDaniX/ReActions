@@ -48,7 +48,7 @@ public class RegionActivator extends Activator implements Locatable {
 	public boolean activate(RAStorage event) {
 		RegionStorage be = (RegionStorage) event;
 		if (be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region)))
-			return Actions.executeActivator(be.getPlayer(), this);
+			return Actions.executeActivator(be.getPlayer(), getBase());
 		return false;
 	}
 
@@ -80,10 +80,7 @@ public class RegionActivator extends Activator implements Locatable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("region:").append(this.region);
 		sb.append(")");

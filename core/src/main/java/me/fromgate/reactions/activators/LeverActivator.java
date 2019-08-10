@@ -57,7 +57,7 @@ public class LeverActivator extends Activator implements Locatable {
 		if (!isLocatedAt(le.getLeverLocation())) return false;
 		if (this.state.equalsIgnoreCase("on") && le.isLeverPowered()) return false;
 		if (this.state.equalsIgnoreCase("off") && (!le.isLeverPowered())) return false;
-		return Actions.executeActivator(le.getPlayer(), this);
+		return Actions.executeActivator(le.getPlayer(), getBase());
 	}
 
 	@Override
@@ -98,10 +98,7 @@ public class LeverActivator extends Activator implements Locatable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (").append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
 		sb.append(" state:").append(this.state.toUpperCase()).append(")");
 		return sb.toString();

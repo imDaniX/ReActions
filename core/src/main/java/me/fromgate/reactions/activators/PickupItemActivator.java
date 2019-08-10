@@ -31,7 +31,7 @@ public class PickupItemActivator extends Activator {
 		Variables.setTempVar("droplocation", Locator.locationToString(pie.getPlayer().getLocation()));
 		Variables.setTempVar("pickupDelay", Double.toString(pie.getPickupDelay()));
 		Variables.setTempVar("item", ItemUtil.itemToString(pie.getItem()));
-		boolean result = Actions.executeActivator(pie.getPlayer(), this);
+		boolean result = Actions.executeActivator(pie.getPlayer(), getBase());
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
 		if (Util.FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
@@ -68,10 +68,7 @@ public class PickupItemActivator extends Activator {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder(name).append(" [").append(getType()).append("]");
-		if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-		if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-		if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
 		sb.append("item:").append(this.itemStr);
 		sb.append(")");
