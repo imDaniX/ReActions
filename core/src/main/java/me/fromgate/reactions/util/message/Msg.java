@@ -408,7 +408,7 @@ public enum Msg {
 	 */
 	MSG_ACTIVATORLISTTITLE("Activators"),
 	ACTIVATOR_BUTTON("This activator is linked to stone or wooden button. Command to create:  /react add button <id>"),
-	ACTIVATOR_PLATE("This activator is linked to stone or woode plate. Command to create: /react add plate <id>"),
+	ACTIVATOR_PLATE("This activator is linked to pressure plate. Command to create: /react add plate <id>"),
 	ACTIVATOR_REGION("This activator is linked to Worldguard region (activates while player is in region)." + " Command: /react add region <id> <region id>"),
 	ACTIVATOR_REGION_ENTER("This activator is linked to Worldguard region (activates when player move into region)." + " Command: /react add region_enter <id> <region id>"),
 	ACTIVATOR_REGION_LEAVE("This activator is linked to Worldguard region (activates when player move out from region)." + " Command: /react add region_leave <id> <region id>"),
@@ -422,7 +422,7 @@ public enum Msg {
 	ACTIVATOR_PVP_RESPAWN("This activator is activating after respawn of dead player if he was murdered by another player. Command: /react add pvp_respawn <id>"),
 	ACTIVATOR_LEVER("This activator is linked to lever block and executing when player triggers this lever. It supports lever states - \"on\" and \"off\". Command: /react add lever <id> [ON/OFF/ANY]"),
 	ACTIVATOR_DOOR("This activators could be linked to any kind of doors (wooden door, fence gates and trap doors). Command: /react add door <id> [OPEN/CLOSE/ANY]"),
-	ACTIVATOR_JOIN("This activator is executing when player joins ther server. Command: /react add join <id> [RIGHT]"),
+	ACTIVATOR_JOIN("This activator is executing when player joins the server. Command: /react add join <id> [FIRST]"),
 	ACTIVATOR_QUIT("This activator is executing when player leaves the server. Command: /react add join <id>"),
 	ACTIVATOR_MOB_CLICK("This activator is executing when player right-clicking mob. You can define mob type (name supported too) for this activators. Command: /react add mobclick <id> &6Mob_Name$MOB_TYPE"),
 	ACTIVATOR_MOB_KILL("This activator is executing when player killing the mob. You can define mob type (name supported too) for this activators. Command: /react add  mobclick <id> Mob_Name$MOB_TYPE"),
