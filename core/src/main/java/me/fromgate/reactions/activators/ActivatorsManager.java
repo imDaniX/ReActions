@@ -357,7 +357,7 @@ public class ActivatorsManager {
 	 * @param clear Clear group before load
 	 */
 	public static void loadActivators(String group, boolean clear) {
-		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separatorChar + group + ".yml");
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + group + ".yml");
 		if (!f.exists()) return;
 		YamlConfiguration cfg = new YamlConfiguration();
 		try {

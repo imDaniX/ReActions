@@ -24,7 +24,7 @@ public class ActionFile extends Action {
 		File path = new File("");
 		String dir = path.getAbsolutePath();
 
-		File file = new File(dir + "/" + fileName);
+		File file = new File(dir + File.separator + fileName);
 		Variables.setTempVar("fullpath", file.getAbsolutePath());
 
 		if (action.equalsIgnoreCase("remove")) {
@@ -32,8 +32,7 @@ public class ActionFile extends Action {
 			if (file.isDirectory()) {
 				String[] files = file.list();
 				for (String subFile : files) {
-					File f = new File(file, subFile);
-					if (f.delete()) c++;
+					if (new File(file, subFile).delete()) c++;
 				}
 			} else {
 				if (file.delete()) c = 1;
@@ -43,7 +42,7 @@ public class ActionFile extends Action {
 
 		} else {
 			if (fileNameTo.isEmpty()) return false;
-			File fileTo = new File(dir + "/" + fileNameTo);
+			File fileTo = new File(dir + File.separator + fileNameTo);
 			try {
 				File fileToDir = new File(fileTo.getCanonicalPath());
 				if (!fileToDir.exists()) fileToDir.mkdirs();
