@@ -44,7 +44,7 @@ public class ActionLog extends Action {
 
 	private final Logger log = Logger.getLogger("Minecraft");
 
-	public void saveToFile(String fileName, String message) {
+	private void saveToFile(String fileName, String message) {
 		File path = new File("");
 		String dir = path.getAbsolutePath();
 
@@ -99,7 +99,6 @@ public class ActionLog extends Action {
 	}
 
 	private String removeParams(String message) {
-		//noinspection StringBufferReplaceableByString
 		StringBuilder sb = new StringBuilder("(?i)(");
 		sb.append(Joiner.on("|").join(SelectorsManager.getAllKeys()));
 		sb.append("|hide|prefix|color|file):(\\{.*\\}|\\S+)\\s{0,1}");
@@ -107,7 +106,7 @@ public class ActionLog extends Action {
 
 	}
 
-	public void log(String msg, String prefix, Boolean color) {
+	private void log(String msg, String prefix, Boolean color) {
 		String px = "";
 		if (!prefix.isEmpty()) px = "[" + prefix + "] ";
 		if (color) log.info(ChatColor.translateAlternateColorCodes('&', px + msg));

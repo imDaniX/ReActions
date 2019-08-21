@@ -1,5 +1,7 @@
 package me.fromgate.reactions.placeholders;
 
+import lombok.Getter;
+import lombok.Setter;
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.util.Variables;
@@ -8,17 +10,19 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Placeholders {
 	private static int placeholderCounter = 0;
-	private static int countLimit = 127;
+	@Getter @Setter private static int countLimit = 127;
 	private final static Pattern PATTERN_RAW = Pattern.compile("%raw:((%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%))%");
 	private final static Pattern PATTERN_ANY = Pattern.compile("(%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%)");
 
-	private static List<Placeholder> placeholders = new ArrayList<>();
+	private static Set<Placeholder> placeholders = new HashSet<>();
 
 	public static void init() {
 		add(new PlaceholderPlayer());
@@ -129,14 +133,6 @@ public class Placeholders {
 	 * @return Is it allowed to process placeholder
 	 */
 	public static boolean countPlaceholder() {
-		return ++placeholderCounter < countLimit;
-	}
-
-	public static void updateLimit(int limit) {
-		countLimit = limit;
-	}
-
-	public static int getCountLimit() {
-		return countLimit;
+		return placeholderCounter++ < countLimit;
 	}
 }

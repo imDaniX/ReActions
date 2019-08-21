@@ -8,7 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -27,9 +27,7 @@ public class WaitingManager {
 
 	public static void executeDelayed(Player player, StoredAction action, boolean isAction, long time) {
 		if (action == null) return;
-		List<StoredAction> actions = new ArrayList<>();
-		actions.add(action);
-		executeDelayed(player, actions, isAction, time);
+		executeDelayed(player, Arrays.asList(action), isAction, time);
 	}
 
 	public static void executeDelayed(Player player, List<StoredAction> actions, boolean isAction, long time) {
@@ -111,7 +109,7 @@ public class WaitingManager {
 		}, 1);
 	}
 
-	public static void updateLimit(int hours) {
+	public static void setTimeLimit(int hours) {
 		timeLimit = hours * 3600000;
 	}
 

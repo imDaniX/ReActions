@@ -9,8 +9,6 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// Functionality is very similar to ConfigurationSection. Implement it?
-// Is so, Activators creation will be a little more simple
 public class Param  {
 	private String paramStr;
 	private Map<String, String> params = new HashMap<>();

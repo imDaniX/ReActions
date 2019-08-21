@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
+import lombok.Getter;
 import me.fromgate.reactions.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.flags.Flags;
@@ -47,6 +48,7 @@ public enum Actions {
 	GROUP_ADD("grpadd", true, new ActionGroupAdd()),
 	GROUP_REMOVE("grprmv", true, new ActionGroupRemove()),
 	MESSAGE("msg", false, new ActionMessage()),
+	RESPONSE("rspns", false, new ActionResponse()),
 	CHAT_MESSAGE("chatmsg", false, new ActionChatMessage()),
 	BROADCAST("msgall", false, new ActionBroadcast()),
 	DAMAGE("dmg", false, new ActionDamage()),
@@ -118,26 +120,21 @@ public enum Actions {
 	WE_SUPERPICKAXE("wesuperpickaxe", true, new ActionWeSuperPickaxe()),
 	RADIUS_CLEAR("clearradius", true, new ActionClearRadius());
 
-	private String alias;
-	private boolean requirePlayer;
-	private Action action;
+	@Getter private final String alias;
+	private final boolean requirePlayer;
+	@Getter private final Action action;
 
 	Actions(String alias, boolean requirePlayer, Action action) {
-		this.alias = alias;
+		this.alias = alias.toUpperCase();
 		this.requirePlayer = requirePlayer;
 		this.action = action;
 		this.action.init(this);
 	}
 
-	public String getAlias() {
-		return this.alias;
-	}
-
-
 	public static Actions getByName(String name) {
+		name = name.toUpperCase();
 		for (Actions at : Actions.values())
-			if (at.name().equalsIgnoreCase(name)
-					|| at.getAlias().equalsIgnoreCase(name)) return at;
+			if (at.name().equals(name) || at.getAlias().equals(name)) return at;
 		return null;
 	}
 

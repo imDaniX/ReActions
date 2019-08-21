@@ -46,7 +46,7 @@ public class WeListener {
 	private static Region regionSelection = null;
 
 	@Subscribe
-	public void onEditSessionEvent(EditSessionEvent event) {
+	public void onEditSession(EditSessionEvent event) {
 		Actor actor = event.getActor();
 		if (actor != null && actor.isPlayer()) {
 			Player player = Bukkit.getPlayer(actor.getUniqueId());
@@ -60,9 +60,7 @@ public class WeListener {
 							// Check Region Selection
 							checkChangeSelectionRegion(player, selection, region);
 						}
-					} catch (IncompleteRegionException ignore) {
-						// e.printStackTrace();
-					}
+					} catch (IncompleteRegionException ignore) {}
 				}
 			}, 2);
 
@@ -73,7 +71,7 @@ public class WeListener {
 	}
 
 	@Subscribe
-	public void onPlayerInputEvent(PlayerInputEvent event) throws IncompleteRegionException {
+	public void onPlayerInput(PlayerInputEvent event) throws IncompleteRegionException {
 		Player player = Bukkit.getPlayer(event.getPlayer().getUniqueId());
 		if (player != null) {
 			Region selection = getSelection(player);

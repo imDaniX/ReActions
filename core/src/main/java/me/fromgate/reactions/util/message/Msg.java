@@ -38,6 +38,7 @@ import java.util.Set;
 
 public enum Msg {
 	// TODO: Clean freaking up
+	// TODO: Simpler system for messages
 
 	//Default (lang) messages
 	LNG_LOAD_FAIL("Failed to load languages from file. Default message used"),

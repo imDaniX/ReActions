@@ -64,8 +64,8 @@ public class Cfg {
 		playerAsynchSaveSelfVarFile = config.getBoolean("general.player-asynch-save-self-variable-file", false);
 		playerMoveTaskUse = config.getBoolean("general.player-move-event.use-task", false);
 		playerMoveTaskTick = config.getInt("general.player-move-event.task-tick", 5);
-		Placeholders.updateLimit(config.getInt("general.placeholder-limit", 127));
-		WaitingManager.updateLimit(config.getInt("general.waiter-hours-limit", 720));
+		Placeholders.setCountLimit(config.getInt("general.placeholder-limit", 127));
+		WaitingManager.setTimeLimit(config.getInt("general.waiter-hours-limit", 720));
 		godActivatorEnable = config.getBoolean("reactions.activators.god.enable", true);
 		godActivatorCheckTicks = config.getInt("reactions.activators.god.recheck-ticks", 10);
 		chatLength = config.getInt("reactions.default-chat-line-length", 55);

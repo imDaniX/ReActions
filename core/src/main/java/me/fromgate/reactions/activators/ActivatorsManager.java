@@ -441,10 +441,14 @@ public class ActivatorsManager {
 		return list;
 	}
 
-	public static boolean activate(RAStorage event) {
+	public static boolean activate(Activator act, RAStorage storage) {
+		return act.getType() == storage.getType() && act.executeActivator(storage);
+	}
+
+	public static boolean activate(RAStorage storage) {
 		boolean cancelParentEvent = false;
-		for (Activator act : activatorsMap.get(event.getType())) {
-			if (act.executeActivator(event)) cancelParentEvent = true;
+		for (Activator act : activatorsMap.get(storage.getType())) {
+			if (act.executeActivator(storage)) cancelParentEvent = true;
 		}
 		return cancelParentEvent;
 	}
