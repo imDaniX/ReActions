@@ -46,7 +46,7 @@ import java.util.Set;
 public class ActivatorsManager {
 
 	private static HashMap<ActivatorType, Set<Activator>> activatorsMap;
-	private static HashMap<String,Activator> activators;
+	private static HashMap<String, Activator> activators;
 	private static Set<String> stopexec;
 
 	/**
@@ -108,8 +108,7 @@ public class ActivatorsManager {
 	 * Clear all the activators
 	 */
 	public static void clear() {
-		for(Set<Activator> acts : activatorsMap.values())
-			acts.clear();
+		activatorsMap.values().forEach(Set::clear);
 		activators.clear();
 	}
 
@@ -119,10 +118,10 @@ public class ActivatorsManager {
 	 * @param x Coordinate x to check
 	 * @param y Coordinate y to check
 	 * @param z Coordinate z to check
-	 * @return Set of activators in location
+	 * @return List of activators in location
 	 */
-	public static Set<Activator> getActivatorInLocation(World world, int x, int y, int z) {
-		Set<Activator> found = new HashSet<>();
+	public static List<Activator> getActivatorInLocation(World world, int x, int y, int z) {
+		List<Activator> found = new ArrayList<>();
 		for (ActivatorType type : ActivatorType.values())
 			if(type.isLocated())
 				activatorsMap.get(type).stream().filter(act -> ((Locatable)act).isLocatedAt(world, x, y, z)).forEach(found::add);
@@ -149,9 +148,9 @@ public class ActivatorsManager {
 	 * @return Was activator added or not
 	 */
 	public static boolean add(Activator act) {
-		if (contains(act.getBase().getName())) return false;
+		if (contains(act.getBase().getName().toLowerCase())) return false;
 		activatorsMap.get(act.getType()).add(act);
-		activators.put(act.getBase().getName(), act);
+		activators.put(act.getBase().getName().toLowerCase(), act);
 		return true;
 	}
 
@@ -160,15 +159,9 @@ public class ActivatorsManager {
 	 * @param name Name of activator to remove
 	 */
 	public static void removeActivator(String name) {
-		for(Set<Activator> acts : activatorsMap.values()) {
-			Iterator<Activator> iterator = acts.iterator();
-			while(iterator.hasNext())
-				if(iterator.next().getBase().getName().equals(name)) {
-					iterator.remove();
-					break;
-				}
-		}
-		activators.remove(name);
+		Activator act = activators.remove(name.toLowerCase());
+		if(act != null)
+			activatorsMap.get(act.getType()).remove(act);
 	}
 
 	/**
@@ -177,7 +170,7 @@ public class ActivatorsManager {
 	 * @return Does activator with this name exist
 	 */
 	public static boolean contains(String name) {
-		return activators.containsKey(name);
+		return activators.containsKey(name.toLowerCase());
 	}
 
 	/**
@@ -186,7 +179,7 @@ public class ActivatorsManager {
 	 * @return Activator or null
 	 */
 	public static Activator get(String name) {
-		return activators.get(name);
+		return activators.get(name.toLowerCase());
 	}
 
 	/**
@@ -413,9 +406,9 @@ public class ActivatorsManager {
 			Iterator<Activator> iter = activatorsMap.get(type).iterator();
 			while(iter.hasNext()) {
 				Activator act = iter.next();
-				if(!act.getBase().getName().equals(name))
+				if(!act.getBase().getGroup().equals(name))
 					continue;
-				activators.remove(name);
+				activators.remove(act.getBase().getName().toLowerCase());
 				iter.remove();
 			}
 		}

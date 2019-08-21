@@ -10,8 +10,7 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @CmdDefine(command = "react", description = Msg.CMD_CHECK, permission = "reactions.config",
 		subCommands = {"check"}, allowConsole = false, shortDescription = "&3/react check [radius]")
@@ -30,17 +29,17 @@ public class CmdCheck extends Cmd {
 		int playerZ = player.getLocation().getBlockZ();
 		World world = player.getWorld();
 		Bukkit.getScheduler().runTaskAsynchronously(ReActions.getPlugin(), () -> {
-			Set<String> set = new HashSet<>();
+			List<String> total = new ArrayList<>();
 			for (int x = playerX - radius; x <= playerX + radius; x++) {
 				for (int y = playerY - radius; y <= playerY + radius; y++) {
 					for (int z = playerZ - radius; z <= playerZ + radius; z++) {
-						Set<Activator> found = ActivatorsManager.getActivatorInLocation(world, x, y, z);
+						List<Activator> found = ActivatorsManager.getActivatorInLocation(world, x, y, z);
 						if (found.isEmpty()) continue;
-						found.forEach(a -> set.add(a.toString()));
+						found.forEach(a -> total.add(a.toString()));
 					}
 				}
 			}
-			Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Msg.printPage(player, new ArrayList<>(set), Msg.MSG_CHECK, 1, 100, true));
+			Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Msg.printPage(player, total, Msg.MSG_CHECK, 1, 100, true));
 		});
 	}
 }
