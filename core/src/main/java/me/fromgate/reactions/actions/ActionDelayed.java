@@ -2,8 +2,8 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.time.waiter.WaitingManager;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionDelayed extends Action {

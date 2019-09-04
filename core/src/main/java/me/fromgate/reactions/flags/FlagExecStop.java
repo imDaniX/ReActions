@@ -29,7 +29,6 @@ public class FlagExecStop implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		if (param.isEmpty()) return false;
 		return ActivatorsManager.isStopped(player, param, false);
 	}
 

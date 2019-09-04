@@ -1,11 +1,11 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.InventoryClickStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.InventoryClickStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
@@ -37,7 +37,7 @@ public class InventoryClickActivator extends Activator {
 
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		InventoryClickStorage pice = (InventoryClickStorage) event;
 		if (!inventoryName.isEmpty() && !pice.getInventoryName().equalsIgnoreCase(inventoryName)) return false;
 		if (pice.getClickType() == null) return false;

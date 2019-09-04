@@ -24,8 +24,8 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionDelay extends Action {

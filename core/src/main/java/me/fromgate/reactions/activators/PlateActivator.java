@@ -23,11 +23,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.PlateStorage;
-import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storages.PlateStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.parameter.BlockParam;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -48,7 +49,7 @@ public class PlateActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		PlateStorage be = (PlateStorage) event;
 		if (!isLocatedAt(be.getLocation())) return false;
 		return Actions.executeActivator(be.getPlayer(), getBase());
@@ -86,7 +87,7 @@ public class PlateActivator extends Activator implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(world);
+		return !Util.isStringEmpty(world);
 	}
 
 	@Override
@@ -96,7 +97,9 @@ public class PlateActivator extends Activator implements Locatable {
 		return sb.toString();
 	}
 
-	public static PlateActivator create(ActivatorBase base, Param param) {
+	public static PlateActivator create(ActivatorBase base, Param p) {
+		if(!(p instanceof BlockParam)) return null;
+		BlockParam param = (BlockParam) p;
 		Block targetBlock = param.getBlock();
 		if (targetBlock != null && BlockUtil.isPlate(targetBlock)) {
 			String world = targetBlock.getWorld().getName();

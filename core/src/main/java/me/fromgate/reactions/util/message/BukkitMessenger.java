@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.util.message;
 
+import me.fromgate.reactions.Cfg;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -29,26 +30,57 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.util.ChatPaginator;
 
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class BukkitMessenger implements Messenger {
 
 	private final JavaPlugin plugin;
+	private final DecimalFormat TWO_DECIMALS = new DecimalFormat("####0.##");
 
 	public BukkitMessenger(JavaPlugin plugin) {
 		this.plugin = plugin;
 	}
 
+	public static void printPage(CommandSender sender, List<String> list, Msg title, int page) {
+		int pageHeight = (sender instanceof Player) ? 9 : 1000;
+		if (title != null) title.print(sender);
+		ChatPaginator.ChatPage chatPage = paginate(list, page, Cfg.chatLength, pageHeight);
+		for (String str : chatPage.getLines()) {
+			Msg.printMessage(sender, str);
+		}
+
+		if (pageHeight == 9) {
+			Msg.LST_FOOTER.print(sender, 'e', '6', chatPage.getPageNumber(), chatPage.getTotalPages());
+		}
+	}
+
+	public static ChatPaginator.ChatPage paginate(List<String> unpaginatedStrings, int pageNumber, int lineLength, int pageHeight) {
+		List<String> lines = new ArrayList<>();
+		for (String str : unpaginatedStrings) {
+			lines.addAll(Arrays.asList(ChatPaginator.wordWrap(str, lineLength)));
+		}
+		int totalPages = lines.size() / pageHeight + (lines.size() % pageHeight == 0 ? 0 : 1);
+		int actualPageNumber = pageNumber <= totalPages ? pageNumber : totalPages;
+		int from = (actualPageNumber - 1) * pageHeight;
+		int to = from + pageHeight <= lines.size() ? from + pageHeight : lines.size();
+		String[] selectedLines = Arrays.copyOfRange(lines.toArray(new String[0]), from, to);
+		return new ChatPaginator.ChatPage(selectedLines, actualPageNumber, totalPages);
+	}
+
 	@Override
 	public String colorize(String text) {
-		return ChatColor.translateAlternateColorCodes('&', text);
+		return text != null ? ChatColor.translateAlternateColorCodes('&', text) : text;
 	}
 
 	@Override
@@ -107,13 +139,12 @@ public class BukkitMessenger implements Messenger {
 	public String toString(Object obj, boolean fullFloat) {
 		if (obj == null) return "'null'";
 		String s = obj.toString();
-		DecimalFormat fmt = new DecimalFormat("####0.##");
 		if (obj instanceof Location) {
 			Location loc = (Location) obj;
 			if (fullFloat)
 				s = loc.getWorld() + "[" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + "]";
 			else
-				s = loc.getWorld() + "[" + fmt.format(loc.getX()) + ", " + fmt.format(loc.getY()) + ", " + fmt.format(loc.getZ()) + "]";
+				s = loc.getWorld() + "[" + TWO_DECIMALS.format(loc.getX()) + ", " + TWO_DECIMALS.format(loc.getY()) + ", " + TWO_DECIMALS.format(loc.getZ()) + "]";
 		}
 		return s;
 	}

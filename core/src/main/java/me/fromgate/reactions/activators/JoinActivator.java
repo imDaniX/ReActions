@@ -23,9 +23,9 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.JoinStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.JoinStorage;
+import me.fromgate.reactions.storages.Storage;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class JoinActivator extends Activator {
@@ -38,7 +38,7 @@ public class JoinActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		JoinStorage ce = (JoinStorage) event;
 		if (isJoinActivate(ce.isFirstJoin())) return Actions.executeActivator(ce.getPlayer(), getBase());
 		return false;

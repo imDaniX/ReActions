@@ -23,10 +23,11 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.sql.SQLManager;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class FlagSQL implements Flag {
+	// TODO: Make it safer
 	private final boolean check;
 
 	public FlagSQL(boolean check) {

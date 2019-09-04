@@ -23,11 +23,11 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -66,9 +66,9 @@ public class ActionBlockFill extends Action {
 			}
 		} else {
 			String locStr = params.getParam("loc1", "");
-			if (!locStr.isEmpty()) loc1 = Locator.parseLocation(locStr, null);
+			if (!locStr.isEmpty()) loc1 = LocationUtil.parseLocation(locStr, null);
 			locStr = params.getParam("loc2", "");
-			if (!locStr.isEmpty()) loc2 = Locator.parseLocation(locStr, null);
+			if (!locStr.isEmpty()) loc2 = LocationUtil.parseLocation(locStr, null);
 		}
 		if (loc1 == null || loc2 == null) return false;
 

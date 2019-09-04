@@ -1,10 +1,10 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.storage.SneakStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.SneakStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 /**
@@ -19,7 +19,7 @@ public class SneakActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		SneakStorage se = (SneakStorage) event;
 		if (!checkSneak(se.isSneaking())) return false;
 		Variables.setTempVar("sneak", se.isSneaking() ? "TRUE" : "FALSE");

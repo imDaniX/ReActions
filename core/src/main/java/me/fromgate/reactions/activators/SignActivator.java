@@ -23,12 +23,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.storage.SignStorage;
+import me.fromgate.reactions.storages.SignStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.simpledata.ClickType;
+import me.fromgate.reactions.util.enums.ClickType;
+import me.fromgate.reactions.util.parameter.BlockParam;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
@@ -64,7 +65,7 @@ public class SignActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		SignStorage signEvent = (SignStorage) event;
 		if (click.checkRight(signEvent.isLeftClick())) return false;
 		if (!checkMask(signEvent.getSignLines())) return false;
@@ -115,7 +116,9 @@ public class SignActivator extends Activator {
 		return sb.toString();
 	}
 
-	public static SignActivator create(ActivatorBase base, Param param) {
+	public static SignActivator create(ActivatorBase base, Param p) {
+		if(!(p instanceof BlockParam)) return null;
+		BlockParam param = (BlockParam) p;
 		Block targetBlock = param.getBlock();
 		Sign sign = null;
 		if (targetBlock != null && BlockUtil.isSign(targetBlock))

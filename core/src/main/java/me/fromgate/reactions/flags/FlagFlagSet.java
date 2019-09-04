@@ -36,7 +36,6 @@ public class FlagFlagSet implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		if (param.isEmpty()) return false;
 		List<String> flagList = parseParamsList(param);
 		if (flagList.isEmpty()) return false;
 		for (String flagStr : flagList) {
@@ -51,8 +50,7 @@ public class FlagFlagSet implements Flag {
 		return false;
 	}
 
-
-	public List<String> parseParamsList(String param) {
+	private List<String> parseParamsList(String param) {
 		List<String> paramList = new ArrayList<>();
 		Matcher matcher = BRACES_GROUP.matcher(hideBkts(param));
 		while (matcher.find()) {

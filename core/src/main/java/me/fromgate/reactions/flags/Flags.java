@@ -31,18 +31,23 @@ import me.fromgate.reactions.flags.worldedit.FlagRegionInRadius;
 import me.fromgate.reactions.flags.worldedit.FlagSelectionBlocks;
 import me.fromgate.reactions.flags.worldedit.FlagSuperPickAxe;
 import me.fromgate.reactions.flags.worldedit.FlagToolControl;
-import me.fromgate.reactions.placeholders.Placeholders;
+import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.message.RaDebug;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public enum Flags {
+	// TODO: FlagCuboid
 	GROUP("group", true, new FlagGroup()),
 	PERM("perm", true, new FlagPerm()),
 	TIME("time", false, new FlagTime()),
@@ -114,6 +119,15 @@ public enum Flags {
 	private final boolean requirePlayer;
 	private final Flag flag;
 
+	private final static Map<String, Flags> BY_NAME;
+	static {
+		Map<String, Flags> byName = new HashMap<>();
+		for(Flags flg : Flags.values()) {
+			byName.put(flg.name(), flg);
+			byName.put(flg.alias.toUpperCase(), flg);
+		}
+		BY_NAME = Collections.unmodifiableMap(byName);
+	}
 
 	Flags(String alias, boolean requirePlayer, Flag flag) {
 		this.alias = alias;
@@ -126,32 +140,22 @@ public enum Flags {
 		return flag.checkFlag(player, param);
 	}
 
+	public static Flags getByName(String name) {
+		return BY_NAME.get(name.toUpperCase());
+	}
 
 	public static boolean isValid(String name) {
-		for (Flags ft : Flags.values()) {
-			if (ft.name().equalsIgnoreCase(name)) return true;
-			if (ft.getAlias().equalsIgnoreCase(name)) return true;
-		}
-		return false;
-	}
-
-	public static Flags getByName(String name) {
-		for (Flags ft : Flags.values()) {
-			if (ft.name().equalsIgnoreCase(name)) return ft;
-			if (ft.getAlias().equalsIgnoreCase(name)) return ft;
-		}
-		return null;
-	}
-
-	public String getAlias() {
-		return this.alias;
+		return getByName(name) != null;
 	}
 
 	public static boolean checkFlag(Player p, String flag, String param, boolean not) {
-		Flags ft = Flags.getByName(flag);
-		if (ft == null) return false;
+		return checkFlag(p, getByName(flag), param, not);
+	}
+
+	public static boolean checkFlag(Player p, Flags flag, String param, boolean not) {
+		if (flag == null || Util.isStringEmpty(param)) return false;
 		Variables.setTempVar((flag + "_flag").toUpperCase(), param);
-		boolean check = ft.check(p, param);
+		boolean check = flag.check(p, param);
 		if (not) return !check;
 		Variables.setTempVar((flag + "_flag_val").toUpperCase(), String.valueOf(check));
 		return check;
@@ -166,7 +170,7 @@ public enum Flags {
 			for (int i = 0; i < c.getFlags().size(); i++) {
 				StoredFlag f = c.getFlags().get(i);
 				Variables.setTempVar((f.getFlagName() + "_flag").toUpperCase(), f.getValue());
-				if (!checkFlag(p, f.getFlagName(), Placeholders.replacePlaceholderButRaw(p, f.getValue()), f.isInverted())) return false;
+				if (!checkFlag(p, f.getFlag(), PlaceholdersManager.replacePlaceholderButRaw(p, f.getValue()), f.isInverted())) return false;
 			}
 		return true;
 	}
@@ -176,15 +180,15 @@ public enum Flags {
 		String str = "";
 		for (Flags f : Flags.values()) {
 			str = (str.isEmpty() ? f.name() : str + "," + f.name());
-			str = (str.isEmpty() ? f.getAlias() : str + "," + f.getAlias());
+			str = (str.isEmpty() ? f.alias : str + "," + f.alias);
 		}
 		return str;
 	}
 
 	@SuppressWarnings("unused")
 	public static String getValidName(String flag) {
-		for (Flags f : Flags.values())
-			if (f.getAlias().equalsIgnoreCase(flag)) return f.name();
+		Flags flg = getByName(flag);
+		if(flg != null) return flg.name();
 		return flag;
 	}
 
@@ -192,7 +196,7 @@ public enum Flags {
 		List<String> flagList = new ArrayList<>();
 		for (Flags flagType : Flags.values()) {
 			String flagName = flagType.name();
-			String alias = flagType.getAlias().equalsIgnoreCase(flagName) ? " " : " (" + flagType.getAlias() + ") ";
+			String alias = flagType.alias.equalsIgnoreCase(flagName) ? " " : " (" + flagType.alias + ") ";
 
 			Msg msg = Msg.getByName("flag_" + flagName);
 			if (msg == null) {
@@ -201,7 +205,7 @@ public enum Flags {
 				flagList.add("&6" + flagName + "&e" + alias + "&3: &a" + msg.getText("NOCOLOR"));
 			}
 		}
-		Util.printPage(sender, flagList, Msg.MSG_FLAGLISTTITLE, pageNum);
+		BukkitMessenger.printPage(sender, flagList, Msg.MSG_FLAGLISTTITLE, pageNum);
 	}
 
 

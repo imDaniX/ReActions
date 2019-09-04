@@ -22,10 +22,10 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -49,7 +49,7 @@ public class ActionBlockSet extends Action {
 			}
 		}
 
-		Location loc = Locator.parseLocation(params.getParam("loc", ""), null);
+		Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), null);
 		if (loc == null) return false;
 		Block b = loc.getBlock();
 

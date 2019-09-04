@@ -1,12 +1,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.ItemHeldStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.ItemHeldStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,7 +28,7 @@ public class ItemHeldActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		ItemHeldStorage ihe = (ItemHeldStorage) event;
 		ItemStack itemNew = ihe.getNewItem();
 		ItemStack itemPrev = ihe.getPreviousItem();

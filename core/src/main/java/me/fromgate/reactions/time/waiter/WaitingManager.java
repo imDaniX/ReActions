@@ -2,13 +2,12 @@ package me.fromgate.reactions.time.waiter;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.StoredAction;
-import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.FileUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +26,7 @@ public class WaitingManager {
 
 	public static void executeDelayed(Player player, StoredAction action, boolean isAction, long time) {
 		if (action == null) return;
-		executeDelayed(player, Arrays.asList(action), isAction, time);
+		executeDelayed(player, Collections.singletonList(action), isAction, time);
 	}
 
 	public static void executeDelayed(Player player, List<StoredAction> actions, boolean isAction, long time) {
@@ -52,12 +51,7 @@ public class WaitingManager {
 		tasks.clear();
 		YamlConfiguration cfg = new YamlConfiguration();
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
-		try {
-			cfg.load(f);
-		} catch (Exception e) {
-			Msg.logMessage("Failed to load delayed actions");
-			return;
-		}
+		if(!FileUtil.loadCfg(cfg, f, "Failed to load delayed actions")) return;
 		for (String key : cfg.getKeys(false)) {
 			WaitTask t = new WaitTask(cfg, key);
 			tasks.add(t);
@@ -101,11 +95,7 @@ public class WaitingManager {
 			for (WaitTask t : tasks) {
 				if (!t.isExecuted()) t.save(cfg);
 			}
-			try {
-				cfg.save(f);
-			} catch (Throwable e) {
-				Msg.logMessage("Failed to save delayed actions");
-			}
+			FileUtil.saveCfg(cfg, f, "Failed to save delayed actions");
 		}, 1);
 	}
 

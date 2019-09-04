@@ -1,13 +1,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.DropStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.DropStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -25,14 +25,14 @@ public class DropActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		DropStorage de = (DropStorage) event;
 		if (!checkItem(de.getItemStack())) return false;
-		Variables.setTempVar("droplocation", Locator.locationToString(de.getPlayer().getLocation()));
+		Variables.setTempVar("droplocation", LocationUtil.locationToString(de.getPlayer().getLocation()));
 		Variables.setTempVar("pickupDelay", Double.toString(de.getPickupDelay()));
 		boolean result = Actions.executeActivator(de.getPlayer(), getBase());
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
-		if (Util.INT.matcher(pickupDelayStr).matches()) de.setPickupDelay(Integer.parseInt(pickupDelayStr));
+		if (Util.INT_POSITIVE.matcher(pickupDelayStr).matches()) de.setPickupDelay(Integer.parseInt(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "0");

@@ -1,12 +1,11 @@
 package me.fromgate.reactions.commands;
 
-import com.google.common.base.Joiner;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -20,7 +19,7 @@ public class CmdSet extends Cmd {
 	public boolean execute(CommandSender sender, String[] args) {
 		if (args.length == 1) return false;
 		String arg1 = args[1];
-		String arg2 = args.length > 3 ? Joiner.on(" ").join(Arrays.copyOfRange(args, 2, args.length)) : "";
+		String arg2 = args.length > 3 ? String.join(" ", Arrays.copyOfRange(args, 2, args.length)) : "";
 		return this.setVariable(sender, arg1, arg2);
 	}
 

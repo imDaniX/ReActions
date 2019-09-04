@@ -23,8 +23,8 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.TemporaryOp;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

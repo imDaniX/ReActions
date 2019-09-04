@@ -22,10 +22,8 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.item.ItemUtil;
-import org.bukkit.Material;
+import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 public class FlagWalkBlock implements Flag {
@@ -33,8 +31,8 @@ public class FlagWalkBlock implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
 		Block walk = player.getLocation().getBlock();
-		if (walk.getType() == Material.AIR) walk = walk.getRelative(BlockFace.DOWN);
-		return walk.getType() == ItemUtil.itemFromString(param).getType();
+		if (!walk.getType().isSolid()) walk = walk.getLocation().subtract(0, 0.1, 0).getBlock();
+		return walk.getType() == VirtualItem.fromString(param).getType();
 	}
 
 }

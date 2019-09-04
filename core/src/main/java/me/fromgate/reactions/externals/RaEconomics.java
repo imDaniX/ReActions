@@ -45,7 +45,7 @@ public class RaEconomics {
 
 	public static String creditAccount(String target, String source, String amountStr, String currencyName, String worldName) {
 		if (target.isEmpty()) return "";
-		if (!isFloat(amountStr)) return "";
+		if (!Util.isFloat(amountStr)) return "";
 		double amount = Double.parseDouble(amountStr);
 		if (RaCraftConomy.isEnabled()) {
 			if (RaCraftConomy.creditAccount(target, source, amount, currencyName, worldName))
@@ -59,7 +59,7 @@ public class RaEconomics {
 
 	public static String debitAccount(String accountFrom, String accountTo, String amountStr, String currencyName, String worldName) {
 		if (accountFrom.isEmpty()) return "";
-		if (!isFloat(amountStr)) return "";
+		if (!Util.isFloat(amountStr)) return "";
 		double amount = Double.parseDouble(amountStr);
 		if (RaCraftConomy.isEnabled()) {
 			if (RaCraftConomy.debitAccount(accountFrom, accountTo, amount, currencyName, worldName))
@@ -69,10 +69,6 @@ public class RaEconomics {
 				return RaVault.format(amount, worldName);
 		}
 		return "";
-	}
-
-	public static boolean isFloat(String numStr) {
-		return Util.FLOAT.matcher(numStr).matches();
 	}
 
 	public static Map<String, String> getBalances(Player p) {

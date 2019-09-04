@@ -1,10 +1,10 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.location.BlockLocation;
+import me.fromgate.reactions.util.location.VirtualLocation;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,8 +15,6 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-// TODO: Cuboid flag
-// TODO: Command to create cuboid activator
 public class CuboidActivator extends Activator implements Locatable {
 	private final String world;
 	private final CuboidMode mode;
@@ -25,7 +23,7 @@ public class CuboidActivator extends Activator implements Locatable {
 	private final boolean twoDimensional;
 	private final Set<UUID> within = new HashSet<>();
 
-	public CuboidActivator(ActivatorBase base, BlockLocation loc1, BlockLocation loc2, CuboidMode mode, boolean twoDimensional) {
+	public CuboidActivator(ActivatorBase base, VirtualLocation loc1, VirtualLocation loc2, CuboidMode mode, boolean twoDimensional) {
 		super(base);
 		this.world = loc1.getWorld();
 		this.mode = mode;
@@ -43,7 +41,7 @@ public class CuboidActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		Player player = event.getPlayer();
 		UUID id = player.getUniqueId();
 		boolean inCuboid = checkInCuboid(player.getLocation(), true);
@@ -124,8 +122,8 @@ public class CuboidActivator extends Activator implements Locatable {
 		CuboidMode mode = CuboidMode.getByName(param.getParam("mode"));
 		boolean twoDimensional = param.getParam("two_dimensional", true);
 		String world = param.getParam("world", Bukkit.getWorlds().get(0).getName());
-		BlockLocation loc1 = new BlockLocation(world, param.getParam("loc1.x", 0), param.getParam("loc1.y", 0), param.getParam("loc1.z", 0));
-		BlockLocation loc2 = new BlockLocation(world, param.getParam("loc2.x", 0), param.getParam("loc2.y", 0), param.getParam("loc2.z", 0));
+		VirtualLocation loc1 = new VirtualLocation(world, param.getParam("loc1.x", 0), param.getParam("loc1.y", 0), param.getParam("loc1.z", 0));
+		VirtualLocation loc2 = new VirtualLocation(world, param.getParam("loc2.x", 0), param.getParam("loc2.y", 0), param.getParam("loc2.z", 0));
 		return new CuboidActivator(base, loc1, loc2, mode, twoDimensional);
 	}
 	
@@ -133,8 +131,8 @@ public class CuboidActivator extends Activator implements Locatable {
 		CuboidMode mode = CuboidMode.getByName(cfg.getString("mode"));
 		boolean twoDimensional = cfg.getBoolean("two_dimensional");
 		String world = cfg.getString("world");
-		BlockLocation loc1 = new BlockLocation(world, cfg.getInt("loc1.x"), cfg.getInt("loc1.y"), cfg.getInt("loc1.z"));
-		BlockLocation loc2 = new BlockLocation(world, cfg.getInt("loc2.x"), cfg.getInt("loc2.y"), cfg.getInt("loc2.z"));
+		VirtualLocation loc1 = new VirtualLocation(world, cfg.getInt("loc1.x"), cfg.getInt("loc1.y"), cfg.getInt("loc1.z"));
+		VirtualLocation loc2 = new VirtualLocation(world, cfg.getInt("loc2.x"), cfg.getInt("loc2.y"), cfg.getInt("loc2.z"));
 		return new CuboidActivator(base, loc1, loc2, mode, twoDimensional);
 	}
 }

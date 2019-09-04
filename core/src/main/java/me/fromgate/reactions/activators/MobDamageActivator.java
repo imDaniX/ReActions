@@ -23,13 +23,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.MobDamageStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.MobDamageStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
@@ -48,13 +48,13 @@ public class MobDamageActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		MobDamageStorage me = (MobDamageStorage) event;
 		if (mobType.isEmpty()) return false;
 		if (me.getEntity() == null) return false;
 		if (!isActivatorMob(me.getEntity())) return false;
 		if (!checkItem(me.getPlayer())) return false;
-		Variables.setTempVar("moblocation", Locator.locationToString(me.getEntity().getLocation()));
+		Variables.setTempVar("moblocation", LocationUtil.locationToString(me.getEntity().getLocation()));
 		Variables.setTempVar("mobdamager", me.getPlayer() == null ? "" : me.getPlayer().getName());
 		Variables.setTempVar("mobtype", me.getEntity().getType().name());
 		LivingEntity mob = me.getEntity();
@@ -64,7 +64,7 @@ public class MobDamageActivator extends Activator {
 		Variables.setTempVar("damage", Double.toString(me.getDamage()));
 		boolean result = Actions.executeActivator(me.getPlayer(), getBase());
 		String dmgStr = Variables.getTempVar("damage");
-		if (Util.FLOAT.matcher(dmgStr).matches()) me.setDamage(Double.parseDouble(dmgStr));
+		if (Util.FLOAT_POSITIVE.matcher(dmgStr).matches()) me.setDamage(Double.parseDouble(dmgStr));
 		return result;
 	}
 
@@ -102,7 +102,7 @@ public class MobDamageActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(mobType);
+		return !Util.isStringEmpty(mobType);
 	}
 
 	@Override

@@ -1,12 +1,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.DamageByBlockStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.DamageByBlockStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -30,13 +30,13 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		DamageByBlockStorage db = (DamageByBlockStorage) event;
 		Block damagerBlock = db.getBlockDamager();
 		if (damagerBlock == null) return false;
 		if (!isActivatorBlock(damagerBlock)) return false;
 		if (!damageCauseCheck(db.getCause())) return false;
-		Variables.setTempVar("blocklocation", Locator.locationToString(db.getBlockLocation()));
+		Variables.setTempVar("blocklocation", LocationUtil.locationToString(db.getBlockLocation()));
 		Variables.setTempVar("blocktype", damagerBlock.getType().name());
 		Variables.setTempVar("block", ItemUtil.itemFromBlock(damagerBlock).toString());
 		Variables.setTempVar("damage", Double.toString(db.getDamage()));
@@ -57,7 +57,7 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 	@Override
 	public boolean isLocatedAt(Location l) {
 		if (this.blockLocation.isEmpty()) return false;
-		Location loc = Locator.parseLocation(this.blockLocation, null);
+		Location loc = LocationUtil.parseLocation(this.blockLocation, null);
 		if (loc == null) return false;
 		return l.getWorld().equals(loc.getWorld()) &&
 				l.getBlockX() == loc.getBlockX() &&

@@ -23,9 +23,9 @@
 package me.fromgate.reactions.util.location;
 
 import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.storage.RespawnStorage;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.simpledata.DeathCause;
+import me.fromgate.reactions.storages.RespawnStorage;
+import me.fromgate.reactions.util.enums.DeathCause;
+import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+// TODO: Move to LocationHolder
 public class PlayerRespawner {
 	private static Map<UUID, LivingEntity> players = new HashMap<>();
 	private static Map<UUID, Location> deathPoints = new HashMap<>();
@@ -43,7 +44,7 @@ public class PlayerRespawner {
 	public static void addPlayerRespawn(PlayerDeathEvent event) {
 		Player deadPlayer = event.getEntity();
 		deathPoints.put(deadPlayer.getUniqueId(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
-		LivingEntity killer = Util.getAnyKiller(deadPlayer.getLastDamageCause());
+		LivingEntity killer = EntityUtil.getAnyKiller(deadPlayer.getLastDamageCause());
 		players.put(deadPlayer.getUniqueId(), killer);
 	}
 

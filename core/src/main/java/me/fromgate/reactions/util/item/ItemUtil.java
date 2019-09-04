@@ -1,16 +1,22 @@
 package me.fromgate.reactions.util.item;
 
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,8 +26,26 @@ import java.util.regex.Pattern;
 
 public class ItemUtil {
 
+	private final static Pattern BYTES_RGB = Pattern.compile("^[0-9]{1,3},[0-9]{1,3},[0-9]{1,3}$");
+
 	private final static Pattern ITEM_D = Pattern.compile("item\\d+|ITEM\\d+");
 	private final static Pattern SET_D = Pattern.compile("set\\d+|SET\\d+");
+
+	public static void removeItemAmount(ItemStack item, int amount) {
+		int itemAmount = item.getAmount();
+		if(amount >= itemAmount)
+			item.setType(Material.AIR);
+		else
+			item.setAmount(itemAmount-amount);
+	}
+
+	public static Enchantment getEnchantmentByName(String name) {
+		if(!Util.isStringEmpty(name))
+			try {
+				return Enchantment.getByKey(NamespacedKey.minecraft(name.toLowerCase()));
+			} catch (IllegalArgumentException ignore) {}
+		return null;
+	}
 
 	public static int getDurability(ItemStack item) {
 		ItemMeta meta = item.getItemMeta();
@@ -45,21 +69,16 @@ public class ItemUtil {
 		}
 	}
 
-	public static VirtualItem itemFromString(String itemStr) {
-		return VirtualItem.fromString(itemStr);
-	}
-
 	@SuppressWarnings("unused")
 	public static void giveItemOrDrop(Player player, String itemStr) {
-		VirtualItem vi = itemFromString(itemStr);
+		VirtualItem vi = VirtualItem.fromString(itemStr);
 		if (vi == null) return;
 		giveItemOrDrop(player, vi);
 	}
 
 	public static boolean removeItemInHand(Player player, String itemStr) {
 		ItemStack inHand = player.getInventory().getItemInMainHand();
-		if (inHand == null || inHand.getType() == Material.AIR)
-			return false;
+		if (!isExist(inHand)) return false;
 		VirtualItem hand = VirtualItem.fromItemStack(inHand);
 		VirtualItem vi = removeItemFromStack(hand, itemStr);
 		if (vi == null) return false;
@@ -69,8 +88,7 @@ public class ItemUtil {
 
 	public static boolean removeItemInOffHand(Player player, String itemStr) {
 		ItemStack inHand = player.getInventory().getItemInOffHand();
-		if (inHand == null || inHand.getType() == Material.AIR)
-			return false;
+		if (!isExist(inHand)) return false;
 		VirtualItem hand = VirtualItem.fromItemStack(inHand);
 		VirtualItem vi = removeItemFromStack(hand, itemStr);
 		if (vi == null) return false;
@@ -80,12 +98,12 @@ public class ItemUtil {
 
 
 	public static boolean removeItemInInventory(Inventory inventory, String itemStr) {
-		Map<String, String> itemParams = VirtualItem.parseParams(itemStr);
+		Map<String, String> itemParams = Param.parseParams(itemStr, "");
 		return removeItemInInventory(inventory, itemParams);
 	}
 
 	private static boolean removeItemInInventory(Inventory inventory, Map<String, String> itemParams) {
-		int amountToRemove = Integer.parseInt(VirtualItem.getParam(itemParams, "amount", "1"));
+		int amountToRemove = Integer.parseInt(itemParams.getOrDefault("amount", "1"));
 		//int countItems =  countItemsInventory (inventory, itemParams);
 		//if (amountToRemove>countItems) return false;
 		for (int i = 0; i < inventory.getSize(); i++) {
@@ -134,12 +152,11 @@ public class ItemUtil {
 	}
 
 	private static int getAmount(String itemStr) {
-		Map<String, String> itemMap = VirtualItem.parseParams(itemStr);
-		String amountStr = VirtualItem.getParam(itemMap, "amount", "1");
-		if (Util.INT_NOTZERO.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
+		Map<String, String> itemMap = Param.parseParams(itemStr, "");
+		String amountStr = itemMap.getOrDefault("amount", "1");
+		if (Util.INT_NOTZERO_POSITIVE.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
 		return 1;
 	}
-
 
 	public static boolean hasItemInInventory(Player player, String itemStr) {
 		return hasItemInInventory(player.getInventory(), itemStr);
@@ -154,17 +171,17 @@ public class ItemUtil {
 	}
 
 	public static int countItemsInInventory(Inventory inventory, String itemStr) {
-		Map<String, String> itemMap = VirtualItem.parseParams(itemStr);
+		Map<String, String> itemMap = Param.parseParams(itemStr, "");
 		return countItemsInventory(inventory, itemMap);
 	}
 
 	public static VirtualItem itemFromBlock(Block block) {
-		if (block == null) return itemFromString("AIR");
+		if (block == null) return VirtualItem.fromString("AIR");
 		return VirtualItem.fromItemStack(new ItemStack(block.getType(), 1));
 	}
 
 	public static ItemStack parseItemStack(String string) {
-		return itemFromString(string);
+		return VirtualItem.fromString(string);
 	}
 
 	public static boolean compareItemStr(Block block, String itemStr) {
@@ -193,7 +210,7 @@ public class ItemUtil {
 		String[] ln = str.split(",");
 		if (ln.length == 0) return new ItemStack(Material.AIR);
 
-		ItemStack item = ItemUtil.parseItemStack(ln[Util.tryChance(ln.length)]);
+		ItemStack item = ItemUtil.parseItemStack(ln[Util.getRandomInt(ln.length)]);
 
 		if (item == null) return new ItemStack(Material.AIR);
 		item.setAmount(1);
@@ -209,7 +226,7 @@ public class ItemUtil {
 		List<ItemStack> stacks = new ArrayList<>();
 		String[] ln = items.split(";"); // ВОТ ЭТО ЛОМАЕТ К ЧЕРТЯМ НОВЫЙ ФОРМАТ!!!
 		for (String item : ln) {
-			VirtualItem vi = itemFromString(item);
+			VirtualItem vi = VirtualItem.fromString(item);
 			if (vi != null) stacks.add(vi);
 		}
 		return stacks;
@@ -244,7 +261,7 @@ public class ItemUtil {
 		for (String key : params.keySet()) {
 			if (ITEM_D.matcher(key).matches()) {
 				String itemStr = params.getParam(key, "");
-				VirtualItem vi = itemFromString(itemStr);
+				VirtualItem vi = VirtualItem.fromString(itemStr);
 				if (vi != null) items.add(vi);
 			}
 		}
@@ -278,7 +295,7 @@ public class ItemUtil {
 			}
 			int eqperc = (nochcount * 100) / sets.size();
 			maxChance = maxChance + eqperc * nochcount;
-			int rnd = Util.tryChance(maxChance);
+			int rnd = Util.getRandomInt(maxChance);
 			int curchance = 0;
 			for (List<ItemStack> stack : sets.keySet()) {
 				curchance = curchance + (sets.get(stack) < 0 ? eqperc : sets.get(stack));
@@ -287,7 +304,7 @@ public class ItemUtil {
 		} else if (params.matchAnyParam("item\\d+|ITEM\\d+")) {
 			return parseItemsSet(params);
 		} else {
-			VirtualItem vi = itemFromString(items);
+			VirtualItem vi = VirtualItem.fromString(items);
 			if (vi != null) {
 				List<ItemStack> iList = new ArrayList<>();
 				iList.add(vi);
@@ -313,7 +330,7 @@ public class ItemUtil {
 				String stacks = ln[0];
 				if (stacks.isEmpty()) continue;
 				int chance = -1;
-				if ((ln.length == 2) && (Util.INT_NOTZERO.matcher(ln[1]).matches())) {
+				if ((ln.length == 2) && (Util.INT_NOTZERO_POSITIVE.matcher(ln[1]).matches())) {
 					chance = Integer.parseInt(ln[1]);
 					maxchance += chance;
 				} else nochcount++;
@@ -323,7 +340,7 @@ public class ItemUtil {
 		if (drops.isEmpty()) return "";
 		int eqperc = (nochcount * 100) / drops.size();
 		maxchance = maxchance + eqperc * nochcount;
-		int rnd = Util.tryChance(maxchance);
+		int rnd = Util.getRandomInt(maxchance);
 		int curchance = 0;
 		for (String stack : drops.keySet()) {
 			curchance = curchance + (drops.get(stack) < 0 ? eqperc : drops.get(stack));
@@ -333,13 +350,13 @@ public class ItemUtil {
 	}
 
 	public static String toDisplayString(String itemStr) {
-		VirtualItem vi = itemFromString(itemStr);
+		VirtualItem vi = VirtualItem.fromString(itemStr);
 		if (vi != null) return vi.toDisplayString();
-		Map<String, String> itemMap = VirtualItem.parseParams(itemStr);
+		Map<String, String> itemMap = Param.parseParams(itemStr, "");
 		String name = itemMap.containsKey("name") ? itemMap.get("name") : itemMap.getOrDefault("type", null);
 		if (name == null) return itemStr;
 		int amount = getAmount(itemStr);
-		String data = VirtualItem.getParam(itemMap, "data", "0");
+		String data = itemMap.getOrDefault("data", "0");
 		StringBuilder sb = new StringBuilder(name);
 		if (!itemMap.containsKey("name") && !data.equals("0")) sb.append(":").append(data);
 		if (amount > 1) sb.append("*").append(amount);
@@ -357,7 +374,6 @@ public class ItemUtil {
 			for (String itemInList : ln) {
 				if (compareItemIdDataStr(type, durability, itemInList)) return true;
 			}
-
 		return false;
 	}
 
@@ -387,5 +403,224 @@ public class ItemUtil {
 	 */
 	public static boolean isExist(ItemStack item) {
 		return item != null && item.getType() != Material.AIR;
+	}
+
+	public static String fireworksToString(FireworkEffect fe) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("type:").append(fe.getType().name());
+		sb.append(" flicker:").append(fe.hasFlicker());
+		sb.append(" trail:").append(fe.hasTrail());
+		if (!fe.getColors().isEmpty()) {
+			sb.append(" colors:");
+			for (int i = 0; i < fe.getColors().size(); i++) {
+				Color c = fe.getColors().get(i);
+				if (i > 0)
+					sb.append(";");
+				sb.append(colorToString(c, true));
+			}
+		}
+		if (!fe.getFadeColors().isEmpty()) {
+			sb.append(" fade-colors:");
+			for (int i = 0; i < fe.getFadeColors().size(); i++) {
+				Color c = fe.getColors().get(i);
+				if (i > 0) sb.append(";");
+				sb.append(colorToString(c, true));
+			}
+		}
+		return sb.toString();
+	}
+
+	static List<Color> parseColors(String colorStr) {
+		List<Color> colors = new ArrayList<>();
+		String[] clrs = colorStr.split(";");
+		for (String cStr : clrs) {
+			Color c = parseColor(cStr.trim());
+			if (c == null)
+				continue;
+			colors.add(c);
+		}
+		return colors;
+	}
+
+	/**
+	 * Parse bukkit colors. Name and RGB values supported
+	 *
+	 * @param colorStr - Color name, or RGB values (Example: 10,15,20)
+	 * @return - Color
+	 */
+	public static Color parseColor(String colorStr) {
+		if (BYTES_RGB.matcher(colorStr).matches()) {
+			String[] rgb = colorStr.split(",");
+			int red = Integer.parseInt(rgb[0]);
+			int green = Integer.parseInt(rgb[1]);
+			int blue = Integer.parseInt(rgb[2]);
+			return Color.fromRGB(red, green, blue);
+		} else if (Util.BYTE.matcher(colorStr).matches()) {
+			int num = Integer.parseInt(colorStr);
+			if (num > 15)
+				num = 15;
+			@SuppressWarnings("deprecation")
+			DyeColor c = DyeColor.getByDyeData((byte) num);
+			return c == null ? null : c.getColor();
+		} else {
+			/*
+			for (DyeColor dc : DyeColor.values())
+				if (dc.name().equalsIgnoreCase(colorStr))
+					return dc.getColor();
+			 */
+		}
+		return null;
+	}
+
+	private static double getColorDistance(Color c1, Color c2) {
+		double rmean = (c1.getRed() + c2.getRed()) / 2.0;
+		double r = c1.getRed() - c2.getRed();
+		double g = c1.getGreen() - c2.getGreen();
+		int b = c1.getBlue() - c2.getBlue();
+		double weightR = 2 + rmean / 256.0;
+		double weightG = 4.0;
+		double weightB = 2 + (255 - rmean) / 256.0;
+		return weightR * r * r + weightG * g * g + weightB * b * b;
+	}
+
+	public static DyeColor getClosestColor(Color color) {
+		int index = 0;
+		double best = -1;
+		for (int i = 0; i < DyeColor.values().length; i++) {
+			double distance = getColorDistance(color,
+					DyeColor.values()[i].getColor());
+			if (distance < best || best == -1) {
+				best = distance;
+				index = i;
+			}
+		}
+		return DyeColor.values()[index];
+	}
+
+	public static String colorToString(Color c, boolean useRGB) {
+		for (DyeColor dc : DyeColor.values())
+			if (dc.getColor().equals(c))
+				return dc.name();
+		if (!useRGB)
+			getClosestColor(c).name();
+		String sb = c.getRed() + "," +
+				c.getGreen() + "," +
+				c.getBlue();
+		return sb;
+	}
+
+	public static Map<Enchantment, Integer> parseEnchantmentsString(String enchStr) {
+		Map<Enchantment, Integer> ench = new HashMap<>();
+		if (enchStr == null || enchStr.isEmpty()) return ench;
+		String[] ln = enchStr.split(";");
+		for (String e : ln) {
+			String eType = e;
+			int power = 0;
+			if (eType.contains(":")) {
+				String powerStr = eType.substring(eType.indexOf(":") + 1);
+				eType = eType.substring(0, eType.indexOf(":"));
+				power = Util.INT_MIN_MAX.matcher(powerStr).matches() ? Util.getNumber(powerStr) : 0;
+			}
+			Enchantment enchantment = getEnchantmentByName(eType);
+			if (enchantment == null)
+				continue;
+			ench.put(enchantment, power);
+		}
+		return ench;
+
+	}
+
+	/**
+	 * Old format algorithm. Implemented for compatibility.
+	 *
+	 * @param itemStr - old item format
+	 * @return - ItemStack
+	 */
+	protected static ItemStack parseOldItemStack(String itemStr) {
+		if (Util.isStringEmpty(itemStr))
+			return null;
+		String iStr = itemStr;
+		String enchant = "";
+		String name = "";
+		String loreStr = "";
+		if (iStr.contains("$")) {
+			name = iStr.substring(0, iStr.indexOf("$"));
+			iStr = iStr.substring(name.length() + 1);
+			if (name.contains("@")) {
+				loreStr = name.substring(name.indexOf("@") + 1);
+				name = name.substring(0, name.indexOf("@"));
+			}
+
+		}
+		if (iStr.contains("@")) {
+			enchant = iStr.substring(iStr.indexOf("@") + 1);
+			iStr = iStr.substring(0, iStr.indexOf("@"));
+		}
+		Material id;
+		int amount = 1;
+		short data = 0;
+		String[] si = iStr.split("\\*");
+		if (si.length > 0) {
+			if (si.length == 2)
+				amount = Math.max(Util.getNumber(si[1]), 1);
+			String[] ti = si[0].split(":");
+			if (ti.length > 0) {
+				Material m = Material.getMaterial(ti[0].toUpperCase());
+				if (m == null)
+					return null;
+				id = m;
+				if ((ti.length == 2) && (Util.INT_POSITIVE.matcher(ti[1]).matches()))
+					data = Short.parseShort(ti[1]);
+				ItemStack item = new ItemStack(id, amount);
+				setDurability(item, data);
+				if (!enchant.isEmpty()) {
+
+					String[] ln = enchant.split(",");
+					for (String ec : ln) {
+						if (ec.isEmpty())
+							continue;
+
+						Color clr = parseColor(ec);
+						if (clr != null) {
+							if (item.hasItemMeta()
+									&& (item.getItemMeta() instanceof LeatherArmorMeta)) {
+								LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+								meta.setColor(clr);
+								item.setItemMeta(meta);
+							}
+						} else {
+							String ench = ec;
+							int level = 1;
+							if (ec.contains(":")) {
+								ench = ec.substring(0, ec.indexOf(":"));
+								level = Math.max(1, Util.getNumber(ec.substring(ench
+										.length() + 1)));
+							}
+							Enchantment e = ItemUtil.getEnchantmentByName(ench);
+							if (e == null)
+								continue;
+							item.addUnsafeEnchantment(e, level);
+						}
+					}
+				}
+				if (!name.isEmpty()) {
+					ItemMeta im = item.getItemMeta();
+					im.setDisplayName(ChatColor.translateAlternateColorCodes(
+							'&', name.replace("_", " ")));
+					item.setItemMeta(im);
+				}
+				if (!loreStr.isEmpty()) {
+					ItemMeta im = item.getItemMeta();
+					String[] ln = loreStr.split("@");
+					List<String> lore = new ArrayList<>();
+					for (String loreLine : ln)
+						lore.add(loreLine.replace("_", " "));
+					im.setLore(lore);
+					item.setItemMeta(im);
+				}
+				return item;
+			}
+		}
+		return null;
 	}
 }

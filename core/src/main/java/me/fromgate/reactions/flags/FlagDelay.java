@@ -24,7 +24,7 @@ package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class FlagDelay implements Flag {

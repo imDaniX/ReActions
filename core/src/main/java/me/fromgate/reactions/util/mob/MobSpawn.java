@@ -25,11 +25,11 @@ package me.fromgate.reactions.util.mob;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.externals.RaEffects;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -58,7 +58,7 @@ public class MobSpawn {
 			return;
 		}
 		String locationStr = params.getParam("loc", "");
-		Location loc = Locator.parseLocation(locationStr, p == null ? null : p.getLocation());
+		Location loc = LocationUtil.parseLocation(locationStr, p == null ? null : p.getLocation());
 		String region = params.getParam("region", "");
 		int radius = params.getParam("radius", 0);
 		int num = Util.getMinMaxRandom(params.getParam("num", "1"));
@@ -84,8 +84,8 @@ public class MobSpawn {
 		String exec = params.getParam("run", "");
 		String exec_delay = params.getParam("rundelay", "1t");
 
-		if (RaWorldGuard.isRegionExists(region)) loc = Locator.getRegionLocation(region, land);
-		else if (radius > 0) loc = Locator.getRadiusLocation(loc, radius, land);
+		if (RaWorldGuard.isRegionExists(region)) loc = LocationUtil.getRegionLocation(region, land);
+		else if (radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
 		if (loc == null) return;
 
 		for (int i = 0; i < num; i++) {
@@ -271,7 +271,7 @@ public class MobSpawn {
 			int level = 1;
 			String[] ln = pot.split(":");
 			pef = ln[0];
-			PotionEffectType pet = Util.parsePotionEffect(pef);
+			PotionEffectType pet = PotionEffectType.getByName(pef);
 			if (pet == null) continue;
 			if ((ln.length == 2) && Util.isInteger(ln[1])) level = Integer.parseInt(ln[1]);
 			PotionEffect pe = new PotionEffect(pet, Integer.MAX_VALUE, level, true);

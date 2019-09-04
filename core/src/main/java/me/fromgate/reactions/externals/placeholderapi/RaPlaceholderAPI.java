@@ -12,7 +12,7 @@ public class RaPlaceholderAPI {
 	public static void init() {
 		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
 			enabled = true;
-			new PapiResolver().register();
+			new RaPapiExpansion().register();
 			Msg.logMessage("Connected to PlaceholderAPI");
 		}
 	}

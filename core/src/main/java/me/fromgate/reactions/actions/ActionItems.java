@@ -23,13 +23,13 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storage.StorageManager;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.StoragesManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -40,6 +40,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class ActionItems extends Action {
+	// TODO: Optimization
+
 	private final ItemActionType actionType;
 
 	public ActionItems(ItemActionType actionType) {
@@ -106,7 +108,7 @@ public class ActionItems extends Action {
 		if (itemStr.equalsIgnoreCase("AIR") || itemStr.equalsIgnoreCase("NULL")) {
 			player.getInventory().setItem(slotNum, null);
 		} else {
-			VirtualItem vi = ItemUtil.itemFromString(itemStr);
+			VirtualItem vi = VirtualItem.fromString(itemStr);
 			if (vi == null) return false;
 			player.getInventory().setItem(slotNum, vi);
 		}
@@ -205,7 +207,7 @@ public class ActionItems extends Action {
 		if (itemStr.isEmpty()) return false;
 		if (!itemStr.equalsIgnoreCase("offhand")) return false;
 		player.getInventory().setItemInOffHand(item);
-		StorageManager.raiseItemWearActivator(player);
+		StoragesManager.raiseItemWearActivator(player);
 		return true;
 	}
 
@@ -224,7 +226,7 @@ public class ActionItems extends Action {
 				player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
 			}
 		}
-		StorageManager.raiseItemWearActivator(player);
+		StoragesManager.raiseItemWearActivator(player);
 		return true;
 	}
 
@@ -293,7 +295,7 @@ public class ActionItems extends Action {
 		String actionItems = ItemUtil.toDisplayString(itemStr);
 		setMessageParam(actionItems);
 		Variables.setTempVar("item_str", actionItems);
-		VirtualItem vi = ItemUtil.itemFromString(itemStr);
+		VirtualItem vi = VirtualItem.fromString(itemStr);
 		if (vi != null) Variables.setTempVar("item", vi.toString());
 		return true;
 	}
@@ -307,7 +309,7 @@ public class ActionItems extends Action {
 		Bukkit.getScheduler().scheduleSyncDelayedTask(ReActions.getPlugin(), () -> {
 			for (ItemStack i : items)
 				ItemUtil.giveItemOrDrop(p, i);
-			StorageManager.raiseItemHoldActivator(p);
+			StoragesManager.raiseItemHoldActivator(p);
 		}, 1);
 		return true;
 	}
@@ -328,17 +330,17 @@ public class ActionItems extends Action {
 
 	public boolean dropItems(Player p, Param params) {
 		int radius = params.getParam("radius", 0);
-		Location loc = Locator.parseLocation(params.getParam("loc", ""), p.getLocation());
+		Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), p.getLocation());
 		if (loc == null) loc = p.getLocation();
 		boolean scatter = params.getParam("scatter", true);
 		boolean land = params.getParam("land", true);
 		List<ItemStack> items = ItemUtil.parseRandomItemsStr(params.getParam("item", ""));
 		if (items == null || items.isEmpty()) return false;
 		if (radius == 0) scatter = false;
-		Location l = Locator.getRadiusLocation(loc, radius, land);
+		Location l = LocationUtil.getRadiusLocation(loc, radius, land);
 		for (ItemStack i : items) {
 			loc.getWorld().dropItemNaturally(l, i);
-			if (scatter) l = Locator.getRadiusLocation(loc, radius, land);
+			if (scatter) l = LocationUtil.getRadiusLocation(loc, radius, land);
 		}
 		String actionItems = ItemUtil.toDisplayString(items);
 		setMessageParam(actionItems);
@@ -385,7 +387,7 @@ public class ActionItems extends Action {
 		player.getInventory().setArmorContents(armor);
 
 		if (action.equalsIgnoreCase("drop")) {
-			player.getWorld().dropItemNaturally(Locator.getRadiusLocation(player.getLocation().add(0, 2, 0), 2, false), vi);
+			player.getWorld().dropItemNaturally(LocationUtil.getRadiusLocation(player.getLocation().add(0, 2, 0), 2, false), vi);
 		} else if (action.equalsIgnoreCase("undress") || action.equalsIgnoreCase("inventory")) {
 			ItemUtil.giveItemOrDrop(player, vi);
 		}

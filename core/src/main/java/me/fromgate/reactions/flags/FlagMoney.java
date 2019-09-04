@@ -23,7 +23,8 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.externals.RaEconomics;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class FlagMoney implements Flag {
@@ -32,7 +33,7 @@ public class FlagMoney implements Flag {
 		if (!RaEconomics.isEconomyFound()) return false;
 		Param params = new Param(param, "amount");
 		String amountStr = params.getParam("amount", "a");
-		if (!RaEconomics.isFloat(amountStr)) return false;
+		if (!Util.isFloat(amountStr)) return false;
 		double amount = Double.parseDouble(amountStr);
 		String account = params.getParam("account", params.getParam("player", player == null ? "" : player.getName()));
 		if (account.isEmpty()) return false;

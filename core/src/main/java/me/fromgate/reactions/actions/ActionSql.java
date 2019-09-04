@@ -23,12 +23,13 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.sql.SQLManager;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionSql extends Action {
+	// TODO: More functionality like working with arrays
 	private final int sqlType;
 
 	public ActionSql(int sqlType) {
@@ -55,7 +56,7 @@ public class ActionSql extends Action {
 				query = params.getParam("query", params.getParam("param-line", "")).trim();
 				if (query.isEmpty()) return false;
 				if (!query.toLowerCase().startsWith("insert")) {
-					Msg.logOnce("needupdate" + query, "You need to use only \"INSERT\" query in SQL_INSERT action. Query: " + query);
+					Msg.logOnce("needuinsert" + query, "You need to use only \"INSERT\" query in SQL_INSERT action. Query: " + query);
 					return false;
 				}
 				SQLManager.executeUpdate(query, params);

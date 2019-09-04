@@ -24,11 +24,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.DoorStorage;
-import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storages.DoorStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.parameter.BlockParam;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -52,7 +53,7 @@ public class DoorActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		DoorStorage de = (DoorStorage) event;
 		if (de.getDoorBlock() == null) return false;
 		if (!isLocatedAt(de.getDoorLocation())) return false;
@@ -96,7 +97,7 @@ public class DoorActivator extends Activator implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(world);
+		return !Util.isStringEmpty(world);
 	}
 
 	@Override
@@ -109,7 +110,9 @@ public class DoorActivator extends Activator implements Locatable {
 		return sb.toString();
 	}
 
-	public static DoorActivator create(ActivatorBase base, Param param) {
+	public static DoorActivator create(ActivatorBase base, Param p) {
+		if(!(p instanceof BlockParam)) return null;
+		BlockParam param = (BlockParam) p;
 		Block targetBlock = param.getBlock();
 		if(targetBlock == null || BlockUtil.isOpenable(targetBlock)) {
 			String state = param.getParam("state", "ANY");

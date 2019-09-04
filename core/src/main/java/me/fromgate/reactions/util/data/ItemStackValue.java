@@ -1,0 +1,64 @@
+package me.fromgate.reactions.util.data;
+
+import me.fromgate.reactions.util.item.ItemUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
+
+public class ItemStackValue implements DataValue {
+	private ItemStack value;
+
+	public ItemStackValue(ItemStack value) {
+		this.value = value;
+	}
+	@Override
+	public String asString() {
+		return ItemUtil.itemToString(value);
+	}
+
+	@Override
+	public double asDouble() {
+		return value.getAmount();
+	}
+
+	@Override
+	public boolean asBoolean() {
+		return value.hasItemMeta();
+	}
+
+	@Override
+	public Location asLocation() {
+		return new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+	}
+
+	@Override
+	public ItemStack asItemStack() {
+		return value;
+	}
+
+	@Override
+	public boolean set(String value) {
+		return false;
+	}
+
+	@Override
+	public boolean set(double value) {
+		return false;
+	}
+
+	@Override
+	public boolean set(boolean value) {
+		return false;
+	}
+
+	@Override
+	public boolean set(Location value) {
+		return false;
+	}
+
+	@Override
+	public boolean set(ItemStack value) {
+		this.value = value;
+		return true;
+	}
+}

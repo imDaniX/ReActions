@@ -2,13 +2,13 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -35,9 +35,9 @@ public class CmdRemove extends Cmd {
 				ActivatorsManager.saveActivators();
 			} else Msg.printMSG(sender, "msg_removebnf", arg2);
 		} else if (arg1.equalsIgnoreCase("loc")) {
-			if (Locator.removeTpLoc(arg2)) {
+			if (LocationHolder.removeTpLoc(arg2)) {
 				Msg.printMSG(sender, "msg_removelocok", arg2);
-				Locator.saveLocs();
+				LocationHolder.saveLocs();
 			} else Msg.printMSG(sender, "msg_removelocnf", arg2);
 		} else if (arg1.equalsIgnoreCase("timer") || arg1.equalsIgnoreCase("tmr")) {
 			TimersManager.removeTimer(sender, arg2);

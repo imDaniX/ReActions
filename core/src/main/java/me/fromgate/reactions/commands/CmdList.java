@@ -1,12 +1,13 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.customcommands.FakeCommander;
+import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -40,19 +41,21 @@ public class CmdList extends Cmd {
 
 			switch(arg1) {
 				case "type":
-					printActType(sender, mask, page, lpp);
+					printActType(sender, mask, page, lpp); break;
 				case "group":
-					printActGroup(sender, mask, page, lpp);
+					printActGroup(sender, mask, page, lpp); break;
 				case "timer": case "timers":
-					TimersManager.listTimers(sender, page);
+					TimersManager.listTimers(sender, page); break;
 				case "delay": case "delays":
-					Delayer.printDelayList(sender, page, lpp);
+					Delayer.printDelayList(sender, page, lpp); break;
 				case "loc": case "location":
-					Locator.printLocList(sender, page, lpp);
+					LocationHolder.printLocList(sender, page, lpp); break;
 				case "var": case "variables": case "variable":
-					Variables.printList(sender, page, mask);
+					Variables.printList(sender, page, mask); break;
 				case "menu": case "menus":
-					InventoryMenu.printMenuList(sender, page, mask);
+					InventoryMenu.printMenuList(sender, page, mask); break;
+				case "cmd": case "commands":
+					FakeCommander.list().forEach(sender::sendMessage); break;
 				default:
 					printAct(sender, page, lpp);
 			}
@@ -61,19 +64,19 @@ public class CmdList extends Cmd {
 	}
 
 	private void printAct(CommandSender sender, int page, int lpp) {
-		List<String> ag = ActivatorsManager.getActivatorsList();
+		List<String> ag = ActivatorsManager.getNames();
 		Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
-		Msg.MSG_LISTCOUNT.print(sender, ActivatorsManager.size(), Locator.sizeTpLoc());
+		Msg.MSG_LISTCOUNT.print(sender, ActivatorsManager.size(), LocationHolder.sizeTpLoc());
 	}
 
 	private void printActGroup(CommandSender sender, String group, int page, int lpp) {
-		List<String> ag = ActivatorsManager.getActivatorsListGroup(group);
+		List<String> ag = ActivatorsManager.getNamesByGroup(group);
 		Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}
 
 	private void printActType(CommandSender sender, String type, int page, int lpp) {
-		List<String> ag = ActivatorsManager.getActivatorsList(type);
+		List<String> ag = ActivatorsManager.getNamesByType(type);
 		Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
 		Msg.printPage(sender, ag, null, page, lpp, true);
 	}

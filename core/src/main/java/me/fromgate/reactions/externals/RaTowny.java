@@ -28,6 +28,7 @@ import com.palmergames.bukkit.towny.event.TownAddResidentEvent;
 import com.palmergames.bukkit.towny.event.TownRemoveResidentEvent;
 import com.palmergames.bukkit.towny.exceptions.EmptyTownException;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
+import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Resident;
 import com.palmergames.bukkit.towny.object.Town;
 import com.palmergames.bukkit.towny.object.TownyUniverse;
@@ -67,13 +68,12 @@ public class RaTowny {
 				try {
 					town = rsd.getTown();
 					if (!rsd.isMayor()) townRemoveResident(town, rsd);
-				} catch (Exception e) {
+				} catch (NotRegisteredException | EmptyTownException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
-
 
 	public static void townRemoveResident(Town town, Resident resident) throws NotRegisteredException, EmptyTownException {
 		if (connected) {
@@ -85,7 +85,6 @@ public class RaTowny {
 			Bukkit.getPluginManager().callEvent(new TownRemoveResidentEvent(resident, town));
 		}
 	}
-
 
 	public static void addToTown(Player p, String town) {
 		if (connected) {
@@ -111,7 +110,7 @@ public class RaTowny {
 						TownyUniverse.getDataSource().saveTown(newtown);
 						towny.getTownyUniverse().setChangedNotify(TOWN_ADD_RESIDENT);
 						Bukkit.getPluginManager().callEvent(new TownAddResidentEvent(rsd, newtown));
-					} catch (Exception e) {
+					} catch (TownyException e) {
 						e.printStackTrace();
 					}
 				}
@@ -136,7 +135,7 @@ public class RaTowny {
 		if (!rsd.hasTown()) return "";
 		try {
 			return rsd.getTown().getName();
-		} catch (Exception e) {
+		} catch (NotRegisteredException | NullPointerException e) {
 			return "";
 		}
 	}

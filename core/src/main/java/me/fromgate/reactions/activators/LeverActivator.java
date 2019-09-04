@@ -23,10 +23,11 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.LeverStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.LeverStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.parameter.BlockParam;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -51,7 +52,7 @@ public class LeverActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		LeverStorage le = (LeverStorage) event;
 		if (le.getLever() == null) return false;
 		if (!isLocatedAt(le.getLeverLocation())) return false;
@@ -93,7 +94,7 @@ public class LeverActivator extends Activator implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(world);
+		return !Util.isStringEmpty(world);
 	}
 
 	@Override
@@ -104,7 +105,9 @@ public class LeverActivator extends Activator implements Locatable {
 		return sb.toString();
 	}
 
-	public static LeverActivator create(ActivatorBase base, Param param) {
+	public static LeverActivator create(ActivatorBase base, Param p) {
+		if(!(p instanceof BlockParam)) return null;
+		BlockParam param = (BlockParam) p;
 		Block targetBlock = param.getBlock();
 		String line = param.toString();
 		if (targetBlock != null && targetBlock.getType() == Material.LEVER) {

@@ -44,7 +44,7 @@ public class FlagTime implements Flag {
 			String[] tln = time.split(",");
 			if (tln.length > 0) {
 				for (String timeStr : tln)
-					if (Util.INT.matcher(timeStr).matches()) {
+					if (Util.INT_POSITIVE.matcher(timeStr).matches()) {
 						int ct = (int) ((currentTime / 1000 + 6) % 24);
 						if (ct == Integer.parseInt(timeStr)) return true;
 					}

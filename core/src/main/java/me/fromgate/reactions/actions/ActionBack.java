@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.location.PushBack;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionBack extends Action {

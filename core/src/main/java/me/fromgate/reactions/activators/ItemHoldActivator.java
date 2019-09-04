@@ -24,14 +24,14 @@ package me.fromgate.reactions.activators;
 
 import lombok.Getter;
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.ItemHoldStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.ItemHoldStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ItemHoldActivator extends Activator {
@@ -44,7 +44,7 @@ public class ItemHoldActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		if (itemStr.isEmpty() || (ItemUtil.parseItemStack(itemStr) == null)) {
 			Msg.logOnce(getBase().getName() + "activatorholdempty", "Failed to parse itemStr of activator " + getBase().getName());
 			return false;
@@ -80,7 +80,7 @@ public class ItemHoldActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(itemStr);
+		return !Util.isStringEmpty(itemStr);
 	}
 
 	public static ItemHoldActivator create(ActivatorBase base, Param param) {

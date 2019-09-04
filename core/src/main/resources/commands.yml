@@ -1,0 +1,20 @@
+example:
+  command: example
+  alias:
+    - raexample
+    - test
+  prefix: raexample
+  exec: cmd_example
+largeexample:
+  command: lrgexample
+  alias:
+    - bigexample
+    - bigtest
+  prefix: raexample
+  permission: ra.command.example
+  exec: cmd_largeexample
+  backup: cmd_errorexample
+  args:
+    'msg ~player *':
+      ignore_after: true
+      exec: cmd_msg

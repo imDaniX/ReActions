@@ -28,7 +28,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.MessageActivator.Source;
-import me.fromgate.reactions.storage.StorageManager;
+import me.fromgate.reactions.storages.StoragesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONArray;
@@ -49,15 +49,9 @@ public class RaProtocolLib {
 	}
 
 	public static void connectProtocolLib() {
-		try {
-			if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-				connected = true;
-			}
-		} catch (Throwable e) {
-			connected = false;
-			ReActions.getPlugin().getLogger().info("Failed to connect to ProtocolLib. MESSAGE activator will not be able to handle chat-messages.");
-			return;
-		}
+		if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+			connected = true;
+		} else return;
 		initPacketListener();
 		ReActions.getPlugin().getLogger().info("ProtocolLib connected");
 
@@ -129,7 +123,7 @@ public class RaProtocolLib {
 							if (jsonMessage != null) message = textToString(jsonMessage);
 						}
 						if (message.isEmpty()) return;
-						if (StorageManager.raiseMessageActivator(event.getPlayer(), Source.CHAT_OUTPUT, message))
+						if (StoragesManager.raiseMessageActivator(event.getPlayer(), Source.CHAT_OUTPUT, message))
 							event.setCancelled(true);
 
 					}

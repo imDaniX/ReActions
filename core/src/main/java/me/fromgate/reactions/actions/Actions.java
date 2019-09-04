@@ -26,25 +26,29 @@ import lombok.Getter;
 import me.fromgate.reactions.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.placeholders.Placeholders;
+import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public enum Actions {
+	// TODO: ActionSetLevel, ActionModifyString, ActionKill
 	TP("tp", true, new ActionTp()),
 	VELOCITY("velocity", true, new ActionVelocity()),
 	VELOCITY_JUMP("jump", true, new ActionVelocityJump()),
 	SOUND("sound", false, new ActionSound()),
-	POTION("potion", true, new ActionPlayerPotion()),
-	POTION_REMOVE("rmvpot", true, new ActionPlayerPotionRemove()),
+	POTION("potion", true, new ActionPotion()),
+	POTION_REMOVE("rmvpot", true, new ActionPotionRemove()),
 	GROUP_ADD("grpadd", true, new ActionGroupAdd()),
 	GROUP_REMOVE("grprmv", true, new ActionGroupRemove()),
 	MESSAGE("msg", false, new ActionMessage()),
@@ -55,9 +59,11 @@ public enum Actions {
 	TOWN_SET("townset", true, new ActionTownSet()),
 	TOWN_KICK("townkick", true, new ActionTownKick()),
 	ITEM_GIVE("itemgive", true, new ActionItems(ItemActionType.GIVE_ITEM)),
+	// TODO: Don't like it
 	ITEM_REMOVE("itemrmv", true, new ActionItems(ItemActionType.REMOVE_ITEM_HAND)),
 	ITEM_REMOVE_OFFHAND("itemrmvoffhand", true, new ActionItems(ItemActionType.REMOVE_ITEM_OFFHAND)),
 	ITEM_REMOVE_INVENTORY("invitemrmv", true, new ActionItems(ItemActionType.REMOVE_ITEM_INVENTORY)),
+	//********************
 	ITEM_DROP("itemdrop", true, new ActionItems(ItemActionType.DROP_ITEM)),
 	ITEM_WEAR("itemwear", true, new ActionItems(ItemActionType.WEAR_ITEM)),
 	ITEM_UNWEAR("itemundress", true, new ActionItems(ItemActionType.UNWEAR_ITEM)),
@@ -124,6 +130,16 @@ public enum Actions {
 	private final boolean requirePlayer;
 	@Getter private final Action action;
 
+	private final static Map<String, Actions> BY_NAME;
+	static {
+		Map<String, Actions> byName = new HashMap<>();
+		for(Actions act : Actions.values()) {
+			byName.put(act.name(), act);
+			byName.put(act.alias.toUpperCase(), act);
+		}
+		BY_NAME = Collections.unmodifiableMap(byName);
+	}
+
 	Actions(String alias, boolean requirePlayer, Action action) {
 		this.alias = alias.toUpperCase();
 		this.requirePlayer = requirePlayer;
@@ -132,15 +148,12 @@ public enum Actions {
 	}
 
 	public static Actions getByName(String name) {
-		name = name.toUpperCase();
-		for (Actions at : Actions.values())
-			if (at.name().equals(name) || at.getAlias().equals(name)) return at;
-		return null;
+		return BY_NAME.get(name.toUpperCase());
 	}
 
 	public static String getValidName(String name) {
-		for (Actions at : Actions.values())
-			if (at.getAlias().equalsIgnoreCase(name)) return at.name();
+		Actions act = getByName(name);
+		if(act != null) return act.name();
 		return name;
 	}
 
@@ -161,7 +174,7 @@ public enum Actions {
 			if (at == Actions.WAIT) {
 				if (i == actions.size() - 1) continue;
 				ActionWait aw = (ActionWait) at.action;
-				Param param = new Param(Placeholders.replacePlaceholderButRaw(player, av.getValue()), "time");
+				Param param = new Param(PlaceholdersManager.replacePlaceholderButRaw(player, av.getValue()), "time");
 				String timeStr = param.getParam("time", "0");
 				long time = TimeUtil.parseTime(timeStr);
 				if (time == 0) continue;
@@ -169,7 +182,7 @@ public enum Actions {
 				aw.executeDelayed(player, futureList, isAction, time);
 				return cancelParentEvent;
 			}
-			if (at != null && at.performAction(player, isAction, new Param(Placeholders.replacePlaceholderButRaw(player, av.getValue())))) {
+			if (at != null && at.performAction(player, isAction, new Param(PlaceholdersManager.replacePlaceholderButRaw(player, av.getValue())))) {
 				cancelParentEvent = true;
 			}
 		}
@@ -182,18 +195,14 @@ public enum Actions {
 	}
 
 	public static boolean isValid(String name) {
-		for (Actions at : Actions.values()) {
-			if (at.name().equalsIgnoreCase(name)) return true;
-			if (at.getAlias().equalsIgnoreCase(name)) return true;
-		}
-		return false;
+		return getByName(name) != null;
 	}
 
 	public static void listActions(CommandSender sender, int pageNum) {
 		List<String> actionList = new ArrayList<>();
 		for (Actions actionType : Actions.values()) {
 			String name = actionType.name();
-			String alias = actionType.getAlias().equalsIgnoreCase(name) ? " " : " (" + actionType.getAlias() + ") ";
+			String alias = actionType.alias.equalsIgnoreCase(name) ? " " : " (" + actionType.alias + ") ";
 			Msg msg = Msg.getByName("action_" + name);
 			if (msg == null) {
 				Msg.LNG_FAIL_ACTION_DESC.log(name);
@@ -201,6 +210,6 @@ public enum Actions {
 				actionList.add("&6" + name + "&e" + alias + "&3: &a" + msg.getText("NOCOLOR"));
 			}
 		}
-		Util.printPage(sender, actionList, Msg.MSG_ACTIONLISTTITLE, pageNum);
+		BukkitMessenger.printPage(sender, actionList, Msg.MSG_ACTIONLISTTITLE, pageNum);
 	}
 }

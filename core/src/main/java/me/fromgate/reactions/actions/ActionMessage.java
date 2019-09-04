@@ -22,12 +22,11 @@
 
 package me.fromgate.reactions.actions;
 
-import com.google.common.base.Joiner;
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.playerselector.SelectorsManager;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -43,8 +42,7 @@ public class ActionMessage extends Action {
 	}
 
 	private String removeParams(String message) {
-		String sb = "(?i)(" + Joiner.on("|").join(SelectorsManager.getAllKeys()) +
-				"|hide):(\\{.*\\}|\\S+)\\s{0,1}";
+		String sb = "(?i)(" + String.join("|", SelectorsManager.getAllKeys()) + "|hide):(\\{.*\\}|\\S+)\\s?";
 		return message.replaceAll(sb, "");
 		//String message = params.getParam("text", params.getParam("param-line").replaceAll("(?i)(region|loc|radius|rgplayer|player|world|faction|group|perm):(\\{.*\\}|\\S+)\\s{0,1}", ""));
 
@@ -62,16 +60,35 @@ public class ActionMessage extends Action {
 		}
 		if (players.isEmpty()) return;
 
+		String type = params.getParam("type", "");
 		String message = params.getParam("text", removeParams(params.getParam("param-line")));
 		if (message.isEmpty()) return;
 		String annoymentTime = params.getParam("hide");
 		for (Player p : players) {
 			if (showMessage(p, message, annoymentTime)) {
-				Msg.printMessage(p, message);
+				switch (type.toLowerCase()) {
+					case "title":
+						p.sendTitle(Msg.colorize(message),
+								params.getParam("subtitle", null),
+								params.getParam("fadein", 10),
+								params.getParam("stay", 70),
+								params.getParam("fadeout", 20));
+						break;
+					case "subtitle":
+						p.sendTitle(null,
+								Msg.colorize(params.getParam("subtitle", null)),
+								params.getParam("fadein", 10),
+								params.getParam("stay", 70),
+								params.getParam("fadeout", 20));
+						break;
+					case "actionbar":
+						// TODO: Spigot-api or reflections/nms
+					default:
+						Msg.printMessage(p, message);
+				}
 			}
 		}
 	}
-
 
 	private boolean showMessage(Player player, String message, String annoymentTime) {
 		if (annoymentTime.isEmpty()) return true;

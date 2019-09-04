@@ -475,7 +475,7 @@ public enum Msg {
 	PLACEHOLDER_VAR("Variable value. Use syntax %var:<id>% to get global variable value and %varp:<id>% to get personal variable value"),
 	PLACEHOLDER_CALC("Calculates the expression and provide it's result. For example: \"%CALC:1+2%\" will be replaced to \"3\""),
 	PLACEHOLDER_SIGNACT("Activator-based placeholders. Provides SIGN activator locations and text-lines"),
-	PLACEHOLDER_COMMANDACT("Activator-based placeholders. Provides COMMAND activator parameters (arguments)"),
+	PLACEHOLDER_COMMANDACT("Activator-based placeholders. Provides PRECOMMAND activator parameters (arguments)"),
 	MSG_NEEDVDMID("You need to define id of element (variable, delay or menu)"),
 	LNG_MISSED_ACTIVATOR_DESC("Activator description undefined: %1%"),
 	LNG_FAIL_ACTION_MSG("Action message undefined: %1%"),
@@ -851,6 +851,7 @@ public enum Msg {
 	}
 
 	public static boolean logMessage(Object... s) {
+		if(s == null) return false;
 		messenger.log(clean(join(s)));
 		return true;
 	}

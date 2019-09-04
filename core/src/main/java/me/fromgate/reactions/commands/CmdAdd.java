@@ -3,15 +3,21 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.holders.LocationHolder;
+import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @CmdDefine(command = "react", description = Msg.CMD_ADD, permission = "reactions.config",
 		subCommands = {"add"}, allowConsole = true,
 		shortDescription = "&3/react add <Id> [f <flag> <param> | <a|r> <action> <param>")
 public class CmdAdd extends Cmd {
+
 	@Override
 	public boolean execute(CommandSender sender, String[] args) {
 		if (args.length == 1) return false;
@@ -26,7 +32,7 @@ public class CmdAdd extends Cmd {
 			arg4 = new StringBuilder(arg4.toString().trim());
 		}
 		if (ActivatorsManager.contains(arg1)) {
-			String param = Util.replaceStandardLocations(player, arg4.toString()); // используется в addActions
+			String param = replaceStandardLocations(player, arg4.toString()); // используется в addActions
 			if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
 				if (addAction(arg1, arg3, param)) {
 					ActivatorsManager.saveActivators();
@@ -83,5 +89,30 @@ public class CmdAdd extends Cmd {
 			return true;
 		}
 		return false;
+	}
+
+	private static String replaceStandardLocations(Player p, String param) {
+		if (p == null) return param;
+		Location targetBlock = null;
+		try {
+			targetBlock = p.getTargetBlock(null, 100).getLocation();
+		} catch (Exception ignored) {
+		}
+		Map<String, Location> locs = new HashMap<>();
+		locs.put("%here%", p.getLocation());
+		locs.put("%eye%", p.getEyeLocation());
+		locs.put("%head%", p.getEyeLocation());
+		locs.put("%viewpoint%", targetBlock);
+		locs.put("%view%", targetBlock);
+		locs.put("%selection%", LocationHolder.getHeld(p));
+		locs.put("%select%", LocationHolder.getHeld(p));
+		locs.put("%sel%", LocationHolder.getHeld(p));
+		String newparam = param;
+		for (String key : locs.keySet()) {
+			Location l = locs.get(key);
+			if (l == null) continue;
+			newparam = newparam.replace(key, LocationUtil.locationToString(l));
+		}
+		return newparam;
 	}
 }

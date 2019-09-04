@@ -23,9 +23,9 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaEffects;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionHeal extends Action {

@@ -23,10 +23,10 @@
 package me.fromgate.reactions.externals;
 
 import me.fromgate.playeffect.PlayEffect;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -37,23 +37,22 @@ import org.bukkit.plugin.Plugin;
 // TODO: PlayEffect is outdated
 public class RaEffects {
 
-
 	private static String effTypes = "smoke,flame,ender,potion";
-	private static boolean use_play_effects = false;
+	private static boolean usePlayEffects = false;
 
 	//ENDER_SIGNAL  POTION_BREAK MOBSPAWNER_FLAMES  SMOKE
 	public static void init() {
-		use_play_effects = isPlayEffectInstalled();
-		if (use_play_effects) Msg.logMessage("PlayEffect found");
+		usePlayEffects = isPlayEffectInstalled();
+		if (usePlayEffects) Msg.logMessage("PlayEffect found");
 		else {
-			Msg.logMessage("PlayEffect plugin is not found at your system");
 			Msg.logMessage("If you need more effects please download PlayEffect from:");
 			Msg.logMessage("http://dev.bukkit.org/bukkit-plugins/playeffect/");
+			Msg.logMessage("But... PlayEffect is outdated. Wait for update of plugin or my fork");
 		}
 	}
 
 	public static boolean isPlayEffectConnected() {
-		return use_play_effects;
+		return usePlayEffects;
 	}
 
 	private static boolean isPlayEffectInstalled() {
@@ -77,8 +76,8 @@ public class RaEffects {
 	}
 
 	public static void playEffect(Location loc, String eff, Param params) {
-		if (use_play_effects) {
-			params.set("loc", Locator.locationToString(loc));
+		if (usePlayEffects) {
+			params.set("loc", LocationUtil.locationToString(loc));
 			playPlayEffect(eff, params);
 		} else {
 			int data = params.isParamsExists("wind") ? parseSmokeDirection(params.getParam("wind")) : 9;
@@ -87,9 +86,9 @@ public class RaEffects {
 	}
 
 	public static void playEffect(Location loc, String eff, int data) {
-		if (use_play_effects) {
+		if (usePlayEffects) {
 			Param params = new Param();
-			params.set("loc", Locator.locationToString(loc));
+			params.set("loc", LocationUtil.locationToString(loc));
 			playPlayEffect(eff, params);
 		} else {
 			playStandardEffect(loc, eff, data);
@@ -105,7 +104,7 @@ public class RaEffects {
 		if (eff.equalsIgnoreCase("smoke")) {
 			if (mod < 0) mod = 0;
 			if (mod > 8) mod = 8;
-			if (data == 10) mod = Util.tryChance(9);
+			if (data == 10) mod = Util.getRandomInt(9);
 			if (data == 9) {
 				for (int i = 0; i < 9; i++)
 					w.playEffect(loc, Effect.SMOKE, i);
@@ -122,13 +121,13 @@ public class RaEffects {
 		String eff = params.getParam("eff", "");
 		Location pLoc = p != null ? p.getLocation() : null;
 		if (eff.isEmpty()) eff = params.getParam("type", "SMOKE"); // для совместимости со старыми версиями
-		Location loc = Locator.parseLocation(params.getParam("loc", ""), pLoc);
-		if (params.isParamsExists("loc")) params.set("loc", Locator.locationToString(loc));
+		Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), pLoc);
+		if (params.isParamsExists("loc")) params.set("loc", LocationUtil.locationToString(loc));
 		if (params.isParamsExists("loc1"))
-			params.set("loc1", Locator.locationToString(Locator.parseLocation(params.getParam("loc1", ""), pLoc)));
+			params.set("loc1", LocationUtil.locationToString(LocationUtil.parseLocation(params.getParam("loc1", ""), pLoc)));
 		if (params.isParamsExists("loc2"))
-			params.set("loc2", Locator.locationToString(Locator.parseLocation(params.getParam("loc2", ""), pLoc)));
-		if (use_play_effects) {
+			params.set("loc2", LocationUtil.locationToString(LocationUtil.parseLocation(params.getParam("loc2", ""), pLoc)));
+		if (usePlayEffects) {
 			playPlayEffect(eff, params);
 		} else {
 			int modifier;
@@ -138,53 +137,36 @@ public class RaEffects {
 			else modifier = Util.getMinMaxRandom(params.getParam("data", "0"));
 			radius = params.getParam("radius", 0);
 			boolean land = params.getParam("land", "true").equalsIgnoreCase("false");
-			if (radius > 0) loc = Locator.getRadiusLocation(loc, radius, land);
+			if (radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
 			playStandardEffect(loc, eff, modifier);
 		}
 	}
 
 	private static int parseSmokeDirection(String dirStr) {
-		int d = 10;
-		if (dirStr.equalsIgnoreCase("n")) {
-			d = 7;
+		switch (dirStr) {
+			case "n":
+				return 7;
+			case "nw":
+				return 8;
+			case "ne":
+				return 6;
+			case "s":
+				return 1;
+			case "sw":
+				return 2;
+			case "se":
+				return 0;
+			case "w":
+				return 5;
+			case "e":
+				return 3;
+			case "calm": case "up":
+				return 4;
+			case "all":
+				return 9;
+			default:
+				return 10;
 		}
-		if (dirStr.equalsIgnoreCase("nw")) {
-			d = 8;
-		}
-		if (dirStr.equalsIgnoreCase("ne")) {
-			d = 6;
-		}
-		if (dirStr.equalsIgnoreCase("s")) {
-			d = 1;
-		}
-		if (dirStr.equalsIgnoreCase("sw")) {
-			d = 2;
-		}
-		if (dirStr.equalsIgnoreCase("se")) {
-			d = 0;
-		}
-		if (dirStr.equalsIgnoreCase("w")) {
-			d = 5;
-		}
-		if (dirStr.equalsIgnoreCase("e")) {
-			d = 3;
-		}
-		if (dirStr.equalsIgnoreCase("calm")) {
-			d = 4;
-		}
-		if (dirStr.equalsIgnoreCase("up")) {
-			d = 4;
-		}
-		if (dirStr.equalsIgnoreCase("all")) {
-			d = 9;
-		}
-		if (dirStr.equalsIgnoreCase("rnd")) {
-			d = 10;
-		}
-		if (dirStr.equalsIgnoreCase("random")) {
-			d = 10;
-		}
-		return d;
 	}
 
 }

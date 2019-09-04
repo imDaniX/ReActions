@@ -25,13 +25,11 @@ package me.fromgate.reactions.flags;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.entity.Player;
 
-// TODO: Action to set level
 public class FlagLevel implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		if (!Util.isInteger(param)) return false;
-		return player.getLevel() >= Integer.parseInt(param);
+		return Util.isInteger(param) && player.getLevel() >= Integer.parseInt(param);
 	}
 
 }

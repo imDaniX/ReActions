@@ -23,17 +23,17 @@
 package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 
 public class Delayer {
@@ -41,36 +41,28 @@ public class Delayer {
 	private static Map<String, Long> delays = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	public static void save() {
-		try {
-			YamlConfiguration cfg = new YamlConfiguration();
-			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
-			if (f.exists()) f.delete();
-			f.createNewFile();
-			for (String key : delays.keySet()) {
-				long delaytime = delays.get(key);
-				if (delaytime > System.currentTimeMillis())
-					cfg.set(key, delaytime);
-			}
-			cfg.save(f);
-		} catch (Exception ignored) {
+		YamlConfiguration cfg = new YamlConfiguration();
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
+		if(!FileUtil.recreateFile(f, "Failed to recreate delays configuration file")) return;
+		for (String key : delays.keySet()) {
+			long delayTime = delays.get(key);
+			if (delayTime > System.currentTimeMillis())
+				cfg.set(key, delayTime);
 		}
+		FileUtil.saveCfg(cfg, f, "Failed to save delays configuration file");
 	}
 
 	public static void load() {
 		delays.clear();
-		try {
-			YamlConfiguration cfg = new YamlConfiguration();
-			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
-			if (!f.exists()) return;
-			cfg.load(f);
+		YamlConfiguration cfg = new YamlConfiguration();
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
+		if(FileUtil.loadCfg(cfg, f, "Failed to load delay configuration file"))
 			for (String key : cfg.getKeys(true)) {
 				if (!key.contains(".")) continue;
-				long delaytime = cfg.getLong(key);
-				if (delaytime > System.currentTimeMillis())
-					delays.put(key, delaytime);
+				long delayTime = cfg.getLong(key);
+				if (delayTime > System.currentTimeMillis())
+					delays.put(key, delayTime);
 			}
-		} catch (Exception ignored) {
-		}
 	}
 
 	public static boolean checkDelay(String id, long updateTime) {
@@ -100,15 +92,14 @@ public class Delayer {
 	}
 
 	public static void printDelayList(CommandSender sender, int pageNum, int linePerPage) {
-		List<String> lst = new ArrayList<>();
+		Set<String> lst = new TreeSet<>();
 		for (String key : delays.keySet()) {
-			long delaytime = delays.get(key);
-			if (delaytime < System.currentTimeMillis()) continue;
+			long delayTime = delays.get(key);
+			if (delayTime < System.currentTimeMillis()) continue;
 			String[] ln = key.split("\\.", 2);
 			if (ln.length != 2) continue;
 			lst.add("[" + ln[0] + "] " + ln[1] + ": " + TimeUtil.fullTimeToString(delays.get(key)));
 		}
-		Collections.sort(lst);
 		Msg.printPage(sender, lst, Msg.MSG_LISTDELAY, pageNum, linePerPage, true);
 	}
 

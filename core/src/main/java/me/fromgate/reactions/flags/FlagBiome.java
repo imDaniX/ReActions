@@ -29,10 +29,11 @@ public class FlagBiome implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		Biome b;
-		try{b = Biome.valueOf(param.toUpperCase());}
-		catch(Exception ignore) {b = Biome.PLAINS;}
-		return player.getLocation().getBlock().getBiome() == b;
+		if(player != null)
+			try {
+				return player.getLocation().getBlock().getBiome() == Biome.valueOf(param.toUpperCase());
+			} catch(IllegalArgumentException ignore) {}
+		return false;
 	}
 
 }

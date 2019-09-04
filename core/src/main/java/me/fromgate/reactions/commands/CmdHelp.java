@@ -3,7 +3,7 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.placeholders.Placeholders;
+import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
@@ -28,7 +28,7 @@ public class CmdHelp extends Cmd {
 		} else if (arg1.equalsIgnoreCase("activator") || arg1.equalsIgnoreCase("activators")) {
 			ActivatorType.listActivators(sender, page);
 		} else if (arg1.equalsIgnoreCase("placeholder") || arg1.equalsIgnoreCase("placeholders")) {
-			Placeholders.listPlaceholders(sender, page);
+			PlaceholdersManager.listPlaceholders(sender, page);
 		} else {
 			if (!arg1.equalsIgnoreCase("help")) page = 1;
 			Commander.printHelp(sender, page);

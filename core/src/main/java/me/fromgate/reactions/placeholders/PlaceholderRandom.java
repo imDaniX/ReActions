@@ -17,7 +17,7 @@ public class PlaceholderRandom extends Placeholder {
 
 
 	private String random(String rndStr) {
-		if (Util.INT.matcher(rndStr).matches())
+		if (Util.INT_POSITIVE.matcher(rndStr).matches())
 			return Integer.toString(Util.getRandomInt(Integer.parseInt(rndStr)));
 
 		if (Util.INT_MIN_MAX.matcher(rndStr).matches())

@@ -24,6 +24,7 @@ package me.fromgate.reactions.util.message;
 
 import java.util.Map;
 
+// Why does this interface/class exist? Nukkit?
 public interface Messenger {
 
 	String colorize(String text);

@@ -3,11 +3,12 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.customcommands.FakeCommander;
+import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.location.Locator;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
@@ -27,13 +28,13 @@ public class CmdReload extends Cmd {
 			if(check.contains("a")) {
 				ActivatorsManager.clear();
 				ActivatorsManager.loadActivators();
-				FakeCmd.updateAllCommands();
 			}
 			if(check.contains("l"))
-				Locator.loadLocs();
+				LocationHolder.loadLocs();
 			if(check.contains("c")) {
 				ReActions.getPlugin().reloadConfig();
 				Cfg.load();
+				FakeCommander.updateCommands();
 			}
 			if(check.contains("d"))
 				Delayer.load();
@@ -49,7 +50,7 @@ public class CmdReload extends Cmd {
 		} else {
 			ActivatorsManager.clear();
 			ActivatorsManager.loadActivators();
-			Locator.loadLocs();
+			LocationHolder.loadLocs();
 			ReActions.getPlugin().reloadConfig();
 			Cfg.load();
 			Delayer.load();
@@ -57,9 +58,9 @@ public class CmdReload extends Cmd {
 			else Variables.loadVars();
 			TimersManager.init();
 			InventoryMenu.load();
-			FakeCmd.updateAllCommands();
+			FakeCommander.updateCommands();
 		}
-		Msg.MSG_CMDRELOAD.print(sender, ActivatorsManager.size(), Locator.sizeTpLoc());
+		Msg.MSG_CMDRELOAD.print(sender, ActivatorsManager.size(), LocationHolder.sizeTpLoc());
 		return true;
 	}
 

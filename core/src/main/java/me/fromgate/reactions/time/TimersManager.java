@@ -23,9 +23,10 @@
 package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storage.StorageManager;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -33,7 +34,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -192,7 +192,7 @@ public class TimersManager {
 			for (String key : timers.keySet()) {
 				Timer timer = timers.get(key);
 				if (timer.isTimeToRun()) {
-					Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> StorageManager.raiseExecActivator(null, timer.getParams()));
+					Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> StoragesManager.raiseExecActivator(null, timer.getParams()));
 				}
 			}
 		}, 1, 4);
@@ -203,12 +203,11 @@ public class TimersManager {
 		serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
 			for (Timer timer : getServerTimers().values()) {
 				if (timer.isTimeToRun()) {
-					Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> StorageManager.raiseExecActivator(null, timer.getParams()));
+					Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> StoragesManager.raiseExecActivator(null, timer.getParams()));
 				}
 			}
 		}, 1, 20);
 	}
-
 
 	public static String getCurrentIngameTime() {
 		return currentIngameTime;
@@ -223,29 +222,24 @@ public class TimersManager {
 		timers.clear();
 		YamlConfiguration cfg = new YamlConfiguration();
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "timers.yml");
-		if (!f.exists()) return;
-		try {
-			cfg.load(f);
-		} catch (Exception e) {
-			Msg.logMessage("Failed to save timers.yml file");
-			return;
-		}
-		for (String timerType : cfg.getKeys(false)) {
-			if (!(timerType.equalsIgnoreCase("INGAME") || timerType.equalsIgnoreCase("SERVER"))) continue;
-			ConfigurationSection cs = cfg.getConfigurationSection(timerType);
-			if (cs == null) continue;
-			for (String timerId : cs.getKeys(false)) {
-				ConfigurationSection csParams = cs.getConfigurationSection(timerId);
-				if (csParams == null) continue;
-				Param params = new Param();
-				params.set("timer-type", timerType);
-				for (String param : csParams.getKeys(true)) {
-					if (!csParams.isString(param)) continue;
-					params.set(param, csParams.getString(param));
+		FileUtil.recreateFile(f, null);
+		if(FileUtil.loadCfg(cfg, f, "Failed to load timers.yml file"))
+			for (String timerType : cfg.getKeys(false)) {
+				if (!(timerType.equalsIgnoreCase("INGAME") || timerType.equalsIgnoreCase("SERVER"))) continue;
+				ConfigurationSection cs = cfg.getConfigurationSection(timerType);
+				if (cs == null) continue;
+				for (String timerId : cs.getKeys(false)) {
+					ConfigurationSection csParams = cs.getConfigurationSection(timerId);
+					if (csParams == null) continue;
+					Param params = new Param();
+					params.set("timer-type", timerType);
+					for (String param : csParams.getKeys(true)) {
+						if (!csParams.isString(param)) continue;
+						params.set(param, csParams.getString(param));
+					}
+					addTimer(timerId, params);
 				}
-				addTimer(timerId, params);
 			}
-		}
 	}
 
 	public static void save() {
@@ -264,11 +258,7 @@ public class TimersManager {
 				cfg.set(root + key, key.equalsIgnoreCase("time") ? params.getParam(key).replace("_", " ") : params.getParam(key));
 			}
 		}
-		try {
-			cfg.save(f);
-		} catch (IOException e) {
-			Msg.logMessage("Failed to save timers.yml file");
-		}
+		FileUtil.saveCfg(cfg, f, "Failed to save timers.yml file");
 	}
 
 	public static boolean isTimerExists(String timerName) {

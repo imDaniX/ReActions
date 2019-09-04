@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -37,7 +37,7 @@ public class FlagPowered implements Flag {
 		Param params = new Param(param);
 		String locStr = params.isParamsExists("loc") ? params.getParam("loc", "") : param;
 		if (locStr.isEmpty()) return false;
-		Location loc = Locator.parseLocation(locStr, null);
+		Location loc = LocationUtil.parseLocation(locStr, null);
 		if (loc == null) return false;
 		Block b = loc.getBlock();
 		BlockData data = b.getBlockData();

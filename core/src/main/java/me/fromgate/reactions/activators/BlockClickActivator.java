@@ -23,13 +23,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.BlockClickStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.BlockClickStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.enums.ClickType;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
-import me.fromgate.reactions.util.simpledata.ClickType;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -49,12 +49,12 @@ public class BlockClickActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		BlockClickStorage bce = (BlockClickStorage) event;
 		if (bce.getBlock() == null) return false;
 		if (!isActivatorBlock(bce.getBlock())) return false;
 		if (click.checkRight(bce.isLeftClick())) return false;
-		Variables.setTempVar("blocklocation", Locator.locationToString(bce.getBlock().getLocation()));
+		Variables.setTempVar("blocklocation", LocationUtil.locationToString(bce.getBlock().getLocation()));
 		Variables.setTempVar("blocktype", bce.getBlock().getType().name());
 		Variables.setTempVar("click", bce.isLeftClick() ? "left" : "right");
 		return Actions.executeActivator(bce.getPlayer(), getBase());
@@ -75,7 +75,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 	public boolean isLocatedAt(Location l) {
 		if (this.blockLocation.isEmpty()) return false;
 		// Location loc = Locator.parseCoordinates(this.blockLocation);
-		Location loc = Locator.parseLocation(this.blockLocation, null);
+		Location loc = LocationUtil.parseLocation(this.blockLocation, null);
 		if (loc == null) return false;
 		return l.getWorld().equals(loc.getWorld()) &&
 				l.getBlockX() == loc.getBlockX() &&

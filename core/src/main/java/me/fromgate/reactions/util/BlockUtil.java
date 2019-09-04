@@ -1,6 +1,5 @@
 package me.fromgate.reactions.util;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.block.Block;
@@ -33,10 +32,6 @@ public class BlockUtil {
 	public static boolean isSign(Block block) {
 		try {return Tag.SIGNS.isTagged(block.getType());}
 		catch(NoSuchFieldError e) {return block.getType().name().contains("SIGN");}
-	}
-
-	public static boolean isSameBlock(Location loc1, Location loc2) {
-		return loc1.getWorld().equals(loc2.getWorld()) && !(loc1.getBlockX() != loc2.getX()) && !(loc1.getBlockZ() != loc2.getZ()) && !(loc1.getBlockY() != loc2.getY());
 	}
 
 	public static boolean setOpen(Block b, boolean open) {

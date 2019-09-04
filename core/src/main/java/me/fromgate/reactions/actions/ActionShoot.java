@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Shoot;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionShoot extends Action {

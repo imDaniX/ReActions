@@ -24,9 +24,9 @@ package me.fromgate.reactions.actions;
 
 import lombok.Setter;
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 
@@ -43,7 +43,7 @@ public abstract class Action {
 		return this.actionExecuting;
 	}
 
-	public boolean executeAction(Player player, boolean action, Param params) {
+	public final boolean executeAction(Player player, boolean action, Param params) {
 		this.actionExecuting = action;
 		//this.activator = a;
 		if (!params.hasAnyParam("param-line")) params.set("param-line", "");

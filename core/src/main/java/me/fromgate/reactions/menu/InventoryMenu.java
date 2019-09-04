@@ -1,10 +1,11 @@
 package me.fromgate.reactions.menu;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storage.StorageManager;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -28,6 +29,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class InventoryMenu implements Listener {
+	// TODO: Some things are weird
 
 	private static Map<Integer, List<String>> activeMenus = new HashMap<>();
 	private static Map<String, VirtualInventory> menu = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
@@ -46,11 +48,7 @@ public class InventoryMenu implements Listener {
 		for (String key : menu.keySet()) {
 			menu.get(key).save(cfg, key);
 		}
-		try {
-			cfg.save(f);
-		} catch (Exception e) {
-			Msg.logMessage("Failed to save menu configuration file");
-		}
+		FileUtil.saveCfg(cfg, f, "Failed to save menu configuration file");
 	}
 
 	public static void load() {
@@ -58,15 +56,11 @@ public class InventoryMenu implements Listener {
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
 		if (!f.exists()) return;
 		YamlConfiguration cfg = new YamlConfiguration();
-		try {
-			cfg.load(f);
+		if(FileUtil.loadCfg(cfg, f, "Failed to load menu configuration file"))
 			for (String key : cfg.getKeys(false)) {
 				VirtualInventory vi = new VirtualInventory(cfg, key);
 				menu.put(key, vi);
 			}
-		} catch (Exception e) {
-			Msg.logMessage("Failed to load menu configuration file");
-		}
 	}
 
 	public static boolean add(String id, int size, String title) {
@@ -196,7 +190,7 @@ public class InventoryMenu implements Listener {
 		if (activators.size() > clickedSlot) {
 			String activator = activators.get(clickedSlot);
 			if (!activator.isEmpty()) {
-				StorageManager.raiseExecActivator(player, new Param(activator, "activator"), tempvars);
+				StoragesManager.raiseExecActivator(player, new Param(activator, "activator"), tempvars);
 			}
 		}
 		event.setCancelled(true);

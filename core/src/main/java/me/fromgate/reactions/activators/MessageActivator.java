@@ -24,11 +24,11 @@ package me.fromgate.reactions.activators;
 
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.MessageStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.MessageStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.regex.Pattern;
@@ -104,7 +104,7 @@ public class MessageActivator extends Activator {
 
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		MessageStorage e = (MessageStorage) event;
 		if (!e.isForActivator(this)) return false;
 		setTempVars(e.getMessage());
@@ -118,7 +118,7 @@ public class MessageActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(mask);
+		return !Util.isStringEmpty(mask);
 	}
 
 	public boolean filterMessage(Source source, String message) {
@@ -151,11 +151,11 @@ public class MessageActivator extends Activator {
 			for (int i = 0; i < args.length; i++) {
 				Variables.setTempVar("word" + (i + 1), args[i]);
 				Variables.setTempVar("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
-				if (Util.INT_NEG.matcher(args[i]).matches()) {
+				if (Util.INT.matcher(args[i]).matches()) {
 					countInt++;
 					Variables.setTempVar("int" + countInt, args[i]);
 				}
-				if (Util.FLOAT_NEG.matcher(args[i]).matches()) {
+				if (Util.FLOAT.matcher(args[i]).matches()) {
 					countNum++;
 					Variables.setTempVar("num" + countNum, args[i]);
 				}

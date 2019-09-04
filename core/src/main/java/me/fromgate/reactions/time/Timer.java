@@ -24,8 +24,8 @@ package me.fromgate.reactions.time;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.quartz.CronExpression;
 
 import java.text.ParseException;

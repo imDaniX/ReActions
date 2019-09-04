@@ -24,8 +24,9 @@ package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storage.StorageManager;
+import me.fromgate.reactions.storages.StoragesManager;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,6 +42,7 @@ import java.util.UUID;
 import java.util.regex.Pattern;
 
 public class Variables {
+	// TODO: Something like classes and objects that just contains variables - actually just global variables
 
 	private static Map<String, String> vars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 	// TODO: I think it would be better to store and transfer temp variables inside Activator and Action classes
@@ -62,7 +64,7 @@ public class Variables {
 		vars.put(varId(player, var), value);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player);
-		StorageManager.raiseVariableActivator(var, player, value, prevVal);
+		StoragesManager.raiseVariableActivator(var, player, value, prevVal);
 	}
 
 	public static void setVar(Player player, String var, String value) {
@@ -70,7 +72,7 @@ public class Variables {
 		vars.put(varId(player, var), value);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player.getName());
-		StorageManager.raiseVariableActivator(var, player == null ? "" : player.getName(), value, prevVal);
+		StoragesManager.raiseVariableActivator(var, player == null ? "" : player.getName(), value, prevVal);
 	}
 
 	public static void clearVar(Player player, String var) {
@@ -79,7 +81,7 @@ public class Variables {
 		vars.remove(id);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player.getName());
-		StorageManager.raiseVariableActivator(var, player == null ? "" : player.getName(), "", prevVal);
+		StoragesManager.raiseVariableActivator(var, player == null ? "" : player.getName(), "", prevVal);
 	}
 
 	public static boolean clearVar(String player, String var) {
@@ -89,7 +91,7 @@ public class Variables {
 		vars.remove(id);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player);
-		StorageManager.raiseVariableActivator(var, player, "", prevVal);
+		StoragesManager.raiseVariableActivator(var, player, "", prevVal);
 		return true;
 	}
 
@@ -180,16 +182,13 @@ public class Variables {
 
 
 	public static void save() {
-		try {
-			YamlConfiguration cfg = new YamlConfiguration();
-			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml");
-			if (f.exists()) f.delete();
-			f.createNewFile();
-			for (String key : vars.keySet())
-				cfg.set(key, vars.get(key));
-			cfg.save(f);
-		} catch (Exception ignored) {
-		}
+		YamlConfiguration cfg = new YamlConfiguration();
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml");
+		if(!FileUtil.recreateFile(f, "Failed to recreate variables configuration file")) return;
+
+		for (String key : vars.keySet())
+			cfg.set(key, vars.get(key));
+		FileUtil.saveCfg(cfg, f, "Failed to save variables configuration file");
 	}
 
 	public static void save(String player) {
@@ -198,25 +197,21 @@ public class Variables {
 	}
 
 	public static void savePlayer(String player) {
-		try {
-			YamlConfiguration cfg = new YamlConfiguration();
-			String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
-			File dir = new File(varDir);
-			if (!dir.exists() && !dir.mkdirs()) return;
-			saveGeneral();
-			if (player == null || player.isEmpty()) return;
-			UUID id = Util.getUUID(player);
-			if (id == null) return;
-			File f = new File(varDir + File.separator + id.toString() + ".yml");
-			if (f.exists()) f.delete();
-			f.createNewFile();
-			for (String key : vars.keySet()) {
-				if (key.contains(player)) cfg.set(key, vars.get(key));
-			}
-			cfg.save(f);
-			removePlayerVars(player);
-		} catch (Exception ignored) {
+		YamlConfiguration cfg = new YamlConfiguration();
+		String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
+		File dir = new File(varDir);
+		if (!dir.exists() && !dir.mkdirs()) return;
+		saveGeneral();
+		if (player == null || player.isEmpty()) return;
+		UUID id = Util.getUUID(player);
+		if (id == null) return;
+		File f = new File(varDir + File.separator + id.toString() + ".yml");
+		if(!FileUtil.recreateFile(f, "Failed to recreate variable configuration file")) return;
+		for (String key : vars.keySet()) {
+			if (key.contains(player)) cfg.set(key, vars.get(key));
 		}
+		if(FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file"))
+			removePlayerVars(player);
 	}
 
 	public static void saveAsync(String player) {
@@ -225,18 +220,14 @@ public class Variables {
 	}
 
 	private static void saveGeneral() {
-		try {
-			YamlConfiguration cfg = new YamlConfiguration();
-			String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
-			File f = new File(varDir + File.separator + "general.yml");
-			if (f.exists()) f.delete();
-			f.createNewFile();
-			for (String key : vars.keySet()) {
-				if (key.contains("general")) cfg.set(key, vars.get(key));
-			}
-			cfg.save(f);
-		} catch (Exception ignored) {
+		YamlConfiguration cfg = new YamlConfiguration();
+		String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
+		File f = new File(varDir + File.separator + "general.yml");
+		if(!FileUtil.recreateFile(f, "Failed to recreate variable configuration file")) return;
+		for (String key : vars.keySet()) {
+			if (key.contains("general")) cfg.set(key, vars.get(key));
 		}
+		FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file");
 	}
 
 	public static void load() {
@@ -293,27 +284,24 @@ public class Variables {
 	}
 
 	private static void removePlayerVars(String player) {
-		try {
-			Map<String, String> vars_tmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-			YamlConfiguration cfg = new YamlConfiguration();
-			String fileName = ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml";
-			File f = new File(fileName);
-			if (!f.exists()) return;
-			cfg.load(f);
-			for (String key : cfg.getKeys(true)) {
-				if (!key.contains(".")) continue;
-				if (key.contains(player) || key.contains("general")) continue;
-				vars_tmp.put(key, cfg.getString(key));
-			}
+		Map<String, String> varsTmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+		YamlConfiguration cfg = new YamlConfiguration();
+		String fileName = ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml";
+		File f = new File(fileName);
+		if (!f.exists()) return;
+		if(!FileUtil.loadCfg(cfg, f, "Failed to load variable file")) return;
+		for (String key : cfg.getKeys(true)) {
+			if (!key.contains(".")) continue;
+			if (key.contains(player) || key.contains("general")) continue;
+			varsTmp.put(key, cfg.getString(key));
+		}
 
-			YamlConfiguration cfg2 = new YamlConfiguration();
-			if (f.delete() && f.createNewFile()) {
-				for (String key : vars_tmp.keySet())
-					cfg2.set(key, vars_tmp.get(key));
-				cfg2.save(f);
-				vars_tmp.clear();
-			}
-		} catch (Exception ignored) {
+		YamlConfiguration cfg2 = new YamlConfiguration();
+		if (FileUtil.recreateFile(f, "Failed to recreate variable file")) {
+			for (String key : varsTmp.keySet())
+				cfg2.set(key, varsTmp.get(key));
+			if(!FileUtil.saveCfg(cfg2, f, "Failed to save variable file")) return;
+			varsTmp.clear();
 		}
 	}
 
@@ -396,7 +384,7 @@ public class Variables {
 	public static boolean isNumber(String... str) {
 		if (str.length == 0) return false;
 		for (String s : str)
-			if (!Util.FLOAT_NEG.matcher(s).matches()) return false;
+			if (!Util.FLOAT.matcher(s).matches()) return false;
 		return true;
 	}
 

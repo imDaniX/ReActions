@@ -24,26 +24,32 @@ package me.fromgate.reactions.activators;
 
 
 import lombok.Getter;
-import me.fromgate.reactions.util.Param;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.RaSupplier;
+import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+// TODO: Will be irrelevant because of modules(externals) system
 public enum ActivatorType {
-	// Actually all the constructors can be private. Maybe use factory instead of lambda'n'interface abuse?
-	// alias, create method, load method, can be located, need target block
-	EXEC("exe", Activator::create, Activator::load),
+	// alias, creator method, loader method, can be located, need target block
+	// TODO: GlideActivator, MoneyTransactionActivator
+	EXEC("exe", ExecActivator::create, ExecActivator::load),
 	BUTTON("b", ButtonActivator::create, ButtonActivator::load, true, true),
 	PLATE("plt", PlateActivator::create, PlateActivator::load, true, true),
-	COMMAND("cmd", CommandActivator::create, CommandActivator::load),
+	TELEPORT("tp", TeleportActivator::create, TeleportActivator::load, true),
+	PRECOMMAND("cmd", PrecommandActivator::create, PrecommandActivator::load),
 	MESSAGE("msg", MessageActivator::create, MessageActivator::load),
 	PVP_KILL("pvpkill", PvpKillActivator::create, PvpKillActivator::load),
-	PLAYER_DEATH("PVP_DEATH", PlayerDeathActivator::create, PlayerDeathActivator::load),
-	PLAYER_RESPAWN("PVP_RESPAWN", PlayerRespawnActivator::create, PlayerRespawnActivator::load),
+	DEATH("player_death", DeathActivator::create, DeathActivator::load),
+	RESPAWN("player_respawn", RespawnActivator::create, RespawnActivator::load),
 	LEVER("lvr", LeverActivator::create, LeverActivator::load, true, true),
 	DOOR("door", DoorActivator::create, DoorActivator::load, true, true),
 	JOIN("join", JoinActivator::create, JoinActivator::load),
@@ -87,60 +93,61 @@ public enum ActivatorType {
 	FCT_DISBAND("fctdisband", FactionDisbandActivator::create, FactionDisbandActivator::load);
 
 	private final String alias;
-	private final RaSupplier<Param> create;
-	private final RaSupplier<ConfigurationSection> load;
-	@Getter private final boolean needTargetBlock;
-	@Getter private final boolean located;
+	private final RaSupplier<Param> creator;
+	private final RaSupplier<ConfigurationSection> loader;
+	@Getter private final boolean needBlock;
+	@Getter private final boolean locatable;
 
-	ActivatorType(String alias, RaSupplier<Param> create, RaSupplier<ConfigurationSection> load, boolean located, boolean needTargetBlock) {
+	private final static Map<String, ActivatorType> BY_NAME;
+	static {
+		Map<String, ActivatorType> byName = new HashMap<>();
+		for(ActivatorType act : ActivatorType.values()) {
+			byName.put(act.name(), act);
+			byName.put(act.alias.toUpperCase(), act);
+		}
+		BY_NAME = Collections.unmodifiableMap(byName);
+	}
+
+	ActivatorType(String alias, RaSupplier<Param> creator, RaSupplier<ConfigurationSection> loader, boolean locatable, boolean needBlock) {
 		this.alias = alias.toUpperCase();
-		this.create = create;
-		this.load = load;
-		this.needTargetBlock = needTargetBlock;
-		this.located = located;
+		this.creator = creator;
+		this.loader = loader;
+		this.needBlock = needBlock;
+		this.locatable = locatable;
 	}
 
-	ActivatorType(String alias, RaSupplier<Param> create, RaSupplier<ConfigurationSection> load, boolean located) {
-		this(alias, create, load, located, false);
+	ActivatorType(String alias, RaSupplier<Param> creator, RaSupplier<ConfigurationSection> loader, boolean locatable) {
+		this(alias, creator, loader, locatable, false);
 	}
 
-	ActivatorType(String alias, RaSupplier<Param> create, RaSupplier<ConfigurationSection> load) {
-		this(alias, create, load, false);
+	ActivatorType(String alias, RaSupplier<Param> creator, RaSupplier<ConfigurationSection> loader) {
+		this(alias, creator, loader, false);
 	}
 
 	public Activator create(String name, String group, Param param) {
 		ActivatorBase base = new ActivatorBase(name, group);
-		return create.get(base, param);
+		return creator.generate(base, param);
 	}
 
 	public Activator load(String name, String group, ConfigurationSection cfg) {
 		ActivatorBase base = new ActivatorBase(name, group, cfg);
-		return load.get(base, cfg);
+		return loader.generate(base, cfg);
 	}
 
-	public String getAlias() {
-		return this.alias;
-	}
-
+	@SuppressWarnings("unused")
 	public static boolean isValid(String str) {
-		str = str.toUpperCase();
-		for (ActivatorType at : ActivatorType.values())
-			if (at.name().equals(str) || at.alias.equals(str)) return true;
-		return false;
+		return getByName(str) != null;
 	}
 
 	public static ActivatorType getByName(String name) {
-		name = name.toUpperCase();
-		for (ActivatorType at : ActivatorType.values())
-			if (at.name().equals(name) || at.getAlias().equals(name)) return at;
-		return null;
+		return BY_NAME.get(name.toUpperCase());
 	}
 
 	public static void listActivators(CommandSender sender, int pageNum) {
 		List<String> activatorList = new ArrayList<>();
 		for (ActivatorType activatorType : ActivatorType.values()) {
 			String name = activatorType.name();
-			String alias = activatorType.getAlias().equalsIgnoreCase(name) ? " " : " (" + activatorType.getAlias() + ") ";
+			String alias = activatorType.alias.equalsIgnoreCase(name) ? " " : " (" + activatorType.alias + ") ";
 			Msg activatorDesc = Msg.getByName("ACTIVATOR_" + name);
 			if (activatorDesc == null) {
 				Msg.LNG_MISSED_ACTIVATOR_DESC.log(name);
@@ -148,11 +155,7 @@ public enum ActivatorType {
 				activatorList.add("&6" + name + "&e" + alias + "&3: &a" + activatorDesc.getText("NOCOLOR"));
 			}
 		}
-		Util.printPage(sender, activatorList, Msg.MSG_ACTIVATORLISTTITLE, pageNum);
+		BukkitMessenger.printPage(sender, activatorList, Msg.MSG_ACTIVATORLISTTITLE, pageNum);
 	}
 
-	@FunctionalInterface
-	public interface RaSupplier<T> {
-		Activator get(ActivatorBase base, T t);
-	}
 }

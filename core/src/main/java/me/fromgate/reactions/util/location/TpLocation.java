@@ -30,7 +30,6 @@ import org.bukkit.World;
 
 import java.text.DecimalFormat;
 
-// Maybe use it in activators?
 public class TpLocation {
 	private static final DecimalFormat FORMAT = new DecimalFormat("####0.##");
 	@Getter private final String world;

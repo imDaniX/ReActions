@@ -24,11 +24,11 @@ package me.fromgate.reactions.activators;
 
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.storage.VariableStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.Storage;
+import me.fromgate.reactions.storages.VariableStorage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class VariableActivator extends Activator {
@@ -42,7 +42,7 @@ public class VariableActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		VariableStorage ve = (VariableStorage) event;
 		if (!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
 		if (personal && ve.getPlayer() != null) return false;
@@ -65,7 +65,7 @@ public class VariableActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(id);
+		return !Util.isStringEmpty(id);
 	}
 
 	@Override

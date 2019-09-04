@@ -23,18 +23,20 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.Collection;
 import java.util.List;
 
 public class ActionClearRegion extends Action {
+	// TODO: Too weird. Optimize, simplify
 
 	@Override
 	public boolean execute(Player p, Param params) {
@@ -44,7 +46,7 @@ public class ActionClearRegion extends Action {
 		if (!RaWorldGuard.isConnected()) return false;
 		List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(region);
 		if (locs.size() != 2) return false;
-		List<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
+		Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
 		int count = 0;
 		for (Entity e : en) {
 			if (e.getType() == EntityType.PLAYER) continue;

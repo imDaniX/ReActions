@@ -29,10 +29,11 @@ public class FlagGamemode implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		GameMode gm;
-		try {gm = GameMode.valueOf(param.toUpperCase());}
-		catch(Exception ignore) {gm = GameMode.SURVIVAL;}
-		return gm == player.getGameMode();
+		if(player != null)
+			try {
+				return player.getGameMode() == GameMode.valueOf(param.toUpperCase());
+			} catch(IllegalArgumentException ignore) {}
+		return false;
 	}
 
 }

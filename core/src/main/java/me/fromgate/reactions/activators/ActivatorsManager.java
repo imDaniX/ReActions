@@ -26,8 +26,9 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.flags.StoredFlag;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.time.TimersManager;
+import me.fromgate.reactions.storages.Storage;
+import me.fromgate.reactions.util.FileUtil;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -41,21 +42,23 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class ActivatorsManager {
 
-	private static HashMap<ActivatorType, Set<Activator>> activatorsMap;
-	private static HashMap<String, Activator> activators;
+	private static Map<ActivatorType, Set<Activator>> typeActivators;
+	// Names in lower case
+	private static Map<String, Activator> activators;
 	private static Set<String> stopexec;
 
 	/**
 	 * Initialize variables
 	 */
 	public static void init() {
-		activatorsMap = new HashMap<>();
+		typeActivators = new HashMap<>();
 		for(ActivatorType type : ActivatorType.values())
-			activatorsMap.put(type, new HashSet<>());
+			typeActivators.put(type, new HashSet<>());
 		activators = new HashMap<>();
 		stopexec = new HashSet<>();
 		loadActivators();
@@ -69,7 +72,6 @@ public class ActivatorsManager {
 		if (!groups.isEmpty())
 			for (String group : groups)
 				loadActivators(group, false);
-		TimersManager.updateIngameTimers();
 		RaWorldGuard.updateRegionCache();
 	}
 
@@ -108,7 +110,7 @@ public class ActivatorsManager {
 	 * Clear all the activators
 	 */
 	public static void clear() {
-		activatorsMap.values().forEach(Set::clear);
+		typeActivators.values().forEach(Set::clear);
 		activators.clear();
 	}
 
@@ -123,8 +125,8 @@ public class ActivatorsManager {
 	public static List<Activator> getActivatorInLocation(World world, int x, int y, int z) {
 		List<Activator> found = new ArrayList<>();
 		for (ActivatorType type : ActivatorType.values())
-			if(type.isLocated())
-				activatorsMap.get(type).stream().filter(act -> ((Locatable)act).isLocatedAt(world, x, y, z)).forEach(found::add);
+			if(type.isLocatable())
+				typeActivators.get(type).stream().filter(act -> ((Locatable)act).isLocatedAt(world, x, y, z)).forEach(found::add);
 		return found;
 	}
 
@@ -137,8 +139,8 @@ public class ActivatorsManager {
 	public static Set<Activator> getActivatorInLocation(Location loc) {
 		Set<Activator> found = new HashSet<>();
 		for (ActivatorType type : ActivatorType.values())
-			if(type.isLocated())
-				activatorsMap.get(type).stream().filter(act -> ((Locatable)act).isLocatedAt(loc)).forEach(found::add);
+			if(type.isLocatable())
+				typeActivators.get(type).stream().filter(act -> ((Locatable)act).isLocatedAt(loc)).forEach(found::add);
 		return found;
 	}
 
@@ -149,7 +151,7 @@ public class ActivatorsManager {
 	 */
 	public static boolean add(Activator act) {
 		if (contains(act.getBase().getName().toLowerCase())) return false;
-		activatorsMap.get(act.getType()).add(act);
+		typeActivators.get(act.getType()).add(act);
 		activators.put(act.getBase().getName().toLowerCase(), act);
 		return true;
 	}
@@ -161,7 +163,7 @@ public class ActivatorsManager {
 	public static void removeActivator(String name) {
 		Activator act = activators.remove(name.toLowerCase());
 		if(act != null)
-			activatorsMap.get(act.getType()).remove(act);
+			typeActivators.get(act.getType()).remove(act);
 	}
 
 	/**
@@ -301,47 +303,20 @@ public class ActivatorsManager {
 	 * @param group Name of group
 	 */
 	private static void saveActivators(String group) {
-		String g = implode(group.split("/"));
+		String g = Util.implode(group.split("/"));
 
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
 		File dir = new File(f.getPath());
 		if (!dir.exists()) dir.mkdirs();
 
-		try {
-			if (f.exists()) f.delete();
-			f.createNewFile();
-		} catch (Exception e) {
-			Msg.logMessage("Failed to create configuration to file " + f.getAbsolutePath());
-			e.printStackTrace();
-			return;
-		}
+		if(!FileUtil.recreateFile(f, "Failed to recreate configuration file " + f.getAbsolutePath())) return;
+
 		YamlConfiguration cfg = new YamlConfiguration();
 		for (Activator a : activators.values()) {
-			if (a.getBase().getGroup().equalsIgnoreCase(group)) a.saveActivator(cfg.createSection(a.getType()+"."+a.getBase().getName()));
+			if (a.getBase().getGroup().equalsIgnoreCase(group)) a.saveActivator(cfg.createSection(a.getType().name()+"."+a.getBase().getName()));
 		}
 
-		try {
-			cfg.save(f);
-		} catch (Exception e) {
-			Msg.logMessage("Failed to save configuration to file " + f.getAbsolutePath());
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Idk yet
-	 */
-	private static String implode(String... data) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < data.length - 1; i++) {
-			//data.length - 1 => to not add separator at the end
-			if (!data[i].matches(" *")) {//empty string are ""; " "; "  "; and so on
-				sb.append(data[i]);
-				sb.append(File.separator);
-			}
-		}
-		sb.append(data[data.length - 1].trim());
-		return sb.toString();
+		FileUtil.saveCfg(cfg, f, "Failed to save configuration to file " + f.getAbsolutePath());
 	}
 
 	/**
@@ -353,13 +328,8 @@ public class ActivatorsManager {
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + group + ".yml");
 		if (!f.exists()) return;
 		YamlConfiguration cfg = new YamlConfiguration();
-		try {
-			cfg.load(f);
-		} catch (Exception e) {
-			Msg.logMessage("Failed to load configuration from file " + f.getAbsolutePath());
-			e.printStackTrace();
-			return;
-		}
+		FileUtil.loadCfg(cfg, f, "Failed to load configuration from file " + f.getAbsolutePath());
+
 
 		if(clear)
 			clearGroup(group);
@@ -373,7 +343,6 @@ public class ActivatorsManager {
 					Msg.logOnce("cannotcreate" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
 					continue;
 				}
-
 				Activator a = loadActivator(type, name, group, cfg);
 				if (a == null) {
 					Msg.logOnce("cannotcreate2" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
@@ -394,7 +363,7 @@ public class ActivatorsManager {
 	 * @return New activator
 	 */
 	private static Activator loadActivator(ActivatorType type, String name, String group, YamlConfiguration cfg) {
-		return type.load(name, group, cfg.getConfigurationSection(type + "." + name));
+		return type.load(name, group, cfg.getConfigurationSection(type.name() + "." + name));
 	}
 
 	/**
@@ -402,51 +371,94 @@ public class ActivatorsManager {
 	 * @param name Name of group
 	 */
 	private static void clearGroup(String name) {
-		for(ActivatorType type : activatorsMap.keySet()) {
-			Iterator<Activator> iter = activatorsMap.get(type).iterator();
+		for(ActivatorType type : typeActivators.keySet()) {
+			Iterator<Activator> iter = typeActivators.get(type).iterator();
 			while(iter.hasNext()) {
-				Activator act = iter.next();
-				if(!act.getBase().getGroup().equals(name))
+				ActivatorBase base = iter.next().getBase();
+				if(!base.getGroup().equalsIgnoreCase(name))
 					continue;
-				activators.remove(act.getBase().getName().toLowerCase());
+				activators.remove(base.getName().toLowerCase());
 				iter.remove();
 			}
 		}
 	}
 
-	public static List<String> getActivatorsList() {
+	/**
+	 * Get names of all the activators
+	 * @return List of names
+	 */
+	public static List<String> getNames() {
 		List<String> list = new ArrayList<>();
 		activators.values().forEach(act -> list.add("&a" + act.toString()));
 		return list;
 	}
 
-	public static List<String> getActivatorsList(String sType) {
+	/**
+	 * Get names of activators of specific type
+	 * @param sType Name of type
+	 * @return List of names
+	 */
+	public static List<String> getNamesByType(String sType) {
 		List<String> list = new ArrayList<>();
 		ActivatorType type = ActivatorType.getByName(sType);
 		if(type != null)
-			activatorsMap.get(type).forEach(act -> list.add("&a" + act.toString()));
+			typeActivators.get(type).forEach(act -> list.add("&a" + act.toString()));
 		return list;
 	}
 
-	public static List<String> getActivatorsListGroup(String group) {
+	/**
+	 * Get names of activator from specific group
+	 * @param group Name of group
+	 * @return List of names
+	 */
+	public static List<String> getNamesByGroup(String group) {
 		List<String> list = new ArrayList<>();
 		activators.values().stream().filter(act -> act.getBase().getGroup().equalsIgnoreCase(group)).forEach(act -> list.add(act.toString()));
 		return list;
 	}
 
-	public static boolean activate(Activator act, RAStorage storage) {
+	/**
+	 * Activate specific activator
+	 * @param act Activator to activate
+	 * @param storage Data storage for activator
+	 * @return Cancel original event or not
+	 */
+	public static boolean activate(Activator act, Storage storage) {
 		return act.getType() == storage.getType() && act.executeActivator(storage);
 	}
 
-	public static boolean activate(RAStorage storage) {
+	/**
+	 * Activate specific activator by it's id(name)
+	 * @param storage Data storage for activator
+	 * @param id Name of activator
+	 * @return Cancel original event or not
+	 */
+	public static boolean activate(Storage storage, String id) {
+		Activator activator = activators.get(id.toLowerCase());
+		return activate(activator, storage);
+	}
+
+	/**
+	 * Activate all the activator of storage's type
+	 * @param storage Data storage for activators
+	 * @return Cancel original event or not
+	 */
+	public static boolean activate(Storage storage) {
 		boolean cancelParentEvent = false;
-		for (Activator act : activatorsMap.get(storage.getType())) {
+		for (Activator act : typeActivators.get(storage.getType())) {
 			if (act.executeActivator(storage)) cancelParentEvent = true;
 		}
 		return cancelParentEvent;
 	}
 
+	/**
+	 * Copy all actions, reactions and flags
+	 * @param actFrom Activator to copy
+	 * @param actTo Activator where to copy
+	 * @return Does these activators exist
+	 */
 	public static boolean copyAll(String actFrom, String actTo) {
+		// TODO: Small optimization
 		if (!contains(actFrom)) return false;
 		if (!contains(actTo)) return false;
 		copyActions(actFrom, actTo);
@@ -455,6 +467,12 @@ public class ActivatorsManager {
 		return true;
 	}
 
+	/**
+	 * Copy all actions
+	 * @param actFrom Activator to copy
+	 * @param actTo Activator where to copy
+	 * @return Does these activators exist
+	 */
 	public static boolean copyActions(String actFrom, String actTo) {
 		if (!contains(actFrom)) return false;
 		if (!contains(actTo)) return false;
@@ -468,6 +486,12 @@ public class ActivatorsManager {
 		return true;
 	}
 
+	/**
+	 * Copy all reactions
+	 * @param actFrom Activator to copy
+	 * @param actTo Activator where to copy
+	 * @return Does these activators exist
+	 */
 	public static boolean copyReactions(String actFrom, String actTo) {
 		if (!contains(actFrom)) return false;
 		if (!contains(actTo)) return false;
@@ -481,6 +505,12 @@ public class ActivatorsManager {
 		return true;
 	}
 
+	/**
+	 * Copy all flags
+	 * @param actFrom Activator to copy
+	 * @param actTo Activator where to copy
+	 * @return Does these activators exist
+	 */
 	public static boolean copyFlags(String actFrom, String actTo) {
 		if (!contains(actFrom)) return false;
 		if (!contains(actTo)) return false;
@@ -494,7 +524,14 @@ public class ActivatorsManager {
 		return true;
 	}
 
+	/**
+	 * Set group of activator
+	 * @param activator Name of activator to edit
+	 * @param group Name of group
+	 * @return Does activator with this name exists
+	 */
 	public static boolean setGroup(String activator, String group) {
+		// TODO: Small optimization
 		if (!contains(activator)) return false;
 		get(activator).getBase().setGroup(group);
 		return true;
@@ -506,8 +543,13 @@ public class ActivatorsManager {
 		return get(activator).getBase().getGroup();
 	}
 
+	/**
+	 * Get set activators by type
+	 * @param type Type of activators
+	 * @return Set of activators
+	 */
 	public static Set<Activator> getActivators(ActivatorType type) {
-		return activatorsMap.get(type);
+		return typeActivators.get(type);
 	}
 
 	@SuppressWarnings("unused")

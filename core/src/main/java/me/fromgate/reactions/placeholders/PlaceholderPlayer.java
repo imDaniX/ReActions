@@ -2,7 +2,7 @@ package me.fromgate.reactions.placeholders;
 
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.VirtualItem;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.location.PlayerRespawner;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -48,18 +48,18 @@ public class PlaceholderPlayer extends Placeholder {
 			case "dplayer":
 				return player.getDisplayName();
 			case "player_loc":
-				return Locator.locationToString(player.getLocation());
+				return LocationUtil.locationToString(player.getLocation());
 			case "player_loc_death":
 			case "deathpoint":
 				Location loc = PlayerRespawner.getLastDeathPoint(player);
 				if (loc == null) loc = player.getLocation();
-				return Locator.locationToString(loc);
+				return LocationUtil.locationToString(loc);
 			case "player_loc_eye":
-				return Locator.locationToString(player.getEyeLocation());
+				return LocationUtil.locationToString(player.getEyeLocation());
 			case "player_loc_view":
-				return Locator.locationToString(getViewLocation(player, false));
+				return LocationUtil.locationToString(getViewLocation(player, false));
 			case "player_loc_view_solid":
-				return Locator.locationToString(getViewLocation(player, true));
+				return LocationUtil.locationToString(getViewLocation(player, true));
 			case "player_level":
 			case "level":
 				return Integer.toString(player.getLevel());

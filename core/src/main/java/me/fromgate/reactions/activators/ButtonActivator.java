@@ -24,10 +24,11 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.ButtonStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.ButtonStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.parameter.BlockParam;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -48,7 +49,7 @@ public class ButtonActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		ButtonStorage be = (ButtonStorage) event;
 		if (!isLocatedAt(be.getButtonLocation())) return false;
 		return Actions.executeActivator(be.getPlayer(), getBase());
@@ -86,7 +87,7 @@ public class ButtonActivator extends Activator implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(world);
+		return !Util.isStringEmpty(world);
 	}
 
 	@Override
@@ -98,12 +99,11 @@ public class ButtonActivator extends Activator implements Locatable {
 		return sb.toString();
 	}
 
-	public static ButtonActivator create(ActivatorBase base, Param param) {
-		int x = param.getParam("x", 0);
-		int y = param.getParam("y", 0);
-		int z = param.getParam("z", 0);
-		String world = param.getParam("world", Bukkit.getWorlds().get(0).getName());
-		return new ButtonActivator(base, world, x, y, z);
+	public static ButtonActivator create(ActivatorBase base, Param p) {
+		if(!(p instanceof BlockParam)) return null;
+		BlockParam param = (BlockParam) p;
+		Location loc = param.getBlock().getLocation();
+		return new ButtonActivator(base, loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 	}
 
 	public static ButtonActivator load(ActivatorBase base, ConfigurationSection cfg) {

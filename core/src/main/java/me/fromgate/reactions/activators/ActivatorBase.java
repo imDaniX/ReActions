@@ -202,7 +202,7 @@ public class ActivatorBase {
 	 * Load activator from config
 	 * @param cfg Config for activator
 	 */
-	public void loadBase(ConfigurationSection cfg) {
+	private void loadBase(ConfigurationSection cfg) {
 		List<String> data = cfg.getStringList("flags");
 		for (String flgstr : data) {
 			String flag = flgstr;

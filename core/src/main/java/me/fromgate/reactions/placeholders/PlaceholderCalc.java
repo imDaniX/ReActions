@@ -9,16 +9,15 @@ import java.util.regex.Pattern;
 
 @PlaceholderDefine(id = "Calculate", keys = {"CALC", "calculate", "expression"})
 public class PlaceholderCalc extends Placeholder {
+	private final static MathEvaluator MATH = new MathEvaluator();
 
 	@Override
 	public String processPlaceholder(Player player, String key, String param) {
 		String expression = replaceVariablesInExpression(param);
-		MathEvaluator math = new MathEvaluator();
 		try {
-			double result = math.evaluate(expression);
+			double result = MATH.evaluate(expression);
 			return (result == (int) result) ? Integer.toString((int) result) : Double.toString(result);
-		} catch (Exception ignore) {
-		}
+		} catch (NumberFormatException | ArithmeticException ignore) {}
 		return null;
 	}
 

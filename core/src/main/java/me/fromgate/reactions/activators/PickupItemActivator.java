@@ -1,13 +1,13 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.PickupItemStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.PickupItemStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -25,15 +25,15 @@ public class PickupItemActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		PickupItemStorage pie = (PickupItemStorage) event;
 		if (!checkItem(pie.getItem())) return false;
-		Variables.setTempVar("droplocation", Locator.locationToString(pie.getPlayer().getLocation()));
+		Variables.setTempVar("droplocation", LocationUtil.locationToString(pie.getPlayer().getLocation()));
 		Variables.setTempVar("pickupDelay", Double.toString(pie.getPickupDelay()));
 		Variables.setTempVar("item", ItemUtil.itemToString(pie.getItem()));
 		boolean result = Actions.executeActivator(pie.getPlayer(), getBase());
 		String pickupDelayStr = Variables.getTempVar("pickupDelay");
-		if (Util.FLOAT.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
+		if (Util.FLOAT_POSITIVE.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
 		Param itemParam = new Param(Variables.getTempVar("item"));
 		if (!itemParam.isEmpty()) {
 			String itemType = itemParam.getParam("type", "AIR");

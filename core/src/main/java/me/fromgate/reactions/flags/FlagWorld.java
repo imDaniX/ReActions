@@ -22,16 +22,13 @@
 
 package me.fromgate.reactions.flags;
 
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 public class FlagWorld implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		World w = Bukkit.getWorld(param);
-		return w != null && player.getWorld().equals(w);
+		return player.getWorld().getName().equals(param);
 	}
 
 }

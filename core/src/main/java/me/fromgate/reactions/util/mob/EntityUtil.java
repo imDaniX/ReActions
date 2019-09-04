@@ -5,6 +5,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -12,8 +13,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.projectiles.BlockProjectileSource;
 import org.bukkit.projectiles.ProjectileSource;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * Some helpful methods related to entities to minify size of code
@@ -40,6 +41,11 @@ public class EntityUtil {
 		return (LivingEntity)source;
 	}
 
+	/**
+	 * Get EntityType by it's name
+	 * @param type Name of EntityType
+	 * @return EntityType or null if there's no types with this name
+	 */
 	public static EntityType getEntityByName(String type) {
 		type = type.toUpperCase();
 		for(EntityType eType : EntityType.values())
@@ -47,8 +53,14 @@ public class EntityUtil {
 		return null;
 	}
 
-	public static List<Entity> getEntities(Location l1, Location l2) {
-		List<Entity> entities = new ArrayList<>();
+	/**
+	 * Get all entities inside cuboid
+	 * @param l1 Point of cuboid
+	 * @param l2 Point of cuboid
+	 * @return List of entities
+	 */
+	public static Collection<Entity> getEntities(Location l1, Location l2) {
+		Collection<Entity> entities = new HashSet<>();
 		if (!l1.getWorld().equals(l2.getWorld())) return entities;
 		int x1 = Math.min(l1.getBlockX(), l2.getBlockX());
 		int x2 = Math.max(l1.getBlockX(), l2.getBlockX());
@@ -95,5 +107,31 @@ public class EntityUtil {
 
 	public static String getMobName(LivingEntity mob) {
 		return mob.getCustomName() == null ? "" : mob.getCustomName();
+	}
+
+	public static LivingEntity getAnyKiller(EntityDamageEvent event) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
+			if (evdmg.getDamager() instanceof LivingEntity) return (LivingEntity) evdmg.getDamager();
+			if (evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+				Projectile prj = (Projectile) evdmg.getDamager();
+				return getEntityFromProjectile(prj.getShooter());
+			}
+		}
+		return null;
+	}
+
+	public static Player getKiller(EntityDamageEvent event) {
+		if (event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
+			if (evdmg.getDamager().getType() == EntityType.PLAYER) return (Player) evdmg.getDamager();
+			if (evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+				Projectile prj = (Projectile) evdmg.getDamager();
+				LivingEntity shooterEntity = getEntityFromProjectile(prj.getShooter());
+				if (shooterEntity == null) return null;
+				if (shooterEntity instanceof Player) return (Player) shooterEntity;
+			}
+		}
+		return null;
 	}
 }

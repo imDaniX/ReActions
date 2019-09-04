@@ -24,7 +24,7 @@
 package me.fromgate.reactions.util.message;
 
 import me.fromgate.reactions.activators.MessageActivator;
-import me.fromgate.reactions.storage.StorageManager;
+import me.fromgate.reactions.storages.StoragesManager;
 
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;
@@ -33,7 +33,7 @@ public class LogHandler extends StreamHandler {
 
 	@Override
 	public void publish(LogRecord record) {
-		StorageManager.raiseMessageActivator(null, MessageActivator.Source.LOG_OUTPUT, record.getMessage());
+		StoragesManager.raiseMessageActivator(null, MessageActivator.Source.LOG_OUTPUT, record.getMessage());
 		super.publish(record);
 	}
 

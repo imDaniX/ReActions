@@ -26,10 +26,10 @@ import lombok.Getter;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.externals.worldguard.WGBridge;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.storage.RegionStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.RegionStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -45,7 +45,7 @@ public class RegionActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		RegionStorage be = (RegionStorage) event;
 		if (be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region)))
 			return Actions.executeActivator(be.getPlayer(), getBase());
@@ -75,7 +75,7 @@ public class RegionActivator extends Activator implements Locatable {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(region);
+		return !Util.isStringEmpty(region);
 	}
 
 	@Override

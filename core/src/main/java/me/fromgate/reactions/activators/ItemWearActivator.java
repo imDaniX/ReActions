@@ -23,14 +23,14 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.ItemWearStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.ItemWearStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -43,7 +43,7 @@ public class ItemWearActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		if (item.isEmpty() || (ItemUtil.parseItemStack(item) == null)) {
 			Msg.logOnce(getBase().getName() + "activatorwearempty", "Failed to parse item of activator " + getBase().getName());
 			return false;
@@ -83,7 +83,7 @@ public class ItemWearActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(item);
+		return !Util.isStringEmpty(item);
 	}
 
 	public static ItemWearActivator create(ActivatorBase base, Param param) {

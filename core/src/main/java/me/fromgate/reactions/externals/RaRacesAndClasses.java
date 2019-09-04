@@ -27,7 +27,6 @@ import de.tobiyas.racesandclasses.APIs.RaceAPI;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 public class RaRacesAndClasses {
 
@@ -38,16 +37,12 @@ public class RaRacesAndClasses {
 	}
 
 	public static void init() {
-		try {
-			enabled = isRacesAndClassesInstalled();
-		} catch (Exception ignored) {
-		}
+		enabled = isRacesAndClassesInstalled();
 		if (enabled) Msg.logMessage("RacesAndClasses found");
 	}
 
 	private static boolean isRacesAndClassesInstalled() {
-		Plugin pe = Bukkit.getServer().getPluginManager().getPlugin("RacesAndClasses");
-		return (pe != null);
+		return (Bukkit.getServer().getPluginManager().getPlugin("RacesAndClasses") != null);
 	}
 
 	// Флаг RNC_RACE

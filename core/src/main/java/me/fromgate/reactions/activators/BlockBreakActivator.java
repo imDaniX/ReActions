@@ -1,12 +1,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.BlockBreakStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.BlockBreakStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -27,15 +27,14 @@ public class BlockBreakActivator extends Activator implements Locatable {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		BlockBreakStorage bbe = (BlockBreakStorage) event;
 		Block brokenBlock = bbe.getBlock();
 		if (brokenBlock == null) return false;
 		if (!isActivatorBlock(brokenBlock)) return false;
-		Variables.setTempVar("blocklocation", Locator.locationToString(bbe.getBlockBreakLocation()));
+		Variables.setTempVar("blocklocation", LocationUtil.locationToString(bbe.getBlockBreakLocation()));
 		Variables.setTempVar("blocktype", brokenBlock.getType().name());
 		Variables.setTempVar("block", ItemUtil.itemFromBlock(brokenBlock).toString());
-
 		Variables.setTempVar("is_drop", Boolean.toString(bbe.isDropItems()));
 		boolean result = Actions.executeActivator(bbe.getPlayer(), getBase());
 		String isDropItem = Variables.getTempVar("is_drop");
@@ -58,7 +57,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 	@Override
 	public boolean isLocatedAt(Location l) {
 		if (this.blockLocation.isEmpty()) return false;
-		Location loc = Locator.parseLocation(this.blockLocation, null);
+		Location loc = LocationUtil.parseLocation(this.blockLocation, null);
 		if (loc == null) return false;
 		return l.getWorld().equals(loc.getWorld()) &&
 				l.getBlockX() == loc.getBlockX() &&

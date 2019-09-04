@@ -6,6 +6,6 @@ import org.bukkit.entity.Player;
 public class FlagHeldSlot implements Flag {
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		return Util.INT_NOTZERO.matcher(param).matches() && player.getInventory().getHeldItemSlot() == Integer.parseInt(param);
+		return Util.INT_POSITIVE.matcher(param).matches() && player.getInventory().getHeldItemSlot() == Integer.parseInt(param);
 	}
 }

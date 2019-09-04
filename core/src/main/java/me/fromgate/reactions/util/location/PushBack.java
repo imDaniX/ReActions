@@ -32,6 +32,7 @@ import java.util.Map;
 
 public class PushBack {
 
+	// TODO: Move it to LocationHolder
 	private static Map<String, Location> prevLocs1 = new HashMap<>();
 	private static Map<String, Location> prevLocs2 = new HashMap<>();
 

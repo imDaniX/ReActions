@@ -2,7 +2,7 @@ package me.fromgate.reactions.listeners;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storage.StorageManager;
+import me.fromgate.reactions.storages.StoragesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,12 +23,7 @@ public class GodModeListener implements Listener {
 	public static void init() {
 		if (Cfg.godActivatorEnable) {
 			Bukkit.getPluginManager().registerEvents(new GodModeListener(), ReActions.getPlugin());
-			new BukkitRunnable() {
-				@Override
-				public void run() {
-					Bukkit.getOnlinePlayers().forEach(GodModeListener::setEventGod);
-				}
-			}.runTaskTimer(ReActions.getPlugin(), 30, Cfg.godActivatorCheckTicks);
+			Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(GodModeListener::setEventGod), 30, Cfg.godActivatorCheckTicks);
 		}
 	}
 
@@ -39,10 +33,10 @@ public class GodModeListener implements Listener {
 			Player player = (Player) event.getEntity();
 			if (event.isCancelled()) {
 				if (GodModeListener.checkGod(player) && GodModeListener.setGod(player)) return;
-				if (GodModeListener.setGod(player) && StorageManager.raiseGodActivator(player, true)) {
+				if (GodModeListener.setGod(player) && StoragesManager.raiseGodActivator(player, true)) {
 					GodModeListener.removeGod(player);
 				}
-			} else if (GodModeListener.removeGod(player) && StorageManager.raiseGodActivator(player, false)) {
+			} else if (GodModeListener.removeGod(player) && StoragesManager.raiseGodActivator(player, false)) {
 				GodModeListener.setGod(player);
 				event.setCancelled(true);
 			}

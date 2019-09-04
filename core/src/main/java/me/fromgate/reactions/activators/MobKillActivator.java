@@ -23,12 +23,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.MobKillStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.MobKillStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
@@ -45,12 +45,12 @@ public class MobKillActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		MobKillStorage me = (MobKillStorage) event;
 		if (mobType.isEmpty()) return false;
 		if (me.getEntity() == null) return false;
 		if (!isActivatorMob(me.getEntity())) return false;
-		Variables.setTempVar("moblocation", Locator.locationToString(me.getEntity().getLocation()));
+		Variables.setTempVar("moblocation", LocationUtil.locationToString(me.getEntity().getLocation()));
 		Variables.setTempVar("mobkiller", me.getPlayer() == null ? "" : me.getPlayer().getName());
 		Variables.setTempVar("mobtype", me.getEntity().getType().name());
 		LivingEntity mob = me.getEntity();
@@ -88,7 +88,7 @@ public class MobKillActivator extends Activator {
 
 	@Override
 	public boolean isValid() {
-		return !Util.emptyString(mobType);
+		return !Util.isStringEmpty(mobType);
 	}
 
 	@Override

@@ -22,12 +22,11 @@
 
 package me.fromgate.reactions.actions;
 
-import com.google.common.base.Joiner;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.playerselector.SelectorsManager;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -100,7 +99,7 @@ public class ActionLog extends Action {
 
 	private String removeParams(String message) {
 		StringBuilder sb = new StringBuilder("(?i)(");
-		sb.append(Joiner.on("|").join(SelectorsManager.getAllKeys()));
+		sb.append(String.join("|", SelectorsManager.getAllKeys()));
 		sb.append("|hide|prefix|color|file):(\\{.*\\}|\\S+)\\s{0,1}");
 		return message.replaceAll(sb.toString(), "");
 

@@ -23,14 +23,15 @@
 package me.fromgate.reactions.sql;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
+import me.fromgate.reactions.util.parameter.Param;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
@@ -117,7 +118,7 @@ public class SQLManager {
 		String connectionLine = "jdbc:mysql://" + cAddress + (cPort.isEmpty() ? "" : ":" + cPort) + "/" + cDataBase;
 		try {
 			connection = DriverManager.getConnection(connectionLine, prop);
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			Msg.logOnce("sqlconnect", "Failed to connect to database: " + connectionLine + " user: " + userName);
 		}
 		return connection;
@@ -143,14 +144,14 @@ public class SQLManager {
 				int columns = result.getMetaData().getColumnCount();
 				if (column > 0 && column <= columns) resultStr = result.getString(column);
 			}
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			Msg.logOnce(query, "Failed to execute query: " + query);
 		}
 		try {
 			if (result != null) result.close();
 			if (selectStmt != null) selectStmt.close();
 			if (connection != null) connection.close();
-		} catch (Exception ignored) {
+		} catch (SQLException ignored) {
 		}
 		return resultStr;
 	}
@@ -167,7 +168,7 @@ public class SQLManager {
 			//statement.execute("SET NAMES 'utf8'");
 			statement.executeUpdate(query);
 			ok = true;
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			Msg.logOnce(query, "Failed to execute query: " + query);
 			if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
 			e.printStackTrace();
@@ -175,7 +176,7 @@ public class SQLManager {
 		try {
 			if (statement != null) statement.close();
 			if (connection != null) connection.close();
-		} catch (Exception ignored) {
+		} catch (SQLException ignored) {
 		}
 		return ok;
 	}
@@ -198,7 +199,7 @@ public class SQLManager {
 			selectStmt = connection.createStatement();
 			result = selectStmt.executeQuery(query);
 			resultBool = result.next();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			Msg.logOnce(query, "Failed to execute query: " + query);
 			if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
 		}
@@ -206,7 +207,7 @@ public class SQLManager {
 			if (result != null) result.close();
 			if (selectStmt != null) selectStmt.close();
 			if (connection != null) connection.close();
-		} catch (Exception ignored) {
+		} catch (SQLException ignored) {
 		}
 		return resultBool;
 	}

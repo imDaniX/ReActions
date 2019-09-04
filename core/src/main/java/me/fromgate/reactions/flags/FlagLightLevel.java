@@ -29,7 +29,6 @@ public class FlagLightLevel implements Flag {
 
 	@Override
 	public boolean checkFlag(Player player, String param) {
-		if (!Util.isInteger(param)) return false;
-		return player.getEyeLocation().getBlock().getLightLevel() >= Integer.parseInt(param);
+		return Util.isInteger(param) && player.getEyeLocation().getBlock().getLightLevel() >= Integer.parseInt(param);
 	}
 }

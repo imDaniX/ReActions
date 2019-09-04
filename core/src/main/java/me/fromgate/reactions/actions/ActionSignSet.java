@@ -24,10 +24,10 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -41,7 +41,7 @@ public class ActionSignSet extends Action {
 		// loc:world,x,y,z line1:text line2:text line3:text line4:text clear:1,2,3,4
 		String locStr = params.getParam("loc", Variables.getTempVar("sign_loc"));
 		if (locStr.isEmpty()) return false;
-		Location loc = Locator.parseCoordinates(locStr);
+		Location loc = LocationUtil.parseCoordinates(locStr);
 		if (loc == null) return false;
 		boolean chunkLoad = params.getParam("loadchunk", false);
 		if (!chunkLoad && !loc.getChunk().isLoaded()) return false;

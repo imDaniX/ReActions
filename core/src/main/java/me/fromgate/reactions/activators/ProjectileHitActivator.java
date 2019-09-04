@@ -1,9 +1,9 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.storage.RAStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Param;
 import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,7 +28,7 @@ public class ProjectileHitActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage storage) {
+	public boolean activate(Storage storage) {
 		return false;
 	}
 

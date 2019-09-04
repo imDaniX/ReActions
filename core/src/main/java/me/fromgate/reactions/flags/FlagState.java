@@ -47,12 +47,13 @@ public class FlagState implements Flag {
 				if (player.isSneaking()) return false;
 				if (player.isSprinting()) return false;
 				if (player.isFlying()) return false;
+				if (player.isGliding()) return false;
 				return !player.isInsideVehicle();
 			case OP:
 				return player.isOp();
 			case VEHICLE_TYPED:
 				if (!player.isInsideVehicle()) return false;
-				return player.getVehicle().getType().name().equalsIgnoreCase(param.split("_")[1]);
+				return player.getVehicle().getType().name().equalsIgnoreCase(param.substring(8));
 			case SPECTATOR_TARGET:
 				return player.getSpectatorTarget() != null;
 			case GLIDE:

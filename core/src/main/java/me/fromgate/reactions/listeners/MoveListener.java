@@ -24,8 +24,9 @@ package me.fromgate.reactions.listeners;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storage.StorageManager;
-import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.events.PlayerMoveByBlockEvent;
+import me.fromgate.reactions.events.PlayerStayEvent;
+import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.location.PushBack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -33,23 +34,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class MoveListener implements Listener {
 
-	private static Map<String, Location> prevLocations = new HashMap<>();
+	private static Map<UUID, Location> prevLocations = new HashMap<>();
 
 	public static void init() {
 		if (Cfg.playerMoveTaskUse) {
 			Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(pl -> {
-				Location from = prevLocations.getOrDefault(pl.getName(), null);
+				Location from = prevLocations.get(pl.getUniqueId());
 				Location to = pl.getLocation();
-				if (!to.getWorld().equals(from.getWorld())) from = null;
+				if (to.getWorld() != from.getWorld()) from = null;
 				processMove(pl, from, to);
-				prevLocations.put(pl.getName(), to);
+				prevLocations.put(pl.getUniqueId(), to);
 			}), 30, Cfg.playerMoveTaskTick);
 		} else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
 	}
@@ -61,20 +64,19 @@ public class MoveListener implements Listener {
 
 	private static void processMove(Player player, Location from, Location to) {
 		PushBack.rememberLocations(player, from, to);
-		if (!BlockUtil.isSameBlock(from, to)) {
-			StorageManager.raiseAllRegionActivators(player, to, from);
-			StorageManager.raiseCuboidActivator(player);
-		}
+		PlayerEvent event = LocationUtil.isSameLocation(from, to) ?
+				new PlayerStayEvent(player, to) : new PlayerMoveByBlockEvent(player, to, from);
+		Bukkit.getPluginManager().callEvent(event);
 	}
 
 	public static void initLocation(Player player) {
 		if (Cfg.playerMoveTaskUse) {
-			prevLocations.put(player.getName(), player.getLocation());
+			prevLocations.put(player.getUniqueId(), player.getLocation());
 		}
 	}
 
 	public static void removeLocation(Player player) {
-		prevLocations.remove(player.getName());
+		prevLocations.remove(player.getUniqueId());
 	}
 
 }

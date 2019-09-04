@@ -1,12 +1,12 @@
 package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storage.DamageByMobStorage;
-import me.fromgate.reactions.storage.RAStorage;
-import me.fromgate.reactions.util.Param;
+import me.fromgate.reactions.storages.DamageByMobStorage;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.Variables;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -34,13 +34,13 @@ public class DamageByMobActivator extends Activator {
 	}
 
 	@Override
-	public boolean activate(RAStorage event) {
+	public boolean activate(Storage event) {
 		DamageByMobStorage pde = (DamageByMobStorage) event;
 		if (damagerType.isEmpty()) return false;
 		Entity damager = pde.getDamager();
 		if (damager != null && !isActivatorDamager(damager)) return false;
 		if (!damageCauseCheck(pde.getCause())) return false;
-		Variables.setTempVar("damagerlocation", (damager != null) ? Locator.locationToString(damager.getLocation()) : "");
+		Variables.setTempVar("damagerlocation", (damager != null) ? LocationUtil.locationToString(damager.getLocation()) : "");
 		Variables.setTempVar("damagertype", (damager != null) ? damager.getType().name() : "");
 		Variables.setTempVar("entitytype", damager.getType().name());
 		Player player = damager instanceof Player ? (Player) damager : null;
@@ -50,7 +50,7 @@ public class DamageByMobActivator extends Activator {
 		Variables.setTempVar("cause", pde.getCause().name());
 		boolean result = Actions.executeActivator(pde.getPlayer(), getBase());
 		String dmgStr = Variables.getTempVar("damage");
-		if (Util.FLOAT.matcher(dmgStr).matches()) pde.setDamage(Double.parseDouble(dmgStr));
+		if (Util.FLOAT_POSITIVE.matcher(dmgStr).matches()) pde.setDamage(Double.parseDouble(dmgStr));
 		return result;
 	}
 

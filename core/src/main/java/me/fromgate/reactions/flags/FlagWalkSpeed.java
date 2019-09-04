@@ -12,7 +12,7 @@ public class FlagWalkSpeed implements Flag {
 	public boolean checkFlag(Player player, String param) {
 		if (!Util.isInteger(param)) return false;
 		long walkSpeed = Math.round(player.getWalkSpeed() * 10);
-		Variables.setTempVar("walkspeed", Integer.toString((int) walkSpeed));
+		Variables.setTempVar("walkspeed", Long.toString(walkSpeed));
 		return walkSpeed >= Integer.parseInt(param);
 
 	}

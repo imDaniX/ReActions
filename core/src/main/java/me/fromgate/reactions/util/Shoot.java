@@ -22,9 +22,10 @@
 
 package me.fromgate.reactions.util;
 
-import me.fromgate.reactions.storage.StorageManager;
+import me.fromgate.reactions.storages.StoragesManager;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.Locator;
+import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;
@@ -77,12 +78,12 @@ public class Shoot {
 		Param tempVars = new Param();
 		tempVars.set("targettype", target.getType().name());
 		tempVars.set("targetname", (player == null) ? getMobName(target) : player.getName());
-		tempVars.set("targetloc", Locator.locationToString(target.getLocation()));
+		tempVars.set("targetloc", LocationUtil.locationToString(target.getLocation()));
 		if (shooter != null) {
 			tempVars.set("shooter", shooter.getName());
-			tempVars.set("shooterloc", Locator.locationToString(shooter.getLocation()));
+			tempVars.set("shooterloc", LocationUtil.locationToString(shooter.getLocation()));
 		}
-		StorageManager.raiseExecActivator(shooter, param, tempVars);
+		StoragesManager.raiseExecActivator(shooter, param, tempVars);
 	}
 
 	private static List<Block> getBeam(LivingEntity p, int distance) {
