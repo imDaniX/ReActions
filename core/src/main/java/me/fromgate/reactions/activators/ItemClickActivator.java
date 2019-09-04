@@ -22,11 +22,11 @@
 
 package me.fromgate.reactions.activators;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.ItemClickStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.enums.HandType;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;

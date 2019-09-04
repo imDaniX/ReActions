@@ -42,14 +42,22 @@ public abstract class Storage {
 	private Map<String, String> tempVars;
 	private Map<String, DataValue> changeables;
 
-	@Getter protected final Player player;
+	@Getter final Player player;
 	@Getter private final ActivatorType type;
+	private final boolean async;
 	// TODO: Move to changeables
 	@Getter @Setter private boolean cancelled = false;
 
 	public Storage(Player player, ActivatorType type) {
 		this.player = player;
 		this.type = type;
+		this.async = false;
+	}
+
+	public Storage(Player player, ActivatorType type, boolean async) {
+		this.player = player;
+		this.type = type;
+		this.async = async;
 	}
 
 	final void setDefaults() {
@@ -60,6 +68,7 @@ public abstract class Storage {
 	Map<String, String> getTempVariables() {
 		return Collections.emptyMap();
 	}
+
 	Map<String, DataValue> getChangeables() {
 		return Collections.emptyMap();
 	}
@@ -75,7 +84,7 @@ public abstract class Storage {
 	}
 
 	public final RaContext generateContext() {
-		return new RaContext(tempVars, changeables, player);
+		return new RaContext(tempVars, changeables, player, async);
 	}
 
 }

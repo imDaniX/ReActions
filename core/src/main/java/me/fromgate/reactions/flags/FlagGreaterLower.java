@@ -1,6 +1,6 @@
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.util.Variables;
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 

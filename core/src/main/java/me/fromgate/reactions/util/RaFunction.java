@@ -8,7 +8,7 @@ import me.fromgate.reactions.activators.ActivatorBase;
  * @param <T> Data class for activators creation
  */
 @FunctionalInterface
-public interface RaSupplier<T> {
+public interface RaFunction<T> {
 	/**
 	 * Generate activator from base and data container
 	 * @param base Base of activator

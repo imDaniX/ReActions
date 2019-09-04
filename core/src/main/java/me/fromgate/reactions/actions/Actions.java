@@ -42,7 +42,7 @@ import java.util.Map;
 
 
 public enum Actions {
-	// TODO: ActionSetLevel, ActionModifyString, ActionKill
+	// TODO: ActionSetLevel, ActionModifyString, ActionKill, ActionDynamic(for actions from placeholders)
 	TP("tp", true, new ActionTp()),
 	VELOCITY("velocity", true, new ActionVelocity()),
 	VELOCITY_JUMP("jump", true, new ActionVelocityJump()),

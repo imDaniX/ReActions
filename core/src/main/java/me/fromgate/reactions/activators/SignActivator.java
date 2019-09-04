@@ -22,11 +22,11 @@
 
 package me.fromgate.reactions.activators;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.SignStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.enums.ClickType;
 import me.fromgate.reactions.util.parameter.BlockParam;
 import me.fromgate.reactions.util.parameter.Param;

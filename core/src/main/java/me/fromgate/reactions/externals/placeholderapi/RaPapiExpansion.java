@@ -1,8 +1,8 @@
 package me.fromgate.reactions.externals.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
-import me.fromgate.reactions.util.Variables;
 import org.bukkit.OfflinePlayer;
 
 import java.util.regex.Pattern;

@@ -24,7 +24,7 @@ package me.fromgate.reactions.activators;
 
 
 import lombok.Getter;
-import me.fromgate.reactions.util.RaSupplier;
+import me.fromgate.reactions.util.RaFunction;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
@@ -93,8 +93,10 @@ public enum ActivatorType {
 	FCT_DISBAND("fctdisband", FactionDisbandActivator::create, FactionDisbandActivator::load);
 
 	private final String alias;
-	private final RaSupplier<Param> creator;
-	private final RaSupplier<ConfigurationSection> loader;
+	// private final BiFunction<ActivatorBase, Param, Activator> creator;
+	// private final BiFunction<ActivatorBase, ConfigurationSection, Activator> loader;
+	private final RaFunction<Param> creator;
+	private final RaFunction<ConfigurationSection> loader;
 	@Getter private final boolean needBlock;
 	@Getter private final boolean locatable;
 
@@ -108,7 +110,7 @@ public enum ActivatorType {
 		BY_NAME = Collections.unmodifiableMap(byName);
 	}
 
-	ActivatorType(String alias, RaSupplier<Param> creator, RaSupplier<ConfigurationSection> loader, boolean locatable, boolean needBlock) {
+	ActivatorType(String alias, RaFunction<Param> creator, RaFunction<ConfigurationSection> loader, boolean locatable, boolean needBlock) {
 		this.alias = alias.toUpperCase();
 		this.creator = creator;
 		this.loader = loader;
@@ -116,11 +118,11 @@ public enum ActivatorType {
 		this.locatable = locatable;
 	}
 
-	ActivatorType(String alias, RaSupplier<Param> creator, RaSupplier<ConfigurationSection> loader, boolean locatable) {
+	ActivatorType(String alias, RaFunction<Param> creator, RaFunction<ConfigurationSection> loader, boolean locatable) {
 		this(alias, creator, loader, locatable, false);
 	}
 
-	ActivatorType(String alias, RaSupplier<Param> creator, RaSupplier<ConfigurationSection> loader) {
+	ActivatorType(String alias, RaFunction<Param> creator, RaFunction<ConfigurationSection> loader) {
 		this(alias, creator, loader, false);
 	}
 

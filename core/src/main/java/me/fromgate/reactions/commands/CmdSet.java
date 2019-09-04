@@ -1,9 +1,9 @@
 package me.fromgate.reactions.commands;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.command.CommandSender;

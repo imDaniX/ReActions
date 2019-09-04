@@ -2,13 +2,13 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.customcommands.FakeCommander;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimersManager;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 

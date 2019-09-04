@@ -23,10 +23,10 @@
 
 package me.fromgate.reactions.activators;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.FactionChangeStorage;
 import me.fromgate.reactions.storages.Storage;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 

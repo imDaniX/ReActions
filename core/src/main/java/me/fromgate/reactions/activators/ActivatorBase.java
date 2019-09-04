@@ -33,6 +33,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 
 public class ActivatorBase {
 	private int hash;
@@ -51,7 +52,9 @@ public class ActivatorBase {
 	public ActivatorBase(String name, String group, ConfigurationSection cfg) {
 		this.name = name;
 		this.group = group == null ? "activators" : group;
-		this.loadBase(cfg);
+		loadData(cfg.getStringList("flags"), this::addFlag);
+		loadData(cfg.getStringList("actions"), this::addAction);
+		loadData(cfg.getStringList("reactions"), this::addReaction);
 	}
 
 	public void setName(String name) {
@@ -68,10 +71,10 @@ public class ActivatorBase {
 	 * Add flag to activator
 	 * @param flag Name of flag to add
 	 * @param param Parameters of flag
-	 * @param not Is indentation needed
 	 */
-	public void addFlag(String flag, String param, boolean not) {
-		addFlag(Flags.getByName(flag), param, not);
+	public void addFlag(String flag, String param) {
+		boolean not = flag.startsWith("!");
+		addFlag(Flags.getByName(not ? flag.substring(1) : flag), param, not);
 	}
 
 	/**
@@ -116,7 +119,7 @@ public class ActivatorBase {
 	public void addAction(Actions action, String param) {
 		StoredAction act = new StoredAction(action, param);
 		if(act.getAction() == null)
-			Msg.logOnce("wrongactopmname"+actions.size()+name, "Flag for activator "+ name +" with this name does not exist.");
+			Msg.logOnce("wrongactname"+actions.size()+name, "Flag for activator "+ name +" with this name does not exist.");
 		else
 			actions.add(act);
 	}
@@ -147,7 +150,11 @@ public class ActivatorBase {
 	 * @param param Parameters of action
 	 */
 	public void addReaction(Actions action, String param) {
-		reactions.add(new StoredAction(action, param));
+		StoredAction act = new StoredAction(action, param);
+		if(act.getAction() == null)
+			Msg.logOnce("wrongactname"+actions.size()+name, "Flag for activator "+ name +" with this name does not exist.");
+		else
+			reactions.add(act);
 	}
 
 	/**
@@ -198,61 +205,26 @@ public class ActivatorBase {
 		cfg.set("reactions", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
 	}
 
-	/**
-	 * Load activator from config
-	 * @param cfg Config for activator
-	 */
-	private void loadBase(ConfigurationSection cfg) {
-		List<String> data = cfg.getStringList("flags");
-		for (String flgstr : data) {
-			String flag = flgstr;
-			String param = "";
-			boolean not = false;
-			if (flgstr.contains("=")) {
-				flag = flgstr.substring(0, flgstr.indexOf("="));
-				if (flgstr.indexOf("=") < flgstr.length())
-					param = flgstr.substring(flgstr.indexOf("=") + 1);
+	private static void loadData(List<String> data, BiConsumer<String, String> loader) {
+		if(data == null) return;
+		for (String str : data) {
+			String param = str;
+			String value = "";
+			int index = str.indexOf("=");
+			if (index != -1) {
+				param = str.substring(0, index);
+				value = str.substring(index + 1);
 			}
-			if (flag.startsWith("!")) {
-				flag = flag.replaceFirst("!", "");
-				not = true;
-			}
-			addFlag(flag, param, not);
+			loader.accept(param, value);
 		}
-
-		data = cfg.getStringList("actions");
-		for (String actstr : data) {
-			String flag = actstr;
-			String param = "";
-			if (actstr.contains("=")) {
-				flag = actstr.substring(0, actstr.indexOf("="));
-				param = actstr.substring(actstr.indexOf("=") + 1);
-			}
-			addAction(flag, param);
-		}
-
-		data = cfg.getStringList("reactions");
-		for (String rctstr : data) {
-			String flag = rctstr;
-			String param = "";
-			if (rctstr.contains("=")) {
-				flag = rctstr.substring(0, rctstr.indexOf("="));
-				param = rctstr.substring(rctstr.indexOf("=") + 1);
-			}
-			addReaction(flag, param);
-		}
-	}
-
-	public boolean equals(String name) {
-		if (name == null) return false;
-		if (name.isEmpty()) return false;
-		return this.name.equalsIgnoreCase(name);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
+		if(obj instanceof String)
+			return name.equalsIgnoreCase((String)obj);
 		if (!(obj instanceof ActivatorBase))
 			return false;
 		ActivatorBase other = (ActivatorBase) obj;
@@ -264,14 +236,13 @@ public class ActivatorBase {
 	}
 
 	private void calcHash() {
-		this.hash = group.hashCode()*1291 + name.hashCode()/20;
+		this.hash = group.hashCode()*31 + name.hashCode()/37;
 	}
 
 	@Override
 	public int hashCode() {
 		return hash;
 	}
-
 
 	@Override
 	public String toString() {

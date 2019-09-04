@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.flags.factions.FlagAtFactionZoneRel;
 import me.fromgate.reactions.flags.factions.FlagFaction;
@@ -33,7 +34,6 @@ import me.fromgate.reactions.flags.worldedit.FlagSuperPickAxe;
 import me.fromgate.reactions.flags.worldedit.FlagToolControl;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.message.RaDebug;

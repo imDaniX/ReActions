@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.Variables;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

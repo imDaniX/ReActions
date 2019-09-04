@@ -1,7 +1,6 @@
 package me.fromgate.reactions.util.data;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -10,15 +9,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RaContext {
-	private final Map<String, String> tempVars;
+	@Getter private final Player player;
+	@Getter private final boolean async;
+	@Getter private final Map<String, String> tempVars;
 	private final Map<String, DataValue> changeables;
-	@Getter @Setter private Player player;
 
-	public RaContext(Map<String, String> tempVars, Map<String, DataValue> changeables, Player player) {
+	public RaContext(Map<String, String> tempVars, Map<String, DataValue> changeables, Player player, boolean async) {
 		this.tempVars = new HashMap<>(tempVars);
 		this.changeables = changeables != null ? changeables : Collections.emptyMap();
-		changeables.keySet().forEach(key -> tempVars.put(key, changeables.get(key).asString()));
 		this.player = player;
+		this.async = async;
+		changeables.keySet().forEach(key -> tempVars.put(key, changeables.get(key).asString()));
 	}
 
 	public String setTempVariable(String key, String str) {

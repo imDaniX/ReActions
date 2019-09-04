@@ -42,7 +42,6 @@ import me.fromgate.reactions.sql.SQLManager;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.time.waiter.WaitingManager;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.LogHandler;
 import me.fromgate.reactions.util.message.Msg;

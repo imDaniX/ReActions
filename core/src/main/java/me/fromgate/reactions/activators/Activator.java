@@ -1,7 +1,7 @@
 package me.fromgate.reactions.activators;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.storages.Storage;
-import me.fromgate.reactions.util.Variables;
 import org.bukkit.configuration.ConfigurationSection;
 
 public abstract class Activator {

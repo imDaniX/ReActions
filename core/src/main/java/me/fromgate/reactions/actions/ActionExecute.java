@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.storages.StoragesManager;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 

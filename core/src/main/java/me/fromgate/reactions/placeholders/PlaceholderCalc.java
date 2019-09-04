@@ -1,7 +1,7 @@
 package me.fromgate.reactions.placeholders;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.MathEvaluator;
-import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 
 import java.util.regex.Matcher;
@@ -20,7 +20,6 @@ public class PlaceholderCalc extends Placeholder {
 		} catch (NumberFormatException | ArithmeticException ignore) {}
 		return null;
 	}
-
 
 	private String replaceVariablesInExpression(String expression) {
 		String result = expression;

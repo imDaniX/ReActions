@@ -22,10 +22,10 @@
 
 package me.fromgate.reactions.flags.worldedit;
 
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.flags.Flag;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.Variables;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 

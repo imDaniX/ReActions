@@ -158,7 +158,7 @@ public class VirtualItem extends ItemStack {
 			type = Material.getMaterial(itemStr.toUpperCase(), false);
 			if(type == null)
 				type = Material.getMaterial(itemStr.toUpperCase(), true);
-			amount = Util.getNumber(amountStr);
+			amount = Util.getMinMaxRandom(amountStr);
 			if (amount == 0) return null;
 		} else if (params.containsKey("type")) {
 			String typeStr = params.getOrDefault("type", "");
@@ -167,15 +167,15 @@ public class VirtualItem extends ItemStack {
 			return null;
 		if (type == null)
 			return null;
-		data = Util.getNumber(params.getOrDefault("data", "0"));
-		amount = Util.getNumber(params.getOrDefault("amount", "1"));
+		data = Util.getMinMaxRandom(params.getOrDefault("data", "0"));
+		amount = Util.getMinMaxRandom(params.getOrDefault("amount", "1"));
 		VirtualItem vi = new VirtualItem(type, data, amount);
 
 		vi.setName(params.get("name"));
 		vi.setLore(params.get("lore"));
 		vi.setEnchantments(params.get("enchantments"));
 		vi.setBook(params.get("book-author"), params.get("book-title"), params.get("book-pages"));
-		vi.setFireworks(Util.getNumber(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
+		vi.setFireworks(Util.getMinMaxRandom(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
 		vi.setColor(params.get("color"));
 		vi.setSkull(params.get("skull-owner"));
 		vi.setPotionMeta(params.get("potion-effects"));
@@ -299,7 +299,7 @@ public class VirtualItem extends ItemStack {
 					.toUpperCase());
 			if (pType == null)
 				continue;
-			int amplifier = (ln.length > 1 && Util.INT_MIN_MAX.matcher(ln[1]).matches()) ? Util.getNumber(ln[1]) : 0;
+			int amplifier = (ln.length > 1) ? Util.getMinMaxRandom(ln[1]) : 0;
 			int duration = (ln.length > 2) ? (int)(TimeUtil.parseTime(ln[2])/50) : Integer.MAX_VALUE;
 			pm.addCustomEffect(new PotionEffect(pType, duration, amplifier, true), true);
 		}

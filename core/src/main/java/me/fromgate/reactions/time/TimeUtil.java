@@ -66,9 +66,8 @@ public class TimeUtil {
 	}
 
 	public static String fullTimeToString(long time, String format) {
-		Date date = new Date(time);
 		DateFormat formatter = new SimpleDateFormat(format);
-		return formatter.format(date);
+		return formatter.format(new Date(time));
 	}
 
 	public static String fullTimeToString(long time) {

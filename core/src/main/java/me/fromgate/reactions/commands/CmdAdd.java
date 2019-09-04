@@ -42,7 +42,7 @@ public class CmdAdd extends Cmd {
 					Msg.CMD_ACTNOTADDED.print(sender, arg3 + " (" + param + ")");
 				}
 			} else if (arg2.equalsIgnoreCase("r") || arg2.equalsIgnoreCase("reaction")) {
-				if (addReAction(arg1, arg3, param)) {
+				if (addReaction(arg1, arg3, param)) {
 					ActivatorsManager.saveActivators();
 					return Msg.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
 				} else {
@@ -64,28 +64,28 @@ public class CmdAdd extends Cmd {
 		return true;
 	}
 
-	private boolean addAction(String clicker, String flag, String param) {
-		if (Actions.isValid(flag)) {
-			ActivatorsManager.addAction(clicker, flag, param);
+	private boolean addAction(String activator, String act, String param) {
+		if (Actions.isValid(act)) {
+			ActivatorsManager.addAction(activator, act, param);
 			return true;
 		}
 		return false;
 	}
 
-	private boolean addReAction(String clicker, String flag, String param) {
-		if (Actions.isValid(flag)) {
-			ActivatorsManager.addReaction(clicker, flag, param);
+	private boolean addReaction(String activator, String act, String param) {
+		if (Actions.isValid(act)) {
+			ActivatorsManager.addReaction(activator, act, param);
 			return true;
 		}
 		return false;
 	}
 
-	private boolean addFlag(String clicker, String fl, String param) {
+	private boolean addFlag(String activator, String fl, String param) {
 		String flag = fl.replaceFirst("!", "");
 		boolean not = fl.startsWith("!");
 		if (Flags.isValid(flag)) {
 			// TODO: все эти проверки вынести в соответствующие классы
-			ActivatorsManager.addFlag(clicker, flag, param, not);
+			ActivatorsManager.addFlag(activator, flag, param, not);
 			return true;
 		}
 		return false;
@@ -96,8 +96,7 @@ public class CmdAdd extends Cmd {
 		Location targetBlock = null;
 		try {
 			targetBlock = p.getTargetBlock(null, 100).getLocation();
-		} catch (Exception ignored) {
-		}
+		} catch (NullPointerException ignored) {}
 		Map<String, Location> locs = new HashMap<>();
 		locs.put("%here%", p.getLocation());
 		locs.put("%eye%", p.getEyeLocation());

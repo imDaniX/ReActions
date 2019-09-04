@@ -23,8 +23,8 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.Cfg;
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.externals.RaEffects;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.location.Teleporter;
 import me.fromgate.reactions.util.parameter.Param;

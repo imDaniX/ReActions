@@ -23,8 +23,8 @@
 package me.fromgate.reactions.sql;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 

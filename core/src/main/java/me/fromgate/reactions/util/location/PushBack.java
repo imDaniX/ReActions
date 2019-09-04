@@ -29,10 +29,9 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-
+// TODO: Move it to LocationHolder
 public class PushBack {
 
-	// TODO: Move it to LocationHolder
 	private static Map<String, Location> prevLocs1 = new HashMap<>();
 	private static Map<String, Location> prevLocs2 = new HashMap<>();
 
@@ -48,12 +47,12 @@ public class PushBack {
 	}
 
 	private static double distance(Location loc1, Location loc2) {
-		if (!loc1.getWorld().equals(loc2.getWorld())) return 1000;
+		if (loc1.getWorld() != loc2.getWorld()) return 1000;
 		if (Cfg.horizontalPushback) {
 			double dx = loc2.getX() - loc1.getX();
 			double dy = loc2.getZ() - loc1.getZ();
-			return Math.sqrt((dx * dx) + (dy * dy));
-		} else return loc1.distance(loc2);
+			return (dx * dx) + (dy * dy);
+		} else return loc1.distanceSquared(loc2);
 	}
 
 	public static void rememberLocations(Player player, Location from, Location to) {

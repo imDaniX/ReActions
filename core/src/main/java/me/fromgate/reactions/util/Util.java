@@ -63,25 +63,30 @@ public class Util {
 
 	/**
 	 * Get random value by min and max values
-	 * @param minmaxstr String with min-max values or just max value(e.g. "2-47", "76")
+	 * @param numsStr String with min-max values or just max value(e.g. "2-47", "76")
 	 * @return Random value
 	 */
-	public static int getMinMaxRandom(String minmaxstr) {
-		int min = 0;
-		int max;
-		String strmin = minmaxstr;
-		String strmax = minmaxstr;
-
-		if (minmaxstr.contains("-")) {
-			int index = minmaxstr.indexOf('-');
-			strmin = minmaxstr.substring(0, index);
-			strmax = minmaxstr.substring(++index);
+	public static int getMinMaxRandom(String numsStr) {
+		if (numsStr.contains("-")) {
+			int min = 0;
+			int max = 0;
+			String minStr;
+			String maxStr;
+			int index = numsStr.indexOf('-');
+			minStr = numsStr.substring(0, index);
+			maxStr = numsStr.substring(index + 1);
+			if (INT_POSITIVE.matcher(minStr).matches())
+				min = Integer.parseInt(minStr);
+			if (INT_POSITIVE.matcher(maxStr).matches())
+				max = Integer.parseInt(maxStr);
+			if (max > min)
+				return min + getRandomInt(1 + max - min);
+			return min;
+		} else {
+			if (INT_POSITIVE.matcher(numsStr).matches())
+				return Integer.parseInt(numsStr);
+			return 0;
 		}
-		if (INT_NOTZERO_POSITIVE.matcher(strmin).matches()) min = Integer.parseInt(strmin);
-		max = min;
-		if (INT_NOTZERO_POSITIVE.matcher(strmax).matches()) max = Integer.parseInt(strmax);
-		if (max > min) return min + getRandomInt(1 + max - min);
-		else return min;
 	}
 
 	/**
@@ -130,8 +135,6 @@ public class Util {
 	 */
 	public static void soundPlay(Location loc, String param) {
 		if (param.isEmpty()) return;
-		/*Map<String,String> params = new HashMap<String,String>();
-		params.put("param", param); */
 		Param params = new Param(param, "param");
 		soundPlay(loc, params);
 	}
@@ -204,6 +207,8 @@ public class Util {
 		return random.nextInt(maxvalue);
 	}
 
+	// TODO: Should be removed or refactored
+
 	public static boolean isIntegerSigned(String... str) {
 		if (str.length == 0) return false;
 		for (String s : str)
@@ -222,7 +227,6 @@ public class Util {
 		return true;
 	}
 
-
 	public static boolean isIntegerGZ(String str) {
 		return INT_NOTZERO_POSITIVE.matcher(str).matches();
 	}
@@ -231,6 +235,13 @@ public class Util {
 		if (str.length == 0) return false;
 		for (String s : str)
 			if (!INT_NOTZERO_POSITIVE.matcher(s).matches()) return false;
+		return true;
+	}
+
+	public static boolean isNumber(String... str) {
+		if (str.length == 0) return false;
+		for (String s : str)
+			if (!FLOAT.matcher(s).matches()) return false;
 		return true;
 	}
 
@@ -243,8 +254,10 @@ public class Util {
 		return FLOAT_POSITIVE.matcher(numStr).matches();
 	}
 
+	// *************************************
+
 	/**
-	 * Safe transition on long to int
+	 * Safe transition from long to int
 	 * @param l Long to transit
 	 * @return Final int
 	 */
@@ -392,29 +405,5 @@ public class Util {
 		}
 		sb.append(data[data.length - 1].trim());
 		return sb.toString();
-	}
-
-	public static int getNumber(String numMinMaxStr) {
-		if (INT_POSITIVE.matcher(numMinMaxStr).matches())
-			return Integer.parseInt(numMinMaxStr);
-		int min = 0;
-		int max;
-		String strMin = numMinMaxStr;
-		String strMax = numMinMaxStr;
-		if (numMinMaxStr.contains("-")) {
-			strMin = numMinMaxStr.substring(0, numMinMaxStr.indexOf("-"));
-			strMax = numMinMaxStr.substring(numMinMaxStr.indexOf("-") + 1);
-		}
-		if (INT_POSITIVE.matcher(strMin).matches())
-			min = Integer.parseInt(strMin);
-		//if (!ALLOW_RANDOM)
-		//	return min;
-		max = min;
-		if (INT_POSITIVE.matcher(strMax).matches())
-			max = Integer.parseInt(strMax);
-		if (max > min)
-			return min + getRandomInt(1 + max - min);
-		else
-			return min;
 	}
 }

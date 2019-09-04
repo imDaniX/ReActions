@@ -95,7 +95,7 @@ public class ArgumentsChain implements Comparable {
 			if(!Util.checkPermission(sender, permission)) return new ExecResult(ExecType.NO_PERMISSIONS, getErroredExec(ExecType.NO_PERMISSIONS));
 
 		for(int i = 0; i < arguments.size(); i++) {
-			ExecType resultType = arguments.get(i).check(args[i]);
+			ExecType resultType = arguments.get(i).check(args[i].toLowerCase());
 			if(resultType != ExecType.DEFAULT)
 				return new ExecResult(resultType, getErroredExec(resultType));
 			if(i == arguments.size() - 1)

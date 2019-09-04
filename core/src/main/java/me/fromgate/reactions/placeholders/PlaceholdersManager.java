@@ -2,9 +2,9 @@ package me.fromgate.reactions.placeholders;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;

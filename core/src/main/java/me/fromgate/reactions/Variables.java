@@ -20,11 +20,11 @@
  * 
  */
 
-package me.fromgate.reactions.util;
+package me.fromgate.reactions;
 
-import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.util.FileUtil;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.OfflinePlayer;
@@ -112,21 +112,21 @@ public class Variables {
 		String id = varId(playerName, var);
 		if (!vars.containsKey(id)) return false;
 		String value = getVar(playerName, var, "");
-		if (isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
+		if (Util.isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
 		return value.equalsIgnoreCase(cmpvalue);
 	}
 
 	public static boolean cmpGreaterVar(String playerName, String var, String cmpvalue) {
 		String id = varId(playerName, var);
 		if (!vars.containsKey(id)) return false;
-		if (!isNumber(vars.get(id), cmpvalue)) return false;
+		if (!Util.isNumber(vars.get(id), cmpvalue)) return false;
 		return Double.parseDouble(vars.get(id)) > Double.parseDouble(cmpvalue);
 	}
 
 	public static boolean cmpLowerVar(String playerName, String var, String cmpvalue) {
 		String id = varId(playerName, var);
 		if (!vars.containsKey(id)) return false;
-		if (!isNumber(vars.get(id), cmpvalue)) return false;
+		if (!Util.isNumber(vars.get(id), cmpvalue)) return false;
 		return Double.parseDouble(vars.get(id)) < Double.parseDouble(cmpvalue);
 	}
 
@@ -158,7 +158,7 @@ public class Variables {
 		String id = varId(player, var);
 		if (!vars.containsKey(id)) setVar(player, var, "0");
 		String valueStr = vars.get(id);
-		if (!isNumber(valueStr)) return false;
+		if (!Util.isNumber(valueStr)) return false;
 		setVar(player, var, String.valueOf(Double.parseDouble(valueStr) + addValue));
 		return true;
 	}
@@ -379,13 +379,6 @@ public class Variables {
 			}
 		}
 		Msg.printPage(sender, varList, Msg.MSG_VARLIST, pageNum, linesPerPage);
-	}
-
-	public static boolean isNumber(String... str) {
-		if (str.length == 0) return false;
-		for (String s : str)
-			if (!Util.FLOAT.matcher(s).matches()) return false;
-		return true;
 	}
 
 	public static boolean matchVar(String playerName, String var, String value) {

@@ -25,6 +25,7 @@ package me.fromgate.reactions.activators;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
+import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.flags.StoredFlag;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.FileUtil;
@@ -231,7 +232,7 @@ public class ActivatorsManager {
 	public static boolean addFlag(String activator, String flag, String param, boolean not) {
 		Activator a = get(activator);
 		if (a == null) return false;
-		a.getBase().addFlag(flag, param, not);
+		a.getBase().addFlag(Flags.getByName(not ? flag.substring(1) : flag), param, not);
 		return true;
 	}
 

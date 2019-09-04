@@ -23,22 +23,22 @@
 package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.FileUtil;
-import me.fromgate.reactions.util.Variables;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 
 public class Delayer {
 
-	private static Map<String, Long> delays = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+	private static Map<String, Long> delays = new HashMap<>();
 
 	public static void save() {
 		YamlConfiguration cfg = new YamlConfiguration();
@@ -76,18 +76,18 @@ public class Delayer {
 		return checkDelay(playerName + "." + id, updateTime);
 	}
 
-	public static void setDelay(String id, Long delayTime, boolean add) {
+	public static void setDelay(String id, long delayTime, boolean add) {
 		setDelaySave(id, delayTime, true, add);
 	}
 
-	public static void setDelaySave(String id, Long delayTime, boolean save, boolean add) {
+	public static void setDelaySave(String id, long delayTime, boolean save, boolean add) {
 		String delayId = id.contains(".") ? id : "global." + id;
 		long currentDelay = add && delays.containsKey(delayId) ? delays.get(delayId) : System.currentTimeMillis();
 		delays.put(delayId, delayTime + currentDelay);
 		if (save) save();
 	}
 
-	public static void setPersonalDelay(String playerName, String id, Long delayTime, boolean add) {
+	public static void setPersonalDelay(String playerName, String id, long delayTime, boolean add) {
 		setDelay(playerName + "." + id, delayTime, add);
 	}
 
