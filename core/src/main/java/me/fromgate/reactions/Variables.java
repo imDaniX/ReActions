@@ -344,9 +344,12 @@ public class Variables {
 
 	public static void setTempVars(Param params) {
 		if (params == null || params.isEmpty()) return;
-		for (String key : params.keySet()) {
-			setTempVar(key, params.getParam(key));
-		}
+		tempvars.putAll(params.getMap());
+	}
+
+	public static void setTempVars(Map<String, String> params) {
+		if (params == null || params.isEmpty()) return;
+		tempvars.putAll(params);
 	}
 
 	public static void setTempVar(String varId, String value) {

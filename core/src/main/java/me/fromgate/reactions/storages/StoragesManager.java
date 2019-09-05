@@ -80,6 +80,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -294,7 +295,23 @@ public class StoragesManager {
 		return true;
 	}
 
-	// Plate Event
+	public static boolean raiseExecActivator(CommandSender sender, String id, Map<String, String> tempVars) {
+		final Player player = (sender instanceof Player) ? (Player) sender : null;
+		Activator act = ActivatorsManager.get(id);
+		if (act == null) {
+			Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
+			return false;
+		}
+		if (act.getType() != ActivatorType.EXEC) {
+			Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
+			return false;
+		}
+		if (ActivatorsManager.isStopped(player, id, true)) return false;
+		ExecStorage ce = new ExecStorage(player, id, tempVars);
+		ActivatorsManager.activate(ce, id);
+		return true;
+	}
+
 	public static boolean raisePlateActivator(PlayerInteractEvent event) {
 		if (event.getAction() != Action.PHYSICAL) return false;
 		if (!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) {
@@ -302,6 +319,7 @@ public class StoragesManager {
 		}
 		final Player p = event.getPlayer();
 		final Location l = event.getClickedBlock().getLocation();
+		// TODO: Why delayed?
 		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
 			PlateStorage pe = new PlateStorage(p, l);
 			ActivatorsManager.activate(pe);

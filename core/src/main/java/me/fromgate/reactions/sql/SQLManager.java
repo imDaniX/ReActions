@@ -36,6 +36,9 @@ import java.sql.Statement;
 import java.util.Properties;
 
 public class SQLManager {
+	// TODO: Ability to create h2/sqlite databases through config file like databases.yml
+	// TODO: Optimize
+
 	private static boolean enabled = false;
 	private static String serverAddress;
 	private static String port;
@@ -43,7 +46,6 @@ public class SQLManager {
 	private static String userName;
 	private static String password;
 	private static String codepage;
-
 
 	public static void init() {
 		loadCfg();
@@ -56,7 +58,6 @@ public class SQLManager {
 			enabled = false;
 		}
 	}
-
 
 	public static void loadCfg() {
 		serverAddress = ReActions.getPlugin().getConfig().getString("MySQL.server", "localhost");

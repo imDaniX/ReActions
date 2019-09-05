@@ -27,9 +27,11 @@ import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class ExecStorage extends Storage {
 	@Getter private final String activatorId;
-	@Getter private Param tempVars;
+	@Getter private Map<String, String> tempVars;
 
 	public ExecStorage(Player player, String activatorId) {
 		super(player, ActivatorType.EXEC);
@@ -38,6 +40,11 @@ public class ExecStorage extends Storage {
 	}
 
 	public ExecStorage(Player p, String activatorId, Param tempVars) {
+		this(p, activatorId);
+		this.tempVars = tempVars.getMap();
+	}
+
+	public ExecStorage(Player p, String activatorId, Map<String, String> tempVars) {
 		this(p, activatorId);
 		this.tempVars = tempVars;
 	}

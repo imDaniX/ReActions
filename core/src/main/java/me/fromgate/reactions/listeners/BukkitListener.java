@@ -211,11 +211,27 @@ public class BukkitListener implements Listener {
 
 		if (event.getEntity().hasMetadata("ReActions-activator") && (killer != null)) {
 			String exec = event.getEntity().getMetadata("ReActions-activator").get(0).asString();
-			StoragesManager.raiseExecActivator(killer, exec + " player:" + killer.getName());
+			StoragesManager.raiseExecActivator(killer, exec, null);
 		} else StoragesManager.raiseMobKillActivator(killer, event.getEntity());
 
 	}
 
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
+		if (StoragesManager.raiseEntityChangeBlockActivator(event)) event.setCancelled(true);
+	}
+
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+	public void onProjectileHit(ProjectileHitEvent event) {
+		StoragesManager.raiseProjectileHitActivator(event);
+	}
+
+	@EventHandler(priority = EventPriority.MONITOR)
+	public void onCheckGodEvent(EntityDamageEvent event) {
+		GodModeListener.cancelGodEvent(event);
+	}
+
+	// TODO: Refactor these - too many duplicated code
 
 	@EventHandler(ignoreCancelled = true)
 	public void onMobGrowl(EntityDamageEvent event) {
@@ -264,11 +280,6 @@ public class BukkitListener implements Listener {
 		event.setDamage(event.getDamage() * dmg);
 	}
 
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onCheckGodEvent(EntityDamageEvent event) {
-		GodModeListener.cancelGodEvent(event);
-	}
-
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onPlayerDamage(EntityDamageEvent event) {
 		String source;
@@ -293,21 +304,6 @@ public class BukkitListener implements Listener {
 		}
 
 		if (StoragesManager.raiseDamageActivator(event, source)) event.setCancelled(true);
-	}
-
-	/* TODO PotionSplashbyMob and PotionSplashbyPlayer activators
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onPotionSplash(PotionSplashEvent event) {
-	}*/
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onEntityChangeBlock(EntityChangeBlockEvent event) {
-		if (StoragesManager.raiseEntityChangeBlockActivator(event)) event.setCancelled(true);
-	}
-
-	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-	public void onProjectileHit(ProjectileHitEvent event) {
-		StoragesManager.raiseProjectileHitActivator(event);
 	}
 
 	@EventHandler(ignoreCancelled = true)
@@ -353,6 +349,7 @@ public class BukkitListener implements Listener {
 		target.setMetadata("reactions-pvp-time", new FixedMetadataValue(ReActions.getPlugin(), time));
 	}
 
+	// *********************************************
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {

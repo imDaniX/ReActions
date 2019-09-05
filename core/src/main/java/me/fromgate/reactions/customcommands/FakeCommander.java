@@ -5,7 +5,6 @@ import me.fromgate.reactions.storages.PrecommandStorage;
 import me.fromgate.reactions.storages.StoragesManager;
 import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
@@ -67,9 +66,7 @@ public class FakeCommander {
 		if(raCmd == null) return false;
 		String[] args = Arrays.copyOfRange(split, 1, split.length);
 		String exec = raCmd.executeCommand(storage.getSender(), args);
-		StoragesManager.raiseExecActivator(storage.getSender(),
-								new Param("activator:"+exec),
-								new Param(generateTempVars(split[0], storage.getCommand(), args)));
+		StoragesManager.raiseExecActivator(storage.getSender(), exec, generateTempVars(split[0], storage.getCommand(), args));
 		return raCmd.isOverride();
 	}
 	

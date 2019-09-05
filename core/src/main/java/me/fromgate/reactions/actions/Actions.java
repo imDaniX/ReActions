@@ -40,7 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+// TODO: Will be irrelevant because of modules(externals) system
 public enum Actions {
 	// TODO: ActionSetLevel, ActionModifyString, ActionKill, ActionDynamic(for actions from placeholders)
 	TP("tp", true, new ActionTp()),

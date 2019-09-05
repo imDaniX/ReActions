@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// TODO: Will be irrelevant because of modules(externals) system
 public enum Flags {
 	// TODO: FlagCuboid
 	GROUP("group", true, new FlagGroup()),

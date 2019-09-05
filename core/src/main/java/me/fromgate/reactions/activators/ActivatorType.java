@@ -39,8 +39,7 @@ import java.util.Map;
 
 // TODO: Will be irrelevant because of modules(externals) system
 public enum ActivatorType {
-	// alias, creator method, loader method, can be located, need target block
-	// TODO: GlideActivator, MoneyTransactionActivator
+	// TODO: GlideActivator, MoneyTransactionActivator, PotionSplashActivator, ProjectileHitActivator
 	EXEC("exe", ExecActivator::create, ExecActivator::load),
 	BUTTON("b", ButtonActivator::create, ButtonActivator::load, true, true),
 	PLATE("plt", PlateActivator::create, PlateActivator::load, true, true),
@@ -93,8 +92,6 @@ public enum ActivatorType {
 	FCT_DISBAND("fctdisband", FactionDisbandActivator::create, FactionDisbandActivator::load);
 
 	private final String alias;
-	// private final BiFunction<ActivatorBase, Param, Activator> creator;
-	// private final BiFunction<ActivatorBase, ConfigurationSection, Activator> loader;
 	private final RaFunction<Param> creator;
 	private final RaFunction<ConfigurationSection> loader;
 	@Getter private final boolean needBlock;
