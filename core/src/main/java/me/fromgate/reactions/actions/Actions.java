@@ -103,6 +103,7 @@ public enum Actions {
 	VAR_DEC("vardec", false, new ActionVar(3, false)),
 	VAR_PLAYER_DEC("varpdec", true, new ActionVar(3, true)),
 	VAR_TEMP_SET("vartempset", false, new ActionVar(4, false)),
+	CHANGE("chng", false, new ActionChange()),
 	RNC_SET_RACE("setrace", true, new ActionRacesAndClasses(true)),
 	RNC_SET_CLASS("setclass", true, new ActionRacesAndClasses(false)),
 	TIMER_STOP("timerstop", false, new ActionTimer(true)),
