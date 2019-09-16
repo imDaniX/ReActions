@@ -23,23 +23,22 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
-import org.bukkit.entity.Player;
 
 public class ActionSignSet extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		// loc:world,x,y,z line1:text line2:text line3:text line4:text clear:1,2,3,4
-		String locStr = params.getParam("loc", Variables.getTempVar("sign_loc"));
+		String locStr = params.getParam("loc", context.getTempVariable("sign_loc"));
 		if (locStr.isEmpty()) return false;
 		Location loc = LocationUtil.parseCoordinates(locStr);
 		if (loc == null) return false;

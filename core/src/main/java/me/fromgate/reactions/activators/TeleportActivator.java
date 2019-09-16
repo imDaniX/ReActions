@@ -1,6 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.storages.TeleportStorage;
 import me.fromgate.reactions.util.Util;
@@ -23,7 +22,7 @@ public class TeleportActivator extends Activator {
 		TeleportStorage tpStorage = (TeleportStorage) storage;
 		if(cause != null && tpStorage.getCause() != cause) return false;
 		if(worldTo != null && !tpStorage.getWorldTo().equalsIgnoreCase(worldTo)) return false;
-		return Actions.executeActivator(storage.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

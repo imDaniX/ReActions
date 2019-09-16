@@ -23,6 +23,7 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -30,8 +31,8 @@ import org.bukkit.util.Vector;
 public class ActionVelocity extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		Vector v = setPlayerVelocity(p, params);
+	public boolean execute(RaContext context, Param params) {
+		Vector v = setPlayerVelocity(context.getPlayer(), params);
 		if (v == null) return false;
 		this.setMessageParam("[" + v.getBlockX() + ", " + v.getBlockY() + ", " + v.getBlockZ() + "]");
 		return true;

@@ -1,7 +1,7 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -12,7 +12,9 @@ import javax.script.ScriptException;
 import javax.script.SimpleBindings;
 import javax.script.SimpleScriptContext;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by MaxDikiy on 2017-05-17.
@@ -23,7 +25,8 @@ public class ActionIfElse extends Action {
 	private static final ScriptEngine engine = factory.getEngineByName("JavaScript");
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		if (params.isParamsExists("if") && params.hasAnyParam("then", "else")) {
 			/*
 			TODO: Meh, not really good - does not support multiply checks
@@ -79,12 +82,12 @@ public class ActionIfElse extends Action {
 
 			String strResult = (result) ? params.getParam("then", "") : params.getParam("else", "");
 			if (!executeActivator(p, condition, strResult) && !executeActions(p, strResult))
-				Variables.setTempVar("ifelseresult" + params.getParam("suffix", ""), strResult);
+				context.setTempVariable("ifelseresult" + params.getParam("suffix", ""), strResult);
 
 			return true;
 			*/
-			final ScriptContext context = new SimpleScriptContext();
-			context.setBindings(new SimpleBindings(), ScriptContext.ENGINE_SCOPE);
+			final ScriptContext scriptContext = new SimpleScriptContext();
+			scriptContext.setBindings(new SimpleBindings(), ScriptContext.ENGINE_SCOPE);
 
 			String condition = params.getParam("if", "");
 			String then_ = params.getParam("then", "");
@@ -92,12 +95,12 @@ public class ActionIfElse extends Action {
 			String suffix = params.getParam("suffix", "");
 
 			try {
-				boolean result = (boolean) engine.eval(condition, context);
-				if (!executeActivator(p, condition, (result) ? then_ : else_)
-						&& !executeActions(p, (result) ? then_ : else_))
-					Variables.setTempVar("ifelseresult" + suffix, (result) ? then_ : else_);
+				boolean result = (boolean) engine.eval(condition, scriptContext);
+				if (!executeActivator(player, condition, (result) ? then_ : else_)
+						&& !executeActions(context, (result) ? then_ : else_))
+					context.setTempVariable("ifelseresult" + suffix, (result) ? then_ : else_);
 			} catch (ScriptException e) {
-				Variables.setTempVar("ifelsedebug", e.getMessage());
+				context.setTempVariable("ifelsedebug", e.getMessage());
 				return false;
 			}
 			return true;
@@ -111,13 +114,13 @@ public class ActionIfElse extends Action {
 		param = Param.parseParams(param.getParam("run"));
 		if (param.isEmpty() || !param.hasAnyParam("activator", "exec")) return false;
 		param.set("player", p == null ? "null" : p.getName());
-		Param tempVars = new Param();
-		tempVars.set("condition", condition);
+		Map<String, String> tempVars = new HashMap<>();
+		tempVars.put("condition", condition);
 		StoragesManager.raiseExecActivator(p, param, tempVars);
 		return true;
 	}
 
-	private boolean executeActions(Player p, String paramStr) {
+	private boolean executeActions(RaContext context, String paramStr) {
 		List<StoredAction> actions = new ArrayList<>();
 		Param params = Param.parseParams(paramStr);
 		if (!params.hasAnyParam("run")) return false;
@@ -137,7 +140,7 @@ public class ActionIfElse extends Action {
 		}
 
 		if (actions.isEmpty()) return false;
-		Actions.executeActions(p, actions, true);
+		Actions.executeActions(context, actions, true);
 		actions.clear();
 		return true;
 	}

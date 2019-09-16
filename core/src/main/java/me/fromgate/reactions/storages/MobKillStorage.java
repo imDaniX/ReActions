@@ -24,8 +24,12 @@ package me.fromgate.reactions.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class MobKillStorage extends Storage {
 	@Getter private final LivingEntity entity;
@@ -33,5 +37,14 @@ public class MobKillStorage extends Storage {
 	public MobKillStorage(Player p, LivingEntity entity) {
 		super(p, ActivatorType.MOB_KILL);
 		this.entity = entity;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("moblocation", LocationUtil.locationToString(entity.getLocation()));
+		tempVars.put("mobkiller", player == null ? "" : player.getName());
+		tempVars.put("mobtype", entity.getType().name());
+		String mobName = entity instanceof Player ? entity.getCustomName() : entity.getName();
+		tempVars.put("mobname", Util.isStringEmpty(mobName) ? entity.getType().name() : mobName);
 	}
 }

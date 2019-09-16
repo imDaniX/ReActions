@@ -1,8 +1,7 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.location.Cuboid;
 import me.fromgate.reactions.util.location.VirtualLocation;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
@@ -16,55 +15,35 @@ import java.util.Set;
 import java.util.UUID;
 
 public class CuboidActivator extends Activator implements Locatable {
-	private final String world;
 	private final CuboidMode mode;
-	private final int xMin, yMin, zMin;
-	private final int xMax, yMax, zMax;
-	private final boolean twoDimensional;
+	private final Cuboid cuboid;
 	private final Set<UUID> within = new HashSet<>();
 
-	public CuboidActivator(ActivatorBase base, VirtualLocation loc1, VirtualLocation loc2, CuboidMode mode, boolean twoDimensional) {
+	public CuboidActivator(ActivatorBase base, Cuboid cuboid, CuboidMode mode) {
 		super(base);
-		this.world = loc1.getWorld();
+		this.cuboid = cuboid;
 		this.mode = mode;
-		int[] pair = Util.sortedIntPair(loc1.getX(), loc2.getX());
-		xMin = pair[0]; xMax = pair[1];
-		pair = Util.sortedIntPair(loc1.getZ(), loc2.getZ());
-		zMin = pair[0]; zMax = pair[1];
-		this.twoDimensional = twoDimensional;
-		if(!twoDimensional) {
-			pair = Util.sortedIntPair(loc1.getY(), loc2.getY());
-			yMin = pair[0]; yMax = pair[1];
-		} else {
-			yMin = 0; yMax = 256;
-		}
 	}
 
 	@Override
 	public boolean activate(Storage event) {
 		Player player = event.getPlayer();
 		UUID id = player.getUniqueId();
-		boolean inCuboid = checkInCuboid(player.getLocation(), true);
+		boolean inCuboid = cuboid.isInside(player.getLocation(), true);
 		switch(mode) {
 			case CHECK:
-				if(inCuboid)
-					Actions.executeActivator(player, getBase());
-				break;
+				return inCuboid;
 			case ENTER:
-				if(inCuboid && within.add(id))
-					Actions.executeActivator(player, getBase());
-				break;
+				return inCuboid && within.add(id);
 			case LEAVE:
-				if(!inCuboid && within.remove(id))
-					Actions.executeActivator(player, getBase());
-				break;
+				return !inCuboid && within.remove(id);
 		}
 		return false;
 	}
 
 	@Override
 	public boolean isLocatedAt(Location loc) {
-		return checkInCuboid(loc, false);
+		return cuboid.isInside(loc, false);
 	}
 
 	@Override
@@ -74,12 +53,11 @@ public class CuboidActivator extends Activator implements Locatable {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("mode", mode.toString());
-		cfg.set("two_dimensional", twoDimensional);
-		cfg.set("world", world);
-		cfg.set("loc1.x", xMin); cfg.set("loc2.x", xMax);
-		cfg.set("loc1.y", yMin); cfg.set("loc2.y", yMax);
-		cfg.set("loc1.z", zMin); cfg.set("loc2.z", zMax);
+		cfg.set("mode", mode.name());
+		cfg.set("world", cuboid.getWorld());
+		cfg.set("loc1.x", cuboid.getXMin()); cfg.set("loc2.x", cuboid.getXMax());
+		cfg.set("loc1.y", cuboid.getYMin()); cfg.set("loc2.y", cuboid.getYMax());
+		cfg.set("loc1.z", cuboid.getZMin()); cfg.set("loc2.z", cuboid.getZMax());
 	}
 
 	@Override
@@ -90,19 +68,6 @@ public class CuboidActivator extends Activator implements Locatable {
 	@Override
 	public boolean isValid() {
 		return true;
-	}
-
-	private boolean checkInCuboid(Location loc, boolean head) {
-		if(!loc.getWorld().getName().equalsIgnoreCase(world))
-			return false;
-		int x = loc.getBlockX();
-		int z = loc.getBlockZ();
-		if((xMin > x || xMax < x) || (zMin > z || zMax < z))
-			return false;
-		if(twoDimensional)
-			return true;
-		int y = loc.getBlockY();
-		return (y >= yMin && y <= yMax) || (!head || (y+1.75 >= yMin && y+1.75 <= yMax));
 	}
 
 	private enum CuboidMode {
@@ -120,19 +85,17 @@ public class CuboidActivator extends Activator implements Locatable {
 	
 	public static CuboidActivator create(ActivatorBase base, Param param) {
 		CuboidMode mode = CuboidMode.getByName(param.getParam("mode"));
-		boolean twoDimensional = param.getParam("two_dimensional", true);
 		String world = param.getParam("world", Bukkit.getWorlds().get(0).getName());
 		VirtualLocation loc1 = new VirtualLocation(world, param.getParam("loc1.x", 0), param.getParam("loc1.y", 0), param.getParam("loc1.z", 0));
 		VirtualLocation loc2 = new VirtualLocation(world, param.getParam("loc2.x", 0), param.getParam("loc2.y", 0), param.getParam("loc2.z", 0));
-		return new CuboidActivator(base, loc1, loc2, mode, twoDimensional);
+		return new CuboidActivator(base, new Cuboid(loc1, loc2), mode);
 	}
 	
 	public static CuboidActivator load(ActivatorBase base, ConfigurationSection cfg) {
 		CuboidMode mode = CuboidMode.getByName(cfg.getString("mode"));
-		boolean twoDimensional = cfg.getBoolean("two_dimensional");
 		String world = cfg.getString("world");
 		VirtualLocation loc1 = new VirtualLocation(world, cfg.getInt("loc1.x"), cfg.getInt("loc1.y"), cfg.getInt("loc1.z"));
 		VirtualLocation loc2 = new VirtualLocation(world, cfg.getInt("loc2.x"), cfg.getInt("loc2.y"), cfg.getInt("loc2.z"));
-		return new CuboidActivator(base, loc1, loc2, mode, twoDimensional);
+		return new CuboidActivator(base, new Cuboid(loc1, loc2), mode);
 	}
 }

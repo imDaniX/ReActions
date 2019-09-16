@@ -23,18 +23,61 @@
 package me.fromgate.reactions.storages;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+import java.util.Map;
+
 public class PrecommandStorage extends Storage {
-	@Getter @Setter	private String command;
+	@Getter private final String label, command;
+	@Getter private final String[] args;
 	@Getter private final CommandSender sender;
 
 	public PrecommandStorage(Player p, CommandSender sender, String command) {
 		super(p, ActivatorType.PRECOMMAND);
 		this.sender = sender;
 		this.command = command;
+		String[] split = command.split("\\s");
+		this.label = split[0];
+		this.args = Arrays.copyOfRange(split, 1, split.length);
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		String[] start = label.split(":");
+		if(start.length == 1) {
+			tempVars.put("prefix", start[0]);
+			tempVars.put("label", start[0]);
+		} else {
+			tempVars.put("prefix", start[0]);
+			tempVars.put("label", start[1]);
+		}
+		// All the arguments
+		tempVars.put("args", String.join(" ", args));
+		// Full command
+		tempVars.put("command", command);
+		// Count of arguments
+		tempVars.put("argscount", Integer.toString(args.length));
+		// Just command
+		tempVars.put("arg0", label);
+		for(int i = 0; i < args.length; i++) {
+			// [i] argument
+			tempVars.put("arg" + (i+1), args[i]);
+		}
+		StringBuilder builder = new StringBuilder();
+		for(int j = args.length - 1; j >= 0; j--) {
+			builder.append(" ").append(args[j]);
+			// Arguments after [j] argument
+			tempVars.put("args" + j, builder.toString().substring(1));
+		}
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
 	}
 }

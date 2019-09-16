@@ -24,6 +24,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaEffects;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
@@ -31,20 +32,20 @@ import org.bukkit.entity.Player;
 public class ActionHeal extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		Player player;
-		double hp = params.getParam("hp", 0);
-		boolean playhearts = params.getParam("hearts", true);
-		if (params.isParamsExists("params")) hp = params.getParam("params", 0);
-		String playerName = params.getParam("player", p != null ? p.getName() : "");
-		player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
+		if(params.hasAnyParam("player"))
+			player = Util.getPlayerExact(params.getParam("player"));
 		if (player == null) return false;
+		double hp = params.getParam("hp", 0);
+		boolean playHearts = params.getParam("hearts", true);
+		if (params.isParamsExists("params")) hp = params.getParam("params", 0);
 		double health = player.getHealth();
 		double healthMax = EntityUtil.getMaxHealth(player);
 		if (health < healthMax && hp >= 0) {
 			player.setHealth(hp == 0 ? healthMax : Math.min(hp + health, healthMax));
 		}
-		if (playhearts && RaEffects.isPlayEffectConnected()) {
+		if (playHearts && RaEffects.isPlayEffectConnected()) {
 			RaEffects.playEffect(player.getEyeLocation(), "HEART", "offset:0.5 num:4 speed:0.7");
 		}
 		setMessageParam(Double.toString(hp));

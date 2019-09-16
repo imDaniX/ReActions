@@ -23,13 +23,15 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class FlagOnline implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		return Util.isIntegerGZ(param) && Integer.parseInt(param) <= Bukkit.getOnlinePlayers().size();
 	}
 

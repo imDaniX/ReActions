@@ -23,8 +23,11 @@
 package me.fromgate.reactions.storages;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
+import me.fromgate.reactions.util.data.ItemStackValue;
+import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -34,17 +37,19 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
+
 
 public class InventoryClickStorage extends Storage {
-	@Getter @Setter private ItemStack item;
-	@Getter private InventoryAction action;
-	@Getter private ClickType clickType;
-	@Getter private SlotType slotType;
-	@Getter private InventoryType inventoryType;
-	@Getter private int numberKey;
-	@Getter private int slot;
-	@Getter private String inventoryName;
-	private InventoryView inventoryView;
+	@Getter private final ItemStack item;
+	@Getter private final InventoryAction action;
+	@Getter private final ClickType clickType;
+	@Getter private final SlotType slotType;
+	@Getter private final InventoryType inventoryType;
+	@Getter private final int numberKey;
+	@Getter private final int slot;
+	@Getter private final String inventoryName;
+	private final InventoryView inventoryView;
 
 	public InventoryClickStorage(Player p, InventoryAction action, ClickType clickType, Inventory inventory, SlotType
 									slotType, ItemStack item, int numberKey, InventoryView inventoryView, int slot) {
@@ -63,5 +68,23 @@ public class InventoryClickStorage extends Storage {
 	public Inventory getBottomInventory() {
 		return this.inventoryView.getBottomInventory();
 	}
+	
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("name", inventoryName);
+		tempVars.put("click", clickType.name());
+		tempVars.put("action", action.name());
+		tempVars.put("slotType", slotType.name());
+		tempVars.put("inventory", inventoryType.name());
+		tempVars.put("item", ItemUtil.itemToString(item));
+		tempVars.put("key", Integer.toString(numberKey + 1));
+		tempVars.put("itemkey", (numberKey > -1) ? ItemUtil.itemToString(getBottomInventory().getItem(numberKey)) : "");
+		tempVars.put("slot", Integer.toString(slot));
+	}
 
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
+		changeables.put("item", new ItemStackValue(item));
+	}
 }

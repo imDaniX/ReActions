@@ -1,6 +1,5 @@
 package me.fromgate.reactions.util.item;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
@@ -102,6 +101,11 @@ public class ItemUtil {
 		return removeItemInInventory(inventory, itemParams);
 	}
 
+	public static int countItemsInInventory(Inventory inventory, String itemStr) {
+		Map<String, String> itemMap = Param.parseParams(itemStr, "");
+		return countItemsInventory(inventory, itemMap);
+	}
+
 	private static boolean removeItemInInventory(Inventory inventory, Map<String, String> itemParams) {
 		int amountToRemove = Integer.parseInt(itemParams.getOrDefault("amount", "1"));
 		//int countItems =  countItemsInventory (inventory, itemParams);
@@ -151,28 +155,11 @@ public class ItemUtil {
 		return result;
 	}
 
-	private static int getAmount(String itemStr) {
+	public static int getAmount(String itemStr) {
 		Map<String, String> itemMap = Param.parseParams(itemStr, "");
 		String amountStr = itemMap.getOrDefault("amount", "1");
 		if (Util.INT_NOTZERO_POSITIVE.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
 		return 1;
-	}
-
-	public static boolean hasItemInInventory(Player player, String itemStr) {
-		return hasItemInInventory(player.getInventory(), itemStr);
-	}
-
-
-	public static boolean hasItemInInventory(Inventory inventory, String itemStr) {
-		int countAmount = countItemsInInventory(inventory, itemStr);
-		Variables.setTempVar("item_amount", countAmount == 0 ? "0" : String.valueOf(countAmount));
-		int amount = getAmount(itemStr);
-		return countAmount >= amount;
-	}
-
-	public static int countItemsInInventory(Inventory inventory, String itemStr) {
-		Map<String, String> itemMap = Param.parseParams(itemStr, "");
-		return countItemsInventory(inventory, itemMap);
 	}
 
 	public static VirtualItem itemFromBlock(Block block) {
@@ -232,12 +219,10 @@ public class ItemUtil {
 		return stacks;
 	}
 
-
 	public static String itemToString(ItemStack item) {
 		VirtualItem vi = VirtualItem.fromItemStack(item);
 		return vi == null ? "" : vi.toString();
 	}
-
 
 	public static String toDisplayString(List<ItemStack> items) {
 		StringBuilder sb = new StringBuilder();

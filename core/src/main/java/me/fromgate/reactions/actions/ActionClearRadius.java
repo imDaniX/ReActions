@@ -1,7 +1,7 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import me.fromgate.reactions.util.parameter.Param;
@@ -9,7 +9,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,13 +20,13 @@ public class ActionClearRadius extends Action {
 	// TODO: Too weird. Optimize, simplify
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		int radius = params.getParam("radius", 0);
 		String type = params.getParam("type", "all");
 		if (radius == 0) return false;
-		List<Location> locs = LocationUtil.getMinMaxRadiusLocations(p, radius);
-		Variables.setTempVar("loc1", LocationUtil.locationToString(locs.get(0)));
-		Variables.setTempVar("loc2", LocationUtil.locationToString(locs.get(1)));
+		List<Location> locs = LocationUtil.getMinMaxRadiusLocations(context.getPlayer(), radius);
+		context.setTempVariable("loc1", LocationUtil.locationToString(locs.get(0)));
+		context.setTempVariable("loc2", LocationUtil.locationToString(locs.get(1)));
 		if (locs.size() != 2) return false;
 		Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
 		int count = 0;

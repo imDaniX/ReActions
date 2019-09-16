@@ -24,8 +24,14 @@ package me.fromgate.reactions.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
+import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 
 public class MobClickStorage extends Storage {
@@ -34,5 +40,18 @@ public class MobClickStorage extends Storage {
 	public MobClickStorage(Player p, LivingEntity entity) {
 		super(p, ActivatorType.MOB_CLICK);
 		this.entity = entity;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("moblocation", LocationUtil.locationToString(entity.getLocation()));
+		tempVars.put("mobtype", entity.getType().name());
+		String mobName = entity instanceof Player ? entity.getCustomName() : entity.getName();
+		tempVars.put("mobname", Util.isStringEmpty(mobName) ? entity.getType().name() : mobName);
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
 	}
 }

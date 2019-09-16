@@ -23,13 +23,10 @@
 package me.fromgate.reactions.activators;
 
 import lombok.Getter;
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.ItemHoldStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
@@ -50,15 +47,8 @@ public class ItemHoldActivator extends Activator {
 			return false;
 		}
 		ItemHoldStorage ie = (ItemHoldStorage) event;
-		if (ItemUtil.compareItemStr(ie.getItem(), this.itemStr)) {
-			VirtualItem vi = VirtualItem.fromItemStack(ie.getItem());
-			if (vi != null) {
-				Variables.setTempVar("item", vi.toString());
-				Variables.setTempVar("item-str", vi.toDisplayString());
-			}
-			return Actions.executeActivator(ie.getPlayer(), getBase());
-		}
-		return false;
+		if (!ItemUtil.compareItemStr(ie.getItem(), this.itemStr)) return false;
+		return true;
 	}
 
 	@Override

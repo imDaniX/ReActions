@@ -24,13 +24,13 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 import java.util.Collection;
 import java.util.List;
@@ -39,7 +39,7 @@ public class ActionClearRegion extends Action {
 	// TODO: Too weird. Optimize, simplify
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		String region = params.getParam("region", "");
 		String type = params.getParam("type", "all");
 		if (region.isEmpty()) return false;

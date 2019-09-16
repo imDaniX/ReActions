@@ -23,7 +23,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.DoorStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
@@ -59,7 +58,7 @@ public class DoorActivator extends Activator implements Locatable {
 		if (!isLocatedAt(de.getDoorLocation())) return false;
 		if (this.state.equalsIgnoreCase("open") && de.isDoorOpened()) return false;
 		if (this.state.equalsIgnoreCase("close") && (!de.isDoorOpened())) return false;
-		return Actions.executeActivator(de.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

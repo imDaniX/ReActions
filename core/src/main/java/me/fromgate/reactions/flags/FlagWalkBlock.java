@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -29,7 +30,8 @@ import org.bukkit.entity.Player;
 public class FlagWalkBlock implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		Block walk = player.getLocation().getBlock();
 		if (!walk.getType().isSolid()) walk = walk.getLocation().subtract(0, 0.1, 0).getBlock();
 		return walk.getType() == VirtualItem.fromString(param).getType();

@@ -23,12 +23,14 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagXP implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!Util.isInteger(param)) return false;
 		return player.getTotalExperience() >= Integer.parseInt(param);
 	}

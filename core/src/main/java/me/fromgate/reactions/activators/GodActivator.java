@@ -1,7 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.GodStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
@@ -22,8 +20,7 @@ public class GodActivator extends Activator {
 	public boolean activate(Storage event) {
 		GodStorage e = (GodStorage) event;
 		if (!checkGod(e.isGod())) return false;
-		Variables.setTempVar("god", e.isGod() ? "TRUE" : "FALSE");
-		return Actions.executeActivator(e.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

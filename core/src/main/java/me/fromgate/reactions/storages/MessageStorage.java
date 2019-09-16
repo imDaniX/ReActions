@@ -26,9 +26,17 @@ package me.fromgate.reactions.storages;
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.MessageActivator;
+import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
+import me.fromgate.reactions.util.data.StringValue;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+import java.util.regex.Pattern;
+
 public class MessageStorage extends Storage {
+	private final static Pattern NOT_D = Pattern.compile("\\D+");
 	@Getter private final String message;
 	private final MessageActivator activator;
 
@@ -41,6 +49,37 @@ public class MessageStorage extends Storage {
 
 	public boolean isForActivator(MessageActivator messageActivator) {
 		return this.activator.equals(messageActivator);
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("message", message);
+		String[] args = message.split(" ");
+		int countInt = 0;
+		int countNum = 0;
+		if (args != null && args.length > 0) {
+			for (int i = 0; i < args.length; i++) {
+				tempVars.put("word" + (i + 1), args[i]);
+				tempVars.put("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
+				if (Util.INT.matcher(args[i]).matches()) {
+					countInt++;
+					tempVars.put("int" + countInt, args[i]);
+				}
+				if (Util.FLOAT.matcher(args[i]).matches()) {
+					countNum++;
+					tempVars.put("num" + countNum, args[i]);
+				}
+			}
+		}
+		tempVars.put("word-count", Integer.toString(args.length));
+		tempVars.put("int-count", Integer.toString(countInt));
+		tempVars.put("num-count", Integer.toString(countNum));
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
+		changeables.put("message", new StringValue(message));
 	}
 
 }

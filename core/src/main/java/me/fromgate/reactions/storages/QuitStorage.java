@@ -23,15 +23,23 @@
 package me.fromgate.reactions.storages;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.DataValue;
+import me.fromgate.reactions.util.data.StringValue;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class QuitStorage extends Storage {
-	@Getter @Setter private String quitMessage;
+	@Getter private String quitMessage;
 
 	public QuitStorage(Player p, String quitMessage) {
 		super(p, ActivatorType.QUIT);
 		this.quitMessage = quitMessage;
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put("quit-message", new StringValue(quitMessage));
 	}
 }

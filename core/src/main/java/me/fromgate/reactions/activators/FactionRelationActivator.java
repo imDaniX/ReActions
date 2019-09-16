@@ -22,8 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.FactionRelationStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
@@ -73,14 +71,8 @@ public class FactionRelationActivator extends Activator {
 	@Override
 	public boolean activate(Storage event) {
 		FactionRelationStorage fe = (FactionRelationStorage) event;
-		Variables.setTempVar("faction1", fe.getFaction());
-		Variables.setTempVar("faction2", fe.getOtherFaction());
-		Variables.setTempVar("oldrelation", fe.getOldRelation());
-		Variables.setTempVar("newrelation", fe.getNewRelation());
-		if (this.mustExecute(fe.getFaction(), fe.getOtherFaction(), fe.getOldRelation(), fe.getNewRelation())) {
-			return Actions.executeActivator(null, getBase());
-		}
-		return false;
+		if (!mustExecute(fe.getFaction(), fe.getOtherFaction(), fe.getOldRelation(), fe.getNewRelation())) return false;
+		return true;
 	}
 
 	@Override

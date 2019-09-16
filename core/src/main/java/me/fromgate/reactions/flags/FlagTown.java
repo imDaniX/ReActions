@@ -24,12 +24,14 @@ package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.RaTowny;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagTown implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!Externals.isTownyConnected()) return false;
 		return RaTowny.playerInTown(player, param);
 	}

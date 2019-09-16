@@ -22,13 +22,10 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.MobDamageStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -54,18 +51,7 @@ public class MobDamageActivator extends Activator {
 		if (me.getEntity() == null) return false;
 		if (!isActivatorMob(me.getEntity())) return false;
 		if (!checkItem(me.getPlayer())) return false;
-		Variables.setTempVar("moblocation", LocationUtil.locationToString(me.getEntity().getLocation()));
-		Variables.setTempVar("mobdamager", me.getPlayer() == null ? "" : me.getPlayer().getName());
-		Variables.setTempVar("mobtype", me.getEntity().getType().name());
-		LivingEntity mob = me.getEntity();
-		Player player = mob instanceof Player ? (Player) mob : null;
-		String mobName = (player == null) ? me.getEntity().getCustomName() : player.getName();
-		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getEntity().getType().name());
-		Variables.setTempVar("damage", Double.toString(me.getDamage()));
-		boolean result = Actions.executeActivator(me.getPlayer(), getBase());
-		String dmgStr = Variables.getTempVar("damage");
-		if (Util.FLOAT_POSITIVE.matcher(dmgStr).matches()) me.setDamage(Double.parseDouble(dmgStr));
-		return result;
+		return true;
 	}
 
 	private boolean checkItem(Player player) {

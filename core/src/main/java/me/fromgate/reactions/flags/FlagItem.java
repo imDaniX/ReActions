@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.parameter.Param;
@@ -38,19 +38,20 @@ public class FlagItem implements Flag {
 	}
 
 	@Override
-	public boolean checkFlag(Player player, String itemStr) {
+	public boolean checkFlag(RaContext context, String itemStr) {
+		Player player = context.getPlayer();
 		switch (flagType) {
 			case 0:
 				ItemStack inHand = player.getInventory().getItemInMainHand();
-				Variables.setTempVar("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
+				context.setTempVariable("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
 				return ItemUtil.compareItemStr(inHand, itemStr, true);
 			case 1:
-				return hasItemInInventory(player, itemStr);
+				return hasItemInInventory(context, itemStr);
 			case 2:
 				return isItemWeared(player, itemStr);
 			case 3:
 				ItemStack inOffhand = player.getInventory().getItemInOffHand();
-				Variables.setTempVar("item_amount", inOffhand == null ? "0" : String.valueOf(inOffhand.getAmount()));
+				context.setTempVariable("item_amount", inOffhand == null ? "0" : String.valueOf(inOffhand.getAmount()));
 				return ItemUtil.compareItemStr(inOffhand, itemStr, true);
 		}
 		return false;
@@ -62,11 +63,15 @@ public class FlagItem implements Flag {
 		return false;
 	}
 
-	private boolean hasItemInInventory(Player player, String itemStr) {
+	private boolean hasItemInInventory(RaContext context, String itemStr) {
+		Player player = context.getPlayer();
 		Param params = new Param(itemStr);
 
 		if (!params.isParamsExists("slot", "item")) {
-			return ItemUtil.hasItemInInventory(player, itemStr);
+			int countAmount = ItemUtil.countItemsInInventory(player.getInventory(), itemStr);
+			context.setTempVariable("item_amount", countAmount == 0 ? "0" : String.valueOf(countAmount));
+			int amount = ItemUtil.getAmount(itemStr);
+			return countAmount >= amount;
 		}
 
 		String slotStr = params.getParam("slot", "");
@@ -93,5 +98,4 @@ public class FlagItem implements Flag {
 
 		return vi.compare(itemStr);
 	}
-
 }

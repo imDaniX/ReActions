@@ -1,7 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.SneakStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
@@ -21,9 +19,8 @@ public class SneakActivator extends Activator {
 	@Override
 	public boolean activate(Storage event) {
 		SneakStorage se = (SneakStorage) event;
-		if (!checkSneak(se.isSneaking())) return false;
-		Variables.setTempVar("sneak", se.isSneaking() ? "TRUE" : "FALSE");
-		return Actions.executeActivator(se.getPlayer(), getBase());
+		if(!checkSneak(se.isSneaking())) return false;
+		return true;
 	}
 
 	@Override

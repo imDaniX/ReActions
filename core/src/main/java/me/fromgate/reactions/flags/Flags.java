@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.activators.ActivatorBase;
 import me.fromgate.reactions.flags.factions.FlagAtFactionZoneRel;
 import me.fromgate.reactions.flags.factions.FlagFaction;
@@ -34,11 +33,11 @@ import me.fromgate.reactions.flags.worldedit.FlagSuperPickAxe;
 import me.fromgate.reactions.flags.worldedit.FlagToolControl;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.message.RaDebug;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -48,7 +47,10 @@ import java.util.Map;
 
 // TODO: Will be irrelevant because of modules(externals) system
 public enum Flags {
-	// TODO: FlagCuboid
+	/*
+	 TODO: More flags
+	 FlagCuboid, FlagString(to check strings), FlagDynamic
+	*/
 	GROUP("group", true, new FlagGroup()),
 	PERM("perm", true, new FlagPerm()),
 	TIME("time", false, new FlagTime()),
@@ -136,9 +138,9 @@ public enum Flags {
 		this.flag = flag;
 	}
 
-	public boolean check(Player player, String param) {
-		if (this.requirePlayer && (player == null)) return false;
-		return flag.checkFlag(player, param);
+	public boolean check(RaContext context, String param) {
+		if (this.requirePlayer && (context.getPlayer() == null)) return false;
+		return flag.checkFlag(context, param);
 	}
 
 	public static Flags getByName(String name) {
@@ -149,29 +151,31 @@ public enum Flags {
 		return getByName(name) != null;
 	}
 
-	public static boolean checkFlag(Player p, String flag, String param, boolean not) {
-		return checkFlag(p, getByName(flag), param, not);
+	public static boolean checkFlag(RaContext context, String flag, String param, boolean not) {
+		return checkFlag(context, getByName(flag), param, not);
 	}
 
-	public static boolean checkFlag(Player p, Flags flag, String param, boolean not) {
+	public static boolean checkFlag(RaContext context, Flags flag, String param, boolean not) {
 		if (flag == null || Util.isStringEmpty(param)) return false;
-		Variables.setTempVar((flag + "_flag").toUpperCase(), param);
-		boolean check = flag.check(p, param);
+		context.setTempVariable((flag + "_flag").toUpperCase(), param);
+		boolean check = flag.check(context, param);
 		if (not) return !check;
-		Variables.setTempVar((flag + "_flag_val").toUpperCase(), String.valueOf(check));
+		context.setTempVariable((flag + "_flag_val").toUpperCase(), String.valueOf(check));
 		return check;
 	}
 
-	public static boolean checkFlags(Player p, ActivatorBase c) {
-		return RaDebug.checkFlagAndDebug(p, checkAllFlags(p, c));
+	public static boolean checkFlags(RaContext context, ActivatorBase c) {
+		return RaDebug.checkFlagAndDebug(context.getPlayer(), checkAllFlags(context, c));
 	}
 
-	public static boolean checkAllFlags(Player p, ActivatorBase c) {
+	public static boolean checkAllFlags(RaContext context, ActivatorBase c) {
 		if (c.getFlags().size() > 0)
 			for (int i = 0; i < c.getFlags().size(); i++) {
 				StoredFlag f = c.getFlags().get(i);
-				Variables.setTempVar((f.getFlagName() + "_flag").toUpperCase(), f.getValue());
-				if (!checkFlag(p, f.getFlag(), PlaceholdersManager.replacePlaceholderButRaw(p, f.getValue()), f.isInverted())) return false;
+				context.setTempVariable((f.getFlagName() + "_flag").toUpperCase(), f.getValue());
+				if (!checkFlag(context, f.getFlag(),
+						PlaceholdersManager.replacePlaceholderButRaw(context, f.getValue()), f.isInverted()))
+					return false;
 			}
 		return true;
 	}

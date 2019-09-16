@@ -25,9 +25,9 @@ package me.fromgate.reactions.actions;
 import lombok.Getter;
 import me.fromgate.reactions.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.activators.ActivatorBase;
-import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
@@ -42,7 +42,11 @@ import java.util.Map;
 
 // TODO: Will be irrelevant because of modules(externals) system
 public enum Actions {
-	// TODO: ActionSetLevel, ActionModifyString, ActionKill, ActionDynamic(for actions from placeholders)
+	/*
+	 TODO: More actions
+	 ActionSetLevel, ActionModifyString, ActionKill, ActionString(change strings),
+	 ActionDynamic(for actions from placeholders), ActionCompassTarget
+	*/
 	TP("tp", true, new ActionTp()),
 	VELOCITY("velocity", true, new ActionVelocity()),
 	VELOCITY_JUMP("jump", true, new ActionVelocityJump()),
@@ -157,41 +161,36 @@ public enum Actions {
 		return name;
 	}
 
-	public static boolean executeActivator(Player player, ActivatorBase act) {
-		boolean isAction = Flags.checkFlags(player, act);
+	public static void executeActions(RaContext context, ActivatorBase act, boolean isAction) {
 		List<StoredAction> actions = isAction ? act.getActions() : act.getReactions();
-		if (actions.isEmpty()) return false;
-		return executeActions(player, actions, isAction);
+		if (actions.isEmpty()) return;
+		executeActions(context, actions, isAction);
 	}
 
-	public static boolean executeActions(Player player, List<StoredAction> actions, boolean isAction) {
-		boolean cancelParentEvent = false;
-		if (actions == null || actions.isEmpty()) return false;
+	public static void executeActions(RaContext context, List<StoredAction> actions, boolean isAction) {
+		Player player = context.getPlayer();
 		for (int i = 0; i < actions.size(); i++) {
 			StoredAction av = actions.get(i);
-			if (av.getAction()==null) continue;
+			if (av.getAction() == null) continue;
 			Actions at = av.getAction();
 			if (at == Actions.WAIT) {
 				if (i == actions.size() - 1) continue;
 				ActionWait aw = (ActionWait) at.action;
-				Param param = new Param(PlaceholdersManager.replacePlaceholderButRaw(player, av.getValue()), "time");
+				Param param = new Param(PlaceholdersManager.replacePlaceholderButRaw(context, av.getValue()), "time");
 				String timeStr = param.getParam("time", "0");
 				long time = TimeUtil.parseTime(timeStr);
 				if (time == 0) continue;
 				List<StoredAction> futureList = new ArrayList<>(actions.subList(i + 1, actions.size()));
-				aw.executeDelayed(player, futureList, isAction, time);
-				return cancelParentEvent;
+				aw.executeDelayed(context.getPlayer(), futureList, isAction, time);
+				return;
 			}
-			if (at != null && at.performAction(player, isAction, new Param(PlaceholdersManager.replacePlaceholderButRaw(player, av.getValue())))) {
-				cancelParentEvent = true;
-			}
+			at.performAction(context, isAction, new Param(PlaceholdersManager.replacePlaceholderButRaw(context, av.getValue())));
 		}
-		return cancelParentEvent;
 	}
 
-	public boolean performAction(Player p, /*Activator a,*/ boolean action, Param actionParam) {
-		if ((p == null) && this.requirePlayer) return false;
-		return this.action.executeAction(p,/* a,*/ action, actionParam);
+	public void performAction(RaContext context, boolean action, Param actionParam) {
+		if ((context.getPlayer() == null) && this.requirePlayer) return;
+		this.action.executeAction(context, action, actionParam);
 	}
 
 	public static boolean isValid(String name) {

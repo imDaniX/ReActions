@@ -25,6 +25,7 @@ package me.fromgate.reactions.actions;
 import lombok.Setter;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
@@ -43,12 +44,13 @@ public abstract class Action {
 		return this.actionExecuting;
 	}
 
-	public final boolean executeAction(Player player, boolean action, Param params) {
+	public final void executeAction(RaContext context, boolean action, Param params) {
 		this.actionExecuting = action;
+		Player player = context.getPlayer();
 		//this.activator = a;
 		if (!params.hasAnyParam("param-line")) params.set("param-line", "");
 		setMessageParam(params.getParam("param-line"));
-		boolean actionFailed = (!execute(player, params));
+		boolean actionFailed = (!execute(context, params));
 		if ((player != null) && (printAction())) {
 			Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase());
 			if (msg == null) {
@@ -57,15 +59,17 @@ public abstract class Action {
 				msg.print(player, messageParam);
 			}
 		}
-		//Залипухи, но похоже по другому - никак...
-		//if (a==null) return true;
-		//if ((a.getType() == ActivatorType.COMMAND)&&(!((CommandActivator) a).isCommandRegistered())) return true;
-		return (this.type == Actions.CANCEL_EVENT) && (!actionFailed);
 	}
 
 	private boolean printAction() {
 		return (Util.isWordInList(this.type.name(), Cfg.actionMsg) || Util.isWordInList(this.type.getAlias(), Cfg.actionMsg));
 	}
 
-	public abstract boolean execute(Player p, Param params);
+	/**
+	 * Try to execute action
+	 * @param context Context of activator
+	 * @param params Parameters of action
+	 * @return Is action execution was successful
+	 */
+	public abstract boolean execute(RaContext context, Param params);
 }

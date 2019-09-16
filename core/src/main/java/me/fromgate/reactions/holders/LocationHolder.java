@@ -54,7 +54,6 @@ public class LocationHolder {
 	public static void saveLocs() {
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
 		if (tports.size() > 0) {
-			FileUtil.recreateFile(f, "Failed to recreate locations configuration file");
 			YamlConfiguration lcs = new YamlConfiguration();
 			for (String key : tports.keySet()) {
 				TpLocation tploc = tports.get(key);

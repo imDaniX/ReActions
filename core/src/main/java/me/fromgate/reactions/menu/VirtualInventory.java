@@ -56,7 +56,9 @@ public class VirtualInventory {
 	}
 
 	public Inventory getInventory() {
-		Inventory inv = Bukkit.createInventory(null, (size % 9 == 0) ? size : ((size / 9) + 1) * 9, ChatColor.translateAlternateColorCodes('&', title));
+		RaInventoryHolder holder = new RaInventoryHolder(activators);
+		Inventory inv = Bukkit.createInventory(holder, (size % 9 == 0) ? size : ((size / 9) + 1) * 9, ChatColor.translateAlternateColorCodes('&', title));
+		holder.setInventory(inv);
 		for (int i = 0; i < slots.size(); i++) {
 			if (slots.get(i).isEmpty()) continue;
 			ItemStack item = ItemUtil.parseItemStack(slots.get(i));

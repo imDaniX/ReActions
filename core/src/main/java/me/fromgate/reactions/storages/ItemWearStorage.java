@@ -24,7 +24,6 @@ package me.fromgate.reactions.storages;
 
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.item.ItemUtil;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -39,12 +38,5 @@ public class ItemWearStorage extends Storage {
 			if (ItemUtil.compareItemStr(armour, itemStr)) return true;
 		return false;
 	}
-
-	public ItemStack getFoundedItem(String itemStr) {
-		for (ItemStack armour : getPlayer().getInventory().getArmorContents())
-			if (ItemUtil.compareItemStr(armour, itemStr)) return armour;
-		return new ItemStack(Material.AIR);
-	}
-
 
 }

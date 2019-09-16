@@ -1,6 +1,7 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -9,14 +10,11 @@ import org.bukkit.entity.Player;
  */
 public class ActionFlySpeed extends Action {
 	@Override
-	public boolean execute(Player p, Param params) {
-		Player player = p;
-		double speed;
-		if (params.hasAnyParam("speed", "player")) {
-			String playerName = params.getParam("player", p != null ? p.getName() : "");
-			player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
-			speed = params.getParam("speed", 0);
-		} else speed = params.getParam("param-line", 0);
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
+		double speed = params.getParam("speed", params.getParam("param-line", 0));
+		if(params.hasAnyParam("player"))
+			player = Util.getPlayerExact(params.getParam("player"));
 		return flySpeedPlayer(player, speed / 10);
 	}
 

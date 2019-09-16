@@ -23,8 +23,8 @@
 package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.FileUtil;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -43,7 +43,6 @@ public class Delayer {
 	public static void save() {
 		YamlConfiguration cfg = new YamlConfiguration();
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
-		if(!FileUtil.recreateFile(f, "Failed to recreate delays configuration file")) return;
 		for (String key : delays.keySet()) {
 			long delayTime = delays.get(key);
 			if (delayTime > System.currentTimeMillis())
@@ -135,17 +134,17 @@ public class Delayer {
 		return times;
 	}
 
-	public static void setTempPlaceholders(String playerName, String id) {
+	public static void setTempPlaceholders(RaContext context, String playerName, String id) {
 		String[] times = Delayer.getStringTime(playerName, id);
 		if (times != null) {
-			Variables.setTempVar("delay-fulltime", times[0]);
-			Variables.setTempVar("delay-time", times[1]);
-			Variables.setTempVar("delay-left", times[7]);
-			Variables.setTempVar("delay-left-full", times[2]);
-			Variables.setTempVar("delay-left-hms", times[3]);
-			Variables.setTempVar("delay-left-hh", times[4]);
-			Variables.setTempVar("delay-left-mm", times[5]);
-			Variables.setTempVar("delay-left-ss", times[6]);
+			context.setTempVariable("delay-fulltime", times[0]);
+			context.setTempVariable("delay-time", times[1]);
+			context.setTempVariable("delay-left", times[7]);
+			context.setTempVariable("delay-left-full", times[2]);
+			context.setTempVariable("delay-left-hms", times[3]);
+			context.setTempVariable("delay-left-hh", times[4]);
+			context.setTempVariable("delay-left-mm", times[5]);
+			context.setTempVariable("delay-left-ss", times[6]);
 		}
 	}
 

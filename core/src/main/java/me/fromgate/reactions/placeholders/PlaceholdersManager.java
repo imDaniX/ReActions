@@ -5,6 +5,8 @@ import lombok.Setter;
 import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.flags.Flags;
+import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,11 +14,12 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: Redesign all the system of placeholders
+// TODO: Redesign all the system of placeholders.
 public class PlaceholdersManager {
 	private static int placeholderCounter = 0;
 	@Getter @Setter private static int countLimit = 127;
@@ -41,7 +44,7 @@ public class PlaceholdersManager {
 		return true;
 	}
 
-	public static String replacePlaceholderButRaw(Player player, String string) {
+	public static String replacePlaceholderButRaw(RaContext context, String string) {
 		String result = string.replace("$", "\\$");
 		List<String> raws = new ArrayList<>();
 		Matcher matcher = PATTERN_RAW.matcher(result);
@@ -53,7 +56,7 @@ public class PlaceholdersManager {
 			count++;
 		}
 		matcher.appendTail(sb);
-		result = replacePlaceholders(player, sb.toString());
+		result = replacePlaceholders(context, sb.toString());
 		if (!raws.isEmpty()) {
 			for (int i = 0; i < raws.size(); i++) {
 				result = result.replace("§~[RAW" + i + "]", raws.get(i));
@@ -62,17 +65,18 @@ public class PlaceholdersManager {
 		return result;
 	}
 
-	private static String replacePlaceholders(Player player, String string) {
+	private static String replacePlaceholders(RaContext context, String string) {
+		Player player = context.getPlayer();
 		String result = string;
-		result = Variables.replaceTempVars(result);
+		result = replaceTempVars(context.getTempVariables(), result);
 		result = Variables.replacePlaceholders(player, result);
 		Matcher matcher = PATTERN_ANY.matcher(result);
 		StringBuffer sb = new StringBuffer();
 		String group;
 		String replacement;
-		while (countPlaceholder() && matcher.find()) {
+		while (matcher.find()) {
 			group = "%" +
-					replacePlaceholders(player,
+					replacePlaceholders(context,
 							matcher.group().replaceAll("(^%)|(%$)", "")) +
 					"%";
 			replacement = replacePlaceholder(player, group);
@@ -80,10 +84,23 @@ public class PlaceholdersManager {
 		}
 		matcher.appendTail(sb);
 		result = sb.toString();
-		if (!string.equals(result)) result = replacePlaceholders(player, result);
+		if (!string.equals(result) && countPlaceholder()) result = replacePlaceholders(context, result);
 		result = RaPlaceholderAPI.processPlaceholder(player, result);
 		placeholderCounter = 0;
 		return result;
+	}
+
+	private static String replaceTempVars(Map<String, String> tempVars, String str) {
+		if (str.isEmpty()) return str;
+		String newStr = str;
+		for (String key : tempVars.keySet()) {
+			String replacement = tempVars.get(key);
+			replacement = Util.FLOAT_WITHZERO.matcher(replacement).matches() ?
+					Integer.toString((int) Double.parseDouble(replacement)) :
+					replacement; // Matcher.quoteReplacement(replacement);
+			newStr = newStr.replaceAll("(?i)%" + key + "%", replacement);
+		}
+		return newStr;
 	}
 
 	private final static Pattern PH_W_S = Pattern.compile("(%\\w+:\\S+%)");

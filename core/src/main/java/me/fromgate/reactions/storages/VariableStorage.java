@@ -26,6 +26,8 @@ import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class VariableStorage extends Storage {
 	@Getter private final String variableId;
 	@Getter private final String newValue;
@@ -36,5 +38,12 @@ public class VariableStorage extends Storage {
 		this.variableId = var;
 		this.newValue = newValue;
 		this.oldValue = prevValue;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("var-id", variableId);
+		tempVars.put("var-old", oldValue);
+		tempVars.put("var-new", newValue);
 	}
 }

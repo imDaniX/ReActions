@@ -1,14 +1,9 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.DropStorage;
 import me.fromgate.reactions.storages.Storage;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,22 +22,8 @@ public class DropActivator extends Activator {
 	@Override
 	public boolean activate(Storage event) {
 		DropStorage de = (DropStorage) event;
-		if (!checkItem(de.getItemStack())) return false;
-		Variables.setTempVar("droplocation", LocationUtil.locationToString(de.getPlayer().getLocation()));
-		Variables.setTempVar("pickupDelay", Double.toString(de.getPickupDelay()));
-		boolean result = Actions.executeActivator(de.getPlayer(), getBase());
-		String pickupDelayStr = Variables.getTempVar("pickupDelay");
-		if (Util.INT_POSITIVE.matcher(pickupDelayStr).matches()) de.setPickupDelay(Integer.parseInt(pickupDelayStr));
-		Param itemParam = new Param(Variables.getTempVar("item"));
-		if (!itemParam.isEmpty()) {
-			String itemType = itemParam.getParam("type", "0");
-			if (itemType.equalsIgnoreCase("AIR") || itemType.equalsIgnoreCase("null") || itemType.equalsIgnoreCase("0") || itemType.isEmpty()) {
-				de.setItemStack(new ItemStack(Material.getMaterial("AIR"), 1));
-			} else {
-				de.setItemStack(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
-			}
-		}
-		return result;
+		if (!checkItem(de.getItem())) return false;
+		return true;
 	}
 
 	@Override

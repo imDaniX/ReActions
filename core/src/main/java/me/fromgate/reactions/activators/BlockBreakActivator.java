@@ -1,7 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.BlockBreakStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -32,16 +30,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 		Block brokenBlock = bbe.getBlock();
 		if (brokenBlock == null) return false;
 		if (!isActivatorBlock(brokenBlock)) return false;
-		Variables.setTempVar("blocklocation", LocationUtil.locationToString(bbe.getBlockBreakLocation()));
-		Variables.setTempVar("blocktype", brokenBlock.getType().name());
-		Variables.setTempVar("block", ItemUtil.itemFromBlock(brokenBlock).toString());
-		Variables.setTempVar("is_drop", Boolean.toString(bbe.isDropItems()));
-		boolean result = Actions.executeActivator(bbe.getPlayer(), getBase());
-		String isDropItem = Variables.getTempVar("is_drop");
-		if (isDropItem.equalsIgnoreCase("true") || isDropItem.equalsIgnoreCase("false")) {
-			bbe.setDropItems(Boolean.parseBoolean(isDropItem));
-		}
-		return result;
+		return true;
 	}
 
 	private boolean checkLocations(Block block) {

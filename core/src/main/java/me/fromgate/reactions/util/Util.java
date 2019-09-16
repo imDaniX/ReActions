@@ -59,7 +59,7 @@ public class Util {
 	public final static Pattern FLOAT_POSITIVE = Pattern.compile("\\d+(\\.\\d+)?");
 	public final static Pattern FLOAT = Pattern.compile("-?\\d+(\\.\\d+)?");
 
-	public final static Pattern FLOAT_ZERO = Pattern.compile("^\\d+\\.0$");
+	public final static Pattern FLOAT_WITHZERO = Pattern.compile("^\\d+\\.0$");
 
 	/**
 	 * Get random value by min and max values
@@ -123,7 +123,7 @@ public class Util {
 			pitch = params.getParam("pitch", 1.0f);
 			volume = params.getParam("volume", 1.0f);
 		}
-		Sound sound = getSoundStr(sndstr);
+		Sound sound = getEnumByName(Sound.class, sndstr, Sound.UI_BUTTON_CLICK);
 		if (soundLoc != null) soundLoc.getWorld().playSound(soundLoc, sound, volume, pitch);
 		return sound.name();
 	}
@@ -137,32 +137,6 @@ public class Util {
 		if (param.isEmpty()) return;
 		Param params = new Param(param, "param");
 		soundPlay(loc, params);
-	}
-
-	/**
-	 * Get Sound from string
-	 * @param param Name of sound
-	 * @return Sound from name or Sound.UI_BUTTON_CLICK
-	 */
-	private static Sound getSoundStr(String param) {
-		try {
-			return Sound.valueOf(param.toUpperCase());
-		} catch (IllegalArgumentException ignored) {
-			return Sound.UI_BUTTON_CLICK;
-		}
-	}
-
-	// TODO: Isn't it useless?
-	/**
-	 * Assemble array of strings
-	 * @param s Array of string
-	 * @return Assembled string
-	 */
-	public static String join(String... s) {
-		StringBuilder sb = new StringBuilder();
-		for (String str : s)
-			sb.append(str);
-		return sb.toString();
 	}
 
 	/**
@@ -405,5 +379,38 @@ public class Util {
 		}
 		sb.append(data[data.length - 1].trim());
 		return sb.toString();
+	}
+
+	/**
+	 * Get any enum by it's name
+	 * @param <T> Enum type
+	 * @param clazz Enum class
+	 * @param name Name of enum
+	 * @return Corresponding enum, or null if not found
+	 */
+	public static <T extends Enum<T>> T getEnumByName(Class<T> clazz, String name) {
+		return getEnumByName(clazz, name, null);
+	}
+
+	/**
+	 * Get any enum by it's name or default value if not found
+	 * @param <T> Enum type
+	 * @param clazz Enum class
+	 * @param name Name of enum
+	 * @return Corresponding enum, or null if not found
+	 */
+	public static <T extends Enum<T>> T getEnumByName(Class<T> clazz, String name, T def) {
+		if(clazz != null && !Util.isStringEmpty(name)) {
+			try {
+				return Enum.valueOf(clazz, name.toUpperCase());
+			} catch(IllegalArgumentException ignored) {}
+		}
+		return def;
+	}
+
+	public static <T> boolean isArrayContains(T value, T[] arr) {
+		for(T t : arr)
+			if(t == value) return true;
+		return false;
 	}
 }

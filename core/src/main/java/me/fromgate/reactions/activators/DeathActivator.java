@@ -22,14 +22,11 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.DeathStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.enums.DeathCause;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 
 public class DeathActivator extends Activator {
 
@@ -44,18 +41,7 @@ public class DeathActivator extends Activator {
 	public boolean activate(Storage event) {
 		DeathStorage de = (DeathStorage) event;
 		if (this.deathCause != DeathCause.ANY && de.getCause() != this.deathCause) return false;
-		Variables.setTempVar("cause", de.getCause().name());
-		if (de.getKiller() != null) {
-			Variables.setTempVar("killer-type", de.getKiller().getType().name());
-			if (de.getKiller().getType() == EntityType.PLAYER) {
-				Variables.setTempVar("killer-name", de.getKiller().getName());
-				Variables.setTempVar("targetplayer", de.getKiller().getName());
-			} else {
-				String mobName = de.getKiller().getCustomName();
-				Variables.setTempVar("killer-name", mobName == null || mobName.isEmpty() ? de.getKiller().getType().name() : mobName);
-			}
-		}
-		return Actions.executeActivator(de.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

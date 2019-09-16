@@ -24,9 +24,9 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.TemporaryOp;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -37,17 +37,17 @@ public class ActionCommand extends Action {
 	public final static int CONSOLE = 2;
 	public final static int CHAT = 3;
 
-	private int commandAs;
-
+	private final int commandAs;
 
 	public ActionCommand(int commandAs) {
 		this.commandAs = commandAs;
 	}
 
 	@Override
-	public boolean execute(Player player, Param params) {
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		if (commandAs != CONSOLE && player == null) return false;
-		String commandLine = ChatColor.translateAlternateColorCodes('&', params.getParam("param-line"));
+		String commandLine = params.getParam("param-line");
 		switch (commandAs) {
 			case NORMAL:
 				dispatchCommand(false, player, commandLine);
@@ -67,17 +67,13 @@ public class ActionCommand extends Action {
 	}
 
 	private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
-		if (Bukkit.isPrimaryThread()) {
-			dispatchCmd(setOp, sender, commandLine);
-		} else {
-			Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> dispatchCmd(setOp, sender, commandLine));
-		}
-	}
-
-	private static void dispatchCmd(final boolean setOp, final CommandSender sender, final String commandLine) {
-		TemporaryOp.setTempOp(sender);
-		Bukkit.getServer().dispatchCommand(sender, commandLine);
-		TemporaryOp.removeTempOp(sender);
+		Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
+			if(setOp) {
+				TemporaryOp.setTempOp(sender);
+				Bukkit.getServer().dispatchCommand(sender, commandLine);
+				TemporaryOp.removeTempOp(sender);
+			} else Bukkit.getServer().dispatchCommand(sender, commandLine);
+		});
 	}
 
 }

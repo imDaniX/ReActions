@@ -23,7 +23,6 @@
 package me.fromgate.reactions.activators;
 
 import lombok.Getter;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.externals.worldguard.WGBridge;
 import me.fromgate.reactions.storages.RegionLeaveStorage;
@@ -47,7 +46,7 @@ public class RegionLeaveActivator extends Activator implements Locatable {
 	public boolean activate(Storage event) {
 		RegionLeaveStorage be = (RegionLeaveStorage) event;
 		if (!be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region))) return false;
-		return Actions.executeActivator(be.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

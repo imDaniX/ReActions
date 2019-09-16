@@ -23,8 +23,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.FactionChangeStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
@@ -48,9 +46,7 @@ public class FactionActivator extends Activator {
 			return false;
 		if (!(oldFaction.isEmpty() || oldFaction.equalsIgnoreCase("any") || fe.getOldFaction().equalsIgnoreCase(oldFaction)))
 			return false;
-		Variables.setTempVar("newfaction", fe.getNewFaction());
-		Variables.setTempVar("oldfaction", fe.getOldFaction());
-		return Actions.executeActivator(fe.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

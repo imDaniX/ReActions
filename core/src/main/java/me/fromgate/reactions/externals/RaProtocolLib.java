@@ -28,13 +28,16 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.MessageActivator.Source;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.util.data.DataValue;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class RaProtocolLib {
@@ -56,7 +59,6 @@ public class RaProtocolLib {
 		ReActions.getPlugin().getLogger().info("ProtocolLib connected");
 
 	}
-
 
 	private static String jsonToString(JSONObject source) {
 		StringBuilder result = new StringBuilder();
@@ -123,7 +125,8 @@ public class RaProtocolLib {
 							if (jsonMessage != null) message = textToString(jsonMessage);
 						}
 						if (message.isEmpty()) return;
-						if (StoragesManager.raiseMessageActivator(event.getPlayer(), Source.CHAT_OUTPUT, message))
+						Map<String, DataValue> changeables = StoragesManager.raiseMessageActivator(event.getPlayer(), Source.CHAT_OUTPUT, message);
+						if(changeables != null && changeables.get(Storage.CANCEL_EVENT).asBoolean())
 							event.setCancelled(true);
 
 					}

@@ -1,8 +1,7 @@
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 /**
  * Created by MaxDikiy on 10/1/2017.
@@ -15,15 +14,15 @@ public class FlagGreaterLower implements Flag {
 	}
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
 		Param params = new Param(param, "unknown");
 		float paramValue = params.getParam("param", 0);
 		float value = params.getParam("value", 0);
 		if (flagType == 0) {
-			Variables.setTempVar("gparam", Double.toString(paramValue));
+			context.setTempVariable("gparam", Double.toString(paramValue));
 			return paramValue > value;
 		} else if (flagType == 1) {
-			Variables.setTempVar("lparam", Double.toString(paramValue));
+			context.setTempVariable("lparam", Double.toString(paramValue));
 			return paramValue < value;
 		}
 		return false;

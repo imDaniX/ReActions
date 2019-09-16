@@ -1,7 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.DamageByBlockStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.item.ItemUtil;
@@ -36,12 +34,7 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 		if (damagerBlock == null) return false;
 		if (!isActivatorBlock(damagerBlock)) return false;
 		if (!damageCauseCheck(db.getCause())) return false;
-		Variables.setTempVar("blocklocation", LocationUtil.locationToString(db.getBlockLocation()));
-		Variables.setTempVar("blocktype", damagerBlock.getType().name());
-		Variables.setTempVar("block", ItemUtil.itemFromBlock(damagerBlock).toString());
-		Variables.setTempVar("damage", Double.toString(db.getDamage()));
-		Variables.setTempVar("cause", db.getCause().name());
-		return Actions.executeActivator(db.getPlayer(), getBase());
+		return true;
 	}
 
 	private boolean checkLocations(Block block) {

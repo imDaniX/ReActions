@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-
 import lombok.Getter;
 import me.fromgate.reactions.util.RaFunction;
 import me.fromgate.reactions.util.message.BukkitMessenger;
@@ -39,7 +38,10 @@ import java.util.Map;
 
 // TODO: Will be irrelevant because of modules(externals) system
 public enum ActivatorType {
-	// TODO: GlideActivator, MoneyTransactionActivator, PotionSplashActivator, ProjectileHitActivator
+	/*
+	 TODO: More activators
+	 GlideActivator, MoneyTransactionActivator, PotionSplashActivator, ProjectileHitActivator
+	*/
 	EXEC("exe", ExecActivator::create, ExecActivator::load),
 	BUTTON("b", ButtonActivator::create, ButtonActivator::load, true, true),
 	PLATE("plt", PlateActivator::create, PlateActivator::load, true, true),
@@ -158,3 +160,24 @@ public enum ActivatorType {
 	}
 
 }
+
+/*
+public abstract class ActivatorType {
+	@Getter private final String name;
+
+	private static Map<String, ActivatorType> byName;
+
+	public ActivatorType(String name) {
+		this.name  name;
+	}
+
+	public static register(ActivatorType type, String alias) {
+		byName.put(type.getame.toUpperCase(), this);
+		byName.put(alias.toUpperCase(), this);
+	}
+
+	public abstract Activator create(ActivatorBase base, Param params);
+
+	public abstract Activator load(ActivatorBase base, ConfigurationSection cfg);
+}
+*/

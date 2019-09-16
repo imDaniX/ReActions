@@ -26,7 +26,6 @@ import me.fromgate.reactions.storages.StoragesManager;
 import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -44,10 +43,8 @@ import java.util.regex.Pattern;
 public class Variables {
 	// TODO: Something like classes and objects that just contains variables - actually just global variables
 
+	// TODO: Why treemap?
 	private static Map<String, String> vars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-	// TODO: I think it would be better to store and transfer temp variables inside Activator and Action classes
-	// TODO: Use some action instead temp variables to change event's data, like damage in MobDamage
-	private static Map<String, String> tempvars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	private final static Pattern VARP = Pattern.compile("(?i).*%varp?:\\S+%.*");
 
@@ -184,8 +181,6 @@ public class Variables {
 	public static void save() {
 		YamlConfiguration cfg = new YamlConfiguration();
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml");
-		if(!FileUtil.recreateFile(f, "Failed to recreate variables configuration file")) return;
-
 		for (String key : vars.keySet())
 			cfg.set(key, vars.get(key));
 		FileUtil.saveCfg(cfg, f, "Failed to save variables configuration file");
@@ -206,7 +201,6 @@ public class Variables {
 		UUID id = Util.getUUID(player);
 		if (id == null) return;
 		File f = new File(varDir + File.separator + id.toString() + ".yml");
-		if(!FileUtil.recreateFile(f, "Failed to recreate variable configuration file")) return;
 		for (String key : vars.keySet()) {
 			if (key.contains(player)) cfg.set(key, vars.get(key));
 		}
@@ -223,10 +217,8 @@ public class Variables {
 		YamlConfiguration cfg = new YamlConfiguration();
 		String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
 		File f = new File(varDir + File.separator + "general.yml");
-		if(!FileUtil.recreateFile(f, "Failed to recreate variable configuration file")) return;
-		for (String key : vars.keySet()) {
+		for (String key : vars.keySet())
 			if (key.contains("general")) cfg.set(key, vars.get(key));
-		}
 		FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file");
 	}
 
@@ -297,12 +289,10 @@ public class Variables {
 		}
 
 		YamlConfiguration cfg2 = new YamlConfiguration();
-		if (FileUtil.recreateFile(f, "Failed to recreate variable file")) {
-			for (String key : varsTmp.keySet())
-				cfg2.set(key, varsTmp.get(key));
-			if(!FileUtil.saveCfg(cfg2, f, "Failed to save variable file")) return;
-			varsTmp.clear();
-		}
+		for (String key : varsTmp.keySet())
+			cfg2.set(key, varsTmp.get(key));
+		if(!FileUtil.saveCfg(cfg2, f, "Failed to save variable file")) return;
+		varsTmp.clear();
 	}
 
 
@@ -312,65 +302,19 @@ public class Variables {
 		String newStr = str;
 		for (String key : vars.keySet()) {
 			String replacement = vars.get(key);
-			replacement = Util.FLOAT_ZERO.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
+			replacement = Util.FLOAT_WITHZERO.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
 			if (key.startsWith("general.")) {
 				String id = key.substring(8); // key.replaceFirst("general\\.", "");
 				newStr = newStr.replaceAll("(?i)%var:" + Pattern.quote(id) + "%", replacement);
 			} else {
-				if (player != null && key.matches(Util.join("(?i)^", player.getName(), "\\..*"))) {
-					String id = key.replaceAll(Util.join("(?i)^", player.getName(), "\\."), "");
+				if (player != null && key.matches("(?i)^" + player.getName() + "\\..*")) {
+					String id = key.replaceAll("(?i)^" + player.getName() + "\\.", "");
 					newStr = newStr.replaceAll("(?i)%varp:" + Pattern.quote(id) + "%", replacement);
 				}
 				newStr = newStr.replaceAll("(?i)%varp?:" + Pattern.quote(key) + "%", replacement);
 			}
 		}
 		return newStr;
-	}
-
-	/*
-	 *  Temporary variables - replacement for place holders
-	 */
-
-	public static String replaceTempVars(String str) {
-		if (str.isEmpty()) return str;
-		String newStr = str;
-		for (String key : tempvars.keySet()) {
-			String replacement = tempvars.get(key);
-			replacement = Util.FLOAT_ZERO.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
-			newStr = newStr.replaceAll("(?i)%" + key + "%", replacement);
-		}
-		return newStr;
-	}
-
-	public static void setTempVars(Param params) {
-		if (params == null || params.isEmpty()) return;
-		tempvars.putAll(params.getMap());
-	}
-
-	public static void setTempVars(Map<String, String> params) {
-		if (params == null || params.isEmpty()) return;
-		tempvars.putAll(params);
-	}
-
-	public static void setTempVar(String varId, String value) {
-		tempvars.put(varId, value);
-	}
-
-	public static void clearTempVar(String varId) {
-		if (tempvars.containsKey(varId)) vars.remove(varId);
-	}
-
-	public static void clearAllTempVar() {
-		tempvars.clear();
-	}
-
-	public static String getTempVar(String varId) {
-		return getTempVar(varId, "");
-	}
-
-	public static String getTempVar(String varId, String defvar) {
-		if (tempvars.containsKey(varId)) return tempvars.get(varId);
-		return defvar;
 	}
 
 	public static void printList(CommandSender sender, int pageNum, String mask) {
@@ -389,9 +333,5 @@ public class Variables {
 		if (!vars.containsKey(id)) return false;
 		String varValue = vars.get(id);
 		return varValue.matches(value);
-	}
-
-	public static Param getTempVars() {
-		return new Param(tempvars);
 	}
 }

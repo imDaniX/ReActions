@@ -1,12 +1,18 @@
 package me.fromgate.reactions.storages;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
+import me.fromgate.reactions.util.data.DoubleValue;
+import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+
+import java.util.Map;
 
 /**
  * Created by MaxDikiy on 2017-07-23.
@@ -14,7 +20,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 public class DamageByBlockStorage extends Storage {
 	@Getter private final Block blockDamager;
 	@Getter private final DamageCause cause;
-	@Getter @Setter private double damage;
+	@Getter private final double damage;
 
 
 	public DamageByBlockStorage(Player player, Block blockDamager, double damage, DamageCause cause) {
@@ -22,14 +28,20 @@ public class DamageByBlockStorage extends Storage {
 		this.blockDamager = blockDamager;
 		this.damage = damage;
 		this.cause = cause;
+	}
 
-		/*
-		setTempVariable("blocklocation", Locator.locationToString(blockDamager.getLocation()));
-		setTempVariable("blocktype", blockDamager.getType());
-		setTempVariable("block", ItemUtil.itemFromBlock(blockDamager));
-		setTempVariable("damage", damage);
-		setTempVariable("cause", cause);
-		 */
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("blocklocation", LocationUtil.locationToString(blockDamager.getLocation()));
+		tempVars.put("blocktype", blockDamager.getType().name());
+		tempVars.put("block", ItemUtil.itemFromBlock(blockDamager).toString());
+		tempVars.put("cause", cause.name());
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
+		changeables.put("damage", new DoubleValue(damage));
 	}
 
 	public Location getBlockLocation() {

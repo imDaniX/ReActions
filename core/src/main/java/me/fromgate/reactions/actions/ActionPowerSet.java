@@ -23,18 +23,18 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Switch;
-import org.bukkit.entity.Player;
 
 public class ActionPowerSet extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), null);
 		setMessageParam("UNKNOWN");
 		if (loc == null) return false;

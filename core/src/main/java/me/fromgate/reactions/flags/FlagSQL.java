@@ -23,8 +23,8 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.sql.SQLManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class FlagSQL implements Flag {
 	// TODO: Make it safer
@@ -35,7 +35,7 @@ public class FlagSQL implements Flag {
 	}
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
 		if (!SQLManager.isEnabled()) return false;
 		Param params = new Param(param);
 		if (!params.isParamsExists("value", "select", "from") &&
@@ -51,7 +51,7 @@ public class FlagSQL implements Flag {
 			query = "SELECT " + select + " FROM " + from + (where.isEmpty() ? "" : " WHERE " + where);
 		}
 		int column = params.getParam("column", 1);
-		if (check) return SQLManager.compareSelect(value, query, column, params);
+		if (check) return SQLManager.compareSelect(value, query, column, params, context.getTempVariable("SQL_SET"));
 		else return SQLManager.isSelectResultEmpty(query);
 	}
 

@@ -1,7 +1,6 @@
 package me.fromgate.reactions.actions;
 
 import lombok.Getter;
-import me.fromgate.reactions.util.Util;
 
 public class StoredAction {
 	@Getter private final Actions action;
@@ -23,6 +22,6 @@ public class StoredAction {
 
 	@Override
 	public String toString() {
-		return Util.join(action.name(), "=", value);
+		return action.name() + "=" + value;
 	}
 }

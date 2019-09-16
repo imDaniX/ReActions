@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,36 +18,46 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class InventoryMenu implements Listener {
-	// TODO: Some things are weird
+	// TODO: Some things are weird, needs refactoring
 
-	private static Map<Integer, List<String>> activeMenus = new HashMap<>();
-	private static Map<String, VirtualInventory> menu = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-	private static Param tempvars;
+	private static Map<String, VirtualInventory> menu = new HashMap<>();
+	private static Map<String, String> tempvars;
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if (!isMenu(event.getInventory())) return;
+		event.setCancelled(true);
+		Player player = (Player) event.getWhoClicked();
+		int clickedSlot = event.getRawSlot();
+		if (clickedSlot < 0 || clickedSlot >= event.getInventory().getSize()) return;
+		List<String> activators = getActivators(event.getInventory());
+		if (activators.size() > clickedSlot) {
+			String activator = activators.get(clickedSlot);
+			if (!activator.isEmpty()) {
+				StoragesManager.raiseExecActivator(player, new Param(activator, "activator"), tempvars);
+			}
+		}
+		// TODO: Do not close menu option?
+		player.closeInventory();
+	}
+
+	@EventHandler
+	public void onInventoryMove(InventoryDragEvent event) {
+		if (isMenu(event.getInventory())) event.setCancelled(true);
+	}
 
 	public static void init() {
 		load();
 		save();
 		Bukkit.getPluginManager().registerEvents(new InventoryMenu(), ReActions.getPlugin());
-	}
-
-	public static void save() {
-		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
-		if (f.exists()) f.delete();
-		YamlConfiguration cfg = new YamlConfiguration();
-		for (String key : menu.keySet()) {
-			menu.get(key).save(cfg, key);
-		}
-		FileUtil.saveCfg(cfg, f, "Failed to save menu configuration file");
 	}
 
 	public static void load() {
@@ -59,20 +68,30 @@ public class InventoryMenu implements Listener {
 		if(FileUtil.loadCfg(cfg, f, "Failed to load menu configuration file"))
 			for (String key : cfg.getKeys(false)) {
 				VirtualInventory vi = new VirtualInventory(cfg, key);
-				menu.put(key, vi);
+				putMenu(key, vi);
 			}
 	}
 
+	public static void save() {
+		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
+		if (f.exists()) f.delete();
+		YamlConfiguration cfg = new YamlConfiguration();
+		for (String key : menu.keySet()) {
+			getMenu(key).save(cfg, key);
+		}
+		FileUtil.saveCfg(cfg, f, "Failed to save menu configuration file");
+	}
+
 	public static boolean add(String id, int size, String title) {
-		if (menu.keySet().contains(id)) return false;
-		menu.put(id, new VirtualInventory(size, title));
+		if (containsMenu(id)) return false;
+		putMenu(id, new VirtualInventory(size, title));
 		save();
 		return true;
 	}
 
 	public static boolean set(String id, Param params) {
-		if (!menu.keySet().contains(id)) return false;
-		VirtualInventory vi = menu.get(id);
+		if (!containsMenu(id)) return false;
+		VirtualInventory vi = getMenu(id);
 		String title = params.getParam("title", vi.getTitle());
 		int size = params.getParam("size", vi.getSize());
 		size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
@@ -93,22 +112,19 @@ public class InventoryMenu implements Listener {
 		vi.setSize(size);
 		// vi.setSlots(slots);
 		// vi.setActivators(activators);
-		menu.put(id, vi);
+		putMenu(id, vi);
 		save();
 		return true;
 	}
 
 	public static boolean remove(String id) {
-		if (!menu.containsKey(id)) return false;
-		menu.remove(id);
-		return true;
+		return menu.remove(id) != null;
 	}
-
 
 	private static List<String> getActivators(Param param) {
 		if (param.isParamsExists("menu")) {
 			String id = param.getParam("menu", "");
-			if (menu.containsKey(id)) return menu.get(id).getActivators();
+			if (containsMenu(id)) return getMenu(id).getActivators();
 		} else {
 			int size = param.getParam("size", 9);
 			if (size > 0) {
@@ -122,15 +138,16 @@ public class InventoryMenu implements Listener {
 	}
 
 	public static Inventory getInventory(Param param) {
+		RaInventoryHolder holder = new RaInventoryHolder(getActivators(param));
 		Inventory inv = null;
 		if (param.isParamsExists("menu")) {
 			String id = param.getParam("menu", "");
-			if (menu.containsKey(id)) inv = menu.get(id).getInventory();
+			if (containsMenu(id)) inv = getMenu(id).getInventory();
 		} else {
 			String title = param.getParam("title", "ReActions Menu");
 			int size = param.getParam("size", 9);
 			if (size <= 0) return null;
-			inv = Bukkit.createInventory(null, size, title);
+			inv = Bukkit.createInventory(holder, size, title);
 			for (int i = 1; i <= size; i++) {
 				String slotStr = "slot" + i;
 				if (!param.isParamsExists(slotStr)) continue;
@@ -139,14 +156,14 @@ public class InventoryMenu implements Listener {
 				inv.setItem(i - 1, slotItem);
 			}
 		}
+		holder.setInventory(inv);
 		return inv;
 	}
 
-	public static boolean createAndOpenInventory(Player player, Param params, final Param tempVars) {
+	public static boolean createAndOpenInventory(Player player, Param params, Map<String, String> tempVars) {
 		tempvars = tempVars;
 		Inventory inv = getInventory(params);
 		if (inv == null) return false;
-		activeMenus.put(getInventoryCode(player, inv), getActivators(params));
 		openInventory(player, inv);
 		return true;
 	}
@@ -157,60 +174,33 @@ public class InventoryMenu implements Listener {
 				player.closeInventory();
 				player.openInventory(inv);
 			}
-			else activeMenus.remove(getInventoryCode(player, inv));
 		}, 1);
 	}
 
 	private static boolean isMenu(Inventory inventory) {
-		return activeMenus.containsKey(getInventoryCode(inventory));
+		return inventory.getHolder() instanceof RaInventoryHolder;
 	}
-
-	private static void removeInventory(Inventory inv) {
-		int code = getInventoryCode(inv);
-		activeMenus.remove(code);
-	}
-
 
 	private static List<String> getActivators(Inventory inventory) {
-		if (isMenu(inventory)) return activeMenus.get(getInventoryCode(inventory));
+		if (isMenu(inventory)) return ((RaInventoryHolder)inventory.getHolder()).getActivators();
 		return new ArrayList<>();
 	}
 
-	@EventHandler
-	public void onInventoryClick(InventoryClickEvent event) {
-		if (!InventoryMenu.isMenu(event.getInventory())) return;
-		if (event.isShiftClick()) {
-			event.setCancelled(true);
-			return;
-		}
-		Player player = (Player) event.getWhoClicked();
-		int clickedSlot = event.getRawSlot();
-		if (clickedSlot < 0 || clickedSlot >= event.getInventory().getSize()) return;
-		List<String> activators = getActivators(event.getInventory());
-		if (activators.size() > clickedSlot) {
-			String activator = activators.get(clickedSlot);
-			if (!activator.isEmpty()) {
-				StoragesManager.raiseExecActivator(player, new Param(activator, "activator"), tempvars);
-			}
-		}
-		event.setCancelled(true);
-		// TODO: Do not close menu option?
-		InventoryMenu.removeInventory(event.getInventory());
-		player.closeInventory();
+	private static VirtualInventory getMenu(String id) {
+		return menu.get(id.toLowerCase());
 	}
 
-	@EventHandler
-	public void onInventoryMove(InventoryDragEvent event) {
-		if (InventoryMenu.isMenu(event.getInventory())) event.setCancelled(true);
+	private static void putMenu(String id, VirtualInventory inventory) {
+		menu.put(id.toLowerCase(), inventory);
 	}
 
-	public static boolean exists(String id) {
-		return menu.containsKey(id);
+	private static boolean containsMenu(String id) {
+		return menu.containsKey(id.toLowerCase());
 	}
 
 	public static void printMenu(CommandSender sender, String id) {
-		if (menu.containsKey(id)) {
-			VirtualInventory vi = menu.get(id);
+		if (containsMenu(id)) {
+			VirtualInventory vi = getMenu(id);
 			Msg.printMSG(sender, "msg_menuinfotitle", 'e', '6', id, vi.getSize(), vi.getTitle());
 			for (int i = 0; i < vi.getSize(); i++) {
 				String exec = vi.getActivators().get(i);
@@ -227,7 +217,7 @@ public class InventoryMenu implements Listener {
 		List<String> menuList = new ArrayList<>();
 		for (String id : menu.keySet()) {
 			if (mask.isEmpty() || id.toLowerCase().contains(mask.toLowerCase())) {
-				menuList.add(id + " : " + menu.get(id).getTitle());
+				menuList.add(id + " : " + getMenu(id).getTitle());
 			}
 		}
 		Msg.printPage(sender, menuList, Msg.MSG_MENULIST, pageNum, linesPerPage);
@@ -240,37 +230,5 @@ public class InventoryMenu implements Listener {
 		String returnStr = item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : "";
 		String itemTypeData = item.getType().name() + (ItemUtil.getDurability(item) == 0 ? "" : ":" + ItemUtil.getDurability(item)) + (item.getAmount() == 1 ? "" : "*" + item.getAmount());
 		return ChatColor.stripColor(returnStr.isEmpty() ? itemTypeData : returnStr + "[" + itemTypeData + "]");
-	}
-
-	private static int getInventoryCode(Inventory inv) {
-		if (inv.getViewers().size() != 1) return -1;
-		HumanEntity human = inv.getViewers().get(0);
-		return getInventoryCode((Player) human, inv);
-	}
-
-	private static int getInventoryCode(Player player, Inventory inv) {
-		if (player == null || inv == null) return -1;
-		StringBuilder sb = new StringBuilder();
-		sb.append(player.getName());
-		sb.append(player.getOpenInventory().getTitle());
-		for (ItemStack i : inv.getContents()) {
-			String iStr = "emptyslot";
-			if (i != null && i.getType() != Material.AIR) {
-				if (i.hasItemMeta()) {
-					ItemMeta im = i.getItemMeta();
-					if (im.hasDisplayName()) sb.append(im.getDisplayName());
-					if (im.hasLore())
-						for (String str : im.getLore())
-							sb.append(str);
-				}
-				sb.append(i.getType().name());
-				sb.append(":");
-				sb.append(ItemUtil.getDurability(i));
-				sb.append(":");
-				sb.append(i.getAmount());
-			}
-			sb.append(iStr);
-		}
-		return sb.toString().hashCode();
 	}
 }

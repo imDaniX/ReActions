@@ -24,9 +24,9 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.sql.SQLManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionSql extends Action {
 	// TODO: More functionality like working with arrays
@@ -37,7 +37,7 @@ public class ActionSql extends Action {
 	}
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		String playerName = params.getParam("player", "");
 		String varName = params.getParam("variable", "");
 		int column = params.getParam("column", 1);
@@ -50,13 +50,13 @@ public class ActionSql extends Action {
 					return false;
 				}
 				if (varName.isEmpty()) return false;
-				Variables.setVar(playerName, varName, SQLManager.executeSelect(query, column, params));
+				Variables.setVar(playerName, varName, SQLManager.executeSelect(query, column, params, context.getTempVariable("SQL_SET")));
 				break;
 			case 1: // INSERT
 				query = params.getParam("query", params.getParam("param-line", "")).trim();
 				if (query.isEmpty()) return false;
 				if (!query.toLowerCase().startsWith("insert")) {
-					Msg.logOnce("needuinsert" + query, "You need to use only \"INSERT\" query in SQL_INSERT action. Query: " + query);
+					Msg.logOnce("needinsert" + query, "You need to use only \"INSERT\" query in SQL_INSERT action. Query: " + query);
 					return false;
 				}
 				SQLManager.executeUpdate(query, params);
@@ -86,7 +86,7 @@ public class ActionSql extends Action {
 					Msg.logOnce("needset" + query, "You need to use only \"SET\" query in SQL_SET action. Query: " + query);
 					return false;
 				}
-				Variables.setTempVar("SQL_SET", query);
+				context.setTempVariable("SQL_SET", query);
 				break;
 		}
 		return true;

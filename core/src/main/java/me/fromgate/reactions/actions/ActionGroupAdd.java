@@ -23,14 +23,14 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaVault;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionGroupAdd extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		return (RaVault.playerAddGroup(p, params.getParam("param-line", "")));
+	public boolean execute(RaContext context, Param params) {
+		return RaVault.playerAddGroup(context.getPlayer(), params.getParam("param-line", ""));
 	}
 
 }

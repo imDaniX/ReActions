@@ -39,8 +39,10 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class Shoot {
@@ -75,13 +77,13 @@ public class Shoot {
 		Player player = target instanceof Player ? (Player) target : null;
 		if (player == null && param.getParam("playeronly", true)) return;
 		param.set("player", player == null ? "null" : player.getName());
-		Param tempVars = new Param();
-		tempVars.set("targettype", target.getType().name());
-		tempVars.set("targetname", (player == null) ? getMobName(target) : player.getName());
-		tempVars.set("targetloc", LocationUtil.locationToString(target.getLocation()));
+		Map<String, String> tempVars = new HashMap<>();
+		tempVars.put("targettype", target.getType().name());
+		tempVars.put("targetname", (player == null) ? getMobName(target) : player.getName());
+		tempVars.put("targetloc", LocationUtil.locationToString(target.getLocation()));
 		if (shooter != null) {
-			tempVars.set("shooter", shooter.getName());
-			tempVars.set("shooterloc", LocationUtil.locationToString(shooter.getLocation()));
+			tempVars.put("shooter", shooter.getName());
+			tempVars.put("shooterloc", LocationUtil.locationToString(shooter.getLocation()));
 		}
 		StoragesManager.raiseExecActivator(shooter, param, tempVars);
 	}

@@ -25,6 +25,7 @@ package me.fromgate.reactions.actions;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
@@ -36,8 +37,8 @@ import java.util.Set;
 public class ActionMessage extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		sendMessage(p, params);
+	public boolean execute(RaContext context, Param params) {
+		sendMessage(context.getPlayer(), params);
 		return true;
 	}
 

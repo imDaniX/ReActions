@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.PlateStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
@@ -52,7 +51,7 @@ public class PlateActivator extends Activator implements Locatable {
 	public boolean activate(Storage event) {
 		PlateStorage be = (PlateStorage) event;
 		if (!isLocatedAt(be.getLocation())) return false;
-		return Actions.executeActivator(be.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

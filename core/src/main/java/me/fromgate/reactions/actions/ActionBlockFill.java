@@ -24,6 +24,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
@@ -31,7 +32,6 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -39,7 +39,7 @@ import java.util.List;
 public class ActionBlockFill extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		boolean phys = params.getParam("physics", false);
 		boolean drop = params.getParam("drop", false);
 		Param itemParam = new Param(params.getParam("block", "AIR"), "type");

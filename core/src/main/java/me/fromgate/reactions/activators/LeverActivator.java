@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.LeverStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
@@ -58,7 +57,7 @@ public class LeverActivator extends Activator implements Locatable {
 		if (!isLocatedAt(le.getLeverLocation())) return false;
 		if (this.state.equalsIgnoreCase("on") && le.isLeverPowered()) return false;
 		if (this.state.equalsIgnoreCase("off") && (!le.isLeverPowered())) return false;
-		return Actions.executeActivator(le.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

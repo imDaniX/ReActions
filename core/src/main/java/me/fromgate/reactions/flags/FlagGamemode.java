@@ -22,17 +22,18 @@
 
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class FlagGamemode implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if(player != null)
-			try {
-				return player.getGameMode() == GameMode.valueOf(param.toUpperCase());
-			} catch(IllegalArgumentException ignore) {}
+			return player.getGameMode() == Util.getEnumByName(GameMode.class, param);
 		return false;
 	}
 

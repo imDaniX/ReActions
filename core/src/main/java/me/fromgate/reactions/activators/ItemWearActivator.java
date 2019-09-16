@@ -22,24 +22,22 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.ItemWearStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ItemWearActivator extends Activator {
-	private String item;
+	private final String item;
+	// private final WearSlot slot;
 
-	public ItemWearActivator(ActivatorBase base, String item) {
+	public ItemWearActivator(ActivatorBase base, String item/*, WearSlot slot*/) {
 		super(base);
 		this.item = item;
+		// this.slot = slot;
 	}
 
 	@Override
@@ -49,20 +47,14 @@ public class ItemWearActivator extends Activator {
 			return false;
 		}
 		ItemWearStorage iw = (ItemWearStorage) event;
-		if (iw.isItemWeared(this.item)) {
-			VirtualItem vi = VirtualItem.fromItemStack(iw.getFoundedItem(this.item));
-			if (vi != null && vi.getType() != Material.AIR) {
-				Variables.setTempVar("item", vi.toString());
-				Variables.setTempVar("item-str", vi.toDisplayString());
-			}
-			return Actions.executeActivator(iw.getPlayer(), getBase());
-		}
-		return false;
+		if(!iw.isItemWeared(this.item)) return false;
+		return true;
 	}
 
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("item", this.item);
+		// cfg.set("wear-slot", this.slot.name());
 	}
 
 	@Override
@@ -88,12 +80,31 @@ public class ItemWearActivator extends Activator {
 
 	public static ItemWearActivator create(ActivatorBase base, Param param) {
 		String item = param.getParam("item", "param-line");
-		return new ItemWearActivator(base, item);
+		// WearSlot slot = WearSlot.getByName(param.getParam("slot", "any"));
+		return new ItemWearActivator(base, item/*, slot*/);
 	}
 
 	public static ItemWearActivator load(ActivatorBase base, ConfigurationSection cfg) {
 		String item = cfg.getString("item");
-		return new ItemWearActivator(base, item);
+		// WearSlot slot = WearSlot.getByName(cfg.getString("wear-slot", "any"));
+		return new ItemWearActivator(base, item/*, slot*/);
 	}
+
+	/*
+	public enum WearSlot {
+		HEAD, CHEST, LEGS, FEET, ANY;
+
+		public static WearSlot getByName(String name) {
+			if(Util.isStringEmpty(name)) return ANY;
+			switch(name.toLowerCase()) {
+				case "head": return HEAD;
+				case "chest": return CHEST;
+				case "legs": return LEGS;
+				case "feet": return FEET;
+				default: return ANY;
+			}
+		}
+	}
+	*/
 }
 

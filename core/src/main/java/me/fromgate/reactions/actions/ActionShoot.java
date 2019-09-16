@@ -23,14 +23,14 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Shoot;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionShoot extends Action {
 
 	@Override
-	public boolean execute(Player player, Param params) {
-		Shoot.shoot(player, params);
+	public boolean execute(RaContext context, Param params) {
+		Shoot.shoot(context.getPlayer(), params);
 		return true;
 	}
 

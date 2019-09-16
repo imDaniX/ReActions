@@ -22,8 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.SignStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.BlockUtil;
@@ -69,11 +67,7 @@ public class SignActivator extends Activator {
 		SignStorage signEvent = (SignStorage) event;
 		if (click.checkRight(signEvent.isLeftClick())) return false;
 		if (!checkMask(signEvent.getSignLines())) return false;
-		for (int i = 0; i < signEvent.getSignLines().length; i++)
-			Variables.setTempVar("sign_line" + (i + 1), signEvent.getSignLines()[i]);
-		Variables.setTempVar("sign_loc", signEvent.getSignLocation());
-		Variables.setTempVar("click", signEvent.isLeftClick() ? "left" : "right");
-		return Actions.executeActivator(signEvent.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

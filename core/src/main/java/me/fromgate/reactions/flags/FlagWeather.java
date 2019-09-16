@@ -22,11 +22,13 @@
 
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagWeather implements Flag {
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (param.equalsIgnoreCase("rain")) return !player.getWorld().isThundering() && player.getWorld().hasStorm();
 		if (param.equalsIgnoreCase("thunder")) return player.getWorld().isThundering() && player.getWorld().hasStorm();
 		return !player.getWorld().hasStorm();

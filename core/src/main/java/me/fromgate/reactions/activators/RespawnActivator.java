@@ -22,14 +22,11 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.RespawnStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.enums.DeathCause;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 
 public class RespawnActivator extends Activator {
 
@@ -43,20 +40,8 @@ public class RespawnActivator extends Activator {
 	@Override
 	public boolean activate(Storage event) {
 		RespawnStorage pe = (RespawnStorage) event;
-		if (this.deathCause != DeathCause.ANY && pe.getDeathCause() != this.deathCause)
-			return false;
-		Variables.setTempVar("cause", pe.getDeathCause().name());
-		if (pe.getKiller() != null) {
-			Variables.setTempVar("killer-type", pe.getKiller().getType().name());
-			if (pe.getKiller().getType() == EntityType.PLAYER) {
-				Variables.setTempVar("targetplayer", pe.getKiller().getName());
-				Variables.setTempVar("killer-name", pe.getKiller().getName());
-			} else {
-				String mobName = pe.getKiller().getCustomName();
-				Variables.setTempVar("killer-name", mobName == null || mobName.isEmpty() ? pe.getKiller().getType().name() : mobName);
-			}
-		}
-		return Actions.executeActivator(pe.getPlayer(), getBase());
+		if (this.deathCause != DeathCause.ANY && pe.getDeathCause() != this.deathCause) return false;
+		return true;
 	}
 
 	@Override

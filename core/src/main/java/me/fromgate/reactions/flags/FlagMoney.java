@@ -24,12 +24,14 @@ package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class FlagMoney implements Flag {
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!RaEconomics.isEconomyFound()) return false;
 		Param params = new Param(param, "amount");
 		String amountStr = params.getParam("amount", "a");

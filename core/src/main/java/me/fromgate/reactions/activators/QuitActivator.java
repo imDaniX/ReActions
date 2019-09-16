@@ -22,9 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storages.QuitStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
@@ -37,11 +34,7 @@ public class QuitActivator extends Activator {
 
 	@Override
 	public boolean activate(Storage event) {
-		QuitStorage ce = (QuitStorage) event;
-		Variables.setTempVar("quit-message", ce.getQuitMessage());
-		boolean result = Actions.executeActivator(ce.getPlayer(), getBase());
-		ce.setQuitMessage(Variables.getTempVar("quit-message"));
-		return result;
+		return true;
 	}
 
 	@Override

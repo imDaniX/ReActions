@@ -24,6 +24,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -33,16 +34,17 @@ import java.util.Map;
 public class ActionMoneyPay extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		if (!RaEconomics.isEconomyFound()) return false;
 		if (params.size() == 0) return false;
-		if (params.size() <= 2) params = parseOldFormat(p, params.getParam("param-line"));
+		if (params.size() <= 2) params = parseOldFormat(player, params.getParam("param-line"));
 		String amountStr = params.getParam("amount", "");
 		if (amountStr.isEmpty()) return false;
 		String currencyName = params.getParam("currency", "");
 		String worldName = params.getParam("world", "");
 		String target = params.getParam("target", "");
-		String source = params.getParam("source", params.getParam("player", (p != null ? p.getName() : "")));
+		String source = params.getParam("source", params.getParam("player", (player != null ? player.getName() : "")));
 		if (source.isEmpty()) return false;
 		String message = RaEconomics.debitAccount(source, target, amountStr, currencyName, worldName);
 		if (message.isEmpty()) return false;

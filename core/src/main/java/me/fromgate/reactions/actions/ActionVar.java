@@ -24,6 +24,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -37,7 +38,8 @@ public class ActionVar extends Action {
 	}
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
+		Player p = context.getPlayer();
 
 		String player = (p != null && this.personalVar) ? p.getName() : "";
 
@@ -72,7 +74,7 @@ public class ActionVar extends Action {
 				int decValue = value.isEmpty() || !(Util.isInteger(value)) ? 1 : Integer.parseInt(value);
 				return Variables.decVar(player, var, decValue);
 			case 4:  //VAR_TEMP_SET
-				Variables.setTempVar(var, value);
+				context.setTempVariable(var, value);
 				return true;
 		}
 		return false;

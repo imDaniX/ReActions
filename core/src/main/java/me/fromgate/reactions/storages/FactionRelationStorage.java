@@ -25,6 +25,8 @@ package me.fromgate.reactions.storages;
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 
+import java.util.Map;
+
 public class FactionRelationStorage extends Storage {
 	@Getter private final String faction;
 	@Getter private final String otherFaction;
@@ -37,5 +39,13 @@ public class FactionRelationStorage extends Storage {
 		this.newRelation = newRelation;
 		this.faction = faction;
 		this.otherFaction = otherFaction;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("faction1", faction);
+		tempVars.put("faction2", otherFaction);
+		tempVars.put("oldrelation", oldRelation);
+		tempVars.put("newrelation", newRelation);
 	}
 }

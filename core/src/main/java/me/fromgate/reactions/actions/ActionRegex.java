@@ -1,9 +1,8 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.playerselector.SelectorsManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,7 +13,7 @@ import java.util.regex.Pattern;
 public class ActionRegex extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		String prefix = params.getParam("prefix", "");
 		String regex = params.getParam("regex", "");
 		String input = params.getParam("input", removeParams(params.getParam("param-line")));
@@ -31,9 +30,9 @@ public class ActionRegex extends Action {
 			for (int i = 0; i <= m.groupCount(); i++) {
 				if (m.group(i) != null) group = m.group(i);
 				else group = "";
-				Variables.setTempVar(prefix + "group" + count + "" + i, group);
-				Variables.setTempVar(prefix + "group_" + count + "_" + i, group);
-				Variables.setTempVar(prefix + "group:" + count + ":" + i, group);
+				context.setTempVariable(prefix + "group" + count + "" + i, group);
+				context.setTempVariable(prefix + "group_" + count + "_" + i, group);
+				context.setTempVariable(prefix + "group:" + count + ":" + i, group);
 			}
 		}
 		return true;

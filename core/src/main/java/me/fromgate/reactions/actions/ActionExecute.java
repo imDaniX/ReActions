@@ -22,18 +22,17 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionExecute extends Action {
 
 	@Override
-	public boolean execute(Player player, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		String id = params.getParam("activator", "");
 		if (id.isEmpty()) return false;
 		setMessageParam(id);
-		return StoragesManager.raiseExecActivator(player, params, Variables.getTempVars());
+		return StoragesManager.raiseExecActivator(context.getPlayer(), params, context.getTempVariables());
 	}
 }

@@ -23,8 +23,8 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaRacesAndClasses;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionRacesAndClasses extends Action {
 	private final boolean setRace;
@@ -34,9 +34,11 @@ public class ActionRacesAndClasses extends Action {
 	}
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		if (!RaRacesAndClasses.isEnabled()) return false;
-		return this.setRace ? RaRacesAndClasses.setRace(p, params.getParam("race", "")) : RaRacesAndClasses.setClass(p, params.getParam("class", ""));
+		return this.setRace ?
+				RaRacesAndClasses.setRace(context.getPlayer(), params.getParam("race", "")) :
+				RaRacesAndClasses.setClass(context.getPlayer(), params.getParam("class", ""));
 	}
 
 }

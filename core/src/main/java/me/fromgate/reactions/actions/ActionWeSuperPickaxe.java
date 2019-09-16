@@ -2,6 +2,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -10,15 +11,11 @@ import org.bukkit.entity.Player;
  */
 public class ActionWeSuperPickaxe extends Action {
 	@Override
-	public boolean execute(Player p, Param params) {
-		Player player = p;
-		boolean isSP;
-		if (params.hasAnyParam("value", "player")) {
-			String playerName = params.getParam("player", p != null ? p.getName() : "");
-			isSP = params.getParam("value", false);
-			player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
-		} else isSP = params.getParam("param-line", false);
-
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
+		boolean isSP = params.getParam("value", params.getParam("param-line", false));
+		if(params.hasAnyParam("player"))
+			player = Util.getPlayerExact(params.getParam("player"));
 		if (isSP) RaWorldEdit.getSession(player).enableSuperPickAxe();
 		else RaWorldEdit.getSession(player).disableSuperPickAxe();
 		return true;

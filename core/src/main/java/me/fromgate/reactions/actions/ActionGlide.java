@@ -1,6 +1,7 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -9,10 +10,10 @@ import org.bukkit.entity.Player;
  */
 public class ActionGlide extends Action {
 	@Override
-	public boolean execute(Player p, Param params) {
-		Player player;
-		String playerName = params.getParam("player", p != null ? p.getName() : "");
-		player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
+		if(params.hasAnyParam("player"))
+			player = Util.getPlayerExact(params.getParam("player"));
 		boolean isGlide = params.getParam("glide", true);
 		return glidePlayer(player, isGlide);
 	}

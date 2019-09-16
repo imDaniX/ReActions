@@ -23,17 +23,18 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaVault;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionGroupRemove extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String param = params.getParam("param-line", "");
-		if (RaVault.playerInGroup(p, param)) {
-			return RaVault.playerRemoveGroup(p, param);
-		}
+		if (RaVault.playerInGroup(player, param))
+			return RaVault.playerRemoveGroup(player, param);
 		return true;
 	}
 

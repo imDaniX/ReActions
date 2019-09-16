@@ -22,14 +22,11 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.ItemClickStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.enums.HandType;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
@@ -52,16 +49,8 @@ public class ItemClickActivator extends Activator {
 		}
 		ItemClickStorage ie = (ItemClickStorage) event;
 		if(hand.checkOff(ie.isMainHand())) return false;
-		if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
-			VirtualItem vi = VirtualItem.fromItemStack(ie.getItem());
-			if (vi != null) {
-				Variables.setTempVar("item", vi.toString());
-				Variables.setTempVar("item-str", vi.toDisplayString());
-			}
-			Variables.setTempVar("hand", ie.isMainHand() ? "MAIN" : "OFF");
-			return Actions.executeActivator(ie.getPlayer(), getBase());
-		}
-		return false;
+		if(!ItemUtil.compareItemStr(ie.getItem(), this.item)) return false;
+		return true;
 	}
 
 	@Override

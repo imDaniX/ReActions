@@ -1,11 +1,8 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.ItemHeldStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -38,23 +35,7 @@ public class ItemHeldActivator extends Activator {
 			return false;
 		if (newSlot > -1 && newSlot != ihe.getNewSlot()) return false;
 		if (previousSlot > -1 && previousSlot != ihe.getPreviousSlot()) return false;
-		if (itemNew != null) {
-			VirtualItem vi = VirtualItem.fromItemStack(itemNew);
-			if (vi != null) {
-				Variables.setTempVar("itemnew", vi.toString());
-				Variables.setTempVar("itemnew-str", vi.toDisplayString());
-			}
-		}
-		if (itemPrev != null) {
-			VirtualItem vi = VirtualItem.fromItemStack(itemPrev);
-			if (vi != null) {
-				Variables.setTempVar("itemprev", vi.toString());
-				Variables.setTempVar("itemprev-str", vi.toDisplayString());
-			}
-		}
-		Variables.setTempVar("slotNew", Integer.toString(ihe.getNewSlot() + 1));
-		Variables.setTempVar("slotPrev", Integer.toString(ihe.getPreviousSlot() + 1));
-		return Actions.executeActivator(ihe.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

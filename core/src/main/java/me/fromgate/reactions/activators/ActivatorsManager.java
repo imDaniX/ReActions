@@ -65,6 +65,7 @@ public class ActivatorsManager {
 		loadActivators();
 	}
 
+	// TODO: Maybe store all the configs in cache?
 	/**
 	 * Load activators
 	 */
@@ -72,7 +73,15 @@ public class ActivatorsManager {
 		Set<String> groups = findGroupsInDirs("");
 		if (!groups.isEmpty())
 			for (String group : groups)
-				loadActivators(group, false);
+				loadGroup(group, false);
+		RaWorldGuard.updateRegionCache();
+	}
+
+	/**
+	 * Load activators from group
+	 */
+	public static void loadActivators(String group) {
+		loadGroup(group, true);
 		RaWorldGuard.updateRegionCache();
 	}
 
@@ -303,29 +312,27 @@ public class ActivatorsManager {
 	 * Save activators of specific group
 	 * @param group Name of group
 	 */
-	private static void saveActivators(String group) {
+	public static void saveActivators(String group) {
 		String g = Util.implode(group.split("/"));
 
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
 		File dir = new File(f.getPath());
 		if (!dir.exists()) dir.mkdirs();
 
-		if(!FileUtil.recreateFile(f, "Failed to recreate configuration file " + f.getAbsolutePath())) return;
-
 		YamlConfiguration cfg = new YamlConfiguration();
 		for (Activator a : activators.values()) {
 			if (a.getBase().getGroup().equalsIgnoreCase(group)) a.saveActivator(cfg.createSection(a.getType().name()+"."+a.getBase().getName()));
 		}
 
-		FileUtil.saveCfg(cfg, f, "Failed to save configuration to file " + f.getAbsolutePath());
+		FileUtil.saveCfg(cfg, f, "Failed to save activators to file " + f.getAbsolutePath());
 	}
 
 	/**
-	 * Load activators from files
-	 * @param group Name of group
+	 * Load activators from file
+	 * @param group Path/name of group
 	 * @param clear Clear group before load
 	 */
-	public static void loadActivators(String group, boolean clear) {
+	private static void loadGroup(String group, boolean clear) {
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + group + ".yml");
 		if (!f.exists()) return;
 		YamlConfiguration cfg = new YamlConfiguration();
@@ -419,37 +426,34 @@ public class ActivatorsManager {
 	}
 
 	/**
-	 * Activate specific activator
-	 * @param act Activator to activate
-	 * @param storage Data storage for activator
-	 * @return Cancel original event or not
-	 */
-	public static boolean activate(Activator act, Storage storage) {
-		return act.getType() == storage.getType() && act.executeActivator(storage);
-	}
-
-	/**
 	 * Activate specific activator by it's id(name)
 	 * @param storage Data storage for activator
 	 * @param id Name of activator
-	 * @return Cancel original event or not
 	 */
-	public static boolean activate(Storage storage, String id) {
+	public static void activate(Storage storage, String id) {
 		Activator activator = activators.get(id.toLowerCase());
-		return activate(activator, storage);
+		activate(storage, activator);
+	}
+
+	/**
+	 * Activate specific activator
+	 * @param storage Data storage for activator
+	 * @param act Activator to activate
+	 */
+	public static void activate(Storage storage, Activator act) {
+		storage.init();
+		if(act.getType() == storage.getType())
+			act.executeActivator(storage);
 	}
 
 	/**
 	 * Activate all the activator of storage's type
 	 * @param storage Data storage for activators
-	 * @return Cancel original event or not
 	 */
-	public static boolean activate(Storage storage) {
-		boolean cancelParentEvent = false;
-		for (Activator act : typeActivators.get(storage.getType())) {
-			if (act.executeActivator(storage)) cancelParentEvent = true;
-		}
-		return cancelParentEvent;
+	public static void activate(Storage storage) {
+		storage.init();
+		typeActivators.get(storage.getType()).forEach(a->a.executeActivator(storage));
+		storage.generateContext();
 	}
 
 	/**
@@ -532,9 +536,9 @@ public class ActivatorsManager {
 	 * @return Does activator with this name exists
 	 */
 	public static boolean setGroup(String activator, String group) {
-		// TODO: Small optimization
-		if (!contains(activator)) return false;
-		get(activator).getBase().setGroup(group);
+		Activator a = get(activator);
+		if (a == null) return false;
+		a.getBase().setGroup(group);
 		return true;
 	}
 

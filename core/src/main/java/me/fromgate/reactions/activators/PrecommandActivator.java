@@ -23,7 +23,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.PrecommandStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
@@ -31,19 +30,42 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class PrecommandActivator extends Activator {
+	// Full command
 	private final String command;
-	private final Pattern pattern;
+	// Check just command?
+	private final boolean checkExact;
+	// List of arguments, if not checkExact
+	private final List<String> args;
+	// Use regex?
 	private final boolean useRegex;
+	// Pattern if useRegex
+	private final Pattern pattern;
+	// Is console allowed to perform this command?
 	private final boolean consoleAllowed;
 
 	public PrecommandActivator(ActivatorBase base, String command, boolean useRegex, boolean consoleAllowed) {
 		super(base);
 		command = command == null ? "unknown" : command;
 		this.command = command;
-		this.pattern = useRegex ? Pattern.compile(command) : null;
+		Param cmdParams = new Param(command);
+		if(cmdParams.hasAnyParam("cmd")) {
+			this.args = new ArrayList<>();
+			this.args.add(cmdParams.getParam("cmd"));
+			int i = 1;
+			while(cmdParams.hasAnyParam("arg" + i))
+				this.args.add(cmdParams.getParam("arg" + i));
+			this.checkExact = false;
+			this.pattern = null;
+		} else {
+			this.args = null;
+			this.checkExact = true;
+			this.pattern = useRegex ? Pattern.compile(command) : null;
+		}
 		this.useRegex = useRegex;
 		this.consoleAllowed = consoleAllowed;
 	}
@@ -52,11 +74,18 @@ public class PrecommandActivator extends Activator {
 	public boolean activate(Storage storage) {
 		PrecommandStorage cs = (PrecommandStorage) storage;
 		if(!consoleAllowed && cs.getSender() instanceof ConsoleCommandSender) return false;
-		if(useRegex) {
-			if(!pattern.matcher(cs.getCommand()).matches()) return false;
-		} else
-			if(!command.equalsIgnoreCase(cs.getCommand())) return false;
-		return Actions.executeActivator(storage.getPlayer(), getBase());
+		if(checkExact) {
+			if(useRegex) {
+				return pattern.matcher(cs.getCommand()).matches();
+			} else
+				return command.equalsIgnoreCase(cs.getCommand());
+		} else {
+			if(!args.get(0).equalsIgnoreCase(cs.getLabel())) return false;
+			if(args.size() != cs.getArgs().length - 1) return false;
+			for(int i = 1; i <= cs.getArgs().length; i++)
+				if(args.get(i).equalsIgnoreCase(cs.getArgs()[i-1])) return false;
+			return true;
+		}
 	}
 
 	@Override

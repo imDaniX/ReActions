@@ -23,9 +23,9 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.storages.ItemStoragesManager;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtil;
@@ -49,38 +49,28 @@ public class ActionItems extends Action {
 	}
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		switch (actionType) {
-			case GIVE_ITEM: {
-				return giveItemPlayer(p, params.getParam("param-line", ""));
-			}
-			case REMOVE_ITEM_HAND: {
-				return removeItemInHand(p, params);
-			}
-			case REMOVE_ITEM_OFFHAND: {
-				return removeItemInOffand(p, params);
-			}
-			case REMOVE_ITEM_INVENTORY: {
-				return removeItemInInventory(p, params);
-			}
-			case DROP_ITEM: {
-				return dropItems(p, params);
-			}
-			case WEAR_ITEM: {
-				return wearItem(p, params);
-			}
-			case OPEN_INVENTORY: {
-				return openInventory(p, params.getParam("param-line", ""));
-			}
-			case SET_INVENTORY: {
-				return setInventorySlot(p, params);
-			}
-			case GET_INVENTORY: {
-				return getInventorySlot(p, params);
-			}
-			case UNWEAR_ITEM: {
-				return unwearItem(p, params);
-			}
+			case GIVE_ITEM:
+				return giveItemPlayer(context, params.getParam("param-line", ""));
+			case REMOVE_ITEM_HAND:
+				return removeItemInHand(context, params);
+			case REMOVE_ITEM_OFFHAND:
+				return removeItemInOffand(context, params);
+			case REMOVE_ITEM_INVENTORY:
+				return removeItemInInventory(context, params);
+			case DROP_ITEM:
+				return dropItems(context, params);
+			case WEAR_ITEM:
+				return wearItem(context, params);
+			case OPEN_INVENTORY:
+				return openInventory(context, params.getParam("param-line", ""));
+			case SET_INVENTORY:
+				return setInventorySlot(context, params);
+			case GET_INVENTORY:
+				return getInventorySlot(context, params);
+			case UNWEAR_ITEM:
+				return unwearItem(context, params);
 		}
 		return true;
 	}
@@ -89,18 +79,19 @@ public class ActionItems extends Action {
 	/**
 	 * Реализует действие ITEM_SLOT - установить предмет в определенный слот
 	 *
-	 * @param player
+	 * @param context
 	 * @param params - параметры: item - предмет
 	 *			   slot - слот (Номер слота или helmet, chestplate...)
 	 *			   exist - что делаем с уже надетым предметов (remove, undress, drop, keep)
 	 * @return
 	 */
-	private boolean setInventorySlot(Player player, Param params) {
+	private boolean setInventorySlot(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String itemStr = params.getParam("item", "");
 		if (itemStr.isEmpty()) return false;
 		String slotStr = params.getParam("slot", "");
 		if (slotStr.isEmpty()) return false;
-		if (!Util.isInteger(slotStr)) return wearItem(player, params);
+		if (!Util.isInteger(slotStr)) return wearItem(context, params);
 		int slotNum = Integer.parseInt(slotStr);
 		if (slotNum >= player.getInventory().getSize()) return false;
 		String existStr = params.getParam("exist", "remove");
@@ -118,50 +109,53 @@ public class ActionItems extends Action {
 		else if (existStr.equalsIgnoreCase("keep")) player.getInventory().setItem(slotNum, oldItem);
 		String actionItems = ItemUtil.toDisplayString(itemStr);
 		setMessageParam(actionItems);
-		Variables.setTempVar("item_str", actionItems);
+		context.setTempVariable("item_str", actionItems);
 
 		return true;
 	}
 
-	private boolean getInventorySlot(Player player, Param params) {
+	private boolean getInventorySlot(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String slotStr = params.getParam("slot", "");
 		if (slotStr.isEmpty()) return false;
-		if (!Util.isInteger(slotStr)) return wearItemView(player, params);
+		if (!Util.isInteger(slotStr)) return wearItemView(context, params);
 		int slotNum = Integer.parseInt(slotStr);
 		if (slotNum >= player.getInventory().getSize()) return false;
 		ItemStack item = player.getInventory().getItem(slotNum);
 		String actionItems = "";
 		if (item != null) actionItems = ItemUtil.itemToString(item);
-		Variables.setTempVar("item_str", actionItems);
-		Variables.setTempVar("item_str_esc", Util.escapeJava(actionItems));
+		context.setTempVariable("item_str", actionItems);
+		context.setTempVariable("item_str_esc", Util.escapeJava(actionItems));
 
 		return true;
 	}
 
-	private boolean wearItemView(Player player, Param params) {
+	private boolean wearItemView(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		int slot; //4 - auto, 3 - helmet, 2 - chestplate, 1 - leggins, 0 - boots
 		slot = this.getSlotNum(params.getParam("slot", "auto"));
-		if (slot == -1) return getItemInOffhand(player, params);
+		if (slot == -1) return getItemInOffhand(context, params);
 		ItemStack[] armour = player.getInventory().getArmorContents();
 		ItemStack item = armour[slot];
 		String actionItems = "";
 		if (item != null) actionItems = ItemUtil.itemToString(item);
-		Variables.setTempVar("item_str", actionItems);
-		Variables.setTempVar("item_str_esc", Util.escapeJava(actionItems));
+		context.setTempVariable("item_str", actionItems);
+		context.setTempVariable("item_str_esc", Util.escapeJava(actionItems));
 		return true;
 	}
 
-	private boolean getItemInOffhand(Player player, Param params) {
+	private boolean getItemInOffhand(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String itemStr = params.getParam("slot", "");
 		if (itemStr.isEmpty()) return false;
 		if (!itemStr.equalsIgnoreCase("offhand")) {
-			Variables.setTempVar("item_str", "");
-			Variables.setTempVar("item_str_esc", "");
+			context.setTempVariable("item_str", "");
+			context.setTempVariable("item_str_esc", "");
 			return true;
 		}
 		String item = ItemUtil.itemToString(player.getInventory().getItemInOffHand());
-		Variables.setTempVar("item_str", item);
-		Variables.setTempVar("item_str_esc", Util.escapeJava(item));
+		context.setTempVariable("item_str", item);
+		context.setTempVariable("item_str_esc", Util.escapeJava(item));
 		return true;
 	}
 
@@ -169,13 +163,14 @@ public class ActionItems extends Action {
 	/**
 	 * Реализует действие ITEM_WEAR
 	 *
-	 * @param player - игрок
+	 * @param context - контекст
 	 * @param params - параметры: item - одеваемый предмет
 	 *			   slot - слот куда одеваем (helmet, chestplate, leggins, boots, auto)
 	 *			   exist - что делаем с уже надетым предметов (remove, undress, drop, keep)
 	 * @return - возвращает true если удалось нацепить предмет на игрока
 	 */
-	private boolean wearItem(Player player, Param params) {
+	private boolean wearItem(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String itemStr = params.getParam("item", "");
 		int slot = -1; //4 - auto, 3 - helmete, 2 - chestplate, 1 - leggins, 0 - boots
 		int existDrop = 1; // 0 - remove, 1 - undress, 2 - drop, 3 - keep
@@ -191,23 +186,24 @@ public class ActionItems extends Action {
 		}
 		ItemStack item = null;
 		if (itemStr.equalsIgnoreCase("AIR") || itemStr.equalsIgnoreCase("NULL")) {
-			if (slot == -1) return setItemInOffhand(player, params, null);
+			if (slot == -1) return setItemInOffhand(context, params, null);
 			//if (slot == -1) slot = 3;
 		} else {
 			item = ItemUtil.parseItemStack(itemStr);
 			if (item == null) return false;
-			if (slot == -1) return setItemInOffhand(player, params, item);
+			if (slot == -1) return setItemInOffhand(context, params, item);
 			// if (slot == -1) slot = getSlotByItem(item);
 		}
 		return setArmourItem(player, slot, item, existDrop);
 	}
 
-	private boolean setItemInOffhand(Player player, Param params, ItemStack item) {
+	private boolean setItemInOffhand(RaContext context, Param params, ItemStack item) {
+		Player player = context.getPlayer();
 		String itemStr = params.getParam("slot", "");
 		if (itemStr.isEmpty()) return false;
 		if (!itemStr.equalsIgnoreCase("offhand")) return false;
 		player.getInventory().setItemInOffHand(item);
-		StoragesManager.raiseItemWearActivator(player);
+		ItemStoragesManager.raiseItemWearActivator(player);
 		return true;
 	}
 
@@ -226,7 +222,7 @@ public class ActionItems extends Action {
 				player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
 			}
 		}
-		StoragesManager.raiseItemWearActivator(player);
+		ItemStoragesManager.raiseItemWearActivator(player);
 		return true;
 	}
 
@@ -265,61 +261,64 @@ public class ActionItems extends Action {
 	}
 
 
-	private boolean removeItemInHand(Player player, Param params) {
+	private boolean removeItemInHand(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String itemStr = params.getParam("param-line", "");
 		if (itemStr.isEmpty()) return false;
-		Variables.setTempVar("item", ItemUtil.itemToString(player.getInventory().getItemInMainHand()));
+		context.setTempVariable("item", ItemUtil.itemToString(player.getInventory().getItemInMainHand()));
 		if (!ItemUtil.removeItemInHand(player, itemStr)) return false;
 		String actionItems = ItemUtil.toDisplayString(itemStr);
 		setMessageParam(actionItems);
-		Variables.setTempVar("item_str", actionItems);
+		context.setTempVariable("item_str", actionItems);
 
 		return true;
 	}
 
-	private boolean removeItemInOffand(Player player, Param params) {
+	private boolean removeItemInOffand(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String itemStr = params.getParam("param-line", "");
 		if (itemStr.isEmpty()) return false;
-		Variables.setTempVar("item", ItemUtil.itemToString(player.getInventory().getItemInOffHand()));
+		context.setTempVariable("item", ItemUtil.itemToString(player.getInventory().getItemInOffHand()));
 		if (!ItemUtil.removeItemInOffHand(player, itemStr)) return false;
 		String actionItems = ItemUtil.toDisplayString(itemStr);
 		setMessageParam(actionItems);
-		Variables.setTempVar("item_str", actionItems);
+		context.setTempVariable("item_str", actionItems);
 		return true;
 	}
 
-	private boolean removeItemInInventory(Player p, Param params) {
+	private boolean removeItemInInventory(RaContext context, Param params) {
 		String itemStr = params.getParam("param-line", "");
 		if (itemStr.isEmpty()) return false;
-		ItemUtil.removeItemInInventory(p, itemStr);
+		ItemUtil.removeItemInInventory(context.getPlayer(), itemStr);
 		String actionItems = ItemUtil.toDisplayString(itemStr);
 		setMessageParam(actionItems);
-		Variables.setTempVar("item_str", actionItems);
+		context.setTempVariable("item_str", actionItems);
 		VirtualItem vi = VirtualItem.fromString(itemStr);
-		if (vi != null) Variables.setTempVar("item", vi.toString());
+		if (vi != null) context.setTempVariable("item", vi.toString());
 		return true;
 	}
 
-	private boolean giveItemPlayer(final Player p, final String param) {
+	private boolean giveItemPlayer(RaContext context, final String param) {
+		Player player = context.getPlayer();
 		final List<ItemStack> items = ItemUtil.parseRandomItemsStr(param);
 		if (items == null || items.isEmpty()) return false;
 		String actionItems = ItemUtil.toDisplayString(items);
 		setMessageParam(actionItems);
-		Variables.setTempVar("item_str", actionItems);
+		context.setTempVariable("item_str", actionItems);
 		Bukkit.getScheduler().scheduleSyncDelayedTask(ReActions.getPlugin(), () -> {
 			for (ItemStack i : items)
-				ItemUtil.giveItemOrDrop(p, i);
-			StoragesManager.raiseItemHoldActivator(p);
+				ItemUtil.giveItemOrDrop(player, i);
+			ItemStoragesManager.raiseItemHoldActivator(player);
 		}, 1);
 		return true;
 	}
 
-	private boolean openInventory(Player p, String itemStr) {
+	private boolean openInventory(RaContext context, String itemStr) {
 		List<ItemStack> items = ItemUtil.parseRandomItemsStr(itemStr);
 		if (items.isEmpty()) return false;
 		String actionItems = ItemUtil.toDisplayString(items);
 		setMessageParam(actionItems);
-		Variables.setTempVar("item_str", actionItems);
+		context.setTempVariable("item_str", actionItems);
 		int size = Math.min(items.size(), 36);
 		Inventory inv = Bukkit.createInventory(null, size);
 		for (int i = 0; i < size; i++)
@@ -328,10 +327,11 @@ public class ActionItems extends Action {
 	}
 
 
-	public boolean dropItems(Player p, Param params) {
+	public boolean dropItems(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		int radius = params.getParam("radius", 0);
-		Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), p.getLocation());
-		if (loc == null) loc = p.getLocation();
+		Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), player.getLocation());
+		if (loc == null) loc = player.getLocation();
 		boolean scatter = params.getParam("scatter", true);
 		boolean land = params.getParam("land", true);
 		List<ItemStack> items = ItemUtil.parseRandomItemsStr(params.getParam("item", ""));
@@ -344,7 +344,7 @@ public class ActionItems extends Action {
 		}
 		String actionItems = ItemUtil.toDisplayString(items);
 		setMessageParam(actionItems);
-		Variables.setTempVar("item_str", actionItems);
+		context.setTempVariable("item_str", actionItems);
 		return true;
 	}
 
@@ -357,11 +357,12 @@ public class ActionItems extends Action {
 	 * <p>
 	 * Сохраняет плейсхолдеры: %item%, %item_str%
 	 *
-	 * @param player — игрок
+	 * @param context — контекст
 	 * @param params — перечень параметров
 	 * @return — true - в случае успешной отработки действия
 	 */
-	private boolean unwearItem(Player player, Param params) {
+	private boolean unwearItem(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		int slot = getSlotNum(params.getParam("slot"));
 		String itemStr = params.getParam("item");
 		String action = params.getParam("item-action", "remove");
@@ -392,8 +393,8 @@ public class ActionItems extends Action {
 			ItemUtil.giveItemOrDrop(player, vi);
 		}
 
-		Variables.setTempVar("item", vi.toString());
-		Variables.setTempVar("item_str", vi.getDescription());
+		context.setTempVariable("item", vi.toString());
+		context.setTempVariable("item_str", vi.getDescription());
 		return true;
 	}
 
@@ -420,7 +421,7 @@ public class ActionItems extends Action {
 
 
 	/*
-		public boolean execute(Player p, Param params) {
+		public boolean execute(RaContext context, Param params) {
 		switch (actionType) {
 			case 0:
 				return giveItemPlayer(p, params.getParam("param-line", ""));

@@ -22,17 +22,13 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.MobKillStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
 public class MobKillActivator extends Activator {
 	private final String mobType;
@@ -50,14 +46,7 @@ public class MobKillActivator extends Activator {
 		if (mobType.isEmpty()) return false;
 		if (me.getEntity() == null) return false;
 		if (!isActivatorMob(me.getEntity())) return false;
-		Variables.setTempVar("moblocation", LocationUtil.locationToString(me.getEntity().getLocation()));
-		Variables.setTempVar("mobkiller", me.getPlayer() == null ? "" : me.getPlayer().getName());
-		Variables.setTempVar("mobtype", me.getEntity().getType().name());
-		LivingEntity mob = me.getEntity();
-		Player player = mob instanceof Player ? (Player) mob : null;
-		String mobName = (player == null) ? me.getEntity().getCustomName() : player.getName();
-		Variables.setTempVar("mobname", mobName != null && !mobName.isEmpty() ? mobName : me.getEntity().getType().name());
-		return Actions.executeActivator(me.getPlayer(), getBase());
+		return true;
 	}
 
 

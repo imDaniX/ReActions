@@ -24,8 +24,11 @@ package me.fromgate.reactions.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Map;
 
 public class ItemHoldStorage extends Storage {
 	@Getter private final boolean mainHand;
@@ -35,5 +38,14 @@ public class ItemHoldStorage extends Storage {
 		super(p, ActivatorType.ITEM_HOLD);
 		this.item = item;
 		this.mainHand = mainHand;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		VirtualItem vItem = VirtualItem.fromItemStack(item);
+		if(item != null) {
+			tempVars.put("item", vItem.toString());
+			tempVars.put("item-str", vItem.toDisplayString());
+		}
 	}
 }

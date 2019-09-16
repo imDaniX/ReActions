@@ -30,6 +30,8 @@ import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class SignStorage extends Storage {
 
 	@Getter private String[] signLines;
@@ -43,7 +45,11 @@ public class SignStorage extends Storage {
 		this.leftClick = leftClick;
 	}
 
-	public String getSignLocation() {
-		return LocationUtil.locationToString(this.location);
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		for (int i = 0; i < signLines.length; i++)
+			tempVars.put("sign_line" + (i + 1), signLines[i]);
+		tempVars.put("sign_loc", LocationUtil.locationToString(location));
+		tempVars.put("click", leftClick ? "left" : "right");
 	}
 }

@@ -73,6 +73,18 @@ public class VirtualLocation {
 		this.hash = calcHash();
 	}
 
+	public int getX(int def) {
+		return x == null ? def : x;
+	}
+
+	public int getY(int def) {
+		return y == null ? def : y;
+	}
+
+	public int getZ(int def) {
+		return z == null ? def : z;
+	}
+
 	public Location getLocation() {
 		World world = Bukkit.getWorld(this.world);
 		return new Location(

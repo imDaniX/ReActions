@@ -1,6 +1,7 @@
 package me.fromgate.reactions.util.data;
 
 import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
@@ -38,6 +39,11 @@ public class ItemStackValue implements DataValue {
 
 	@Override
 	public boolean set(String value) {
+		ItemStack item = VirtualItem.fromString(value);
+		if(item != null) {
+			this.value = item;
+			return true;
+		}
 		return false;
 	}
 

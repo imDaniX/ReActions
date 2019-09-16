@@ -14,7 +14,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -61,44 +60,12 @@ public class FakeCommander {
 	}
 
 	public static boolean raiseRaCommand(PrecommandStorage storage) {
-		String[] split = storage.getCommand().split("\\s");
-		RaCommand raCmd = commands.get(split[0].toLowerCase());
+		RaCommand raCmd = commands.get(storage.getLabel().toLowerCase());
 		if(raCmd == null) return false;
-		String[] args = Arrays.copyOfRange(split, 1, split.length);
-		String exec = raCmd.executeCommand(storage.getSender(), args);
-		StoragesManager.raiseExecActivator(storage.getSender(), exec, generateTempVars(split[0], storage.getCommand(), args));
+		String exec = raCmd.executeCommand(storage.getSender(), storage.getArgs());
+		StoragesManager.raiseExecActivator(storage.getSender(), exec, storage.getTempVars());
+		// It's not activator - context will not be generated
 		return raCmd.isOverride();
-	}
-	
-	private static Map<String, String> generateTempVars(String command, String fullCmd, String[] args) {
-		Map<String, String> tempVars = new HashMap<>();
-		String[] start = command.split(":");
-		if(start.length == 1) {
-			tempVars.put("prefix", start[0]);
-			tempVars.put("label", start[0]);
-		} else {
-			tempVars.put("prefix", start[0]);
-			tempVars.put("label", start[1]);
-		}
-		// All the arguments
-		tempVars.put("args", String.join(" ", args));
-		// Full command
-		tempVars.put("command", command + fullCmd);
-		// Count of arguments
-		tempVars.put("argscount", Integer.toString(args.length));
-		// Just command
-		tempVars.put("arg0", command);
-		for(int i = 0; i < args.length; i++) {
-			// [i] argument
-			tempVars.put("arg" + (i+1), args[i]);
-		}
-		StringBuilder builder = new StringBuilder();
-		for(int j = args.length - 1; j >= 0; j--) {
-			builder.append(" ").append(args[j]);
-			// Arguments after [j] argument
-			tempVars.put("args" + j, builder.toString().substring(1));
-		}
-		return tempVars;
 	}
 
 	// @SuppressWarnings("unchecked")

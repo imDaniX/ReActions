@@ -22,16 +22,17 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class FlagTime implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String time) {
-		saveTempVar(time);
+	public boolean checkFlag(RaContext context, String time) {
+		Player player = context.getPlayer();
+		saveTempVar(context, time);
 		long currentTime = Bukkit.getWorlds().get(0).getTime();
 		if (player != null) currentTime = player.getWorld().getTime();
 
@@ -53,7 +54,7 @@ public class FlagTime implements Flag {
 		return false;
 	}
 
-	private void saveTempVar(String time) {
+	private void saveTempVar(RaContext context, String time) {
 		StringBuilder result = new StringBuilder(time);
 		if (!(time.equals("day") || time.equals("night"))) {
 			String[] ln = time.split(",");
@@ -65,7 +66,7 @@ public class FlagTime implements Flag {
 					else result.append(", ").append(tmp);
 				}
 		}
-		Variables.setTempVar("TIME", result.toString());
+		context.setTempVariable("TIME", result.toString());
 	}
 }
 

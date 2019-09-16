@@ -39,6 +39,11 @@ public class LocationValue implements DataValue {
 
 	@Override
 	public boolean set(String value) {
+		Location loc = LocationUtil.parseLocation(value, null);
+		if(loc != null) {
+			this.value = loc;
+			return true;
+		}
 		return false;
 	}
 

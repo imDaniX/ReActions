@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -30,8 +31,8 @@ import org.bukkit.potion.PotionEffectType;
 public class ActionPotionRemove extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		String str = removePotionEffect(p, params.getParam("param-line", ""));
+	public boolean execute(RaContext context, Param params) {
+		String str = removePotionEffect(context.getPlayer(), params.getParam("param-line", ""));
 		if (str.isEmpty()) return false;
 		this.setMessageParam(str);
 		return true;

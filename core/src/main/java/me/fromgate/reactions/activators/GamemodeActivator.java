@@ -1,9 +1,8 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.GameModeStorage;
 import me.fromgate.reactions.storages.Storage;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,8 +22,7 @@ public class GamemodeActivator extends Activator {
 	public boolean activate(Storage event) {
 		GameModeStorage e = (GameModeStorage) event;
 		if (!gameModeCheck(e.getGameMode())) return false;
-		Variables.setTempVar("gamemode", e.getGameMode().toString());
-		return Actions.executeActivator(e.getPlayer(), getBase());
+		return true;
 	}
 
 	private boolean gameModeCheck(GameMode gm) {
@@ -51,20 +49,13 @@ public class GamemodeActivator extends Activator {
 		return sb.toString();
 	}
 
-	private static GameMode getGameModeByName(String name) {
-		name = name.toUpperCase();
-		for(GameMode gm : GameMode.values())
-			if(gm.name().equals(name)) return gm;
-		return null;
-	}
-
 	public static GamemodeActivator create(ActivatorBase base, Param param) {
-		GameMode gameMode = getGameModeByName(param.getParam("gamemode", "ANY"));
+		GameMode gameMode = Util.getEnumByName(GameMode.class, param.getParam("gamemode", "ANY"));
 		return new GamemodeActivator(base, gameMode);
 	}
 
 	public static GamemodeActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		GameMode gameMode = getGameModeByName(cfg.getString("gamemode", "ANY"));
+		GameMode gameMode = Util.getEnumByName(GameMode.class, cfg.getString("gamemode", "ANY"));
 		return new GamemodeActivator(base, gameMode);
 	}
 }

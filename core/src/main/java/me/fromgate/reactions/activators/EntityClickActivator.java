@@ -1,7 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.EntityClickStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
@@ -24,8 +22,7 @@ public class EntityClickActivator extends Activator {
 		EntityClickStorage ece = (EntityClickStorage) event;
 		if (ece.getEntity() == null) return false;
 		if (!isActivatorEntity(ece.getEntity())) return false;
-		Variables.setTempVar("entitytype", ece.getEntity().getType().name());
-		return Actions.executeActivator(ece.getPlayer(), getBase());
+		return true;
 	}
 
 	private boolean isActivatorEntity(Entity entity) {

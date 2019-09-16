@@ -124,10 +124,7 @@ public class MobSpawn {
 				mbs = mbs.substring(name.length() + 1);
 			}
 
-			EntityType et = EntityType.ZOMBIE;
-			try {
-				et = EntityType.valueOf(mbs.toUpperCase());
-			} catch (IllegalArgumentException ignore) {}
+			EntityType et = Util.getEnumByName(EntityType.class, mbs, EntityType.ZOMBIE);
 
 			Entity e = loc.getWorld().spawnEntity(loc, et);
 			if (e == null) {

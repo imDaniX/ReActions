@@ -1,7 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.DamageStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.enums.DamageType;
@@ -28,10 +26,7 @@ public class DamageActivator extends Activator {
 		DamageStorage de = (DamageStorage) event;
 		if (!damageCauseCheck(de.getCause())) return false;
 		if (!sourceCheck(de.getSource())) return false;
-		Variables.setTempVar("damage", Double.toString(de.getDamage()));
-		Variables.setTempVar("cause", de.getCause().name());
-		Variables.setTempVar("source", de.getSource());
-		return Actions.executeActivator(de.getPlayer(), getBase());
+		return true;
 	}
 
 	private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {

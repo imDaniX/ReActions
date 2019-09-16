@@ -26,6 +26,8 @@ import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class FactionChangeStorage extends Storage {
 
 	@Getter private final String newFaction;
@@ -35,5 +37,11 @@ public class FactionChangeStorage extends Storage {
 		super(player, ActivatorType.FCT_CHANGE);
 		this.newFaction = newFaction;
 		this.oldFaction = oldFaction;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("newfaction", newFaction);
+		tempVars.put("oldfaction", oldFaction);
 	}
 }

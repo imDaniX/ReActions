@@ -2,14 +2,14 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.time.waiter.WaitingManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionDelayed extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		long delay = TimeUtil.parseTime(params.getParam("time", "0"));
 		if (delay == 0) return false;
 
@@ -29,7 +29,7 @@ public class ActionDelayed extends Action {
 		}
 
 		StoredAction av = new StoredAction(actionStr, paramStr);
-		WaitingManager.executeDelayed(p, av, this.isAction(), delay);
+		WaitingManager.executeDelayed(context.getPlayer(), av, this.isAction(), delay);
 		return false;
 	}
 

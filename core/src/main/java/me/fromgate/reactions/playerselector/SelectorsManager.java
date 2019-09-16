@@ -1,6 +1,5 @@
 package me.fromgate.reactions.playerselector;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -35,7 +34,7 @@ public class SelectorsManager {
 		for (Selector selector : selectors) {
 			String selectorParam = param.getParam(selector.getKey());
 			if (selector.getKey().equalsIgnoreCase("loc") && param.isParamsExists("radius"))
-				selectorParam = Util.join("loc:", selectorParam, " ", "radius:", param.getParam("radius", "1"));
+				selectorParam = "loc:" + selectorParam + " " + "radius:" + param.getParam("radius", "1");
 			players.addAll(selector.selectPlayers(selectorParam));
 		}
 		return players;

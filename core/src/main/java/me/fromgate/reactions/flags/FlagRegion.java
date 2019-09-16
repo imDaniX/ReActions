@@ -23,6 +23,7 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -41,7 +42,8 @@ public class FlagRegion implements Flag {
 	}
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!RaWorldGuard.isConnected()) return false;
 		switch (flagType) {
 			case REGION:

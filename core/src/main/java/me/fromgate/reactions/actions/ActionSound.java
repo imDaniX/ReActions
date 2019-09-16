@@ -23,13 +23,15 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionSound extends Action {
 	@Override
-	public boolean execute(Player p, Param params) {
-		String str = Util.soundPlay(p == null ? null : p.getLocation(), params);
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
+		String str = Util.soundPlay(player == null ? null : player.getLocation(), params);
 		if (str.isEmpty()) return false;
 		this.setMessageParam(str);
 		return true;

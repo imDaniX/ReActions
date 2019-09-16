@@ -1,14 +1,9 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.PickupItemStorage;
 import me.fromgate.reactions.storages.Storage;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,22 +23,7 @@ public class PickupItemActivator extends Activator {
 	public boolean activate(Storage event) {
 		PickupItemStorage pie = (PickupItemStorage) event;
 		if (!checkItem(pie.getItem())) return false;
-		Variables.setTempVar("droplocation", LocationUtil.locationToString(pie.getPlayer().getLocation()));
-		Variables.setTempVar("pickupDelay", Double.toString(pie.getPickupDelay()));
-		Variables.setTempVar("item", ItemUtil.itemToString(pie.getItem()));
-		boolean result = Actions.executeActivator(pie.getPlayer(), getBase());
-		String pickupDelayStr = Variables.getTempVar("pickupDelay");
-		if (Util.FLOAT_POSITIVE.matcher(pickupDelayStr).matches()) pie.setPickupDelay(Integer.parseInt(pickupDelayStr));
-		Param itemParam = new Param(Variables.getTempVar("item"));
-		if (!itemParam.isEmpty()) {
-			String itemType = itemParam.getParam("type", "AIR");
-			if (itemType.isEmpty() || itemType.equalsIgnoreCase("AIR")) {
-				pie.setItem(new ItemStack(Material.getMaterial("AIR")));
-			} else {
-				pie.setItem(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
-			}
-		}
-		return result;
+		return true;
 	}
 
 	@Override

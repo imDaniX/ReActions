@@ -23,18 +23,13 @@
 package me.fromgate.reactions.activators;
 
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.MessageStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.regex.Pattern;
-
 public class MessageActivator extends Activator {
-	private final static Pattern NOT_D = Pattern.compile("\\D+");
 
 	private CheckType type;
 	private Source source;
@@ -107,8 +102,7 @@ public class MessageActivator extends Activator {
 	public boolean activate(Storage event) {
 		MessageStorage e = (MessageStorage) event;
 		if (!e.isForActivator(this)) return false;
-		setTempVars(e.getMessage());
-		return Actions.executeActivator(e.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override
@@ -140,31 +134,6 @@ public class MessageActivator extends Activator {
 				return message.toLowerCase().startsWith(this.mask.toLowerCase());
 		}
 		return false;
-	}
-
-	private void setTempVars(String message) {
-		Variables.setTempVar("message", message);
-		String[] args = message.split(" ");
-		int countInt = 0;
-		int countNum = 0;
-		if (args != null && args.length > 0) {
-			for (int i = 0; i < args.length; i++) {
-				Variables.setTempVar("word" + (i + 1), args[i]);
-				Variables.setTempVar("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
-				if (Util.INT.matcher(args[i]).matches()) {
-					countInt++;
-					Variables.setTempVar("int" + countInt, args[i]);
-				}
-				if (Util.FLOAT.matcher(args[i]).matches()) {
-					countNum++;
-					Variables.setTempVar("num" + countNum, args[i]);
-				}
-
-			}
-		}
-		Variables.setTempVar("word-count", Integer.toString(args.length));
-		Variables.setTempVar("int-count", Integer.toString(countInt));
-		Variables.setTempVar("num-count", Integer.toString(countNum));
 	}
 
 	@Override

@@ -23,6 +23,7 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.externals.RaRacesAndClasses;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagRacesAndClasses implements Flag {
@@ -34,7 +35,8 @@ public class FlagRacesAndClasses implements Flag {
 	}
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!RaRacesAndClasses.isEnabled()) return false;
 		return this.checkRace ? RaRacesAndClasses.checkRace(player, param) : RaRacesAndClasses.checkClass(player, param);
 	}

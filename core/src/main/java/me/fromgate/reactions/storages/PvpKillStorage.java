@@ -26,11 +26,18 @@ import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
+import java.util.Map;
+
 public class PvpKillStorage extends Storage {
 	@Getter private final Player killedPlayer;
 
 	public PvpKillStorage(Player player, Player killedPlayer) {
 		super(player, ActivatorType.PVP_KILL);
 		this.killedPlayer = killedPlayer;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put("targetplayer", killedPlayer.getName());
 	}
 }

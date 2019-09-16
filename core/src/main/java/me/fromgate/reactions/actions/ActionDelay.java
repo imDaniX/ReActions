@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -37,9 +37,10 @@ public class ActionDelay extends Action {
 	}
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
 		String timeStr = "";
-		String playerName = this.globalDelay ? "" : (p != null ? p.getName() : "");
+		String playerName = this.globalDelay ? "" : (player != null ? player.getName() : "");
 		String variableId = "";
 		boolean add = false;
 		if (params.isParamsExists("id", "delay") || params.isParamsExists("id", "time")) {
@@ -61,8 +62,8 @@ public class ActionDelay extends Action {
 		if (timeStr.isEmpty()) return false;
 		if (variableId.isEmpty()) return false;
 		setDelay(playerName, variableId, TimeUtil.parseTime(timeStr), add);
-		Delayer.setTempPlaceholders(playerName, variableId);
-		setMessageParam(Variables.getTempVar("delay-left-hms", timeStr));
+		Delayer.setTempPlaceholders(context, playerName, variableId);
+		setMessageParam(context.getTempVariable("delay-left-hms", timeStr));
 		return true;
 	}
 

@@ -24,6 +24,7 @@ package me.fromgate.reactions.flags.worldedit;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.flags.Flag;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 /**
@@ -31,7 +32,8 @@ import org.bukkit.entity.Player;
  */
 public class FlagSuperPickAxe implements Flag {
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		return Boolean.parseBoolean(param) == RaWorldEdit.hasSuperPickAxe(player);
 	}
 }

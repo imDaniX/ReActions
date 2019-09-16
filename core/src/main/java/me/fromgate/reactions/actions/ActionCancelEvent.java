@@ -22,14 +22,15 @@
 
 package me.fromgate.reactions.actions;
 
+import me.fromgate.reactions.storages.Storage;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionCancelEvent extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		return params.getParam("param-line", false);
+	public boolean execute(RaContext context, Param params) {
+		return context.setChangeable(Storage.CANCEL_EVENT, params.getParam("param-line", false));
 	}
 
 }

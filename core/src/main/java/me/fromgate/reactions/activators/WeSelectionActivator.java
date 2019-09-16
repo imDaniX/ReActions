@@ -1,12 +1,9 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.externals.worldedit.WeSelection;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.storages.WeSelectionRegionStorage;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class WeSelectionActivator extends Activator {
@@ -26,24 +23,14 @@ public class WeSelectionActivator extends Activator {
 		WeSelectionRegionStorage e = (WeSelectionRegionStorage) event;
 		WeSelection selection = e.getSelection();
 		if (!selection.isValid()) return false;
-
 		int selectionBlocks = selection.getArea();
-		Variables.setTempVar("selblocks", Integer.toString(selectionBlocks));
 		if (selectionBlocks < minBlocks) return false;
 		if (selectionBlocks > maxBlocks && maxBlocks != 0) return false;
-
 		String selType = selection.getSelType();
-		Variables.setTempVar("seltype", selType);
 		if (!checkTypeSelection(selType)) return false;
-
 		String region = selection.getRegion();
 		if (region == null || region.isEmpty()) return false;
-
-		World world = selection.getWorld();
-		Variables.setTempVar("world", (world != null) ? world.getName() : "");
-
-		Variables.setTempVar("region", region);
-		return Actions.executeActivator(e.getPlayer(), getBase());
+		return true;
 	}
 
 	private boolean checkTypeSelection(String selType) {

@@ -1,8 +1,7 @@
 package me.fromgate.reactions.actions;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,14 +14,14 @@ import java.nio.file.StandardCopyOption;
 public class ActionFile extends Action {
 	private static final String dir = new File("").getAbsolutePath();
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		String action = params.getParam("action", "");
 		String fileName = params.getParam("fileName", "");
 		String fileNameTo = params.getParam("fileNameTo", "");
 		if (action.isEmpty() || fileName.isEmpty()) return false;
 
 		File file = new File(dir + File.separator + fileName);
-		Variables.setTempVar("fullpath", file.getAbsolutePath());
+		context.setTempVariable("fullpath", file.getAbsolutePath());
 
 		if (action.equalsIgnoreCase("remove")) {
 			int c = 0;
@@ -34,7 +33,7 @@ public class ActionFile extends Action {
 			} else {
 				if (file.delete()) c = 1;
 			}
-			Variables.setTempVar("removecount", Integer.toString(c));
+			context.setTempVariable("removecount", Integer.toString(c));
 			return true;
 
 		} else {
@@ -53,7 +52,7 @@ public class ActionFile extends Action {
 					return true;
 				}
 			} catch (IOException e) {
-				Variables.setTempVar("filedebug", e.getLocalizedMessage());
+				context.setTempVariable("filedebug", e.getLocalizedMessage());
 			}
 
 		}

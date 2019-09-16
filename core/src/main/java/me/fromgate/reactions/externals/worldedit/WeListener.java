@@ -33,6 +33,7 @@ import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.storages.WeChangeStorage;
 import me.fromgate.reactions.storages.WeSelectionRegionStorage;
 import org.bukkit.Bukkit;
@@ -96,17 +97,18 @@ public class WeListener {
 
 	public static boolean raiseChangeSelectionRegionActivator(Player player, Region selection, Region region) {
 		WeSelection weSelection = new WeSelection(getRegionSelector(player).getTypeName(),
-				BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()), BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
+				BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()),
+				BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
 				selection.getArea(), BukkitAdapter.adapt(selection.getWorld()), region.toString());
 		WeSelectionRegionStorage e = new WeSelectionRegionStorage(player, weSelection);
 		ActivatorsManager.activate(e);
-		return e.isCancelled();
+		return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
 	}
 
 	public static boolean raiseWEChangeActivator(Player player, Location location, Material blockType) {
 		WeChangeStorage e = new WeChangeStorage(player, location, blockType);
 		ActivatorsManager.activate(e);
-		return e.isCancelled();
+		return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
 	}
 
 }

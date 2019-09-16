@@ -22,18 +22,18 @@
 
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Powerable;
-import org.bukkit.entity.Player;
 
 public class FlagPowered implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
 		Param params = new Param(param);
 		String locStr = params.isParamsExists("loc") ? params.getParam("loc", "") : param;
 		if (locStr.isEmpty()) return false;

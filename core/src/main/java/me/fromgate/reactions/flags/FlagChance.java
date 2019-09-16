@@ -22,15 +22,14 @@
 
 package me.fromgate.reactions.flags;
 
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
-import org.bukkit.entity.Player;
+import me.fromgate.reactions.util.data.RaContext;
 
 public class FlagChance implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
-		Variables.setTempVar("CHANCE", param + "%");
+	public boolean checkFlag(RaContext context, String param) {
+		context.setTempVariable("CHANCE", param + "%");
 		int d = 50;
 		if (Util.isInteger(param)) d = Integer.parseInt(param);
 		d = Math.max(Math.min(d, 100), 0);

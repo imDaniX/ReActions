@@ -23,14 +23,14 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.RaEffects;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionEffect extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		RaEffects.playEffect(p, params);
+	public boolean execute(RaContext context, Param params) {
+		RaEffects.playEffect(context.getPlayer(), params);
 		return true;
 	}
 

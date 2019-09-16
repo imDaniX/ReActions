@@ -3,13 +3,10 @@
  */
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.storages.WeChangeStorage;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -28,12 +25,8 @@ public class WeChangeActivator extends Activator {
 	public boolean activate(Storage event) {
 		WeChangeStorage e = (WeChangeStorage) event;
 		if (!checkBlockType(e.getBlockType())) return false;
-		Variables.setTempVar("blocktype", e.getBlockType().name());
-		Variables.setTempVar("blocklocation", LocationUtil.locationToString(e.getLocation()));
-
 		if (!region.isEmpty() && !RaWorldGuard.isLocationInRegion(e.getLocation(), region)) return false;
-
-		return Actions.executeActivator(e.getPlayer(), getBase());
+		return true;
 	}
 
 	private boolean checkBlockType(Material check) {

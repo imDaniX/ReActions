@@ -23,10 +23,14 @@
 package me.fromgate.reactions.storages;
 
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Switch;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class LeverStorage extends Storage {
 	private final Block leverBlock;
@@ -48,6 +52,11 @@ public class LeverStorage extends Storage {
 
 	public Location getLeverLocation() {
 		return leverBlock.getLocation();
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
 	}
 
 }

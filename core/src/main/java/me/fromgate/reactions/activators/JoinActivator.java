@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.JoinStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
@@ -40,12 +39,12 @@ public class JoinActivator extends Activator {
 	@Override
 	public boolean activate(Storage event) {
 		JoinStorage ce = (JoinStorage) event;
-		if (isJoinActivate(ce.isFirstJoin())) return Actions.executeActivator(ce.getPlayer(), getBase());
+		if (isJoinActivate(ce.isFirstJoin())) return true;
 		return false;
 	}
 
-	private boolean isJoinActivate(boolean join_first_time) {
-		if (this.firstJoin) return join_first_time;
+	private boolean isJoinActivate(boolean joinFirstTime) {
+		if (this.firstJoin) return joinFirstTime;
 		return true;
 	}
 

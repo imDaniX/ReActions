@@ -2,6 +2,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -10,14 +11,11 @@ import org.bukkit.entity.Player;
  */
 public class ActionWeToolControl extends Action {
 	@Override
-	public boolean execute(Player p, Param params) {
-		Player player = p;
-		boolean isToolControl;
-		if (params.hasAnyParam("value", "player")) {
-			String playerName = params.getParam("player", p != null ? p.getName() : "");
-			isToolControl = params.getParam("value", false);
-			player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
-		} else isToolControl = params.getParam("param-line", false);
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
+		boolean isToolControl = params.getParam("value", params.getParam("param-line", false));
+		if(params.hasAnyParam("player"))
+			player = Util.getPlayerExact(params.getParam("player"));
 
 		RaWorldEdit.getSession(player).setToolControl(isToolControl);
 		return true;

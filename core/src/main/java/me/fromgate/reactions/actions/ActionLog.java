@@ -23,12 +23,11 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.playerselector.SelectorsManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -41,19 +40,19 @@ import java.util.logging.Logger;
 
 public class ActionLog extends Action {
 
-	private final Logger log = Logger.getLogger("Minecraft");
+	private final Logger LOGGER = Logger.getLogger("Minecraft");
+	private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private void saveToFile(String fileName, String message) {
+	private void saveToFile(RaContext context, String fileName, String message) {
 		File path = new File("");
 		String dir = path.getAbsolutePath();
 
 		File file = new File(dir + "/" + fileName);
-		Variables.setTempVar("fullpath", file.getAbsolutePath());
+		context.setTempVariable("fullpath", file.getAbsolutePath());
 		if (fileName.isEmpty()) return;
 
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
-		String d = dateFormat.format(date);
+		String d = DATE_FORMAT.format(date);
 		try {
 			if (fileName.contains("/")) {
 				String ph = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\") + 1);
@@ -72,12 +71,12 @@ public class ActionLog extends Action {
 			}
 
 		} catch (IOException e) {
-			Variables.setTempVar("logdebug", e.getLocalizedMessage());
+			context.setTempVariable("logdebug", e.getLocalizedMessage());
 		}
 	}
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		if (params.hasAnyParam("prefix", "color", "file")) {
 			String plg_name = ReActions.getPlugin().getDescription().getName();
 			boolean prefix = params.getParam("prefix", true);
@@ -90,7 +89,7 @@ public class ActionLog extends Action {
 					this.log(message, plg_name, color);
 				} else this.log(message, "", color);
 			} else {
-				saveToFile(file, message);
+				saveToFile(context, file, message);
 			}
 		} else Msg.logMessage(params.getParam("param-line"));
 
@@ -108,7 +107,7 @@ public class ActionLog extends Action {
 	private void log(String msg, String prefix, Boolean color) {
 		String px = "";
 		if (!prefix.isEmpty()) px = "[" + prefix + "] ";
-		if (color) log.info(ChatColor.translateAlternateColorCodes('&', px + msg));
-		else log.info(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', px + msg)));
+		if (color) LOGGER.info(ChatColor.translateAlternateColorCodes('&', px + msg));
+		else LOGGER.info(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', px + msg)));
 	}
 }

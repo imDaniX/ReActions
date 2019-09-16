@@ -26,6 +26,7 @@ import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.factions.RaFactions;
 import me.fromgate.reactions.flags.Flag;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 
@@ -37,7 +38,8 @@ import org.bukkit.entity.Player;
 
 public class FlagPlayersInRel implements Flag {
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!Externals.isConnectedFactions()) return false;
 		String[] params = param.split("\\s");
 		Player player1 = Util.getPlayerExact(params[0].trim());

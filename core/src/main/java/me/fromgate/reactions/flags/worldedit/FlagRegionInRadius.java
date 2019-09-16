@@ -24,11 +24,13 @@ package me.fromgate.reactions.flags.worldedit;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.flags.Flag;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagRegionInRadius implements Flag {
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		int radius = 0;
 		if (!param.isEmpty()) radius = Integer.parseInt(param);
 		return RaWorldEdit.checkRegionInRadius(player, radius);

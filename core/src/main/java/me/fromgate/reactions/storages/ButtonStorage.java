@@ -24,8 +24,12 @@ package me.fromgate.reactions.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 public class ButtonStorage extends Storage {
 	@Getter private final Location buttonLocation;
@@ -33,5 +37,10 @@ public class ButtonStorage extends Storage {
 	public ButtonStorage(Player p, Location loc) {
 		super(p, ActivatorType.BUTTON);
 		this.buttonLocation = loc;
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
 	}
 }

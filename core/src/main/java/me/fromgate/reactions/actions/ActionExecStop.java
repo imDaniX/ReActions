@@ -23,13 +23,15 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class ActionExecStop extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
+		Player p = context.getPlayer();
 		String player = params.getParam("player", (p == null ? "" : p.getName()));
 		if (player.isEmpty()) return false;
 		String activator = params.getParam("activator", "");

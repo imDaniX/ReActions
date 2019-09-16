@@ -23,6 +23,7 @@
 package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.Player;
@@ -30,14 +31,12 @@ import org.bukkit.entity.Player;
 public class ActionDamage extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		Player player = p;
-		double damage = 0;
-		if (params.hasAnyParam("damage", "player")) {
-			String playerName = params.getParam("player", p != null ? p.getName() : "");
-			player = playerName.isEmpty() ? null : Util.getPlayerExact(playerName);
-			damage = params.getParam("damage", 0);
-		} else params.getParam("param-line", 0);
+	public boolean execute(RaContext context, Param params) {
+		Player player = context.getPlayer();
+		double damage = params.getParam("damage", params.getParam("param-line", 0));
+		if(params.hasAnyParam("player"))
+			// TODO: Selector?
+			player = Util.getPlayerExact(params.getParam("player"));
 		return damagePlayer(player, damage);
 	}
 

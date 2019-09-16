@@ -22,13 +22,10 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.ItemConsumeStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
@@ -49,15 +46,8 @@ public class ItemConsumeActivator extends Activator {
 			return false;
 		}
 		ItemConsumeStorage ie = (ItemConsumeStorage) event;
-		if (ItemUtil.compareItemStr(ie.getItem(), this.item)) {
-			VirtualItem vi = VirtualItem.fromItemStack(ie.getItem());
-			if (vi != null) {
-				Variables.setTempVar("item", vi.toString());
-				Variables.setTempVar("item-str", vi.toDisplayString());
-			}
-			return Actions.executeActivator(ie.getPlayer(), getBase());
-		}
-		return false;
+		if (!ItemUtil.compareItemStr(ie.getItem(), this.item)) return false;
+		return true;
 	}
 
 	public void save(ConfigurationSection cfg) {

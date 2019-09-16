@@ -23,8 +23,6 @@
 package me.fromgate.reactions.activators;
 
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.storages.VariableStorage;
 import me.fromgate.reactions.util.Util;
@@ -46,10 +44,7 @@ public class VariableActivator extends Activator {
 		VariableStorage ve = (VariableStorage) event;
 		if (!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
 		if (personal && ve.getPlayer() != null) return false;
-		Variables.setTempVar("var-id", ve.getVariableId());
-		Variables.setTempVar("var-old", ve.getOldValue());
-		Variables.setTempVar("var-new", ve.getNewValue());
-		return Actions.executeActivator(ve.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

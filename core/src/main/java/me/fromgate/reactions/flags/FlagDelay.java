@@ -24,6 +24,7 @@ package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
@@ -35,7 +36,8 @@ public class FlagDelay implements Flag {
 	}
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		String playerName = this.globalDelay ? "" : (player != null ? player.getName() : "");
 		long updateTime = 0;
 		String id = param;
@@ -47,7 +49,7 @@ public class FlagDelay implements Flag {
 			playerName = params.getParam("player", playerName);
 		}
 		boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);
-		Delayer.setTempPlaceholders(playerName, id);
+		Delayer.setTempPlaceholders(context, playerName, id);
 		return result;
 	}
 

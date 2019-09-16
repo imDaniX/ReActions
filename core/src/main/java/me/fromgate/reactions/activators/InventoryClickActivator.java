@@ -1,12 +1,9 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.InventoryClickStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -48,28 +45,8 @@ public class InventoryClickActivator extends Activator {
 		int key = pice.getNumberKey();
 		if (!checkItem(pice.getItem(), key, pice.getBottomInventory())) return false;
 		if (!checkNumberKey(key)) return false;
-		int slot = pice.getSlot();
-		if (!checkSlot(slot)) return false;
-		Variables.setTempVar("name", pice.getInventoryName());
-		Variables.setTempVar("click", pice.getClickType().toString());
-		Variables.setTempVar("action", pice.getAction().toString());
-		Variables.setTempVar("slotType", pice.getSlotType().toString());
-		Variables.setTempVar("inventory", pice.getInventoryType().toString());
-		Variables.setTempVar("item", ItemUtil.itemToString(pice.getItem()));
-		Variables.setTempVar("key", Integer.toString(key + 1));
-		Variables.setTempVar("itemkey", (key > -1) ? ItemUtil.itemToString(pice.getBottomInventory().getItem(key)) : "");
-		Variables.setTempVar("slot", Integer.toString(slot));
-		boolean result = Actions.executeActivator(pice.getPlayer(), getBase());
-		Param itemParam = new Param(Variables.getTempVar("item"));
-		if (!itemParam.isEmpty()) {
-			String itemType = itemParam.getParam("type", "0");
-			if (itemType.equalsIgnoreCase("AIR") || itemType.equalsIgnoreCase("null") || itemType.equalsIgnoreCase("0") || itemType.isEmpty()) {
-				pice.setItem(new ItemStack(Material.getMaterial("AIR"), 1));
-			} else {
-				pice.setItem(ItemUtil.parseItemStack(itemParam.getParam("param-line", "")));
-			}
-		}
-		return result;
+		if (!checkSlot(pice.getSlot())) return false;
+		return true;
 	}
 
 

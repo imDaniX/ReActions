@@ -1,7 +1,9 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.actions.Actions;
+import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.storages.Storage;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.configuration.ConfigurationSection;
 
 public abstract class Activator {
@@ -14,12 +16,11 @@ public abstract class Activator {
 	/**
 	 * Execution of activator
 	 * @param storage Storage with data for activator
-	 * @return Cancel original event or not
 	 */
-	public final boolean executeActivator(Storage storage) {
-		boolean result = activate(storage);
-		Variables.clearAllTempVar();
-		return result;
+	public final void executeActivator(Storage storage) {
+		if(!activate(storage)) return;
+		RaContext context = storage.generateContext();
+		Actions.executeActions(context, getBase(), Flags.checkFlags(context, getBase()));
 	}
 
 	/**
@@ -42,7 +43,7 @@ public abstract class Activator {
 	/**
 	 * Execution of activator
 	 * @param storage Storage with data for activator
-	 * @return Do we need to cancel original event (actually used just for action CANCEL_EVENT)
+	 * @return Is activation success
 	 */
 	public abstract boolean activate(Storage storage);
 

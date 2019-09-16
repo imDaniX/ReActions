@@ -24,17 +24,17 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.RaTowny;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class ActionTownSet extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
+	public boolean execute(RaContext context, Param params) {
 		if (!Externals.isTownyConnected()) return false;
 		String town = params.getParam("param-line", "");
 		if (town.isEmpty()) return false;
-		RaTowny.addToTown(p, town);
+		RaTowny.addToTown(context.getPlayer(), town);
 		return true;
 	}
 

@@ -23,12 +23,14 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.listeners.GodModeListener;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagState implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		Posture pt = Posture.getByName(param);
 		if (pt == null) return false;
 		switch (pt) {

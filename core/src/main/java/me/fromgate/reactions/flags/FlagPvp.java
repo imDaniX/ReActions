@@ -23,13 +23,15 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class FlagPvp implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!player.hasMetadata("reactions-pvp-time")) return false;
 		Param params = new Param(param, "time");
 		String timeStr = params.getParam("time");

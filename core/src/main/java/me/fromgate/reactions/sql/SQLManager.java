@@ -23,7 +23,6 @@
 package me.fromgate.reactions.sql;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
@@ -37,7 +36,8 @@ import java.util.Properties;
 
 public class SQLManager {
 	// TODO: Ability to create h2/sqlite databases through config file like databases.yml
-	// TODO: Optimize
+	// TODO: Make from scratch
+	// TODO: HikariCP?
 
 	private static boolean enabled = false;
 	private static String serverAddress;
@@ -78,20 +78,8 @@ public class SQLManager {
 		ReActions.getPlugin().saveConfig();
 	}
 
-
-	public static void setQueryToVar(String player, String var, String query, int column, Param params) {
-		if (!enabled) return;
-		String result = SQLManager.executeSelect(query, column, params);
-		Variables.setVar(player, var, result);
-	}
-
-
-	public static String executeSelect(String query, Param params) {
-		return executeSelect(query, -1, params);
-	}
-
-	public static boolean compareSelect(String value, String query, int column, Param params) {
-		String result = executeSelect(query, column, params);
+	public static boolean compareSelect(String value, String query, int column, Param params, String sqlset) {
+		String result = executeSelect(query, column, params, sqlset);
 		if (Util.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
 		return result.equalsIgnoreCase(value);
 	}
@@ -126,7 +114,7 @@ public class SQLManager {
 	}
 
 
-	public static String executeSelect(String query, int column, Param params) {
+	public static String executeSelect(String query, int column, Param params, String sqlset) {
 		if (!enabled) return "";
 
 		Statement selectStmt = null;
@@ -136,8 +124,7 @@ public class SQLManager {
 
 		try {
 			selectStmt = connection.createStatement();
-			String sqlset = Variables.getTempVar("SQL_SET");
-			if (!sqlset.isEmpty()) {
+			if (!Util.isStringEmpty(sqlset)) {
 				selectStmt.execute(sqlset);
 			}
 			result = selectStmt.executeQuery(query);

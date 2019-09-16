@@ -22,8 +22,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.BlockClickStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.enums.ClickType;
@@ -54,10 +52,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 		if (bce.getBlock() == null) return false;
 		if (!isActivatorBlock(bce.getBlock())) return false;
 		if (click.checkRight(bce.isLeftClick())) return false;
-		Variables.setTempVar("blocklocation", LocationUtil.locationToString(bce.getBlock().getLocation()));
-		Variables.setTempVar("blocktype", bce.getBlock().getType().name());
-		Variables.setTempVar("click", bce.isLeftClick() ? "left" : "right");
-		return Actions.executeActivator(bce.getPlayer(), getBase());
+		return true;
 	}
 
 	private boolean checkLocations(Block block) {

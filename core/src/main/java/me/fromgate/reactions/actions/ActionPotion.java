@@ -24,6 +24,7 @@ package me.fromgate.reactions.actions;
 
 import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -32,8 +33,8 @@ import org.bukkit.potion.PotionEffectType;
 public class ActionPotion extends Action {
 
 	@Override
-	public boolean execute(Player p, Param params) {
-		String str = potionEffect(p, params);
+	public boolean execute(RaContext context, Param params) {
+		String str = potionEffect(context.getPlayer(), params);
 		if (str.isEmpty()) return false;
 		this.setMessageParam(str);
 		return true;

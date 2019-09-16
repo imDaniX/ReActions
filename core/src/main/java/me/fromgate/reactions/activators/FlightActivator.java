@@ -1,7 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.FlightStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
@@ -22,8 +20,7 @@ public class FlightActivator extends Activator {
 	public boolean activate(Storage event) {
 		FlightStorage fe = (FlightStorage) event;
 		if (!checkFlight(fe.isFlying())) return false;
-		Variables.setTempVar("flight", fe.isFlying() ? "TRUE" : "FALSE");
-		return Actions.executeActivator(fe.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

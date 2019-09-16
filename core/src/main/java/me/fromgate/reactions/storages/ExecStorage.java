@@ -30,22 +30,26 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class ExecStorage extends Storage {
-	@Getter private final String activatorId;
 	@Getter private Map<String, String> tempVars;
 
-	public ExecStorage(Player player, String activatorId) {
+	public ExecStorage(Player player) {
 		super(player, ActivatorType.EXEC);
-		this.activatorId = activatorId;
 		this.tempVars = null;
 	}
 
-	public ExecStorage(Player p, String activatorId, Param tempVars) {
-		this(p, activatorId);
+	public ExecStorage(Player player, Param tempVars) {
+		super(player, ActivatorType.EXEC);
 		this.tempVars = tempVars.getMap();
 	}
 
-	public ExecStorage(Player p, String activatorId, Map<String, String> tempVars) {
-		this(p, activatorId);
+	public ExecStorage(Player player, Map<String, String> tempVars) {
+		super(player, ActivatorType.EXEC);
 		this.tempVars = tempVars;
+	}
+
+	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		if(this.tempVars != null && !this.tempVars.isEmpty())
+			tempVars.putAll(this.tempVars);
 	}
 }

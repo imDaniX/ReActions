@@ -24,13 +24,13 @@
 package me.fromgate.reactions.flags;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Param;
-import org.bukkit.entity.Player;
 
 public class FlagCompare implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
 		Param params = new Param(param, "unknown");
 		String paramValue = params.getParam("param", "");
 		if (paramValue.isEmpty()) return false;

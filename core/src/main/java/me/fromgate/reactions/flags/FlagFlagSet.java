@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags;
 
-import org.bukkit.entity.Player;
+import me.fromgate.reactions.util.data.RaContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class FlagFlagSet implements Flag {
 	private final static Pattern BRACES_GROUP = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
 		List<String> flagList = parseParamsList(param);
 		if (flagList.isEmpty()) return false;
 		for (String flagStr : flagList) {
@@ -43,7 +43,7 @@ public class FlagFlagSet implements Flag {
 			if (negative) flagStr = flagStr.replaceFirst("!", "");
 			String[] fnv = flagStr.split(":", 2);
 			if (fnv.length != 2) continue;
-			if (Flags.checkFlag(player, fnv[0], BRACES.matcher(fnv[1]).replaceAll(""), negative)) {
+			if (Flags.checkFlag(context, fnv[0], BRACES.matcher(fnv[1]).replaceAll(""), negative)) {
 				return true;
 			}
 		}

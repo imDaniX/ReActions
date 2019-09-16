@@ -1,8 +1,5 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.storages.ExecStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
@@ -14,12 +11,7 @@ public class ExecActivator extends Activator {
 
 	@Override
 	public boolean activate(Storage storage) {
-		ExecStorage ce = (ExecStorage) storage;
-		if (ce.getActivatorId().equalsIgnoreCase(getBase().getName())) {
-			Variables.setTempVars(ce.getTempVars());
-			return Actions.executeActivator(ce.getPlayer(), getBase());
-		}
-		return false;
+		return true;
 	}
 
 	@Override

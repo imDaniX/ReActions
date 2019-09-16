@@ -1,17 +1,12 @@
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.DamageByMobStorage;
 import me.fromgate.reactions.storages.Storage;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 /**
@@ -40,18 +35,7 @@ public class DamageByMobActivator extends Activator {
 		Entity damager = pde.getDamager();
 		if (damager != null && !isActivatorDamager(damager)) return false;
 		if (!damageCauseCheck(pde.getCause())) return false;
-		Variables.setTempVar("damagerlocation", (damager != null) ? LocationUtil.locationToString(damager.getLocation()) : "");
-		Variables.setTempVar("damagertype", (damager != null) ? damager.getType().name() : "");
-		Variables.setTempVar("entitytype", damager.getType().name());
-		Player player = damager instanceof Player ? (Player) damager : null;
-		String damagerName = (player == null) ? ((damager != null) ? damager.getCustomName() : "") : player.getName();
-		Variables.setTempVar("damagername", damagerName != null && !damagerName.isEmpty() ? damagerName : ((damager != null) ? damager.getType().name() : ""));
-		Variables.setTempVar("damage", Double.toString(pde.getDamage()));
-		Variables.setTempVar("cause", pde.getCause().name());
-		boolean result = Actions.executeActivator(pde.getPlayer(), getBase());
-		String dmgStr = Variables.getTempVar("damage");
-		if (Util.FLOAT_POSITIVE.matcher(dmgStr).matches()) pde.setDamage(Double.parseDouble(dmgStr));
-		return result;
+		return true;
 	}
 
 	private boolean isActivatorDamager(Entity damager) {
@@ -64,7 +48,6 @@ public class DamageByMobActivator extends Activator {
 		if (entityType.equalsIgnoreCase("ANY")) return true;
 		return entity.getType().name().equalsIgnoreCase(this.entityType);
 	}
-
 
 	private String getMobName(Entity mob) {
 		return mob.getCustomName() == null ? "" : mob.getCustomName();

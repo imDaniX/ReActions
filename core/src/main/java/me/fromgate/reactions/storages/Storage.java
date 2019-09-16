@@ -23,7 +23,6 @@
 package me.fromgate.reactions.storages;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.RaContext;
@@ -37,16 +36,15 @@ import java.util.Map;
  * Storages are used to transfer some data to activators
  */
 public abstract class Storage {
+	public static final String CANCEL_EVENT = "cancel_event";
 
 	// Default temporary placeholders
-	private Map<String, String> tempVars;
-	private Map<String, DataValue> changeables;
+	@Getter private Map<String, String> tempVars;
+	@Getter private Map<String, DataValue> changeables;
 
 	@Getter final Player player;
 	@Getter private final ActivatorType type;
 	private final boolean async;
-	// TODO: Move to changeables
-	@Getter @Setter private boolean cancelled = false;
 
 	public Storage(Player player, ActivatorType type) {
 		this.player = player;
@@ -54,37 +52,39 @@ public abstract class Storage {
 		this.async = false;
 	}
 
+	@SuppressWarnings("unused")
 	public Storage(Player player, ActivatorType type, boolean async) {
 		this.player = player;
 		this.type = type;
 		this.async = async;
 	}
 
-	final void setDefaults() {
-		setDefaultTempVariables(getTempVariables());
-		setDefaultChangeables(getChangeables());
+	public final void init() {
+		Map<String, String> tempVars = new HashMap<>();
+		defaultVariables(tempVars);
+		Map<String, DataValue> changeables = new HashMap<>();
+		defaultChangeables(changeables);
+
+		setDefaultVariables(tempVars.isEmpty() ? Collections.emptyMap() : tempVars);
+		setDefaultChangeables(changeables.isEmpty() ? Collections.emptyMap() : changeables);
 	}
 
-	Map<String, String> getTempVariables() {
-		return Collections.emptyMap();
-	}
+	void defaultVariables(Map<String, String> tempVars) {}
 
-	Map<String, DataValue> getChangeables() {
-		return Collections.emptyMap();
-	}
+	void defaultChangeables(Map<String, DataValue> changeables) {}
 
-	private void setDefaultTempVariables(Map<String, String> tempVars) {
+	private void setDefaultVariables(Map<String, String> tempVars) {
 		if(this.tempVars != null) return;
 		this.tempVars = Collections.unmodifiableMap(tempVars);
 	}
 
 	private void setDefaultChangeables(Map<String, DataValue> changeables) {
 		if(this.changeables != null) return;
-		this.changeables = new HashMap<>(changeables);
+		this.changeables = changeables;
 	}
 
 	public final RaContext generateContext() {
-		return new RaContext(tempVars, changeables, player, async);
+		return new RaContext(tempVars, changeables, player);
 	}
 
 }

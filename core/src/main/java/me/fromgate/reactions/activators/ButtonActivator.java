@@ -23,7 +23,6 @@
 
 package me.fromgate.reactions.activators;
 
-import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.storages.ButtonStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
@@ -52,7 +51,7 @@ public class ButtonActivator extends Activator implements Locatable {
 	public boolean activate(Storage event) {
 		ButtonStorage be = (ButtonStorage) event;
 		if (!isLocatedAt(be.getButtonLocation())) return false;
-		return Actions.executeActivator(be.getPlayer(), getBase());
+		return true;
 	}
 
 	@Override

@@ -24,12 +24,13 @@ package me.fromgate.reactions.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class BlockClickStorage extends Storage {
@@ -40,20 +41,16 @@ public class BlockClickStorage extends Storage {
 		super(p, ActivatorType.BLOCK_CLICK);
 		this.block = block;
 		this.leftClick = leftClick;
-
-		setDefaults();
-		/*
-		setTempVariable("blocklocation", Locator.locationToString(block.getLocation()));
-		setTempVariable("blocktype", block.getType());
-		setTempVariable("click", leftClick ? "left" : "right");
-		 */
 	}
 	@Override
-	Map<String, String> getTempVariables() {
-		Map<String, String> tempVars = new HashMap<>();
+	void defaultVariables(Map<String, String> tempVars) {
 		tempVars.put("blocklocation", LocationUtil.locationToString(block.getLocation()));
 		tempVars.put("blocktype", block.getType().name());
 		tempVars.put("block", ItemUtil.itemFromBlock(block).toString());
-		return tempVars;
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
 	}
 }

@@ -1,5 +1,6 @@
 package me.fromgate.reactions.flags;
 
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Location;
@@ -9,7 +10,8 @@ import org.bukkit.entity.Player;
 public class FlagBlock implements Flag {
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		Param params = new Param(param, "loc");
 		Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), player.getLocation());
 		if (loc == null) return false;

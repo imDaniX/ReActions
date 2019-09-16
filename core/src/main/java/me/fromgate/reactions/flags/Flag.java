@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.flags;
 
-import org.bukkit.entity.Player;
+import me.fromgate.reactions.util.data.RaContext;
 
 public interface Flag {
-	boolean checkFlag(Player player, String param);
+	boolean checkFlag(RaContext context, String param);
 }

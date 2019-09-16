@@ -222,7 +222,6 @@ public class TimersManager {
 		timers.clear();
 		YamlConfiguration cfg = new YamlConfiguration();
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "timers.yml");
-		FileUtil.recreateFile(f, null);
 		if(FileUtil.loadCfg(cfg, f, "Failed to load timers.yml file"))
 			for (String timerType : cfg.getKeys(false)) {
 				if (!(timerType.equalsIgnoreCase("INGAME") || timerType.equalsIgnoreCase("SERVER"))) continue;

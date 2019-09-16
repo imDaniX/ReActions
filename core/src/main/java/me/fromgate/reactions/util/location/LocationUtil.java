@@ -37,7 +37,9 @@ import org.bukkit.util.Vector;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class LocationUtil {
 
@@ -186,17 +188,15 @@ public class LocationUtil {
 		return new Vector(Double.parseDouble(ln[0]), Double.parseDouble(ln[1]), Double.parseDouble(ln[2]));
 	}
 
-	private static boolean isEmptyLocation(Location loc) {
+	private static boolean isLocationEmpty(Location loc) {
 		Block block = loc.getBlock();
-		if (!block.isEmpty()) return false;
-		return block.getRelative(BlockFace.UP).isEmpty();
+		return block.isPassable() && block.getRelative(BlockFace.UP).isPassable();
 	}
 
-	private static boolean isLandableLocation(Location loc) {
+	private static boolean isLocationLandable(Location loc) {
 		Block block = loc.getBlock();
-		if (!block.isEmpty()) return false;
-		if (block.getRelative(BlockFace.DOWN).isEmpty()) return false;
-		return block.getRelative(BlockFace.UP).isEmpty();
+		if (block.getRelative(BlockFace.DOWN).isPassable()) return false;
+		return isLocationEmpty(loc);
 	}
 
 	private static Location getRandomLocation(List<Location> locs) {
@@ -208,9 +208,9 @@ public class LocationUtil {
 		List<Location> landLocs = new ArrayList<>();
 		for (Location loc : locs) {
 			if (land) {
-				if (isLandableLocation(loc)) landLocs.add(loc);
+				if (isLocationLandable(loc)) landLocs.add(loc);
 			} else {
-				if (isEmptyLocation(loc)) landLocs.add(loc);
+				if (isLocationEmpty(loc)) landLocs.add(loc);
 			}
 		}
 		return landLocs.isEmpty() ? getRandomLocation(locs) : getRandomLocation(landLocs);
@@ -267,5 +267,29 @@ public class LocationUtil {
 
 	public static boolean isSameLocation(Location loc1, Location loc2) {
 		return loc1.getWorld().equals(loc2.getWorld()) && !(loc1.getBlockX() != loc2.getX()) && !(loc1.getBlockZ() != loc2.getZ()) && !(loc1.getBlockY() != loc2.getY());
+	}
+
+	public static String replaceStandardLocations(Player p, String param) {
+		if (p == null) return param;
+		Location targetBlock = null;
+		try {
+			targetBlock = p.getTargetBlock(null, 100).getLocation();
+		} catch (NullPointerException ignored) {}
+		Map<String, Location> locs = new HashMap<>();
+		locs.put("%here%", p.getLocation());
+		locs.put("%eye%", p.getEyeLocation());
+		locs.put("%head%", p.getEyeLocation());
+		locs.put("%viewpoint%", targetBlock);
+		locs.put("%view%", targetBlock);
+		locs.put("%selection%", LocationHolder.getHeld(p));
+		locs.put("%select%", LocationHolder.getHeld(p));
+		locs.put("%sel%", LocationHolder.getHeld(p));
+		String newparam = param;
+		for (String key : locs.keySet()) {
+			Location l = locs.get(key);
+			if (l == null) continue;
+			newparam = newparam.replace(key, locationToString(l));
+		}
+		return newparam;
 	}
 }

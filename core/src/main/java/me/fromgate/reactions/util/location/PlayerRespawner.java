@@ -49,24 +49,21 @@ public class PlayerRespawner {
 	}
 
 	public static Location getLastDeathPoint(Player player) {
-		if (deathPoints.containsKey(player.getUniqueId())) return deathPoints.get(player.getUniqueId());
-		return player.getLocation();
+		return deathPoints.getOrDefault(player.getUniqueId(), player.getLocation());
 	}
 
 	private static LivingEntity getLastKiller(Player player) {
-		if (players.containsKey(player.getUniqueId()))
-			return players.get(player.getUniqueId());
-		return null;
+		return players.get(player.getUniqueId());
 	}
 
-	public static void raisePlayerRespawnActivator(Player player) {
+	public static void raisePlayerRespawnActivator(Player player, Location respawnLoc) {
 		if (!players.containsKey(player.getUniqueId())) return;
 		LivingEntity killer = getLastKiller(player);
 		players.remove(player.getUniqueId());
 		DeathCause d = DeathCause.OTHER;
 		if (killer != null && killer.getType() == EntityType.PLAYER) d = DeathCause.PVP;
 		else if (killer instanceof LivingEntity) d = DeathCause.PVE;
-		ActivatorsManager.activate(new RespawnStorage(player, killer, d));
+		ActivatorsManager.activate(new RespawnStorage(player, killer, d, respawnLoc));
 	}
 
 }

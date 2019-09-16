@@ -25,13 +25,15 @@ package me.fromgate.reactions.flags.factions;
 import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.factions.RaFactions;
 import me.fromgate.reactions.flags.Flag;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagFaction implements Flag {
 
 
 	@Override
-	public boolean checkFlag(Player player, String param) {
+	public boolean checkFlag(RaContext context, String param) {
+		Player player = context.getPlayer();
 		if (!Externals.isConnectedFactions()) return false;
 		return RaFactions.isPlayerInFaction(player, param);
 	}
