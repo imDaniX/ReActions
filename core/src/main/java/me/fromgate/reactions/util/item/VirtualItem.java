@@ -651,7 +651,7 @@ public class VirtualItem extends ItemStack {
 	public boolean compare(ItemStack item, int amount) {
 		int amountToRemove = amount > 0 ? amount : item.getAmount();
 		if (this.getAmount() < amountToRemove)
-			return false; // Сравниваем ТЕКУЩИЙ предмет с целевым. Т.е. текущего должно быть столько же (или больше чем) того с которым сравниваем.
+			return false; // Сравниваем ТЕКУЩИЙ предмет с целевым. Т.е. текущего должно быть столько же или больше
 		if (this.getType() != item.getType()) return false;
 		if (this.getDamage() != ItemUtil.getDurability(item)) return false;
 		return Bukkit.getItemFactory().equals(this.getItemMeta(), item.getItemMeta());

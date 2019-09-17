@@ -31,6 +31,7 @@ public class ItemUtil {
 	private final static Pattern SET_D = Pattern.compile("set\\d+|SET\\d+");
 
 	public static void removeItemAmount(ItemStack item, int amount) {
+		if(!isExist(item)) return;
 		int itemAmount = item.getAmount();
 		if(amount >= itemAmount)
 			item.setType(Material.AIR);
@@ -74,27 +75,6 @@ public class ItemUtil {
 		if (vi == null) return;
 		giveItemOrDrop(player, vi);
 	}
-
-	public static boolean removeItemInHand(Player player, String itemStr) {
-		ItemStack inHand = player.getInventory().getItemInMainHand();
-		if (!isExist(inHand)) return false;
-		VirtualItem hand = VirtualItem.fromItemStack(inHand);
-		VirtualItem vi = removeItemFromStack(hand, itemStr);
-		if (vi == null) return false;
-		player.getInventory().setItemInMainHand(vi.getType() == Material.AIR ? null : vi);
-		return true;
-	}
-
-	public static boolean removeItemInOffHand(Player player, String itemStr) {
-		ItemStack inHand = player.getInventory().getItemInOffHand();
-		if (!isExist(inHand)) return false;
-		VirtualItem hand = VirtualItem.fromItemStack(inHand);
-		VirtualItem vi = removeItemFromStack(hand, itemStr);
-		if (vi == null) return false;
-		player.getInventory().setItemInOffHand(vi.getType() == Material.AIR ? null : vi);
-		return true;
-	}
-
 
 	public static boolean removeItemInInventory(Inventory inventory, String itemStr) {
 		Map<String, String> itemParams = Param.parseParams(itemStr, "");
@@ -345,6 +325,15 @@ public class ItemUtil {
 		StringBuilder sb = new StringBuilder(name);
 		if (!itemMap.containsKey("name") && !data.equals("0")) sb.append(":").append(data);
 		if (amount > 1) sb.append("*").append(amount);
+		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
+	}
+
+	public static String toDisplayString(ItemStack item) {
+		ItemMeta meta = item.getItemMeta();
+		StringBuilder sb = new StringBuilder(meta.hasDisplayName() ? meta.getDisplayName() : item.getType().name());
+		int data = getDurability(item);
+		if (data != 0) sb.append(":").append(data);
+		if (item.getAmount() > 1) sb.append("*").append(item.getAmount());
 		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
 	}
 

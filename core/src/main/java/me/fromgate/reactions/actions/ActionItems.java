@@ -56,7 +56,7 @@ public class ActionItems extends Action {
 			case REMOVE_ITEM_HAND:
 				return removeItemInHand(context, params);
 			case REMOVE_ITEM_OFFHAND:
-				return removeItemInOffand(context, params);
+				return removeItemInOffHand(context, params);
 			case REMOVE_ITEM_INVENTORY:
 				return removeItemInInventory(context, params);
 			case DROP_ITEM:
@@ -226,75 +226,40 @@ public class ActionItems extends Action {
 		return true;
 	}
 
-
-	private int getSlotByItem(ItemStack item) {
-		switch (item.getType()) {
-			case LEATHER_BOOTS:
-			case CHAINMAIL_BOOTS:
-			case IRON_BOOTS:
-			case GOLDEN_BOOTS:
-			case DIAMOND_BOOTS:
-				return 0;
-			case LEATHER_LEGGINGS:
-			case CHAINMAIL_LEGGINGS:
-			case IRON_LEGGINGS:
-			case GOLDEN_LEGGINGS:
-			case DIAMOND_LEGGINGS:
-				return 1;
-			case LEATHER_CHESTPLATE:
-			case CHAINMAIL_CHESTPLATE:
-			case IRON_CHESTPLATE:
-			case GOLDEN_CHESTPLATE:
-			case DIAMOND_CHESTPLATE:
-				return 2;
-			/*
-			case LEATHER_HELMET:
-			case CHAINMAIL_HELMET:
-			case IRON_HELMET:
-			case GOLDEN_HELMET:
-			case DIAMOND_HELMET:
-			case PUMPKIN:
-			*/
-			default:
-				return 3;
+	private boolean removeItem(RaContext context, VirtualItem search, ItemStack item, boolean all) {
+		if(!ItemUtil.isExist(search)) return false;
+		if(search.isSimilar(item)) {
+			context.setTempVariable("item", ItemUtil.itemToString(item));
+			String display = ItemUtil.toDisplayString(item);
+			context.setTempVariable("item_str", display);
+			ItemUtil.removeItemAmount(item, all ? item.getAmount() : search.getAmount());
+			setMessageParam(display);
+			return true;
 		}
+		return false;
 	}
-
 
 	private boolean removeItemInHand(RaContext context, Param params) {
-		Player player = context.getPlayer();
-		String itemStr = params.getParam("param-line", "");
-		if (itemStr.isEmpty()) return false;
-		context.setTempVariable("item", ItemUtil.itemToString(player.getInventory().getItemInMainHand()));
-		if (!ItemUtil.removeItemInHand(player, itemStr)) return false;
-		String actionItems = ItemUtil.toDisplayString(itemStr);
-		setMessageParam(actionItems);
-		context.setTempVariable("item_str", actionItems);
-
-		return true;
+		VirtualItem search = VirtualItem.fromMap(params.getMap());
+		return removeItem(context, search, context.getPlayer().getInventory().getItemInMainHand(), !params.hasAnyParam("amount"));
 	}
 
-	private boolean removeItemInOffand(RaContext context, Param params) {
-		Player player = context.getPlayer();
-		String itemStr = params.getParam("param-line", "");
-		if (itemStr.isEmpty()) return false;
-		context.setTempVariable("item", ItemUtil.itemToString(player.getInventory().getItemInOffHand()));
-		if (!ItemUtil.removeItemInOffHand(player, itemStr)) return false;
-		String actionItems = ItemUtil.toDisplayString(itemStr);
-		setMessageParam(actionItems);
-		context.setTempVariable("item_str", actionItems);
-		return true;
+	private boolean removeItemInOffHand(RaContext context, Param params) {
+		VirtualItem search = VirtualItem.fromMap(params.getMap());
+		return removeItem(context, search, context.getPlayer().getInventory().getItemInOffHand(), !params.hasAnyParam("amount"));
 	}
 
 	private boolean removeItemInInventory(RaContext context, Param params) {
-		String itemStr = params.getParam("param-line", "");
-		if (itemStr.isEmpty()) return false;
-		ItemUtil.removeItemInInventory(context.getPlayer(), itemStr);
-		String actionItems = ItemUtil.toDisplayString(itemStr);
-		setMessageParam(actionItems);
-		context.setTempVariable("item_str", actionItems);
-		VirtualItem vi = VirtualItem.fromString(itemStr);
-		if (vi != null) context.setTempVariable("item", vi.toString());
+		VirtualItem search = VirtualItem.fromMap(params.getMap());
+		boolean all = !params.hasAnyParam("amount");
+		int remCount = search.getAmount();
+		for(ItemStack item : context.getPlayer().getInventory()) {
+			if(removeItem(context, search, item, all) && !all) {
+				remCount -= item.getAmount();
+				if(remCount <= 0) break;
+				search.setAmount(remCount);
+			}
+		}
 		return true;
 	}
 

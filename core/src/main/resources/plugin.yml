@@ -1,7 +1,7 @@
 name: ReActions
 api-version: 1.13
 main: me.fromgate.reactions.ReActions
-version: 0.12.29.3
+version: 0.12.29.4
 website: http://fromgate.me
 author: fromgate, fromgate@gmail.com
 softdepend: [Vault,Towny,WorldGuard,RacesAndClasses,PlayEffect,Factions,Craftconomy3,ProtocolLib,PlaceholderAPI]
