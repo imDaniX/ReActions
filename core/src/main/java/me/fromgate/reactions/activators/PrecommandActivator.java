@@ -95,6 +95,7 @@ public class PrecommandActivator extends Activator {
 	public void save(ConfigurationSection cfg) {
 		cfg.set("regex", useRegex);
 		cfg.set("command", command);
+		cfg.set("console_allowed", consoleAllowed);
 	}
 
 	@Override
