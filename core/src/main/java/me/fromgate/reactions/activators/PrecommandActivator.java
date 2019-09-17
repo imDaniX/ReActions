@@ -80,10 +80,13 @@ public class PrecommandActivator extends Activator {
 			} else
 				return command.equalsIgnoreCase(cs.getCommand());
 		} else {
+			if(args.size() != cs.getArgs().length + 1) return false;
 			if(!args.get(0).equalsIgnoreCase(cs.getLabel())) return false;
-			if(args.size() != cs.getArgs().length - 1) return false;
-			for(int i = 1; i <= cs.getArgs().length; i++)
-				if(args.get(i).equalsIgnoreCase(cs.getArgs()[i-1])) return false;
+			for(int i = 1; i <= cs.getArgs().length; i++) {
+				String arg = args.get(i);
+				if(arg.equals("*")) continue;
+				if(!arg.equalsIgnoreCase(cs.getArgs()[i-1])) return false;
+			}
 			return true;
 		}
 	}
