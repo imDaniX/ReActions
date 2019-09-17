@@ -15,17 +15,15 @@ public class CmdClear extends Cmd {
 		if (ActivatorsManager.contains(activatorId)) {
 			if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
 				ActivatorsManager.clearFlags(activatorId);
-				ActivatorsManager.saveActivators();
 				Msg.MSG_CLEARFLAG.print(sender, activatorId);
 			} else if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
 				ActivatorsManager.clearActions(activatorId);
 				Msg.MSG_CLEARACT.print(sender, activatorId);
-				ActivatorsManager.saveActivators();
 			} else if (arg2.equalsIgnoreCase("r") || arg2.equalsIgnoreCase("reaction")) {
 				ActivatorsManager.clearReactions(activatorId);
 				Msg.MSG_CLEARREACT.print(sender, activatorId);
-				ActivatorsManager.saveActivators();
 			}
+			// TODO: Save just one group
 			ActivatorsManager.saveActivators();
 		} else return Msg.CMD_UNKNOWNBUTTON.print(sender, activatorId);
 		return false;

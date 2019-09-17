@@ -5,7 +5,7 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
 @CmdDefine(command = "react", description = Msg.CMD_COPY, permission = "reactions.config",
-		subCommands = {"copy"}, allowConsole = true, shortDescription = "&3/react copy [flag|actions|reactions] <source> <destination>")
+		subCommands = {"copy"}, allowConsole = true, shortDescription = "&3/react copy [f|a|r] <source> <destination>")
 public class CmdCopy extends Cmd {
 	@Override
 	public boolean execute(CommandSender sender, String[] args) {
@@ -22,7 +22,7 @@ public class CmdCopy extends Cmd {
 		} else if (copyMode.equalsIgnoreCase("a") || copyMode.equalsIgnoreCase("actions")) {
 			if (ActivatorsManager.copyActions(id1, id2)) Msg.printMSG(sender, "msg_copyactions", id1, id2);
 			else Msg.printMSG(sender, "msg_copyactionsfailed", 'c', '4', id1, id2);
-		} else if (copyMode.equalsIgnoreCase("r") || copyMode.equalsIgnoreCase("me/fromgate/reactions")) {
+		} else if (copyMode.equalsIgnoreCase("r") || copyMode.equalsIgnoreCase("reactions")) {
 			if (ActivatorsManager.copyReactions(id1, id2)) Msg.printMSG(sender, "msg_copyreactions", id1, id2);
 			else Msg.printMSG(sender, "msg_copyreactionsfailed", 'c', '4', id1, id2);
 		}

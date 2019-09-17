@@ -7,7 +7,7 @@ public class ActionChange extends Action {
 	@Override
 	public boolean execute(RaContext context, Param params) {
 		// TODO: Error message
-		context.setChangeable(params.getParam("key").toLowerCase(), params.getParam("value", ""));
-		return true;
+		return context.setChangeable(params.getParam("key", params.getParam("id")).toLowerCase(),
+										params.getParam("value", ""));
 	}
 }

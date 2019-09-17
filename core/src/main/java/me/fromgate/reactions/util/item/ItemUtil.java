@@ -376,6 +376,7 @@ public class ItemUtil {
 	 * @return Material (may be legacy)
 	 */
 	public static Material getMaterial(String name) {
+		if(Util.isStringEmpty(name)) return null;
 		name = name.toUpperCase();
 		Material material = Material.getMaterial(name, false);
 		return material == null ? Material.getMaterial(name, true) : material;
