@@ -85,7 +85,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("block-type", this.blockType);
+		cfg.set("block-type", this.blockType.name());
 		cfg.set("click-type", click.name());
 		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
 	}
