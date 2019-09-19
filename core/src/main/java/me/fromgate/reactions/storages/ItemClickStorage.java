@@ -24,6 +24,8 @@ package me.fromgate.reactions.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.activators.ActivatorType;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -48,5 +50,10 @@ public class ItemClickStorage extends Storage {
 			tempVars.put("item-str", vItem.toDisplayString());
 		}
 		tempVars.put("hand", mainHand ? "MAIN" : "OFF");
+	}
+
+	@Override
+	void defaultChangeables(Map<String, DataValue> changeables) {
+		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
 	}
 }

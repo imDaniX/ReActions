@@ -338,7 +338,6 @@ public class ActivatorsManager {
 		YamlConfiguration cfg = new YamlConfiguration();
 		FileUtil.loadCfg(cfg, f, "Failed to load configuration from file " + f.getAbsolutePath());
 
-
 		if(clear)
 			clearGroup(group);
 
