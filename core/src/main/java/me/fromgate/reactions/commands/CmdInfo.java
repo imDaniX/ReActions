@@ -43,7 +43,7 @@ public class CmdInfo extends Cmd {
 		} else {
 			f = far.contains("f") || far.equalsIgnoreCase("flag") || far.equalsIgnoreCase("flags");
 			a = far.contains("a") || far.equalsIgnoreCase("action") || far.equalsIgnoreCase("actions");
-			r = far.contains("r") || far.equalsIgnoreCase("reaction") || far.equalsIgnoreCase("me/fromgate/reactions");
+			r = far.contains("r") || far.equalsIgnoreCase("reaction") || far.equalsIgnoreCase("reactions");
 		}
 
 		Msg.printMSG(sender, "&5☆ &d&l" + Msg.MSG_ACTINFOTITLE.getText("NOCOLOR") + " &r&5☆");

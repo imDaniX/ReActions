@@ -1,17 +1,17 @@
 name: ReActions
 api-version: 1.13
 main: me.fromgate.reactions.ReActions
-version: 0.12.29.4
+version: 0.12.30.0
 website: http://fromgate.me
 author: fromgate, fromgate@gmail.com
 softdepend: [Vault,Towny,WorldGuard,RacesAndClasses,PlayEffect,Factions,Craftconomy3,ProtocolLib,PlaceholderAPI]
 description: Simplest scripting engine for Bukkit
 commands:
-   react:
-      aliases: [ra,rea,reactions]
-      description: Main command of ReActions
-      usage: /react help
-   exec:
-      aliases: [run]
-      description: Execute EXEC-activator
-      usage: /exec <ActivatorId> [player:<PlayerSelector>] [delay:<Time>]
+  react:
+    aliases: [ra,rea,reactions]
+    description: Main command of ReActions
+    usage: /react help
+  exec:
+    aliases: [run]
+    description: Execute EXEC-activator
+    usage: /exec <ActivatorId> [player:<PlayerSelector>] [delay:<Time>]

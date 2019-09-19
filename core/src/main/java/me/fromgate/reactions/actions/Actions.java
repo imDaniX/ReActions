@@ -45,7 +45,8 @@ public enum Actions {
 	/*
 	 TODO: More actions
 	 ActionSetLevel, ActionModifyString, ActionKill, ActionString(change strings),
-	 ActionDynamic(for actions from placeholders), ActionCompassTarget
+	 ActionDynamic(for actions from placeholders), ActionCompassTarget,
+	 ActionReturn(stop execution of activator by some condition)
 	*/
 	TP("tp", true, new ActionTp()),
 	VELOCITY("velocity", true, new ActionVelocity()),
