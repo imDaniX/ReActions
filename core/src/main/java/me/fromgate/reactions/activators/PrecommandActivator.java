@@ -126,7 +126,7 @@ public class PrecommandActivator extends Activator {
 
 	public static PrecommandActivator create(ActivatorBase base, Param param) {
 		String command = param.getParam("command", param.toString());
-		boolean starts = param.getParam("starts", false);
+		boolean starts = param.getParam("starts", true);
 		boolean useRegex = param.getParam("regex", false);
 		boolean consoleAllowed = param.getParam("console", true);
 		return new PrecommandActivator(base, command, starts, useRegex, consoleAllowed);
@@ -134,7 +134,7 @@ public class PrecommandActivator extends Activator {
 
 	public static PrecommandActivator load(ActivatorBase base, ConfigurationSection cfg) {
 		String command = cfg.getString("command");
-		boolean starts = cfg.getBoolean("starts", false);
+		boolean starts = cfg.getBoolean("starts", true);
 		boolean useRegex = cfg.getBoolean("regex", false);
 		boolean consoleAllowed = cfg.getBoolean("console_allowed", true);
 		return new PrecommandActivator(base, command, starts, useRegex, consoleAllowed);
