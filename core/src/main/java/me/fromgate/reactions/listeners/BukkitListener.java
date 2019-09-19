@@ -144,7 +144,7 @@ public class BukkitListener implements Listener {
 
 	@EventHandler
 	public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-		if(StoragesManager.raisePrecommandActivator(null, event.getPlayer(), event.getMessage()))
+		if(StoragesManager.raisePrecommandActivator(null, event.getPlayer(), event.getMessage().substring(1)))
 			event.setCancelled(true);
 	}
 
