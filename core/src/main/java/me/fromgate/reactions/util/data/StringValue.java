@@ -2,7 +2,6 @@ package me.fromgate.reactions.util.data;
 
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,7 +29,7 @@ public class StringValue implements DataValue {
 
 	@Override
 	public Location asLocation() {
-		return LocationUtil.parseLocation(value, new Location(Bukkit.getWorlds().get(0), 0, 0, 0));
+		return LocationUtil.parseLocation(value, LocationUtil.ZERO_LOCATION);
 	}
 
 	@Override

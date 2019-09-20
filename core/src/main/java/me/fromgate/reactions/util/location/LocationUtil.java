@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 
 public class LocationUtil {
+	public final static Location ZERO_LOCATION = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
 
 	/**
 	 * Returns location defined by group of parameter:

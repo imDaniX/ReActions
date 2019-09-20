@@ -1,6 +1,6 @@
 package me.fromgate.reactions.util.data;
 
-import org.bukkit.Bukkit;
+import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -29,7 +29,7 @@ public class BooleanValue implements DataValue {
 
 	@Override
 	public Location asLocation() {
-		return new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+		return LocationUtil.ZERO_LOCATION;
 	}
 
 	@Override
