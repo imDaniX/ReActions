@@ -49,7 +49,8 @@ import java.util.Map;
 public enum Flags {
 	/*
 	 TODO: More flags
-	 FlagCuboid, FlagString(to check strings), FlagDynamic
+	 FlagCuboid, FlagString(for strings checking), FlagDynamic(for flags from placeholders)
+	 FlagStatistic(checking player's stats)
 	*/
 	GROUP("group", true, new FlagGroup()),
 	PERM("perm", true, new FlagPerm()),

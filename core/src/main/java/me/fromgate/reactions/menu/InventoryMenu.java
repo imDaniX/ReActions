@@ -4,6 +4,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.storages.StoragesManager;
 import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
@@ -63,7 +64,6 @@ public class InventoryMenu implements Listener {
 	public static void load() {
 		menu.clear();
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
-		if (!f.exists()) return;
 		YamlConfiguration cfg = new YamlConfiguration();
 		if(FileUtil.loadCfg(cfg, f, "Failed to load menu configuration file"))
 			for (String key : cfg.getKeys(false)) {
@@ -74,7 +74,6 @@ public class InventoryMenu implements Listener {
 
 	public static void save() {
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
-		if (f.exists()) f.delete();
 		YamlConfiguration cfg = new YamlConfiguration();
 		for (String key : menu.keySet()) {
 			getMenu(key).save(cfg, key);
@@ -151,7 +150,7 @@ public class InventoryMenu implements Listener {
 			for (int i = 1; i <= size; i++) {
 				String slotStr = "slot" + i;
 				if (!param.isParamsExists(slotStr)) continue;
-				ItemStack slotItem = ItemUtil.parseItemStack(param.getParam(slotStr, ""));
+				ItemStack slotItem = VirtualItem.fromString(param.getParam(slotStr));
 				if (slotItem == null) continue;
 				inv.setItem(i - 1, slotItem);
 			}
@@ -225,7 +224,7 @@ public class InventoryMenu implements Listener {
 
 	private static String itemToString(String itemStr) {
 		if (itemStr.isEmpty()) return "AIR";
-		ItemStack item = ItemUtil.parseItemStack(itemStr);
+		ItemStack item = VirtualItem.fromString(itemStr);
 		if (item == null || item.getType() == Material.AIR) return "AIR";
 		String returnStr = item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : "";
 		String itemTypeData = item.getType().name() + (ItemUtil.getDurability(item) == 0 ? "" : ":" + ItemUtil.getDurability(item)) + (item.getAmount() == 1 ? "" : "*" + item.getAmount());

@@ -27,6 +27,7 @@ import me.fromgate.reactions.storages.ItemHoldStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,7 +43,7 @@ public class ItemHoldActivator extends Activator {
 
 	@Override
 	public boolean activate(Storage event) {
-		if (itemStr.isEmpty() || (ItemUtil.parseItemStack(itemStr) == null)) {
+		if (itemStr.isEmpty() || (VirtualItem.fromString(itemStr) == null)) {
 			Msg.logOnce(getBase().getName() + "activatorholdempty", "Failed to parse itemStr of activator " + getBase().getName());
 			return false;
 		}

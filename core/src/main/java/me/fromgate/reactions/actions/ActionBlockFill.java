@@ -25,7 +25,7 @@ package me.fromgate.reactions.actions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
@@ -45,7 +45,7 @@ public class ActionBlockFill extends Action {
 		Param itemParam = new Param(params.getParam("block", "AIR"), "type");
 		ItemStack item = null;
 		if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
-			item = ItemUtil.itemFromMap(itemParam);
+			item = VirtualItem.fromMap(itemParam.getMap());
 			if ((item == null) || ((!item.getType().isBlock()))) {
 				Msg.logOnce("wrongblockfill" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
 				return false;

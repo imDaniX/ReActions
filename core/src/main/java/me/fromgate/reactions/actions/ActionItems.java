@@ -103,7 +103,7 @@ public class ActionItems extends Action {
 			if (vi == null) return false;
 			player.getInventory().setItem(slotNum, vi);
 		}
-		if (oldItem == null || oldItem.getType() == Material.AIR) return true;
+		if (ItemUtil.isExist(oldItem)) return true;
 		if (existStr.equalsIgnoreCase("drop")) player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
 		else if (existStr.equalsIgnoreCase("undress")) ItemUtil.giveItemOrDrop(player, oldItem);
 		else if (existStr.equalsIgnoreCase("keep")) player.getInventory().setItem(slotNum, oldItem);
@@ -189,7 +189,7 @@ public class ActionItems extends Action {
 			if (slot == -1) return setItemInOffhand(context, params, null);
 			//if (slot == -1) slot = 3;
 		} else {
-			item = ItemUtil.parseItemStack(itemStr);
+			item = VirtualItem.fromString(itemStr);
 			if (item == null) return false;
 			if (slot == -1) return setItemInOffhand(context, params, item);
 			// if (slot == -1) slot = getSlotByItem(item);
@@ -210,7 +210,7 @@ public class ActionItems extends Action {
 	private boolean setArmourItem(Player player, int slot, ItemStack item, int existDrop) {
 		ItemStack[] armour = player.getInventory().getArmorContents().clone();
 		ItemStack oldItem = armour[slot] == null ? null : armour[slot].clone();
-		if (oldItem != null && oldItem.getType() != Material.AIR && (existDrop == 3)) {
+		if (ItemUtil.isExist(oldItem) && (existDrop == 3)) {
 			return false; // сохраняем и уходим
 		}
 		armour[slot] = item;

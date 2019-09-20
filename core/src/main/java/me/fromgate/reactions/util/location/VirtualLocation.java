@@ -2,9 +2,11 @@ package me.fromgate.reactions.util.location;
 
 import lombok.Getter;
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Objects;
 
@@ -47,6 +49,22 @@ public class VirtualLocation {
 				this.z = Double.valueOf(locSplit[3]).intValue();
 			else this.z = null;
 		}
+		this.hash = calcHash();
+	}
+
+	public VirtualLocation(ConfigurationSection cfg) {
+		this.world = cfg.getString("world");
+		this.x = cfg.contains("x") ? cfg.getInt("x") : null;
+		this.y = cfg.contains("y") ? cfg.getInt("y") : null;
+		this.z = cfg.contains("z") ? cfg.getInt("z") : null;
+		this.hash = calcHash();
+	}
+
+	public VirtualLocation(Param params) {
+		this.world = params.getParam("world", null);
+		this.x = params.hasAnyParam("x") ? params.getParam("x", 0) : null;
+		this.y = params.hasAnyParam("y") ? params.getParam("y", 0) : null;
+		this.z = params.hasAnyParam("z") ? params.getParam("z", 0) : null;
 		this.hash = calcHash();
 	}
 

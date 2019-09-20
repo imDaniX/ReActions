@@ -147,10 +147,6 @@ public class ItemUtil {
 		return VirtualItem.fromItemStack(new ItemStack(block.getType(), 1));
 	}
 
-	public static ItemStack parseItemStack(String string) {
-		return VirtualItem.fromString(string);
-	}
-
 	public static boolean compareItemStr(Block block, String itemStr) {
 		if (block == null || block.getType() == Material.AIR) return false;
 		ItemStack item = new ItemStack(block.getType(), 1);
@@ -158,12 +154,12 @@ public class ItemUtil {
 	}
 
 	public static boolean compareItemStr(ItemStack item, String itemStr) {
-		if (item == null || item.getType() == Material.AIR) return false;
+		if (!isExist(item)) return false;
 		return VirtualItem.fromItemStack(item).compare(itemStr);
 	}
 
 	public static boolean compareItemStr(ItemStack item, String itemStr, boolean allowHand) {
-		if (item != null && item.getType() != Material.AIR) return compareItemStr(item, itemStr);
+		if (isExist(item)) return compareItemStr(item, itemStr);
 		if (!allowHand) return false;
 		return (itemStr.equalsIgnoreCase("HAND") || itemStr.equalsIgnoreCase("AIR"));
 	}
@@ -177,7 +173,7 @@ public class ItemUtil {
 		String[] ln = str.split(",");
 		if (ln.length == 0) return new ItemStack(Material.AIR);
 
-		ItemStack item = ItemUtil.parseItemStack(ln[Util.getRandomInt(ln.length)]);
+		ItemStack item = VirtualItem.fromString(ln[Util.getRandomInt(ln.length)]);
 
 		if (item == null) return new ItemStack(Material.AIR);
 		item.setAmount(1);
@@ -231,7 +227,7 @@ public class ItemUtil {
 			}
 		}
 		if (items.isEmpty()) {
-			VirtualItem item = itemFromMap(params);
+			VirtualItem item = VirtualItem.fromMap(params.getMap());
 			if (item != null) items.add(item);
 		}
 		return items;
@@ -352,7 +348,7 @@ public class ItemUtil {
 	}
 
 	public static boolean compareItemIdDataStr(Material type, int durability, String itemStr) {
-		ItemStack item = parseItemStack(itemStr);
+		ItemStack item = VirtualItem.fromString(itemStr);
 		if (item == null) return false;
 		if (item.getType() != type) return false;
 		if (durability < 0) return true;
