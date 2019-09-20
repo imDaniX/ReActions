@@ -31,7 +31,7 @@ public class VirtualLocation {
 	}
 
 	public VirtualLocation(String loc) {
-		if(!Util.isStringEmpty(loc)) {
+		if(Util.isStringEmpty(loc)) {
 			this.world = null;
 			this.x = null;
 			this.y = null;
@@ -112,7 +112,7 @@ public class VirtualLocation {
 				z == null ? 0 : z);
 	}
 
-	public boolean compare(Location loc) {
+	public boolean isSimilar(Location loc) {
 		if(x != null && x != loc.getBlockX()) return false;
 		if(y != null && y != loc.getBlockY()) return false;
 		if(z != null && z != loc.getBlockZ()) return false;
@@ -120,7 +120,7 @@ public class VirtualLocation {
 		return true;
 	}
 
-	public boolean compare(World world, int x, int y, int z) {
+	public boolean isSimilar(World world, int x, int y, int z) {
 		if(this.x != null && this.x != x) return false;
 		if(this.y != null && this.y != y) return false;
 		if(this.z != null && this.z != z) return false;
@@ -142,20 +142,13 @@ public class VirtualLocation {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null) return false;
+		if(obj == null || obj.hashCode() != this.hashCode()) return false;
 		if(obj instanceof VirtualLocation) {
 			VirtualLocation loc = (VirtualLocation) obj;
 			return Objects.equals(loc.x, this.x) &&
 					Objects.equals(loc.y, this.y) &&
 					Objects.equals(loc.z, this.z) &&
 					Objects.equals(loc.world, this.world);
-		}
-		if(obj instanceof Location) {
-			Location loc = (Location) obj;
-			return Objects.equals(loc.getBlockX(), this.x) &&
-					Objects.equals(loc.getBlockY(), this.y) &&
-					Objects.equals(loc.getBlockZ(), this.z) &&
-					Objects.equals(loc.getWorld().getName(), this.world);
 		}
 		return false;
 	}

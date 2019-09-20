@@ -52,72 +52,79 @@ public enum Flags {
 	 FlagCuboid, FlagString(for strings checking), FlagDynamic(for flags from placeholders)
 	 FlagStatistic(checking player's stats)
 	*/
-	GROUP("group", true, new FlagGroup()),
-	PERM("perm", true, new FlagPerm()),
-	TIME("time", false, new FlagTime()),
-	ITEM("item", true, new FlagItem((byte) 0)),
-	ITEM_INVENTORY("invitem", true, new FlagItem((byte) 1)),
-	ITEM_WEAR("invwear", true, new FlagItem((byte) 2)),
-	ITEM_OFFHAND("itemoffhand", true, new FlagItem((byte) 3)),
-	BLOCK("blockcheck", false, new FlagBlock()),
-	TOWN("town", true, new FlagTown()),
-	MONEY("money", false, new FlagMoney()),
-	CHANCE("chance", false, new FlagChance()),
-	PVP("pvp", true, new FlagPvp()),
-	ONLINE("online", false, new FlagOnline()),
-	DELAY("delay", false, new FlagDelay(true)),
-	DELAY_PLAYER("pdelay", true, new FlagDelay(false)),
-	STATE("pose", true, new FlagState()),
-	REGION("region", true, new FlagRegion(FlagRegion.REGION)),
-	REGION_PLAYERS("rgplayer", false, new FlagRegion(FlagRegion.REGION_PLAYERS)),
-	REGION_MEMBER("rgmember", false, new FlagRegion(FlagRegion.REGION_MEMBER)),
-	REGION_OWNER("rgowner", false, new FlagRegion(FlagRegion.REGION_OWNER)),
-	REGION_STATE("rgstate", false, new FlagRegion(FlagRegion.REGION_STATE)),
-	GAMEMODE("gamemode", true, new FlagGamemode()),
-	FOODLEVEL("food", true, new FlagFoodLevel()),
-	XP("xp", true, new FlagXP()),
-	LEVEL("level", true, new FlagLevel()),
-	HEALTH("hp", true, new FlagHealth()),
-	POWER("powered", false, new FlagPowered()),
-	WORLD("world", true, new FlagWorld()),
-	BIOME("biome", true, new FlagBiome()),
-	LIGHT_LEVEL("light", true, new FlagLightLevel()),
-	WALK_BLOCK("walk", true, new FlagWalkBlock()),
-	DIRECTION("dir", true, new FlagDirection()),
-	FLAG_SET("flagset", false, new FlagFlagSet()),
-	EXECUTE_STOP("stopped", false, new FlagExecStop()),
-	VAR_EXIST("varexist", false, new FlagVar((byte) 0, false)),
-	VAR_PLAYER_EXIST("varpexist", true, new FlagVar((byte) 0, true)),
-	VAR_COMPARE("varcmp", false, new FlagVar((byte) 1, false)),
-	VAR_PLAYER_COMPARE("varpcmp", true, new FlagVar((byte) 1, true)),
-	VAR_GREATER("vargrt", false, new FlagVar((byte) 2, false)),
-	VAR_PLAYER_GREATER("varpgrt", true, new FlagVar((byte) 2, true)),
-	VAR_LOWER("varlwr", false, new FlagVar((byte) 3, false)),
-	VAR_PLAYER_LOWER("varplwr", true, new FlagVar((byte) 3, true)),
-	VAR_MATCH("varmatch", false, new FlagVar((byte) 4, false)),
-	VAR_PLAYER_MATCH("varpmatch", true, new FlagVar((byte) 4, true)),
-	COMPARE("cmp", false, new FlagCompare()),
-	RNC_RACE("rncrace", true, new FlagRacesAndClasses(true)),
-	RNC_CLASS("rncclass", true, new FlagRacesAndClasses(false)),
-	WEATHER("weather", true, new FlagWeather()),
-	TIMER_ACTIVE("timeract", false, new FlagTimerActive()),
-	FCT_PLAYER("playerfaction", false, new FlagFaction()),
-	FCT_AT_ZONE_REL("atfactionzonerel", true, new FlagAtFactionZoneRel()),
-	FCT_IS_REL_PLAYER_AROUND("isfactionrelplayeraround", true, new FlagIsFactionRelPlayerAround()),
-	FCT_ARE_PLAYERS_IN_REL("areplayersinfactionsrel", false, new FlagPlayersInRel()),
-	SQL_CHECK("sqlcheck", false, new FlagSQL(true)),
-	SQL_RESULT("sqlhasresult", false, new FlagSQL(false)),
-	FLY_SPEED("flyspeed", true, new FlagFlySpeed()),
-	WALK_SPEED("walkspeed", true, new FlagWalkSpeed()),
-	GREATER("greater", false, new FlagGreaterLower((byte) 0)),
-	LOWER("lower", false, new FlagGreaterLower((byte) 1)),
-	WE_SEL_BLOCKS("selblocks", true, new FlagSelectionBlocks()),
-	WE_SUPERPICKAXE("superpickaxe", true, new FlagSuperPickAxe()),
-	WE_TOOLCONTROL("toolcontrol", true, new FlagToolControl()),
-	REGION_IN_RADIUS("regioninradius", true, new FlagRegionInRadius()),
-	CHECK_ONLINE("checkonline", false, new FlagCheckOnline()),
-	REGEX("regex", false, new FlagRegex()),
-	HELD_SLOT("slot", true, new FlagHeldSlot());
+	GROUP("group", new FlagGroup(), true),
+	PERM("perm", new FlagPerm(), true),
+	TIME("time", new FlagTime()),
+	ITEM("item", new FlagItem((byte) 0), true),
+	ITEM_INVENTORY("invitem", new FlagItem((byte) 1), true),
+	ITEM_WEAR("invwear", new FlagItem((byte) 2), true),
+	ITEM_OFFHAND("itemoffhand", new FlagItem((byte) 3), true),
+	BLOCK_CHECK("block", new FlagBlock()),
+	TOWN("town", new FlagTown(), true),
+	MONEY("money", new FlagMoney()),
+	CHANCE("chance", new FlagChance()),
+	PVP("pvp", new FlagPvp(), true),
+	ONLINE("online", new FlagOnline()),
+	DELAY("delay", new FlagDelay(true)),
+	DELAY_PLAYER("pdelay", new FlagDelay(false), true),
+	STATE("pose", new FlagState(), true),
+	REGION("region", new FlagRegion(FlagRegion.REGION), true),
+	REGION_PLAYERS("rgplayer", new FlagRegion(FlagRegion.REGION_PLAYERS)),
+	REGION_MEMBER("rgmember", new FlagRegion(FlagRegion.REGION_MEMBER)),
+	REGION_OWNER("rgowner", new FlagRegion(FlagRegion.REGION_OWNER)),
+	REGION_STATE("rgstate", new FlagRegion(FlagRegion.REGION_STATE)),
+	GAMEMODE("gm", new FlagGamemode(), true),
+	FOODLEVEL("food", new FlagFoodLevel(), true),
+	XP("xp", new FlagXP(), true),
+	LEVEL("level", new FlagLevel(), true),
+	HEALTH("hp", new FlagHealth(), true),
+	POWER("powered", new FlagPowered()),
+	WORLD("world", new FlagWorld(), true),
+	BIOME("biome", new FlagBiome(), true),
+	LIGHT_LEVEL("light", new FlagLightLevel(), true),
+	WALK_BLOCK("walk", new FlagWalkBlock(), true),
+	DIRECTION("dir", new FlagDirection(), true),
+	FLAG_SET("flagset", new FlagFlagSet()),
+	EXECUTE_STOP("stopped", new FlagExecStop()),
+	VAR_EXIST("varexist", new FlagVar((byte) 0, false)),
+	VAR_COMPARE("varcmp", new FlagVar((byte) 1, false)),
+	VAR_GREATER("vargrt", new FlagVar((byte) 2, false)),
+	VAR_LOWER("varlwr", new FlagVar((byte) 3, false)),
+	VAR_MATCH("varmatch", new FlagVar((byte) 4, false)),
+	VAR_PLAYER_EXIST("varpexist", new FlagVar((byte) 0, true), true),
+	VAR_PLAYER_COMPARE("varpcmp", new FlagVar((byte) 1, true), true),
+	VAR_PLAYER_GREATER("varpgrt", new FlagVar((byte) 2, true), true),
+	VAR_PLAYER_LOWER("varplwr", new FlagVar((byte) 3, true), true),
+	VAR_PLAYER_MATCH("varpmatch", new FlagVar((byte) 4, true), true),
+	/*
+	VAR_TEMP_EXIST
+	VAR_TEMP_COMPARE
+	VAR_TEMP_GREATER
+	VAR_TEMP_LOWER
+	VAR_TEMP_MATCH
+	*/
+	COMPARE("cmp", new FlagCompare()),
+	GREATER("greater", new FlagGreaterLower((byte) 0)),
+	LOWER("lower", new FlagGreaterLower((byte) 1)),
+	RNC_RACE("rncrace", new FlagRacesAndClasses(true), true),
+	RNC_CLASS("rncclass", new FlagRacesAndClasses(false), true),
+	WEATHER("weather", new FlagWeather()),
+	TIMER_ACTIVE("timeract", new FlagTimerActive()),
+	FCT_PLAYER("playerfaction", new FlagFaction()),
+	FCT_AT_ZONE_REL("atfactionzonerel", new FlagAtFactionZoneRel(), true),
+	FCT_IS_REL_PLAYER_AROUND("isfactionrelplayeraround", new FlagIsFactionRelPlayerAround(), true),
+	FCT_ARE_PLAYERS_IN_REL("areplayersinfactionsrel", new FlagPlayersInRel()),
+	SQL_CHECK("sqlcheck", new FlagSQL(true)),
+	SQL_RESULT("sqlhasresult", new FlagSQL(false)),
+	FLY_SPEED("flyspeed", new FlagFlySpeed(), true),
+	WALK_SPEED("walkspeed", new FlagWalkSpeed(), true),
+	WE_SEL_BLOCKS("selblocks", new FlagSelectionBlocks(), true),
+	WE_SUPERPICKAXE("superpickaxe", new FlagSuperPickAxe(), true),
+	WE_TOOLCONTROL("toolcontrol", new FlagToolControl(), true),
+	REGION_IN_RADIUS("regioninradius", new FlagRegionInRadius(), true),
+	CHECK_ONLINE("checkonline", new FlagCheckOnline()),
+	REGEX("regex", new FlagRegex()),
+	HELD_SLOT("slot", new FlagHeldSlot(), true);
 
 	private final String alias;
 	private final boolean requirePlayer;
@@ -133,10 +140,14 @@ public enum Flags {
 		BY_NAME = Collections.unmodifiableMap(byName);
 	}
 
-	Flags(String alias, boolean requirePlayer, Flag flag) {
+	Flags(String alias, Flag flag, boolean requirePlayer) {
 		this.alias = alias;
 		this.requirePlayer = requirePlayer;
 		this.flag = flag;
+	}
+
+	Flags(String alias, Flag flag) {
+		this(alias, flag, false);
 	}
 
 	public boolean check(RaContext context, String param) {
