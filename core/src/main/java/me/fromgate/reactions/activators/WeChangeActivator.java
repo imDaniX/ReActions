@@ -53,7 +53,7 @@ public class WeChangeActivator extends Activator {
 	public String toString() {
 		StringBuilder sb = new StringBuilder(super.toString());
 		sb.append(" (");
-		sb.append("block-type:").append(blockType!=null ? "ANY" : blockType);
+		sb.append("block-type:").append(blockType != null ? blockType : "ANY");
 		sb.append(" region:").append(region.isEmpty() ? "-" : region.toUpperCase());
 		sb.append(")");
 		return sb.toString();
