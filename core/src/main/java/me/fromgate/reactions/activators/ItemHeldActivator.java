@@ -16,7 +16,7 @@ public class ItemHeldActivator extends Activator {
 	private final String itemNewStr;
 	private final String itemPrevStr;
 
-	public ItemHeldActivator(ActivatorBase base, String itemPrevStr, String itemNewStr, int previousSlot, int newSlot) {
+	private ItemHeldActivator(ActivatorBase base, String itemPrevStr, String itemNewStr, int previousSlot, int newSlot) {
 		super(base);
 		this.itemNewStr = itemNewStr;
 		this.itemPrevStr = itemPrevStr;

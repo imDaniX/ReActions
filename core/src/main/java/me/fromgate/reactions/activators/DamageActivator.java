@@ -15,7 +15,7 @@ public class DamageActivator extends Activator {
 	private final String damageCause;
 	private final DamageType source;
 
-	public DamageActivator(ActivatorBase base, String cause, DamageType source) {
+	private DamageActivator(ActivatorBase base, String cause, DamageType source) {
 		super(base);
 		this.damageCause = cause;
 		this.source = source;

@@ -11,7 +11,7 @@ public class TeleportActivator extends Activator {
 	private final TeleportCause cause;
 	private final String worldTo;
 
-	public TeleportActivator(ActivatorBase base, TeleportCause cause, String worldTo) {
+	private TeleportActivator(ActivatorBase base, TeleportCause cause, String worldTo) {
 		super(base);
 		this.cause = cause;
 		this.worldTo = worldTo;

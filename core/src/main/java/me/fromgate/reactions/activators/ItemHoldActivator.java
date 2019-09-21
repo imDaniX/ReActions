@@ -32,11 +32,11 @@ import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class ItemHoldActivator extends Activator {
+public class ItemHoldActivator extends Activator /*implements Manageable*/ {
 	@Getter private String itemStr;
 	// TODO: Hand option
 
-	public ItemHoldActivator(ActivatorBase base, String item) {
+	private ItemHoldActivator(ActivatorBase base, String item) {
 		super(base);
 		this.itemStr = item;
 	}

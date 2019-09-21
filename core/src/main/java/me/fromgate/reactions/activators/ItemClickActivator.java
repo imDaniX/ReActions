@@ -36,7 +36,7 @@ public class ItemClickActivator extends Activator {
 	private final String item;
 	private final HandType hand;
 
-	public ItemClickActivator(ActivatorBase base, String item, HandType hand) {
+	private ItemClickActivator(ActivatorBase base, String item, HandType hand) {
 		super(base);
 		this.item = item;
 		this.hand = hand;

@@ -104,7 +104,7 @@ public class ActionLog extends Action {
 
 	}
 
-	private void log(String msg, String prefix, Boolean color) {
+	private void log(String msg, String prefix, boolean color) {
 		String px = "";
 		if (!prefix.isEmpty()) px = "[" + prefix + "] ";
 		if (color) LOGGER.info(ChatColor.translateAlternateColorCodes('&', px + msg));

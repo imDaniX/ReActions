@@ -33,7 +33,7 @@ public class VariableActivator extends Activator {
 	private final String id;
 	private final boolean personal;
 
-	public VariableActivator(ActivatorBase base, String id, boolean personal) {
+	private VariableActivator(ActivatorBase base, String id, boolean personal) {
 		super(base);
 		this.id = id;
 		this.personal = personal;

@@ -32,7 +32,7 @@ public class DeathActivator extends Activator {
 
 	private final DeathCause deathCause;
 
-	public DeathActivator(ActivatorBase base, DeathCause cause) {
+	private DeathActivator(ActivatorBase base, DeathCause cause) {
 		super(base);
 		this.deathCause = cause;
 	}

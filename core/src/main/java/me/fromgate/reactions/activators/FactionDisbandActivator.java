@@ -29,7 +29,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class FactionDisbandActivator extends Activator {
 
-	public FactionDisbandActivator(ActivatorBase base) {
+	private FactionDisbandActivator(ActivatorBase base) {
 		super(base);
 	}
 

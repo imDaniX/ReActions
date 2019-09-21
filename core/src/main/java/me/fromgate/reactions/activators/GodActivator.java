@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public class GodActivator extends Activator {
 	private final GodType god;
 
-	public GodActivator(ActivatorBase base, GodType type) {
+	private GodActivator(ActivatorBase base, GodType type) {
 		super(base);
 		this.god = type;
 	}

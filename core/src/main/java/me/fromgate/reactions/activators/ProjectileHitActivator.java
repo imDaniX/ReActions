@@ -18,7 +18,7 @@ public class ProjectileHitActivator extends Activator {
 
 	private HitType hitType;
 
-	public ProjectileHitActivator(ActivatorBase base, EntityType projType, Material hitBlock, BlockFace hitFace, EntityType hitEntity, HitType hitType) {
+	private ProjectileHitActivator(ActivatorBase base, EntityType projType, Material hitBlock, BlockFace hitFace, EntityType hitEntity, HitType hitType) {
 		super(base);
 		this.projType = projType;
 		this.hitBlock = hitBlock;

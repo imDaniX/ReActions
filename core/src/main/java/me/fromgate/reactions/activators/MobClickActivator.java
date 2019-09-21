@@ -39,7 +39,7 @@ public class MobClickActivator extends Activator implements Locatable {
 	private final String mobName;
 	private final String mobLocation;
 
-	public MobClickActivator(ActivatorBase base, String type, String name, String location) {
+	private MobClickActivator(ActivatorBase base, String type, String name, String location) {
 		super(base);
 		this.mobType = type;
 		this.mobName = name;

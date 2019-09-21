@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public class SneakActivator extends Activator {
 	private final SneakType sneak;
 
-	public SneakActivator(ActivatorBase base, SneakType sneak) {
+	private SneakActivator(ActivatorBase base, SneakType sneak) {
 		super(base);
 		this.sneak = sneak;
 	}
@@ -38,7 +38,7 @@ public class SneakActivator extends Activator {
 		return true;
 	}
 
-	private boolean checkSneak(Boolean isSneak) {
+	private boolean checkSneak(boolean isSneak) {
 		switch (sneak) {
 			case ANY:
 				return true;

@@ -37,7 +37,7 @@ public class RegionEnterActivator extends Activator implements Locatable {
 
 	@Getter private final String region;
 
-	public RegionEnterActivator(ActivatorBase base, String region) {
+	private RegionEnterActivator(ActivatorBase base, String region) {
 		super(base);
 		this.region = region;
 	}

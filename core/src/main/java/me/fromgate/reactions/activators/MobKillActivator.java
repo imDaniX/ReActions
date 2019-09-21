@@ -34,7 +34,7 @@ public class MobKillActivator extends Activator {
 	private final String mobType;
 	private final String mobName;
 
-	public MobKillActivator(ActivatorBase base, String type, String name) {
+	private MobKillActivator(ActivatorBase base, String type, String name) {
 		super(base);
 		this.mobType = type;
 		this.mobName = name;

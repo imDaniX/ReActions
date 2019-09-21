@@ -12,7 +12,7 @@ import org.bukkit.entity.Entity;
 public class EntityClickActivator extends Activator {
 	private final String entityType;
 
-	public EntityClickActivator(ActivatorBase base, String entityType) {
+	private EntityClickActivator(ActivatorBase base, String entityType) {
 		super(base);
 		this.entityType = entityType;
 	}

@@ -33,7 +33,7 @@ public class FactionActivator extends Activator {
 	private final String newFaction;
 	private final String oldFaction;
 
-	public FactionActivator(ActivatorBase base, String newFaction, String oldFaction) {
+	private FactionActivator(ActivatorBase base, String newFaction, String oldFaction) {
 		super(base);
 		this.newFaction = newFaction;
 		this.oldFaction = oldFaction;

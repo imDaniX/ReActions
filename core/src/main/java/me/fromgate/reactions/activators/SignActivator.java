@@ -40,7 +40,7 @@ public class SignActivator extends Activator {
 	private List<String> maskLines;
 	private ClickType click;
 
-	public SignActivator(ActivatorBase base, ClickType click, List<String> maskLines) {
+	private SignActivator(ActivatorBase base, ClickType click, List<String> maskLines) {
 		super(base);
 		this.click = click;
 		this.maskLines = maskLines;

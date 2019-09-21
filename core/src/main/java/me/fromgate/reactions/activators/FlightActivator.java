@@ -11,7 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public class FlightActivator extends Activator {
 	private final FlightType flight;
 
-	public FlightActivator(ActivatorBase base, FlightType type) {
+	private FlightActivator(ActivatorBase base, FlightType type) {
 		super(base);
 		this.flight = type;
 	}
@@ -33,7 +33,7 @@ public class FlightActivator extends Activator {
 		return ActivatorType.FLIGHT;
 	}
 
-	private boolean checkFlight(Boolean isFlight) {
+	private boolean checkFlight(boolean isFlight) {
 		switch (flight) {
 			case ANY:
 				return true;

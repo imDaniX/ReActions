@@ -11,7 +11,7 @@ public class WeSelectionActivator extends Activator {
 	private final int minBlocks;
 	private final String typeSelection;
 
-	public WeSelectionActivator(ActivatorBase base, int maxBlocks, int minBlocks, String typeSelection) {
+	private WeSelectionActivator(ActivatorBase base, int maxBlocks, int minBlocks, String typeSelection) {
 		super(base);
 		this.maxBlocks = maxBlocks;
 		this.minBlocks = minBlocks;

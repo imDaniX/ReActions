@@ -19,8 +19,8 @@ public class InventoryClickActivator extends Activator {
 	private String slotStr;
 	private String itemStr;
 
-	public InventoryClickActivator(ActivatorBase base, String inventoryName, ClickType click, InventoryAction action,
-								   InventoryType inventory, SlotType slotType, String numberKey, String slotStr, String itemStr) {
+	private InventoryClickActivator(ActivatorBase base, String inventoryName, ClickType click, InventoryAction action,
+									InventoryType inventory, SlotType slotType, String numberKey, String slotStr, String itemStr) {
 		super(base);
 		this.inventoryName = inventoryName;
 		this.click = click;
@@ -223,19 +223,19 @@ public class InventoryClickActivator extends Activator {
 		return sl.name().equals(slotType.name());
 	}
 
-	private boolean checkItem(ItemStack item, Integer key, Inventory bottomInventory) {
+	private boolean checkItem(ItemStack item, int key, Inventory bottomInventory) {
 		if (this.itemStr.isEmpty()) return true;
 		boolean result = ItemUtil.compareItemStr(item, this.itemStr, true);
 		if (!result && key > -1) return ItemUtil.compareItemStr(bottomInventory.getItem(key), this.itemStr, true);
 		return result;
 	}
 
-	private boolean checkNumberKey(Integer key) {
+	private boolean checkNumberKey(int key) {
 		if (numberKey.isEmpty() || numberKey.equals("ANY") || Integer.parseInt(numberKey) <= 0) return true;
 		return key == Integer.parseInt(numberKey) - 1;
 	}
 
-	private boolean checkSlot(Integer slot) {
+	private boolean checkSlot(int slot) {
 		if (slotStr.isEmpty() || slotStr.equals("ANY") || Integer.parseInt(slotStr) <= 0) return true;
 		return slot == Integer.parseInt(slotStr);
 	}

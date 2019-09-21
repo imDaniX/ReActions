@@ -31,7 +31,7 @@ public class JoinActivator extends Activator {
 
 	private final boolean firstJoin;
 
-	public JoinActivator(ActivatorBase base, boolean firstJoin) {
+	private JoinActivator(ActivatorBase base, boolean firstJoin) {
 		super(base);
 		this.firstJoin = firstJoin;
 	}

@@ -20,7 +20,7 @@ public class DamageByMobActivator extends Activator {
 	private final String entityType;
 	private final String damageCause;
 	
-	public DamageByMobActivator(ActivatorBase base, String damagerName, String damagerType, String entityType, String damageCause) {
+	private DamageByMobActivator(ActivatorBase base, String damagerName, String damagerType, String entityType, String damageCause) {
 		super(base);
 		this.damagerName = damagerName;
 		this.damagerType = damagerType;

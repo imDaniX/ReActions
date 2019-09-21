@@ -42,7 +42,7 @@ public class DoorActivator extends Activator implements Locatable {
 	private final int y;
 	private final int z;
 
-	public DoorActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
+	private DoorActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
 		super(base);
 		this.state = state;
 		this.world = world;

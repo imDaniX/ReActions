@@ -50,7 +50,7 @@ public class PrecommandActivator extends Activator {
 	// Is console allowed to perform this command?
 	private final boolean consoleAllowed;
 
-	public PrecommandActivator(ActivatorBase base, String command, boolean starts, boolean useRegex, boolean consoleAllowed) {
+	private PrecommandActivator(ActivatorBase base, String command, boolean starts, boolean useRegex, boolean consoleAllowed) {
 		super(base);
 		command = command == null ? "unknown" : command;
 		this.command = command;

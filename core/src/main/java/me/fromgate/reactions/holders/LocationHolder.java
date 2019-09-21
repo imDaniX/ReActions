@@ -24,6 +24,7 @@ package me.fromgate.reactions.holders;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.FileUtil;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.location.TpLocation;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
@@ -52,8 +53,8 @@ public class LocationHolder {
 	}
 
 	public static void saveLocs() {
-		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
 		if (tports.size() > 0) {
+			File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
 			YamlConfiguration lcs = new YamlConfiguration();
 			for (String key : tports.keySet()) {
 				TpLocation tploc = tports.get(key);
@@ -71,17 +72,15 @@ public class LocationHolder {
 	public static void loadLocs() {
 		tports.clear();
 		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
-		if (f.exists()) {
-			YamlConfiguration lcs = new YamlConfiguration();
-			if(FileUtil.loadCfg(lcs, f, "Failed to load locations configuration file"))
-				for (String key : lcs.getKeys(false))
-					tports.put(key, new TpLocation(lcs.getString(key + ".world"),
-							lcs.getDouble(key + ".x"),
-							lcs.getDouble(key + ".y"),
-							lcs.getDouble(key + ".z"),
-							(float) lcs.getDouble(key + ".yaw"),
-							(float) lcs.getDouble(key + ".pitch")));
-		}
+		YamlConfiguration lcs = new YamlConfiguration();
+		if(FileUtil.loadCfg(lcs, f, "Failed to load locations configuration file"))
+			for (String key : lcs.getKeys(false))
+				tports.put(key, new TpLocation(lcs.getString(key + ".world"),
+						lcs.getDouble(key + ".x"),
+						lcs.getDouble(key + ".y"),
+						lcs.getDouble(key + ".z"),
+						(float) lcs.getDouble(key + ".yaw"),
+						(float) lcs.getDouble(key + ".pitch")));
 	}
 
 	@SuppressWarnings("unused")
@@ -99,7 +98,7 @@ public class LocationHolder {
 	}
 
 	public static boolean addTpLoc(String id, Location loc) {
-		if (id.isEmpty()) return false;
+		if (Util.isStringEmpty(id)) return false;
 		tports.put(id, new TpLocation(loc));
 		return true;
 	}

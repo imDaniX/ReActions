@@ -30,11 +30,11 @@ import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
-public class ItemWearActivator extends Activator {
+public class ItemWearActivator extends Activator /*implements Manageable*/ {
 	private final String item;
 	// private final WearSlot slot;
 
-	public ItemWearActivator(ActivatorBase base, String item/*, WearSlot slot*/) {
+	private ItemWearActivator(ActivatorBase base, String item/*, WearSlot slot*/) {
 		super(base);
 		this.item = item;
 		// this.slot = slot;

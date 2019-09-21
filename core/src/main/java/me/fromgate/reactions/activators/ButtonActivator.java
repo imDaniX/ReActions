@@ -39,7 +39,7 @@ public class ButtonActivator extends Activator implements Locatable {
 	private final int y;
 	private final int z;
 
-	public ButtonActivator(ActivatorBase base, String world, int x, int y, int z) {
+	private ButtonActivator(ActivatorBase base, String world, int x, int y, int z) {
 		super(base);
 		this.world = world;
 		this.x = x;

@@ -14,7 +14,7 @@ public class PickupItemActivator extends Activator {
 
 	private String itemStr;
 
-	public PickupItemActivator(ActivatorBase base, String item) {
+	private PickupItemActivator(ActivatorBase base, String item) {
 		super(base);
 		this.itemStr = item;
 	}

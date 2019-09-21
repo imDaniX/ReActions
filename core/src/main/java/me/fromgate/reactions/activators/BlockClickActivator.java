@@ -39,7 +39,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 	private final String blockLocation;
 	private final ClickType click;
 
-	public BlockClickActivator(ActivatorBase base, Material block, String location, ClickType click) {
+	private BlockClickActivator(ActivatorBase base, Material block, String location, ClickType click) {
 		super(base);
 		this.blockType = block;
 		this.blockLocation = location;

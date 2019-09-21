@@ -19,7 +19,7 @@ public class CuboidActivator extends Activator implements Locatable {
 	private final Cuboid cuboid;
 	private final Set<UUID> within = new HashSet<>();
 
-	public CuboidActivator(ActivatorBase base, Cuboid cuboid, CuboidMode mode) {
+	private CuboidActivator(ActivatorBase base, Cuboid cuboid, CuboidMode mode) {
 		super(base);
 		this.cuboid = cuboid;
 		this.mode = mode;

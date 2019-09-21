@@ -41,7 +41,7 @@ public class LeverActivator extends Activator implements Locatable {
 	private final int y;
 	private final int z;
 
-	public LeverActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
+	private LeverActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
 		super(base);
 		this.state = state;
 		this.world = world;

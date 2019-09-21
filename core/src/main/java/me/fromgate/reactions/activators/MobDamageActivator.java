@@ -37,7 +37,7 @@ public class MobDamageActivator extends Activator {
 	private final String mobType;
 	private final String itemStr;
 
-	public MobDamageActivator(ActivatorBase base, String type, String name, String item) {
+	private MobDamageActivator(ActivatorBase base, String type, String name, String item) {
 		super(base);
 		this.mobType = type;
 		this.mobName = name;

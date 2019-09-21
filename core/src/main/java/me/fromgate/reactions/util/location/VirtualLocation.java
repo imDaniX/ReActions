@@ -114,16 +114,16 @@ public class VirtualLocation {
 
 	public boolean isSimilar(Location loc) {
 		if(x != null && x != loc.getBlockX()) return false;
-		if(y != null && y != loc.getBlockY()) return false;
 		if(z != null && z != loc.getBlockZ()) return false;
+		if(y != null && y != loc.getBlockY()) return false;
 		if(world != null) return world.equals(loc.getWorld().getName());
 		return true;
 	}
 
 	public boolean isSimilar(World world, int x, int y, int z) {
 		if(this.x != null && this.x != x) return false;
-		if(this.y != null && this.y != y) return false;
 		if(this.z != null && this.z != z) return false;
+		if(this.y != null && this.y != y) return false;
 		if(this.world != null) return this.world.equals(world.getName());
 		return true;
 	}
@@ -142,12 +142,12 @@ public class VirtualLocation {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null || obj.hashCode() != this.hashCode()) return false;
 		if(obj instanceof VirtualLocation) {
+			if(obj.hashCode() != this.hashCode()) return false;
 			VirtualLocation loc = (VirtualLocation) obj;
 			return Objects.equals(loc.x, this.x) &&
-					Objects.equals(loc.y, this.y) &&
 					Objects.equals(loc.z, this.z) &&
+					Objects.equals(loc.y, this.y) &&
 					Objects.equals(loc.world, this.world);
 		}
 		return false;

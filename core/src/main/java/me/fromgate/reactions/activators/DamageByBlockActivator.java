@@ -20,7 +20,7 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 	private final String blockLocation;
 	private final String damageCause;
 	
-	public DamageByBlockActivator(ActivatorBase base, String block, String location, String cause) {
+	private DamageByBlockActivator(ActivatorBase base, String block, String location, String cause) {
 		super(base);
 		this.blockStr = block;
 		this.blockLocation = location;

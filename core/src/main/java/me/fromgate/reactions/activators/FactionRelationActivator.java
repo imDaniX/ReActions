@@ -39,7 +39,7 @@ public class FactionRelationActivator extends Activator {
 	private final String oldRelation;
 	private final String newRelation;
 
-	public FactionRelationActivator(ActivatorBase base, String faction, String otherFaction, String oldRelation, String newRelation) {
+	private FactionRelationActivator(ActivatorBase base, String faction, String otherFaction, String oldRelation, String newRelation) {
 		super(base);
 		this.factions = new HashSet<>();
 		this.factions.add(faction.toUpperCase());
@@ -47,7 +47,6 @@ public class FactionRelationActivator extends Activator {
 		this.oldRelation = oldRelation;
 		this.newRelation = newRelation;
 	}
-
 
 	private boolean mustExecute(String faction1, String faction2, String oldRelation, String newRelation) {
 		if (!isFactionRelated(faction1, faction2)) return false;

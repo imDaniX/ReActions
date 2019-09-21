@@ -18,7 +18,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 	private final Material blockType;
 	private final String blockLocation;
 
-	public BlockBreakActivator(ActivatorBase base, Material block, String location) {
+	private BlockBreakActivator(ActivatorBase base, Material block, String location) {
 		super(base);
 		this.blockType = block;
 		this.blockLocation = location;
@@ -61,7 +61,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("block", this.blockType.name());
+		if(blockType != null) cfg.set("block", this.blockType.name());
 		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
 	}
 

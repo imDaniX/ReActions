@@ -5,7 +5,7 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ExecActivator extends Activator {
-	public ExecActivator(ActivatorBase base) {
+	private ExecActivator(ActivatorBase base) {
 		super(base);
 	}
 

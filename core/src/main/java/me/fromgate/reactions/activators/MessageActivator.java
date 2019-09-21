@@ -35,7 +35,7 @@ public class MessageActivator extends Activator {
 	private Source source;
 	private String mask;
 
-	public MessageActivator(ActivatorBase base, CheckType type, Source source, String mask) {
+	private MessageActivator(ActivatorBase base, CheckType type, Source source, String mask) {
 		super(base);
 		this.type = type;
 		this.source = source;

@@ -32,7 +32,7 @@ public class RespawnActivator extends Activator {
 
 	private final DeathCause deathCause;
 
-	public RespawnActivator(ActivatorBase base, DeathCause cause) {
+	private RespawnActivator(ActivatorBase base, DeathCause cause) {
 		super(base);
 		this.deathCause = cause;
 	}

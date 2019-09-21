@@ -29,7 +29,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class FactionCreateActivator extends Activator {
 
-	public FactionCreateActivator(ActivatorBase base) {
+	private FactionCreateActivator(ActivatorBase base) {
 		super(base);
 	}
 

@@ -15,7 +15,7 @@ public class WeChangeActivator extends Activator {
 	private final Material blockType;
 	private final String region;
 
-	public WeChangeActivator(ActivatorBase base, Material blockType, String region) {
+	private WeChangeActivator(ActivatorBase base, Material blockType, String region) {
 		super(base);
 		this.blockType = blockType;
 		this.region = region;
@@ -35,7 +35,7 @@ public class WeChangeActivator extends Activator {
 
 	@Override
 	public void save(ConfigurationSection cfg) {
-		cfg.set("block-type", this.blockType.name());
+		if(blockType != null) cfg.set("block-type", this.blockType.name());
 		cfg.set("region", this.region);
 	}
 

@@ -13,7 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 public class GamemodeActivator extends Activator {
 	private final GameMode gameMode;
 
-	public GamemodeActivator(ActivatorBase base, GameMode gameMode) {
+	private GamemodeActivator(ActivatorBase base, GameMode gameMode) {
 		super(base);
 		this.gameMode = gameMode;
 	}

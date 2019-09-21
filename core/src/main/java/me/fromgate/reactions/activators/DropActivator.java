@@ -14,7 +14,7 @@ public class DropActivator extends Activator {
 
 	private final String itemStr;
 
-	public DropActivator(ActivatorBase base, String itemStr) {
+	private DropActivator(ActivatorBase base, String itemStr) {
 		super(base);
 		this.itemStr = itemStr;
 	}

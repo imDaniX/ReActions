@@ -28,7 +28,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class QuitActivator extends Activator {
 
-	public QuitActivator(ActivatorBase base) {
+	private QuitActivator(ActivatorBase base) {
 		super(base);
 	}
 

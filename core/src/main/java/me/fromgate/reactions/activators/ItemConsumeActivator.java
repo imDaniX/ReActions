@@ -36,7 +36,7 @@ public class ItemConsumeActivator extends Activator {
 	private String item;
 	// TODO: Hand option
 
-	public ItemConsumeActivator(ActivatorBase base, String item) {
+	private ItemConsumeActivator(ActivatorBase base, String item) {
 		super(base);
 		this.item = item;
 	}
