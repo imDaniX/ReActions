@@ -65,7 +65,6 @@ public class ActivatorsManager {
 		loadActivators();
 	}
 
-	// TODO: Maybe store all the configs in cache?
 	/**
 	 * Load activators
 	 */

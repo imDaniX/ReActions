@@ -44,10 +44,10 @@ public class PlaceholdersManager {
 		return true;
 	}
 
-	public static String replacePlaceholderButRaw(RaContext context, String string) {
-		String result = string.replace("$", "\\$");
+	public static String replacePlaceholderButRaw(RaContext context, String original) {
 		List<String> raws = new ArrayList<>();
-		Matcher matcher = PATTERN_RAW.matcher(result);
+		String result = original;
+		Matcher matcher = PATTERN_RAW.matcher(Matcher.quoteReplacement(result));
 		StringBuffer sb = new StringBuffer();
 		int count = 0;
 		while (matcher.find()) {
@@ -65,12 +65,12 @@ public class PlaceholdersManager {
 		return result;
 	}
 
-	private static String replacePlaceholders(RaContext context, String string) {
+	private static String replacePlaceholders(RaContext context, String original) {
 		Player player = context.getPlayer();
-		String result = string;
+		String result = original;
 		result = replaceTempVars(context.getTempVariables(), result);
 		result = Variables.replacePlaceholders(player, result);
-		Matcher matcher = PATTERN_ANY.matcher(result);
+		Matcher matcher = PATTERN_ANY.matcher(Matcher.quoteReplacement(result));
 		StringBuffer sb = new StringBuffer();
 		String group;
 		String replacement;
@@ -84,7 +84,7 @@ public class PlaceholdersManager {
 		}
 		matcher.appendTail(sb);
 		result = sb.toString();
-		if (!string.equals(result) && countPlaceholder()) result = replacePlaceholders(context, result);
+		if (!original.equals(result) && countPlaceholder()) result = replacePlaceholders(context, result);
 		result = RaPlaceholderAPI.processPlaceholder(player, result);
 		placeholderCounter = 0;
 		return result;

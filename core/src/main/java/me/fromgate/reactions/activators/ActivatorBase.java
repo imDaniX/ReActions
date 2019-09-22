@@ -28,6 +28,7 @@ import me.fromgate.reactions.actions.Actions;
 import me.fromgate.reactions.actions.StoredAction;
 import me.fromgate.reactions.flags.Flags;
 import me.fromgate.reactions.flags.StoredFlag;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -46,7 +47,7 @@ public class ActivatorBase {
 
 	public ActivatorBase(String name, String group) {
 		this.name = name;
-		this.group = group == null ? "activators" : group;
+		this.group = Util.isStringEmpty(group) ? "activators" : group;
 	}
 
 	public ActivatorBase(String name, String group, ConfigurationSection cfg) {
