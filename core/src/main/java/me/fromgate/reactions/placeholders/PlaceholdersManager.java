@@ -86,7 +86,6 @@ public class PlaceholdersManager {
 		result = sb.toString();
 		if (!original.equals(result) && countPlaceholder()) result = replacePlaceholders(context, result);
 		result = RaPlaceholderAPI.processPlaceholder(player, result);
-		placeholderCounter = 0;
 		return result;
 	}
 
@@ -151,6 +150,9 @@ public class PlaceholdersManager {
 	 * @return Is it allowed to process placeholder
 	 */
 	public static boolean countPlaceholder() {
-		return placeholderCounter++ < countLimit;
+		if(placeholderCounter++ < countLimit)
+			return true;
+		placeholderCounter = 0;
+		return false;
 	}
 }
