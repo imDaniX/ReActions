@@ -20,7 +20,7 @@ public abstract class Placeholder {
 	}
 
 	public boolean checkKey(String key) {
-		return Stream.of(this.keys).anyMatch(key::equalsIgnoreCase);
+		return Stream.of(this.keys).anyMatch(k -> k.equalsIgnoreCase(key));
 	}
 
 	/**
