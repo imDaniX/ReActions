@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 @Getter
 public abstract class Placeholder 
 {
-    private final String id = "UNKNOWN";
+    private String id = "UNKNOWN";
  
-    private final String[] keys = new String[] {};
+    private String[] keys = new String[] {};
 
     public Placeholder() 
     {
@@ -19,12 +19,6 @@ public abstract class Placeholder
             this.id = pd.id();
             this.keys = pd.keys();
         }
-    }
-
-    protected boolean equalsIgnoreCase(String key, String... values) 
-    {
-        return Stream.of(values)
-                     .anyMatch((string) -> string.equalsIgnoreCase(key));
     }
 
     public boolean checkKey(String key) 

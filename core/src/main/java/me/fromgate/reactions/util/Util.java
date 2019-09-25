@@ -408,9 +408,9 @@ public class Util {
 		return def;
 	}
 
-	public static <T> boolean isArrayContains(T value, T[] arr) {
-		for(T t : arr)
-			if(t == value) return true;
+	public static boolean containsValue(String str, String... values) {
+		for (String s : values)
+			if (s.equalsIgnoreCase(str)) return true;
 		return false;
 	}
 }
