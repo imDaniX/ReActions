@@ -19,16 +19,9 @@ public abstract class Placeholder {
 		}
 	}
 
-	protected boolean equalsIgnoreCase(String key, String... values) {
-		for (String s : values)
-			if (key.equalsIgnoreCase(s)) return true;
-		return false;
-	}
-
 	public boolean checkKey(String key) {
-		for (String k : this.getKeys()) {
+		for (String k : this.getKeys())
 			if (k.equalsIgnoreCase(key)) return true;
-		}
 		return false;
 	}
 
