@@ -39,6 +39,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,7 +58,7 @@ public class ActivatorsManager {
 	 * Initialize variables
 	 */
 	public static void init() {
-		typeActivators = new HashMap<>();
+		typeActivators = new EnumMap<>(ActivatorType.class);
 		for(ActivatorType type : ActivatorType.values())
 			typeActivators.put(type, new HashSet<>());
 		activators = new HashMap<>();
