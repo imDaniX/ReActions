@@ -43,7 +43,7 @@ import java.util.Map;
 public enum Actions {
 	/*
 	 TODO: More actions
-	 ActionSetLevel, ActionModifyString, ActionKill, ActionString(change strings),
+	 ActionSetLevel, ActionModifyString, ActionKill, ActionJavaScript(execute js file)
 	 ActionDynamic(for actions from placeholders), ActionCompassTarget,
 	 ActionReturn(stop execution of activator by some condition),
 	 ActionStatistic(editing player's stats)
@@ -73,7 +73,7 @@ public enum Actions {
 	ITEM_UNWEAR("itemundress", new ActionItems(ItemActionType.UNWEAR_ITEM), true),
 	ITEM_SLOT("itemslot", new ActionItems(ItemActionType.SET_INVENTORY), true),
 	ITEM_SLOT_VIEW("itemslotview", new ActionItems(ItemActionType.GET_INVENTORY), true),
-	//********************
+	// *******************
 	CMD("cmdplr", new ActionCommand(ActionCommand.NORMAL), true),
 	CMD_OP("cmdop", new ActionCommand(ActionCommand.OP), true),
 	CMD_CONSOLE("cmdsrv", new ActionCommand(ActionCommand.CONSOLE)),
@@ -178,8 +178,9 @@ public enum Actions {
 			StoredAction av = actions.get(i);
 			if (av.getAction() == null) continue;
 			Actions at = av.getAction();
+			// TODO: Should be inside ActionWait
 			if (at == Actions.WAIT) {
-				if (i == actions.size() - 1) continue;
+				if (i == actions.size() - 1) return;
 				ActionWait aw = (ActionWait) at.action;
 				Param param = new Param(PlaceholdersManager.replacePlaceholderButRaw(context, av.getValue()), "time");
 				String timeStr = param.getParam("time", "0");
@@ -194,7 +195,7 @@ public enum Actions {
 	}
 
 	public void performAction(RaContext context, boolean action, Param actionParam) {
-		if ((context.getPlayer() == null) && this.requirePlayer) return;
+		if (context.getPlayer() == null && this.requirePlayer) return;
 		this.action.executeAction(context, action, actionParam);
 	}
 

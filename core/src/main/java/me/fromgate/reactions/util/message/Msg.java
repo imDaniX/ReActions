@@ -250,10 +250,7 @@ public enum Msg {
 	MSG_VARLIST("Variables"),
 	MSG_SIGNFORBIDDEN("You're not permitted to set signs, that subscribed to activator %1%"),
 
-
-	/*
-	ON DESCRIPTION MESSAGES
-	 */
+	//	ON DESCRIPTION MESSAGES
 	MSG_ACTIONLISTTITLE("Actions"),
 	ACTION_TP("Teleport player to defined location. Parameters: loc:<location or location's name> radius:<radius> land:<true/false> effect:<effect type>"),
 	ACTION_VELOCITY("Set player's velocity (you can force player to jump or change movement direction). Parameters: vector:<x,y,z> kick:<true/false>"),
@@ -335,9 +332,7 @@ public enum Msg {
 	ACTION_WE_TOOLCONTROL("Change tool control setting: value:<true/false> [player:<Name>]"),
 	ACTION_RADIUS_CLEAR("Remove entities (mobs or items) in radius from player location. Paramters: radius:<digit> type:<entity_type|all|mobs|items>"),
 
-	/*
-	DESCRIPTION MESSAGES
-	 */
+	//	DESCRIPTION MESSAGES
 	MSG_FLAGLISTTITLE("Flags"),
 	FLAG_GROUP("Check player's group. Parameter: <group>"),
 	FLAG_PERM("Check player's permission. Parameter: <permission>"),
@@ -404,9 +399,7 @@ public enum Msg {
 	FLAG_REGION_IN_RADIUS("Checks if exist region in radius from player"),
 	FLAG_CHECK_ONLINE("Checks if player is online"),
 
-	/*
-			ACTIVATORS!
-	 */
+	//	ACTIVATORS!
 	MSG_ACTIVATORLISTTITLE("Activators"),
 	ACTIVATOR_BUTTON("This activator is linked to stone or wooden button. Command to create:  /react add button <id>"),
 	ACTIVATOR_PLATE("This activator is linked to pressure plate. Command to create: /react add plate <id>"),
@@ -415,9 +408,7 @@ public enum Msg {
 	ACTIVATOR_REGION_LEAVE("This activator is linked to Worldguard region (activates when player move out from region)." + " Command: /react add region_leave <id> <region id>"),
 	ACTIVATOR_EXEC("This is standalone activator (it is not bounded to any item or event)." + " EXEC activator could be executed by any other activator, built-in timer and command (/react run <activator> [parameters[)." + " Command to create: /react add exec <id>"),
 	ACTIVATOR_COMMAND("This activator is initiates when player typed a defined command. " + "Command: /react add command <id> <command>"),
-
 	ACTIVATOR_MESSAGE("This activator is initiates when defined message appears in chat input, console input, server log, chat screen. " + "Command: /react add message <id> type:<Type> source:<Source> mask:<MessageMask>"),
-
 	ACTIVATOR_PVP_KILL("This activator is activating when one player is killing another player. Command: /react add pvp_death <id>"),
 	ACTIVATOR_PVP_DEATH("This activator is activating after player death, if he was murdered by another player. Command: /react add pvp_death <id>"),
 	ACTIVATOR_PVP_RESPAWN("This activator is activating after respawn of dead player if he was murdered by another player. Command: /react add pvp_respawn <id>"),
@@ -669,8 +660,8 @@ public enum Msg {
 				if (!fullFloat) s = fmt.format(key);
 			}
 
-			String from = (new StringBuilder("%").append(count).append("%")).toString();
-			String to = skipDefaultColors ? s : (new StringBuilder("&").append(colors[1]).append(s).append("&").append(colors[0])).toString();
+			String from = new StringBuilder("%").append(count).append("%").toString();
+			String to = skipDefaultColors ? s : new StringBuilder("&").append(colors[1]).append(s).append("&").append(colors[0]).toString();
 			str = str.replace(from, to);
 			count++;
 		}
@@ -855,7 +846,6 @@ public enum Msg {
 		messenger.log(clean(join(s)));
 		return true;
 	}
-
 
 	public static Msg getByName(String name) {
 		for (Msg m : values()) {

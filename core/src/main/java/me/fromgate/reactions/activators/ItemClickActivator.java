@@ -57,7 +57,7 @@ public class ItemClickActivator extends Activator {
 	@Override
 	public void save(ConfigurationSection cfg) {
 		cfg.set("item", this.item);
-		cfg.set("hand", this.hand);
+		cfg.set("hand", this.hand.name());
 	}
 
 	@Override

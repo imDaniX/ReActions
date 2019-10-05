@@ -17,12 +17,13 @@ import java.util.UUID;
 public class CuboidActivator extends Activator implements Locatable {
 	private final CuboidMode mode;
 	private final Cuboid cuboid;
-	private final Set<UUID> within = new HashSet<>();
+	private final Set<UUID> within;
 
 	private CuboidActivator(ActivatorBase base, Cuboid cuboid, CuboidMode mode) {
 		super(base);
 		this.cuboid = cuboid;
 		this.mode = mode;
+		this.within = new HashSet<>();
 	}
 
 	@Override

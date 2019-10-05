@@ -46,8 +46,9 @@ public class ActionBlockFill extends Action {
 		ItemStack item = null;
 		if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
 			item = VirtualItem.fromMap(itemParam.getMap());
-			if ((item == null) || ((!item.getType().isBlock()))) {
-				Msg.logOnce("wrongblockfill" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
+			if (item == null || !item.getType().isBlock()) {
+				Msg.logOnce("wrongblockfill" + params.getParam("block"),
+						"Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
 				return false;
 			}
 		}
@@ -89,11 +90,7 @@ public class ActionBlockFill extends Action {
 					if (Util.rollDiceChance(chance)) {
 						Block block = min.getWorld().getBlockAt(x, y, z);
 						if (block.getType() != Material.AIR && drop) block.breakNaturally();
-						if (blockItem != null && blockItem.getType() != Material.AIR) {
-							//block.setTypeIdAndData(blockItem.getTypeId(), blockItem.getData().getData(), phys);
-							block.setType(blockItem.getType(), phys);
-							//block.setData(blockItem.getData().getData());
-						} else block.setType(Material.AIR, phys);
+						block.setType(blockItem == null ? Material.AIR : blockItem.getType(), phys);
 					}
 	}
 }

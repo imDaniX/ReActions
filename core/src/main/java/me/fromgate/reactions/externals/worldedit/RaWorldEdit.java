@@ -12,16 +12,11 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Polygonal2DRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
-import com.sk89q.worldedit.util.Location;
-import com.sk89q.worldguard.LocalPlayer;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -140,61 +135,4 @@ public class RaWorldEdit {
 		}
 	}
 
-	public static boolean checkRegionInRadius(Player p, int radius) {
-		if (!isConnected()) return false;
-		World world = p.getWorld();
-		LocalPlayer player = RaWorldGuard.getWrapPlayer(p);
-		String id = "__canbuild__";
-		Location loc = player.getLocation();
-		BlockVector3 min = BlockVector3.at(loc.getBlockX() + radius, 0, loc.getBlockZ() + radius);
-		BlockVector3 max = BlockVector3.at(loc.getBlockX() - radius, world.getMaxHeight(), loc.getBlockZ() - radius);
-		ProtectedRegion region = new ProtectedCuboidRegion(id, min, max);
-
-		ApplicableRegionSet set = RaWorldGuard.getRegionManager(world).getApplicableRegions(region);
-		if (RaWorldGuard.getRegionManager(world).overlapsUnownedRegion(region, player)) {
-			for (ProtectedRegion each : set) {
-				if (each != null && !each.getOwners().contains(player) && !each.getMembers().contains(player))
-					return true;
-			}
-		}
-		return false;
-	}
-
-	public static int canBuildSelection(Player p) throws CommandException {
-		boolean canBuild = false;
-		World world = p.getWorld();
-		LocalPlayer player = RaWorldGuard.getWrapPlayer(p);
-		String id = "__canbuild__";
-		ProtectedRegion region = checkRegionFromSelection(p, id);
-		if (region == null) return 3;
-		ApplicableRegionSet set = RaWorldGuard.getRegionManager(world).getApplicableRegions(region);
-		if (RaWorldGuard.getRegionManager(world).overlapsUnownedRegion(region, player)) {
-			for (ProtectedRegion each : set) {
-				if (each != null) {
-					if (!each.getOwners().contains(player) && !each.getMembers().contains(player)) {
-						return 1;
-					}
-					if (each.getOwners().contains(player) || each.getMembers().contains(player)) {
-						canBuild = true;
-					}
-				}
-			}
-			if (!canBuild) return 1;
-		} else {
-			for (ProtectedRegion each : set) {
-				if (each != null) {
-					if (each.getOwners().contains(player) || each.getMembers().contains(player)) {
-						BlockVector3 rgBlockMin = region.getMinimumPoint();
-						BlockVector3 rgBlockMax = region.getMaximumPoint();
-						if (each.contains(rgBlockMin.getBlockX(), rgBlockMin.getBlockY(), rgBlockMin.getBlockZ())
-								&& each.contains(rgBlockMax.getBlockX(), rgBlockMax.getBlockY(), rgBlockMax.getBlockZ())) {
-							canBuild = true;
-						}
-					}
-				}
-			}
-			if (!canBuild) return 2;
-		}
-		return 0;
-	}
 }

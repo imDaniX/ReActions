@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.flags.worldedit;
 
-import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
+import me.fromgate.reactions.externals.worldguard.WGBridge7x;
 import me.fromgate.reactions.flags.Flag;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
@@ -33,6 +33,6 @@ public class FlagRegionInRadius implements Flag {
 		Player player = context.getPlayer();
 		int radius = 0;
 		if (!param.isEmpty()) radius = Integer.parseInt(param);
-		return RaWorldEdit.checkRegionInRadius(player, radius);
+		return WGBridge7x.checkRegionInRadius(player, radius);
 	}
 }
