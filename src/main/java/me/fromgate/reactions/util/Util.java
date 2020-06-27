@@ -61,6 +61,20 @@ public class Util {
 
 	public final static Pattern FLOAT_WITHZERO = Pattern.compile("^\\d+\\.0$");
 
+	public static String removeSpaces(String str) {
+		StringBuilder bld = new StringBuilder();
+		for(int i = 0; i < str.length(); i++) {
+			char c = str.charAt(i);
+			if(c != ' ') bld.append(c);
+		}
+		return bld.toString();
+	}
+
+	public static double getDouble(String str, double def) {
+		if(isStringEmpty(str) || !FLOAT.matcher(str).matches()) return def;
+		return Double.parseDouble(str);
+	}
+
 	/**
 	 * Get random value by min and max values
 	 * @param numsStr String with min-max values or just max value(e.g. "2-47", "76")
