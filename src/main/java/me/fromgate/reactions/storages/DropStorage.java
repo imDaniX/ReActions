@@ -28,7 +28,7 @@ public class DropStorage extends Storage {
 
 	@Override
 	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("droplocation", LocationUtil.locationToString(player.getLocation()));
+		tempVars.put("droplocation", LocationUtil.locationToString(getPlayer().getLocation()));
 	}
 
 	@Override

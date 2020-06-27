@@ -42,7 +42,7 @@ public abstract class Storage {
 	@Getter private Map<String, String> tempVars;
 	@Getter private Map<String, DataValue> changeables;
 
-	@Getter final Player player;
+	@Getter private final Player player;
 	@Getter private final ActivatorType type;
 	private final boolean async;
 

@@ -50,9 +50,9 @@ public class MobDamageStorage extends Storage {
 	@Override
 	void defaultVariables(Map<String, String> tempVars) {
 		tempVars.put("moblocation", LocationUtil.locationToString(entity.getLocation()));
-		tempVars.put("mobdamager", player == null ? "" : player.getName());
+		tempVars.put("mobdamager", getPlayer() == null ? "" : getPlayer().getName());
 		tempVars.put("mobtype", entity.getType().name());
-		String mobName = entity instanceof Player ? entity.getCustomName() : entity.getName();
+		String mobName = entity instanceof Player ? entity.getName() : entity.getCustomName();
 		tempVars.put("mobname", Util.isStringEmpty(mobName) ? entity.getType().name() : mobName);
 	}
 

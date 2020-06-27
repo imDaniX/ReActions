@@ -46,7 +46,7 @@ public class MobClickStorage extends Storage {
 	void defaultVariables(Map<String, String> tempVars) {
 		tempVars.put("moblocation", LocationUtil.locationToString(entity.getLocation()));
 		tempVars.put("mobtype", entity.getType().name());
-		String mobName = entity instanceof Player ? entity.getCustomName() : entity.getName();
+		String mobName = entity instanceof Player ? entity.getName() : entity.getCustomName();
 		tempVars.put("mobname", Util.isStringEmpty(mobName) ? entity.getType().name() : mobName);
 	}
 
