@@ -223,25 +223,7 @@ public enum DefaultFunctions implements MathBase.Function {
     FORMATFLOAT {
         @Override
         public double eval(double a, double... num) {
-            if(a == 0) return 0;
-            return a < 0 ? -_eval(-a) : _eval(a);
-        }
-
-        // TODO: Count of chars after dot
-        private double _eval(double a) {
-            double j = a * 10;
-            boolean cut = false;
-            while(true) {
-                j = (j * 10) % 1;
-                double b = j * 10;
-                if(b < 6) {
-                    if(b < 5) {
-                        cut = true;
-                        break;
-                    }
-                } else break;
-            }
-            return (Math.floor(a)) + (Math.floor(a%1 * 100) + (cut ? 0 : 1)) / 100;
+            return Math.round(a*100)/100;
         }
     }
 }
