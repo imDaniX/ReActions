@@ -1,10 +1,10 @@
 name: ReActions
-api-version: 1.13
+api-version: '1.13'
 main: me.fromgate.reactions.ReActions
-version: 0.12.30.11
+version: ${project.version}
 website: http://fromgate.me
 author: fromgate, fromgate@gmail.com
-softdepend: [Vault,Towny,WorldGuard,RacesAndClasses,PlayEffect,Factions,Craftconomy3,ProtocolLib,PlaceholderAPI]
+softdepend: [Vault,WorldGuard,WorldEdit,ProtocolLib,PlaceholderAPI]
 description: Simplest scripting engine for Bukkit
 commands:
   react:
