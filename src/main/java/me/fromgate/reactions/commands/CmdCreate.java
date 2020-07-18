@@ -3,7 +3,6 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.activators.Activator;
 import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
@@ -83,8 +82,6 @@ public class CmdCreate extends Cmd {
 		if(ActivatorsManager.add(activator)) {
 			ActivatorsManager.saveActivators();
 			Msg.CMD_ADDBADDED.print(sender, activator.toString());
-			if(at == ActivatorType.REGION || at == ActivatorType.REGION_ENTER || at == ActivatorType.REGION_LEAVE)
-				RaWorldGuard.updateRegionCache();
 		} else {
 			Msg.CMD_NOTADDBADDED.print(sender, activator.toString());
 		}
