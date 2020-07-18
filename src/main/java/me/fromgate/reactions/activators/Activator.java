@@ -19,7 +19,7 @@ public abstract class Activator {
 	 */
 	public final void executeActivator(Storage storage) {
 		if(!activate(storage)) return;
-		RaContext context = storage.generateContext();
+		RaContext context = storage.generateContext(base.getName());
 		Actions.executeActions(context, getBase(), Flags.checkFlags(context, getBase()));
 	}
 

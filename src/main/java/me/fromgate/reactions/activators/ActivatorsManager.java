@@ -452,7 +452,6 @@ public class ActivatorsManager {
 	public static void activate(Storage storage) {
 		storage.init();
 		typeActivators.get(storage.getType()).forEach(a->a.executeActivator(storage));
-		storage.generateContext();
 	}
 
 	/**

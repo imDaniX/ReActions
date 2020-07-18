@@ -83,8 +83,8 @@ public abstract class Storage {
 		this.changeables = changeables;
 	}
 
-	public final RaContext generateContext() {
-		return new RaContext(tempVars, changeables, player);
+	public final RaContext generateContext(String activator) {
+		return new RaContext(activator, tempVars, changeables, player);
 	}
 
 }
