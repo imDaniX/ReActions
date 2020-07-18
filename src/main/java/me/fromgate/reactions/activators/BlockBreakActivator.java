@@ -2,6 +2,7 @@ package me.fromgate.reactions.activators;
 
 import me.fromgate.reactions.storages.BlockBreakStorage;
 import me.fromgate.reactions.storages.Storage;
+import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.parameter.Param;
@@ -16,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
  */
 public class BlockBreakActivator extends Activator implements Locatable {
 	private final Material blockType;
+	// TODO: VirtualLocation
 	private final String blockLocation;
 
 	private BlockBreakActivator(ActivatorBase base, Material block, String location) {
@@ -33,19 +35,15 @@ public class BlockBreakActivator extends Activator implements Locatable {
 		return true;
 	}
 
-	private boolean checkLocations(Block block) {
-		if (this.blockLocation.isEmpty()) return true;
-		return this.isLocatedAt(block.getLocation());
-	}
-
 	private boolean isActivatorBlock(Block block) {
 		if (this.blockType != null && blockType != block.getType()) return false;
-		return checkLocations(block);
+		if (Util.isStringEmpty(blockLocation)) return true;
+		return this.isLocatedAt(block.getLocation());
 	}
 
 	@Override
 	public boolean isLocatedAt(Location l) {
-		if (this.blockLocation.isEmpty()) return false;
+		if (Util.isStringEmpty(blockLocation)) return false;
 		Location loc = LocationUtil.parseLocation(this.blockLocation, null);
 		if (loc == null) return false;
 		return l.getWorld().equals(loc.getWorld()) &&
@@ -62,7 +60,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 	@Override
 	public void save(ConfigurationSection cfg) {
 		if(blockType != null) cfg.set("block", this.blockType.name());
-		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+		cfg.set("location", Util.isStringEmpty(blockLocation) ? null : this.blockLocation);
 	}
 
 	@Override
