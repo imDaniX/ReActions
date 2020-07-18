@@ -35,7 +35,12 @@ public class CuboidActivator extends Activator implements Locatable {
 			case CHECK:
 				return inCuboid;
 			case ENTER:
-				return inCuboid && within.add(id);
+				if(inCuboid) {
+					if(within.contains(id)) return false;
+					within.add(id);
+					return true;
+				}
+				return false;
 			case LEAVE:
 				return !inCuboid && within.remove(id);
 		}
