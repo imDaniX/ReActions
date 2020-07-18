@@ -39,7 +39,7 @@ public class ActionSignSet extends Action {
 	public boolean execute(RaContext context, Param params) {
 		// loc:world,x,y,z line1:text line2:text line3:text line4:text clear:1,2,3,4
 		String locStr = params.getParam("loc", context.getTempVariable("sign_loc"));
-		if (locStr.isEmpty()) return false;
+		if (Util.isStringEmpty(locStr)) return false;
 		Location loc = LocationUtil.parseCoordinates(locStr);
 		if (loc == null) return false;
 		boolean chunkLoad = params.getParam("loadchunk", false);
