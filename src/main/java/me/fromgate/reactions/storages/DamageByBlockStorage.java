@@ -7,7 +7,6 @@ import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.LocationUtil;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -41,6 +40,6 @@ public class DamageByBlockStorage extends Storage {
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
 		changeables.put(CANCEL_EVENT, new BooleanValue(false));
-		changeables.put(DAMAGE, new DoubleValue(damage));
+		changeables.put(DamageStorage.DAMAGE, new DoubleValue(damage));
 	}
 }
