@@ -2,7 +2,6 @@ package me.fromgate.reactions.externals.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import org.bukkit.OfflinePlayer;
 
 import java.util.regex.Pattern;
@@ -30,11 +29,8 @@ public class RaPapiExpansion extends PlaceholderExpansion {
 
 	@Override
 	public String onRequest(OfflinePlayer player, String s) {
-		if (PlaceholdersManager.countPlaceholder() && VARP.matcher(s).find()) {
-			String placeholder = "%" + s + "%";
-			String result = Variables.replacePlaceholders(player, placeholder);
-			if (!placeholder.equals(result))
-				return result;
+		if (VARP.matcher(s).find()) {
+			return Variables.getVariable(player.getName(), s, null);
 		}
 		return "";
 	}

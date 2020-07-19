@@ -26,7 +26,6 @@ import me.fromgate.reactions.storages.StoragesManager;
 import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -57,32 +56,15 @@ public class Variables {
 	}
 
 	public static void setVar(String player, String var, String value) {
-		String prevVal = Variables.getVar(player, var, "");
+		String prevVal = Variables.getVariable(player, var, "");
 		vars.put(varId(player, var), value);
 		if (!Cfg.playerSelfVarFile) save();
 		else save(player);
 		StoragesManager.raiseVariableActivator(var, player, value, prevVal);
 	}
 
-	public static void setVar(Player player, String var, String value) {
-		String prevVal = Variables.getVar(player, var, "");
-		vars.put(varId(player, var), value);
-		if (!Cfg.playerSelfVarFile) save();
-		else save(player.getName());
-		StoragesManager.raiseVariableActivator(var, player == null ? "" : player.getName(), value, prevVal);
-	}
-
-	public static void clearVar(Player player, String var) {
-		String prevVal = Variables.getVar(player, var, "");
-		String id = varId(player, var);
-		vars.remove(id);
-		if (!Cfg.playerSelfVarFile) save();
-		else save(player.getName());
-		StoragesManager.raiseVariableActivator(var, player == null ? "" : player.getName(), "", prevVal);
-	}
-
 	public static boolean clearVar(String player, String var) {
-		String prevVal = Variables.getVar(player, var, "");
+		String prevVal = Variables.getVariable(player, var, "");
 		String id = varId(player, var);
 		if (!vars.containsKey(id)) return false;
 		vars.remove(id);
@@ -93,22 +75,18 @@ public class Variables {
 	}
 
 
-	public static String getVar(String player, String var, String defvar) {
-		String id = varId(player, var);
-		if (vars.containsKey(id)) return vars.get(id);
-		return defvar;
+	public static String getVariable(String player, String var, String defvar) {
+		return vars.getOrDefault(varId(player, var), defvar);
 	}
 
-	public static String getVar(Player player, String var, String defvar) {
-		String id = varId(player, var);
-		if (vars.containsKey(id)) return vars.get(id);
-		return defvar;
+	public static String getVariable(Player player, String var, String defvar) {
+		return vars.getOrDefault(varId(player, var), defvar);
 	}
 
-	public static boolean cmpVar(String playerName, String var, String cmpvalue) {
+	public static boolean compareVariable(String playerName, String var, String cmpvalue) {
 		String id = varId(playerName, var);
 		if (!vars.containsKey(id)) return false;
-		String value = getVar(playerName, var, "");
+		String value = getVariable(playerName, var, "");
 		if (Util.isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
 		return value.equalsIgnoreCase(cmpvalue);
 	}
@@ -131,26 +109,6 @@ public class Variables {
 		return (vars.containsKey(varId(playerName, var)));
 	}
 
-	public static boolean incVar(Player player, String var) {
-		return incVar(player, var, 1);
-	}
-
-	public static boolean incVar(String player, String var) {
-		return incVar(player, var, 1);
-	}
-
-	public static boolean decVar(Player player, String var) {
-		return incVar(player, var, -1);
-	}
-
-	public static boolean decVar(String player, String var) {
-		return incVar(player, var, -1);
-	}
-
-	public static boolean incVar(Player player, String var, double addValue) {
-		return incVar(player == null ? "" : player.getName(), var, addValue);
-	}
-
 	public static boolean incVar(String player, String var, double addValue) {
 		String id = varId(player, var);
 		if (!vars.containsKey(id)) setVar(player, var, "0");
@@ -164,19 +122,6 @@ public class Variables {
 	public static boolean decVar(String player, String var, double decValue) {
 		return incVar(player, var, decValue * (-1));
 	}
-
-	public static boolean decVar(Player player, String var, double decValue) {
-		return incVar(player, var, decValue * (-1));
-	}
-
-	public static boolean mergeVar(Player player, String var, String stringToMerge, boolean spaceDivider) {
-		String space = spaceDivider ? " " : "";
-		String id = varId(player, var);
-		if (!vars.containsKey(id)) setVar(player, var, "");
-		setVar(player, var, getVar(player, var, "") + space + stringToMerge);
-		return false;
-	}
-
 
 	public static void save() {
 		YamlConfiguration cfg = new YamlConfiguration();
@@ -293,28 +238,6 @@ public class Variables {
 			cfg2.set(key, varsTmp.get(key));
 		if(!FileUtil.saveCfg(cfg2, f, "Failed to save variable file")) return;
 		varsTmp.clear();
-	}
-
-
-	public static String replacePlaceholders(OfflinePlayer player, String str) {
-		if (!VARP.matcher(str).matches()) return str;
-
-		String newStr = str;
-		for (String key : vars.keySet()) {
-			String replacement = vars.get(key);
-			replacement = Util.FLOAT_WITHZERO.matcher(replacement).matches() ? Integer.toString((int) Double.parseDouble(replacement)) : replacement; // Matcher.quoteReplacement(replacement);
-			if (key.startsWith("general.")) {
-				String id = key.substring(8); // key.replaceFirst("general\\.", "");
-				newStr = newStr.replaceAll("(?i)%var:" + Pattern.quote(id) + "%", replacement);
-			} else {
-				if (player != null && key.matches("(?i)^" + player.getName() + "\\..*")) {
-					String id = key.replaceAll("(?i)^" + player.getName() + "\\.", "");
-					newStr = newStr.replaceAll("(?i)%varp:" + Pattern.quote(id) + "%", replacement);
-				}
-				newStr = newStr.replaceAll("(?i)%varp?:" + Pattern.quote(key) + "%", replacement);
-			}
-		}
-		return newStr;
 	}
 
 	public static void printList(CommandSender sender, int pageNum, String mask) {

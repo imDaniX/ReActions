@@ -40,7 +40,7 @@ public class CmdSet extends Cmd {
 			String value = params.getParam("value", "");
 			String player = params.getParam("player", "");
 			Variables.setVar(player, id, value);
-			return Msg.CMD_VARSET.print(sender, player.isEmpty() ? id : player + "." + id, Variables.getVar(player, id, ""));
+			return Msg.CMD_VARSET.print(sender, player.isEmpty() ? id : player + "." + id, Variables.getVariable(player, id, ""));
 		} else if (var.equalsIgnoreCase("menu") || var.equalsIgnoreCase("m")) {
 			if (InventoryMenu.set(id, params))
 				return Msg.MSG_MENUPARAMSET.print(sender, id);

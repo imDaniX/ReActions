@@ -5,7 +5,6 @@ import lombok.Setter;
 import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.flags.Flags;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
@@ -14,7 +13,6 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +22,9 @@ public class PlaceholdersManager {
 	private static int placeholderCounter = 0;
 	@Getter @Setter private static int countLimit = 127;
 	private final static Pattern PATTERN_RAW = Pattern.compile("%raw:((%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%))%");
-	private final static Pattern PATTERN_ANY = Pattern.compile("(%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%)");
+
+	private static final Pattern PLACEHOLDER_GREEDY = Pattern.compile("%\\S+%");
+	private static final Pattern PLACEHOLDER_NONGREEDY = Pattern.compile("%\\S+?%");
 
 	private static Set<Placeholder> placeholders = new HashSet<>();
 
@@ -49,14 +49,13 @@ public class PlaceholdersManager {
 		String result = original;
 		Matcher matcher = PATTERN_RAW.matcher(Matcher.quoteReplacement(result));
 		StringBuffer sb = new StringBuffer();
-		int count = 0;
 		while (matcher.find()) {
-			raws.add(matcher.group().replaceAll("(^%raw:)|(%$)", ""));
-			matcher.appendReplacement(sb, "§~[RAW" + count + "]");
-			count++;
+			String group = matcher.group();
+			matcher.appendReplacement(sb, "§~[RAW" + raws.size() + "]");
+			raws.add(group.substring(5, group.length() - 1));
 		}
 		matcher.appendTail(sb);
-		result = replacePlaceholders(context, sb.toString());
+		result = parsePlaceholders(sb.toString(), context);
 		if (!raws.isEmpty()) {
 			for (int i = 0; i < raws.size(); i++) {
 				result = result.replace("§~[RAW" + i + "]", raws.get(i));
@@ -65,56 +64,64 @@ public class PlaceholdersManager {
 		return result;
 	}
 
-	private static String replacePlaceholders(RaContext context, String original) {
-		Player player = context.getPlayer();
-		String result = original;
-		result = replaceTempVars(context.getTempVariables(), result);
-		result = Variables.replacePlaceholders(player, result);
-		Matcher matcher = PATTERN_ANY.matcher(Matcher.quoteReplacement(result));
-		StringBuffer sb = new StringBuffer();
-		String group;
-		String replacement;
-		while (matcher.find()) {
-			group = "%" +
-					replacePlaceholders(context,
-							matcher.group().replaceAll("(^%)|(%$)", "")) +
-					"%";
-			replacement = replacePlaceholder(player, group);
-			matcher.appendReplacement(sb, Matcher.quoteReplacement(replacement == null ? group : replacement));
-		}
-		matcher.appendTail(sb);
-		result = sb.toString();
-		if (!original.equals(result) && countPlaceholder()) result = replacePlaceholders(context, result);
-		result = RaPlaceholderAPI.processPlaceholder(player, result);
-		return result;
+	private static String parsePlaceholders(String text, RaContext context) {
+		if(text == null || text.length() < 3) return text;
+		String oldText;
+		int limit = countLimit;
+		do {
+			oldText = text;
+			text = parseRecursive(text, PLACEHOLDER_GREEDY, context);
+			text = parseRecursive(text, PLACEHOLDER_NONGREEDY, context);
+		} while(--limit > 0 && !text.equals(oldText));
+		return text;
 	}
 
-	private static String replaceTempVars(Map<String, String> tempVars, String str) {
-		if (str.isEmpty()) return str;
-		String newStr = str;
-		for (String key : tempVars.keySet()) {
-			String replacement = tempVars.get(key);
-			replacement = Util.FLOAT_WITHZERO.matcher(replacement).matches() ?
-					Integer.toString((int) Double.parseDouble(replacement)) :
-					replacement; // Matcher.quoteReplacement(replacement);
-			newStr = newStr.replaceAll("(?i)%" + key + "%", replacement);
+	private static String parseRecursive(String text, final Pattern phPattern, final RaContext context) {
+		Matcher phMatcher = phPattern.matcher(text);
+		// If found at least one
+		if(phMatcher.find()) {
+			StringBuffer buf = new StringBuffer();
+			processIteration(buf, phMatcher, phPattern, context);
+			while(phMatcher.find()) {
+				processIteration(buf, phMatcher, phPattern, context);
+			}
+			return phMatcher.appendTail(buf).toString();
 		}
-		return newStr;
+		return text;
 	}
 
-	private final static Pattern PH_W_S = Pattern.compile("(%\\w+:\\S+%)");
+	// Just some sh!tty stuff
+	private static void processIteration(StringBuffer buffer, Matcher matcher, Pattern pattern, RaContext context) {
+		matcher.appendReplacement(
+				buffer,
+				Matcher.quoteReplacement(
+						replacePlaceholder(
+								parseRecursive(
+										crop(matcher.group()),
+										pattern,
+										context
+								),
+								context
+						)
+				)
+		);
+	}
 
-	private static String replacePlaceholder(Player player, String field) {
-		String key = field.replaceAll("^%", "").replaceAll("%$", "");
-		String value = "";
-		if (PH_W_S.matcher(field).matches()) {
-			value = field.replaceAll("^%\\w+:", "").replaceAll("%$", "");
-			key = key.replaceAll(Pattern.quote(":" + value) + "$", "");
+	private static String crop(String text) {
+		return text.substring(1, text.length() - 1);
+	}
+
+	private static String replacePlaceholder(String text, RaContext context) {
+		String result = context.getTempVariable(text);
+		if(result != null) return result;
+		result = Variables.getVariable(context.getPlayer(), text, null);
+		if(result != null) return result;
+		for(Placeholder placeholder : placeholders) {
+			String[] ph = result.split(":", 2);
+			result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph.length > 1 ? ph[1] : ph[0]);
+			if(result != null) return result;
 		}
-		for (Placeholder ph : placeholders) {
-			if (ph.checkKey(key)) return ph.processPlaceholder(player, key, value);
-		}
-		return field;
+		return RaPlaceholderAPI.processPlaceholder(context.getPlayer(), result);
 	}
 
 	public static void listPlaceholders(CommandSender sender, int pageNum) {
@@ -144,15 +151,5 @@ public class PlaceholdersManager {
 		phList.add("&6SIGN_LOC, SIGN_LINE1,.. SIGN_LINE4&3: &a" + Msg.PLACEHOLDER_SIGNACT.getText("NOCOLOR"));
 		phList.add("&6ARG0, ARG1, ARG2...&3: &a" + Msg.PLACEHOLDER_COMMANDACT.getText("NOCOLOR"));
 		Msg.printPage(sender, phList, Msg.MSG_PLACEHOLDERLISTTITLE, pageNum, sender instanceof Player ? 10 : 1000);
-	}
-
-	/**
-	 * @return Is it allowed to process placeholder
-	 */
-	public static boolean countPlaceholder() {
-		if(placeholderCounter++ < countLimit)
-			return true;
-		placeholderCounter = 0;
-		return false;
 	}
 }

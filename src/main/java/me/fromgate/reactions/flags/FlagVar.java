@@ -61,7 +61,7 @@ public class FlagVar implements Flag {
 			case 0: // VAR_EXIST
 				return Variables.existVar(playerName, var);
 			case 1: // VAR_COMPARE
-				return Variables.cmpVar(playerName, var, value);
+				return Variables.compareVariable(playerName, var, value);
 			case 2: // VAR_GREATER
 				return Variables.cmpGreaterVar(playerName, var, value);
 			case 3: // VAR_LOWER
