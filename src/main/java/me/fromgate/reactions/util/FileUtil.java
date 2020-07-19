@@ -11,7 +11,7 @@ public class FileUtil {
     public static boolean loadCfg(YamlConfiguration cfg, File f, String error) {
         if (cfg == null) return false;
         try {
-            if (!f.exists() && !createFile(f, error)) return false;
+            if (!createFile(f, error)) return false;
             cfg.load(f);
             return true;
         } catch (IOException | InvalidConfigurationException | IllegalArgumentException e) {

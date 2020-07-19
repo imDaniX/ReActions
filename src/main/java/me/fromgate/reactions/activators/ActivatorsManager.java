@@ -334,7 +334,7 @@ public class ActivatorsManager {
         String g = Util.implode(group.split("/"));
 
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
-        File dir = new File(f.getPath());
+        File dir = f.getParentFile();
         if (!dir.exists()) dir.mkdirs();
 
         YamlConfiguration cfg = new YamlConfiguration();
