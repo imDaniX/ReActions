@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 package me.fromgate.reactions.storages;
@@ -32,19 +32,20 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class MobKillStorage extends Storage {
-	@Getter private final LivingEntity entity;
+    @Getter
+    private final LivingEntity entity;
 
-	public MobKillStorage(Player p, LivingEntity entity) {
-		super(p, ActivatorType.MOB_KILL);
-		this.entity = entity;
-	}
+    public MobKillStorage(Player p, LivingEntity entity) {
+        super(p, ActivatorType.MOB_KILL);
+        this.entity = entity;
+    }
 
-	@Override
-	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("moblocation", LocationUtil.locationToString(entity.getLocation()));
-		tempVars.put("mobkiller", getPlayer() == null ? "" : getPlayer().getName());
-		tempVars.put("mobtype", entity.getType().name());
-		String mobName = entity instanceof Player ? entity.getName() : entity.getCustomName();
-		tempVars.put("mobname", Util.isStringEmpty(mobName) ? entity.getType().name() : mobName);
-	}
+    @Override
+    void defaultVariables(Map<String, String> tempVars) {
+        tempVars.put("moblocation", LocationUtil.locationToString(entity.getLocation()));
+        tempVars.put("mobkiller", getPlayer() == null ? "" : getPlayer().getName());
+        tempVars.put("mobtype", entity.getType().name());
+        String mobName = entity instanceof Player ? entity.getName() : entity.getCustomName();
+        tempVars.put("mobname", Util.isStringEmpty(mobName) ? entity.getType().name() : mobName);
+    }
 }

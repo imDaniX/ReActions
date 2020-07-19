@@ -9,75 +9,74 @@ import org.bukkit.configuration.ConfigurationSection;
  * Created by MaxDikiy on 2017-05-16.
  */
 public class SneakActivator extends Activator {
-	private final SneakType sneak;
+    private final SneakType sneak;
 
-	private SneakActivator(ActivatorBase base, SneakType sneak) {
-		super(base);
-		this.sneak = sneak;
-	}
+    private SneakActivator(ActivatorBase base, SneakType sneak) {
+        super(base);
+        this.sneak = sneak;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		SneakStorage se = (SneakStorage) event;
-		if(!checkSneak(se.isSneaking())) return false;
-		return true;
-	}
+    public static SneakActivator create(ActivatorBase base, Param param) {
+        SneakType sneak = SneakType.getByName(param.getParam("sneak", "ANY"));
+        return new SneakActivator(base, sneak);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("sneak", sneak.name());
-	}
+    public static SneakActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        SneakType sneak = SneakType.getByName(cfg.getString("sneak", "ANY"));
+        return new SneakActivator(base, sneak);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.SNEAK;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        SneakStorage se = (SneakStorage) event;
+        return checkSneak(se.isSneaking());
+    }
 
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("sneak", sneak.name());
+    }
 
-	private boolean checkSneak(boolean isSneak) {
-		switch (sneak) {
-			case ANY:
-				return true;
-			case TRUE:
-				return isSneak;
-			case FALSE:
-				return !isSneak;
-		}
-		return false;
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.SNEAK;
+    }
 
-	enum SneakType {
-		TRUE,
-		FALSE,
-		ANY;
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 
-		public static SneakType getByName(String sneakStr) {
-			if (sneakStr.equalsIgnoreCase("true")) return SneakType.TRUE;
-			if (sneakStr.equalsIgnoreCase("any")) return SneakType.ANY;
-			return SneakType.FALSE;
-		}
-	}
+    private boolean checkSneak(boolean isSneak) {
+        switch(sneak) {
+            case ANY:
+                return true;
+            case TRUE:
+                return isSneak;
+            case FALSE:
+                return !isSneak;
+        }
+        return false;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("sneak:").append(this.sneak.name());
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("sneak:").append(this.sneak.name());
+        sb.append(")");
+        return sb.toString();
+    }
 
-	public static SneakActivator create(ActivatorBase base, Param param) {
-		SneakType sneak = SneakType.getByName(param.getParam("sneak", "ANY"));
-		return new SneakActivator(base, sneak);
-	}
+    enum SneakType {
+        TRUE,
+        FALSE,
+        ANY;
 
-	public static SneakActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		SneakType sneak = SneakType.getByName(cfg.getString("sneak", "ANY"));
-		return new SneakActivator(base, sneak);
-	}
+        public static SneakType getByName(String sneakStr) {
+            if(sneakStr.equalsIgnoreCase("true")) return SneakType.TRUE;
+            if(sneakStr.equalsIgnoreCase("any")) return SneakType.ANY;
+            return SneakType.FALSE;
+        }
+    }
 }

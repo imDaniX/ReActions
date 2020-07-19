@@ -29,50 +29,49 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class JoinActivator extends Activator {
 
-	private final boolean firstJoin;
+    private final boolean firstJoin;
 
-	private JoinActivator(ActivatorBase base, boolean firstJoin) {
-		super(base);
-		this.firstJoin = firstJoin;
-	}
+    private JoinActivator(ActivatorBase base, boolean firstJoin) {
+        super(base);
+        this.firstJoin = firstJoin;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		JoinStorage ce = (JoinStorage) event;
-		if (isJoinActivate(ce.isFirstJoin())) return true;
-		return false;
-	}
+    public static JoinActivator create(ActivatorBase base, Param param) {
+        boolean firstJoin = param.toString().contains("first");
+        return new JoinActivator(base, firstJoin);
+    }
 
-	private boolean isJoinActivate(boolean joinFirstTime) {
-		if (this.firstJoin) return joinFirstTime;
-		return true;
-	}
+    public static JoinActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        boolean firstJoin = cfg.getString("join-state", "ANY").equalsIgnoreCase("first");
+        return new JoinActivator(base, firstJoin);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("join-state", (firstJoin ? "TRUE" : "ANY"));
-	}
+    @Override
+    public boolean activate(Storage event) {
+        JoinStorage ce = (JoinStorage) event;
+        return isJoinActivate(ce.isFirstJoin());
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.JOIN;
-	}
+    private boolean isJoinActivate(boolean joinFirstTime) {
+        if(this.firstJoin) return joinFirstTime;
+        return true;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (first join:").append(this.firstJoin).append(")");
-		return sb.toString();
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("join-state", (firstJoin ? "TRUE" : "ANY"));
+    }
 
-	public static JoinActivator create(ActivatorBase base, Param param) {
-		boolean firstJoin = param.toString().contains("first");
-		return new JoinActivator(base, firstJoin);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.JOIN;
+    }
 
-	public static JoinActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		boolean firstJoin = cfg.getString("join-state", "ANY").equalsIgnoreCase("first");
-		return new JoinActivator(base, firstJoin);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (first join:").append(this.firstJoin).append(")");
+        return sb.toString();
+    }
 
 }

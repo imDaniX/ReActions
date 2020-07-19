@@ -28,31 +28,31 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class QuitActivator extends Activator {
 
-	private QuitActivator(ActivatorBase base) {
-		super(base);
-	}
+    private QuitActivator(ActivatorBase base) {
+        super(base);
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		return true;
-	}
+    public static QuitActivator create(ActivatorBase base, Param ignore) {
+        return new QuitActivator(base);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.QUIT;
-	}
+    public static QuitActivator load(ActivatorBase base, ConfigurationSection ignore) {
+        return new QuitActivator(base);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		return sb.toString();
-	}
+    @Override
+    public boolean activate(Storage event) {
+        return true;
+    }
 
-	public static QuitActivator create(ActivatorBase base, Param ignore) {
-		return new QuitActivator(base);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.QUIT;
+    }
 
-	public static QuitActivator load(ActivatorBase base, ConfigurationSection ignore) {
-		return new QuitActivator(base);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        return sb.toString();
+    }
 }

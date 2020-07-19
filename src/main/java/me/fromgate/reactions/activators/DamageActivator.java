@@ -12,63 +12,62 @@ import org.bukkit.event.entity.EntityDamageEvent;
  */
 // TODO: Assemble to one activator
 public class DamageActivator extends Activator {
-	private final String damageCause;
-	private final DamageType source;
+    private final String damageCause;
+    private final DamageType source;
 
-	private DamageActivator(ActivatorBase base, String cause, DamageType source) {
-		super(base);
-		this.damageCause = cause;
-		this.source = source;
-	}
+    private DamageActivator(ActivatorBase base, String cause, DamageType source) {
+        super(base);
+        this.damageCause = cause;
+        this.source = source;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		DamageStorage de = (DamageStorage) event;
-		if (!damageCauseCheck(de.getCause())) return false;
-		if (!sourceCheck(de.getSource())) return false;
-		return true;
-	}
+    public static DamageActivator create(ActivatorBase base, Param param) {
+        String cause = param.getParam("cause", "ANY");
+        DamageType source = DamageType.getByName(param.getParam("source", "ANY"));
+        return new DamageActivator(base, cause, source);
+    }
 
-	private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {
-		if (damageCause.equals("ANY")) return true;
-		return dc.name().equals(damageCause);
-	}
+    public static DamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String cause = cfg.getString("cause", "ANY");
+        DamageType source = DamageType.getByName(cfg.getString("source", "ANY"));
+        return new DamageActivator(base, cause, source);
+    }
 
-	private boolean sourceCheck(String st) {
-		if (source.name().equals("ANY")) return true;
-		return st.equals(source.name());
-	}
+    @Override
+    public boolean activate(Storage event) {
+        DamageStorage de = (DamageStorage) event;
+        if(!damageCauseCheck(de.getCause())) return false;
+        return sourceCheck(de.getSource());
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("cause", this.damageCause);
-		cfg.set("source", this.source.name());
-	}
+    private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {
+        if(damageCause.equals("ANY")) return true;
+        return dc.name().equals(damageCause);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.DAMAGE;
-	}
+    private boolean sourceCheck(String st) {
+        if(source.name().equals("ANY")) return true;
+        return st.equals(source.name());
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("cause:").append(this.damageCause);
-		sb.append("; source:").append(this.source.name());
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("cause", this.damageCause);
+        cfg.set("source", this.source.name());
+    }
 
-	public static DamageActivator create(ActivatorBase base, Param param) {
-		String cause = param.getParam("cause", "ANY");
-		DamageType source = DamageType.getByName(param.getParam("source", "ANY"));
-		return new DamageActivator(base, cause, source);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.DAMAGE;
+    }
 
-	public static DamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String cause = cfg.getString("cause", "ANY");
-		DamageType source = DamageType.getByName(cfg.getString("source", "ANY"));
-		return new DamageActivator(base, cause, source);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("cause:").append(this.damageCause);
+        sb.append("; source:").append(this.source.name());
+        sb.append(")");
+        return sb.toString();
+    }
 }

@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 package me.fromgate.reactions.actions;
@@ -40,74 +40,74 @@ import java.util.logging.Logger;
 
 public class ActionLog extends Action {
 
-	private final Logger LOGGER = Logger.getLogger("Minecraft");
-	private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private final Logger LOGGER = Logger.getLogger("Minecraft");
+    private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private void saveToFile(RaContext context, String fileName, String message) {
-		File path = new File("");
-		String dir = path.getAbsolutePath();
+    private void saveToFile(RaContext context, String fileName, String message) {
+        File path = new File("");
+        String dir = path.getAbsolutePath();
 
-		File file = new File(dir + "/" + fileName);
-		context.setTempVariable("fullpath", file.getAbsolutePath());
-		if (fileName.isEmpty()) return;
+        File file = new File(dir + "/" + fileName);
+        context.setTempVariable("fullpath", file.getAbsolutePath());
+        if(fileName.isEmpty()) return;
 
-		Date date = new Date();
-		String d = DATE_FORMAT.format(date);
-		try {
-			if (fileName.contains("/")) {
-				String ph = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\") + 1);
-				File fileDir = new File(ph);
-				if (!fileDir.exists() && !fileDir.mkdirs()) return;
-			}
-			if (!file.exists()) {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
-				bw.close();
-			}
+        Date date = new Date();
+        String d = DATE_FORMAT.format(date);
+        try {
+            if(fileName.contains("/")) {
+                String ph = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\") + 1);
+                File fileDir = new File(ph);
+                if(!fileDir.exists() && !fileDir.mkdirs()) return;
+            }
+            if(!file.exists()) {
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+                bw.close();
+            }
 
-			if (file.isFile()) {
-				BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
-				bw.append("[").append(d).append("] ").append(message).append("\n");
-				bw.close();
-			}
+            if(file.isFile()) {
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+                bw.append("[").append(d).append("] ").append(message).append("\n");
+                bw.close();
+            }
 
-		} catch (IOException e) {
-			context.setTempVariable("logdebug", e.getLocalizedMessage());
-		}
-	}
+        } catch (IOException e) {
+            context.setTempVariable("logdebug", e.getLocalizedMessage());
+        }
+    }
 
-	@Override
-	public boolean execute(RaContext context, Param params) {
-		if (params.hasAnyParam("prefix", "color", "file")) {
-			String plg_name = ReActions.getPlugin().getDescription().getName();
-			boolean prefix = params.getParam("prefix", true);
-			boolean color = params.getParam("color", false);
-			String file = params.getParam("file", "");
-			String message = params.getParam("text", removeParams(params.getParam("param-line")));
-			if (message.isEmpty()) return false;
-			if (file.isEmpty()) {
-				if (prefix) {
-					this.log(message, plg_name, color);
-				} else this.log(message, "", color);
-			} else {
-				saveToFile(context, file, message);
-			}
-		} else Msg.logMessage(params.getParam("param-line"));
+    @Override
+    public boolean execute(RaContext context, Param params) {
+        if(params.hasAnyParam("prefix", "color", "file")) {
+            String plg_name = ReActions.getPlugin().getDescription().getName();
+            boolean prefix = params.getParam("prefix", true);
+            boolean color = params.getParam("color", false);
+            String file = params.getParam("file", "");
+            String message = params.getParam("text", removeParams(params.getParam("param-line")));
+            if(message.isEmpty()) return false;
+            if(file.isEmpty()) {
+                if(prefix) {
+                    this.log(message, plg_name, color);
+                } else this.log(message, "", color);
+            } else {
+                saveToFile(context, file, message);
+            }
+        } else Msg.logMessage(params.getParam("param-line"));
 
-		return true;
-	}
+        return true;
+    }
 
-	private String removeParams(String message) {
-		StringBuilder sb = new StringBuilder("(?i)(");
-		sb.append(String.join("|", SelectorsManager.getAllKeys()));
-		sb.append("|hide|prefix|color|file):(\\{.*\\}|\\S+)\\s{0,1}");
-		return message.replaceAll(sb.toString(), "");
+    private String removeParams(String message) {
+        StringBuilder sb = new StringBuilder("(?i)(");
+        sb.append(String.join("|", SelectorsManager.getAllKeys()));
+        sb.append("|hide|prefix|color|file):(\\{.*\\}|\\S+)\\s{0,1}");
+        return message.replaceAll(sb.toString(), "");
 
-	}
+    }
 
-	private void log(String msg, String prefix, boolean color) {
-		String px = "";
-		if (!prefix.isEmpty()) px = "[" + prefix + "] ";
-		if (color) LOGGER.info(ChatColor.translateAlternateColorCodes('&', px + msg));
-		else LOGGER.info(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', px + msg)));
-	}
+    private void log(String msg, String prefix, boolean color) {
+        String px = "";
+        if(!prefix.isEmpty()) px = "[" + prefix + "] ";
+        if(color) LOGGER.info(ChatColor.translateAlternateColorCodes('&', px + msg));
+        else LOGGER.info(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', px + msg)));
+    }
 }

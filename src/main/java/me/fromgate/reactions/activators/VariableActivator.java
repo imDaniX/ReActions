@@ -1,4 +1,4 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
@@ -30,58 +30,57 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class VariableActivator extends Activator {
-	private final String id;
-	private final boolean personal;
+    private final String id;
+    private final boolean personal;
 
-	private VariableActivator(ActivatorBase base, String id, boolean personal) {
-		super(base);
-		this.id = id;
-		this.personal = personal;
-	}
+    private VariableActivator(ActivatorBase base, String id, boolean personal) {
+        super(base);
+        this.id = id;
+        this.personal = personal;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		VariableStorage ve = (VariableStorage) event;
-		if (!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
-		if (personal && ve.getPlayer() != null) return false;
-		return true;
-	}
+    public static VariableActivator create(ActivatorBase base, Param param) {
+        String id = param.getParam("id", "UnknownVariable");
+        boolean personal = param.getParam("personal", false);
+        return new VariableActivator(base, id, personal);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("variable-id", id);
-		cfg.set("personal", personal);
-	}
+    public static VariableActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String id = cfg.getString("variable-id", "UnknownVariable");
+        boolean personal = cfg.getBoolean("personal", false);
+        return new VariableActivator(base, id, personal);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.VARIABLE;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        VariableStorage ve = (VariableStorage) event;
+        if(!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
+        return !personal || ve.getPlayer() == null;
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(id);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("variable-id", id);
+        cfg.set("personal", personal);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("variable id:").append(this.id);
-		if (this.personal) sb.append(" personal:true");
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.VARIABLE;
+    }
 
-	public static VariableActivator create(ActivatorBase base, Param param) {
-		String id = param.getParam("id", "UnknownVariable");
-		boolean personal = param.getParam("personal", false);
-		return new VariableActivator(base, id, personal);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(id);
+    }
 
-	public static VariableActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String id = cfg.getString("variable-id", "UnknownVariable");
-		boolean personal = cfg.getBoolean("personal", false);
-		return new VariableActivator(base, id, personal);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("variable id:").append(this.id);
+        if(this.personal) sb.append(" personal:true");
+        sb.append(")");
+        return sb.toString();
+    }
 }

@@ -35,99 +35,98 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class LeverActivator extends Activator implements Locatable {
 
-	private final String state; //on, off
-	private final String world;
-	private final int x;
-	private final int y;
-	private final int z;
+    private final String state; //on, off
+    private final String world;
+    private final int x;
+    private final int y;
+    private final int z;
 
-	private LeverActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
-		super(base);
-		this.state = state;
-		this.world = world;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
+    private LeverActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
+        super(base);
+        this.state = state;
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		LeverStorage le = (LeverStorage) event;
-		if (le.getLever() == null) return false;
-		if (!isLocatedAt(le.getLeverLocation())) return false;
-		if (this.state.equalsIgnoreCase("on") && le.isLeverPowered()) return false;
-		if (this.state.equalsIgnoreCase("off") && (!le.isLeverPowered())) return false;
-		return true;
-	}
+    public static LeverActivator create(ActivatorBase base, Param p) {
+        if(!(p instanceof BlockParam)) return null;
+        BlockParam param = (BlockParam) p;
+        Block targetBlock = param.getBlock();
+        String line = param.toString();
+        if(targetBlock != null && targetBlock.getType() == Material.LEVER) {
+            String state = "ANY";
+            if(line.equalsIgnoreCase("on")) state = "ON";
+            if(line.equalsIgnoreCase("off")) state = "OFF";
+            String world = targetBlock.getWorld().getName();
+            int x = targetBlock.getX();
+            int y = targetBlock.getY();
+            int z = targetBlock.getZ();
+            return new LeverActivator(base, state, world, x, y, z);
+        } else return null;
+    }
 
-	@Override
-	public boolean isLocatedAt(Location l) {
-		if (l == null) return false;
-		if (!world.equals(l.getWorld().getName())) return false;
-		if (x != l.getBlockX()) return false;
-		if (y != l.getBlockY()) return false;
-		return (z == l.getBlockZ());
-	}
+    public static LeverActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String world = cfg.getString("world");
+        int x = cfg.getInt("x");
+        int y = cfg.getInt("y");
+        int z = cfg.getInt("z");
+        String state = cfg.getString("lever-state", "ANY");
+        if((!state.equalsIgnoreCase("on")) && (!state.equalsIgnoreCase("off"))) state = "ANY";
+        return new LeverActivator(base, state, world, x, y, z);
+    }
 
-	@Override
-	public boolean isLocatedAt(World world, int x, int y, int z) {
-		return this.world.equals(world.getName()) &&
-				this.x == x &&
-				this.y == y &&
-				this.z == z;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        LeverStorage le = (LeverStorage) event;
+        if(le.getLever() == null) return false;
+        if(!isLocatedAt(le.getLeverLocation())) return false;
+        if(this.state.equalsIgnoreCase("on") && le.isLeverPowered()) return false;
+        return !this.state.equalsIgnoreCase("off") || (le.isLeverPowered());
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("world", this.world);
-		cfg.set("x", x);
-		cfg.set("y", y);
-		cfg.set("z", z);
-		cfg.set("lever-state", state);
-	}
+    @Override
+    public boolean isLocatedAt(Location l) {
+        if(l == null) return false;
+        if(!world.equals(l.getWorld().getName())) return false;
+        if(x != l.getBlockX()) return false;
+        if(y != l.getBlockY()) return false;
+        return (z == l.getBlockZ());
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.LEVER;
-	}
+    @Override
+    public boolean isLocatedAt(World world, int x, int y, int z) {
+        return this.world.equals(world.getName()) &&
+                this.x == x &&
+                this.y == y &&
+                this.z == z;
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(world);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("world", this.world);
+        cfg.set("x", x);
+        cfg.set("y", y);
+        cfg.set("z", z);
+        cfg.set("lever-state", state);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (").append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
-		sb.append(" state:").append(this.state.toUpperCase()).append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.LEVER;
+    }
 
-	public static LeverActivator create(ActivatorBase base, Param p) {
-		if(!(p instanceof BlockParam)) return null;
-		BlockParam param = (BlockParam) p;
-		Block targetBlock = param.getBlock();
-		String line = param.toString();
-		if (targetBlock != null && targetBlock.getType() == Material.LEVER) {
-			String state = "ANY";
-			if (line.equalsIgnoreCase("on")) state = "ON";
-			if (line.equalsIgnoreCase("off")) state = "OFF";
-			String world = targetBlock.getWorld().getName();
-			int x = targetBlock.getX();
-			int y = targetBlock.getY();
-			int z = targetBlock.getZ();
-			return new LeverActivator(base, state, world, x, y, z);
-		} else return null;
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(world);
+    }
 
-	public static LeverActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String world = cfg.getString("world");
-		int x = cfg.getInt("x");
-		int y = cfg.getInt("y");
-		int z = cfg.getInt("z");
-		String state = cfg.getString("lever-state", "ANY");
-		if ((!state.equalsIgnoreCase("on")) && (!state.equalsIgnoreCase("off"))) state = "ANY";
-		return new LeverActivator(base, state, world, x, y, z);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (").append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
+        sb.append(" state:").append(this.state.toUpperCase()).append(")");
+        return sb.toString();
+    }
 }

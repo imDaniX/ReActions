@@ -7,23 +7,25 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 public class PlayerMoveByBlockEvent extends PlayerEvent {
-	private static final HandlerList handlers = new HandlerList();
+    private static final HandlerList handlers = new HandlerList();
 
-	@Getter private final Location to;
-	@Getter private final Location from;
+    @Getter
+    private final Location to;
+    @Getter
+    private final Location from;
 
-	public PlayerMoveByBlockEvent(Player player, Location to, Location from) {
-		super(player);
-		this.to = to;
-		this.from = from;
-	}
+    public PlayerMoveByBlockEvent(Player player, Location to, Location from) {
+        super(player);
+        this.to = to;
+        this.from = from;
+    }
 
-	@Override
-	public HandlerList getHandlers() {
-		return handlers;
-	}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
-	public static HandlerList getHandlerList() {
-		return handlers;
-	}
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 }

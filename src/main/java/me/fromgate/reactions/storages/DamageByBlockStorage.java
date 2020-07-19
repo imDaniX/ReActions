@@ -17,29 +17,32 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-07-23.
  */
 public class DamageByBlockStorage extends Storage {
-	@Getter private final Block blockDamager;
-	@Getter private final DamageCause cause;
-	@Getter private final double damage;
+    @Getter
+    private final Block blockDamager;
+    @Getter
+    private final DamageCause cause;
+    @Getter
+    private final double damage;
 
 
-	public DamageByBlockStorage(Player player, Block blockDamager, double damage, DamageCause cause) {
-		super(player, ActivatorType.DAMAGE_BY_BLOCK);
-		this.blockDamager = blockDamager;
-		this.damage = damage;
-		this.cause = cause;
-	}
+    public DamageByBlockStorage(Player player, Block blockDamager, double damage, DamageCause cause) {
+        super(player, ActivatorType.DAMAGE_BY_BLOCK);
+        this.blockDamager = blockDamager;
+        this.damage = damage;
+        this.cause = cause;
+    }
 
-	@Override
-	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("blocklocation", LocationUtil.locationToString(blockDamager.getLocation()));
-		tempVars.put("blocktype", blockDamager.getType().name());
-		tempVars.put("block", ItemUtil.itemFromBlock(blockDamager).toString());
-		tempVars.put("cause", cause.name());
-	}
+    @Override
+    void defaultVariables(Map<String, String> tempVars) {
+        tempVars.put("blocklocation", LocationUtil.locationToString(blockDamager.getLocation()));
+        tempVars.put("blocktype", blockDamager.getType().name());
+        tempVars.put("block", ItemUtil.itemFromBlock(blockDamager).toString());
+        tempVars.put("cause", cause.name());
+    }
 
-	@Override
-	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(CANCEL_EVENT, new BooleanValue(false));
-		changeables.put(DamageStorage.DAMAGE, new DoubleValue(damage));
-	}
+    @Override
+    void defaultChangeables(Map<String, DataValue> changeables) {
+        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+        changeables.put(DamageStorage.DAMAGE, new DoubleValue(damage));
+    }
 }

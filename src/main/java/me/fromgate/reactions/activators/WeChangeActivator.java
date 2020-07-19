@@ -12,62 +12,61 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class WeChangeActivator extends Activator {
-	private final Material blockType;
-	private final String region;
+    private final Material blockType;
+    private final String region;
 
-	private WeChangeActivator(ActivatorBase base, Material blockType, String region) {
-		super(base);
-		this.blockType = blockType;
-		this.region = region;
-	}
+    private WeChangeActivator(ActivatorBase base, Material blockType, String region) {
+        super(base);
+        this.blockType = blockType;
+        this.region = region;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		WeChangeStorage e = (WeChangeStorage) event;
-		if (!checkBlockType(e.getBlockType())) return false;
-		if (!region.isEmpty() && !RaWorldGuard.isLocationInRegion(e.getLocation(), region)) return false;
-		return true;
-	}
+    public static WeChangeActivator create(ActivatorBase base, Param param) {
+        Material blockType = ItemUtil.getMaterial(param.getParam("blocktype"));
+        String region = param.getParam("region", "");
+        return new WeChangeActivator(base, blockType, region);
+    }
 
-	private boolean checkBlockType(Material check) {
-		return blockType == null || blockType == check;
-	}
+    public static WeChangeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        Material blockType = ItemUtil.getMaterial(cfg.getString("block-type").toUpperCase());
+        String region = cfg.getString("region", "");
+        return new WeChangeActivator(base, blockType, region);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		if(blockType != null) cfg.set("block-type", this.blockType.name());
-		cfg.set("region", this.region);
-	}
+    @Override
+    public boolean activate(Storage event) {
+        WeChangeStorage e = (WeChangeStorage) event;
+        if(!checkBlockType(e.getBlockType())) return false;
+        return region.isEmpty() || RaWorldGuard.isLocationInRegion(e.getLocation(), region);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.WE_CHANGE;
-	}
+    private boolean checkBlockType(Material check) {
+        return blockType == null || blockType == check;
+    }
 
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        if(blockType != null) cfg.set("block-type", this.blockType.name());
+        cfg.set("region", this.region);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("block-type:").append(blockType != null ? blockType : "ANY");
-		sb.append(" region:").append(region.isEmpty() ? "-" : region.toUpperCase());
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.WE_CHANGE;
+    }
 
-	public static WeChangeActivator create(ActivatorBase base, Param param) {
-		Material blockType = ItemUtil.getMaterial(param.getParam("blocktype"));
-		String region = param.getParam("region", "");
-		return new WeChangeActivator(base, blockType, region);
-	}
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 
-	public static WeChangeActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		Material blockType = ItemUtil.getMaterial(cfg.getString("block-type").toUpperCase());
-		String region = cfg.getString("region", "");
-		return new WeChangeActivator(base, blockType, region);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("block-type:").append(blockType != null ? blockType : "ANY");
+        sb.append(" region:").append(region.isEmpty() ? "-" : region.toUpperCase());
+        sb.append(")");
+        return sb.toString();
+    }
 }

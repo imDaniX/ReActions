@@ -28,9 +28,9 @@ import org.bukkit.entity.Player;
 
 public class FlagHealth implements Flag {
 
-	@Override
-	public boolean checkFlag(RaContext context, String param) {
-		Player player = context.getPlayer();
-		return Util.FLOAT.matcher(param).matches() && player.getHealth() >= Double.parseDouble(param);
-	}
+    @Override
+    public boolean checkFlag(RaContext context, String param) {
+        Player player = context.getPlayer();
+        return Util.FLOAT.matcher(param).matches() && player.getHealth() >= Double.parseDouble(param);
+    }
 }

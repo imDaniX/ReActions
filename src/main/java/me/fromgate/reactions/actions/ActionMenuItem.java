@@ -6,9 +6,9 @@ import me.fromgate.reactions.util.parameter.Param;
 
 public class ActionMenuItem extends Action {
 
-	@Override
-	public boolean execute(RaContext context, Param params) {
-		return InventoryMenu.createAndOpenInventory(context.getPlayer(), params, context.getTempVariables());
-	}
+    @Override
+    public boolean execute(RaContext context, Param params) {
+        return InventoryMenu.createAndOpenInventory(context.getPlayer(), params, context.getTempVariables());
+    }
 
 }

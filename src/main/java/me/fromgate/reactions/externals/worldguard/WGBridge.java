@@ -12,92 +12,92 @@ import org.bukkit.plugin.Plugin;
 import java.util.List;
 
 public abstract class WGBridge {
-	protected Plugin wgPlugin = null;
-	protected boolean connected = false;
+    protected Plugin wgPlugin = null;
+    protected boolean connected = false;
 
-	private String version;
+    private String version;
 
-	public WGBridge() {
-		connectToWorldGuard();
-		setVersion("[" + this.getClass().getSimpleName() + "]");
-		init();
-		if (connected) {
-			Msg.logMessage("WorldGuard " + wgPlugin.getDescription().getVersion() + " found. Bridge loaded: " + getVersion());
-		} else Msg.logMessage("Worlguard not found...");
-	}
+    public WGBridge() {
+        connectToWorldGuard();
+        setVersion("[" + this.getClass().getSimpleName() + "]");
+        init();
+        if(connected) {
+            Msg.logMessage("WorldGuard " + wgPlugin.getDescription().getVersion() + " found. Bridge loaded: " + getVersion());
+        } else Msg.logMessage("Worlguard not found...");
+    }
 
-	protected void setVersion(String version) {
-		this.version = version;
-	}
+    public static World getRegionWorld(String worldAndRegion) {
+        return getRegionWorld(Bukkit.getWorlds().get(0), worldAndRegion);
+    }
 
-	public String getVersion() {
-		return this.version;
-	}
+    public static World getRegionWorld(World w, String worldAndRegion) {
+        if(!worldAndRegion.contains(".")) return w;
+        String worldName = worldAndRegion.substring(0, worldAndRegion.indexOf("."));
+        World world = Bukkit.getWorld(worldName);
+        return world == null ? w : world;
+    }
 
-	private void connectToWorldGuard() {
-		Plugin twn = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-		if (twn == null) return;
-		if (!twn.getClass().getName().equals("com.sk89q.worldguard.bukkit.WorldGuardPlugin")) return;
-		wgPlugin = twn;
-		connected = true;
-	}
+    public static String getRegionName(String worldAndRegion) {
+        if(!worldAndRegion.contains(".")) return worldAndRegion;
+        String regionName = worldAndRegion.substring(worldAndRegion.indexOf(".") + 1);
+        return regionName.isEmpty() ? worldAndRegion : regionName;
+    }
 
-	public static World getRegionWorld(String worldAndRegion) {
-		return getRegionWorld(Bukkit.getWorlds().get(0), worldAndRegion);
-	}
+    public static String getFullRegionName(String region) {
+        World world = getRegionWorld(region);
+        String regionName = getRegionName(region);
+        return world.getName() + "." + regionName;
+    }
 
-	public static World getRegionWorld(World w, String worldAndRegion) {
-		if (!worldAndRegion.contains(".")) return w;
-		String worldName = worldAndRegion.substring(0, worldAndRegion.indexOf("."));
-		World world = Bukkit.getWorld(worldName);
-		return world == null ? w : world;
-	}
+    public String getVersion() {
+        return this.version;
+    }
 
-	public static String getRegionName(String worldAndRegion) {
-		if (!worldAndRegion.contains(".")) return worldAndRegion;
-		String regionName = worldAndRegion.substring(worldAndRegion.indexOf(".") + 1);
-		return regionName.isEmpty() ? worldAndRegion : regionName;
-	}
+    protected void setVersion(String version) {
+        this.version = version;
+    }
 
-	public static String getFullRegionName(String region) {
-		World world = getRegionWorld(region);
-		String regionName = getRegionName(region);
-		return world.getName() + "." + regionName;
-	}
+    private void connectToWorldGuard() {
+        Plugin twn = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        if(twn == null) return;
+        if(!twn.getClass().getName().equals("com.sk89q.worldguard.bukkit.WorldGuardPlugin")) return;
+        wgPlugin = twn;
+        connected = true;
+    }
 
-	public boolean isConnected() {
-		return this.connected;
-	}
+    public boolean isConnected() {
+        return this.connected;
+    }
 
-	public abstract void init();
+    public abstract void init();
 
-	public abstract boolean isLocationInRegion(Location loc, String regionName);
+    public abstract boolean isLocationInRegion(Location loc, String regionName);
 
-	public abstract List<String> getRegions(Location loc);
+    public abstract List<String> getRegions(Location loc);
 
-	public abstract List<String> getRegions(Player p);
+    public abstract List<String> getRegions(Player p);
 
-	public abstract int countPlayersInRegion(String rg);
+    public abstract int countPlayersInRegion(String rg);
 
-	public abstract List<Player> playersInRegion(String rg);
+    public abstract List<Player> playersInRegion(String rg);
 
-	public abstract boolean isPlayerInRegion(Player p, String rg);
+    public abstract boolean isPlayerInRegion(Player p, String rg);
 
-	public abstract boolean isRegionExists(String rg);
+    public abstract boolean isRegionExists(String rg);
 
-	public abstract List<Location> getRegionMinMaxLocations(String rg);
+    public abstract List<Location> getRegionMinMaxLocations(String rg);
 
-	public abstract List<Location> getRegionLocations(String rg, boolean land);
+    public abstract List<Location> getRegionLocations(String rg, boolean land);
 
-	public abstract boolean isPlayerIsMemberOrOwner(Player p, String region);
+    public abstract boolean isPlayerIsMemberOrOwner(Player p, String region);
 
-	public abstract boolean isPlayerIsOwner(Player p, String region);
+    public abstract boolean isPlayerIsOwner(Player p, String region);
 
-	public abstract boolean isPlayerIsMember(Player p, String region);
+    public abstract boolean isPlayerIsMember(Player p, String region);
 
-	public abstract boolean isFlagInRegion(Player p, String region);
+    public abstract boolean isFlagInRegion(Player p, String region);
 
-	public abstract LocalPlayer getWrapPlayer(Player player);
+    public abstract LocalPlayer getWrapPlayer(Player player);
 
-	public abstract RegionManager getRegionManager(World world);
+    public abstract RegionManager getRegionManager(World world);
 }

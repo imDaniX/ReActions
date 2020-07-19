@@ -16,104 +16,103 @@ import org.bukkit.event.entity.EntityDamageEvent;
  */
 // TODO: Assemble to one activator
 public class DamageByBlockActivator extends Activator implements Locatable {
-	private final String blockStr;
-	private final String blockLocation;
-	private final String damageCause;
-	
-	private DamageByBlockActivator(ActivatorBase base, String block, String location, String cause) {
-		super(base);
-		this.blockStr = block;
-		this.blockLocation = location;
-		this.damageCause = cause;
-	}
+    private final String blockStr;
+    private final String blockLocation;
+    private final String damageCause;
 
-	@Override
-	public boolean activate(Storage event) {
-		DamageByBlockStorage db = (DamageByBlockStorage) event;
-		Block damagerBlock = db.getBlockDamager();
-		if (damagerBlock == null) return false;
-		if (!isActivatorBlock(damagerBlock)) return false;
-		if (!damageCauseCheck(db.getCause())) return false;
-		return true;
-	}
+    private DamageByBlockActivator(ActivatorBase base, String block, String location, String cause) {
+        super(base);
+        this.blockStr = block;
+        this.blockLocation = location;
+        this.damageCause = cause;
+    }
 
-	private boolean checkLocations(Block block) {
-		if (this.blockLocation.isEmpty()) return true;
-		return this.isLocatedAt(block.getLocation());
-	}
+    private static String getCauseByName(String damageCauseStr) {
+        if(damageCauseStr != null) {
+            for (EntityDamageEvent.DamageCause damageCause : EntityDamageEvent.DamageCause.values()) {
+                if(damageCauseStr.equalsIgnoreCase(damageCause.name())) {
+                    return damageCause.name();
+                }
+            }
+        }
+        return "ANY";
+    }
 
-	private boolean isActivatorBlock(Block block) {
-		if (!this.blockStr.isEmpty() && !ItemUtil.compareItemStr(block, this.blockStr)) return false;
-		return checkLocations(block);
-	}
+    public static DamageByBlockActivator create(ActivatorBase base, Param param) {
+        String block = param.getParam("block", "");
+        String location = param.getParam("loc", "");
+        String cause = param.getParam("cause", "ANY");
+        return new DamageByBlockActivator(base, block, location, cause);
+    }
 
-	@Override
-	public boolean isLocatedAt(Location l) {
-		if (this.blockLocation.isEmpty()) return false;
-		Location loc = LocationUtil.parseLocation(this.blockLocation, null);
-		if (loc == null) return false;
-		return l.getWorld().equals(loc.getWorld()) &&
-				l.getBlockX() == loc.getBlockX() &&
-				l.getBlockY() == loc.getBlockY() &&
-				l.getBlockZ() == loc.getBlockZ();
-	}
+    public static DamageByBlockActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String block = cfg.getString("block", "");
+        String location = cfg.getString("loc", "");
+        String cause = cfg.getString("cause", "ANY");
+        return new DamageByBlockActivator(base, block, location, cause);
 
-	@Override
-	public boolean isLocatedAt(World world, int x, int y, int z) {
-		return isLocatedAt(new Location(world, x, y, z));
-	}
+    }
 
-	private static String getCauseByName(String damageCauseStr) {
-		if (damageCauseStr != null) {
-			for (EntityDamageEvent.DamageCause damageCause : EntityDamageEvent.DamageCause.values()) {
-				if (damageCauseStr.equalsIgnoreCase(damageCause.name())) {
-					return damageCause.name();
-				}
-			}
-		}
-		return "ANY";
-	}
+    @Override
+    public boolean activate(Storage event) {
+        DamageByBlockStorage db = (DamageByBlockStorage) event;
+        Block damagerBlock = db.getBlockDamager();
+        if(damagerBlock == null) return false;
+        if(!isActivatorBlock(damagerBlock)) return false;
+        return damageCauseCheck(db.getCause());
+    }
 
-	private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {
-		if (damageCause.equals("ANY")) return true;
-		return dc.name().equals(damageCause);
-	}
+    private boolean checkLocations(Block block) {
+        if(this.blockLocation.isEmpty()) return true;
+        return this.isLocatedAt(block.getLocation());
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("block", this.blockStr);
-		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
-		cfg.set("cause", this.damageCause);
-	}
+    private boolean isActivatorBlock(Block block) {
+        if(!this.blockStr.isEmpty() && !ItemUtil.compareItemStr(block, this.blockStr)) return false;
+        return checkLocations(block);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.DAMAGE_BY_BLOCK;
-	}
+    @Override
+    public boolean isLocatedAt(Location l) {
+        if(this.blockLocation.isEmpty()) return false;
+        Location loc = LocationUtil.parseLocation(this.blockLocation, null);
+        if(loc == null) return false;
+        return l.getWorld().equals(loc.getWorld()) &&
+                l.getBlockX() == loc.getBlockX() &&
+                l.getBlockY() == loc.getBlockY() &&
+                l.getBlockZ() == loc.getBlockZ();
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("block:").append(blockStr.isEmpty() ? "-" : blockStr);
-		sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
-		sb.append("; cause:").append(damageCause);
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public boolean isLocatedAt(World world, int x, int y, int z) {
+        return isLocatedAt(new Location(world, x, y, z));
+    }
 
-	public static DamageByBlockActivator create(ActivatorBase base, Param param) {
-		String block = param.getParam("block", "");
-		String location = param.getParam("loc", "");
-		String cause = param.getParam("cause", "ANY");
-		return new DamageByBlockActivator(base, block, location, cause);
-	}
+    private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {
+        if(damageCause.equals("ANY")) return true;
+        return dc.name().equals(damageCause);
+    }
 
-	public static DamageByBlockActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String block = cfg.getString("block", "");
-		String location = cfg.getString("loc", "");
-		String cause = cfg.getString("cause", "ANY");
-		return new DamageByBlockActivator(base, block, location, cause);
-		
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("block", this.blockStr);
+        cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+        cfg.set("cause", this.damageCause);
+    }
+
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.DAMAGE_BY_BLOCK;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("block:").append(blockStr.isEmpty() ? "-" : blockStr);
+        sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
+        sb.append("; cause:").append(damageCause);
+        sb.append(")");
+        return sb.toString();
+    }
 }

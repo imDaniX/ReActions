@@ -35,108 +35,108 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class PrecommandActivator extends Activator {
-	// Full command
-	private final String command;
-	// Check just command?
-	private final boolean checkExact;
-	// Check it by start?
-	private final boolean starts;
-	// List of arguments, if not checkExact
-	private final List<String> args;
-	// Use regex?
-	private final boolean useRegex;
-	// Pattern if useRegex
-	private final Pattern pattern;
-	// Is console allowed to perform this command?
-	private final boolean consoleAllowed;
+    // Full command
+    private final String command;
+    // Check just command?
+    private final boolean checkExact;
+    // Check it by start?
+    private final boolean starts;
+    // List of arguments, if not checkExact
+    private final List<String> args;
+    // Use regex?
+    private final boolean useRegex;
+    // Pattern if useRegex
+    private final Pattern pattern;
+    // Is console allowed to perform this command?
+    private final boolean consoleAllowed;
 
-	private PrecommandActivator(ActivatorBase base, String command, boolean starts, boolean useRegex, boolean consoleAllowed) {
-		super(base);
-		command = command == null ? "unknown" : command;
-		this.command = command;
-		Param cmdParams = new Param(command);
-		if(cmdParams.hasAnyParam("cmd")) {
-			this.args = new ArrayList<>();
-			this.args.add(cmdParams.getParam("cmd"));
-			int i = 1;
-			while(cmdParams.hasAnyParam("arg" + i))
-				this.args.add(cmdParams.getParam("arg" + i));
-			this.checkExact = false;
-			this.pattern = null;
-		} else {
-			this.args = null;
-			this.checkExact = true;
-			this.pattern = useRegex ? Pattern.compile(command) : null;
-		}
-		this.starts = starts;
-		this.useRegex = useRegex;
-		this.consoleAllowed = consoleAllowed;
-	}
+    private PrecommandActivator(ActivatorBase base, String command, boolean starts, boolean useRegex, boolean consoleAllowed) {
+        super(base);
+        command = command == null ? "unknown" : command;
+        this.command = command;
+        Param cmdParams = new Param(command);
+        if(cmdParams.hasAnyParam("cmd")) {
+            this.args = new ArrayList<>();
+            this.args.add(cmdParams.getParam("cmd"));
+            int i = 1;
+            while (cmdParams.hasAnyParam("arg" + i))
+                this.args.add(cmdParams.getParam("arg" + i));
+            this.checkExact = false;
+            this.pattern = null;
+        } else {
+            this.args = null;
+            this.checkExact = true;
+            this.pattern = useRegex ? Pattern.compile(command) : null;
+        }
+        this.starts = starts;
+        this.useRegex = useRegex;
+        this.consoleAllowed = consoleAllowed;
+    }
 
-	@Override
-	public boolean activate(Storage storage) {
-		PrecommandStorage cs = (PrecommandStorage) storage;
-		if(!consoleAllowed && cs.getSender() instanceof ConsoleCommandSender) return false;
-		if(checkExact) {
-			if(useRegex) {
-				return pattern.matcher(cs.getCommand()).matches();
-			} else
-				return starts ?
-						cs.getCommand().toLowerCase().startsWith(command) :
-						command.equalsIgnoreCase(cs.getCommand());
-		} else {
-			if(args.size() != cs.getArgs().length + 1) return false;
-			if(!args.get(0).equalsIgnoreCase(cs.getLabel())) return false;
-			for(int i = 1; i <= cs.getArgs().length; i++) {
-				String arg = args.get(i);
-				if(arg.equals("*")) continue;
-				if(!arg.equalsIgnoreCase(cs.getArgs()[i-1])) return false;
-			}
-			return true;
-		}
-	}
+    public static PrecommandActivator create(ActivatorBase base, Param param) {
+        String command = param.getParam("command", param.toString());
+        boolean starts = param.getParam("starts", true);
+        boolean useRegex = param.getParam("regex", false);
+        boolean consoleAllowed = param.getParam("console", true);
+        return new PrecommandActivator(base, command, starts, useRegex, consoleAllowed);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("regex", useRegex);
-		cfg.set("command", command);
-		cfg.set("console_allowed", consoleAllowed);
-	}
+    public static PrecommandActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String command = cfg.getString("command");
+        boolean starts = cfg.getBoolean("starts", true);
+        boolean useRegex = cfg.getBoolean("regex", false);
+        boolean consoleAllowed = cfg.getBoolean("console_allowed", true);
+        return new PrecommandActivator(base, command, starts, useRegex, consoleAllowed);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.PRECOMMAND;
-	}
+    @Override
+    public boolean activate(Storage storage) {
+        PrecommandStorage cs = (PrecommandStorage) storage;
+        if(!consoleAllowed && cs.getSender() instanceof ConsoleCommandSender) return false;
+        if(checkExact) {
+            if(useRegex) {
+                return pattern.matcher(cs.getCommand()).matches();
+            } else
+                return starts ?
+                        cs.getCommand().toLowerCase().startsWith(command) :
+                        command.equalsIgnoreCase(cs.getCommand());
+        } else {
+            if(args.size() != cs.getArgs().length + 1) return false;
+            if(!args.get(0).equalsIgnoreCase(cs.getLabel())) return false;
+            for (int i = 1; i <= cs.getArgs().length; i++) {
+                String arg = args.get(i);
+                if(arg.equals("*")) continue;
+                if(!arg.equalsIgnoreCase(cs.getArgs()[i - 1])) return false;
+            }
+            return true;
+        }
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(command);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("regex", useRegex);
+        cfg.set("command", command);
+        cfg.set("console_allowed", consoleAllowed);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("; regex:").append(this.useRegex);
-		sb.append("; command:").append(this.command);
-		sb.append("; console:").append(this.consoleAllowed);
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.PRECOMMAND;
+    }
 
-	public static PrecommandActivator create(ActivatorBase base, Param param) {
-		String command = param.getParam("command", param.toString());
-		boolean starts = param.getParam("starts", true);
-		boolean useRegex = param.getParam("regex", false);
-		boolean consoleAllowed = param.getParam("console", true);
-		return new PrecommandActivator(base, command, starts, useRegex, consoleAllowed);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(command);
+    }
 
-	public static PrecommandActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String command = cfg.getString("command");
-		boolean starts = cfg.getBoolean("starts", true);
-		boolean useRegex = cfg.getBoolean("regex", false);
-		boolean consoleAllowed = cfg.getBoolean("console_allowed", true);
-		return new PrecommandActivator(base, command, starts, useRegex, consoleAllowed);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("; regex:").append(this.useRegex);
+        sb.append("; command:").append(this.command);
+        sb.append("; console:").append(this.consoleAllowed);
+        sb.append(")");
+        return sb.toString();
+    }
 }

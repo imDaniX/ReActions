@@ -12,56 +12,55 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PickupItemActivator extends Activator {
 
-	private String itemStr;
+    private String itemStr;
 
-	private PickupItemActivator(ActivatorBase base, String item) {
-		super(base);
-		this.itemStr = item;
-	}
+    private PickupItemActivator(ActivatorBase base, String item) {
+        super(base);
+        this.itemStr = item;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		PickupItemStorage pie = (PickupItemStorage) event;
-		if (!checkItem(pie.getItem())) return false;
-		return true;
-	}
+    public static PickupItemActivator create(ActivatorBase base, Param param) {
+        String item = param.getParam("item", param.toString());
+        return new PickupItemActivator(base, item);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("item", this.itemStr);
-	}
+    public static PickupItemActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String item = cfg.getString("item", "");
+        return new PickupItemActivator(base, item);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.PICKUP_ITEM;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        PickupItemStorage pie = (PickupItemStorage) event;
+        return checkItem(pie.getItem());
+    }
 
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("item", this.itemStr);
+    }
 
-	private boolean checkItem(ItemStack item) {
-		if (this.itemStr.isEmpty()) return true;
-		return ItemUtil.compareItemStr(item, this.itemStr, true);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.PICKUP_ITEM;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("item:").append(this.itemStr);
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public boolean isValid() {
+        return true;
+    }
 
-	public static PickupItemActivator create(ActivatorBase base, Param param) {
-		String item = param.getParam("item", param.toString());
-		return new PickupItemActivator(base, item);
-	}
+    private boolean checkItem(ItemStack item) {
+        if(this.itemStr.isEmpty()) return true;
+        return ItemUtil.compareItemStr(item, this.itemStr, true);
+    }
 
-	public static PickupItemActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String item = cfg.getString("item", "");
-		return new PickupItemActivator(base, item);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("item:").append(this.itemStr);
+        sb.append(")");
+        return sb.toString();
+    }
 }

@@ -14,61 +14,61 @@ import java.util.List;
 import java.util.Set;
 
 public class Commander implements CommandExecutor {
-	private static Set<Cmd> commands = new HashSet<>();
-	private static JavaPlugin plugin;
-	private static Commander commander;
+    private static Set<Cmd> commands = new HashSet<>();
+    private static JavaPlugin plugin;
+    private static Commander commander;
 
-	public static void init(JavaPlugin plg) {
-		plugin = plg;
-		commander = new Commander();
-		// TODO: All the commands should be redesigned
-		addNewCommand(new CmdHelp());
-		addNewCommand(new CmdRun());
-		addNewCommand(new CmdAdd());
-		addNewCommand(new CmdCreate());
-		addNewCommand(new CmdSet());
-		addNewCommand(new CmdCopy());
-		addNewCommand(new CmdList());
-		addNewCommand(new CmdInfo());
-		addNewCommand(new CmdGroup());
-		addNewCommand(new CmdRemove());
-		addNewCommand(new CmdClear());
-		addNewCommand(new CmdSelect());
-		addNewCommand(new CmdDebug());
-		addNewCommand(new CmdCheck());
-		addNewCommand(new CmdReload());
-		addNewCommand(new CmdExec());
-	}
+    public static void init(JavaPlugin plg) {
+        plugin = plg;
+        commander = new Commander();
+        // TODO: All the commands should be redesigned
+        addNewCommand(new CmdHelp());
+        addNewCommand(new CmdRun());
+        addNewCommand(new CmdAdd());
+        addNewCommand(new CmdCreate());
+        addNewCommand(new CmdSet());
+        addNewCommand(new CmdCopy());
+        addNewCommand(new CmdList());
+        addNewCommand(new CmdInfo());
+        addNewCommand(new CmdGroup());
+        addNewCommand(new CmdRemove());
+        addNewCommand(new CmdClear());
+        addNewCommand(new CmdSelect());
+        addNewCommand(new CmdDebug());
+        addNewCommand(new CmdCheck());
+        addNewCommand(new CmdReload());
+        addNewCommand(new CmdExec());
+    }
 
-	public static JavaPlugin getPlugin() {
-		return plugin;
-	}
+    public static JavaPlugin getPlugin() {
+        return plugin;
+    }
 
-	private static boolean addNewCommand(Cmd cmd) {
-		if (cmd.getCommand() == null) return false;
-		if (cmd.getCommand().isEmpty()) return false;
-		plugin.getCommand(cmd.getCommand()).setExecutor(commander);
-		commands.add(cmd);
-		return true;
-	}
+    private static boolean addNewCommand(Cmd cmd) {
+        if(cmd.getCommand() == null) return false;
+        if(cmd.getCommand().isEmpty()) return false;
+        plugin.getCommand(cmd.getCommand()).setExecutor(commander);
+        commands.add(cmd);
+        return true;
+    }
 
-	@Override
-	public boolean onCommand(CommandSender sender, Command command, String cmdLabel, String[] args) {
-		for (Cmd cmd : commands) {
-			if (!cmd.getCommand().equalsIgnoreCase(command.getLabel())) continue;
-			if (cmd.executeCommand(sender, args)) return true;
-		}
-		return false;
-	}
+    public static void printHelp(CommandSender sender, int page) {
+        List<String> helpList = new ArrayList<>();
+        for (Cmd cmd : commands) {
+            helpList.add(cmd.getFullDescription());
+        }
+        Msg.printMessage(sender, "&6&lReActions v" + ReActions.getPlugin().getDescription().getVersion() + " &r&6| " + Msg.HLP_HELP.getText("NO_COLOR"));
+        BukkitMessenger.printPage(sender, helpList, null, page);
+    }
 
-	public static void printHelp(CommandSender sender, int page) {
-		List<String> helpList = new ArrayList<>();
-		for (Cmd cmd : commands) {
-			helpList.add(cmd.getFullDescription());
-		}
-		Msg.printMessage(sender, "&6&lReActions v" + ReActions.getPlugin().getDescription().getVersion() + " &r&6| " + Msg.HLP_HELP.getText("NO_COLOR"));
-		BukkitMessenger.printPage(sender, helpList, null, page);
-	}
+    @Override
+    public boolean onCommand(CommandSender sender, Command command, String cmdLabel, String[] args) {
+        for (Cmd cmd : commands) {
+            if(!cmd.getCommand().equalsIgnoreCase(command.getLabel())) continue;
+            if(cmd.executeCommand(sender, args)) return true;
+        }
+        return false;
+    }
 
 
 }

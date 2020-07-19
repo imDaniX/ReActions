@@ -31,133 +31,130 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class MessageActivator extends Activator {
 
-	private CheckType type;
-	private Source source;
-	private String mask;
+    private CheckType type;
+    private Source source;
+    private String mask;
 
-	private MessageActivator(ActivatorBase base, CheckType type, Source source, String mask) {
-		super(base);
-		this.type = type;
-		this.source = source;
-		this.mask = mask;
-	}
+    private MessageActivator(ActivatorBase base, CheckType type, Source source, String mask) {
+        super(base);
+        this.type = type;
+        this.source = source;
+        this.mask = mask;
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("mask", mask);
-		cfg.set("type", type.name());
-		cfg.set("source", source.name());
-	}
+    public static MessageActivator create(ActivatorBase base, Param param) {
+        CheckType type = CheckType.getByName(param.getParam("type", "EQUAL"));
+        Source source = Source.getByName(param.getParam("source", "CHAT_MESSAGE"));
+        String mask = param.getParam("mask", param.getParam("message", "Message mask"));
+        return new MessageActivator(base, type, source, mask);
+    }
 
-	public enum CheckType {
-		REGEX,
-		CONTAINS,
-		EQUAL,
-		START,
-		END;
+    public static MessageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        CheckType type = CheckType.getByName(cfg.getString("type", "EQUAL"));
+        Source source = Source.getByName(cfg.getString("source", "CHAT_INPUT"));
+        String mask = cfg.getString("mask", "Message mask");
+        return new MessageActivator(base, type, source, mask);
+    }
 
-		public static CheckType getByName(String name) {
-			if (name.equalsIgnoreCase("contain")) return CheckType.CONTAINS;
-			if (name.equalsIgnoreCase("equals")) return CheckType.EQUAL;
-			for (CheckType t : CheckType.values()) {
-				if (t.name().equalsIgnoreCase(name)) return t;
-			}
-			return CheckType.EQUAL;
-		}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("mask", mask);
+        cfg.set("type", type.name());
+        cfg.set("source", source.name());
+    }
 
-		public static boolean isValid(String name) {
-			for (CheckType t : CheckType.values()) {
-				if (t.name().equalsIgnoreCase(name)) return true;
-			}
-			return false;
-		}
-	}
+    @Override
+    public boolean activate(Storage event) {
+        MessageStorage e = (MessageStorage) event;
+        return e.isForActivator(this);
+    }
 
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.MESSAGE;
+    }
 
-	public enum Source {
-		ALL,
-		CHAT_INPUT,
-		CONSOLE_INPUT,
-		CHAT_OUTPUT,
-		LOG_OUTPUT;
-		//ANSWER;
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(mask);
+    }
 
-		public static Source getByName(String name) {
-			for (Source source : Source.values()) {
-				if (source.name().equalsIgnoreCase(name)) return source;
-			}
-			return Source.ALL;
-		}
+    public boolean filterMessage(Source source, String message) {
+        if(source != this.source && this.source != Source.ALL) return false;
+        return filter(message);
+    }
 
-		public static boolean isValid(String name) {
-			for (Source source : Source.values()) {
-				if (source.name().equalsIgnoreCase(name)) return true;
-			}
-			return false;
-		}
-	}
+    private boolean filter(String message) {
+        switch(type) {
+            case CONTAINS:
+                return message.toLowerCase().contains(this.mask.toLowerCase());
+            case END:
+                return message.toLowerCase().endsWith(this.mask.toLowerCase());
+            case EQUAL:
+                return message.equalsIgnoreCase(this.mask);
+            case REGEX:
+                return message.matches(this.mask);
+            case START:
+                return message.toLowerCase().startsWith(this.mask.toLowerCase());
+        }
+        return false;
+    }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("type:").append(this.type.name());
+        sb.append(" source:").append(this.source.name());
+        sb.append(" mask:").append(this.mask);
+        sb.append(")");
+        return sb.toString();
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		MessageStorage e = (MessageStorage) event;
-		if (!e.isForActivator(this)) return false;
-		return true;
-	}
+    public enum CheckType {
+        REGEX,
+        CONTAINS,
+        EQUAL,
+        START,
+        END;
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.MESSAGE;
-	}
+        public static CheckType getByName(String name) {
+            if(name.equalsIgnoreCase("contain")) return CheckType.CONTAINS;
+            if(name.equalsIgnoreCase("equals")) return CheckType.EQUAL;
+            for (CheckType t : CheckType.values()) {
+                if(t.name().equalsIgnoreCase(name)) return t;
+            }
+            return CheckType.EQUAL;
+        }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(mask);
-	}
+        public static boolean isValid(String name) {
+            for (CheckType t : CheckType.values()) {
+                if(t.name().equalsIgnoreCase(name)) return true;
+            }
+            return false;
+        }
+    }
 
-	public boolean filterMessage(Source source, String message) {
-		if (source != this.source && this.source != Source.ALL) return false;
-		return filter(message);
-	}
+    public enum Source {
+        ALL,
+        CHAT_INPUT,
+        CONSOLE_INPUT,
+        CHAT_OUTPUT,
+        LOG_OUTPUT;
+        //ANSWER;
 
-	private boolean filter(String message) {
-		switch (type) {
-			case CONTAINS:
-				return message.toLowerCase().contains(this.mask.toLowerCase());
-			case END:
-				return message.toLowerCase().endsWith(this.mask.toLowerCase());
-			case EQUAL:
-				return message.equalsIgnoreCase(this.mask);
-			case REGEX:
-				return message.matches(this.mask);
-			case START:
-				return message.toLowerCase().startsWith(this.mask.toLowerCase());
-		}
-		return false;
-	}
+        public static Source getByName(String name) {
+            for (Source source : Source.values()) {
+                if(source.name().equalsIgnoreCase(name)) return source;
+            }
+            return Source.ALL;
+        }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("type:").append(this.type.name());
-		sb.append(" source:").append(this.source.name());
-		sb.append(" mask:").append(this.mask);
-		sb.append(")");
-		return sb.toString();
-	}
-
-	public static MessageActivator create(ActivatorBase base, Param param) {
-		CheckType type = CheckType.getByName(param.getParam("type", "EQUAL"));
-		Source source = Source.getByName(param.getParam("source", "CHAT_MESSAGE"));
-		String mask = param.getParam("mask", param.getParam("message", "Message mask"));
-		return new MessageActivator(base, type, source, mask);
-	}
-
-	public static MessageActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		CheckType type = CheckType.getByName(cfg.getString("type", "EQUAL"));
-		Source source = Source.getByName(cfg.getString("source", "CHAT_INPUT"));
-		String mask = cfg.getString("mask", "Message mask");
-		return new MessageActivator(base, type, source, mask);
-	}
+        public static boolean isValid(String name) {
+            for (Source source : Source.values()) {
+                if(source.name().equalsIgnoreCase(name)) return true;
+            }
+            return false;
+        }
+    }
 }

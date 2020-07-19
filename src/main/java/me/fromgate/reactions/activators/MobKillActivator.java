@@ -31,81 +31,78 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 
 public class MobKillActivator extends Activator {
-	private final String mobType;
-	private final String mobName;
+    private final String mobType;
+    private final String mobName;
 
-	private MobKillActivator(ActivatorBase base, String type, String name) {
-		super(base);
-		this.mobType = type;
-		this.mobName = name;
-	}
+    private MobKillActivator(ActivatorBase base, String type, String name) {
+        super(base);
+        this.mobType = type;
+        this.mobName = name;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		MobKillStorage me = (MobKillStorage) event;
-		if (mobType.isEmpty()) return false;
-		if (me.getEntity() == null) return false;
-		if (!isActivatorMob(me.getEntity())) return false;
-		return true;
-	}
+    public static MobKillActivator create(ActivatorBase base, Param param) {
+        String type = param.toString();
+        String name = "";
+        if(param.isParamsExists("type")) {
+            type = param.getParam("type");
+            name = param.getParam("name");
+        } else if(param.toString().contains("$")) {
+            name = type.substring(0, type.indexOf("$"));
+            type = type.substring(name.length() + 1);
+        }
+        return new MobKillActivator(base, type, name);
+    }
 
+    public static MobKillActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String type = cfg.getString("mob-type", "");
+        String name = cfg.getString("mob-name", "");
+        return new MobKillActivator(base, type, name);
+    }
 
-	private boolean isActivatorMob(LivingEntity mob) {
-		if (!mobName.isEmpty()) {
-			if (!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
-				return false;
-		} else if (!getMobName(mob).isEmpty()) return false;
-		return mob.getType().name().equalsIgnoreCase(this.mobType);
-	}
+    @Override
+    public boolean activate(Storage event) {
+        MobKillStorage me = (MobKillStorage) event;
+        if(mobType.isEmpty()) return false;
+        if(me.getEntity() == null) return false;
+        return isActivatorMob(me.getEntity());
+    }
 
+    private boolean isActivatorMob(LivingEntity mob) {
+        if(!mobName.isEmpty()) {
+            if(!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
+                return false;
+        } else if(!getMobName(mob).isEmpty()) return false;
+        return mob.getType().name().equalsIgnoreCase(this.mobType);
+    }
 
-	private String getMobName(LivingEntity mob) {
-		if (mob.getCustomName() == null) return "";
-		return mob.getCustomName();
-	}
+    private String getMobName(LivingEntity mob) {
+        if(mob.getCustomName() == null) return "";
+        return mob.getCustomName();
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("mob-type", this.mobType);
-		cfg.set("mob-name", this.mobName);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("mob-type", this.mobType);
+        cfg.set("mob-name", this.mobName);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.MOB_KILL;
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.MOB_KILL;
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(mobType);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(mobType);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
-		sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());
-		sb.append(")");
-		return sb.toString();
-	}
-
-	public static MobKillActivator create(ActivatorBase base, Param param) {
-		String type = param.toString();
-		String name = "";
-		if (param.isParamsExists("type")) {
-			type = param.getParam("type");
-			name = param.getParam("name");
-		} else if (param.toString().contains("$")) {
-			name = type.substring(0, type.indexOf("$"));
-			type = type.substring(name.length() + 1);
-		}
-		return new MobKillActivator(base, type, name);
-	}
-
-	public static MobKillActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String type = cfg.getString("mob-type", "");
-		String name = cfg.getString("mob-name", "");
-		return new MobKillActivator(base, type, name);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
+        sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());
+        sb.append(")");
+        return sb.toString();
+    }
 }

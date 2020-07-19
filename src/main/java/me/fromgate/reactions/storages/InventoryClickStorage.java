@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 package me.fromgate.reactions.storages;
@@ -41,52 +41,60 @@ import java.util.Map;
 
 
 public class InventoryClickStorage extends Storage {
-	public static final String ITEM = "item";
+    public static final String ITEM = "item";
 
-	@Getter private final ItemStack item;
-	@Getter private final InventoryAction action;
-	@Getter private final ClickType clickType;
-	@Getter private final SlotType slotType;
-	@Getter private final InventoryType inventoryType;
-	@Getter private final int numberKey;
-	@Getter private final int slot;
-	@Getter private final String inventoryName;
-	private final InventoryView inventoryView;
+    @Getter
+    private final ItemStack item;
+    @Getter
+    private final InventoryAction action;
+    @Getter
+    private final ClickType clickType;
+    @Getter
+    private final SlotType slotType;
+    @Getter
+    private final InventoryType inventoryType;
+    @Getter
+    private final int numberKey;
+    @Getter
+    private final int slot;
+    @Getter
+    private final String inventoryName;
+    private final InventoryView inventoryView;
 
-	public InventoryClickStorage(Player p, InventoryAction action, ClickType clickType, Inventory inventory, SlotType
-									slotType, ItemStack item, int numberKey, InventoryView inventoryView, int slot) {
-		super(p, ActivatorType.INVENTORY_CLICK);
-		this.inventoryName = inventoryView.getTitle();
-		this.action = action;
-		this.clickType = clickType;
-		this.inventoryType = inventory.getType();
-		this.slotType = slotType;
-		this.item = item;
-		this.numberKey = numberKey;
-		this.slot = slot;
-		this.inventoryView = inventoryView;
-	}
+    public InventoryClickStorage(Player p, InventoryAction action, ClickType clickType, Inventory inventory, SlotType
+            slotType, ItemStack item, int numberKey, InventoryView inventoryView, int slot) {
+        super(p, ActivatorType.INVENTORY_CLICK);
+        this.inventoryName = inventoryView.getTitle();
+        this.action = action;
+        this.clickType = clickType;
+        this.inventoryType = inventory.getType();
+        this.slotType = slotType;
+        this.item = item;
+        this.numberKey = numberKey;
+        this.slot = slot;
+        this.inventoryView = inventoryView;
+    }
 
-	public Inventory getBottomInventory() {
-		return this.inventoryView.getBottomInventory();
-	}
-	
-	@Override
-	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("name", inventoryName);
-		tempVars.put("click", clickType.name());
-		tempVars.put("action", action.name());
-		tempVars.put("slotType", slotType.name());
-		tempVars.put("inventory", inventoryType.name());
-		tempVars.put("item", ItemUtil.itemToString(item));
-		tempVars.put("key", Integer.toString(numberKey + 1));
-		tempVars.put("itemkey", (numberKey > -1) ? ItemUtil.itemToString(getBottomInventory().getItem(numberKey)) : "");
-		tempVars.put("slot", Integer.toString(slot));
-	}
+    public Inventory getBottomInventory() {
+        return this.inventoryView.getBottomInventory();
+    }
 
-	@Override
-	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(CANCEL_EVENT, new BooleanValue(false));
-		changeables.put(ITEM, new ItemStackValue(item));
-	}
+    @Override
+    void defaultVariables(Map<String, String> tempVars) {
+        tempVars.put("name", inventoryName);
+        tempVars.put("click", clickType.name());
+        tempVars.put("action", action.name());
+        tempVars.put("slotType", slotType.name());
+        tempVars.put("inventory", inventoryType.name());
+        tempVars.put("item", ItemUtil.itemToString(item));
+        tempVars.put("key", Integer.toString(numberKey + 1));
+        tempVars.put("itemkey", (numberKey > -1) ? ItemUtil.itemToString(getBottomInventory().getItem(numberKey)) : "");
+        tempVars.put("slot", Integer.toString(slot));
+    }
+
+    @Override
+    void defaultChangeables(Map<String, DataValue> changeables) {
+        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+        changeables.put(ITEM, new ItemStackValue(item));
+    }
 }

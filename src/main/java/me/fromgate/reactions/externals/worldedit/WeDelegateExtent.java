@@ -35,24 +35,24 @@ import org.bukkit.entity.Player;
 
 
 public class WeDelegateExtent extends AbstractDelegateExtent {
-	private final Player player;
+    private final Player player;
 
-	/**
-	 * Create a new instance.
-	 *
-	 * @param actor
-	 * @param extent the extent
-	 */
-	public WeDelegateExtent(Actor actor, Extent extent) {
-		super(extent);
-		this.player = Bukkit.getPlayer(actor.getUniqueId());
-	}
+    /**
+     * Create a new instance.
+     *
+     * @param actor
+     * @param extent the extent
+     */
+    public WeDelegateExtent(Actor actor, Extent extent) {
+        super(extent);
+        this.player = Bukkit.getPlayer(actor.getUniqueId());
+    }
 
-	@Override
-	public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 vector, T block) throws WorldEditException {
-		Location loc = new Location(player.getWorld(), vector.getX(), vector.getY(), vector.getZ());
-		Material blockType = Material.AIR; //Material.getMaterial(block.getVariableId());
-		return !WeListener.raiseWEChangeActivator(player, loc, blockType) && super.setBlock(vector, block);
-	}
+    @Override
+    public <T extends BlockStateHolder<T>> boolean setBlock(BlockVector3 vector, T block) throws WorldEditException {
+        Location loc = new Location(player.getWorld(), vector.getX(), vector.getY(), vector.getZ());
+        Material blockType = Material.AIR; //Material.getMaterial(block.getVariableId());
+        return !WeListener.raiseWEChangeActivator(player, loc, blockType) && super.setBlock(vector, block);
+    }
 
 }

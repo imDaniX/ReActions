@@ -33,93 +33,90 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 public class MobDamageActivator extends Activator {
-	private final String mobName;
-	private final String mobType;
-	private final String itemStr;
+    private final String mobName;
+    private final String mobType;
+    private final String itemStr;
 
-	private MobDamageActivator(ActivatorBase base, String type, String name, String item) {
-		super(base);
-		this.mobType = type;
-		this.mobName = name;
-		this.itemStr = item;
-	}
+    private MobDamageActivator(ActivatorBase base, String type, String name, String item) {
+        super(base);
+        this.mobType = type;
+        this.mobName = name;
+        this.itemStr = item;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		MobDamageStorage me = (MobDamageStorage) event;
-		if (mobType.isEmpty()) return false;
-		if (me.getEntity() == null) return false;
-		if (!isActivatorMob(me.getEntity())) return false;
-		if (!checkItem(me.getPlayer())) return false;
-		return true;
-	}
+    public static MobDamageActivator create(ActivatorBase base, Param param) {
+        String type = param.toString();
+        String name = "";
+        String itemStr = "";
+        if(param.isParamsExists("type")) {
+            type = param.getParam("type");
+            name = param.getParam("name");
+            itemStr = param.getParam("item");
+        } else if(param.toString().contains("$")) {
+            name = type.substring(0, type.indexOf("$"));
+            type = type.substring(name.length() + 1);
+        }
+        return new MobDamageActivator(base, type, name, itemStr);
+    }
 
-	private boolean checkItem(Player player) {
-		if (this.itemStr.isEmpty()) return true;
-		return ItemUtil.compareItemStr(player.getInventory().getItemInMainHand(), this.itemStr, true);
-	}
+    public static MobDamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String type = cfg.getString("mob-type", "");
+        String name = cfg.getString("mob-name", "");
+        String itemStr = cfg.getString("item", "");
+        return new MobDamageActivator(base, type, name, itemStr);
+    }
 
-	private boolean isActivatorMob(LivingEntity mob) {
-		if (!mobName.isEmpty()) {
-			if (!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
-				return false;
-		} else if (!getMobName(mob).isEmpty()) return false;
-		return mob.getType().name().equalsIgnoreCase(this.mobType);
-	}
+    @Override
+    public boolean activate(Storage event) {
+        MobDamageStorage me = (MobDamageStorage) event;
+        if(mobType.isEmpty()) return false;
+        if(me.getEntity() == null) return false;
+        if(!isActivatorMob(me.getEntity())) return false;
+        return checkItem(me.getPlayer());
+    }
 
+    private boolean checkItem(Player player) {
+        if(this.itemStr.isEmpty()) return true;
+        return ItemUtil.compareItemStr(player.getInventory().getItemInMainHand(), this.itemStr, true);
+    }
 
-	private String getMobName(LivingEntity mob) {
-		if (mob.getCustomName() == null) return "";
-		return mob.getCustomName();
-	}
+    private boolean isActivatorMob(LivingEntity mob) {
+        if(!mobName.isEmpty()) {
+            if(!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
+                return false;
+        } else if(!getMobName(mob).isEmpty()) return false;
+        return mob.getType().name().equalsIgnoreCase(this.mobType);
+    }
 
+    private String getMobName(LivingEntity mob) {
+        if(mob.getCustomName() == null) return "";
+        return mob.getCustomName();
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("mob-type", this.mobType);
-		cfg.set("mob-name", this.mobName);
-		cfg.set("item", this.itemStr);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("mob-type", this.mobType);
+        cfg.set("mob-name", this.mobName);
+        cfg.set("item", this.itemStr);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.MOB_DAMAGE;
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.MOB_DAMAGE;
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(mobType);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(mobType);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
-		sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());
-		sb.append(")");
-		return sb.toString();
-	}
-
-	public static MobDamageActivator create(ActivatorBase base, Param param) {
-		String type = param.toString();
-		String name = "";
-		String itemStr = "";
-		if (param.isParamsExists("type")) {
-			type = param.getParam("type");
-			name = param.getParam("name");
-			itemStr = param.getParam("item");
-		} else if (param.toString().contains("$")) {
-			name = type.substring(0, type.indexOf("$"));
-			type = type.substring(name.length() + 1);
-		}
-		return new MobDamageActivator(base, type, name, itemStr);
-	}
-
-	public static MobDamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String type = cfg.getString("mob-type", "");
-		String name = cfg.getString("mob-name", "");
-		String itemStr = cfg.getString("item", "");
-		return new MobDamageActivator(base, type, name, itemStr);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
+        sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());
+        sb.append(")");
+        return sb.toString();
+    }
 }

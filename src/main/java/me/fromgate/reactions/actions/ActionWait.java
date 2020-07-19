@@ -9,14 +9,14 @@ import java.util.List;
 
 public class ActionWait extends Action {
 
-	@Override
-	public boolean execute(RaContext context, Param params) {
-		return false;
-	}
+    @Override
+    public boolean execute(RaContext context, Param params) {
+        return false;
+    }
 
-	public void executeDelayed(Player player, final List<StoredAction> actions, final boolean isAction, long time) {
-		if (actions.isEmpty()) return;
-		WaitingManager.executeDelayed(player, actions, isAction, time);
+    public void executeDelayed(Player player, final List<StoredAction> actions, final boolean isAction, long time) {
+        if(actions.isEmpty()) return;
+        WaitingManager.executeDelayed(player, actions, isAction, time);
 
 		/*final String playerStr = player!=null? player.getName() : null;
 		Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), new Runnable(){
@@ -29,6 +29,6 @@ public class ActionWait extends Action {
 			}
 		}, time); */
 
-	}
+    }
 
 }

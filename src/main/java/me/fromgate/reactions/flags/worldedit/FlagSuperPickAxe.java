@@ -31,9 +31,9 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 11/10/2017.
  */
 public class FlagSuperPickAxe implements Flag {
-	@Override
-	public boolean checkFlag(RaContext context, String param) {
-		Player player = context.getPlayer();
-		return Boolean.parseBoolean(param) == RaWorldEdit.hasSuperPickAxe(player);
-	}
+    @Override
+    public boolean checkFlag(RaContext context, String param) {
+        Player player = context.getPlayer();
+        return Boolean.parseBoolean(param) == RaWorldEdit.hasSuperPickAxe(player);
+    }
 }

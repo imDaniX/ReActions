@@ -6,8 +6,9 @@ import java.util.Map;
 public class MathBase {
     private static final Map<String, Function> functions = new HashMap<>();
     private static final Map<String, Double> constants = new HashMap<>();
+
     static {
-        for(DefaultFunctions func : DefaultFunctions.values())
+        for (DefaultFunctions func : DefaultFunctions.values())
             MathBase.registerFunction(func.name(), func);
         MathBase.registerConstant("e", Math.E);
         MathBase.registerConstant("ln2", 0.693147180559945);
@@ -60,7 +61,7 @@ public class MathBase {
     }
 
     private static boolean isAllowedName(String str) {
-        for(char c : str.toCharArray())
+        for (char c : str.toCharArray())
             if(!(isNumberChar(c) && isWordChar(c))) return false;
         return isWordChar(str.charAt(0));
     }

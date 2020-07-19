@@ -33,52 +33,51 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class ItemConsumeActivator extends Activator {
 
-	private String item;
-	// TODO: Hand option
+    private String item;
+    // TODO: Hand option
 
-	private ItemConsumeActivator(ActivatorBase base, String item) {
-		super(base);
-		this.item = item;
-	}
+    private ItemConsumeActivator(ActivatorBase base, String item) {
+        super(base);
+        this.item = item;
+    }
 
-	public boolean activate(Storage event) {
-		if (this.item.isEmpty() || VirtualItem.fromString(this.item) == null) {
-			Msg.logOnce(getBase().getName() + "activatoritemempty", "Failed to parse item of activator " + getBase().getName());
-			return false;
-		}
-		ItemConsumeStorage ie = (ItemConsumeStorage) event;
-		if (!ItemUtil.compareItemStr(ie.getItem(), this.item)) return false;
-		return true;
-	}
+    public static ItemConsumeActivator create(ActivatorBase base, Param param) {
+        String item = param.getParam("item", param.getParam("param-line"));
+        return new ItemConsumeActivator(base, item);
+    }
 
-	public void save(ConfigurationSection cfg) {
-		cfg.set("item", this.item);
-	}
+    public static ItemConsumeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String item = cfg.getString("item", "");
+        return new ItemConsumeActivator(base, item);
+    }
 
-	public ActivatorType getType() {
-		return ActivatorType.ITEM_CONSUME;
-	}
+    public boolean activate(Storage event) {
+        if(this.item.isEmpty() || VirtualItem.fromString(this.item) == null) {
+            Msg.logOnce(getBase().getName() + "activatoritemempty", "Failed to parse item of activator " + getBase().getName());
+            return false;
+        }
+        ItemConsumeStorage ie = (ItemConsumeStorage) event;
+        return ItemUtil.compareItemStr(ie.getItem(), this.item);
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(item);
-	}
+    public void save(ConfigurationSection cfg) {
+        cfg.set("item", this.item);
+    }
 
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append(this.item);
-		sb.append(")");
-		return sb.toString();
-	}
+    public ActivatorType getType() {
+        return ActivatorType.ITEM_CONSUME;
+    }
 
-	public static ItemConsumeActivator create(ActivatorBase base, Param param) {
-		String item = param.getParam("item", param.getParam("param-line"));
-		return new ItemConsumeActivator(base, item);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(item);
+    }
 
-	public static ItemConsumeActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String item = cfg.getString("item", "");
-		return new ItemConsumeActivator(base, item);
-	}
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append(this.item);
+        sb.append(")");
+        return sb.toString();
+    }
 }

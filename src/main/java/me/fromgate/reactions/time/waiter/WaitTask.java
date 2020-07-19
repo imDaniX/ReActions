@@ -17,81 +17,84 @@ import java.util.List;
 import java.util.UUID;
 
 public class WaitTask implements Runnable {
-	@Getter private String taskId;
-	@Getter private String playerName;
-	@Getter private boolean executed;
-	private List<StoredAction> actions;
-	private boolean isAction;
-	private long executionTime;
-	private BukkitTask task;
+    @Getter
+    private String taskId;
+    @Getter
+    private String playerName;
+    @Getter
+    private boolean executed;
+    private List<StoredAction> actions;
+    private boolean isAction;
+    private long executionTime;
+    private BukkitTask task;
 
-	public WaitTask(String playerName, List<StoredAction> actions, boolean isAction, long time) {
-		this.taskId = UUID.randomUUID().toString();
-		this.playerName = playerName;
-		this.actions = actions;
-		this.isAction = isAction;
-		this.executed = false;
-		this.executionTime = System.currentTimeMillis() + time;
-		task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
-	}
+    public WaitTask(String playerName, List<StoredAction> actions, boolean isAction, long time) {
+        this.taskId = UUID.randomUUID().toString();
+        this.playerName = playerName;
+        this.actions = actions;
+        this.isAction = isAction;
+        this.executed = false;
+        this.executionTime = System.currentTimeMillis() + time;
+        task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
+    }
 
-	public WaitTask(YamlConfiguration cfg, String taskId) {
-		this.taskId = taskId;
-		this.load(cfg, taskId);
-		long time = this.executionTime - System.currentTimeMillis();
-		if (time < 0) this.execute();
-		else
-			task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
-	}
+    public WaitTask(YamlConfiguration cfg, String taskId) {
+        this.taskId = taskId;
+        this.load(cfg, taskId);
+        long time = this.executionTime - System.currentTimeMillis();
+        if(time < 0) this.execute();
+        else
+            task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
+    }
 
-	@Override
-	public void run() {
-		execute();
-	}
+    @Override
+    public void run() {
+        execute();
+    }
 
-	public void execute() {
-		if (this.isExecuted()) return;
-		Player p = playerName == null ? null : Util.getPlayerExact(playerName);
-		if (System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
-		if (p == null && playerName != null) return;
-		Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions, isAction));
-		this.executed = true;
-	}
+    public void execute() {
+        if(this.isExecuted()) return;
+        Player p = playerName == null ? null : Util.getPlayerExact(playerName);
+        if(System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
+        if(p == null && playerName != null) return;
+        Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions, isAction));
+        this.executed = true;
+    }
 
-	public void stop() {
-		this.task.cancel();
-		this.task = null;
-	}
+    public void stop() {
+        this.task.cancel();
+        this.task = null;
+    }
 
-	public boolean isTimePassed() {
-		return this.executionTime < System.currentTimeMillis();
-	}
+    public boolean isTimePassed() {
+        return this.executionTime < System.currentTimeMillis();
+    }
 
-	public void save(YamlConfiguration cfg) {
-		cfg.set(this.taskId + ".player", this.playerName == null ? "" : this.playerName);
-		cfg.set(this.taskId + ".execution-time", this.executionTime);
-		cfg.set(this.taskId + ".actions.action", this.isAction);
-		List<String> actionList = new ArrayList<>();
-		for (StoredAction a : this.actions) {
-			actionList.add(a.toString());
-		}
-		cfg.set(this.taskId + ".actions.list", actionList);
-	}
+    public void save(YamlConfiguration cfg) {
+        cfg.set(this.taskId + ".player", this.playerName == null ? "" : this.playerName);
+        cfg.set(this.taskId + ".execution-time", this.executionTime);
+        cfg.set(this.taskId + ".actions.action", this.isAction);
+        List<String> actionList = new ArrayList<>();
+        for (StoredAction a : this.actions) {
+            actionList.add(a.toString());
+        }
+        cfg.set(this.taskId + ".actions.list", actionList);
+    }
 
-	public void load(YamlConfiguration cfg, String root) {
-		this.playerName = cfg.getString(root + ".player");
-		this.executionTime = cfg.getLong(root + ".execution-time", 0);
-		this.isAction = cfg.getBoolean(root + ".actions.action", true);
-		List<String> actionList = cfg.getStringList(root + ".actions.list");
-		this.actions = new ArrayList<>();
-		if (actionList != null)
-			for (String a : actionList) {
-				if (a.contains("=")) {
-					String av = a.substring(0, a.indexOf("="));
-					String vv = a.substring(a.indexOf("=") + 1);
-					this.actions.add(new StoredAction(av, vv));
-				}
-			}
-	}
+    public void load(YamlConfiguration cfg, String root) {
+        this.playerName = cfg.getString(root + ".player");
+        this.executionTime = cfg.getLong(root + ".execution-time", 0);
+        this.isAction = cfg.getBoolean(root + ".actions.action", true);
+        List<String> actionList = cfg.getStringList(root + ".actions.list");
+        this.actions = new ArrayList<>();
+        if(actionList != null)
+            for (String a : actionList) {
+                if(a.contains("=")) {
+                    String av = a.substring(0, a.indexOf("="));
+                    String vv = a.substring(a.indexOf("=") + 1);
+                    this.actions.add(new StoredAction(av, vv));
+                }
+            }
+    }
 
 }

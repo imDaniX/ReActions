@@ -30,44 +30,43 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class RespawnActivator extends Activator {
 
-	private final DeathCause deathCause;
+    private final DeathCause deathCause;
 
-	private RespawnActivator(ActivatorBase base, DeathCause cause) {
-		super(base);
-		this.deathCause = cause;
-	}
+    private RespawnActivator(ActivatorBase base, DeathCause cause) {
+        super(base);
+        this.deathCause = cause;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		RespawnStorage pe = (RespawnStorage) event;
-		if (this.deathCause != DeathCause.ANY && pe.getDeathCause() != this.deathCause) return false;
-		return true;
-	}
+    public static RespawnActivator create(ActivatorBase base, Param param) {
+        DeathCause cause = DeathCause.getByName(param.getParam("cause", param.toString()));
+        return new RespawnActivator(base, cause);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("death-cause", deathCause.name());
-	}
+    public static RespawnActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        DeathCause cause = DeathCause.getByName(cfg.getString("death-cause", "ANY"));
+        return new RespawnActivator(base, cause);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.RESPAWN;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        RespawnStorage pe = (RespawnStorage) event;
+        return this.deathCause == DeathCause.ANY || pe.getDeathCause() == this.deathCause;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append("(").append(this.deathCause.name()).append(")");
-		return sb.toString();
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("death-cause", deathCause.name());
+    }
 
-	public static RespawnActivator create(ActivatorBase base, Param param) {
-		DeathCause cause = DeathCause.getByName(param.getParam("cause", param.toString()));
-		return new RespawnActivator(base, cause);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.RESPAWN;
+    }
 
-	public static RespawnActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		DeathCause cause = DeathCause.getByName(cfg.getString("death-cause", "ANY"));
-		return new RespawnActivator(base, cause);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append("(").append(this.deathCause.name()).append(")");
+        return sb.toString();
+    }
 }

@@ -5,7 +5,7 @@ import java.lang.annotation.RetentionPolicy;
 
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PlaceholderDefine {
-	String id();
+    String id();
 
-	String[] keys();
+    String[] keys();
 }

@@ -14,29 +14,32 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-07-23.
  */
 public class DamageStorage extends Storage {
-	public static final String DAMAGE = "damage";
+    public static final String DAMAGE = "damage";
 
-	@Getter private final DamageCause cause;
-	@Getter private final String source;
-	@Getter private final double damage;
+    @Getter
+    private final DamageCause cause;
+    @Getter
+    private final String source;
+    @Getter
+    private final double damage;
 
-	public DamageStorage(Player player, double damage, DamageCause cause, String source) {
-		super(player, ActivatorType.DAMAGE);
-		this.damage = damage;
-		this.cause = cause;
-		this.source = source;
-	}
+    public DamageStorage(Player player, double damage, DamageCause cause, String source) {
+        super(player, ActivatorType.DAMAGE);
+        this.damage = damage;
+        this.cause = cause;
+        this.source = source;
+    }
 
-	@Override
-	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("damage", Double.toString(damage));
-		tempVars.put("cause", cause.name());
-		tempVars.put("source", source);
-	}
+    @Override
+    void defaultVariables(Map<String, String> tempVars) {
+        tempVars.put("damage", Double.toString(damage));
+        tempVars.put("cause", cause.name());
+        tempVars.put("source", source);
+    }
 
-	@Override
-	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(CANCEL_EVENT, new BooleanValue(false));
-		changeables.put(DAMAGE, new DoubleValue(damage));
-	}
+    @Override
+    void defaultChangeables(Map<String, DataValue> changeables) {
+        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+        changeables.put(DAMAGE, new DoubleValue(damage));
+    }
 }

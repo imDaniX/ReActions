@@ -44,72 +44,73 @@ import org.bukkit.entity.Player;
 import static me.fromgate.reactions.externals.worldedit.RaWorldEdit.*;
 
 public class WeListener {
-	private static Region regionSelection = null;
+    private static Region regionSelection = null;
 
-	@Subscribe
-	public void onEditSession(EditSessionEvent event) {
-		Actor actor = event.getActor();
-		if (actor != null && actor.isPlayer()) {
-			Player player = Bukkit.getPlayer(actor.getUniqueId());
-			Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
-				Region selection = getSelection(player);
-				if (selection != null) {
-					Region region;
-					try {
-						region = getRegion(player);
-						if (region != null) {
-							// Check Region Selection
-							checkChangeSelectionRegion(player, selection, region);
-						}
-					} catch (IncompleteRegionException ignore) {}
-				}
-			}, 2);
+    public static boolean raiseChangeSelectionRegionActivator(Player player, Region selection, Region region) {
+        WeSelection weSelection = new WeSelection(getRegionSelector(player).getTypeName(),
+                BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()),
+                BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
+                selection.getArea(), BukkitAdapter.adapt(selection.getWorld()), region.toString());
+        WeSelectionRegionStorage e = new WeSelectionRegionStorage(player, weSelection);
+        ActivatorsManager.activate(e);
+        return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
+    }
 
-			if (event.getStage() == EditSession.Stage.BEFORE_CHANGE) {
-				event.setExtent(new WeDelegateExtent(actor, event.getExtent()));
-			}
-		}
-	}
+    public static boolean raiseWEChangeActivator(Player player, Location location, Material blockType) {
+        WeChangeStorage e = new WeChangeStorage(player, location, blockType);
+        ActivatorsManager.activate(e);
+        return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
+    }
 
-	@Subscribe
-	public void onPlayerInput(PlayerInputEvent event) throws IncompleteRegionException {
-		Player player = Bukkit.getPlayer(event.getPlayer().getUniqueId());
-		if (player != null) {
-			Region selection = getSelection(player);
-			if (selection != null) {
-				Region region = getRegion(player);
-				// Check Region Selection
-				checkChangeSelectionRegion(player, selection, region);
-			}
-		}
-	}
+    @Subscribe
+    public void onEditSession(EditSessionEvent event) {
+        Actor actor = event.getActor();
+        if(actor != null && actor.isPlayer()) {
+            Player player = Bukkit.getPlayer(actor.getUniqueId());
+            Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
+                Region selection = getSelection(player);
+                if(selection != null) {
+                    Region region;
+                    try {
+                        region = getRegion(player);
+                        if(region != null) {
+                            // Check Region Selection
+                            checkChangeSelectionRegion(player, selection, region);
+                        }
+                    } catch (IncompleteRegionException ignore) {
+                    }
+                }
+            }, 2);
 
-	private void checkChangeSelectionRegion(Player player, Region selection, Region region) {
-		if (regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
-			regionSelection = region.clone();
-			if (raiseChangeSelectionRegionActivator(player, selection, regionSelection)) {
-				regionSelection = null;
-				RegionSelector rs = getRegionSelector(player);
-				if (rs != null) rs.clear();
-			}
-		}
-	}
+            if(event.getStage() == EditSession.Stage.BEFORE_CHANGE) {
+                event.setExtent(new WeDelegateExtent(actor, event.getExtent()));
+            }
+        }
+    }
 
-	public static boolean raiseChangeSelectionRegionActivator(Player player, Region selection, Region region) {
-		WeSelection weSelection = new WeSelection(getRegionSelector(player).getTypeName(),
-				BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()),
-				BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
-				selection.getArea(), BukkitAdapter.adapt(selection.getWorld()), region.toString());
-		WeSelectionRegionStorage e = new WeSelectionRegionStorage(player, weSelection);
-		ActivatorsManager.activate(e);
-		return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
-	}
+    @Subscribe
+    public void onPlayerInput(PlayerInputEvent event) throws IncompleteRegionException {
+        Player player = Bukkit.getPlayer(event.getPlayer().getUniqueId());
+        if(player != null) {
+            Region selection = getSelection(player);
+            if(selection != null) {
+                Region region = getRegion(player);
+                // Check Region Selection
+                checkChangeSelectionRegion(player, selection, region);
+            }
+        }
+    }
 
-	public static boolean raiseWEChangeActivator(Player player, Location location, Material blockType) {
-		WeChangeStorage e = new WeChangeStorage(player, location, blockType);
-		ActivatorsManager.activate(e);
-		return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
-	}
+    private void checkChangeSelectionRegion(Player player, Region selection, Region region) {
+        if(regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
+            regionSelection = region.clone();
+            if(raiseChangeSelectionRegionActivator(player, selection, regionSelection)) {
+                regionSelection = null;
+                RegionSelector rs = getRegionSelector(player);
+                if(rs != null) rs.clear();
+            }
+        }
+    }
 
 }
 

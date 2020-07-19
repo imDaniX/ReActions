@@ -1,4 +1,4 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
@@ -35,63 +35,63 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class RegionEnterActivator extends Activator implements Locatable {
 
-	@Getter private final String region;
+    @Getter
+    private final String region;
 
-	private RegionEnterActivator(ActivatorBase base, String region) {
-		super(base);
-		this.region = region;
-	}
+    private RegionEnterActivator(ActivatorBase base, String region) {
+        super(base);
+        this.region = region;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		RegionEnterStorage be = (RegionEnterStorage) event;
-		if (!be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region))) return false;
-		return true;
-	}
+    public static RegionEnterActivator create(ActivatorBase base, Param param) {
+        String region = param.getParam("region", param.getParam("param-line"));
+        RaWorldGuard.updateRegionCache();
+        return new RegionEnterActivator(base, region);
+    }
 
-	@Override
-	public boolean isLocatedAt(Location loc) {
-		if (!RaWorldGuard.isConnected()) return false;
-		return RaWorldGuard.isLocationInRegion(loc, this.region);
-	}
+    public static RegionEnterActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String region = cfg.getString("region", "region");
+        return new RegionEnterActivator(base, region);
+    }
 
-	@Override
-	public boolean isLocatedAt(World world, int x, int y, int z) {
-		return isLocatedAt(new Location(world, x, y, z));
-	}
+    @Override
+    public boolean activate(Storage event) {
+        RegionEnterStorage be = (RegionEnterStorage) event;
+        return be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region));
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("region", this.region);
-	}
+    @Override
+    public boolean isLocatedAt(Location loc) {
+        if(!RaWorldGuard.isConnected()) return false;
+        return RaWorldGuard.isLocationInRegion(loc, this.region);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.REGION_ENTER;
-	}
+    @Override
+    public boolean isLocatedAt(World world, int x, int y, int z) {
+        return isLocatedAt(new Location(world, x, y, z));
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(region);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("region", this.region);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("region:").append(this.region);
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.REGION_ENTER;
+    }
 
-	public static RegionEnterActivator create(ActivatorBase base, Param param) {
-		String region = param.getParam("region", param.getParam("param-line"));
-		RaWorldGuard.updateRegionCache();
-		return new RegionEnterActivator(base, region);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(region);
+    }
 
-	public static RegionEnterActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String region = cfg.getString("region", "region");
-		return new RegionEnterActivator(base, region);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("region:").append(this.region);
+        sb.append(")");
+        return sb.toString();
+    }
 }

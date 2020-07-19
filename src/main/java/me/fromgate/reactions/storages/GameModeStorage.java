@@ -13,20 +13,21 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-10-27.
  */
 public class GameModeStorage extends Storage {
-	@Getter private GameMode gameMode;
+    @Getter
+    private GameMode gameMode;
 
-	public GameModeStorage(Player player, GameMode gameMode) {
-		super(player, ActivatorType.GAMEMODE);
-		this.gameMode = gameMode;
-	}
+    public GameModeStorage(Player player, GameMode gameMode) {
+        super(player, ActivatorType.GAMEMODE);
+        this.gameMode = gameMode;
+    }
 
-	@Override
-	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("gamemode", gameMode.name());
-	}
+    @Override
+    void defaultVariables(Map<String, String> tempVars) {
+        tempVars.put("gamemode", gameMode.name());
+    }
 
-	@Override
-	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(CANCEL_EVENT, new BooleanValue(false));
-	}
+    @Override
+    void defaultChangeables(Map<String, DataValue> changeables) {
+        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+    }
 }

@@ -15,23 +15,25 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class WeChangeStorage extends Storage {
-	@Getter private final Location location;
-	@Getter private final Material blockType;
+    @Getter
+    private final Location location;
+    @Getter
+    private final Material blockType;
 
-	public WeChangeStorage(Player player, Location location, Material blockType) {
-		super(player, ActivatorType.WE_CHANGE);
-		this.location = location;
-		this.blockType = blockType;
-	}
+    public WeChangeStorage(Player player, Location location, Material blockType) {
+        super(player, ActivatorType.WE_CHANGE);
+        this.location = location;
+        this.blockType = blockType;
+    }
 
-	@Override
-	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("blocktype", blockType.name());
-		tempVars.put("blocklocation", LocationUtil.locationToString(location));
-	}
+    @Override
+    void defaultVariables(Map<String, String> tempVars) {
+        tempVars.put("blocktype", blockType.name());
+        tempVars.put("blocklocation", LocationUtil.locationToString(location));
+    }
 
-	@Override
-	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-	}
+    @Override
+    void defaultChangeables(Map<String, DataValue> changeables) {
+        changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
+    }
 }

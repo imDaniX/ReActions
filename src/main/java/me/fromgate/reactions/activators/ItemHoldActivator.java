@@ -33,55 +33,55 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ItemHoldActivator extends Activator /*implements Manageable*/ {
-	@Getter private String itemStr;
-	// TODO: Hand option
+    @Getter
+    private String itemStr;
+    // TODO: Hand option
 
-	private ItemHoldActivator(ActivatorBase base, String item) {
-		super(base);
-		this.itemStr = item;
-	}
+    private ItemHoldActivator(ActivatorBase base, String item) {
+        super(base);
+        this.itemStr = item;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		if (itemStr.isEmpty() || (VirtualItem.fromString(itemStr) == null)) {
-			Msg.logOnce(getBase().getName() + "activatorholdempty", "Failed to parse itemStr of activator " + getBase().getName());
-			return false;
-		}
-		ItemHoldStorage ie = (ItemHoldStorage) event;
-		if (!ItemUtil.compareItemStr(ie.getItem(), this.itemStr)) return false;
-		return true;
-	}
+    public static ItemHoldActivator create(ActivatorBase base, Param param) {
+        String item = param.getParam("item", "");
+        return new ItemHoldActivator(base, item);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("item", this.itemStr);
-	}
+    public static ItemHoldActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String item = cfg.getString("item", "");
+        return new ItemHoldActivator(base, item);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.ITEM_HOLD;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        if(itemStr.isEmpty() || (VirtualItem.fromString(itemStr) == null)) {
+            Msg.logOnce(getBase().getName() + "activatorholdempty", "Failed to parse itemStr of activator " + getBase().getName());
+            return false;
+        }
+        ItemHoldStorage ie = (ItemHoldStorage) event;
+        return ItemUtil.compareItemStr(ie.getItem(), this.itemStr);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (").append(this.itemStr).append(")");
-		return sb.toString();
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("item", this.itemStr);
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(itemStr);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.ITEM_HOLD;
+    }
 
-	public static ItemHoldActivator create(ActivatorBase base, Param param) {
-		String item = param.getParam("item", "");
-		return new ItemHoldActivator(base, item);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (").append(this.itemStr).append(")");
+        return sb.toString();
+    }
 
-	public static ItemHoldActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String item = cfg.getString("item", "");
-		return new ItemHoldActivator(base, item);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(itemStr);
+    }
 }
 

@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 package me.fromgate.reactions.flags;
@@ -29,28 +29,28 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.entity.Player;
 
 public class FlagDelay implements Flag {
-	private final boolean globalDelay;
+    private final boolean globalDelay;
 
-	public FlagDelay(boolean globalDelay) {
-		this.globalDelay = globalDelay;
-	}
+    public FlagDelay(boolean globalDelay) {
+        this.globalDelay = globalDelay;
+    }
 
-	@Override
-	public boolean checkFlag(RaContext context, String param) {
-		Player player = context.getPlayer();
-		String playerName = this.globalDelay ? "" : (player != null ? player.getName() : "");
-		long updateTime = 0;
-		String id = param;
+    @Override
+    public boolean checkFlag(RaContext context, String param) {
+        Player player = context.getPlayer();
+        String playerName = this.globalDelay ? "" : (player != null ? player.getName() : "");
+        long updateTime = 0;
+        String id = param;
 
-		Param params = new Param(param);
-		if (params.isParamsExists("id")) {
-			id = params.getParam("id");
-			updateTime = TimeUtil.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
-			playerName = params.getParam("player", playerName);
-		}
-		boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);
-		Delayer.setTempPlaceholders(context, playerName, id);
-		return result;
-	}
+        Param params = new Param(param);
+        if(params.isParamsExists("id")) {
+            id = params.getParam("id");
+            updateTime = TimeUtil.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
+            playerName = params.getParam("player", playerName);
+        }
+        boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);
+        Delayer.setTempPlaceholders(context, playerName, id);
+        return result;
+    }
 
 }

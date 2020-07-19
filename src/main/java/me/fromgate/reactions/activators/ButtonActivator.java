@@ -1,4 +1,4 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
@@ -34,83 +34,82 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ButtonActivator extends Activator implements Locatable {
-	private final String world;
-	private final int x;
-	private final int y;
-	private final int z;
+    private final String world;
+    private final int x;
+    private final int y;
+    private final int z;
 
-	private ButtonActivator(ActivatorBase base, String world, int x, int y, int z) {
-		super(base);
-		this.world = world;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-	}
+    private ButtonActivator(ActivatorBase base, String world, int x, int y, int z) {
+        super(base);
+        this.world = world;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		ButtonStorage be = (ButtonStorage) event;
-		if (!isLocatedAt(be.getButtonLocation())) return false;
-		return true;
-	}
+    public static ButtonActivator create(ActivatorBase base, Param p) {
+        if(!(p instanceof BlockParam)) return null;
+        BlockParam param = (BlockParam) p;
+        Location loc = param.getBlock().getLocation();
+        return new ButtonActivator(base, loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+    }
 
-	@Override
-	public boolean isLocatedAt(Location l) {
-		if (l == null) return false;
-		if (!world.equalsIgnoreCase(l.getWorld().getName())) return false;
-		if (x != l.getBlockX()) return false;
-		if (y != l.getBlockY()) return false;
-		return (z == l.getBlockZ());
-	}
+    public static ButtonActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        int x = cfg.getInt("x", 0);
+        int y = cfg.getInt("y", 0);
+        int z = cfg.getInt("z", 0);
+        String world = cfg.getString("world", Bukkit.getWorlds().get(0).getName());
+        return new ButtonActivator(base, world, x, y, z);
+    }
 
-	@Override
-	public boolean isLocatedAt(World world, int x, int y, int z) {
-		return this.world.equals(world.getName()) &&
-				this.x == x &&
-				this.y == y &&
-				this.z == z;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        ButtonStorage be = (ButtonStorage) event;
+        return isLocatedAt(be.getButtonLocation());
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("world", this.world);
-		cfg.set("x", x);
-		cfg.set("y", y);
-		cfg.set("z", z);
-	}
+    @Override
+    public boolean isLocatedAt(Location l) {
+        if(l == null) return false;
+        if(!world.equalsIgnoreCase(l.getWorld().getName())) return false;
+        if(x != l.getBlockX()) return false;
+        if(y != l.getBlockY()) return false;
+        return (z == l.getBlockZ());
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.BUTTON;
-	}
+    @Override
+    public boolean isLocatedAt(World world, int x, int y, int z) {
+        return this.world.equals(world.getName()) &&
+                this.x == x &&
+                this.y == y &&
+                this.z == z;
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(world);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("world", this.world);
+        cfg.set("x", x);
+        cfg.set("y", y);
+        cfg.set("z", z);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.BUTTON;
+    }
 
-	public static ButtonActivator create(ActivatorBase base, Param p) {
-		if(!(p instanceof BlockParam)) return null;
-		BlockParam param = (BlockParam) p;
-		Location loc = param.getBlock().getLocation();
-		return new ButtonActivator(base, loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(world);
+    }
 
-	public static ButtonActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		int x = cfg.getInt("x", 0);
-		int y = cfg.getInt("y", 0);
-		int z = cfg.getInt("z", 0);
-		String world = cfg.getString("world", Bukkit.getWorlds().get(0).getName());
-		return new ButtonActivator(base, world, x, y, z);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
+        sb.append(")");
+        return sb.toString();
+    }
 
 }

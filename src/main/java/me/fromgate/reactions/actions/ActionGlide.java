@@ -9,18 +9,18 @@ import org.bukkit.entity.Player;
  * Created by MaxDikiy on 5/8/2017.
  */
 public class ActionGlide extends Action {
-	@Override
-	public boolean execute(RaContext context, Param params) {
-		Player player = context.getPlayer();
-		if(params.hasAnyParam("player"))
-			player = Util.getPlayerExact(params.getParam("player"));
-		boolean isGlide = params.getParam("glide", true);
-		return glidePlayer(player, isGlide);
-	}
+    @Override
+    public boolean execute(RaContext context, Param params) {
+        Player player = context.getPlayer();
+        if(params.hasAnyParam("player"))
+            player = Util.getPlayerExact(params.getParam("player"));
+        boolean isGlide = params.getParam("glide", true);
+        return glidePlayer(player, isGlide);
+    }
 
-	private boolean glidePlayer(Player player, boolean isGlide) {
-		if (player == null || player.isDead() || !player.isOnline()) return false;
-		player.setGliding(isGlide);
-		return true;
-	}
+    private boolean glidePlayer(Player player, boolean isGlide) {
+        if(player == null || player.isDead() || !player.isOnline()) return false;
+        player.setGliding(isGlide);
+        return true;
+    }
 }

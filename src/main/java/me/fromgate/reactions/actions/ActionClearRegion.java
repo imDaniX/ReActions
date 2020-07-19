@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 package me.fromgate.reactions.actions;
@@ -36,39 +36,39 @@ import java.util.Collection;
 import java.util.List;
 
 public class ActionClearRegion extends Action {
-	// TODO: Too weird. Optimize, simplify
+    // TODO: Too weird. Optimize, simplify
 
-	@Override
-	public boolean execute(RaContext context, Param params) {
-		String region = params.getParam("region", "");
-		String type = params.getParam("type", "all");
-		if (region.isEmpty()) return false;
-		if (!RaWorldGuard.isConnected()) return false;
-		List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(region);
-		if (locs.size() != 2) return false;
-		Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
-		int count = 0;
-		for (Entity e : en) {
-			if (e.getType() == EntityType.PLAYER) continue;
-			if (isEntityIsTypeOf(e, type)) {
-				e.remove();
-				count++;
-			}
-		}
-		setMessageParam(Integer.toString(count));
-		return true;
-	}
+    @Override
+    public boolean execute(RaContext context, Param params) {
+        String region = params.getParam("region", "");
+        String type = params.getParam("type", "all");
+        if(region.isEmpty()) return false;
+        if(!RaWorldGuard.isConnected()) return false;
+        List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(region);
+        if(locs.size() != 2) return false;
+        Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
+        int count = 0;
+        for (Entity e : en) {
+            if(e.getType() == EntityType.PLAYER) continue;
+            if(isEntityIsTypeOf(e, type)) {
+                e.remove();
+                count++;
+            }
+        }
+        setMessageParam(Integer.toString(count));
+        return true;
+    }
 
 
-	private boolean isEntityIsTypeOf(Entity e, String type) {
-		if (e == null) return false;
-		if (type.isEmpty()) return true;
-		if (type.equalsIgnoreCase("all")) return true;
-		if (e instanceof LivingEntity) {
-			if (type.equalsIgnoreCase("mob") || type.equalsIgnoreCase("mobs")) return true;
-		} else {
-			if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
-		}
-		return (Util.isWordInList(e.getType().name().toLowerCase(), type.toLowerCase()));
-	}
+    private boolean isEntityIsTypeOf(Entity e, String type) {
+        if(e == null) return false;
+        if(type.isEmpty()) return true;
+        if(type.equalsIgnoreCase("all")) return true;
+        if(e instanceof LivingEntity) {
+            if(type.equalsIgnoreCase("mob") || type.equalsIgnoreCase("mobs")) return true;
+        } else {
+            if(type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
+        }
+        return (Util.isWordInList(e.getType().name().toLowerCase(), type.toLowerCase()));
+    }
 }

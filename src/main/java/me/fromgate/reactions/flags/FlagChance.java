@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 package me.fromgate.reactions.flags;
@@ -27,13 +27,13 @@ import me.fromgate.reactions.util.data.RaContext;
 
 public class FlagChance implements Flag {
 
-	@Override
-	public boolean checkFlag(RaContext context, String param) {
-		context.setTempVariable("CHANCE", param + "%");
-		int d = 50;
-		if (Util.isInteger(param)) d = Integer.parseInt(param);
-		d = Math.max(Math.min(d, 100), 0);
-		return Util.rollDiceChance(d);
-	}
+    @Override
+    public boolean checkFlag(RaContext context, String param) {
+        context.setTempVariable("CHANCE", param + "%");
+        int d = 50;
+        if(Util.isInteger(param)) d = Integer.parseInt(param);
+        d = Math.max(Math.min(d, 100), 0);
+        return Util.rollDiceChance(d);
+    }
 
 }

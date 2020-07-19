@@ -14,20 +14,21 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class EntityClickStorage extends Storage {
-	@Getter private final Entity entity;
+    @Getter
+    private final Entity entity;
 
-	public EntityClickStorage(Player p, Entity entity) {
-		super(p, ActivatorType.ENTITY_CLICK);
-		this.entity = entity;
-	}
+    public EntityClickStorage(Player p, Entity entity) {
+        super(p, ActivatorType.ENTITY_CLICK);
+        this.entity = entity;
+    }
 
-	@Override
-	void defaultVariables(Map<String, String> tempVars) {
-		tempVars.put("entitytype", entity.getType().name());
-	}
+    @Override
+    void defaultVariables(Map<String, String> tempVars) {
+        tempVars.put("entitytype", entity.getType().name());
+    }
 
-	@Override
-	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(CANCEL_EVENT, new BooleanValue(false));
-	}
+    @Override
+    void defaultChangeables(Map<String, DataValue> changeables) {
+        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+    }
 }

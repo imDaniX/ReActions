@@ -31,64 +31,63 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ItemWearActivator extends Activator /*implements Manageable*/ {
-	private final String item;
-	// private final WearSlot slot;
+    private final String item;
+    // private final WearSlot slot;
 
-	private ItemWearActivator(ActivatorBase base, String item/*, WearSlot slot*/) {
-		super(base);
-		this.item = item;
-		// this.slot = slot;
-	}
+    private ItemWearActivator(ActivatorBase base, String item/*, WearSlot slot*/) {
+        super(base);
+        this.item = item;
+        // this.slot = slot;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		if (item.isEmpty() || (VirtualItem.fromString(item) == null)) {
-			Msg.logOnce(getBase().getName() + "activatorwearempty", "Failed to parse item of activator " + getBase().getName());
-			return false;
-		}
-		ItemWearStorage iw = (ItemWearStorage) event;
-		if(!iw.isItemWeared(this.item)) return false;
-		return true;
-	}
+    public static ItemWearActivator create(ActivatorBase base, Param param) {
+        String item = param.getParam("item", "param-line");
+        // WearSlot slot = WearSlot.getByName(param.getParam("slot", "any"));
+        return new ItemWearActivator(base, item/*, slot*/);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("item", this.item);
-		// cfg.set("wear-slot", this.slot.name());
-	}
+    public static ItemWearActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String item = cfg.getString("item");
+        // WearSlot slot = WearSlot.getByName(cfg.getString("wear-slot", "any"));
+        return new ItemWearActivator(base, item/*, slot*/);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.ITEM_WEAR;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        if(item.isEmpty() || (VirtualItem.fromString(item) == null)) {
+            Msg.logOnce(getBase().getName() + "activatorwearempty", "Failed to parse item of activator " + getBase().getName());
+            return false;
+        }
+        ItemWearStorage iw = (ItemWearStorage) event;
+        return iw.isItemWeared(this.item);
+    }
 
-	public String getItemStr() {
-		return this.item;
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("item", this.item);
+        // cfg.set("wear-slot", this.slot.name());
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (").append(this.item).append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.ITEM_WEAR;
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(item);
-	}
+    public String getItemStr() {
+        return this.item;
+    }
 
-	public static ItemWearActivator create(ActivatorBase base, Param param) {
-		String item = param.getParam("item", "param-line");
-		// WearSlot slot = WearSlot.getByName(param.getParam("slot", "any"));
-		return new ItemWearActivator(base, item/*, slot*/);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (").append(this.item).append(")");
+        return sb.toString();
+    }
 
-	public static ItemWearActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String item = cfg.getString("item");
-		// WearSlot slot = WearSlot.getByName(cfg.getString("wear-slot", "any"));
-		return new ItemWearActivator(base, item/*, slot*/);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(item);
+    }
 
 	/*
 	public enum WearSlot {

@@ -5,7 +5,7 @@
  * permitted provided that the following conditions are met:
  *
  * 1. You cannot use this file (or part of this file) in commercial projects.
- * 
+ *
  * 2. Redistributions of source code must retain the above copyright notice, this list of
  * conditions and the following disclaimer.
  *
@@ -73,639 +73,638 @@ import java.util.regex.Pattern;
 
 public class VirtualItem extends ItemStack {
 
-	// private static boolean ALLOW_RANDOM = true;
-	private static boolean ADD_REGEX = true;
-	private final static String DIVIDER = "\\n";
-	private final static Pattern AMOUNT_RANDOM = Pattern.compile("<\\d+|>\\d+|<=\\d+|>=\\d+");
+    private final static String DIVIDER = "\\n";
+    private final static Pattern AMOUNT_RANDOM = Pattern.compile("<\\d+|>\\d+|<=\\d+|>=\\d+");
+    // private static boolean ALLOW_RANDOM = true;
+    private static boolean ADD_REGEX = true;
 
-	/**
-	 * Constructor Create new VirtualItem object
-	 *
-	 * @param type - Item type
-	 */
-	public VirtualItem(Material type) {
-		super(type);
-	}
+    /**
+     * Constructor Create new VirtualItem object
+     *
+     * @param type - Item type
+     */
+    public VirtualItem(Material type) {
+        super(type);
+    }
 
-	/**
-	 * Constructor Create new VirtualItem object
-	 *
-	 * @param type Item material
-	 * @param damage Durability
-	 * @param amount Amount
-	 */
-	public VirtualItem(Material type, int damage, int amount) {
-		super(type);
-		this.setDamage(damage);
-		this.setAmount(amount);
-	}
+    /**
+     * Constructor Create new VirtualItem object
+     *
+     * @param type   Item material
+     * @param damage Durability
+     * @param amount Amount
+     */
+    public VirtualItem(Material type, int damage, int amount) {
+        super(type);
+        this.setDamage(damage);
+        this.setAmount(amount);
+    }
 
-	/**
-	 * Constructor Create new VirtualItem object based on ItemStack
-	 *
-	 * @param item Base ItemStack
-	 */
-	public VirtualItem(ItemStack item) {
-		super(item);
-	}
+    /**
+     * Constructor Create new VirtualItem object based on ItemStack
+     *
+     * @param item Base ItemStack
+     */
+    public VirtualItem(ItemStack item) {
+        super(item);
+    }
 
-	public static VirtualItem fromItemStack(ItemStack item) {
-		if (!ItemUtil.isExist(item))
-			return null;
-		return new VirtualItem(item);
-	}
+    public static VirtualItem fromItemStack(ItemStack item) {
+        if(!ItemUtil.isExist(item))
+            return null;
+        return new VirtualItem(item);
+    }
 
-	/**
-	 * Create VirtualItem object based on parameter-string
-	 *
-	 * @param itemStr - String. Format: type:<Type> data:<Data> amount:<Amount> [AnotherParameters]
-	 *				item:<Type>:<Data>*<Amount> [AnotherParameters]
-	 * @return - New VirtualItem object or null (if parse failed)
-	 */
-	public static VirtualItem fromString(String itemStr) {
-		Map<String, String> params = Param.parseParams(itemStr, "");
-		VirtualItem vi = fromMap(params);
-		if (vi != null) return vi;
-		ItemStack item = ItemUtil.parseOldItemStack(itemStr);
-		if (item != null) return new VirtualItem(item);
-		return null;
-	}
+    /**
+     * Create VirtualItem object based on parameter-string
+     *
+     * @param itemStr - String. Format: type:<Type> data:<Data> amount:<Amount> [AnotherParameters]
+     *                item:<Type>:<Data>*<Amount> [AnotherParameters]
+     * @return - New VirtualItem object or null (if parse failed)
+     */
+    public static VirtualItem fromString(String itemStr) {
+        Map<String, String> params = Param.parseParams(itemStr, "");
+        VirtualItem vi = fromMap(params);
+        if(vi != null) return vi;
+        ItemStack item = ItemUtil.parseOldItemStack(itemStr);
+        if(item != null) return new VirtualItem(item);
+        return null;
+    }
 
-	/**
-	 * Create VirtualItem object (deserialize from Map)
-	 *
-	 * @param params - Map of parameters and values
-	 * @return - VirtualItem object
-	 */
+    /**
+     * Create VirtualItem object (deserialize from Map)
+     *
+     * @param params - Map of parameters and values
+     * @return - VirtualItem object
+     */
 
-	public static VirtualItem fromMap(Map<String, String> params) {
-		if (params == null || params.isEmpty())
-			return null;
-		Material type;
-		int data;
-		int amount;
-		if (params.containsKey("item") || params.containsKey("default-param")) {
-			String itemStr = params.containsKey("item") ? params.get("item")
-					: params.get("default-param");
-			String amountStr = "1";
-			if (itemStr.contains("*")) {
-				itemStr = itemStr.substring(0, itemStr.indexOf("*"));
-				amountStr = itemStr.substring(itemStr.indexOf("*") + 1);
-			}
-			if (itemStr.contains(":")) {
-				itemStr = itemStr.substring(0, itemStr.indexOf(":"));
-			}
-			type = Material.getMaterial(itemStr.toUpperCase(), false);
-			if(type == null)
-				type = Material.getMaterial(itemStr.toUpperCase(), true);
-			amount = Util.getMinMaxRandom(amountStr);
-			if (amount == 0) return null;
-		} else if (params.containsKey("type")) {
-			String typeStr = params.getOrDefault("type", "");
-			type = Material.getMaterial(typeStr.toUpperCase());
-		} else
-			return null;
-		if (type == null)
-			return null;
-		data = Util.getMinMaxRandom(params.getOrDefault("data", "0"));
-		amount = Util.getMinMaxRandom(params.getOrDefault("amount", "1"));
-		VirtualItem vi = new VirtualItem(type, data, amount);
+    public static VirtualItem fromMap(Map<String, String> params) {
+        if(params == null || params.isEmpty())
+            return null;
+        Material type;
+        int data;
+        int amount;
+        if(params.containsKey("item") || params.containsKey("default-param")) {
+            String itemStr = params.containsKey("item") ? params.get("item")
+                    : params.get("default-param");
+            String amountStr = "1";
+            if(itemStr.contains("*")) {
+                itemStr = itemStr.substring(0, itemStr.indexOf("*"));
+                amountStr = itemStr.substring(itemStr.indexOf("*") + 1);
+            }
+            if(itemStr.contains(":")) {
+                itemStr = itemStr.substring(0, itemStr.indexOf(":"));
+            }
+            type = Material.getMaterial(itemStr.toUpperCase(), false);
+            if(type == null)
+                type = Material.getMaterial(itemStr.toUpperCase(), true);
+            amount = Util.getMinMaxRandom(amountStr);
+            if(amount == 0) return null;
+        } else if(params.containsKey("type")) {
+            String typeStr = params.getOrDefault("type", "");
+            type = Material.getMaterial(typeStr.toUpperCase());
+        } else
+            return null;
+        if(type == null)
+            return null;
+        data = Util.getMinMaxRandom(params.getOrDefault("data", "0"));
+        amount = Util.getMinMaxRandom(params.getOrDefault("amount", "1"));
+        VirtualItem vi = new VirtualItem(type, data, amount);
 
-		vi.setName(params.get("name"));
-		vi.setLore(params.get("lore"));
-		vi.setEnchantments(params.get("enchantments"));
-		vi.setBook(params.get("book-author"), params.get("book-title"), params.get("book-pages"));
-		vi.setFireworks(Util.getMinMaxRandom(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
-		vi.setColor(params.get("color"));
-		vi.setSkull(params.get("skull-owner"));
-		vi.setPotionMeta(params.get("potion-effects"));
-		vi.setMap(params.getOrDefault("map-scale", "false").equalsIgnoreCase("true"));
-		vi.setEnchantStorage(params.get("stored-enchants"));
-		vi.setFireworkEffect(params.get("firework-effects"));
-		return vi;
-	}
+        vi.setName(params.get("name"));
+        vi.setLore(params.get("lore"));
+        vi.setEnchantments(params.get("enchantments"));
+        vi.setBook(params.get("book-author"), params.get("book-title"), params.get("book-pages"));
+        vi.setFireworks(Util.getMinMaxRandom(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
+        vi.setColor(params.get("color"));
+        vi.setSkull(params.get("skull-owner"));
+        vi.setPotionMeta(params.get("potion-effects"));
+        vi.setMap(params.getOrDefault("map-scale", "false").equalsIgnoreCase("true"));
+        vi.setEnchantStorage(params.get("stored-enchants"));
+        vi.setFireworkEffect(params.get("firework-effects"));
+        return vi;
+    }
 
-	/**
-	 * Serialize VirtualItem to Map<String,String>
-	 *
-	 * @return - Map of parameters to recreate item
-	 */
-	public Map<String, String> toMap() {
-		Map<String, String> params = new LinkedHashMap<>();
-		params.put("type", this.getType().name());
-		params.put("data", Integer.toString(this.getDamage()));
-		params.put("amount", Integer.toString(this.getAmount()));
-		putEnchants(params, "enchantments", this.getEnchantments());
-		putItemMeta(params, this.getItemMeta());
-		if (ADD_REGEX) params.put("regex", "false");
-		return params;
-	}
+    /**
+     * Deserialize item from JSON-string
+     *
+     * @param itemJSON JSON-string with item parameters
+     * @return VirtualItem generated from JSON-string
+     */
+    public static VirtualItem fromJSONString(String itemJSON) {
+        if(Util.isStringEmpty(itemJSON))
+            return null;
+        JSONParser parser = new JSONParser();
+        Object object = null;
+        try {
+            object = parser.parse(itemJSON);
+        } catch (Exception ignore) {
+        }
+        if(object == null)
+            return null;
+        JSONObject json = (JSONObject) object;
+        Map<String, Object> map = new HashMap<>();
+        for (Object key : json.keySet()) {
+            if(key instanceof String) {
+                map.put((String) key, json.get(key));
+            }
+        }
+        if(map.isEmpty())
+            return null;
+        ItemStack item = ItemStack.deserialize(map);
+        if(item == null)
+            return null;
+        return new VirtualItem(item);
+    }
 
-	/**
-	 * Serialize item to JSON-string
-	 *
-	 * @return JSON-string generated from ItemStack
-	 */
-	@SuppressWarnings({"unchecked", "unused"})
-	public String toJSON() {
-		Map<String, Object> itemS = this.serialize();
-		JSONObject json = new JSONObject();
-		for (String i : itemS.keySet())
-			json.put(i, itemS.get(i));
-		return json.toJSONString();
-	}
+    /**
+     * Serialize VirtualItem to Map<String,String>
+     *
+     * @return - Map of parameters to recreate item
+     */
+    public Map<String, String> toMap() {
+        Map<String, String> params = new LinkedHashMap<>();
+        params.put("type", this.getType().name());
+        params.put("data", Integer.toString(this.getDamage()));
+        params.put("amount", Integer.toString(this.getAmount()));
+        putEnchants(params, "enchantments", this.getEnchantments());
+        putItemMeta(params, this.getItemMeta());
+        if(ADD_REGEX) params.put("regex", "false");
+        return params;
+    }
 
-	/**
-	 * Deserialize item from JSON-string
-	 *
-	 * @param itemJSON JSON-string with item parameters
-	 * @return VirtualItem generated from JSON-string
-	 */
-	public static VirtualItem fromJSONString(String itemJSON) {
-		if (Util.isStringEmpty(itemJSON))
-			return null;
-		JSONParser parser = new JSONParser();
-		Object object = null;
-		try {
-			object = parser.parse(itemJSON);
-		} catch (Exception ignore) {
-		}
-		if (object == null)
-			return null;
-		JSONObject json = (JSONObject) object;
-		Map<String, Object> map = new HashMap<>();
-		for (Object key : json.keySet()) {
-			if (key instanceof String) {
-				map.put((String) key, json.get(key));
-			}
-		}
-		if (map.isEmpty())
-			return null;
-		ItemStack item = ItemStack.deserialize(map);
-		if (item == null)
-			return null;
-		return new VirtualItem(item);
-	}
+    /**
+     * Serialize item to JSON-string
+     *
+     * @return JSON-string generated from ItemStack
+     */
+    @SuppressWarnings({"unchecked", "unused"})
+    public String toJSON() {
+        Map<String, Object> itemS = this.serialize();
+        JSONObject json = new JSONObject();
+        for (String i : itemS.keySet())
+            json.put(i, itemS.get(i));
+        return json.toJSONString();
+    }
 
-	// ///////////////////////////////////////////////////////
-	public void giveItemOrDrop(Player player) {
-		for (ItemStack i : player.getInventory().addItem(this.clone()).values())
-			player.getWorld().dropItemNaturally(player.getLocation(), i);
-	}
+    // ///////////////////////////////////////////////////////
+    public void giveItemOrDrop(Player player) {
+        for (ItemStack i : player.getInventory().addItem(this.clone()).values())
+            player.getWorld().dropItemNaturally(player.getLocation(), i);
+    }
 
-	// ////////////////////////////////////////////////////
-	protected void setEnchantStorage(String enchStr) {
-		if (Util.isStringEmpty(enchStr)) return;
-		if (!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
-		EnchantmentStorageMeta esm = (EnchantmentStorageMeta) this.getItemMeta();
-		String[] enchLn = enchStr.split(";");
-		for (String e : enchLn) {
-			String eType = e;
-			int power = 0;
-			if (eType.contains(":")) {
-				String powerStr = eType.substring(eType.indexOf(":") + 1);
-				eType = eType.substring(0, eType.indexOf(":"));
-				power = Util.INT_POSITIVE.matcher(powerStr).matches() ? Integer.valueOf(powerStr) : 0;
-			}
-			Enchantment enchantment = ItemUtil.getEnchantmentByName(eType);
-			if (enchantment == null) continue;
-			esm.addStoredEnchant(enchantment, power, true);
-		}
-		this.setItemMeta(esm);
-	}
+    // ////////////////////////////////////////////////////
+    protected void setEnchantStorage(String enchStr) {
+        if(Util.isStringEmpty(enchStr)) return;
+        if(!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
+        EnchantmentStorageMeta esm = (EnchantmentStorageMeta) this.getItemMeta();
+        String[] enchLn = enchStr.split(";");
+        for (String e : enchLn) {
+            String eType = e;
+            int power = 0;
+            if(eType.contains(":")) {
+                String powerStr = eType.substring(eType.indexOf(":") + 1);
+                eType = eType.substring(0, eType.indexOf(":"));
+                power = Util.INT_POSITIVE.matcher(powerStr).matches() ? Integer.valueOf(powerStr) : 0;
+            }
+            Enchantment enchantment = ItemUtil.getEnchantmentByName(eType);
+            if(enchantment == null) continue;
+            esm.addStoredEnchant(enchantment, power, true);
+        }
+        this.setItemMeta(esm);
+    }
 
-	protected void setMap(boolean scale) {
-		if (this.getItemMeta() instanceof MapMeta) {
-			MapMeta mm = (MapMeta) this.getItemMeta();
-			mm.setScaling(scale);
-			this.setItemMeta(mm);
-		}
-	}
-
-
-	protected void setPotionMeta(String potions) {
-		if (Util.isStringEmpty(potions))
-			return;
-		if (!(this.getItemMeta() instanceof PotionMeta))
-			return;
-		String[] potLn = potions.split(";");
-		PotionMeta pm = (PotionMeta) this.getItemMeta();
-		pm.clearCustomEffects();
-		for (String pStr : potLn) {
-			String[] ln = pStr.trim().split(":");
-			if (ln.length == 0)
-				continue;
-			PotionEffectType pType = PotionEffectType.getByName(ln[0]
-					.toUpperCase());
-			if (pType == null)
-				continue;
-			int amplifier = (ln.length > 1) ? Util.getMinMaxRandom(ln[1]) : 0;
-			int duration = (ln.length > 2) ? (int)(TimeUtil.parseTime(ln[2])/50) : Integer.MAX_VALUE;
-			pm.addCustomEffect(new PotionEffect(pType, duration, amplifier, true), true);
-		}
-		this.setItemMeta(pm);
-	}
-
-	@SuppressWarnings("deprecation")
-	private void setSkull(String owner) {
-		if (Util.isStringEmpty(owner))
-			return;
-		if (this.getItemMeta() instanceof SkullMeta) {
-			SkullMeta sm = (SkullMeta) this.getItemMeta();
-			sm.setOwner(owner);
-			this.setItemMeta(sm);
-		}
-	}
-
-	/**
-	 * Configure leather armor color
-	 *
-	 * @param colorStr
-	 */
-	private void setColor(String colorStr) {
-		if (Util.isStringEmpty(colorStr)) return;
-
-		if (this.getItemMeta() instanceof LeatherArmorMeta) {
-			Color c = ItemUtil.parseColor(colorStr);
-			if (c == null) return;
-			LeatherArmorMeta lm = (LeatherArmorMeta) this.getItemMeta();
-			lm.setColor(c);
-			this.setItemMeta(lm);
-		}
-	}
-
-	private void putEnchants(Map<String, String> params, String key, Map<Enchantment, Integer> enchantments) {
-		if (enchantments == null || enchantments.isEmpty())
-			return;
-		StringBuilder sb = new StringBuilder();
-		for (Enchantment e : enchantments.keySet()) {
-			if (sb.length() > 0)
-				sb.append(";");
-			sb.append(e.getKey().getKey()).append(":").append(enchantments.get(e));
-		}
-		params.put(key, sb.toString());
-	}
-
-	public boolean hasDisplayName() {
-		return this.hasItemMeta() && this.getItemMeta().hasDisplayName();
-	}
-
-	public boolean hasLore() {
-		return this.hasItemMeta() && this.getItemMeta().hasLore();
-	}
-
-	public String getDisplayName() {
-		if (!this.hasItemMeta()) return null;
-		ItemMeta im = this.getItemMeta();
-		if (im.hasDisplayName()) return im.getDisplayName();
-		return null;
-	}
-
-	public List<String> getLore() {
-		if (!this.hasItemMeta()) return null;
-		ItemMeta im = this.getItemMeta();
-		if (im.hasLore()) return im.getLore();
-		return null;
-	}
+    protected void setMap(boolean scale) {
+        if(this.getItemMeta() instanceof MapMeta) {
+            MapMeta mm = (MapMeta) this.getItemMeta();
+            mm.setScaling(scale);
+            this.setItemMeta(mm);
+        }
+    }
 
 
-	private void putItemMeta(Map<String, String> params, ItemMeta itemMeta) {
-		if (itemMeta == null)
-			return;
-		if (itemMeta.hasDisplayName())
-			put(params, "name", itemMeta.getDisplayName().replace('§', '&'));
-		if (itemMeta.hasLore())
-			put(params, "lore", itemMeta.getLore());
-		if (itemMeta instanceof BookMeta) {
-			BookMeta bm = (BookMeta) itemMeta;
-			put(params, "book-author", bm.getAuthor().replace('§', '&'));
-			put(params, "book-title", bm.getTitle().replace('§', '&'));
-			if (!bm.getPages().isEmpty()) {
-				List<String> pages = new ArrayList<>();
-				for (String page : bm.getPages()) {
-					String newPage = page.replaceAll("§0\n", "&z");
-					newPage = newPage.replace('§', '&');
-					pages.add(newPage);
-				}
-				put(params, "book-pages", pages);
-			}
-		}
-		if (itemMeta instanceof FireworkMeta) {
-			FireworkMeta fm = (FireworkMeta) itemMeta;
-			put(params, "firework-power", fm.getPower());
-			put(params, "firework-effects", fireworksToList(fm.getEffects()));
-		}
+    protected void setPotionMeta(String potions) {
+        if(Util.isStringEmpty(potions))
+            return;
+        if(!(this.getItemMeta() instanceof PotionMeta))
+            return;
+        String[] potLn = potions.split(";");
+        PotionMeta pm = (PotionMeta) this.getItemMeta();
+        pm.clearCustomEffects();
+        for (String pStr : potLn) {
+            String[] ln = pStr.trim().split(":");
+            if(ln.length == 0)
+                continue;
+            PotionEffectType pType = PotionEffectType.getByName(ln[0]
+                    .toUpperCase());
+            if(pType == null)
+                continue;
+            int amplifier = (ln.length > 1) ? Util.getMinMaxRandom(ln[1]) : 0;
+            int duration = (ln.length > 2) ? (int) (TimeUtil.parseTime(ln[2]) / 50) : Integer.MAX_VALUE;
+            pm.addCustomEffect(new PotionEffect(pType, duration, amplifier, true), true);
+        }
+        this.setItemMeta(pm);
+    }
 
-		if (itemMeta instanceof LeatherArmorMeta) {
-			LeatherArmorMeta lm = (LeatherArmorMeta) itemMeta;
-			put(params, "color", ItemUtil.colorToString(lm.getColor(), true));
-		}
-		if (itemMeta instanceof SkullMeta) {
-			SkullMeta sm = (SkullMeta) itemMeta;
-			if (sm.hasOwner())
-				put(params, "skull-owner", sm.getOwningPlayer().getName());
-		}
-		if (itemMeta instanceof PotionMeta) {
-			PotionMeta pm = (PotionMeta) itemMeta;
-			if (pm.hasCustomEffects())
-				putEffects(params, pm.getCustomEffects());
-		}
-		if (itemMeta instanceof MapMeta) {
-			MapMeta mm = (MapMeta) itemMeta;
-			if (mm.isScaling())
-				put(params, "map-scale", "true");
-		}
+    @SuppressWarnings("deprecation")
+    private void setSkull(String owner) {
+        if(Util.isStringEmpty(owner))
+            return;
+        if(this.getItemMeta() instanceof SkullMeta) {
+            SkullMeta sm = (SkullMeta) this.getItemMeta();
+            sm.setOwner(owner);
+            this.setItemMeta(sm);
+        }
+    }
 
-		if (itemMeta instanceof EnchantmentStorageMeta) {
-			EnchantmentStorageMeta esm = (EnchantmentStorageMeta) itemMeta;
-			if (esm.hasStoredEnchants())
-				putEnchants(params, "stored-enchants", esm.getStoredEnchants());
-		}
+    /**
+     * Configure leather armor color
+     *
+     * @param colorStr
+     */
+    private void setColor(String colorStr) {
+        if(Util.isStringEmpty(colorStr)) return;
 
-		if (itemMeta instanceof FireworkEffectMeta)
-			putFireworkEffectMeta(params, (FireworkEffectMeta) itemMeta);
-	}
+        if(this.getItemMeta() instanceof LeatherArmorMeta) {
+            Color c = ItemUtil.parseColor(colorStr);
+            if(c == null) return;
+            LeatherArmorMeta lm = (LeatherArmorMeta) this.getItemMeta();
+            lm.setColor(c);
+            this.setItemMeta(lm);
+        }
+    }
 
-	private void putFireworkEffectMeta(Map<String, String> params, FireworkEffectMeta fwm) {
-		if (!fwm.hasEffect()) return;
-		put(params, "firework-effects", ItemUtil.fireworksToString(fwm.getEffect()));
+    private void putEnchants(Map<String, String> params, String key, Map<Enchantment, Integer> enchantments) {
+        if(enchantments == null || enchantments.isEmpty())
+            return;
+        StringBuilder sb = new StringBuilder();
+        for (Enchantment e : enchantments.keySet()) {
+            if(sb.length() > 0)
+                sb.append(";");
+            sb.append(e.getKey().getKey()).append(":").append(enchantments.get(e));
+        }
+        params.put(key, sb.toString());
+    }
 
-	}
+    public boolean hasDisplayName() {
+        return this.hasItemMeta() && this.getItemMeta().hasDisplayName();
+    }
 
-	private void putEffects(Map<String, String> params, List<PotionEffect> customEffects) {
-		StringBuilder sb = new StringBuilder();
-		for (PotionEffect pef : customEffects) {
-			if (sb.length() > 0)
-				sb.append(";");
-			sb.append(pef.getType().getName()).append(":");
-			sb.append(pef.getAmplifier()).append(":").append(pef.getDuration());
-		}
-		put(params, "potion-effects", sb.toString());
-	}
+    public boolean hasLore() {
+        return this.hasItemMeta() && this.getItemMeta().hasLore();
+    }
 
-	@Override
-	public String toString() {
-		Map<String, String> params = toMap();
-		StringBuilder sb = new StringBuilder();
-		for (String key : params.keySet()) {
-			if (sb.length() > 0)
-				sb.append(" ");
-			sb.append(key).append(":");
-			String value = params.get(key);
-			if (value.contains(" "))
-				sb.append("{").append(value).append("}");
-			else
-				sb.append(value);
-		}
-		return sb.toString();
-	}
+    public String getDisplayName() {
+        if(!this.hasItemMeta()) return null;
+        ItemMeta im = this.getItemMeta();
+        if(im.hasDisplayName()) return im.getDisplayName();
+        return null;
+    }
 
-	public String toDisplayString() {
-		StringBuilder sb = new StringBuilder();
-		if (this.getItemMeta().hasDisplayName()) sb.append(this.getItemMeta().getDisplayName());
-		else {
-			sb.append(this.getType().name());
-			if (this.getDamage() > 0) sb.append(":").append(this.getDamage());
-		}
-		if (this.getAmount() > 1) sb.append("*").append(this.getAmount());
-		return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
-	}
+    public List<String> getLore() {
+        if(!this.hasItemMeta()) return null;
+        ItemMeta im = this.getItemMeta();
+        if(im.hasLore()) return im.getLore();
+        return null;
+    }
 
-	public String getDescription() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(this.getItemMeta().hasDisplayName() ? this.getItemMeta()
-				.getDisplayName() : this.getType().name());
-		if (this.getAmount() > 1)
-			sb.append("*").append(this.getAmount());
-		return ChatColor.stripColor(sb.toString());
-	}
+    public void setLore(String loreStr) {
+        List<String> lore = new ArrayList<>();
+        if(loreStr != null) {
+            String[] ln = ChatColor.translateAlternateColorCodes('&', loreStr).split(Pattern.quote(DIVIDER));
+            lore = Arrays.asList(ln);
+        } // else this.lore = null;
+        ItemMeta im = this.getItemMeta();
+        im.setLore(lore);
+        this.setItemMeta(im);
+    }
 
-	private void setEnchantments(String enchStr) {
-		clearEnchantments();
-		Map<Enchantment, Integer> enchantments = ItemUtil.parseEnchantmentsString(enchStr);
-		if (enchantments.isEmpty()) return;
-		this.addUnsafeEnchantments(enchantments);
-	}
+    private void putItemMeta(Map<String, String> params, ItemMeta itemMeta) {
+        if(itemMeta == null)
+            return;
+        if(itemMeta.hasDisplayName())
+            put(params, "name", itemMeta.getDisplayName().replace('§', '&'));
+        if(itemMeta.hasLore())
+            put(params, "lore", itemMeta.getLore());
+        if(itemMeta instanceof BookMeta) {
+            BookMeta bm = (BookMeta) itemMeta;
+            put(params, "book-author", bm.getAuthor().replace('§', '&'));
+            put(params, "book-title", bm.getTitle().replace('§', '&'));
+            if(!bm.getPages().isEmpty()) {
+                List<String> pages = new ArrayList<>();
+                for (String page : bm.getPages()) {
+                    String newPage = page.replaceAll("§0\n", "&z");
+                    newPage = newPage.replace('§', '&');
+                    pages.add(newPage);
+                }
+                put(params, "book-pages", pages);
+            }
+        }
+        if(itemMeta instanceof FireworkMeta) {
+            FireworkMeta fm = (FireworkMeta) itemMeta;
+            put(params, "firework-power", fm.getPower());
+            put(params, "firework-effects", fireworksToList(fm.getEffects()));
+        }
 
-	public void clearEnchantments() {
-		for (Enchantment e : this.getEnchantments().keySet())
-			this.removeEnchantment(e);
-	}
+        if(itemMeta instanceof LeatherArmorMeta) {
+            LeatherArmorMeta lm = (LeatherArmorMeta) itemMeta;
+            put(params, "color", ItemUtil.colorToString(lm.getColor(), true));
+        }
+        if(itemMeta instanceof SkullMeta) {
+            SkullMeta sm = (SkullMeta) itemMeta;
+            if(sm.hasOwner())
+                put(params, "skull-owner", sm.getOwningPlayer().getName());
+        }
+        if(itemMeta instanceof PotionMeta) {
+            PotionMeta pm = (PotionMeta) itemMeta;
+            if(pm.hasCustomEffects())
+                putEffects(params, pm.getCustomEffects());
+        }
+        if(itemMeta instanceof MapMeta) {
+            MapMeta mm = (MapMeta) itemMeta;
+            if(mm.isScaling())
+                put(params, "map-scale", "true");
+        }
 
-	public void setBook(String author, String title, String pagesStr) {
-		if (!(this.getItemMeta() instanceof BookMeta))
-			return;
-		BookMeta bm = (BookMeta) this.getItemMeta();
-		if (pagesStr != null) {
-			String[] ln = pagesStr.split(Pattern.quote(DIVIDER));
-			List<String> pages = new ArrayList<>();
-			for (String page : ln)
-				pages.add(ChatColor.translateAlternateColorCodes('&',
-						page.replace("&z", "§0\n")));
-			bm.setPages(pages);
-		}
-		if (author != null && !author.isEmpty())
-			bm.setAuthor(ChatColor.translateAlternateColorCodes('&', author));
-		if (title != null && !title.isEmpty())
-			bm.setTitle(ChatColor.translateAlternateColorCodes('&', title));
-		this.setItemMeta(bm);
-	}
+        if(itemMeta instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta esm = (EnchantmentStorageMeta) itemMeta;
+            if(esm.hasStoredEnchants())
+                putEnchants(params, "stored-enchants", esm.getStoredEnchants());
+        }
 
-	public void setLore(String loreStr) {
-		List<String> lore = new ArrayList<>();
-		if (loreStr != null) {
-			String[] ln = ChatColor.translateAlternateColorCodes('&', loreStr).split(Pattern.quote(DIVIDER));
-			lore = Arrays.asList(ln);
-		} // else this.lore = null;
-		ItemMeta im = this.getItemMeta();
-		im.setLore(lore);
-		this.setItemMeta(im);
-	}
+        if(itemMeta instanceof FireworkEffectMeta)
+            putFireworkEffectMeta(params, (FireworkEffectMeta) itemMeta);
+    }
 
-	public void setName(String name) {
-		if (name == null) return;
-		ItemMeta im = this.getItemMeta();
-		im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-		this.setItemMeta(im);
-	}
+    private void putFireworkEffectMeta(Map<String, String> params, FireworkEffectMeta fwm) {
+        if(!fwm.hasEffect()) return;
+        put(params, "firework-effects", ItemUtil.fireworksToString(fwm.getEffect()));
 
-	private void setFireworkEffect(String fireworkStr) {
-		if (fireworkStr == null || fireworkStr.isEmpty()) return;
-		if (!(this.getItemMeta() instanceof FireworkEffectMeta)) return;
-		FireworkEffectMeta fm = (FireworkEffectMeta) this.getItemMeta();
-		Map<String, String> params = Param.parseParams(fireworkStr, "");
-		FireworkEffect.Type fType;
-		List<Color> colors;
-		List<Color> fadeColors;
-		boolean flicker;
-		boolean trail;
-		fType = FireworkEffect.Type.valueOf(params.getOrDefault("type", "")
-				.toUpperCase());
-		flicker = "true".equalsIgnoreCase(params.getOrDefault("flicker", "false"));
-		trail = "true".equalsIgnoreCase(params.getOrDefault("trail", "false"));
-		colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
-		fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
-		Builder b = FireworkEffect.builder().with(fType);
-		if (flicker)
-			b = b.withFlicker();
-		if (trail)
-			b = b.withTrail();
-		for (Color c : colors)
-			b = b.withColor(c);
-		for (Color c : fadeColors)
-			b = b.withFade(c);
-		fm.setEffect(b.build());
-		this.setItemMeta(fm);
-	}
+    }
 
-	private void setFireworks(int power, String fireworkStr) {
-		if (!(this.getItemMeta() instanceof FireworkMeta))
-			return;
-		FireworkMeta fm = (FireworkMeta) this.getItemMeta();
-		fm.clearEffects();
-		fm.setPower(power);
-		if (fireworkStr != null && !fireworkStr.isEmpty()) {
-			String[] fireworks = fireworkStr.split(";");
-			List<FireworkEffect> fe = new ArrayList<>();
-			for (String fStr : fireworks) {
-				Map<String, String> params = Param.parseParams(fStr, "");
-				FireworkEffect.Type fType = null;
-				List<Color> colors;
-				List<Color> fadeColors;
-				boolean flicker;
-				boolean trail;
-				for (FireworkEffect.Type ft : FireworkEffect.Type.values()) {
-					if (ft.name()
-							.equalsIgnoreCase(params.getOrDefault("type", "")))
-						fType = ft;
-				}
-				flicker = "true".equalsIgnoreCase(params.getOrDefault("flicker",
-						"false"));
-				trail = "true".equalsIgnoreCase(params.getOrDefault("trail",
-						"false"));
-				colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
-				fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
-				if (fType == null)
-					continue;
-				Builder b = FireworkEffect.builder().with(fType);
-				if (flicker)
-					b = b.withFlicker();
-				if (trail)
-					b = b.withTrail();
-				for (Color c : colors)
-					b = b.withColor(c);
-				for (Color c : fadeColors)
-					b = b.withFade(c);
-				fe.add(b.build());
-			}
-			if (!fe.isEmpty())
-				fm.addEffects(fe);
-		}
-		this.setItemMeta(fm);
-	}
+    private void putEffects(Map<String, String> params, List<PotionEffect> customEffects) {
+        StringBuilder sb = new StringBuilder();
+        for (PotionEffect pef : customEffects) {
+            if(sb.length() > 0)
+                sb.append(";");
+            sb.append(pef.getType().getName()).append(":");
+            sb.append(pef.getAmplifier()).append(":").append(pef.getDuration());
+        }
+        put(params, "potion-effects", sb.toString());
+    }
 
-	private List<String> fireworksToList(List<FireworkEffect> fireworks) {
-		if (fireworks == null || fireworks.isEmpty())
-			return null;
-		List<String> fireList = new ArrayList<>();
-		StringBuilder sb = new StringBuilder();
-		for (int j = 0; j < fireworks.size(); j++) {
-			// if (j>0) sb.append("\\\\n");
-			if (j > 0)
-				sb.append(";");
-			FireworkEffect fe = fireworks.get(j);
-			sb.append(ItemUtil.fireworksToString(fe));
-		}
-		fireList.add(sb.toString());
-		return fireList;
-	}
+    @Override
+    public String toString() {
+        Map<String, String> params = toMap();
+        StringBuilder sb = new StringBuilder();
+        for (String key : params.keySet()) {
+            if(sb.length() > 0)
+                sb.append(" ");
+            sb.append(key).append(":");
+            String value = params.get(key);
+            if(value.contains(" "))
+                sb.append("{").append(value).append("}");
+            else
+                sb.append(value);
+        }
+        return sb.toString();
+    }
 
-	protected void put(Map<String, String> params, String key, int value) {
-		params.put(key, Integer.toString(value));
-	}
+    public String toDisplayString() {
+        StringBuilder sb = new StringBuilder();
+        if(this.getItemMeta().hasDisplayName()) sb.append(this.getItemMeta().getDisplayName());
+        else {
+            sb.append(this.getType().name());
+            if(this.getDamage() > 0) sb.append(":").append(this.getDamage());
+        }
+        if(this.getAmount() > 1) sb.append("*").append(this.getAmount());
+        return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
+    }
 
-	protected void put(Map<String, String> params, String key, String value) {
-		if (value == null)
-			return;
-		if (value.isEmpty())
-			return;
-		params.put(key, value);
-	}
+    public String getDescription() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getItemMeta().hasDisplayName() ? this.getItemMeta()
+                .getDisplayName() : this.getType().name());
+        if(this.getAmount() > 1)
+            sb.append("*").append(this.getAmount());
+        return ChatColor.stripColor(sb.toString());
+    }
 
-	private String listToString(List<String> valueList) {
-		if (valueList == null) return null;
-		if (valueList.isEmpty()) return null;
-		StringBuilder sb = new StringBuilder(valueList.get(0));
-		if (valueList.size() > 1)
-			for (int i = 1; i < valueList.size(); i++)
-				sb.append(DIVIDER).append(valueList.get(i));
-		return sb.toString();
-	}
+    private void setEnchantments(String enchStr) {
+        clearEnchantments();
+        Map<Enchantment, Integer> enchantments = ItemUtil.parseEnchantmentsString(enchStr);
+        if(enchantments.isEmpty()) return;
+        this.addUnsafeEnchantments(enchantments);
+    }
 
-	protected void put(Map<String, String> params, String key, List<String> valueList) {
-		String str = listToString(valueList);
-		if (str == null) return;
-		params.put(key, str.replace('§', '&'));
-	}
+    public void clearEnchantments() {
+        for (Enchantment e : this.getEnchantments().keySet())
+            this.removeEnchantment(e);
+    }
 
-	public boolean compare(ItemStack item, int amount) {
-		int amountToRemove = amount > 0 ? amount : item.getAmount();
-		if (this.getAmount() < amountToRemove)
-			return false; // Сравниваем ТЕКУЩИЙ предмет с целевым. Т.е. текущего должно быть столько же или больше
-		if (this.getType() != item.getType()) return false;
-		if (this.getDamage() != ItemUtil.getDurability(item)) return false;
-		return Bukkit.getItemFactory().equals(this.getItemMeta(), item.getItemMeta());
-	}
+    public void setBook(String author, String title, String pagesStr) {
+        if(!(this.getItemMeta() instanceof BookMeta))
+            return;
+        BookMeta bm = (BookMeta) this.getItemMeta();
+        if(pagesStr != null) {
+            String[] ln = pagesStr.split(Pattern.quote(DIVIDER));
+            List<String> pages = new ArrayList<>();
+            for (String page : ln)
+                pages.add(ChatColor.translateAlternateColorCodes('&',
+                        page.replace("&z", "§0\n")));
+            bm.setPages(pages);
+        }
+        if(author != null && !author.isEmpty())
+            bm.setAuthor(ChatColor.translateAlternateColorCodes('&', author));
+        if(title != null && !title.isEmpty())
+            bm.setTitle(ChatColor.translateAlternateColorCodes('&', title));
+        this.setItemMeta(bm);
+    }
 
-	public boolean compare(String itemStr) {
-		return compare(itemStr, -1);
-	}
+    public void setName(String name) {
+        if(name == null) return;
+        ItemMeta im = this.getItemMeta();
+        im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        this.setItemMeta(im);
+    }
 
-	public boolean compare(String itemStr, int amount) {
-		Map<String, String> params = Param.parseParams(itemStr, "");
-		if (amount > 0) params.put("amount", Integer.toString(amount));
-		return compare(params, amount);
-	}
+    private void setFireworkEffect(String fireworkStr) {
+        if(fireworkStr == null || fireworkStr.isEmpty()) return;
+        if(!(this.getItemMeta() instanceof FireworkEffectMeta)) return;
+        FireworkEffectMeta fm = (FireworkEffectMeta) this.getItemMeta();
+        Map<String, String> params = Param.parseParams(fireworkStr, "");
+        FireworkEffect.Type fType;
+        List<Color> colors;
+        List<Color> fadeColors;
+        boolean flicker;
+        boolean trail;
+        fType = FireworkEffect.Type.valueOf(params.getOrDefault("type", "")
+                .toUpperCase());
+        flicker = "true".equalsIgnoreCase(params.getOrDefault("flicker", "false"));
+        trail = "true".equalsIgnoreCase(params.getOrDefault("trail", "false"));
+        colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
+        fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
+        Builder b = FireworkEffect.builder().with(fType);
+        if(flicker)
+            b = b.withFlicker();
+        if(trail)
+            b = b.withTrail();
+        for (Color c : colors)
+            b = b.withColor(c);
+        for (Color c : fadeColors)
+            b = b.withFade(c);
+        fm.setEffect(b.build());
+        this.setItemMeta(fm);
+    }
 
-	@SuppressWarnings("unused")
-	public boolean compare(Map<String, String> itemMap) {
-		return compare(itemMap, -1);
-	}
+    private void setFireworks(int power, String fireworkStr) {
+        if(!(this.getItemMeta() instanceof FireworkMeta))
+            return;
+        FireworkMeta fm = (FireworkMeta) this.getItemMeta();
+        fm.clearEffects();
+        fm.setPower(power);
+        if(fireworkStr != null && !fireworkStr.isEmpty()) {
+            String[] fireworks = fireworkStr.split(";");
+            List<FireworkEffect> fe = new ArrayList<>();
+            for (String fStr : fireworks) {
+                Map<String, String> params = Param.parseParams(fStr, "");
+                FireworkEffect.Type fType = null;
+                List<Color> colors;
+                List<Color> fadeColors;
+                boolean flicker;
+                boolean trail;
+                for (FireworkEffect.Type ft : FireworkEffect.Type.values()) {
+                    if(ft.name()
+                            .equalsIgnoreCase(params.getOrDefault("type", "")))
+                        fType = ft;
+                }
+                flicker = "true".equalsIgnoreCase(params.getOrDefault("flicker",
+                        "false"));
+                trail = "true".equalsIgnoreCase(params.getOrDefault("trail",
+                        "false"));
+                colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
+                fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
+                if(fType == null)
+                    continue;
+                Builder b = FireworkEffect.builder().with(fType);
+                if(flicker)
+                    b = b.withFlicker();
+                if(trail)
+                    b = b.withTrail();
+                for (Color c : colors)
+                    b = b.withColor(c);
+                for (Color c : fadeColors)
+                    b = b.withFade(c);
+                fe.add(b.build());
+            }
+            if(!fe.isEmpty())
+                fm.addEffects(fe);
+        }
+        this.setItemMeta(fm);
+    }
 
-	public boolean compare(Map<String, String> itemMap, int amount) {
-		if (itemMap == null || itemMap.isEmpty()) return false;
-		
-		boolean regex = !itemMap.containsKey("regex") || itemMap.get("regex").equalsIgnoreCase("true");
+    private List<String> fireworksToList(List<FireworkEffect> fireworks) {
+        if(fireworks == null || fireworks.isEmpty())
+            return null;
+        List<String> fireList = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        for (int j = 0; j < fireworks.size(); j++) {
+            // if (j>0) sb.append("\\\\n");
+            if(j > 0)
+                sb.append(";");
+            FireworkEffect fe = fireworks.get(j);
+            sb.append(ItemUtil.fireworksToString(fe));
+        }
+        fireList.add(sb.toString());
+        return fireList;
+    }
 
-		ItemMeta thisMeta = this.getItemMeta();
-		if (itemMap.containsKey("item") || itemMap.containsKey("default-param")) {
-			String itemStr = itemMap.containsKey("item") ? itemMap.get("item") : itemMap.get("default-param");
-			String dataStr = "";
-			String amountStr = "";
-			if (itemStr.contains("*")) {
-				itemStr = itemStr.substring(0, itemStr.indexOf("*"));
-				amountStr = itemStr.substring(itemStr.indexOf("*") + 1);
-			}
-			if (itemStr.contains(":")) {
-				itemStr = itemStr.substring(0, itemStr.indexOf(":"));
-				dataStr = itemStr.substring(itemStr.indexOf(":") + 1);
-			}
-			itemMap.put("type", Material.getMaterial(itemStr.toUpperCase()).name());
+    protected void put(Map<String, String> params, String key, int value) {
+        params.put(key, Integer.toString(value));
+    }
 
-			if (Util.INT_POSITIVE.matcher(dataStr).matches()) itemMap.put("data", dataStr);
-			if (Util.INT_POSITIVE.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
-			itemMap.remove("item");
-			itemMap.remove("default-param");
-		}
-		if (amount > 0) itemMap.put("amount", Integer.toString(amount));
-		if (this.hasDisplayName() && !itemMap.containsKey("name")) return false;
-		if (this.hasLore() && !itemMap.containsKey("lore")) return false;
-		if (itemMap.containsKey("type")) {
-			String typeStr = itemMap.get("type").toUpperCase();
-			Material m = Material.getMaterial(typeStr);
-			if (m == null) return false;
-			typeStr = m.toString();
-			if (!compareOrMatch(this.getType().toString(), typeStr, regex)) return false;
+    protected void put(Map<String, String> params, String key, String value) {
+        if(value == null)
+            return;
+        if(value.isEmpty())
+            return;
+        params.put(key, value);
+    }
+
+    private String listToString(List<String> valueList) {
+        if(valueList == null) return null;
+        if(valueList.isEmpty()) return null;
+        StringBuilder sb = new StringBuilder(valueList.get(0));
+        if(valueList.size() > 1)
+            for (int i = 1; i < valueList.size(); i++)
+                sb.append(DIVIDER).append(valueList.get(i));
+        return sb.toString();
+    }
+
+    protected void put(Map<String, String> params, String key, List<String> valueList) {
+        String str = listToString(valueList);
+        if(str == null) return;
+        params.put(key, str.replace('§', '&'));
+    }
+
+    public boolean compare(ItemStack item, int amount) {
+        int amountToRemove = amount > 0 ? amount : item.getAmount();
+        if(this.getAmount() < amountToRemove)
+            return false; // Сравниваем ТЕКУЩИЙ предмет с целевым. Т.е. текущего должно быть столько же или больше
+        if(this.getType() != item.getType()) return false;
+        if(this.getDamage() != ItemUtil.getDurability(item)) return false;
+        return Bukkit.getItemFactory().equals(this.getItemMeta(), item.getItemMeta());
+    }
+
+    public boolean compare(String itemStr) {
+        return compare(itemStr, -1);
+    }
+
+    public boolean compare(String itemStr, int amount) {
+        Map<String, String> params = Param.parseParams(itemStr, "");
+        if(amount > 0) params.put("amount", Integer.toString(amount));
+        return compare(params, amount);
+    }
+
+    @SuppressWarnings("unused")
+    public boolean compare(Map<String, String> itemMap) {
+        return compare(itemMap, -1);
+    }
+
+    public boolean compare(Map<String, String> itemMap, int amount) {
+        if(itemMap == null || itemMap.isEmpty()) return false;
+
+        boolean regex = !itemMap.containsKey("regex") || itemMap.get("regex").equalsIgnoreCase("true");
+
+        ItemMeta thisMeta = this.getItemMeta();
+        if(itemMap.containsKey("item") || itemMap.containsKey("default-param")) {
+            String itemStr = itemMap.containsKey("item") ? itemMap.get("item") : itemMap.get("default-param");
+            String dataStr = "";
+            String amountStr = "";
+            if(itemStr.contains("*")) {
+                itemStr = itemStr.substring(0, itemStr.indexOf("*"));
+                amountStr = itemStr.substring(itemStr.indexOf("*") + 1);
+            }
+            if(itemStr.contains(":")) {
+                itemStr = itemStr.substring(0, itemStr.indexOf(":"));
+                dataStr = itemStr.substring(itemStr.indexOf(":") + 1);
+            }
+            itemMap.put("type", Material.getMaterial(itemStr.toUpperCase()).name());
+
+            if(Util.INT_POSITIVE.matcher(dataStr).matches()) itemMap.put("data", dataStr);
+            if(Util.INT_POSITIVE.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
+            itemMap.remove("item");
+            itemMap.remove("default-param");
+        }
+        if(amount > 0) itemMap.put("amount", Integer.toString(amount));
+        if(this.hasDisplayName() && !itemMap.containsKey("name")) return false;
+        if(this.hasLore() && !itemMap.containsKey("lore")) return false;
+        if(itemMap.containsKey("type")) {
+            String typeStr = itemMap.get("type").toUpperCase();
+            Material m = Material.getMaterial(typeStr);
+            if(m == null) return false;
+            typeStr = m.toString();
+            if(!compareOrMatch(this.getType().toString(), typeStr, regex)) return false;
 
 			/*
 			if (itemMap.containsKey("color")) {
@@ -715,76 +714,76 @@ public class VirtualItem extends ItemStack {
 
 			}
 			*/
-		}
+        }
 
-		if (itemMap.containsKey("data")) {
-			String dataStr = itemMap.get("data");
-			int reqData = Util.INT_POSITIVE.matcher(dataStr).matches() ? Integer.parseInt(dataStr) : -1;
-			if (reqData != this.getDamage()) return false;
-		}
-		if (itemMap.containsKey("amount")) {
-			String amountStr = itemMap.get("amount");
-			if (Util.INT_POSITIVE.matcher(amountStr).matches() && this.getAmount() < Integer.parseInt(amountStr))
-				return false;//this.getAmount()>=Integer.parseInt(amountStr);
-			else if (AMOUNT_RANDOM.matcher(amountStr).matches()) {
-				boolean greater = amountStr.startsWith(">");
-				boolean equal = amountStr.contains("=");
-				int reqAmount = Integer.parseInt(amountStr.replaceAll("\\D+", ""));
-				reqAmount = equal ? (greater ? reqAmount++ : reqAmount--) : reqAmount;
-				if (greater && this.getAmount() < reqAmount) return false;
-				if (!greater && this.getAmount() > reqAmount) return false;
-			}
-		}
-		if (itemMap.containsKey("name")) {
-			String thisName = thisMeta.hasDisplayName() ? thisMeta.getDisplayName() : "";
-			if (!compareOrMatch(thisName, ChatColor.translateAlternateColorCodes('&', itemMap.get("name")), regex))
-				return false;
-		}
+        if(itemMap.containsKey("data")) {
+            String dataStr = itemMap.get("data");
+            int reqData = Util.INT_POSITIVE.matcher(dataStr).matches() ? Integer.parseInt(dataStr) : -1;
+            if(reqData != this.getDamage()) return false;
+        }
+        if(itemMap.containsKey("amount")) {
+            String amountStr = itemMap.get("amount");
+            if(Util.INT_POSITIVE.matcher(amountStr).matches() && this.getAmount() < Integer.parseInt(amountStr))
+                return false;//this.getAmount()>=Integer.parseInt(amountStr);
+            else if(AMOUNT_RANDOM.matcher(amountStr).matches()) {
+                boolean greater = amountStr.startsWith(">");
+                boolean equal = amountStr.contains("=");
+                int reqAmount = Integer.parseInt(amountStr.replaceAll("\\D+", ""));
+                reqAmount = equal ? (greater ? reqAmount++ : reqAmount--) : reqAmount;
+                if(greater && this.getAmount() < reqAmount) return false;
+                if(!greater && this.getAmount() > reqAmount) return false;
+            }
+        }
+        if(itemMap.containsKey("name")) {
+            String thisName = thisMeta.hasDisplayName() ? thisMeta.getDisplayName() : "";
+            if(!compareOrMatch(thisName, ChatColor.translateAlternateColorCodes('&', itemMap.get("name")), regex))
+                return false;
+        }
 
-		if (itemMap.containsKey("lore")) {
-			List<String> thisLore = thisMeta.hasLore() ? thisMeta.getLore() : new ArrayList<>();
-			String thisLoreStr = String.join(DIVIDER, thisLore);
-			String loreStr = ChatColor.translateAlternateColorCodes('&', itemMap.get("lore")); //Joiner.on(regex ? Pattern.quote(DIVIDER) : DIVIDER).join(thisLore);
-			return compareOrMatch(thisLoreStr, loreStr, regex);
-		}
-		return true;
-	}
+        if(itemMap.containsKey("lore")) {
+            List<String> thisLore = thisMeta.hasLore() ? thisMeta.getLore() : new ArrayList<>();
+            String thisLoreStr = String.join(DIVIDER, thisLore);
+            String loreStr = ChatColor.translateAlternateColorCodes('&', itemMap.get("lore")); //Joiner.on(regex ? Pattern.quote(DIVIDER) : DIVIDER).join(thisLore);
+            return compareOrMatch(thisLoreStr, loreStr, regex);
+        }
+        return true;
+    }
 
-	private boolean compareOrMatch(String str, String toStr, boolean useRegex) {
-		if (useRegex) {
-			//try {
-			return str.matches(toStr);
-			//} catch (Exception e) {
-			//	Msg.logOnce(toStr + "0", "Failed to check items matches:");
-			//	Msg.logOnce(toStr + "1", "Item 1: " + str);
-			//	Msg.logOnce(toStr + "2", "Item 2: " + toStr);
-			//	return false;
-			//}
-		}
-		return str.equalsIgnoreCase(toStr);
-	}
+    private boolean compareOrMatch(String str, String toStr, boolean useRegex) {
+        if(useRegex) {
+            //try {
+            return str.matches(toStr);
+            //} catch (Exception e) {
+            //	Msg.logOnce(toStr + "0", "Failed to check items matches:");
+            //	Msg.logOnce(toStr + "1", "Item 1: " + str);
+            //	Msg.logOnce(toStr + "2", "Item 2: " + toStr);
+            //	return false;
+            //}
+        }
+        return str.equalsIgnoreCase(toStr);
+    }
 
-	/**
-	 * Actually {@link #getDurability()} but for 1.13+
-	 *
-	 * @return Durability of item
-	 */
-	public int getDamage() {
-		ItemMeta meta = this.getItemMeta();
-		if(meta instanceof Damageable) {
-			return ((Damageable)meta).getDamage();
-		}
-		return 0;
-	}
+    /**
+     * Actually {@link #getDurability()} but for 1.13+
+     *
+     * @return Durability of item
+     */
+    public int getDamage() {
+        ItemMeta meta = this.getItemMeta();
+        if(meta instanceof Damageable) {
+            return ((Damageable) meta).getDamage();
+        }
+        return 0;
+    }
 
-	/**
-	 * Actually {@link #setDurability(short)} but for 1.13+
-	 */
-	public void setDamage(int damage) {
-		ItemMeta meta = this.getItemMeta();
-		if(meta instanceof Damageable) {
-			((Damageable)meta).setDamage(damage);
-			this.setItemMeta(meta);
-		}
-	}
+    /**
+     * Actually {@link #setDurability(short)} but for 1.13+
+     */
+    public void setDamage(int damage) {
+        ItemMeta meta = this.getItemMeta();
+        if(meta instanceof Damageable) {
+            ((Damageable) meta).setDamage(damage);
+            this.setItemMeta(meta);
+        }
+    }
 }

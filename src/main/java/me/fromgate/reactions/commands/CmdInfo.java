@@ -14,74 +14,74 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CmdDefine(command = "react", description = Msg.CMD_INFO, permission = "reactions.config",
-		subCommands = {"info"}, allowConsole = true, shortDescription = "&3/react info <activator> [f|a|r]")
+        subCommands = {"info"}, allowConsole = true, shortDescription = "&3/react info <activator> [f|a|r]")
 public class CmdInfo extends Cmd {
-	@Override
-	public boolean execute(CommandSender sender, String[] args) {
-		String id = args.length > 1 ? args[1] : "";
-		if (id.isEmpty()) return false;
-		String far = args.length > 2 ? args[2] : "";
-		if (ActivatorsManager.contains(id)) {
-			printActInfo(sender, id, far);
-		} else if (id.equalsIgnoreCase("menu")) {
-			InventoryMenu.printMenu(sender, far);
-		} else Msg.printMSG(sender, "cmd_unknownbutton", id);
-		return true;
-	}
+    @Override
+    public boolean execute(CommandSender sender, String[] args) {
+        String id = args.length > 1 ? args[1] : "";
+        if(id.isEmpty()) return false;
+        String far = args.length > 2 ? args[2] : "";
+        if(ActivatorsManager.contains(id)) {
+            printActInfo(sender, id, far);
+        } else if(id.equalsIgnoreCase("menu")) {
+            InventoryMenu.printMenu(sender, far);
+        } else Msg.printMSG(sender, "cmd_unknownbutton", id);
+        return true;
+    }
 
 
-	private void printActInfo(CommandSender sender, String activatorName, String far) {
-		Activator act = ActivatorsManager.get(activatorName);
-		ActivatorBase base = act.getBase();
-		boolean f;
-		boolean a;
-		boolean r;
-		if (far.isEmpty()) {
-			f = true;
-			a = true;
-			r = true;
-		} else {
-			f = far.contains("f") || far.equalsIgnoreCase("flag") || far.equalsIgnoreCase("flags");
-			a = far.contains("a") || far.equalsIgnoreCase("action") || far.equalsIgnoreCase("actions");
-			r = far.contains("r") || far.equalsIgnoreCase("reaction") || far.equalsIgnoreCase("reactions");
-		}
+    private void printActInfo(CommandSender sender, String activatorName, String far) {
+        Activator act = ActivatorsManager.get(activatorName);
+        ActivatorBase base = act.getBase();
+        boolean f;
+        boolean a;
+        boolean r;
+        if(far.isEmpty()) {
+            f = true;
+            a = true;
+            r = true;
+        } else {
+            f = far.contains("f") || far.equalsIgnoreCase("flag") || far.equalsIgnoreCase("flags");
+            a = far.contains("a") || far.equalsIgnoreCase("action") || far.equalsIgnoreCase("actions");
+            r = far.contains("r") || far.equalsIgnoreCase("reaction") || far.equalsIgnoreCase("reactions");
+        }
 
-		Msg.printMSG(sender, "&5☆ &d&l" + Msg.MSG_ACTINFOTITLE.getText("NOCOLOR") + " &r&5☆");
-		Msg.printMSG(sender, "msg_actinfo", base.getName(), act.getType(), base.getGroup());
-		Msg.printMSG(sender, "msg_actinfo2", base.getFlags().size(), base.getActions().size(), base.getReactions().size());
-		if (f && (!base.getFlags().isEmpty())) {
-			List<String> flg = new ArrayList<>();
-			for (int i = 0; i < base.getFlags().size(); i++) {
-				StoredFlag flag = base.getFlags().get(i);
-				flg.add((flag.isInverted() ? "&4! &e" : "  &e") + flag.getFlagName() + " &3= &a" + flag.getValue());
-			}
-			Msg.printPage(sender, flg, Msg.LST_FLAGS, 1, 100, true);
-		}
-		if (a && (!base.getActions().isEmpty())) {
-			List<String> flg = new ArrayList<>();
-			for (int i = 0; i < base.getActions().size(); i++) {
-				String action = base.getActions().get(i).getActionName();
-				String param = base.getActions().get(i).getValue();
-				if (action.equalsIgnoreCase("tp")) {
-					Location loc = LocationUtil.parseCoordinates(param);//Util.parseLocation(param);
-					if (loc != null) param = LocationUtil.locationToStringFormatted(loc);
-				}
-				flg.add("  &e" + action + " &3= &a" + param);
-			}
-			Msg.printPage(sender, flg, Msg.LST_ACTIONS, 1, 100, true);
-		}
-		if (r && (!base.getReactions().isEmpty())) {
-			List<String> flg = new ArrayList<>();
-			for (int i = 0; i < base.getReactions().size(); i++) {
-				String action = base.getReactions().get(i).getActionName();
-				String param = base.getReactions().get(i).getValue();
-				if (action.equalsIgnoreCase("tp")) {
-					Location loc = LocationUtil.parseCoordinates(param);
-					if (loc != null) param = LocationUtil.locationToStringFormatted(loc);
-				}
-				flg.add("  &e" + action + " &3= &a" + param);
-			}
-			Msg.printPage(sender, flg, Msg.LST_REACTIONS, 1, 100, true);
-		}
-	}
+        Msg.printMSG(sender, "&5☆ &d&l" + Msg.MSG_ACTINFOTITLE.getText("NOCOLOR") + " &r&5☆");
+        Msg.printMSG(sender, "msg_actinfo", base.getName(), act.getType(), base.getGroup());
+        Msg.printMSG(sender, "msg_actinfo2", base.getFlags().size(), base.getActions().size(), base.getReactions().size());
+        if(f && (!base.getFlags().isEmpty())) {
+            List<String> flg = new ArrayList<>();
+            for (int i = 0; i < base.getFlags().size(); i++) {
+                StoredFlag flag = base.getFlags().get(i);
+                flg.add((flag.isInverted() ? "&4! &e" : "  &e") + flag.getFlagName() + " &3= &a" + flag.getValue());
+            }
+            Msg.printPage(sender, flg, Msg.LST_FLAGS, 1, 100, true);
+        }
+        if(a && (!base.getActions().isEmpty())) {
+            List<String> flg = new ArrayList<>();
+            for (int i = 0; i < base.getActions().size(); i++) {
+                String action = base.getActions().get(i).getActionName();
+                String param = base.getActions().get(i).getValue();
+                if(action.equalsIgnoreCase("tp")) {
+                    Location loc = LocationUtil.parseCoordinates(param);//Util.parseLocation(param);
+                    if(loc != null) param = LocationUtil.locationToStringFormatted(loc);
+                }
+                flg.add("  &e" + action + " &3= &a" + param);
+            }
+            Msg.printPage(sender, flg, Msg.LST_ACTIONS, 1, 100, true);
+        }
+        if(r && (!base.getReactions().isEmpty())) {
+            List<String> flg = new ArrayList<>();
+            for (int i = 0; i < base.getReactions().size(); i++) {
+                String action = base.getReactions().get(i).getActionName();
+                String param = base.getReactions().get(i).getValue();
+                if(action.equalsIgnoreCase("tp")) {
+                    Location loc = LocationUtil.parseCoordinates(param);
+                    if(loc != null) param = LocationUtil.locationToStringFormatted(loc);
+                }
+                flg.add("  &e" + action + " &3= &a" + param);
+            }
+            Msg.printPage(sender, flg, Msg.LST_REACTIONS, 1, 100, true);
+        }
+    }
 }

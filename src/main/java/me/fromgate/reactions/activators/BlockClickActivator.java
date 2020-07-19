@@ -35,94 +35,92 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class BlockClickActivator extends Activator implements Locatable {
-	private final Material blockType;
-	private final String blockLocation;
-	private final ClickType click;
+    private final Material blockType;
+    private final String blockLocation;
+    private final ClickType click;
 
-	private BlockClickActivator(ActivatorBase base, Material block, String location, ClickType click) {
-		super(base);
-		this.blockType = block;
-		this.blockLocation = location;
-		this.click = click;
-	}
+    private BlockClickActivator(ActivatorBase base, Material block, String location, ClickType click) {
+        super(base);
+        this.blockType = block;
+        this.blockLocation = location;
+        this.click = click;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		BlockClickStorage bce = (BlockClickStorage) event;
-		if (bce.getBlock() == null) return false;
-		if (!isActivatorBlock(bce.getBlock())) return false;
-		if (click.checkRight(bce.isLeftClick())) return false;
-		return true;
-	}
+    public static BlockClickActivator create(ActivatorBase base, Param param) {
+        Material block = ItemUtil.getMaterial(param.getParam("block-type"));
+        ClickType click = ClickType.getByName(param.getParam("click-type"));
+        String loc = param.getParam("location");
+        return new BlockClickActivator(base, block, loc, click);
+    }
 
-	private boolean isActivatorBlock(Block block) {
-		if (this.blockType != null && block.getType() != this.blockType) return false;
-		return checkLocations(block);
-	}
+    public static BlockClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        Material block = ItemUtil.getMaterial(cfg.getString("block-type"));
+        ClickType click = ClickType.getByName(cfg.getString("click-type"));
+        String loc = cfg.getString("location");
+        return new BlockClickActivator(base, block, loc, click);
+    }
 
-	private boolean checkLocations(Block block) {
-		if (this.blockLocation.isEmpty()) return true;
-		return this.isLocatedAt(block.getLocation());
-	}
+    @Override
+    public boolean activate(Storage event) {
+        BlockClickStorage bce = (BlockClickStorage) event;
+        if(bce.getBlock() == null) return false;
+        if(!isActivatorBlock(bce.getBlock())) return false;
+        return !click.checkRight(bce.isLeftClick());
+    }
 
+    private boolean isActivatorBlock(Block block) {
+        if(this.blockType != null && block.getType() != this.blockType) return false;
+        return checkLocations(block);
+    }
 
-	@Override
-	public boolean isLocatedAt(Location l) {
-		if (this.blockLocation.isEmpty()) return false;
-		// Location loc = Locator.parseCoordinates(this.blockLocation);
-		Location loc = LocationUtil.parseLocation(this.blockLocation, null);
-		if (loc == null) return false;
-		return l.getWorld().equals(loc.getWorld()) &&
-				l.getBlockX() == loc.getBlockX() &&
-				l.getBlockY() == loc.getBlockY() &&
-				l.getBlockZ() == loc.getBlockZ();
-	}
+    private boolean checkLocations(Block block) {
+        if(this.blockLocation.isEmpty()) return true;
+        return this.isLocatedAt(block.getLocation());
+    }
 
-	@Override
-	public boolean isLocatedAt(World world, int x, int y, int z) {
-		return isLocatedAt(new Location(world, x, y, z));
-	}
+    @Override
+    public boolean isLocatedAt(Location l) {
+        if(this.blockLocation.isEmpty()) return false;
+        // Location loc = Locator.parseCoordinates(this.blockLocation);
+        Location loc = LocationUtil.parseLocation(this.blockLocation, null);
+        if(loc == null) return false;
+        return l.getWorld().equals(loc.getWorld()) &&
+                l.getBlockX() == loc.getBlockX() &&
+                l.getBlockY() == loc.getBlockY() &&
+                l.getBlockZ() == loc.getBlockZ();
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		if(blockType != null) cfg.set("block-type", this.blockType.name());
-		cfg.set("click-type", click.name());
-		cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
-	}
+    @Override
+    public boolean isLocatedAt(World world, int x, int y, int z) {
+        return isLocatedAt(new Location(world, x, y, z));
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.BLOCK_CLICK;
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        if(blockType != null) cfg.set("block-type", this.blockType.name());
+        cfg.set("click-type", click.name());
+        cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("type:").append(blockType == null ? "-" : blockType);
-		sb.append("; click:").append(this.click.name());
-		sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.BLOCK_CLICK;
+    }
 
-	public boolean isValid() {
-		// return (this.blockType == null || this.blockType.isEmpty()) && (this.blockLocation == null || this.blockLocation.isEmpty());
-		return true;
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("type:").append(blockType == null ? "-" : blockType);
+        sb.append("; click:").append(this.click.name());
+        sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
+        sb.append(")");
+        return sb.toString();
+    }
 
-	public static BlockClickActivator create(ActivatorBase base, Param param) {
-		Material block = ItemUtil.getMaterial(param.getParam("block-type"));
-		ClickType click = ClickType.getByName(param.getParam("click-type"));
-		String loc = param.getParam("location");
-		return new BlockClickActivator(base, block, loc, click);
-	}
-
-	public static BlockClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		Material block = ItemUtil.getMaterial(cfg.getString("block-type"));
-		ClickType click = ClickType.getByName(cfg.getString("click-type"));
-		String loc = cfg.getString("location");
-		return new BlockClickActivator(base, block, loc, click);
-	}
+    public boolean isValid() {
+        // return (this.blockType == null || this.blockType.isEmpty()) && (this.blockLocation == null || this.blockLocation.isEmpty());
+        return true;
+    }
 
 }

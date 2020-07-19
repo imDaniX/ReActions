@@ -28,11 +28,11 @@ import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 public class FlagRegionInRadius implements Flag {
-	@Override
-	public boolean checkFlag(RaContext context, String param) {
-		Player player = context.getPlayer();
-		int radius = 0;
-		if (!param.isEmpty()) radius = Integer.parseInt(param);
-		return WGBridge7x.checkRegionInRadius(player, radius);
-	}
+    @Override
+    public boolean checkFlag(RaContext context, String param) {
+        Player player = context.getPlayer();
+        int radius = 0;
+        if(!param.isEmpty()) radius = Integer.parseInt(param);
+        return WGBridge7x.checkRegionInRadius(player, radius);
+    }
 }

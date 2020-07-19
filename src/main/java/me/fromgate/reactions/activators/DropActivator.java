@@ -12,42 +12,41 @@ import org.bukkit.inventory.ItemStack;
  */
 public class DropActivator extends Activator {
 
-	private final String itemStr;
+    private final String itemStr;
 
-	private DropActivator(ActivatorBase base, String itemStr) {
-		super(base);
-		this.itemStr = itemStr;
-	}
+    private DropActivator(ActivatorBase base, String itemStr) {
+        super(base);
+        this.itemStr = itemStr;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		DropStorage de = (DropStorage) event;
-		if (!checkItem(de.getItem())) return false;
-		return true;
-	}
+    public static DropActivator create(ActivatorBase base, Param param) {
+        String itemStr = param.getParam("item", param.toString());
+        return new DropActivator(base, itemStr);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("item", this.itemStr);
-	}
+    public static DropActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String itemStr = cfg.getString("item", "");
+        return new DropActivator(base, itemStr);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.DROP;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        DropStorage de = (DropStorage) event;
+        return checkItem(de.getItem());
+    }
 
-	private boolean checkItem(ItemStack item) {
-		if (this.itemStr.isEmpty()) return true;
-		return ItemUtil.compareItemStr(item, this.itemStr, true);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("item", this.itemStr);
+    }
 
-	public static DropActivator create(ActivatorBase base, Param param) {
-		String itemStr = param.getParam("item", param.toString());
-		return new DropActivator(base, itemStr);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.DROP;
+    }
 
-	public static DropActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String itemStr = cfg.getString("item", "");
-		return new DropActivator(base, itemStr);
-	}
+    private boolean checkItem(ItemStack item) {
+        if(this.itemStr.isEmpty()) return true;
+        return ItemUtil.compareItemStr(item, this.itemStr, true);
+    }
 }

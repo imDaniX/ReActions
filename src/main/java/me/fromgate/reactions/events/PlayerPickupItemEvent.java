@@ -7,35 +7,35 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 public class PlayerPickupItemEvent extends PlayerEvent implements Cancellable {
-	private static final HandlerList handlers = new HandlerList();
-	private boolean cancel;
-	private final Item item;
+    private static final HandlerList handlers = new HandlerList();
+    private final Item item;
+    private boolean cancel;
 
-	public PlayerPickupItemEvent(Player player, Item item) {
-		super(player);
-		this.item = item;
-	}
+    public PlayerPickupItemEvent(Player player, Item item) {
+        super(player);
+        this.item = item;
+    }
 
-	public Item getItem() {
-		return item;
-	}
+    public static HandlerList getHandlerList() {
+        return handlers;
+    }
 
-	@Override
-	public boolean isCancelled() {
-		return cancel;
-	}
+    public Item getItem() {
+        return item;
+    }
 
-	@Override
-	public void setCancelled(boolean cancel) {
-		this.cancel = cancel;
-	}
+    @Override
+    public boolean isCancelled() {
+        return cancel;
+    }
 
-	@Override
-	public HandlerList getHandlers() {
-		return handlers;
-	}
+    @Override
+    public void setCancelled(boolean cancel) {
+        this.cancel = cancel;
+    }
 
-	public static HandlerList getHandlerList() {
-		return handlers;
-	}
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
 }

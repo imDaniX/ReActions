@@ -9,51 +9,51 @@ import org.bukkit.Bukkit;
 // Maybe external jar modules, that will be registered from folder?
 public class Externals {
 
-	private static boolean factions = false;
+    private static boolean factions = false;
 
-	//разные переменные
-	private static boolean townyConnected = false;
+    //разные переменные
+    private static boolean townyConnected = false;
 
-	public static void init() {
-		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
-			try {
-				RaPlaceholderAPI.init();
-			} catch (Throwable ignore) {
-			}
-		}
+    public static void init() {
+        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            try {
+                RaPlaceholderAPI.init();
+            } catch (Throwable ignore) {
+            }
+        }
 
 
-		if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
-			try {
-				RaProtocolLib.connectProtocolLib();
-			} catch (Throwable ignore) {
-			}
-		}
+        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+            try {
+                RaProtocolLib.connectProtocolLib();
+            } catch (Throwable ignore) {
+            }
+        }
 
-		// TODO: Actions with WorldEdit API - placing blocks, working with schematics
-		if (Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
-			try {
-				RaWorldEdit.init();
-			} catch (Throwable ignore) {
-			}
-		}
+        // TODO: Actions with WorldEdit API - placing blocks, working with schematics
+        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
+            try {
+                RaWorldEdit.init();
+            } catch (Throwable ignore) {
+            }
+        }
 
-		if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
-			try {
-				RaWorldGuard.init();
-			} catch (Throwable ignore) {
-			}
-		}
+        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
+            try {
+                RaWorldGuard.init();
+            } catch (Throwable ignore) {
+            }
+        }
 
-		// TODO: Essentials support (homes, warps, native god check)
-	}
+        // TODO: Essentials support (homes, warps, native god check)
+    }
 
-	public static boolean isConnectedFactions() {
-		return factions;
-	}
+    public static boolean isConnectedFactions() {
+        return factions;
+    }
 
-	public static boolean isTownyConnected() {
-		return townyConnected;
-	}
+    public static boolean isTownyConnected() {
+        return townyConnected;
+    }
 
 }

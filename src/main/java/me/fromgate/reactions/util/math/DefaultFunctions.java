@@ -105,7 +105,7 @@ public enum DefaultFunctions implements MathBase.Function {
         public double eval(double a, double... num) {
             if(num.length > 0) {
                 double max = a;
-                for(double j : num)
+                for (double j : num)
                     max = Math.max(max, j);
                 return max;
             }
@@ -117,7 +117,7 @@ public enum DefaultFunctions implements MathBase.Function {
         public double eval(double a, double... num) {
             if(num.length > 0) {
                 double min = a;
-                for(double j : num)
+                for (double j : num)
                     min = Math.min(min, j);
                 return min;
             }
@@ -223,7 +223,7 @@ public enum DefaultFunctions implements MathBase.Function {
     FORMATFLOAT {
         @Override
         public double eval(double a, double... num) {
-            return Math.round(a*100)/100;
+            return Math.round(a * 100) / 100;
         }
     }
 }

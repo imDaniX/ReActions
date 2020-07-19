@@ -43,40 +43,40 @@ import java.util.UUID;
 
 public class MoveListener implements Listener {
 
-	private static Map<UUID, Location> prevLocations = new HashMap<>();
+    private static Map<UUID, Location> prevLocations = new HashMap<>();
 
-	public static void init() {
-		if (Cfg.playerMoveTaskUse) {
-			Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(pl -> {
-				Location from = prevLocations.get(pl.getUniqueId());
-				Location to = pl.getLocation();
-				if (to.getWorld() != from.getWorld()) from = null;
-				processMove(pl, from, to);
-				prevLocations.put(pl.getUniqueId(), to);
-			}), 30, Cfg.playerMoveTaskTick);
-		} else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
-	}
+    public static void init() {
+        if(Cfg.playerMoveTaskUse) {
+            Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(pl -> {
+                Location from = prevLocations.get(pl.getUniqueId());
+                Location to = pl.getLocation();
+                if(to.getWorld() != from.getWorld()) from = null;
+                processMove(pl, from, to);
+                prevLocations.put(pl.getUniqueId(), to);
+            }), 30, Cfg.playerMoveTaskTick);
+        } else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
+    }
 
-	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-	public void onPlayerMove(PlayerMoveEvent event) {
-		processMove(event.getPlayer(), event.getFrom(), event.getTo());
-	}
+    private static void processMove(Player player, Location from, Location to) {
+        PushBack.rememberLocations(player, from, to);
+        PlayerEvent event = LocationUtil.isSameLocation(from, to) ?
+                new PlayerStayEvent(player, to) : new PlayerMoveByBlockEvent(player, to, from);
+        Bukkit.getPluginManager().callEvent(event);
+    }
 
-	private static void processMove(Player player, Location from, Location to) {
-		PushBack.rememberLocations(player, from, to);
-		PlayerEvent event = LocationUtil.isSameLocation(from, to) ?
-				new PlayerStayEvent(player, to) : new PlayerMoveByBlockEvent(player, to, from);
-		Bukkit.getPluginManager().callEvent(event);
-	}
+    public static void initLocation(Player player) {
+        if(Cfg.playerMoveTaskUse) {
+            prevLocations.put(player.getUniqueId(), player.getLocation());
+        }
+    }
 
-	public static void initLocation(Player player) {
-		if (Cfg.playerMoveTaskUse) {
-			prevLocations.put(player.getUniqueId(), player.getLocation());
-		}
-	}
+    public static void removeLocation(Player player) {
+        prevLocations.remove(player.getUniqueId());
+    }
 
-	public static void removeLocation(Player player) {
-		prevLocations.remove(player.getUniqueId());
-	}
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onPlayerMove(PlayerMoveEvent event) {
+        processMove(event.getPlayer(), event.getFrom(), event.getTo());
+    }
 
 }

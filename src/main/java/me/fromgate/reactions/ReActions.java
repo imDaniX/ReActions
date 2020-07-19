@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 package me.fromgate.reactions;
@@ -48,45 +48,45 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReActions extends JavaPlugin {
 
-	private static ReActions instance;
+    private static ReActions instance;
 
-	public static JavaPlugin getPlugin() {
-		return instance;
-	}
+    public static JavaPlugin getPlugin() {
+        return instance;
+    }
 
-	@Override
-	public void onEnable() {
-		// TODO: More OOP style
+    @Override
+    public void onEnable() {
+        // TODO: More OOP style
 
-		instance = this;
-		Cfg.load();
-		Cfg.save();
-		Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
+        instance = this;
+        Cfg.load();
+        Cfg.save();
+        Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
 
-		if (!getDataFolder().exists()) getDataFolder().mkdirs();
+        if(!getDataFolder().exists()) getDataFolder().mkdirs();
 
-		Commander.init(this);
-		TimersManager.init();
-		ActivatorsManager.init();
-		Bukkit.getScheduler().runTaskLater(this, FakeCommander::init, 1);
-		SelectorsManager.init();
-		Externals.init();
-		RaVault.init();
-		WaitingManager.init();
-		Delayer.load();
-		if (!Cfg.playerSelfVarFile) Variables.load();
-		else Variables.loadVars();
-		LocationHolder.loadLocs();
-		SQLManager.init();
-		InventoryMenu.init();
-		PlaceholdersManager.init();
-		Bukkit.getLogger().addHandler(new LogHandler());
-		Bukkit.getPluginManager().registerEvents(new BukkitListener(), this);
-		Bukkit.getPluginManager().registerEvents(new RaListener(), this);
-		MoveListener.init();
-		GodModeListener.init();
+        Commander.init(this);
+        TimersManager.init();
+        ActivatorsManager.init();
+        Bukkit.getScheduler().runTaskLater(this, FakeCommander::init, 1);
+        SelectorsManager.init();
+        Externals.init();
+        RaVault.init();
+        WaitingManager.init();
+        Delayer.load();
+        if(!Cfg.playerSelfVarFile) Variables.load();
+        else Variables.loadVars();
+        LocationHolder.loadLocs();
+        SQLManager.init();
+        InventoryMenu.init();
+        PlaceholdersManager.init();
+        Bukkit.getLogger().addHandler(new LogHandler());
+        Bukkit.getPluginManager().registerEvents(new BukkitListener(), this);
+        Bukkit.getPluginManager().registerEvents(new RaListener(), this);
+        MoveListener.init();
+        GodModeListener.init();
 
-		new MetricsLite(this, 1894);
-	}
+        new MetricsLite(this, 1894);
+    }
 
 }

@@ -1,4 +1,4 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
@@ -37,105 +37,104 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SignActivator extends Activator {
-	private List<String> maskLines;
-	private ClickType click;
+    private List<String> maskLines;
+    private ClickType click;
 
-	private SignActivator(ActivatorBase base, ClickType click, List<String> maskLines) {
-		super(base);
-		this.click = click;
-		this.maskLines = maskLines;
-	}
+    private SignActivator(ActivatorBase base, ClickType click, List<String> maskLines) {
+        super(base);
+        this.click = click;
+        this.maskLines = maskLines;
+    }
 
-	public boolean checkMask(String[] sign) {
-		if (maskLines.isEmpty()) return false;
-		int emptyLines = 0;
-		for (int i = 0; i < Math.min(4, maskLines.size()); i++) {
-			if (maskLines.get(i).isEmpty()) {
-				emptyLines++;
-				continue;
-			}
-			if (!ChatColor.translateAlternateColorCodes('&', maskLines.get(i))
-					.equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', sign[i]))) {
-				return false;
-			}
-		}
-		return emptyLines < 4;
-	}
+    public static SignActivator create(ActivatorBase base, Param p) {
+        if(!(p instanceof BlockParam)) return null;
+        BlockParam param = (BlockParam) p;
+        Block targetBlock = param.getBlock();
+        Sign sign = null;
+        if(targetBlock != null && BlockUtil.isSign(targetBlock))
+            sign = (Sign) targetBlock.getState();
+        ClickType click = ClickType.getByName(param.getParam("click", "RIGHT"));
+        List<String> maskLines = new ArrayList<>();
+        if(sign == null) {
+            maskLines.add(param.getParam("line1", ""));
+            maskLines.add(param.getParam("line2", ""));
+            maskLines.add(param.getParam("line3", ""));
+            maskLines.add(param.getParam("line4", ""));
+        } else {
+            maskLines.add(param.getParam("line1", sign.getLine(0)));
+            maskLines.add(param.getParam("line2", sign.getLine(1)));
+            maskLines.add(param.getParam("line3", sign.getLine(2)));
+            maskLines.add(param.getParam("line4", sign.getLine(3)));
+        }
+        return new SignActivator(base, click, maskLines);
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		SignStorage signEvent = (SignStorage) event;
-		if (click.checkRight(signEvent.isLeftClick())) return false;
-		if (!checkMask(signEvent.getSignLines())) return false;
-		return true;
-	}
+    public static SignActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        ClickType click = ClickType.getByName(cfg.getString("click-type", "RIGHT"));
+        List<String> maskLines = cfg.getStringList("sign-mask");
+        return new SignActivator(base, click, maskLines);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("sign-mask", maskLines);
-		cfg.set("click-type", click.name());
-	}
+    public boolean checkMask(String[] sign) {
+        if(maskLines.isEmpty()) return false;
+        int emptyLines = 0;
+        for (int i = 0; i < Math.min(4, maskLines.size()); i++) {
+            if(maskLines.get(i).isEmpty()) {
+                emptyLines++;
+                continue;
+            }
+            if(!ChatColor.translateAlternateColorCodes('&', maskLines.get(i))
+                    .equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', sign[i]))) {
+                return false;
+            }
+        }
+        return emptyLines < 4;
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.SIGN;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        SignStorage signEvent = (SignStorage) event;
+        if(click.checkRight(signEvent.isLeftClick())) return false;
+        return checkMask(signEvent.getSignLines());
+    }
 
-	@Override
-	public boolean isValid() {
-		if (maskLines == null || maskLines.isEmpty()) {
-			return false;
-		}
-		int emptyLines = 0;
-		for (int i = 0; i < Math.min(4, maskLines.size()); i++) {
-			if (maskLines.get(i).isEmpty()) {
-				emptyLines++;
-			}
-		}
-		return emptyLines > 0;
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("sign-mask", maskLines);
+        cfg.set("click-type", click.name());
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append("click:").append(this.click.name());
-		sb.append(" sign:");
-		if (this.maskLines.isEmpty()) sb.append("[][][][]");
-		else {
-			for (String s : maskLines)
-				sb.append("[").append(s).append("]");
-		}
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.SIGN;
+    }
 
-	public static SignActivator create(ActivatorBase base, Param p) {
-		if(!(p instanceof BlockParam)) return null;
-		BlockParam param = (BlockParam) p;
-		Block targetBlock = param.getBlock();
-		Sign sign = null;
-		if (targetBlock != null && BlockUtil.isSign(targetBlock))
-			sign = (Sign) targetBlock.getState();
-		ClickType click = ClickType.getByName(param.getParam("click", "RIGHT"));
-		List<String> maskLines = new ArrayList<>();
-		if (sign == null) {
-			maskLines.add(param.getParam("line1", ""));
-			maskLines.add(param.getParam("line2", ""));
-			maskLines.add(param.getParam("line3", ""));
-			maskLines.add(param.getParam("line4", ""));
-		} else {
-			maskLines.add(param.getParam("line1", sign.getLine(0)));
-			maskLines.add(param.getParam("line2", sign.getLine(1)));
-			maskLines.add(param.getParam("line3", sign.getLine(2)));
-			maskLines.add(param.getParam("line4", sign.getLine(3)));
-		}
-		return new SignActivator(base, click, maskLines);
-	}
+    @Override
+    public boolean isValid() {
+        if(maskLines == null || maskLines.isEmpty()) {
+            return false;
+        }
+        int emptyLines = 0;
+        for (int i = 0; i < Math.min(4, maskLines.size()); i++) {
+            if(maskLines.get(i).isEmpty()) {
+                emptyLines++;
+            }
+        }
+        return emptyLines > 0;
+    }
 
-	public static SignActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		ClickType click = ClickType.getByName(cfg.getString("click-type", "RIGHT"));
-		List<String> maskLines = cfg.getStringList("sign-mask");
-		return new SignActivator(base, click, maskLines);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("click:").append(this.click.name());
+        sb.append(" sign:");
+        if(this.maskLines.isEmpty()) sb.append("[][][][]");
+        else {
+            for (String s : maskLines)
+                sb.append("[").append(s).append("]");
+        }
+        sb.append(")");
+        return sb.toString();
+    }
 }

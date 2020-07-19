@@ -8,14 +8,14 @@ import org.bukkit.event.Listener;
 
 public class RaListener implements Listener {
 
-	@EventHandler
-	public void onMove(PlayerMoveByBlockEvent event) {
-		StoragesManager.raiseAllRegionActivators(event.getPlayer(), event.getTo(), event.getFrom());
-		StoragesManager.raiseCuboidActivator(event.getPlayer());
-	}
+    @EventHandler
+    public void onMove(PlayerMoveByBlockEvent event) {
+        StoragesManager.raiseAllRegionActivators(event.getPlayer(), event.getTo(), event.getFrom());
+        StoragesManager.raiseCuboidActivator(event.getPlayer());
+    }
 
-	@EventHandler
-	public void onStay(PlayerStayEvent event) {
-		StoragesManager.raiseCuboidActivator(event.getPlayer());
-	}
+    @EventHandler
+    public void onStay(PlayerStayEvent event) {
+        StoragesManager.raiseCuboidActivator(event.getPlayer());
+    }
 }

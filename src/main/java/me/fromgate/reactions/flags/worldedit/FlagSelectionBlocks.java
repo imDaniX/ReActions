@@ -30,21 +30,21 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class FlagSelectionBlocks implements Flag {
-	@Override
-	public boolean checkFlag(RaContext context, String param) {
-		Player player = context.getPlayer();
-		int selectionBlocks = RaWorldEdit.getArea(player);
-		Vector minPoint = RaWorldEdit.getMinimumPoint(player);
-		Vector maxPoint = RaWorldEdit.getMaximumPoint(player);
-		context.setTempVariable("minpoint", (minPoint == null) ? "" : minPoint.toString());
-		context.setTempVariable("minX", (minPoint == null) ? "" : Integer.toString(minPoint.getBlockX()));
-		context.setTempVariable("minY", (minPoint == null) ? "" : Integer.toString(minPoint.getBlockY()));
-		context.setTempVariable("minZ", (minPoint == null) ? "" : Integer.toString(minPoint.getBlockZ()));
-		context.setTempVariable("maxpoint", (maxPoint == null) ? "" : maxPoint.toString());
-		context.setTempVariable("maxX", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockX()));
-		context.setTempVariable("maxY", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockY()));
-		context.setTempVariable("maxZ", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockZ()));
-		context.setTempVariable("selblocks", Integer.toString(selectionBlocks));
-		return Util.isInteger(param) && selectionBlocks <= Integer.parseInt(param);
-	}
+    @Override
+    public boolean checkFlag(RaContext context, String param) {
+        Player player = context.getPlayer();
+        int selectionBlocks = RaWorldEdit.getArea(player);
+        Vector minPoint = RaWorldEdit.getMinimumPoint(player);
+        Vector maxPoint = RaWorldEdit.getMaximumPoint(player);
+        context.setTempVariable("minpoint", (minPoint == null) ? "" : minPoint.toString());
+        context.setTempVariable("minX", (minPoint == null) ? "" : Integer.toString(minPoint.getBlockX()));
+        context.setTempVariable("minY", (minPoint == null) ? "" : Integer.toString(minPoint.getBlockY()));
+        context.setTempVariable("minZ", (minPoint == null) ? "" : Integer.toString(minPoint.getBlockZ()));
+        context.setTempVariable("maxpoint", (maxPoint == null) ? "" : maxPoint.toString());
+        context.setTempVariable("maxX", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockX()));
+        context.setTempVariable("maxY", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockY()));
+        context.setTempVariable("maxZ", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockZ()));
+        context.setTempVariable("selblocks", Integer.toString(selectionBlocks));
+        return Util.isInteger(param) && selectionBlocks <= Integer.parseInt(param);
+    }
 }

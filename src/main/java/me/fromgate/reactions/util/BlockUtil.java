@@ -13,55 +13,59 @@ import java.util.Set;
  * Some helpful methods related to blocks to minify size of code
  */
 public class BlockUtil {
-	private final static Set<Material> PLATES = new HashSet<>();
-	static {
-		for(Material mat : Material.values())
-			if(mat.name().endsWith("PRESSURE_PLATE")) PLATES.add(mat);
-	}
+    private final static Set<Material> PLATES = new HashSet<>();
 
-	public static BlockFace getFaceByName(String name) {
-		for(BlockFace face : BlockFace.values())
-			if(face.name().equalsIgnoreCase(name)) return face;
-		return null;
-	}
+    static {
+        for (Material mat : Material.values())
+            if(mat.name().endsWith("PRESSURE_PLATE")) PLATES.add(mat);
+    }
 
-	public static boolean isPlate(Block block) {
-		return PLATES.contains(block.getType());
-	}
+    public static BlockFace getFaceByName(String name) {
+        for (BlockFace face : BlockFace.values())
+            if(face.name().equalsIgnoreCase(name)) return face;
+        return null;
+    }
 
-	public static boolean isSign(Block block) {
-		try {return Tag.SIGNS.isTagged(block.getType());}
-		catch(NoSuchFieldError e) {return block.getType().name().contains("SIGN");}
-	}
+    public static boolean isPlate(Block block) {
+        return PLATES.contains(block.getType());
+    }
 
-	public static boolean setOpen(Block b, boolean open) {
-		if (isOpenable(b)) {
-			Openable om = (Openable) b.getBlockData();
-			om.setOpen(open);
-			b.setBlockData(om);
-			return true;
-		}
-		return false;
-	}
+    public static boolean isSign(Block block) {
+        try {
+            return Tag.SIGNS.isTagged(block.getType());
+        } catch (NoSuchFieldError e) {
+            return block.getType().name().contains("SIGN");
+        }
+    }
 
-	public static boolean isOpen(Block b) {
-		if (isOpenable(b)) {
-			Openable om = (Openable) b.getBlockData();
-			return om.isOpen();
-		}
-		return false;
-	}
+    public static boolean setOpen(Block b, boolean open) {
+        if(isOpenable(b)) {
+            Openable om = (Openable) b.getBlockData();
+            om.setOpen(open);
+            b.setBlockData(om);
+            return true;
+        }
+        return false;
+    }
 
-	public static Block getDoorBottomBlock(Block block) {
-		if (Tag.DOORS.isTagged(block.getType())) {
-			Block bottomBlock = block.getRelative(BlockFace.DOWN);
-			if (Tag.DOORS.isTagged(bottomBlock.getType()))
-				return bottomBlock;
-		}
-		return block;
-	}
+    public static boolean isOpen(Block b) {
+        if(isOpenable(b)) {
+            Openable om = (Openable) b.getBlockData();
+            return om.isOpen();
+        }
+        return false;
+    }
 
-	public static boolean isOpenable(Block b) {
-		return b.getBlockData() instanceof Openable;
-	}
+    public static Block getDoorBottomBlock(Block block) {
+        if(Tag.DOORS.isTagged(block.getType())) {
+            Block bottomBlock = block.getRelative(BlockFace.DOWN);
+            if(Tag.DOORS.isTagged(bottomBlock.getType()))
+                return bottomBlock;
+        }
+        return block;
+    }
+
+    public static boolean isOpenable(Block b) {
+        return b.getBlockData() instanceof Openable;
+    }
 }

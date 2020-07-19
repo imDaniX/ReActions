@@ -5,5 +5,5 @@ package me.fromgate.reactions.activators;
  * This interface should let devs to do it without "hacking" the plugin.
  */
 public interface Manageable {
-	void manage();
+    void manage();
 }

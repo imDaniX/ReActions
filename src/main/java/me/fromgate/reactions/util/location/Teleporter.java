@@ -1,10 +1,10 @@
-/*  
+/*
  *  ReActions, Minecraft bukkit plugin
  *  (c)2012-2017, fromgate, fromgate@gmail.com
  *  http://dev.bukkit.org/server-mods/reactions/
  *
  *  This file is part of ReActions.
- *  
+ *
  *  ReActions is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with ReActions.  If not, see <http://www.gnorg/licenses/>.
- * 
+ *
  */
 
 
@@ -32,21 +32,21 @@ import java.util.Map;
 
 
 public class Teleporter {
-	private static Map<Player, PlayerTeleportEvent> events = new HashMap<>();
+    private static Map<Player, PlayerTeleportEvent> events = new HashMap<>();
 
-	public static void startTeleport(PlayerTeleportEvent event) {
-		events.put(event.getPlayer(), event);
-	}
+    public static void startTeleport(PlayerTeleportEvent event) {
+        events.put(event.getPlayer(), event);
+    }
 
-	public static void stopTeleport(Player player) {
-		events.remove(player);
-	}
+    public static void stopTeleport(Player player) {
+        events.remove(player);
+    }
 
-	public static void teleport(Player player, Location location) {
-		if (location == null) return;
-		PlayerTeleportEvent event = events.get(player);
-		if (event != null)
-			event.setTo(location);
-		else player.teleport(location);
-	}
+    public static void teleport(Player player, Location location) {
+        if(location == null) return;
+        PlayerTeleportEvent event = events.get(player);
+        if(event != null)
+            event.setTo(location);
+        else player.teleport(location);
+    }
 }

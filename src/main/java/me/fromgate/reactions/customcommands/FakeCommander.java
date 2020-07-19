@@ -21,56 +21,56 @@ import java.util.Map;
 import java.util.Set;
 
 public class FakeCommander {
-	private final static Map<String, RaCommand> commands = new HashMap<>();
+    private final static Map<String, RaCommand> commands = new HashMap<>();
 
-	public static void init() {
-		ReActions.getPlugin().saveResource("commands.yml", false);
-		updateCommands();
-	}
+    public static void init() {
+        ReActions.getPlugin().saveResource("commands.yml", false);
+        updateCommands();
+    }
 
-	public static void updateCommands() {
-		File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "commands.yml");
-		YamlConfiguration cfg = new YamlConfiguration();
-		if(!FileUtil.loadCfg(cfg, f, "Failed to load commands")) return;
-		CommandMap commandMap = getCommandMap();
-		unregisterAll(/*commandMap*/);
-		if(commandMap == null) return;
-		for(String cmdKey : cfg.getKeys(false)) {
-			ConfigurationSection cmdSection = cfg.getConfigurationSection(cmdKey);
-			String command = cmdSection.getString("command");
-			// TODO: Error message
-			if(command == null) continue;
-			String prefix = cmdSection.getString("prefix");
-			List<String> aliases = cmdSection.getStringList("alias");
-			boolean toBukkit = cmdSection.getBoolean("register", true);
-			// TODO: Error message
-			register(command, prefix, aliases, commandMap, new RaCommand(cmdSection, toBukkit), toBukkit);
-		}
-	}
+    public static void updateCommands() {
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "commands.yml");
+        YamlConfiguration cfg = new YamlConfiguration();
+        if(!FileUtil.loadCfg(cfg, f, "Failed to load commands")) return;
+        CommandMap commandMap = getCommandMap();
+        unregisterAll(/*commandMap*/);
+        if(commandMap == null) return;
+        for (String cmdKey : cfg.getKeys(false)) {
+            ConfigurationSection cmdSection = cfg.getConfigurationSection(cmdKey);
+            String command = cmdSection.getString("command");
+            // TODO: Error message
+            if(command == null) continue;
+            String prefix = cmdSection.getString("prefix");
+            List<String> aliases = cmdSection.getStringList("alias");
+            boolean toBukkit = cmdSection.getBoolean("register", true);
+            // TODO: Error message
+            register(command, prefix, aliases, commandMap, new RaCommand(cmdSection, toBukkit), toBukkit);
+        }
+    }
 
-	private static CommandMap getCommandMap() {
-		try {
-			final Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-			commandMapField.setAccessible(true);
-			return (CommandMap) commandMapField.get(Bukkit.getServer());
-		} catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException exception){
-			exception.printStackTrace();
-			return null;
-		}
-	}
+    private static CommandMap getCommandMap() {
+        try {
+            final Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            commandMapField.setAccessible(true);
+            return (CommandMap) commandMapField.get(Bukkit.getServer());
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException exception) {
+            exception.printStackTrace();
+            return null;
+        }
+    }
 
-	public static boolean raiseRaCommand(PrecommandStorage storage) {
-		RaCommand raCmd = commands.get(storage.getLabel().toLowerCase());
-		if(raCmd == null) return false;
-		String exec = raCmd.executeCommand(storage.getSender(), storage.getArgs());
-		StoragesManager.raiseExecActivator(storage.getSender(), exec, storage.getTempVars());
-		// It's not activator - context will not be generated
-		return raCmd.isOverride();
-	}
+    public static boolean raiseRaCommand(PrecommandStorage storage) {
+        RaCommand raCmd = commands.get(storage.getLabel().toLowerCase());
+        if(raCmd == null) return false;
+        String exec = raCmd.executeCommand(storage.getSender(), storage.getArgs());
+        StoragesManager.raiseExecActivator(storage.getSender(), exec, storage.getTempVars());
+        // It's not activator - context will not be generated
+        return raCmd.isOverride();
+    }
 
-	// @SuppressWarnings("unchecked")
-	private static void unregisterAll(/*CommandMap commandMap*/) {
-		if(commands.isEmpty()) return;
+    // @SuppressWarnings("unchecked")
+    private static void unregisterAll(/*CommandMap commandMap*/) {
+        if(commands.isEmpty()) return;
 		/*
 		TODO: Command unregister
 		try {
@@ -83,39 +83,39 @@ public class FakeCommander {
 			e.printStackTrace();
 		}
 		*/
-		commands.clear();
-	}
+        commands.clear();
+    }
 
-	private static boolean register(String command, String prefix, List<String> aliases, CommandMap commandMap, RaCommand raCommand, boolean toBukkit) {
-		if(Util.isStringEmpty(command)) return false;
-		command = command.toLowerCase();
-		prefix = Util.isStringEmpty(prefix) ? command : prefix.toLowerCase();
-		if(aliases == null)
-			aliases = new ArrayList<>();
-		// Registering main command
-		if(toBukkit) commandMap.register(prefix, raCommand);
-		commands.put(command, raCommand);
-		commands.put(prefix + ":" + command, raCommand);
-		// ReActions.getPlugin().getCommand(raCommand.getName()).setTabCompleter(tabCompleter);
-		// Registering aliases
-		for(String alias : aliases) {
-			if(toBukkit) commandMap.register(alias, prefix, raCommand);
-			commands.put(alias, raCommand);
-			commands.put(prefix + ":" + alias, raCommand);
-		}
-		return true;
-	}
+    private static boolean register(String command, String prefix, List<String> aliases, CommandMap commandMap, RaCommand raCommand, boolean toBukkit) {
+        if(Util.isStringEmpty(command)) return false;
+        command = command.toLowerCase();
+        prefix = Util.isStringEmpty(prefix) ? command : prefix.toLowerCase();
+        if(aliases == null)
+            aliases = new ArrayList<>();
+        // Registering main command
+        if(toBukkit) commandMap.register(prefix, raCommand);
+        commands.put(command, raCommand);
+        commands.put(prefix + ":" + command, raCommand);
+        // ReActions.getPlugin().getCommand(raCommand.getName()).setTabCompleter(tabCompleter);
+        // Registering aliases
+        for (String alias : aliases) {
+            if(toBukkit) commandMap.register(alias, prefix, raCommand);
+            commands.put(alias, raCommand);
+            commands.put(prefix + ":" + alias, raCommand);
+        }
+        return true;
+    }
 
-	private static Set<RaCommand> getCommandsSet() {
-		return new HashSet<>(commands.values());
-	}
+    private static Set<RaCommand> getCommandsSet() {
+        return new HashSet<>(commands.values());
+    }
 
-	public static List<String> list() {
-		List<String> list = new ArrayList<>();
-		for(RaCommand cmd : getCommandsSet()) {
-			List<String> sublist = cmd.list();
-			sublist.forEach(s -> list.add(ChatColor.UNDERLINE + "/" + cmd.getName() + ChatColor.RESET + " " + s));
-		}
-		return list;
-	}
+    public static List<String> list() {
+        List<String> list = new ArrayList<>();
+        for (RaCommand cmd : getCommandsSet()) {
+            List<String> sublist = cmd.list();
+            sublist.forEach(s -> list.add(ChatColor.UNDERLINE + "/" + cmd.getName() + ChatColor.RESET + " " + s));
+        }
+        return list;
+    }
 }

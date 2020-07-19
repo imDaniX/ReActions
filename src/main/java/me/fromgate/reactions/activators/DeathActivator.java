@@ -30,44 +30,43 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class DeathActivator extends Activator {
 
-	private final DeathCause deathCause;
+    private final DeathCause deathCause;
 
-	private DeathActivator(ActivatorBase base, DeathCause cause) {
-		super(base);
-		this.deathCause = cause;
-	}
+    private DeathActivator(ActivatorBase base, DeathCause cause) {
+        super(base);
+        this.deathCause = cause;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		DeathStorage de = (DeathStorage) event;
-		if (this.deathCause != DeathCause.ANY && de.getCause() != this.deathCause) return false;
-		return true;
-	}
+    public static DeathActivator create(ActivatorBase base, Param param) {
+        DeathCause cause = DeathCause.getByName(param.getParam("cause", param.toString()));
+        return new DeathActivator(base, cause);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("death-cause", this.deathCause != null ? this.deathCause.name() : "PVP");
-	}
+    public static DeathActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        DeathCause cause = DeathCause.getByName(cfg.getString("death-cause"));
+        return new DeathActivator(base, cause);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.DEATH;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        DeathStorage de = (DeathStorage) event;
+        return this.deathCause == DeathCause.ANY || de.getCause() == this.deathCause;
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append("(").append(this.deathCause.name()).append(")");
-		return sb.toString();
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("death-cause", this.deathCause != null ? this.deathCause.name() : "PVP");
+    }
 
-	public static DeathActivator create(ActivatorBase base, Param param) {
-		DeathCause cause = DeathCause.getByName(param.getParam("cause", param.toString()));
-		return new DeathActivator(base, cause);
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.DEATH;
+    }
 
-	public static DeathActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		DeathCause cause = DeathCause.getByName(cfg.getString("death-cause"));
-		return new DeathActivator(base, cause);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append("(").append(this.deathCause.name()).append(")");
+        return sb.toString();
+    }
 }

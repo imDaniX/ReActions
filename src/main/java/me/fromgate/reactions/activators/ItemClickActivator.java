@@ -33,62 +33,61 @@ import me.fromgate.reactions.util.parameter.Param;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ItemClickActivator extends Activator {
-	private final String item;
-	private final HandType hand;
+    private final String item;
+    private final HandType hand;
 
-	private ItemClickActivator(ActivatorBase base, String item, HandType hand) {
-		super(base);
-		this.item = item;
-		this.hand = hand;
-	}
+    private ItemClickActivator(ActivatorBase base, String item, HandType hand) {
+        super(base);
+        this.item = item;
+        this.hand = hand;
+    }
 
-	@Override
-	public boolean activate(Storage event) {
-		if (item.isEmpty() || (VirtualItem.fromString(item) == null)) {
-			Msg.logOnce(getBase().getName() + "activatoritemempty", "Failed to parse item of activator " + getBase().getName());
-			return false;
-		}
-		ItemClickStorage ie = (ItemClickStorage) event;
-		if(hand.checkOff(ie.isMainHand())) return false;
-		if(!ItemUtil.compareItemStr(ie.getItem(), this.item)) return false;
-		return true;
-	}
+    public static ItemClickActivator create(ActivatorBase base, Param param) {
+        String item = param.getParam("item", param.getParam("param-line"));
+        HandType hand = HandType.getByName(param.getParam("hand", "ANY"));
+        return new ItemClickActivator(base, item, hand);
+    }
 
-	@Override
-	public void save(ConfigurationSection cfg) {
-		cfg.set("item", this.item);
-		cfg.set("hand", this.hand.name());
-	}
+    public static ItemClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+        String item = cfg.getString("item", "");
+        HandType hand = HandType.getByName(cfg.getString("hand", "ANY"));
+        return new ItemClickActivator(base, item, hand);
+    }
 
-	@Override
-	public ActivatorType getType() {
-		return ActivatorType.ITEM_CLICK;
-	}
+    @Override
+    public boolean activate(Storage event) {
+        if(item.isEmpty() || (VirtualItem.fromString(item) == null)) {
+            Msg.logOnce(getBase().getName() + "activatoritemempty", "Failed to parse item of activator " + getBase().getName());
+            return false;
+        }
+        ItemClickStorage ie = (ItemClickStorage) event;
+        if(hand.checkOff(ie.isMainHand())) return false;
+        return ItemUtil.compareItemStr(ie.getItem(), this.item);
+    }
 
-	@Override
-	public boolean isValid() {
-		return !Util.isStringEmpty(item);
-	}
+    @Override
+    public void save(ConfigurationSection cfg) {
+        cfg.set("item", this.item);
+        cfg.set("hand", this.hand.name());
+    }
 
-	@Override
-	public String toString() {
-		StringBuilder sb = new StringBuilder(super.toString());
-		sb.append(" (");
-		sb.append(this.item);
-		sb.append("; hand:").append(hand);
-		sb.append(")");
-		return sb.toString();
-	}
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.ITEM_CLICK;
+    }
 
-	public static ItemClickActivator create(ActivatorBase base, Param param) {
-		String item = param.getParam("item", param.getParam("param-line"));
-		HandType hand = HandType.getByName(param.getParam("hand", "ANY"));
-		return new ItemClickActivator(base, item, hand);
-	}
+    @Override
+    public boolean isValid() {
+        return !Util.isStringEmpty(item);
+    }
 
-	public static ItemClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
-		String item = cfg.getString("item", "");
-		HandType hand = HandType.getByName(cfg.getString("hand", "ANY"));
-		return new ItemClickActivator(base, item, hand);
-	}
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append(this.item);
+        sb.append("; hand:").append(hand);
+        sb.append(")");
+        return sb.toString();
+    }
 }

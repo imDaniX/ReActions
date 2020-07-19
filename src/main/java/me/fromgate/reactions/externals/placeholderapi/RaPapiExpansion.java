@@ -7,31 +7,31 @@ import org.bukkit.OfflinePlayer;
 import java.util.regex.Pattern;
 
 public class RaPapiExpansion extends PlaceholderExpansion {
-	private final static String IDENTIFIER = "reactions";
-	private final static String AUTHOR = "fromgate";
-	private final static String VERSION = "0.0.3";
-	private final static Pattern VARP = Pattern.compile("(?i)varp?:\\S+");
+    private final static String IDENTIFIER = "reactions";
+    private final static String AUTHOR = "fromgate";
+    private final static String VERSION = "0.0.3";
+    private final static Pattern VARP = Pattern.compile("(?i)varp?:\\S+");
 
-	@Override
-	public String getIdentifier() {
-		return IDENTIFIER;
-	}
+    @Override
+    public String getIdentifier() {
+        return IDENTIFIER;
+    }
 
-	@Override
-	public String getAuthor() {
-		return AUTHOR;
-	}
+    @Override
+    public String getAuthor() {
+        return AUTHOR;
+    }
 
-	@Override
-	public String getVersion() {
-		return VERSION;
-	}
+    @Override
+    public String getVersion() {
+        return VERSION;
+    }
 
-	@Override
-	public String onRequest(OfflinePlayer player, String s) {
-		if (VARP.matcher(s).find()) {
-			return Variables.getVariable(player.getName(), s, null);
-		}
-		return "";
-	}
+    @Override
+    public String onRequest(OfflinePlayer player, String s) {
+        if(VARP.matcher(s).find()) {
+            return Variables.getVariable(player.getName(), s, null);
+        }
+        return "";
+    }
 }
