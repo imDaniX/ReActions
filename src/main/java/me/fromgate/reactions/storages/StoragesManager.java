@@ -212,7 +212,7 @@ public class StoragesManager {
         final Player senderPlayer = (sender instanceof Player) ? (Player) sender : null;
         final String id = param.getParam("activator", param.getParam("exec"));
         if (id.isEmpty()) return false;
-        Activator act = ActivatorsManager.get(id);
+        Activator act = ActivatorsManager.getActivator(id);
         if (act == null) {
             Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
             return false;
@@ -249,7 +249,7 @@ public class StoragesManager {
 
     public static boolean raiseExecActivator(CommandSender sender, String id, Map<String, String> tempVars) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
-        Activator act = ActivatorsManager.get(id);
+        Activator act = ActivatorsManager.getActivator(id);
         if (act == null) {
             Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
             return false;

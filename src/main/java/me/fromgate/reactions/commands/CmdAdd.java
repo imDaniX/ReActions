@@ -27,9 +27,9 @@ public class CmdAdd extends Cmd {
                 arg4.append(" ").append(args[i]);
             arg4 = new StringBuilder(arg4.toString().trim());
         }
-        if (ActivatorsManager.contains(arg1)) {
+        if (ActivatorsManager.containsActivator(arg1)) {
             String param = LocationUtil.replaceStandardLocations(player, arg4.toString()); // используется в addActions
-            Activator act = ActivatorsManager.get(arg1);
+            Activator act = ActivatorsManager.getActivator(arg1);
             switch (arg2) {
                 case "a":
                 case "action":

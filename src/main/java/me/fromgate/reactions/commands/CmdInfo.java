@@ -21,7 +21,7 @@ public class CmdInfo extends Cmd {
         String id = args.length > 1 ? args[1] : "";
         if (id.isEmpty()) return false;
         String far = args.length > 2 ? args[2] : "";
-        if (ActivatorsManager.contains(id)) {
+        if (ActivatorsManager.containsActivator(id)) {
             printActInfo(sender, id, far);
         } else if (id.equalsIgnoreCase("menu")) {
             InventoryMenu.printMenu(sender, far);
@@ -31,7 +31,7 @@ public class CmdInfo extends Cmd {
 
 
     private void printActInfo(CommandSender sender, String activatorName, String far) {
-        Activator act = ActivatorsManager.get(activatorName);
+        Activator act = ActivatorsManager.getActivator(activatorName);
         ActivatorBase base = act.getBase();
         boolean f;
         boolean a;

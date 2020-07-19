@@ -70,7 +70,7 @@ public class ActivatorsManager {
      * Load activators
      */
     public static void loadActivators() {
-        Set<String> groups = findGroupsInDirs("");
+        Set<String> groups = findGroups("");
         if (!groups.isEmpty())
             for (String group : groups)
                 loadGroup(group, false);
@@ -91,14 +91,14 @@ public class ActivatorsManager {
      * @param dir Name of folder
      * @return Set of file names
      */
-    private static Set<String> findGroupsInDirs(String dir) {
+    private static Set<String> findGroups(String dir) {
         dir = ((dir.isEmpty()) ? "" : dir + File.separator);
         Set<String> grps = new HashSet<>();
         File dirs = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + dir);
         if (!dirs.exists()) dirs.mkdirs();
         for (File f : dirs.listFiles()) {
             if (f.isDirectory()) {
-                grps.addAll(findGroupsInDirs(dir + f.getName()));
+                grps.addAll(findGroups(dir + f.getName()));
             } else {
                 String fstr = f.getName();
                 if (fstr.endsWith(".yml")) {
@@ -164,8 +164,8 @@ public class ActivatorsManager {
      * @param act Activator to add
      * @return Was activator added or not
      */
-    public static boolean add(Activator act) {
-        if (contains(act.getBase().getName().toLowerCase())) return false;
+    public static boolean addActivator(Activator act) {
+        if (containsActivator(act.getBase().getName().toLowerCase())) return false;
         typeActivators.get(act.getType()).add(act);
         activators.put(act.getBase().getName().toLowerCase(), act);
         return true;
@@ -188,7 +188,7 @@ public class ActivatorsManager {
      * @param name Name of activator to search
      * @return Does activator with this name exist
      */
-    public static boolean contains(String name) {
+    public static boolean containsActivator(String name) {
         return activators.containsKey(name.toLowerCase());
     }
 
@@ -198,7 +198,7 @@ public class ActivatorsManager {
      * @param name Name of activator to search
      * @return Activator or null
      */
-    public static Activator get(String name) {
+    public static Activator getActivator(String name) {
         return activators.get(name.toLowerCase());
     }
 
@@ -209,7 +209,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exist
      */
     public static boolean clearFlags(String name) {
-        Activator a = get(name);
+        Activator a = getActivator(name);
         if (a == null) return false;
         a.getBase().clearFlags();
         return true;
@@ -222,7 +222,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exist
      */
     public static boolean clearActions(String name) {
-        Activator a = get(name);
+        Activator a = getActivator(name);
         if (a == null) return false;
         a.getBase().clearActions();
         return true;
@@ -235,7 +235,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exist
      */
     public static boolean clearReactions(String name) {
-        Activator a = get(name);
+        Activator a = getActivator(name);
         if (a == null) return false;
         a.getBase().clearReactions();
         return true;
@@ -251,7 +251,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exist
      */
     public static boolean addFlag(String activator, String flag, String param, boolean not) {
-        Activator a = get(activator);
+        Activator a = getActivator(activator);
         if (a == null) return false;
         a.getBase().addFlag(Flags.getByName(not ? flag.substring(1) : flag), param, not);
         return true;
@@ -266,7 +266,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exist
      */
     public static boolean addAction(String activator, String action, String param) {
-        Activator a = get(activator);
+        Activator a = getActivator(activator);
         if (a == null) return false;
         a.getBase().addAction(action, param);
         return true;
@@ -281,7 +281,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exist
      */
     public static boolean addReaction(String activator, String action, String param) {
-        Activator a = get(activator);
+        Activator a = getActivator(activator);
         if (a == null) return false;
         a.getBase().addReaction(action, param);
         return true;
@@ -292,23 +292,21 @@ public class ActivatorsManager {
      *
      * @param dir Name of direction
      */
-    private static void delFiles(String dir) {
+    private static void deleteFiles(String dir) {
         dir += dir.isEmpty() ? "" : File.separator;
         File dirs = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + dir);
-        for (File f : dirs.listFiles())
-            if (f.isDirectory()) {
-                delFiles(dir + f.getName());
-                f.delete();
-            } else {
-                f.delete();
-            }
+        for (File f : dirs.listFiles()) {
+            if (f.isDirectory())
+                deleteFiles(dir + f.getName());
+            f.delete();
+        }
     }
 
     /**
      * Save activators
      */
     public static void saveActivators() {
-        delFiles("");
+        deleteFiles("");
         for (String group : findGroupsFromActivators())
             saveActivators(group);
     }
@@ -375,7 +373,7 @@ public class ActivatorsManager {
                     Msg.logOnce("cannotcreate2" + sType + name, "Failed to create new activator. Type: " + sType + " Name: " + name);
                     continue;
                 }
-                if (!add(a))
+                if (!addActivator(a))
                     Msg.logOnce("cannotcreate3", "Failed to create new activator. Type: " + sType + " Name: " + name);
             }
         }
@@ -491,8 +489,8 @@ public class ActivatorsManager {
      */
     public static boolean copyAll(String actFrom, String actTo) {
         // TODO: Small optimization
-        if (!contains(actFrom)) return false;
-        if (!contains(actTo)) return false;
+        if (!containsActivator(actFrom)) return false;
+        if (!containsActivator(actTo)) return false;
         copyActions(actFrom, actTo);
         copyReactions(actFrom, actTo);
         copyFlags(actFrom, actTo);
@@ -507,10 +505,10 @@ public class ActivatorsManager {
      * @return Does these activators exist
      */
     public static boolean copyActions(String actFrom, String actTo) {
-        if (!contains(actFrom)) return false;
-        if (!contains(actTo)) return false;
-        Activator afrom = get(actFrom);
-        Activator ato = get(actTo);
+        if (!containsActivator(actFrom)) return false;
+        if (!containsActivator(actTo)) return false;
+        Activator afrom = getActivator(actFrom);
+        Activator ato = getActivator(actTo);
         ato.getBase().clearActions();
         if (!afrom.getBase().getActions().isEmpty()) {
             for (StoredAction action : afrom.getBase().getActions())
@@ -527,10 +525,10 @@ public class ActivatorsManager {
      * @return Does these activators exist
      */
     public static boolean copyReactions(String actFrom, String actTo) {
-        if (!contains(actFrom)) return false;
-        if (!contains(actTo)) return false;
-        Activator afrom = get(actFrom);
-        Activator ato = get(actTo);
+        if (!containsActivator(actFrom)) return false;
+        if (!containsActivator(actTo)) return false;
+        Activator afrom = getActivator(actFrom);
+        Activator ato = getActivator(actTo);
         ato.getBase().clearReactions();
         if (!afrom.getBase().getReactions().isEmpty()) {
             for (StoredAction action : afrom.getBase().getReactions())
@@ -547,10 +545,10 @@ public class ActivatorsManager {
      * @return Does these activators exist
      */
     public static boolean copyFlags(String actFrom, String actTo) {
-        if (!contains(actFrom)) return false;
-        if (!contains(actTo)) return false;
-        Activator afrom = get(actFrom);
-        Activator ato = get(actTo);
+        if (!containsActivator(actFrom)) return false;
+        if (!containsActivator(actTo)) return false;
+        Activator afrom = getActivator(actFrom);
+        Activator ato = getActivator(actTo);
         ato.getBase().clearFlags();
         if (!afrom.getBase().getFlags().isEmpty()) {
             for (StoredFlag flag : afrom.getBase().getFlags())
@@ -567,7 +565,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exists
      */
     public static boolean setGroup(String activator, String group) {
-        Activator a = get(activator);
+        Activator a = getActivator(activator);
         if (a == null) return false;
         a.getBase().setGroup(group);
         return true;
@@ -575,8 +573,8 @@ public class ActivatorsManager {
 
     @SuppressWarnings("unused")
     public static String getGroup(String activator) {
-        if (!contains(activator)) return "activator";
-        return get(activator).getBase().getGroup();
+        if (!containsActivator(activator)) return "activator";
+        return getActivator(activator).getBase().getGroup();
     }
 
     /**

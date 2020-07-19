@@ -79,7 +79,7 @@ public class CmdCreate extends Cmd {
             Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
             return true;
         }
-        if (ActivatorsManager.add(activator)) {
+        if (ActivatorsManager.addActivator(activator)) {
             ActivatorsManager.saveActivators();
             Msg.CMD_ADDBADDED.print(sender, activator.toString());
         } else {

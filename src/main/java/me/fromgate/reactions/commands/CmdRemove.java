@@ -29,7 +29,7 @@ public class CmdRemove extends Cmd {
         }
         if (arg2.isEmpty()) return false;
         if (arg1.equalsIgnoreCase("act") || arg1.equalsIgnoreCase("activator")) {
-            if (ActivatorsManager.contains(arg2)) {
+            if (ActivatorsManager.containsActivator(arg2)) {
                 ActivatorsManager.removeActivator(arg2);
                 Msg.printMSG(sender, "msg_removebok", arg2);
                 ActivatorsManager.saveActivators();
@@ -46,8 +46,8 @@ public class CmdRemove extends Cmd {
         } else if (arg1.equalsIgnoreCase("menu") || arg1.equalsIgnoreCase("m")) {
             if (InventoryMenu.remove(arg2)) Msg.printMSG(sender, "msg_removemenu", arg2);
             else Msg.printMSG(sender, "msg_removemenufail", 'c', '4', arg2);
-        } else if (ActivatorsManager.contains(arg1)) {
-            ActivatorBase act = ActivatorsManager.get(arg1).getBase();
+        } else if (ActivatorsManager.containsActivator(arg1)) {
+            ActivatorBase act = ActivatorsManager.getActivator(arg1).getBase();
             if (Util.isIntegerGZ(arg3.toString())) {
                 int num = Integer.parseInt(arg3.toString());
                 if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {

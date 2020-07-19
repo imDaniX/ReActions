@@ -12,7 +12,7 @@ public class CmdClear extends Cmd {
         String activatorId = args.length >= 2 ? args[1] : "";
         if (activatorId.isEmpty()) return false;
         String arg2 = args.length >= 3 ? args[2] : "";
-        if (ActivatorsManager.contains(activatorId)) {
+        if (ActivatorsManager.containsActivator(activatorId)) {
             if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
                 ActivatorsManager.clearFlags(activatorId);
                 Msg.MSG_CLEARFLAG.print(sender, activatorId);
