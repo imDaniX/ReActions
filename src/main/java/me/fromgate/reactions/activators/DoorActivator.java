@@ -52,12 +52,12 @@ public class DoorActivator extends Activator implements Locatable {
     }
 
     public static DoorActivator create(ActivatorBase base, Param p) {
-        if(!(p instanceof BlockParam)) return null;
+        if (!(p instanceof BlockParam)) return null;
         BlockParam param = (BlockParam) p;
         Block targetBlock = param.getBlock();
-        if(targetBlock == null || BlockUtil.isOpenable(targetBlock)) {
+        if (targetBlock == null || BlockUtil.isOpenable(targetBlock)) {
             String state = param.getParam("state", "ANY");
-            if(!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
+            if (!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
             String world = targetBlock.getWorld().getName();
             int x = targetBlock.getX();
             int y = targetBlock.getY();
@@ -68,7 +68,7 @@ public class DoorActivator extends Activator implements Locatable {
 
     public static DoorActivator load(ActivatorBase base, ConfigurationSection cfg) {
         String state = cfg.getString("state", "ANY");
-        if(!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
+        if (!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
         String world = cfg.getString("world");
         int x = cfg.getInt("x");
         int y = cfg.getInt("y");
@@ -79,18 +79,18 @@ public class DoorActivator extends Activator implements Locatable {
     @Override
     public boolean activate(Storage event) {
         DoorStorage de = (DoorStorage) event;
-        if(de.getDoorBlock() == null) return false;
-        if(!isLocatedAt(de.getDoorLocation())) return false;
-        if(this.state.equalsIgnoreCase("open") && de.isDoorOpened()) return false;
+        if (de.getDoorBlock() == null) return false;
+        if (!isLocatedAt(de.getDoorLocation())) return false;
+        if (this.state.equalsIgnoreCase("open") && de.isDoorOpened()) return false;
         return !this.state.equalsIgnoreCase("close") || (de.isDoorOpened());
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(l == null) return false;
-        if(!world.equals(l.getWorld().getName())) return false;
-        if(x != l.getBlockX()) return false;
-        if(y != l.getBlockY()) return false;
+        if (l == null) return false;
+        if (!world.equals(l.getWorld().getName())) return false;
+        if (x != l.getBlockX()) return false;
+        if (y != l.getBlockY()) return false;
         return (z == l.getBlockZ());
     }
 

@@ -34,20 +34,20 @@ public class FlagTime implements Flag {
         Player player = context.getPlayer();
         saveTempVar(context, time);
         long currentTime = Bukkit.getWorlds().get(0).getTime();
-        if(player != null) currentTime = player.getWorld().getTime();
+        if (player != null) currentTime = player.getWorld().getTime();
 
-        if(time.equalsIgnoreCase("day")) {
+        if (time.equalsIgnoreCase("day")) {
             return ((currentTime >= 0) && (currentTime < 12000));
-        } else if(time.equalsIgnoreCase("night")) {
+        } else if (time.equalsIgnoreCase("night")) {
             return ((currentTime >= 12000) && (currentTime < 23999));
 
         } else {
             String[] tln = time.split(",");
-            if(tln.length > 0) {
+            if (tln.length > 0) {
                 for (String timeStr : tln)
-                    if(Util.INT_POSITIVE.matcher(timeStr).matches()) {
+                    if (Util.INT_POSITIVE.matcher(timeStr).matches()) {
                         int ct = (int) ((currentTime / 1000 + 6) % 24);
-                        if(ct == Integer.parseInt(timeStr)) return true;
+                        if (ct == Integer.parseInt(timeStr)) return true;
                     }
             }
         }
@@ -56,13 +56,13 @@ public class FlagTime implements Flag {
 
     private void saveTempVar(RaContext context, String time) {
         StringBuilder result = new StringBuilder(time);
-        if(!(time.equals("day") || time.equals("night"))) {
+        if (!(time.equals("day") || time.equals("night"))) {
             String[] ln = time.split(",");
-            if(ln.length > 0)
+            if (ln.length > 0)
                 for (int i = 0; i < ln.length; i++) {
-                    if(!Util.isInteger(ln[i])) continue;
+                    if (!Util.isInteger(ln[i])) continue;
                     String tmp = String.format("%02d:00", Integer.parseInt(ln[i]));
-                    if(i == 0) result = new StringBuilder(tmp);
+                    if (i == 0) result = new StringBuilder(tmp);
                     else result.append(", ").append(tmp);
                 }
         }

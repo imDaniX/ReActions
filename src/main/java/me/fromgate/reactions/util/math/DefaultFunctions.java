@@ -103,7 +103,7 @@ public enum DefaultFunctions implements MathBase.Function {
     MAX {
         @Override
         public double eval(double a, double... num) {
-            if(num.length > 0) {
+            if (num.length > 0) {
                 double max = a;
                 for (double j : num)
                     max = Math.max(max, j);
@@ -115,7 +115,7 @@ public enum DefaultFunctions implements MathBase.Function {
     MIN {
         @Override
         public double eval(double a, double... num) {
-            if(num.length > 0) {
+            if (num.length > 0) {
                 double min = a;
                 for (double j : num)
                     min = Math.min(min, j);

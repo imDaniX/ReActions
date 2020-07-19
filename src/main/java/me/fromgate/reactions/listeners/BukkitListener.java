@@ -84,10 +84,10 @@ public class BukkitListener implements Listener {
 
     // TODO: I really don't like it
     private static boolean raiseEntityChangeBlockActivator(EntityChangeBlockEvent event) {
-        if(event.getEntity() instanceof FallingBlock) {
+        if (event.getEntity() instanceof FallingBlock) {
             Location loc = event.getEntity().getLocation();
             for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-                if(p.getLocation().distanceSquared(loc) > 0.7) continue;
+                if (p.getLocation().distanceSquared(loc) > 0.7) continue;
                 EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(event.getEntity(), p, EntityDamageEvent.DamageCause.FALLING_BLOCK, 0);
                 Bukkit.getPluginManager().callEvent(ev);
                 return ev.isCancelled();
@@ -98,7 +98,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void raisePickupEvent(EntityPickupItemEvent event) {
-        if(event.getEntityType() != EntityType.PLAYER) return;
+        if (event.getEntityType() != EntityType.PLAYER) return;
         PlayerPickupItemEvent plEvent = new PlayerPickupItemEvent((Player) event.getEntity(), event.getItem());
         Bukkit.getPluginManager().callEvent(plEvent);
         event.setCancelled(plEvent.isCancelled());
@@ -107,8 +107,8 @@ public class BukkitListener implements Listener {
     @EventHandler
     public void raiseAttackEvent(EntityDamageByEntityEvent event) {
         LivingEntity damager = EntityUtil.getDamagerEntity(event);
-        if(damager == null || damager.getType() != EntityType.PLAYER) return;
-        if(!(event.getEntity() instanceof LivingEntity)) return;
+        if (damager == null || damager.getType() != EntityType.PLAYER) return;
+        if (!(event.getEntity() instanceof LivingEntity)) return;
         PlayerAttacksEntityEvent plEvent = new PlayerAttacksEntityEvent((Player) damager,
                 (LivingEntity) event.getEntity(),
                 event.getDamage(),
@@ -130,9 +130,9 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onInteractAtEntity(PlayerInteractAtEntityEvent event) {
-        if(event.getHand() != EquipmentSlot.HAND) return;
-        if(event.getRightClicked().getType() != EntityType.ARMOR_STAND) return;
-        if(StoragesManager.raiseMobClickActivator(event.getPlayer(), (LivingEntity) event.getRightClicked()))
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (event.getRightClicked().getType() != EntityType.ARMOR_STAND) return;
+        if (StoragesManager.raiseMobClickActivator(event.getPlayer(), (LivingEntity) event.getRightClicked()))
             event.setCancelled(true);
     }
 
@@ -149,7 +149,7 @@ public class BukkitListener implements Listener {
             Map<String, DataValue> changeables = StoragesManager.raiseMessageActivator(event.getPlayer(),
                     MessageActivator.Source.CHAT_INPUT,
                     event.getMessage());
-            if(changeables == null) return;
+            if (changeables == null) return;
             event.setMessage(changeables.get(MessageStorage.MESSAGE).asString());
             event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
         } catch (IllegalStateException ignore) {
@@ -160,13 +160,13 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onServerCommand(ServerCommandEvent event) {
-        if(StoragesManager.raisePrecommandActivator(null, event.getSender(), event.getCommand()))
+        if (StoragesManager.raisePrecommandActivator(null, event.getSender(), event.getCommand()))
             event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerCommand(PlayerCommandPreprocessEvent event) {
-        if(StoragesManager.raisePrecommandActivator(null, event.getPlayer(), event.getMessage().substring(1)))
+        if (StoragesManager.raisePrecommandActivator(null, event.getPlayer(), event.getMessage().substring(1)))
             event.setCancelled(true);
     }
 
@@ -175,8 +175,8 @@ public class BukkitListener implements Listener {
     public void onSignChange(SignChangeEvent event) {
         for (Activator activator : ActivatorsManager.getActivators(ActivatorType.SIGN)) {
             SignActivator signAct = (SignActivator) activator;
-            if(!signAct.checkMask(event.getLines())) continue;
-            if(event.getPlayer().hasPermission("reactions.sign." + signAct.getBase().getName().toLowerCase())) return;
+            if (!signAct.checkMask(event.getLines())) continue;
+            if (event.getPlayer().hasPermission("reactions.sign." + signAct.getBase().getName().toLowerCase())) return;
             Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getBase().getName());
             event.setCancelled(true);
             return;
@@ -185,7 +185,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onItemHeld(PlayerItemHeldEvent event) {
-        if(StoragesManager.raiseItemHeldActivator(event.getPlayer(), event.getNewSlot(), event.getPreviousSlot()))
+        if (StoragesManager.raiseItemHeldActivator(event.getPlayer(), event.getNewSlot(), event.getPreviousSlot()))
             event.setCancelled(true);
         else {
             ItemStoragesManager.raiseItemHoldActivator(event.getPlayer());
@@ -211,7 +211,7 @@ public class BukkitListener implements Listener {
         event.getItem().setPickupDelay((int) changeables.get(PickupItemStorage.PICKUP_DELAY).asDouble());
         event.getItem().setItemStack(changeables.get(PickupItemStorage.ITEM).asItemStack());
         event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-        if(event.isCancelled()) return;
+        if (event.isCancelled()) return;
         ItemStoragesManager.raiseItemHoldActivator(event.getPlayer());
         ItemStoragesManager.raiseItemWearActivator(event.getPlayer());
     }
@@ -225,15 +225,15 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onItemConsume(PlayerItemConsumeEvent event) {
-        if(StoragesManager.raiseItemConsumeActivator(event))
+        if (StoragesManager.raiseItemConsumeActivator(event))
             event.setCancelled(true);
     }
 
     @EventHandler
     public void onPlayerClickMob(PlayerInteractEntityEvent event) {
         StoragesManager.raiseItemClickActivator(event);
-        if(!(event.getRightClicked() instanceof LivingEntity)) return;
-        if(event.getHand() != EquipmentSlot.HAND) return;
+        if (!(event.getRightClicked() instanceof LivingEntity)) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
         StoragesManager.raiseMobClickActivator(event.getPlayer(), (LivingEntity) event.getRightClicked());
     }
 
@@ -249,26 +249,26 @@ public class BukkitListener implements Listener {
         Player killer = EntityUtil.getKiller(event.getEntity().getLastDamageCause());
 
         List<ItemStack> stacks = MobSpawn.getMobDrop(event.getEntity());
-        if(stacks != null && !stacks.isEmpty()) {
+        if (stacks != null && !stacks.isEmpty()) {
             event.getDrops().clear();
             event.getDrops().addAll(stacks);
         }
 
-        if(event.getEntity().hasMetadata("ReActions-xp")) {
+        if (event.getEntity().hasMetadata("ReActions-xp")) {
             int xp = Util.getMinMaxRandom(event.getEntity().getMetadata("ReActions-xp").get(0).asString());
             event.setDroppedExp(xp);
         }
 
-        if(event.getEntity().hasMetadata("ReActions-money")) {
-            if(!RaVault.isEconomyConnected()) return;
-            if(killer != null) {
+        if (event.getEntity().hasMetadata("ReActions-money")) {
+            if (!RaVault.isEconomyConnected()) return;
+            if (killer != null) {
                 int money = Util.getMinMaxRandom(event.getEntity().getMetadata("ReActions-money").get(0).asString());
                 RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "", "");
                 Msg.MSG_MOBBOUNTY.print(killer, 'e', '6', RaEconomics.format(money, "", ""), event.getEntity().getType().name());
             }
         }
 
-        if(event.getEntity().hasMetadata("ReActions-activator") && (killer != null)) {
+        if (event.getEntity().hasMetadata("ReActions-activator") && (killer != null)) {
             String exec = event.getEntity().getMetadata("ReActions-activator").get(0).asString();
             StoragesManager.raiseExecActivator(killer, exec, null);
         } else StoragesManager.raiseMobKillActivator(killer, event.getEntity());
@@ -277,7 +277,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
-        if(raiseEntityChangeBlockActivator(event)) event.setCancelled(true);
+        if (raiseEntityChangeBlockActivator(event)) event.setCancelled(true);
     }
 
 	/*
@@ -295,9 +295,9 @@ public class BukkitListener implements Listener {
     @EventHandler
     public void onMobGrowl(PlayerAttacksEntityEvent event) {
         LivingEntity damager = event.getPlayer();
-        if(!damager.hasMetadata("ReActions-growl")) return;
+        if (!damager.hasMetadata("ReActions-growl")) return;
         String growl = damager.getMetadata("ReActions-growl").get(0).asString();
-        if(Util.isStringEmpty(growl)) return;
+        if (Util.isStringEmpty(growl)) return;
         Util.soundPlay(damager.getLocation(), growl);
     }
 
@@ -311,24 +311,24 @@ public class BukkitListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onDamageByMob(EntityDamageByEntityEvent event) {
         LivingEntity damager = EntityUtil.getDamagerEntity(event);
-        if(damager == null || !damager.hasMetadata("ReActions-dmg")) return;
+        if (damager == null || !damager.hasMetadata("ReActions-dmg")) return;
         double dmg = damager.getMetadata("ReActions-dmg").get(0).asDouble();
-        if(dmg < 0) return;
+        if (dmg < 0) return;
         event.setDamage(event.getDamage() * dmg);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDamage(EntityDamageEvent event) {
         String source;
-        if(event.getEntity().getType() != EntityType.PLAYER) return;
-        if(event.getCause() == EntityDamageEvent.DamageCause.CUSTOM && Math.round(event.getDamage()) == 0) return;
-        if((event instanceof EntityDamageByEntityEvent)) {
+        if (event.getEntity().getType() != EntityType.PLAYER) return;
+        if (event.getCause() == EntityDamageEvent.DamageCause.CUSTOM && Math.round(event.getDamage()) == 0) return;
+        if ((event instanceof EntityDamageByEntityEvent)) {
             source = "ENTITY";
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             Map<String, DataValue> changeables = StoragesManager.raiseDamageByMobActivator(evdmg);
             event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
             event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-        } else if((event instanceof EntityDamageByBlockEvent)) {
+        } else if ((event instanceof EntityDamageByBlockEvent)) {
             source = "BLOCK";
             EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
             Block blockDamager = evdmg.getDamager();
@@ -346,30 +346,30 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onMobCry(EntityDamageEvent event) {
-        if((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) && (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE))
+        if ((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) && (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE))
             return;
-        if(event.getEntityType() == EntityType.PLAYER) return;
-        if(!(event.getEntity() instanceof LivingEntity)) return;
+        if (event.getEntityType() == EntityType.PLAYER) return;
+        if (!(event.getEntity() instanceof LivingEntity)) return;
         LivingEntity le = (LivingEntity) event.getEntity();
-        if(!le.hasMetadata("ReActions-cry")) return;
+        if (!le.hasMetadata("ReActions-cry")) return;
         String cry = le.getMetadata("ReActions-cry").get(0).asString();
-        if(cry == null) return;
-        if(cry.isEmpty()) return;
-        if(!(event instanceof EntityDamageByEntityEvent)) return;
+        if (cry == null) return;
+        if (cry.isEmpty()) return;
+        if (!(event instanceof EntityDamageByEntityEvent)) return;
         EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-        if(evdmg.getDamager() instanceof Projectile) {
+        if (evdmg.getDamager() instanceof Projectile) {
             Projectile prj = (Projectile) evdmg.getDamager();
             LivingEntity shooter = EntityUtil.getEntityFromProjectile(prj.getShooter());
-            if(shooter == null) return;
-            if(!(shooter instanceof Player)) return;
-        } else if(evdmg.getDamager().getType() != EntityType.PLAYER) return;
+            if (shooter == null) return;
+            if (!(shooter instanceof Player)) return;
+        } else if (evdmg.getDamager().getType() != EntityType.PLAYER) return;
         Util.soundPlay(le.getLocation(), cry);
     }
 
     @EventHandler
     public void onPvPDamage(PlayerAttacksEntityEvent event) {
         LivingEntity target = event.getEntity();
-        if(target.getType() != EntityType.PLAYER) return;
+        if (target.getType() != EntityType.PLAYER) return;
         Player damager = event.getPlayer();
         long time = System.currentTimeMillis();
         damager.setMetadata("reactions-pvp-time", new FixedMetadataValue(ReActions.getPlugin(), time));
@@ -393,11 +393,11 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onSignClick(PlayerInteractEvent event) {
-        if(event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if(!BlockUtil.isSign(event.getClickedBlock())) return;
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (!BlockUtil.isSign(event.getClickedBlock())) return;
         Sign sign = (Sign) event.getClickedBlock().getState();
-        if(sign == null) return;
-        if(StoragesManager.raiseSignActivator(event.getPlayer(), sign.getLines(), event.getClickedBlock().getLocation(), event.getAction() == Action.LEFT_CLICK_BLOCK))
+        if (sign == null) return;
+        if (StoragesManager.raiseSignActivator(event.getPlayer(), sign.getLines(), event.getClickedBlock().getLocation(), event.getAction() == Action.LEFT_CLICK_BLOCK))
             event.setCancelled(true);
     }
 
@@ -406,11 +406,11 @@ public class BukkitListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         StoragesManager.raiseItemClickActivator(event);
         ItemStoragesManager.raiseItemWearActivator(event.getPlayer());
-        if(StoragesManager.raiseBlockClickActivator(event)) event.setCancelled(true);
-        if(StoragesManager.raiseButtonActivator(event)) event.setCancelled(true);
-        if(StoragesManager.raisePlateActivator(event)) event.setCancelled(true);
-        if(StoragesManager.raiseLeverActivator(event)) event.setCancelled(true);
-        if(StoragesManager.raiseDoorActivator(event)) event.setCancelled(true);
+        if (StoragesManager.raiseBlockClickActivator(event)) event.setCancelled(true);
+        if (StoragesManager.raiseButtonActivator(event)) event.setCancelled(true);
+        if (StoragesManager.raisePlateActivator(event)) event.setCancelled(true);
+        if (StoragesManager.raiseLeverActivator(event)) event.setCancelled(true);
+        if (StoragesManager.raiseDoorActivator(event)) event.setCancelled(true);
     }
 
     @EventHandler
@@ -438,13 +438,13 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onFlight(PlayerToggleFlightEvent event) {
-        if(StoragesManager.raiseFlightActivator(event.getPlayer(), event.isFlying())) event.setCancelled(true);
+        if (StoragesManager.raiseFlightActivator(event.getPlayer(), event.isFlying())) event.setCancelled(true);
     }
 
     @EventHandler
     public void onEntityClick(PlayerInteractEntityEvent event) {
-        if(event.getHand() != EquipmentSlot.HAND) return;
-        if(StoragesManager.raiseEntityClickActivator(event.getPlayer(), event.getRightClicked()))
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (StoragesManager.raiseEntityClickActivator(event.getPlayer(), event.getRightClicked()))
             event.setCancelled(true);
     }
 
@@ -469,6 +469,6 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onGameModeChange(PlayerGameModeChangeEvent event) {
-        if(StoragesManager.raiseGamemodeActivator(event.getPlayer(), event.getNewGameMode())) event.setCancelled(true);
+        if (StoragesManager.raiseGamemodeActivator(event.getPlayer(), event.getNewGameMode())) event.setCancelled(true);
     }
 }

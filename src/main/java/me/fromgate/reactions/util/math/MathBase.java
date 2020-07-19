@@ -27,7 +27,7 @@ public class MathBase {
 
     public static boolean registerFunction(String name, Function function) {
         name = name.toLowerCase();
-        if(isAllowedName(name) && !functions.containsKey(name)) {
+        if (isAllowedName(name) && !functions.containsKey(name)) {
             functions.put(name, function);
             return true;
         }
@@ -36,7 +36,7 @@ public class MathBase {
 
     public static boolean registerConstant(String name, double value) {
         name = name.toLowerCase();
-        if(isAllowedName(name) && !constants.containsKey(name)) {
+        if (isAllowedName(name) && !constants.containsKey(name)) {
             constants.put(name, value);
             return true;
         }
@@ -62,7 +62,7 @@ public class MathBase {
 
     private static boolean isAllowedName(String str) {
         for (char c : str.toCharArray())
-            if(!(isNumberChar(c) && isWordChar(c))) return false;
+            if (!(isNumberChar(c) && isWordChar(c))) return false;
         return isWordChar(str.charAt(0));
     }
 

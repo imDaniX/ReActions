@@ -50,11 +50,11 @@ public class MobClickActivator extends Activator implements Locatable {
         String type = param.toString();
         String name = "";
         String location = "";
-        if(param.isParamsExists("type")) {
+        if (param.isParamsExists("type")) {
             type = param.getParam("type");
             name = param.getParam("name");
             location = param.getParam("loc");
-        } else if(param.toString().contains("$")) {
+        } else if (param.toString().contains("$")) {
             name = type.substring(0, type.indexOf("$"));
             type = type.substring(name.length() + 1);
         }
@@ -71,30 +71,30 @@ public class MobClickActivator extends Activator implements Locatable {
     @Override
     public boolean activate(Storage event) {
         MobClickStorage me = (MobClickStorage) event;
-        if(mobType.isEmpty()) return false;
-        if(me.getEntity() == null) return false;
+        if (mobType.isEmpty()) return false;
+        if (me.getEntity() == null) return false;
         return isActivatorMob(me.getEntity());
     }
 
     private boolean checkLocations(LivingEntity mob) {
-        if(this.mobLocation.isEmpty()) return true;
+        if (this.mobLocation.isEmpty()) return true;
         return this.isLocatedAt(mob.getLocation());
     }
 
     private boolean isActivatorMob(LivingEntity mob) {
-        if(!mob.getType().name().equalsIgnoreCase(this.mobType)) return false;
-        if(!mobName.isEmpty()) {
-            if(!ChatColor.translateAlternateColorCodes('&', mobName).equals(EntityUtil.getMobName(mob)))
+        if (!mob.getType().name().equalsIgnoreCase(this.mobType)) return false;
+        if (!mobName.isEmpty()) {
+            if (!ChatColor.translateAlternateColorCodes('&', mobName).equals(EntityUtil.getMobName(mob)))
                 return false;
-        } else if(!EntityUtil.getMobName(mob).isEmpty()) return false;
+        } else if (!EntityUtil.getMobName(mob).isEmpty()) return false;
         return checkLocations(mob);
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(this.mobLocation.isEmpty()) return false;
+        if (this.mobLocation.isEmpty()) return false;
         Location loc = LocationUtil.parseCoordinates(this.mobLocation);
-        if(loc == null) return false;
+        if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&
                 l.getBlockY() == loc.getBlockY() &&

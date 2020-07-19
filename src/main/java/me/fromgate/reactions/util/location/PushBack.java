@@ -37,18 +37,18 @@ public class PushBack {
 
     public static boolean teleportToPrev(Player player, int prev) {
         Location loc;
-        if(prev <= 1) loc = getPlayerPrevLoc1(player);
+        if (prev <= 1) loc = getPlayerPrevLoc1(player);
         else {
             loc = getPlayerPrevLoc2(player);
-            if(loc == null) loc = getPlayerPrevLoc1(player);
+            if (loc == null) loc = getPlayerPrevLoc1(player);
         }
-        if(loc == null) return false;
+        if (loc == null) return false;
         return player.teleport(loc);
     }
 
     private static double distance(Location loc1, Location loc2) {
-        if(loc1.getWorld() != loc2.getWorld()) return 1000;
-        if(Cfg.horizontalPushback) {
+        if (loc1.getWorld() != loc2.getWorld()) return 1000;
+        if (Cfg.horizontalPushback) {
             double dx = loc2.getX() - loc1.getX();
             double dy = loc2.getZ() - loc1.getZ();
             return (dx * dx) + (dy * dy);
@@ -57,12 +57,12 @@ public class PushBack {
 
     public static void rememberLocations(Player player, Location from, Location to) {
         Location prev1 = getPlayerPrevLoc1(player);
-        if(prev1 == null) {
+        if (prev1 == null) {
             setPlayerPrevLoc1(player, from);
             setPlayerPrevLoc2(player, from);
             return;
         }
-        if(distance(prev1, to) < 1) return;
+        if (distance(prev1, to) < 1) return;
         setPlayerPrevLoc2(player, prev1);
         setPlayerPrevLoc1(player, from);
     }

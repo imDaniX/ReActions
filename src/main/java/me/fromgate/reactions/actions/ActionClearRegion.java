@@ -42,15 +42,15 @@ public class ActionClearRegion extends Action {
     public boolean execute(RaContext context, Param params) {
         String region = params.getParam("region", "");
         String type = params.getParam("type", "all");
-        if(region.isEmpty()) return false;
-        if(!RaWorldGuard.isConnected()) return false;
+        if (region.isEmpty()) return false;
+        if (!RaWorldGuard.isConnected()) return false;
         List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(region);
-        if(locs.size() != 2) return false;
+        if (locs.size() != 2) return false;
         Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
         int count = 0;
         for (Entity e : en) {
-            if(e.getType() == EntityType.PLAYER) continue;
-            if(isEntityIsTypeOf(e, type)) {
+            if (e.getType() == EntityType.PLAYER) continue;
+            if (isEntityIsTypeOf(e, type)) {
                 e.remove();
                 count++;
             }
@@ -61,13 +61,13 @@ public class ActionClearRegion extends Action {
 
 
     private boolean isEntityIsTypeOf(Entity e, String type) {
-        if(e == null) return false;
-        if(type.isEmpty()) return true;
-        if(type.equalsIgnoreCase("all")) return true;
-        if(e instanceof LivingEntity) {
-            if(type.equalsIgnoreCase("mob") || type.equalsIgnoreCase("mobs")) return true;
+        if (e == null) return false;
+        if (type.isEmpty()) return true;
+        if (type.equalsIgnoreCase("all")) return true;
+        if (e instanceof LivingEntity) {
+            if (type.equalsIgnoreCase("mob") || type.equalsIgnoreCase("mobs")) return true;
         } else {
-            if(type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
+            if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
         }
         return (Util.isWordInList(e.getType().name().toLowerCase(), type.toLowerCase()));
     }

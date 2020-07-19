@@ -526,8 +526,8 @@ public enum Msg {
      *          Message.BC ("variable 1:",var1,"variable 2:",var2)
      */
     public static void BC(Object... s) {
-        if(!debugMode) return;
-        if(s.length == 0) return;
+        if (!debugMode) return;
+        if (s.length == 0) return;
         StringBuilder sb = new StringBuilder("&3[").append(pluginName).append("]&f ");
         for (Object str : s) {
             sb.append(str == null ? "null" : str.toString()).append(" ");
@@ -550,7 +550,7 @@ public enum Msg {
         language = lang;
         debugMode = debug;
         initMessages();
-        if(save) saveMessages();
+        if (save) saveMessages();
         LNG_CONFIG.debug(Msg.values().length, language, true, debugMode);
         testRequiredMessages();
     }
@@ -571,9 +571,9 @@ public enum Msg {
     private static void initMessages() {
         Map<String, String> lng = messenger.load(language);
         for (Msg key : Msg.values()) {
-            if(lng.containsKey(key.name().toLowerCase())) {
+            if (lng.containsKey(key.name().toLowerCase())) {
                 key.initMessage(lng.get(key.name().toLowerCase()));
-            } else if(!(language.equalsIgnoreCase("default") || language.equalsIgnoreCase("english"))) {
+            } else if (!(language.equalsIgnoreCase("default") || language.equalsIgnoreCase("english"))) {
                 Msg.LNG_TRANSLATION_NOT_FOUND.log(key.name());
             }
         }
@@ -583,19 +583,19 @@ public enum Msg {
         String key;
         for (ActivatorType activator : ActivatorType.values()) {
             key = "ACTIVATOR_" + activator.name().toUpperCase();
-            if(!exists(key)) {
+            if (!exists(key)) {
                 Msg.LNG_MISSED_ACTIVATOR_DESC.log(key);
             }
         }
         for (Actions action : Actions.values()) {
             key = "ACTION_" + action.name().toUpperCase();
-            if(!exists(key)) {
+            if (!exists(key)) {
                 Msg.LNG_FAIL_ACTION_DESC.log(key);
             }
         }
         for (Flags flag : Flags.values()) {
             key = "FLAG_" + flag.name().toUpperCase();
-            if(!exists(key)) {
+            if (!exists(key)) {
                 Msg.LNG_FAIL_FLAG_DESC.log(key);
             }
         }
@@ -603,7 +603,7 @@ public enum Msg {
 
     private static boolean exists(String key) {
         for (Msg m : values()) {
-            if(m.name().equalsIgnoreCase(key)) return true;
+            if (m.name().equalsIgnoreCase(key)) return true;
         }
         return false;
     }
@@ -622,7 +622,7 @@ public enum Msg {
      * @param s - array of any object that you need to print out.
      */
     public static boolean debugMessage(Object... s) {
-        if(debugMode) messenger.log(clean(join(s)));
+        if (debugMode) messenger.log(clean(join(s)));
         return true;
     }
 
@@ -634,7 +634,7 @@ public enum Msg {
     public static String join(Object... s) {
         StringBuilder sb = new StringBuilder();
         for (Object o : s) {
-            if(sb.length() > 0) sb.append(" ");
+            if (sb.length() > 0) sb.append(" ");
             sb.append(messenger.toString(o, false));
         }
         return sb.toString();
@@ -660,12 +660,12 @@ public enum Msg {
     }
 
     public static void printPage(Object sender, Collection<String> lines, Msg title, Msg footer, int pageNum, int linesPerPage, boolean showNum) {
-        if(lines == null || lines.isEmpty()) return;
+        if (lines == null || lines.isEmpty()) return;
         List<String> page = new ArrayList<>();
-        if(title != null) page.add(title.getText('e', '6', pluginName));
+        if (title != null) page.add(title.getText('e', '6', pluginName));
 
         int pageCount = lines.size() / linesPerPage + 1;
-        if(pageCount * linesPerPage == lines.size()) pageCount = pageCount - 1;
+        if (pageCount * linesPerPage == lines.size()) pageCount = pageCount - 1;
 
         int num = pageNum <= pageCount ? pageNum : 1;
 
@@ -673,19 +673,19 @@ public enum Msg {
         for (int i = linesPerPage * (num - 1); i < Math.min(lines.size(), num * linesPerPage); i++) {
             page.add((showNum ? (i + 1) : "") + iterator.next());
         }
-        if(footer != null) page.add(footer.getText('e', 'e', num, pageCount));
+        if (footer != null) page.add(footer.getText('e', 'e', num, pageCount));
         printLines(sender, page);
     }
 
     public static boolean logMessage(Object... s) {
-        if(s == null) return false;
+        if (s == null) return false;
         messenger.log(clean(join(s)));
         return true;
     }
 
     public static Msg getByName(String name) {
         for (Msg m : values()) {
-            if(m.name().equalsIgnoreCase(name)) return m;
+            if (m.name().equalsIgnoreCase(name)) return m;
         }
         return null;
     }
@@ -696,7 +696,7 @@ public enum Msg {
 
     public static boolean printMSG(Object sender, String key, Object... s) {
         Msg m = getByName(key.toUpperCase());
-        if(m == null) {
+        if (m == null) {
             LNG_PRINT_FAIL_M.print(sender, key);
             return LNG_PRINT_FAIL_M.log(sender, key);
         } else {
@@ -706,13 +706,13 @@ public enum Msg {
 
     @SuppressWarnings("unchecked")
     public static void logOnce(String key, Object... s) {
-        if(onceLog.contains(key)) return;
+        if (onceLog.contains(key)) return;
         onceLog.add(key);
         Msg.logMessage(s);
     }
 
     public static void printMessage(Object sender, String message) {
-        if(messenger.isValidSender(sender)) {
+        if (messenger.isValidSender(sender)) {
             messenger.print(sender, colorize(message));
         }
     }
@@ -738,7 +738,7 @@ public enum Msg {
      * @return — always returns true.
      */
     public boolean debug(Object... s) {
-        if(debugMode) {
+        if (debugMode) {
             log(messenger.clean(getText(s)));
         }
         return true;
@@ -775,7 +775,7 @@ public enum Msg {
      * @return — always returns true.
      */
     public boolean print(Object sender, Object... s) {
-        if(sender == null) return Msg.LNG_PRINT_FAIL.log(this.name());
+        if (sender == null) return Msg.LNG_PRINT_FAIL.log(this.name());
         return messenger.print(sender, getText(s));
     }
 
@@ -822,7 +822,7 @@ public enum Msg {
         char c2 = '2';
         char c1 = 'a';
         char[] colors = new char[]{color1 == null ? c1 : color1, color2 == null ? c2 : color2};
-        if(keys.length == 0) {
+        if (keys.length == 0) {
             return colorize("&" + colors[0] + this.message);
         }
         String str = this.message;
@@ -835,26 +835,26 @@ public enum Msg {
         DecimalFormat fmt = new DecimalFormat("####0.##");
         for (Object key : keys) {
             String s = messenger.toString(key, fullFloat);//keys[i].toString();
-            if(c < 2 && key instanceof Character) {
+            if (c < 2 && key instanceof Character) {
                 colors[c] = (Character) key;
                 c++;
                 continue;
-            } else if(s.startsWith("prefix:")) {
+            } else if (s.startsWith("prefix:")) {
                 prefix = s.replace("prefix:", "");
                 continue;
-            } else if(s.equals("SKIPCOLOR")) {
+            } else if (s.equals("SKIPCOLOR")) {
                 skipDefaultColors = true;
                 continue;
-            } else if(s.equals("NOCOLORS") || s.equals("NOCOLOR")) {
+            } else if (s.equals("NOCOLORS") || s.equals("NOCOLOR")) {
                 noColors = true;
                 continue;
-            } else if(s.equals("FULLFLOAT")) {
+            } else if (s.equals("FULLFLOAT")) {
                 fullFloat = true;
                 continue;
-            } else if(key instanceof Double) {
-                if(!fullFloat) s = fmt.format(key);
-            } else if(key instanceof Float) {
-                if(!fullFloat) s = fmt.format(key);
+            } else if (key instanceof Double) {
+                if (!fullFloat) s = fmt.format(key);
+            } else if (key instanceof Float) {
+                if (!fullFloat) s = fmt.format(key);
             }
 
             String from = new StringBuilder("%").append(count).append("%").toString();
@@ -863,7 +863,7 @@ public enum Msg {
             count++;
         }
         str = colorize(prefix.isEmpty() ? "&" + colors[0] + str : prefix + " " + "&" + colors[0] + str);
-        if(noColors) str = clean(str);
+        if (noColors) str = clean(str);
         return str;
     }
 

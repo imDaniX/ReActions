@@ -21,7 +21,7 @@ public abstract class WGBridge {
         connectToWorldGuard();
         setVersion("[" + this.getClass().getSimpleName() + "]");
         init();
-        if(connected) {
+        if (connected) {
             Msg.logMessage("WorldGuard " + wgPlugin.getDescription().getVersion() + " found. Bridge loaded: " + getVersion());
         } else Msg.logMessage("Worlguard not found...");
     }
@@ -31,14 +31,14 @@ public abstract class WGBridge {
     }
 
     public static World getRegionWorld(World w, String worldAndRegion) {
-        if(!worldAndRegion.contains(".")) return w;
+        if (!worldAndRegion.contains(".")) return w;
         String worldName = worldAndRegion.substring(0, worldAndRegion.indexOf("."));
         World world = Bukkit.getWorld(worldName);
         return world == null ? w : world;
     }
 
     public static String getRegionName(String worldAndRegion) {
-        if(!worldAndRegion.contains(".")) return worldAndRegion;
+        if (!worldAndRegion.contains(".")) return worldAndRegion;
         String regionName = worldAndRegion.substring(worldAndRegion.indexOf(".") + 1);
         return regionName.isEmpty() ? worldAndRegion : regionName;
     }
@@ -59,8 +59,8 @@ public abstract class WGBridge {
 
     private void connectToWorldGuard() {
         Plugin twn = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
-        if(twn == null) return;
-        if(!twn.getClass().getName().equals("com.sk89q.worldguard.bukkit.WorldGuardPlugin")) return;
+        if (twn == null) return;
+        if (!twn.getClass().getName().equals("com.sk89q.worldguard.bukkit.WorldGuardPlugin")) return;
         wgPlugin = twn;
         connected = true;
     }

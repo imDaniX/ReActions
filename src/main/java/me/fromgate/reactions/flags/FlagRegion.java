@@ -44,8 +44,8 @@ public class FlagRegion implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        if(!RaWorldGuard.isConnected()) return false;
-        switch(flagType) {
+        if (!RaWorldGuard.isConnected()) return false;
+        switch (flagType) {
             case REGION:
                 return RaWorldGuard.isPlayerInRegion(player, param);
             case REGION_PLAYERS:

@@ -36,40 +36,40 @@ public class RaEconomics {
     }
 
     public static boolean hasMoney(String account, double amount, String currencyName, String worldName) {
-        if(RaVault.isEconomyConnected()) return RaVault.hasMoney(account, worldName, amount);
+        if (RaVault.isEconomyConnected()) return RaVault.hasMoney(account, worldName, amount);
         return false;
     }
 
 
     public static String creditAccount(String target, String source, String amountStr, String currencyName, String worldName) {
-        if(target.isEmpty()) return "";
-        if(!Util.isFloat(amountStr)) return "";
+        if (target.isEmpty()) return "";
+        if (!Util.isFloat(amountStr)) return "";
         double amount = Double.parseDouble(amountStr);
-        if(RaVault.isEconomyConnected()) {
-            if(RaVault.creditAccount(target, source, amount, worldName))
+        if (RaVault.isEconomyConnected()) {
+            if (RaVault.creditAccount(target, source, amount, worldName))
                 return RaVault.format(amount, worldName);
         }
         return "";
     }
 
     public static String debitAccount(String accountFrom, String accountTo, String amountStr, String currencyName, String worldName) {
-        if(accountFrom.isEmpty()) return "";
-        if(!Util.isFloat(amountStr)) return "";
+        if (accountFrom.isEmpty()) return "";
+        if (!Util.isFloat(amountStr)) return "";
         double amount = Double.parseDouble(amountStr);
-        if(RaVault.isEconomyConnected()) {
-            if(RaVault.debitAccount(accountFrom, accountTo, amount, worldName))
+        if (RaVault.isEconomyConnected()) {
+            if (RaVault.debitAccount(accountFrom, accountTo, amount, worldName))
                 return RaVault.format(amount, worldName);
         }
         return "";
     }
 
     public static Map<String, String> getBalances(Player p) {
-        if(RaVault.isEconomyConnected()) return RaVault.getAllBalances(p.getName());
+        if (RaVault.isEconomyConnected()) return RaVault.getAllBalances(p.getName());
         return new HashMap<>();
     }
 
     public static String format(double amount, String currencyName, String worldName) {
-        if(RaVault.isEconomyConnected())
+        if (RaVault.isEconomyConnected())
             return RaVault.format(amount, worldName.isEmpty() ? Bukkit.getWorlds().get(0).getName() : worldName);
         return Double.toString(amount);
     }

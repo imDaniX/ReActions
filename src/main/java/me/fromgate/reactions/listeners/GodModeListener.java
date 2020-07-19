@@ -21,7 +21,7 @@ public class GodModeListener implements Listener {
     private static Set<EntityDamageEvent> godCheckEvents = new HashSet<>();
 
     public static void init() {
-        if(Cfg.godActivatorEnable) {
+        if (Cfg.godActivatorEnable) {
             Bukkit.getPluginManager().registerEvents(new GodModeListener(), ReActions.getPlugin());
             Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(GodModeListener::setEventGod), 30, Cfg.godActivatorCheckTicks);
         }
@@ -32,7 +32,7 @@ public class GodModeListener implements Listener {
     }
 
     public static boolean setGod(Player player) {
-        if(!isGod(player)) {
+        if (!isGod(player)) {
             player.setMetadata("reactions-god", new FixedMetadataValue(ReActions.getPlugin(), true));
             return true;
         }
@@ -40,7 +40,7 @@ public class GodModeListener implements Listener {
     }
 
     public static boolean removeGod(Player player) {
-        if(isGod(player)) {
+        if (isGod(player)) {
             player.removeMetadata("reactions-god", ReActions.getPlugin());
             return true;
         }
@@ -53,7 +53,7 @@ public class GodModeListener implements Listener {
 
     public static boolean checkGod(Player player) {
         boolean result = false;
-        if(player.hasMetadata("reactions-god-check")) {
+        if (player.hasMetadata("reactions-god-check")) {
             result = player.getMetadata("reactions-god-check").get(0).asBoolean();
             player.removeMetadata("reactions-god-check", ReActions.getPlugin());
         }
@@ -67,7 +67,7 @@ public class GodModeListener implements Listener {
     }
 
     public static void cancelGodEvent(EntityDamageEvent event) {
-        if(event instanceof EntityDamageByEntityEvent && godCheckEvents.contains(event)) {
+        if (event instanceof EntityDamageByEntityEvent && godCheckEvents.contains(event)) {
             godCheckEvents.remove(event);
             event.setCancelled(true);
         }
@@ -75,14 +75,14 @@ public class GodModeListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCheckGod(EntityDamageEvent event) {
-        if(event.getEntity().getType() == EntityType.PLAYER) {
+        if (event.getEntity().getType() == EntityType.PLAYER) {
             Player player = (Player) event.getEntity();
-            if(event.isCancelled()) {
-                if(GodModeListener.checkGod(player) && GodModeListener.setGod(player)) return;
-                if(GodModeListener.setGod(player) && StoragesManager.raiseGodActivator(player, true)) {
+            if (event.isCancelled()) {
+                if (GodModeListener.checkGod(player) && GodModeListener.setGod(player)) return;
+                if (GodModeListener.setGod(player) && StoragesManager.raiseGodActivator(player, true)) {
                     GodModeListener.removeGod(player);
                 }
-            } else if(GodModeListener.removeGod(player) && StoragesManager.raiseGodActivator(player, false)) {
+            } else if (GodModeListener.removeGod(player) && StoragesManager.raiseGodActivator(player, false)) {
                 GodModeListener.setGod(player);
                 event.setCancelled(true);
             }

@@ -9,7 +9,7 @@ import me.fromgate.reactions.util.parameter.Param;
 public class ActionChatMessage extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
-        if(context.getPlayer() != null) {
+        if (context.getPlayer() != null) {
             String msg = params.getParam("param-line");
             msg = msg.replaceFirst("^[\\s\\/]+", "");
             context.getPlayer().chat(msg);

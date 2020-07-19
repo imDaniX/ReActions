@@ -40,7 +40,7 @@ public class FlagItem implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String itemStr) {
         Player player = context.getPlayer();
-        switch(flagType) {
+        switch (flagType) {
             case 0:
                 ItemStack inHand = player.getInventory().getItemInMainHand();
                 context.setTempVariable("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
@@ -59,7 +59,7 @@ public class FlagItem implements Flag {
 
     private boolean isItemWeared(Player player, String itemStr) {
         for (ItemStack armour : player.getInventory().getArmorContents())
-            if(ItemUtil.compareItemStr(armour, itemStr)) return true;
+            if (ItemUtil.compareItemStr(armour, itemStr)) return true;
         return false;
     }
 
@@ -67,7 +67,7 @@ public class FlagItem implements Flag {
         Player player = context.getPlayer();
         Param params = new Param(itemStr);
 
-        if(!params.isParamsExists("slot", "item")) {
+        if (!params.isParamsExists("slot", "item")) {
             int countAmount = ItemUtil.countItemsInInventory(player.getInventory(), itemStr);
             context.setTempVariable("item_amount", countAmount == 0 ? "0" : String.valueOf(countAmount));
             int amount = ItemUtil.getAmount(itemStr);
@@ -75,26 +75,26 @@ public class FlagItem implements Flag {
         }
 
         String slotStr = params.getParam("slot", "");
-        if(slotStr.isEmpty()) return false;
+        if (slotStr.isEmpty()) return false;
         int slotNum = Util.isInteger(slotStr) ? Integer.parseInt(slotStr) : -1;
-        if(slotNum >= player.getInventory().getSize()) return false;
+        if (slotNum >= player.getInventory().getSize()) return false;
 
         VirtualItem vi = null;
 
-        if(slotNum < 0) {
-            if(slotStr.equalsIgnoreCase("helm") || slotStr.equalsIgnoreCase("helmet"))
+        if (slotNum < 0) {
+            if (slotStr.equalsIgnoreCase("helm") || slotStr.equalsIgnoreCase("helmet"))
                 vi = VirtualItem.fromItemStack(player.getInventory().getHelmet());
-            else if(slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest"))
+            else if (slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest"))
                 vi = VirtualItem.fromItemStack(player.getInventory().getChestplate());
-            else if(slotStr.equalsIgnoreCase("Leggings") || slotStr.equalsIgnoreCase("Leg"))
+            else if (slotStr.equalsIgnoreCase("Leggings") || slotStr.equalsIgnoreCase("Leg"))
                 vi = VirtualItem.fromItemStack(player.getInventory().getLeggings());
-            else if(slotStr.equalsIgnoreCase("boot") || slotStr.equalsIgnoreCase("boots"))
+            else if (slotStr.equalsIgnoreCase("boot") || slotStr.equalsIgnoreCase("boots"))
                 VirtualItem.fromItemStack(player.getInventory().getBoots());
         } else vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));
 
         // vi = VirtualItem.fromItemStack(player.getInventoryType().getItem(slotNum));
 
-        if(vi == null) return false;
+        if (vi == null) return false;
 
         return vi.compare(itemStr);
     }

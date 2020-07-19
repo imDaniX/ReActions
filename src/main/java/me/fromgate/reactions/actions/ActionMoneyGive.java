@@ -36,28 +36,28 @@ public class ActionMoneyGive extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         Player player = context.getPlayer();
-        if(!RaEconomics.isEconomyFound()) return false;
-        if(params.isEmpty()) return false;
-        if(params.size() <= 2) params = parseOldFormat(player, params.getParam("param-line"));
+        if (!RaEconomics.isEconomyFound()) return false;
+        if (params.isEmpty()) return false;
+        if (params.size() <= 2) params = parseOldFormat(player, params.getParam("param-line"));
         String amountStr = params.getParam("amount", "");
-        if(amountStr.isEmpty()) return false;
+        if (amountStr.isEmpty()) return false;
         String currencyName = params.getParam("currency", "");
         String worldName = params.getParam("world", "");
         String target = params.getParam("target", params.getParam("player", (player == null ? "" : player.getName())));
-        if(target.isEmpty()) return false;
+        if (target.isEmpty()) return false;
         String source = params.getParam("source", "");
         String message = RaEconomics.creditAccount(target, source, amountStr, currencyName, worldName);
-        if(message.isEmpty()) return false;
+        if (message.isEmpty()) return false;
         setMessageParam(message);
         return true;
     }
 
     private Param parseOldFormat(Player p, String mstr) {
         Map<String, String> newParams = new HashMap<>();
-        if(p != null) newParams.put("target", p.getName());
-        if(mstr.contains("/")) {
+        if (p != null) newParams.put("target", p.getName());
+        if (mstr.contains("/")) {
             String[] m = mstr.split("/");
-            if(m.length >= 2) {
+            if (m.length >= 2) {
                 newParams.put("amount", m[0].contains("-") ? Integer.toString(Util.getMinMaxRandom(m[0])) : m[0]);
                 newParams.put("sourse", m[1]);
             }

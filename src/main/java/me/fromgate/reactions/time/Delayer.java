@@ -45,7 +45,7 @@ public class Delayer {
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
         for (String key : delays.keySet()) {
             long delayTime = delays.get(key);
-            if(delayTime > System.currentTimeMillis())
+            if (delayTime > System.currentTimeMillis())
                 cfg.set(key, delayTime);
         }
         FileUtil.saveCfg(cfg, f, "Failed to save delays configuration file");
@@ -55,11 +55,11 @@ public class Delayer {
         delays.clear();
         YamlConfiguration cfg = new YamlConfiguration();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
-        if(FileUtil.loadCfg(cfg, f, "Failed to load delay configuration file"))
+        if (FileUtil.loadCfg(cfg, f, "Failed to load delay configuration file"))
             for (String key : cfg.getKeys(true)) {
-                if(!key.contains(".")) continue;
+                if (!key.contains(".")) continue;
                 long delayTime = cfg.getLong(key);
-                if(delayTime > System.currentTimeMillis())
+                if (delayTime > System.currentTimeMillis())
                     delays.put(key, delayTime);
             }
     }
@@ -67,7 +67,7 @@ public class Delayer {
     public static boolean checkDelay(String id, long updateTime) {
         String idd = (id.contains(".") ? id : "global." + id);
         boolean result = !delays.containsKey(idd) || delays.get(idd) < System.currentTimeMillis();
-        if(result && updateTime > 0) Delayer.setDelay(idd, updateTime, false);
+        if (result && updateTime > 0) Delayer.setDelay(idd, updateTime, false);
         return result;
     }
 
@@ -83,7 +83,7 @@ public class Delayer {
         String delayId = id.contains(".") ? id : "global." + id;
         long currentDelay = add && delays.containsKey(delayId) ? delays.get(delayId) : System.currentTimeMillis();
         delays.put(delayId, delayTime + currentDelay);
-        if(save) save();
+        if (save) save();
     }
 
     public static void setPersonalDelay(String playerName, String id, long delayTime, boolean add) {
@@ -94,9 +94,9 @@ public class Delayer {
         Set<String> lst = new TreeSet<>();
         for (String key : delays.keySet()) {
             long delayTime = delays.get(key);
-            if(delayTime < System.currentTimeMillis()) continue;
+            if (delayTime < System.currentTimeMillis()) continue;
             String[] ln = key.split("\\.", 2);
-            if(ln.length != 2) continue;
+            if (ln.length != 2) continue;
             lst.add("[" + ln[0] + "] " + ln[1] + ": " + TimeUtil.fullTimeToString(delays.get(key)));
         }
         Msg.printPage(sender, lst, Msg.MSG_LISTDELAY, pageNum, linePerPage, true);
@@ -104,8 +104,8 @@ public class Delayer {
 
     public static String[] getStringTime(String playerName, String id) {
         String fullId = (id.contains(".") ? id : (playerName == null || playerName.isEmpty() ? "global." + id : playerName + "." + id));
-        if(checkDelay(fullId, 0)) return null;
-        if(!delays.containsKey(fullId)) return null;
+        if (checkDelay(fullId, 0)) return null;
+        if (!delays.containsKey(fullId)) return null;
         long time = delays.get(fullId);
         String[] times = new String[8];
         times[0] = TimeUtil.fullTimeToString(time, "dd-MM-YYYY HH:mm:ss");
@@ -126,17 +126,17 @@ public class Delayer {
         times[5] = String.format("%02d", min);
         times[6] = String.format("%02d", sec);
         StringBuilder sb = new StringBuilder();
-        if(days > 0) sb.append(days).append("d");
-        if(days > 0 || hour > 0) sb.append(" ").append(hour).append("h");
-        if(days > 0 || hour > 0 || min > 0) sb.append(" ").append(min).append("m");
-        if(sb.length() == 0 || sec > 0) sb.append(" ").append(sec).append("s");
+        if (days > 0) sb.append(days).append("d");
+        if (days > 0 || hour > 0) sb.append(" ").append(hour).append("h");
+        if (days > 0 || hour > 0 || min > 0) sb.append(" ").append(min).append("m");
+        if (sb.length() == 0 || sec > 0) sb.append(" ").append(sec).append("s");
         times[7] = sb.toString().trim();
         return times;
     }
 
     public static void setTempPlaceholders(RaContext context, String playerName, String id) {
         String[] times = Delayer.getStringTime(playerName, id);
-        if(times != null) {
+        if (times != null) {
             context.setTempVariable("delay-fulltime", times[0]);
             context.setTempVariable("delay-time", times[1]);
             context.setTempVariable("delay-left", times[7]);

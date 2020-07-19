@@ -55,7 +55,7 @@ public class PrecommandActivator extends Activator {
         command = command == null ? "unknown" : command;
         this.command = command;
         Param cmdParams = new Param(command);
-        if(cmdParams.hasAnyParam("cmd")) {
+        if (cmdParams.hasAnyParam("cmd")) {
             this.args = new ArrayList<>();
             this.args.add(cmdParams.getParam("cmd"));
             int i = 1;
@@ -92,21 +92,21 @@ public class PrecommandActivator extends Activator {
     @Override
     public boolean activate(Storage storage) {
         PrecommandStorage cs = (PrecommandStorage) storage;
-        if(!consoleAllowed && cs.getSender() instanceof ConsoleCommandSender) return false;
-        if(checkExact) {
-            if(useRegex) {
+        if (!consoleAllowed && cs.getSender() instanceof ConsoleCommandSender) return false;
+        if (checkExact) {
+            if (useRegex) {
                 return pattern.matcher(cs.getCommand()).matches();
             } else
                 return starts ?
                         cs.getCommand().toLowerCase().startsWith(command) :
                         command.equalsIgnoreCase(cs.getCommand());
         } else {
-            if(args.size() != cs.getArgs().length + 1) return false;
-            if(!args.get(0).equalsIgnoreCase(cs.getLabel())) return false;
+            if (args.size() != cs.getArgs().length + 1) return false;
+            if (!args.get(0).equalsIgnoreCase(cs.getLabel())) return false;
             for (int i = 1; i <= cs.getArgs().length; i++) {
                 String arg = args.get(i);
-                if(arg.equals("*")) continue;
-                if(!arg.equalsIgnoreCase(cs.getArgs()[i - 1])) return false;
+                if (arg.equals("*")) continue;
+                if (!arg.equalsIgnoreCase(cs.getArgs()[i - 1])) return false;
             }
             return true;
         }

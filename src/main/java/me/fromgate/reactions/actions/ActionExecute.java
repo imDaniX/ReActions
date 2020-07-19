@@ -31,7 +31,7 @@ public class ActionExecute extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         String id = params.getParam("activator", "");
-        if(id.isEmpty()) return false;
+        if (id.isEmpty()) return false;
         setMessageParam(id);
         return StoragesManager.raiseExecActivator(context.getPlayer(), params, context.getTempVariables());
     }

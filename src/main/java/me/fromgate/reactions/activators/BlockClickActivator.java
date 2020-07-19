@@ -63,27 +63,27 @@ public class BlockClickActivator extends Activator implements Locatable {
     @Override
     public boolean activate(Storage event) {
         BlockClickStorage bce = (BlockClickStorage) event;
-        if(bce.getBlock() == null) return false;
-        if(!isActivatorBlock(bce.getBlock())) return false;
+        if (bce.getBlock() == null) return false;
+        if (!isActivatorBlock(bce.getBlock())) return false;
         return !click.checkRight(bce.isLeftClick());
     }
 
     private boolean isActivatorBlock(Block block) {
-        if(this.blockType != null && block.getType() != this.blockType) return false;
+        if (this.blockType != null && block.getType() != this.blockType) return false;
         return checkLocations(block);
     }
 
     private boolean checkLocations(Block block) {
-        if(this.blockLocation.isEmpty()) return true;
+        if (this.blockLocation.isEmpty()) return true;
         return this.isLocatedAt(block.getLocation());
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(this.blockLocation.isEmpty()) return false;
+        if (this.blockLocation.isEmpty()) return false;
         // Location loc = Locator.parseCoordinates(this.blockLocation);
         Location loc = LocationUtil.parseLocation(this.blockLocation, null);
-        if(loc == null) return false;
+        if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&
                 l.getBlockY() == loc.getBlockY() &&
@@ -97,7 +97,7 @@ public class BlockClickActivator extends Activator implements Locatable {
 
     @Override
     public void save(ConfigurationSection cfg) {
-        if(blockType != null) cfg.set("block-type", this.blockType.name());
+        if (blockType != null) cfg.set("block-type", this.blockType.name());
         cfg.set("click-type", click.name());
         cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
     }

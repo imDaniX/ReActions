@@ -12,7 +12,7 @@ public abstract class Placeholder {
     private String[] keys = new String[]{};
 
     public Placeholder() {
-        if(this.getClass().isAnnotationPresent(PlaceholderDefine.class)) {
+        if (this.getClass().isAnnotationPresent(PlaceholderDefine.class)) {
             PlaceholderDefine pd = this.getClass().getAnnotation(PlaceholderDefine.class);
             this.id = pd.id();
             this.keys = pd.keys();

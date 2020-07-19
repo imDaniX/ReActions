@@ -15,7 +15,7 @@ public class ActionWait extends Action {
     }
 
     public void executeDelayed(Player player, final List<StoredAction> actions, final boolean isAction, long time) {
-        if(actions.isEmpty()) return;
+        if (actions.isEmpty()) return;
         WaitingManager.executeDelayed(player, actions, isAction, time);
 
 		/*final String playerStr = player!=null? player.getName() : null;

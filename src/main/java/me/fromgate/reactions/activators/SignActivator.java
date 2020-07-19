@@ -47,15 +47,15 @@ public class SignActivator extends Activator {
     }
 
     public static SignActivator create(ActivatorBase base, Param p) {
-        if(!(p instanceof BlockParam)) return null;
+        if (!(p instanceof BlockParam)) return null;
         BlockParam param = (BlockParam) p;
         Block targetBlock = param.getBlock();
         Sign sign = null;
-        if(targetBlock != null && BlockUtil.isSign(targetBlock))
+        if (targetBlock != null && BlockUtil.isSign(targetBlock))
             sign = (Sign) targetBlock.getState();
         ClickType click = ClickType.getByName(param.getParam("click", "RIGHT"));
         List<String> maskLines = new ArrayList<>();
-        if(sign == null) {
+        if (sign == null) {
             maskLines.add(param.getParam("line1", ""));
             maskLines.add(param.getParam("line2", ""));
             maskLines.add(param.getParam("line3", ""));
@@ -76,14 +76,14 @@ public class SignActivator extends Activator {
     }
 
     public boolean checkMask(String[] sign) {
-        if(maskLines.isEmpty()) return false;
+        if (maskLines.isEmpty()) return false;
         int emptyLines = 0;
         for (int i = 0; i < Math.min(4, maskLines.size()); i++) {
-            if(maskLines.get(i).isEmpty()) {
+            if (maskLines.get(i).isEmpty()) {
                 emptyLines++;
                 continue;
             }
-            if(!ChatColor.translateAlternateColorCodes('&', maskLines.get(i))
+            if (!ChatColor.translateAlternateColorCodes('&', maskLines.get(i))
                     .equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', sign[i]))) {
                 return false;
             }
@@ -94,7 +94,7 @@ public class SignActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         SignStorage signEvent = (SignStorage) event;
-        if(click.checkRight(signEvent.isLeftClick())) return false;
+        if (click.checkRight(signEvent.isLeftClick())) return false;
         return checkMask(signEvent.getSignLines());
     }
 
@@ -111,12 +111,12 @@ public class SignActivator extends Activator {
 
     @Override
     public boolean isValid() {
-        if(maskLines == null || maskLines.isEmpty()) {
+        if (maskLines == null || maskLines.isEmpty()) {
             return false;
         }
         int emptyLines = 0;
         for (int i = 0; i < Math.min(4, maskLines.size()); i++) {
-            if(maskLines.get(i).isEmpty()) {
+            if (maskLines.get(i).isEmpty()) {
                 emptyLines++;
             }
         }
@@ -129,7 +129,7 @@ public class SignActivator extends Activator {
         sb.append(" (");
         sb.append("click:").append(this.click.name());
         sb.append(" sign:");
-        if(this.maskLines.isEmpty()) sb.append("[][][][]");
+        if (this.maskLines.isEmpty()) sb.append("[][][][]");
         else {
             for (String s : maskLines)
                 sb.append("[").append(s).append("]");

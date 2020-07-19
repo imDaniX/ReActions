@@ -110,7 +110,7 @@ public class VirtualItem extends ItemStack {
     }
 
     public static VirtualItem fromItemStack(ItemStack item) {
-        if(!ItemUtil.isExist(item))
+        if (!ItemUtil.isExist(item))
             return null;
         return new VirtualItem(item);
     }
@@ -125,9 +125,9 @@ public class VirtualItem extends ItemStack {
     public static VirtualItem fromString(String itemStr) {
         Map<String, String> params = Param.parseParams(itemStr, "");
         VirtualItem vi = fromMap(params);
-        if(vi != null) return vi;
+        if (vi != null) return vi;
         ItemStack item = ItemUtil.parseOldItemStack(itemStr);
-        if(item != null) return new VirtualItem(item);
+        if (item != null) return new VirtualItem(item);
         return null;
     }
 
@@ -139,33 +139,33 @@ public class VirtualItem extends ItemStack {
      */
 
     public static VirtualItem fromMap(Map<String, String> params) {
-        if(params == null || params.isEmpty())
+        if (params == null || params.isEmpty())
             return null;
         Material type;
         int data;
         int amount;
-        if(params.containsKey("item") || params.containsKey("default-param")) {
+        if (params.containsKey("item") || params.containsKey("default-param")) {
             String itemStr = params.containsKey("item") ? params.get("item")
                     : params.get("default-param");
             String amountStr = "1";
-            if(itemStr.contains("*")) {
+            if (itemStr.contains("*")) {
                 itemStr = itemStr.substring(0, itemStr.indexOf("*"));
                 amountStr = itemStr.substring(itemStr.indexOf("*") + 1);
             }
-            if(itemStr.contains(":")) {
+            if (itemStr.contains(":")) {
                 itemStr = itemStr.substring(0, itemStr.indexOf(":"));
             }
             type = Material.getMaterial(itemStr.toUpperCase(), false);
-            if(type == null)
+            if (type == null)
                 type = Material.getMaterial(itemStr.toUpperCase(), true);
             amount = Util.getMinMaxRandom(amountStr);
-            if(amount == 0) return null;
-        } else if(params.containsKey("type")) {
+            if (amount == 0) return null;
+        } else if (params.containsKey("type")) {
             String typeStr = params.getOrDefault("type", "");
             type = Material.getMaterial(typeStr.toUpperCase());
         } else
             return null;
-        if(type == null)
+        if (type == null)
             return null;
         data = Util.getMinMaxRandom(params.getOrDefault("data", "0"));
         amount = Util.getMinMaxRandom(params.getOrDefault("amount", "1"));
@@ -192,7 +192,7 @@ public class VirtualItem extends ItemStack {
      * @return VirtualItem generated from JSON-string
      */
     public static VirtualItem fromJSONString(String itemJSON) {
-        if(Util.isStringEmpty(itemJSON))
+        if (Util.isStringEmpty(itemJSON))
             return null;
         JSONParser parser = new JSONParser();
         Object object = null;
@@ -200,19 +200,19 @@ public class VirtualItem extends ItemStack {
             object = parser.parse(itemJSON);
         } catch (Exception ignore) {
         }
-        if(object == null)
+        if (object == null)
             return null;
         JSONObject json = (JSONObject) object;
         Map<String, Object> map = new HashMap<>();
         for (Object key : json.keySet()) {
-            if(key instanceof String) {
+            if (key instanceof String) {
                 map.put((String) key, json.get(key));
             }
         }
-        if(map.isEmpty())
+        if (map.isEmpty())
             return null;
         ItemStack item = ItemStack.deserialize(map);
-        if(item == null)
+        if (item == null)
             return null;
         return new VirtualItem(item);
     }
@@ -229,7 +229,7 @@ public class VirtualItem extends ItemStack {
         params.put("amount", Integer.toString(this.getAmount()));
         putEnchants(params, "enchantments", this.getEnchantments());
         putItemMeta(params, this.getItemMeta());
-        if(ADD_REGEX) params.put("regex", "false");
+        if (ADD_REGEX) params.put("regex", "false");
         return params;
     }
 
@@ -255,27 +255,27 @@ public class VirtualItem extends ItemStack {
 
     // ////////////////////////////////////////////////////
     protected void setEnchantStorage(String enchStr) {
-        if(Util.isStringEmpty(enchStr)) return;
-        if(!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
+        if (Util.isStringEmpty(enchStr)) return;
+        if (!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
         EnchantmentStorageMeta esm = (EnchantmentStorageMeta) this.getItemMeta();
         String[] enchLn = enchStr.split(";");
         for (String e : enchLn) {
             String eType = e;
             int power = 0;
-            if(eType.contains(":")) {
+            if (eType.contains(":")) {
                 String powerStr = eType.substring(eType.indexOf(":") + 1);
                 eType = eType.substring(0, eType.indexOf(":"));
                 power = Util.INT_POSITIVE.matcher(powerStr).matches() ? Integer.valueOf(powerStr) : 0;
             }
             Enchantment enchantment = ItemUtil.getEnchantmentByName(eType);
-            if(enchantment == null) continue;
+            if (enchantment == null) continue;
             esm.addStoredEnchant(enchantment, power, true);
         }
         this.setItemMeta(esm);
     }
 
     protected void setMap(boolean scale) {
-        if(this.getItemMeta() instanceof MapMeta) {
+        if (this.getItemMeta() instanceof MapMeta) {
             MapMeta mm = (MapMeta) this.getItemMeta();
             mm.setScaling(scale);
             this.setItemMeta(mm);
@@ -284,20 +284,20 @@ public class VirtualItem extends ItemStack {
 
 
     protected void setPotionMeta(String potions) {
-        if(Util.isStringEmpty(potions))
+        if (Util.isStringEmpty(potions))
             return;
-        if(!(this.getItemMeta() instanceof PotionMeta))
+        if (!(this.getItemMeta() instanceof PotionMeta))
             return;
         String[] potLn = potions.split(";");
         PotionMeta pm = (PotionMeta) this.getItemMeta();
         pm.clearCustomEffects();
         for (String pStr : potLn) {
             String[] ln = pStr.trim().split(":");
-            if(ln.length == 0)
+            if (ln.length == 0)
                 continue;
             PotionEffectType pType = PotionEffectType.getByName(ln[0]
                     .toUpperCase());
-            if(pType == null)
+            if (pType == null)
                 continue;
             int amplifier = (ln.length > 1) ? Util.getMinMaxRandom(ln[1]) : 0;
             int duration = (ln.length > 2) ? (int) (TimeUtil.parseTime(ln[2]) / 50) : Integer.MAX_VALUE;
@@ -308,9 +308,9 @@ public class VirtualItem extends ItemStack {
 
     @SuppressWarnings("deprecation")
     private void setSkull(String owner) {
-        if(Util.isStringEmpty(owner))
+        if (Util.isStringEmpty(owner))
             return;
-        if(this.getItemMeta() instanceof SkullMeta) {
+        if (this.getItemMeta() instanceof SkullMeta) {
             SkullMeta sm = (SkullMeta) this.getItemMeta();
             sm.setOwner(owner);
             this.setItemMeta(sm);
@@ -323,11 +323,11 @@ public class VirtualItem extends ItemStack {
      * @param colorStr
      */
     private void setColor(String colorStr) {
-        if(Util.isStringEmpty(colorStr)) return;
+        if (Util.isStringEmpty(colorStr)) return;
 
-        if(this.getItemMeta() instanceof LeatherArmorMeta) {
+        if (this.getItemMeta() instanceof LeatherArmorMeta) {
             Color c = ItemUtil.parseColor(colorStr);
-            if(c == null) return;
+            if (c == null) return;
             LeatherArmorMeta lm = (LeatherArmorMeta) this.getItemMeta();
             lm.setColor(c);
             this.setItemMeta(lm);
@@ -335,11 +335,11 @@ public class VirtualItem extends ItemStack {
     }
 
     private void putEnchants(Map<String, String> params, String key, Map<Enchantment, Integer> enchantments) {
-        if(enchantments == null || enchantments.isEmpty())
+        if (enchantments == null || enchantments.isEmpty())
             return;
         StringBuilder sb = new StringBuilder();
         for (Enchantment e : enchantments.keySet()) {
-            if(sb.length() > 0)
+            if (sb.length() > 0)
                 sb.append(";");
             sb.append(e.getKey().getKey()).append(":").append(enchantments.get(e));
         }
@@ -355,22 +355,22 @@ public class VirtualItem extends ItemStack {
     }
 
     public String getDisplayName() {
-        if(!this.hasItemMeta()) return null;
+        if (!this.hasItemMeta()) return null;
         ItemMeta im = this.getItemMeta();
-        if(im.hasDisplayName()) return im.getDisplayName();
+        if (im.hasDisplayName()) return im.getDisplayName();
         return null;
     }
 
     public List<String> getLore() {
-        if(!this.hasItemMeta()) return null;
+        if (!this.hasItemMeta()) return null;
         ItemMeta im = this.getItemMeta();
-        if(im.hasLore()) return im.getLore();
+        if (im.hasLore()) return im.getLore();
         return null;
     }
 
     public void setLore(String loreStr) {
         List<String> lore = new ArrayList<>();
-        if(loreStr != null) {
+        if (loreStr != null) {
             String[] ln = ChatColor.translateAlternateColorCodes('&', loreStr).split(Pattern.quote(DIVIDER));
             lore = Arrays.asList(ln);
         } // else this.lore = null;
@@ -380,17 +380,17 @@ public class VirtualItem extends ItemStack {
     }
 
     private void putItemMeta(Map<String, String> params, ItemMeta itemMeta) {
-        if(itemMeta == null)
+        if (itemMeta == null)
             return;
-        if(itemMeta.hasDisplayName())
+        if (itemMeta.hasDisplayName())
             put(params, "name", itemMeta.getDisplayName().replace('§', '&'));
-        if(itemMeta.hasLore())
+        if (itemMeta.hasLore())
             put(params, "lore", itemMeta.getLore());
-        if(itemMeta instanceof BookMeta) {
+        if (itemMeta instanceof BookMeta) {
             BookMeta bm = (BookMeta) itemMeta;
             put(params, "book-author", bm.getAuthor().replace('§', '&'));
             put(params, "book-title", bm.getTitle().replace('§', '&'));
-            if(!bm.getPages().isEmpty()) {
+            if (!bm.getPages().isEmpty()) {
                 List<String> pages = new ArrayList<>();
                 for (String page : bm.getPages()) {
                     String newPage = page.replaceAll("§0\n", "&z");
@@ -400,44 +400,44 @@ public class VirtualItem extends ItemStack {
                 put(params, "book-pages", pages);
             }
         }
-        if(itemMeta instanceof FireworkMeta) {
+        if (itemMeta instanceof FireworkMeta) {
             FireworkMeta fm = (FireworkMeta) itemMeta;
             put(params, "firework-power", fm.getPower());
             put(params, "firework-effects", fireworksToList(fm.getEffects()));
         }
 
-        if(itemMeta instanceof LeatherArmorMeta) {
+        if (itemMeta instanceof LeatherArmorMeta) {
             LeatherArmorMeta lm = (LeatherArmorMeta) itemMeta;
             put(params, "color", ItemUtil.colorToString(lm.getColor(), true));
         }
-        if(itemMeta instanceof SkullMeta) {
+        if (itemMeta instanceof SkullMeta) {
             SkullMeta sm = (SkullMeta) itemMeta;
-            if(sm.hasOwner())
+            if (sm.hasOwner())
                 put(params, "skull-owner", sm.getOwningPlayer().getName());
         }
-        if(itemMeta instanceof PotionMeta) {
+        if (itemMeta instanceof PotionMeta) {
             PotionMeta pm = (PotionMeta) itemMeta;
-            if(pm.hasCustomEffects())
+            if (pm.hasCustomEffects())
                 putEffects(params, pm.getCustomEffects());
         }
-        if(itemMeta instanceof MapMeta) {
+        if (itemMeta instanceof MapMeta) {
             MapMeta mm = (MapMeta) itemMeta;
-            if(mm.isScaling())
+            if (mm.isScaling())
                 put(params, "map-scale", "true");
         }
 
-        if(itemMeta instanceof EnchantmentStorageMeta) {
+        if (itemMeta instanceof EnchantmentStorageMeta) {
             EnchantmentStorageMeta esm = (EnchantmentStorageMeta) itemMeta;
-            if(esm.hasStoredEnchants())
+            if (esm.hasStoredEnchants())
                 putEnchants(params, "stored-enchants", esm.getStoredEnchants());
         }
 
-        if(itemMeta instanceof FireworkEffectMeta)
+        if (itemMeta instanceof FireworkEffectMeta)
             putFireworkEffectMeta(params, (FireworkEffectMeta) itemMeta);
     }
 
     private void putFireworkEffectMeta(Map<String, String> params, FireworkEffectMeta fwm) {
-        if(!fwm.hasEffect()) return;
+        if (!fwm.hasEffect()) return;
         put(params, "firework-effects", ItemUtil.fireworksToString(fwm.getEffect()));
 
     }
@@ -445,7 +445,7 @@ public class VirtualItem extends ItemStack {
     private void putEffects(Map<String, String> params, List<PotionEffect> customEffects) {
         StringBuilder sb = new StringBuilder();
         for (PotionEffect pef : customEffects) {
-            if(sb.length() > 0)
+            if (sb.length() > 0)
                 sb.append(";");
             sb.append(pef.getType().getName()).append(":");
             sb.append(pef.getAmplifier()).append(":").append(pef.getDuration());
@@ -458,11 +458,11 @@ public class VirtualItem extends ItemStack {
         Map<String, String> params = toMap();
         StringBuilder sb = new StringBuilder();
         for (String key : params.keySet()) {
-            if(sb.length() > 0)
+            if (sb.length() > 0)
                 sb.append(" ");
             sb.append(key).append(":");
             String value = params.get(key);
-            if(value.contains(" "))
+            if (value.contains(" "))
                 sb.append("{").append(value).append("}");
             else
                 sb.append(value);
@@ -472,12 +472,12 @@ public class VirtualItem extends ItemStack {
 
     public String toDisplayString() {
         StringBuilder sb = new StringBuilder();
-        if(this.getItemMeta().hasDisplayName()) sb.append(this.getItemMeta().getDisplayName());
+        if (this.getItemMeta().hasDisplayName()) sb.append(this.getItemMeta().getDisplayName());
         else {
             sb.append(this.getType().name());
-            if(this.getDamage() > 0) sb.append(":").append(this.getDamage());
+            if (this.getDamage() > 0) sb.append(":").append(this.getDamage());
         }
-        if(this.getAmount() > 1) sb.append("*").append(this.getAmount());
+        if (this.getAmount() > 1) sb.append("*").append(this.getAmount());
         return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
     }
 
@@ -485,7 +485,7 @@ public class VirtualItem extends ItemStack {
         StringBuilder sb = new StringBuilder();
         sb.append(this.getItemMeta().hasDisplayName() ? this.getItemMeta()
                 .getDisplayName() : this.getType().name());
-        if(this.getAmount() > 1)
+        if (this.getAmount() > 1)
             sb.append("*").append(this.getAmount());
         return ChatColor.stripColor(sb.toString());
     }
@@ -493,7 +493,7 @@ public class VirtualItem extends ItemStack {
     private void setEnchantments(String enchStr) {
         clearEnchantments();
         Map<Enchantment, Integer> enchantments = ItemUtil.parseEnchantmentsString(enchStr);
-        if(enchantments.isEmpty()) return;
+        if (enchantments.isEmpty()) return;
         this.addUnsafeEnchantments(enchantments);
     }
 
@@ -503,10 +503,10 @@ public class VirtualItem extends ItemStack {
     }
 
     public void setBook(String author, String title, String pagesStr) {
-        if(!(this.getItemMeta() instanceof BookMeta))
+        if (!(this.getItemMeta() instanceof BookMeta))
             return;
         BookMeta bm = (BookMeta) this.getItemMeta();
-        if(pagesStr != null) {
+        if (pagesStr != null) {
             String[] ln = pagesStr.split(Pattern.quote(DIVIDER));
             List<String> pages = new ArrayList<>();
             for (String page : ln)
@@ -514,23 +514,23 @@ public class VirtualItem extends ItemStack {
                         page.replace("&z", "§0\n")));
             bm.setPages(pages);
         }
-        if(author != null && !author.isEmpty())
+        if (author != null && !author.isEmpty())
             bm.setAuthor(ChatColor.translateAlternateColorCodes('&', author));
-        if(title != null && !title.isEmpty())
+        if (title != null && !title.isEmpty())
             bm.setTitle(ChatColor.translateAlternateColorCodes('&', title));
         this.setItemMeta(bm);
     }
 
     public void setName(String name) {
-        if(name == null) return;
+        if (name == null) return;
         ItemMeta im = this.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         this.setItemMeta(im);
     }
 
     private void setFireworkEffect(String fireworkStr) {
-        if(fireworkStr == null || fireworkStr.isEmpty()) return;
-        if(!(this.getItemMeta() instanceof FireworkEffectMeta)) return;
+        if (fireworkStr == null || fireworkStr.isEmpty()) return;
+        if (!(this.getItemMeta() instanceof FireworkEffectMeta)) return;
         FireworkEffectMeta fm = (FireworkEffectMeta) this.getItemMeta();
         Map<String, String> params = Param.parseParams(fireworkStr, "");
         FireworkEffect.Type fType;
@@ -545,9 +545,9 @@ public class VirtualItem extends ItemStack {
         colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
         fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
         Builder b = FireworkEffect.builder().with(fType);
-        if(flicker)
+        if (flicker)
             b = b.withFlicker();
-        if(trail)
+        if (trail)
             b = b.withTrail();
         for (Color c : colors)
             b = b.withColor(c);
@@ -558,12 +558,12 @@ public class VirtualItem extends ItemStack {
     }
 
     private void setFireworks(int power, String fireworkStr) {
-        if(!(this.getItemMeta() instanceof FireworkMeta))
+        if (!(this.getItemMeta() instanceof FireworkMeta))
             return;
         FireworkMeta fm = (FireworkMeta) this.getItemMeta();
         fm.clearEffects();
         fm.setPower(power);
-        if(fireworkStr != null && !fireworkStr.isEmpty()) {
+        if (fireworkStr != null && !fireworkStr.isEmpty()) {
             String[] fireworks = fireworkStr.split(";");
             List<FireworkEffect> fe = new ArrayList<>();
             for (String fStr : fireworks) {
@@ -574,7 +574,7 @@ public class VirtualItem extends ItemStack {
                 boolean flicker;
                 boolean trail;
                 for (FireworkEffect.Type ft : FireworkEffect.Type.values()) {
-                    if(ft.name()
+                    if (ft.name()
                             .equalsIgnoreCase(params.getOrDefault("type", "")))
                         fType = ft;
                 }
@@ -584,12 +584,12 @@ public class VirtualItem extends ItemStack {
                         "false"));
                 colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
                 fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
-                if(fType == null)
+                if (fType == null)
                     continue;
                 Builder b = FireworkEffect.builder().with(fType);
-                if(flicker)
+                if (flicker)
                     b = b.withFlicker();
-                if(trail)
+                if (trail)
                     b = b.withTrail();
                 for (Color c : colors)
                     b = b.withColor(c);
@@ -597,20 +597,20 @@ public class VirtualItem extends ItemStack {
                     b = b.withFade(c);
                 fe.add(b.build());
             }
-            if(!fe.isEmpty())
+            if (!fe.isEmpty())
                 fm.addEffects(fe);
         }
         this.setItemMeta(fm);
     }
 
     private List<String> fireworksToList(List<FireworkEffect> fireworks) {
-        if(fireworks == null || fireworks.isEmpty())
+        if (fireworks == null || fireworks.isEmpty())
             return null;
         List<String> fireList = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
         for (int j = 0; j < fireworks.size(); j++) {
             // if (j>0) sb.append("\\\\n");
-            if(j > 0)
+            if (j > 0)
                 sb.append(";");
             FireworkEffect fe = fireworks.get(j);
             sb.append(ItemUtil.fireworksToString(fe));
@@ -624,18 +624,18 @@ public class VirtualItem extends ItemStack {
     }
 
     protected void put(Map<String, String> params, String key, String value) {
-        if(value == null)
+        if (value == null)
             return;
-        if(value.isEmpty())
+        if (value.isEmpty())
             return;
         params.put(key, value);
     }
 
     private String listToString(List<String> valueList) {
-        if(valueList == null) return null;
-        if(valueList.isEmpty()) return null;
+        if (valueList == null) return null;
+        if (valueList.isEmpty()) return null;
         StringBuilder sb = new StringBuilder(valueList.get(0));
-        if(valueList.size() > 1)
+        if (valueList.size() > 1)
             for (int i = 1; i < valueList.size(); i++)
                 sb.append(DIVIDER).append(valueList.get(i));
         return sb.toString();
@@ -643,16 +643,16 @@ public class VirtualItem extends ItemStack {
 
     protected void put(Map<String, String> params, String key, List<String> valueList) {
         String str = listToString(valueList);
-        if(str == null) return;
+        if (str == null) return;
         params.put(key, str.replace('§', '&'));
     }
 
     public boolean compare(ItemStack item, int amount) {
         int amountToRemove = amount > 0 ? amount : item.getAmount();
-        if(this.getAmount() < amountToRemove)
+        if (this.getAmount() < amountToRemove)
             return false; // Сравниваем ТЕКУЩИЙ предмет с целевым. Т.е. текущего должно быть столько же или больше
-        if(this.getType() != item.getType()) return false;
-        if(this.getDamage() != ItemUtil.getDurability(item)) return false;
+        if (this.getType() != item.getType()) return false;
+        if (this.getDamage() != ItemUtil.getDurability(item)) return false;
         return Bukkit.getItemFactory().equals(this.getItemMeta(), item.getItemMeta());
     }
 
@@ -662,7 +662,7 @@ public class VirtualItem extends ItemStack {
 
     public boolean compare(String itemStr, int amount) {
         Map<String, String> params = Param.parseParams(itemStr, "");
-        if(amount > 0) params.put("amount", Integer.toString(amount));
+        if (amount > 0) params.put("amount", Integer.toString(amount));
         return compare(params, amount);
     }
 
@@ -672,39 +672,39 @@ public class VirtualItem extends ItemStack {
     }
 
     public boolean compare(Map<String, String> itemMap, int amount) {
-        if(itemMap == null || itemMap.isEmpty()) return false;
+        if (itemMap == null || itemMap.isEmpty()) return false;
 
         boolean regex = !itemMap.containsKey("regex") || itemMap.get("regex").equalsIgnoreCase("true");
 
         ItemMeta thisMeta = this.getItemMeta();
-        if(itemMap.containsKey("item") || itemMap.containsKey("default-param")) {
+        if (itemMap.containsKey("item") || itemMap.containsKey("default-param")) {
             String itemStr = itemMap.containsKey("item") ? itemMap.get("item") : itemMap.get("default-param");
             String dataStr = "";
             String amountStr = "";
-            if(itemStr.contains("*")) {
+            if (itemStr.contains("*")) {
                 itemStr = itemStr.substring(0, itemStr.indexOf("*"));
                 amountStr = itemStr.substring(itemStr.indexOf("*") + 1);
             }
-            if(itemStr.contains(":")) {
+            if (itemStr.contains(":")) {
                 itemStr = itemStr.substring(0, itemStr.indexOf(":"));
                 dataStr = itemStr.substring(itemStr.indexOf(":") + 1);
             }
             itemMap.put("type", Material.getMaterial(itemStr.toUpperCase()).name());
 
-            if(Util.INT_POSITIVE.matcher(dataStr).matches()) itemMap.put("data", dataStr);
-            if(Util.INT_POSITIVE.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
+            if (Util.INT_POSITIVE.matcher(dataStr).matches()) itemMap.put("data", dataStr);
+            if (Util.INT_POSITIVE.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
             itemMap.remove("item");
             itemMap.remove("default-param");
         }
-        if(amount > 0) itemMap.put("amount", Integer.toString(amount));
-        if(this.hasDisplayName() && !itemMap.containsKey("name")) return false;
-        if(this.hasLore() && !itemMap.containsKey("lore")) return false;
-        if(itemMap.containsKey("type")) {
+        if (amount > 0) itemMap.put("amount", Integer.toString(amount));
+        if (this.hasDisplayName() && !itemMap.containsKey("name")) return false;
+        if (this.hasLore() && !itemMap.containsKey("lore")) return false;
+        if (itemMap.containsKey("type")) {
             String typeStr = itemMap.get("type").toUpperCase();
             Material m = Material.getMaterial(typeStr);
-            if(m == null) return false;
+            if (m == null) return false;
             typeStr = m.toString();
-            if(!compareOrMatch(this.getType().toString(), typeStr, regex)) return false;
+            if (!compareOrMatch(this.getType().toString(), typeStr, regex)) return false;
 
 			/*
 			if (itemMap.containsKey("color")) {
@@ -716,31 +716,31 @@ public class VirtualItem extends ItemStack {
 			*/
         }
 
-        if(itemMap.containsKey("data")) {
+        if (itemMap.containsKey("data")) {
             String dataStr = itemMap.get("data");
             int reqData = Util.INT_POSITIVE.matcher(dataStr).matches() ? Integer.parseInt(dataStr) : -1;
-            if(reqData != this.getDamage()) return false;
+            if (reqData != this.getDamage()) return false;
         }
-        if(itemMap.containsKey("amount")) {
+        if (itemMap.containsKey("amount")) {
             String amountStr = itemMap.get("amount");
-            if(Util.INT_POSITIVE.matcher(amountStr).matches() && this.getAmount() < Integer.parseInt(amountStr))
+            if (Util.INT_POSITIVE.matcher(amountStr).matches() && this.getAmount() < Integer.parseInt(amountStr))
                 return false;//this.getAmount()>=Integer.parseInt(amountStr);
-            else if(AMOUNT_RANDOM.matcher(amountStr).matches()) {
+            else if (AMOUNT_RANDOM.matcher(amountStr).matches()) {
                 boolean greater = amountStr.startsWith(">");
                 boolean equal = amountStr.contains("=");
                 int reqAmount = Integer.parseInt(amountStr.replaceAll("\\D+", ""));
                 reqAmount = equal ? (greater ? reqAmount++ : reqAmount--) : reqAmount;
-                if(greater && this.getAmount() < reqAmount) return false;
-                if(!greater && this.getAmount() > reqAmount) return false;
+                if (greater && this.getAmount() < reqAmount) return false;
+                if (!greater && this.getAmount() > reqAmount) return false;
             }
         }
-        if(itemMap.containsKey("name")) {
+        if (itemMap.containsKey("name")) {
             String thisName = thisMeta.hasDisplayName() ? thisMeta.getDisplayName() : "";
-            if(!compareOrMatch(thisName, ChatColor.translateAlternateColorCodes('&', itemMap.get("name")), regex))
+            if (!compareOrMatch(thisName, ChatColor.translateAlternateColorCodes('&', itemMap.get("name")), regex))
                 return false;
         }
 
-        if(itemMap.containsKey("lore")) {
+        if (itemMap.containsKey("lore")) {
             List<String> thisLore = thisMeta.hasLore() ? thisMeta.getLore() : new ArrayList<>();
             String thisLoreStr = String.join(DIVIDER, thisLore);
             String loreStr = ChatColor.translateAlternateColorCodes('&', itemMap.get("lore")); //Joiner.on(regex ? Pattern.quote(DIVIDER) : DIVIDER).join(thisLore);
@@ -750,7 +750,7 @@ public class VirtualItem extends ItemStack {
     }
 
     private boolean compareOrMatch(String str, String toStr, boolean useRegex) {
-        if(useRegex) {
+        if (useRegex) {
             //try {
             return str.matches(toStr);
             //} catch (Exception e) {
@@ -770,7 +770,7 @@ public class VirtualItem extends ItemStack {
      */
     public int getDamage() {
         ItemMeta meta = this.getItemMeta();
-        if(meta instanceof Damageable) {
+        if (meta instanceof Damageable) {
             return ((Damageable) meta).getDamage();
         }
         return 0;
@@ -781,7 +781,7 @@ public class VirtualItem extends ItemStack {
      */
     public void setDamage(int damage) {
         ItemMeta meta = this.getItemMeta();
-        if(meta instanceof Damageable) {
+        if (meta instanceof Damageable) {
             ((Damageable) meta).setDamage(damage);
             this.setItemMeta(meta);
         }

@@ -33,22 +33,22 @@ public class ActionPotionRemove extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         String str = removePotionEffect(context.getPlayer(), params.getParam("param-line", ""));
-        if(str.isEmpty()) return false;
+        if (str.isEmpty()) return false;
         this.setMessageParam(str);
         return true;
     }
 
     private String removePotionEffect(Player p, String param) {
         String str = "";
-        if(param.equalsIgnoreCase("all") || param.equalsIgnoreCase("*"))
+        if (param.equalsIgnoreCase("all") || param.equalsIgnoreCase("*"))
             for (PotionEffect pe : p.getActivePotionEffects()) p.removePotionEffect(pe.getType());
         else {
             String[] pefs = param.split(",");
-            if(pefs.length > 0) {
+            if (pefs.length > 0) {
                 for (String pefStr : pefs) {
                     PotionEffectType pef = PotionEffectType.getByName(pefStr);
-                    if(pef == null) continue;
-                    if(p.hasPotionEffect(pef)) {
+                    if (pef == null) continue;
+                    if (p.hasPotionEffect(pef)) {
                         p.removePotionEffect(pef);
                         str = str.isEmpty() ? pef.getName() : str + ", " + pef.getName();
                     }

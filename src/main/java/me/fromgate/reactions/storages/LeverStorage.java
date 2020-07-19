@@ -46,7 +46,7 @@ public class LeverStorage extends Storage {
 
     public boolean isLeverPowered() {
         Switch lever = getLever();
-        if(lever == null) return false;
+        if (lever == null) return false;
         return lever.isPowered();
     }
 

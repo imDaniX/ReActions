@@ -13,12 +13,12 @@ public class GroupSelector implements Selector {
     @Override
     public Set<Player> selectPlayers(String param) {
         Set<Player> players = new HashSet<>();
-        if(!RaVault.isPermissionConnected()) return players;
-        if(param.isEmpty()) return players;
+        if (!RaVault.isPermissionConnected()) return players;
+        if (param.isEmpty()) return players;
         String[] group = param.split(",\\s*");
         for (Player player : Bukkit.getOnlinePlayers())
             for (String g : group)
-                if(RaVault.playerInGroup(player, g)) players.add(player);
+                if (RaVault.playerInGroup(player, g)) players.add(player);
         return players;
     }
 }

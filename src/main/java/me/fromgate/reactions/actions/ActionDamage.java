@@ -34,7 +34,7 @@ public class ActionDamage extends Action {
     public boolean execute(RaContext context, Param params) {
         Player player = context.getPlayer();
         double damage = params.getParam("damage", params.getParam("param-line", 0));
-        if(params.hasAnyParam("player"))
+        if (params.hasAnyParam("player"))
             // TODO: Selector?
             player = Util.getPlayerExact(params.getParam("player"));
         return damagePlayer(player, damage);
@@ -42,8 +42,8 @@ public class ActionDamage extends Action {
 
 
     private boolean damagePlayer(Player player, double damage) {
-        if(player == null || player.isDead() || !player.isOnline()) return false;
-        if(damage > 0) player.damage(damage);
+        if (player == null || player.isDead() || !player.isOnline()) return false;
+        if (damage > 0) player.damage(damage);
         else player.playEffect(EntityEffect.HURT);
         setMessageParam(Double.toString(damage));
         return true;

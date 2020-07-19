@@ -22,12 +22,12 @@ public class ItemStoragesManager {
 
     private static void setFutureItemWearCheck(final UUID playerId, final String itemStr, boolean repeat) {
         Player player = Bukkit.getPlayer(playerId);
-        if(player == null) return;
-        if(!player.isOnline()) return;
+        if (player == null) return;
+        if (!player.isOnline()) return;
         String rg = "iw-" + itemStr;
-        if(!StoragesManager.isTimeToRaiseEvent(player, rg, Cfg.itemWearRecheck, repeat)) return;
+        if (!StoragesManager.isTimeToRaiseEvent(player, rg, Cfg.itemWearRecheck, repeat)) return;
         ItemWearStorage iwe = new ItemWearStorage(player);
-        if(!iwe.isItemWeared(itemStr)) return;
+        if (!iwe.isItemWeared(itemStr)) return;
         ActivatorsManager.activate(iwe);
         Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
     }
@@ -50,12 +50,12 @@ public class ItemStoragesManager {
 
     private static void setFutureItemHoldCheck(final UUID playerId, final String itemStr, boolean repeat) {
         Player player = Bukkit.getPlayer(playerId);
-        if(player == null || !player.isOnline() || player.isDead()) return;
+        if (player == null || !player.isOnline() || player.isDead()) return;
         ItemStack item = player.getInventory().getItemInMainHand();
-        if(!ItemUtil.isExist(item)) return;
+        if (!ItemUtil.isExist(item)) return;
         String rg = "ih-" + itemStr;
-        if(!StoragesManager.isTimeToRaiseEvent(player, rg, Cfg.itemHoldRecheck, repeat)) return;
-        if(!ItemUtil.compareItemStr(item, itemStr)) return;
+        if (!StoragesManager.isTimeToRaiseEvent(player, rg, Cfg.itemHoldRecheck, repeat)) return;
+        if (!ItemUtil.compareItemStr(item, itemStr)) return;
         ItemHoldStorage ihe = new ItemHoldStorage(player, item, true);
         ActivatorsManager.activate(ihe);
 

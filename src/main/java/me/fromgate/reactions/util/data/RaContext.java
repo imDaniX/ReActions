@@ -26,7 +26,7 @@ public class RaContext {
     public RaContext(String activator, Map<String, String> tempVariables, Map<String, DataValue> changeables, Player player, boolean async) {
         this.tempVariables = tempVariables != null ? new HashMap<>(tempVariables) : new HashMap<>();
         tempVariables.put("activator_name", activator);
-        if(changeables == null || changeables.isEmpty()) {
+        if (changeables == null || changeables.isEmpty()) {
             this.changeables = Collections.emptyMap();
         } else {
             this.changeables = changeables;
@@ -55,7 +55,7 @@ public class RaContext {
     public boolean setChangeable(String key, double value) {
         key = key.toLowerCase();
         DataValue dataValue = changeables.get(key);
-        if(dataValue == null || !dataValue.set(value)) return false;
+        if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());
         return true;
     }
@@ -63,7 +63,7 @@ public class RaContext {
     public boolean setChangeable(String key, String value) {
         key = key.toLowerCase();
         DataValue dataValue = changeables.get(key);
-        if(dataValue == null || !dataValue.set(value)) return false;
+        if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());
         return true;
     }
@@ -71,7 +71,7 @@ public class RaContext {
     public boolean setChangeable(String key, boolean value) {
         key = key.toLowerCase();
         DataValue dataValue = changeables.get(key);
-        if(dataValue == null || !dataValue.set(value)) return false;
+        if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());
         return true;
     }
@@ -79,7 +79,7 @@ public class RaContext {
     public boolean setChangeable(String key, Location value) {
         key = key.toLowerCase();
         DataValue dataValue = changeables.get(key);
-        if(dataValue == null || !dataValue.set(value)) return false;
+        if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());
         return true;
     }

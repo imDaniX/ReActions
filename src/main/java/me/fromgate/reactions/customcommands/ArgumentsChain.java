@@ -42,7 +42,7 @@ public class ArgumentsChain implements Comparable {
     private void loadExecs(ConfigurationSection argSection) {
         execs.put(ExecType.DEFAULT, argSection.getString("exec"));
         ConfigurationSection errSection = argSection.getConfigurationSection("error");
-        if(errSection == null) return;
+        if (errSection == null) return;
         execs.put(ExecType.ANY_ERROR, errSection.getString("any"));
         execs.put(ExecType.NO_PERMISSIONS, errSection.getString("no_perm"));
         execs.put(ExecType.OFFLINE, errSection.getString("offline"));
@@ -58,15 +58,15 @@ public class ArgumentsChain implements Comparable {
      * @param args     Current arguments
      */
     public void tabComplete(List<String> complete, CommandSender sender, String[] args) {
-        if(args.length > arguments.size()) return;
+        if (args.length > arguments.size()) return;
 
-        if(sender instanceof ConsoleCommandSender) {
-            if(!consoleAllowed) return;
-        } else if(!Util.checkPermission(sender, permission)) return;
+        if (sender instanceof ConsoleCommandSender) {
+            if (!consoleAllowed) return;
+        } else if (!Util.checkPermission(sender, permission)) return;
 
         for (int i = 0; i < args.length; i++) {
-            if(i != args.length - 1) {
-                if(arguments.get(i).check(args[i]) == ExecType.BACKUP)
+            if (i != args.length - 1) {
+                if (arguments.get(i).check(args[i]) == ExecType.BACKUP)
                     return;
             } else
                 arguments.get(i).tabComplete(complete, args[i]);
@@ -90,19 +90,19 @@ public class ArgumentsChain implements Comparable {
      * @return Result of command
      */
     public ExecResult executeChain(CommandSender sender, String[] args) {
-        if(!ignoreAfter && args.length > arguments.size()) return ExecResult.BLANK_BACKUP;
+        if (!ignoreAfter && args.length > arguments.size()) return ExecResult.BLANK_BACKUP;
 
-        if(sender instanceof ConsoleCommandSender) {
-            if(!consoleAllowed)
+        if (sender instanceof ConsoleCommandSender) {
+            if (!consoleAllowed)
                 return new ExecResult(ExecType.CONSOLE_DISALLOWED, getErroredExec(ExecType.CONSOLE_DISALLOWED));
-        } else if(!Util.checkPermission(sender, permission))
+        } else if (!Util.checkPermission(sender, permission))
             return new ExecResult(ExecType.NO_PERMISSIONS, getErroredExec(ExecType.NO_PERMISSIONS));
 
         for (int i = 0; i < arguments.size(); i++) {
             ExecType resultType = arguments.get(i).check(args[i].toLowerCase());
-            if(resultType != ExecType.DEFAULT)
+            if (resultType != ExecType.DEFAULT)
                 return new ExecResult(resultType, getErroredExec(resultType));
-            if(i == arguments.size() - 1)
+            if (i == arguments.size() - 1)
                 return new ExecResult(ExecType.DEFAULT, execs.get(ExecType.DEFAULT));
         }
 
@@ -115,8 +115,8 @@ public class ArgumentsChain implements Comparable {
 
     @Override
     public int compareTo(Object obj) {
-        if(!(obj instanceof ArgumentsChain)) return -1;
-        if(this.priority == ((ArgumentsChain) obj).priority) return 1;
+        if (!(obj instanceof ArgumentsChain)) return -1;
+        if (this.priority == ((ArgumentsChain) obj).priority) return 1;
         return -1;
     }
 

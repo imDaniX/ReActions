@@ -37,10 +37,10 @@ public class ActionPowerSet extends Action {
     public boolean execute(RaContext context, Param params) {
         Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), null);
         setMessageParam("UNKNOWN");
-        if(loc == null) return false;
+        if (loc == null) return false;
         Block b = loc.getBlock();
         setMessageParam(b.getType().name());
-        if(!isPowerBlock(b)) return false;
+        if (!isPowerBlock(b)) return false;
         String state = params.getParam("power", "on");
         boolean power = getPower(b, state);
         return setPower(b, power);
@@ -49,11 +49,11 @@ public class ActionPowerSet extends Action {
 
     private boolean getPower(Block b, String state) {
         boolean power = state.equalsIgnoreCase("on") || state.equalsIgnoreCase("true");
-        if(state.equalsIgnoreCase("toggle")) {
-            if(b.getType() == Material.LEVER) {
+        if (state.equalsIgnoreCase("toggle")) {
+            if (b.getType() == Material.LEVER) {
                 Switch sw = (Switch) b.getBlockData();
                 power = sw.isPowered();
-            } else if(BlockUtil.isOpenable(b)) {
+            } else if (BlockUtil.isOpenable(b)) {
                 power = BlockUtil.isOpen(b);
             } else power = true;
         }
@@ -61,18 +61,18 @@ public class ActionPowerSet extends Action {
     }
 
     private boolean setPower(Block b, boolean power) {
-        if(b.getType() == Material.LEVER) {
+        if (b.getType() == Material.LEVER) {
             Switch sw = (Switch) b.getBlockData();
             sw.setPowered(power);
             b.setBlockData(sw, true);
-        } else if(BlockUtil.isOpenable(b)) {
+        } else if (BlockUtil.isOpenable(b)) {
             BlockUtil.setOpen(b, power);
         } else return false;
         return true;
     }
 
     private boolean isPowerBlock(Block b) {
-        if(b.getType() == Material.LEVER) return true;
+        if (b.getType() == Material.LEVER) return true;
         return BlockUtil.isOpenable(b);
     }
 }

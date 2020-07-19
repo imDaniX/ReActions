@@ -25,12 +25,12 @@ public class WaitingManager {
     }
 
     public static void executeDelayed(Player player, StoredAction action, boolean isAction, long time) {
-        if(action == null) return;
+        if (action == null) return;
         executeDelayed(player, Collections.singletonList(action), isAction, time);
     }
 
     public static void executeDelayed(Player player, List<StoredAction> actions, boolean isAction, long time) {
-        if(actions.isEmpty()) return;
+        if (actions.isEmpty()) return;
         String playerStr = player != null ? player.getName() : null;
         WaitTask task = new WaitTask(playerStr, actions, isAction, time);
         tasks.add(task);
@@ -43,7 +43,7 @@ public class WaitingManager {
     }
 
     public static void load() {
-        if(!tasks.isEmpty()) {
+        if (!tasks.isEmpty()) {
             for (WaitTask t : tasks) {
                 t.stop();
             }
@@ -51,7 +51,7 @@ public class WaitingManager {
         tasks.clear();
         YamlConfiguration cfg = new YamlConfiguration();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
-        if(!FileUtil.loadCfg(cfg, f, "Failed to load delayed actions")) return;
+        if (!FileUtil.loadCfg(cfg, f, "Failed to load delayed actions")) return;
         for (String key : cfg.getKeys(false)) {
             WaitTask t = new WaitTask(cfg, key);
             tasks.add(t);
@@ -64,36 +64,36 @@ public class WaitingManager {
     }
 
     public static void refreshPlayer(String player) {
-        if(tasks.isEmpty()) return;
+        if (tasks.isEmpty()) return;
         int before = tasks.size();
         Iterator<WaitTask> iter = tasks.iterator();
         while (iter.hasNext()) {
             WaitTask t = iter.next();
-            if(player.equals(t.getPlayerName()) && t.isTimePassed()) t.execute();
-            if(t.isExecuted()) iter.remove();
+            if (player.equals(t.getPlayerName()) && t.isTimePassed()) t.execute();
+            if (t.isExecuted()) iter.remove();
         }
-        if(tasks.size() != before) save();
+        if (tasks.size() != before) save();
     }
 
     public static void refresh() {
-        if(tasks.isEmpty()) return;
+        if (tasks.isEmpty()) return;
         int before = tasks.size();
         Iterator<WaitTask> iter = tasks.iterator();
         while (iter.hasNext()) {
             WaitTask t = iter.next();
-            if(t.isTimePassed()) t.execute();
-            if(t.isExecuted()) iter.remove();
+            if (t.isTimePassed()) t.execute();
+            if (t.isExecuted()) iter.remove();
         }
-        if(tasks.size() != before) save();
+        if (tasks.size() != before) save();
     }
 
     public static void save() {
         Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
             YamlConfiguration cfg = new YamlConfiguration();
             File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
-            if(f.exists()) f.delete();
+            if (f.exists()) f.delete();
             for (WaitTask t : tasks) {
-                if(!t.isExecuted()) t.save(cfg);
+                if (!t.isExecuted()) t.save(cfg);
             }
             FileUtil.saveCfg(cfg, f, "Failed to save delayed actions");
         }, 1);

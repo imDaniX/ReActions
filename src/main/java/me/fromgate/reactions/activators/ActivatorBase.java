@@ -64,12 +64,12 @@ public class ActivatorBase {
     }
 
     private static void loadData(List<String> data, BiConsumer<String, String> loader) {
-        if(data == null) return;
+        if (data == null) return;
         for (String str : data) {
             String param = str;
             String value = "";
             int index = str.indexOf("=");
-            if(index != -1) {
+            if (index != -1) {
                 param = str.substring(0, index);
                 value = str.substring(index + 1);
             }
@@ -107,7 +107,7 @@ public class ActivatorBase {
      */
     public void addFlag(Flags flag, String param, boolean not) {
         StoredFlag flg = new StoredFlag(flag, param, not);
-        if(flg.getFlag() == null)
+        if (flg.getFlag() == null)
             Msg.logOnce("wrongflagname" + flags.size() + name, "Flag for activator " + name + " with this name does not exist.");
         else
             flags.add(flg);
@@ -120,7 +120,7 @@ public class ActivatorBase {
      * @return Is there flag with this index
      */
     public boolean removeFlag(int index) {
-        if(flags.size() <= index) return false;
+        if (flags.size() <= index) return false;
         flags.remove(index);
         return true;
     }
@@ -143,7 +143,7 @@ public class ActivatorBase {
      */
     public void addAction(Actions action, String param) {
         StoredAction act = new StoredAction(action, param);
-        if(act.getAction() == null)
+        if (act.getAction() == null)
             Msg.logOnce("wrongactname" + actions.size() + name, "Flag for activator " + name + " with this name does not exist.");
         else
             actions.add(act);
@@ -156,7 +156,7 @@ public class ActivatorBase {
      * @return Is there action with this index
      */
     public boolean removeAction(int index) {
-        if(actions.size() <= index) return false;
+        if (actions.size() <= index) return false;
         actions.remove(index);
         return true;
     }
@@ -179,7 +179,7 @@ public class ActivatorBase {
      */
     public void addReaction(Actions action, String param) {
         StoredAction act = new StoredAction(action, param);
-        if(act.getAction() == null)
+        if (act.getAction() == null)
             Msg.logOnce("wrongactname" + actions.size() + name, "Flag for activator " + name + " with this name does not exist.");
         else
             reactions.add(act);
@@ -192,7 +192,7 @@ public class ActivatorBase {
      * @return Is there action with this index
      */
     public boolean removeReaction(int index) {
-        if(reactions.size() <= index) return false;
+        if (reactions.size() <= index) return false;
         reactions.remove(index);
         return true;
     }
@@ -237,16 +237,16 @@ public class ActivatorBase {
 
     @Override
     public boolean equals(Object obj) {
-        if(this == obj)
+        if (this == obj)
             return true;
-        if(obj instanceof String)
+        if (obj instanceof String)
             return name.equalsIgnoreCase((String) obj);
-        if(!(obj instanceof ActivatorBase))
+        if (!(obj instanceof ActivatorBase))
             return false;
         ActivatorBase other = (ActivatorBase) obj;
-        if(name == null)
+        if (name == null)
             return other.name == null;
-        if(group == null)
+        if (group == null)
             return other.group == null;
         return this.name.equals(other.name) && this.group.equals(other.group);
     }
@@ -263,9 +263,9 @@ public class ActivatorBase {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        if(!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
-        if(!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
-        if(!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
+        if (!getFlags().isEmpty()) sb.append(" F:").append(getFlags().size());
+        if (!getActions().isEmpty()) sb.append(" A:").append(getActions().size());
+        if (!getReactions().isEmpty()) sb.append(" R:").append(getReactions().size());
         return sb.toString();
     }
 }

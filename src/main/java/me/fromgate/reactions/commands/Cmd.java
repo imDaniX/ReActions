@@ -17,7 +17,7 @@ public class Cmd {
 
 
     public Cmd() {
-        if(this.getClass().isAnnotationPresent(CmdDefine.class)) {
+        if (this.getClass().isAnnotationPresent(CmdDefine.class)) {
             CmdDefine cd = this.getClass().getAnnotation(CmdDefine.class);
             this.command = cd.command();
             this.subCommands = cd.subCommands();
@@ -30,8 +30,8 @@ public class Cmd {
 
     public boolean canExecute(CommandSender sender) {
         Player player = (sender instanceof Player) ? (Player) sender : null;
-        if(player == null) return this.allowConsole;
-        if(this.permission == null || this.permission.isEmpty()) return true;
+        if (player == null) return this.allowConsole;
+        if (this.permission == null || this.permission.isEmpty()) return true;
         return player.hasPermission(this.permission);
     }
 
@@ -41,19 +41,19 @@ public class Cmd {
     }
 
     public boolean checkParams(String[] params) {
-        if(this.subCommands == null) return true;
-        if(this.subCommands.length == 0) return true;
-        if(params.length < this.subCommands.length) return false;
+        if (this.subCommands == null) return true;
+        if (this.subCommands.length == 0) return true;
+        if (params.length < this.subCommands.length) return false;
         for (int i = 0; i < this.subCommands.length; i++) {
-            if(!params[i].matches(this.subCommands[i])) return false;
+            if (!params[i].matches(this.subCommands[i])) return false;
         }
         return true;
     }
 
     public boolean executeCommand(CommandSender sender, String[] params) {
-        if(!canExecute(sender)) return false;
-        if(!this.checkParams(params)) return false;
-        if(this.allowConsole) return execute(sender, params);
+        if (!canExecute(sender)) return false;
+        if (!this.checkParams(params)) return false;
+        if (this.allowConsole) return execute(sender, params);
         else return execute((Player) sender, params);
     }
 

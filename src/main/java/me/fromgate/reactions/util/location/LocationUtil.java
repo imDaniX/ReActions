@@ -71,42 +71,42 @@ public class LocationUtil {
 
     public static Location parseLocation(Param params, Location defaultLocation) {
         Location location = null;
-        if(params.isParamsExists("loc")) {
+        if (params.isParamsExists("loc")) {
             String locStr = params.getParam("loc", "");
             location = LocationHolder.getTpLoc(locStr);
-            if(location == null) location = parseCoordinates(locStr);
+            if (location == null) location = parseCoordinates(locStr);
         }
 
         boolean land = params.getParam("land", true);
-        if(params.isParamsExists("region")) {
+        if (params.isParamsExists("region")) {
             location = getRegionLocation(params.getParam("region", ""), land);
             location = copyYawPitch(location, defaultLocation);
         }
 
-        if(params.isParamsExists("loc1", "loc2")) {
+        if (params.isParamsExists("loc1", "loc2")) {
             Location loc1 = parseCoordinates(params.getParam("loc1", ""));
             Location loc2 = parseCoordinates(params.getParam("loc2", ""));
-            if(loc1 != null && loc2 != null) {
+            if (loc1 != null && loc2 != null) {
                 location = getCubeLocation(loc1, loc2, land);
                 location = copyYawPitch(location, defaultLocation);
             }
         }
-        if(params.isParamsExists("radius")) {
+        if (params.isParamsExists("radius")) {
             int radius = params.getParam("radius", -1);
-            if(radius > 0) {
+            if (radius > 0) {
                 location = getRadiusLocation(location == null ? defaultLocation : location, radius, land);
                 location = copyYawPitch(location, defaultLocation);
             }
         }
         Vector vector = LocationUtil.parseVector(params.getParam("add-vector", ""));
-        if(vector == null) vector = new Vector(0, 0, 0);
+        if (vector == null) vector = new Vector(0, 0, 0);
         Location result = location == null ? defaultLocation : location;
-        if(result != null) result.add(vector);
+        if (result != null) result.add(vector);
         return result;
     }
 
     public static Location copyYawPitch(Location targetLoc, Location sourceLoc) {
-        if(targetLoc == null || sourceLoc == null) return targetLoc;
+        if (targetLoc == null || sourceLoc == null) return targetLoc;
         targetLoc.setYaw(sourceLoc.getYaw());
         targetLoc.setPitch(sourceLoc.getPitch());
         return targetLoc;
@@ -125,14 +125,14 @@ public class LocationUtil {
 
     public static Location getRegionLocation(String regionStr, boolean land) {
         List<Location> minmax = RaWorldGuard.getRegionMinMaxLocations(regionStr);
-        if(minmax.isEmpty()) return null;
+        if (minmax.isEmpty()) return null;
         return getMinMaxLocation(minmax, land);
     }
 
 
     public static Location getRadiusLocation(Location center, int radius, boolean land) {
         List<Location> locs = new ArrayList<>();
-        if(radius <= 16) {
+        if (radius <= 16) {
             for (int x = -radius; x <= radius; x++)
                 for (int y = -radius; y <= radius; y++)
                     for (int z = -radius; z <= radius; z++) {
@@ -140,8 +140,8 @@ public class LocationUtil {
                                 center.getBlockX() + x,
                                 center.getBlockY() + y,
                                 center.getBlockZ() + z)).add(0.5, 0.5, 0.5);
-                        if(loc.getBlockY() < 0 || loc.getBlockY() >= loc.getWorld().getMaxHeight()) continue;
-                        if(loc.distance(center) <= radius) locs.add(loc);
+                        if (loc.getBlockY() < 0 || loc.getBlockY() >= loc.getWorld().getMaxHeight()) continue;
+                        if (loc.distance(center) <= radius) locs.add(loc);
                     }
         } else {
             int x, y, z;
@@ -153,26 +153,26 @@ public class LocationUtil {
             } while (radiusSquared < x * x + z * z + y * y);
 
             for (y = Math.max(center.getBlockY() - radius, 0); y <= Math.min(center.getBlockY() + radius, center.getWorld().getMaxHeight() - 1); y++) {
-                if(radiusSquared < x * x + z * z + y * y)
+                if (radiusSquared < x * x + z * z + y * y)
                     locs.add(new Location(center.getWorld(), center.getBlockX() + x, y, center.getBlockZ() + z));
             }
         }
-        if(locs.isEmpty()) locs.add(center);
+        if (locs.isEmpty()) locs.add(center);
         return getEmptyOrLandedLocations(locs, land);
     }
 
     public static Location parseCoordinates(String strloc) {
         Location loc;
-        if(strloc.isEmpty()) return null;
+        if (strloc.isEmpty()) return null;
         String[] ln = strloc.split(",");
-        if(!((ln.length == 4) || (ln.length == 6))) return null;
+        if (!((ln.length == 4) || (ln.length == 6))) return null;
         World w = Bukkit.getWorld(ln[0]);
-        if(w == null) return null;
+        if (w == null) return null;
         for (int i = 1; i < ln.length; i++) {
-            if(!Util.FLOAT.matcher(ln[i]).matches()) return null;
+            if (!Util.FLOAT.matcher(ln[i]).matches()) return null;
         }
         loc = new Location(w, Double.parseDouble(ln[1]), Double.parseDouble(ln[2]), Double.parseDouble(ln[3]));
-        if(ln.length == 6) {
+        if (ln.length == 6) {
             loc.setYaw(Float.parseFloat(ln[4]));
             loc.setPitch(Float.parseFloat(ln[5]));
         }
@@ -180,11 +180,11 @@ public class LocationUtil {
     }
 
     public static Vector parseVector(String vectorStr) {
-        if(vectorStr.isEmpty()) return null;
+        if (vectorStr.isEmpty()) return null;
         String[] ln = vectorStr.split(",");
-        if(ln.length != 3) return null;
+        if (ln.length != 3) return null;
         for (String s : ln) {
-            if(!Util.FLOAT.matcher(s).matches()) return null;
+            if (!Util.FLOAT.matcher(s).matches()) return null;
         }
         return new Vector(Double.parseDouble(ln[0]), Double.parseDouble(ln[1]), Double.parseDouble(ln[2]));
     }
@@ -196,29 +196,29 @@ public class LocationUtil {
 
     private static boolean isLocationLandable(Location loc) {
         Block block = loc.getBlock();
-        if(block.getRelative(BlockFace.DOWN).isPassable()) return false;
+        if (block.getRelative(BlockFace.DOWN).isPassable()) return false;
         return isLocationEmpty(loc);
     }
 
     private static Location getRandomLocation(List<Location> locs) {
-        if(locs.isEmpty()) return null;
+        if (locs.isEmpty()) return null;
         return locs.get(Util.getRandomInt(locs.size()));
     }
 
     private static Location getEmptyOrLandedLocations(List<Location> locs, boolean land) {
         List<Location> landLocs = new ArrayList<>();
         for (Location loc : locs) {
-            if(land) {
-                if(isLocationLandable(loc)) landLocs.add(loc);
+            if (land) {
+                if (isLocationLandable(loc)) landLocs.add(loc);
             } else {
-                if(isLocationEmpty(loc)) landLocs.add(loc);
+                if (isLocationEmpty(loc)) landLocs.add(loc);
             }
         }
         return landLocs.isEmpty() ? getRandomLocation(locs) : getRandomLocation(landLocs);
     }
 
     private static Location getMinMaxLocation(List<Location> minmax, boolean land) {
-        if(minmax.isEmpty()) return null;
+        if (minmax.isEmpty()) return null;
         int x = minmax.get(0).getBlockX() + Util.getRandomInt(minmax.get(1).getBlockX() - minmax.get(0).getBlockX() + 1);
         int z = minmax.get(0).getBlockZ() + Util.getRandomInt(minmax.get(1).getBlockZ() - minmax.get(0).getBlockZ() + 1);
         List<Location> locations = new ArrayList<>();
@@ -229,7 +229,7 @@ public class LocationUtil {
     }
 
     public static String locationToStringFormatted(Location loc) {
-        if(loc == null) return "";
+        if (loc == null) return "";
         DecimalFormat fmt = new DecimalFormat("####0.##");
         String lstr = loc.toString();
         try {
@@ -240,7 +240,7 @@ public class LocationUtil {
     }
 
     public static String locationToString(Block block) {
-        if(block == null) return "";
+        if (block == null) return "";
         return block.getWorld().getName()
                 + "," + block.getX()
                 + "," + block.getY()
@@ -248,7 +248,7 @@ public class LocationUtil {
     }
 
     public static String locationToString(Location loc) {
-        if(loc == null || loc.getWorld() == null) return "";
+        if (loc == null || loc.getWorld() == null) return "";
         return loc.getWorld().getName() + "," +
                 Util.trimDouble(loc.getX()) + "," +
                 Util.trimDouble(loc.getY()) + "," +
@@ -271,7 +271,7 @@ public class LocationUtil {
     }
 
     public static String replaceStandardLocations(Player p, String param) {
-        if(p == null) return param;
+        if (p == null) return param;
         Location targetBlock = null;
         try {
             targetBlock = p.getTargetBlock(null, 100).getLocation();
@@ -289,7 +289,7 @@ public class LocationUtil {
         String newparam = param;
         for (String key : locs.keySet()) {
             Location l = locs.get(key);
-            if(l == null) continue;
+            if (l == null) continue;
             newparam = newparam.replace(key, locationToString(l));
         }
         return newparam;

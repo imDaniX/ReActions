@@ -33,7 +33,7 @@ public class ActionVelocity extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         Vector v = setPlayerVelocity(context.getPlayer(), params);
-        if(v == null) return false;
+        if (v == null) return false;
         this.setMessageParam("[" + v.getBlockX() + ", " + v.getBlockY() + ", " + v.getBlockZ() + "]");
         return true;
     }
@@ -41,28 +41,28 @@ public class ActionVelocity extends Action {
     private Vector setPlayerVelocity(Player p, Param params) {
         String velstr;
         boolean kick = false;
-        if(params.isParamsExists("param")) {
+        if (params.isParamsExists("param")) {
             velstr = params.getParam("param", "");
         } else {
             velstr = params.getParam("vector", "");
-            if(velstr.isEmpty()) velstr = params.getParam("direction", "");
+            if (velstr.isEmpty()) velstr = params.getParam("direction", "");
             kick = params.getParam("kick", false);
         }
 
-        if(velstr.isEmpty()) return null;
+        if (velstr.isEmpty()) return null;
         Vector v = p.getVelocity();
         String[] ln = velstr.split(",");
-        if((ln.length == 1) && (Util.FLOAT.matcher(velstr).matches())) {
+        if ((ln.length == 1) && (Util.FLOAT.matcher(velstr).matches())) {
             double power = Double.parseDouble(velstr);
             v.setY(Math.min(10, kick ? power * p.getVelocity().getY() : power));
-        } else if((ln.length == 3) &&
+        } else if ((ln.length == 3) &&
                 Util.FLOAT.matcher(ln[0]).matches() &&
                 Util.FLOAT.matcher(ln[1]).matches() &&
                 Util.FLOAT.matcher(ln[2]).matches()) {
             double powerx = Double.parseDouble(ln[0]);
             double powery = Double.parseDouble(ln[1]);
             double powerz = Double.parseDouble(ln[2]);
-            if(kick) {
+            if (kick) {
                 v = p.getLocation().getDirection();
                 v = v.normalize();
                 v = v.multiply(new Vector(powerx, powery, powerz));

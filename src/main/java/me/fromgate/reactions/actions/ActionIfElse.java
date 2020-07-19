@@ -26,9 +26,9 @@ public class ActionIfElse extends Action {
 
     private static boolean executeActivator(Player p, String condition, String paramStr) {
         Param param = Param.parseParams(paramStr);
-        if(!param.hasAnyParam("run")) return false;
+        if (!param.hasAnyParam("run")) return false;
         param = Param.parseParams(param.getParam("run"));
-        if(param.isEmpty() || !param.hasAnyParam("activator", "exec")) return false;
+        if (param.isEmpty() || !param.hasAnyParam("activator", "exec")) return false;
         param.set("player", p == null ? "null" : p.getName());
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("condition", condition);
@@ -39,7 +39,7 @@ public class ActionIfElse extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         Player player = context.getPlayer();
-        if(params.isParamsExists("if") && params.hasAnyParam("then", "else")) {
+        if (params.isParamsExists("if") && params.hasAnyParam("then", "else")) {
 			/*
 			TODO: Meh, not really good - does not support multiply checks
 			String condition = params.getParam("if", "");
@@ -108,7 +108,7 @@ public class ActionIfElse extends Action {
 
             try {
                 boolean result = (boolean) engine.eval(condition, scriptContext);
-                if(!executeActivator(player, condition, (result) ? then_ : else_)
+                if (!executeActivator(player, condition, (result) ? then_ : else_)
                         && !executeActions(context, (result) ? then_ : else_))
                     context.setTempVariable("ifelseresult" + suffix, (result) ? then_ : else_);
             } catch (ScriptException e) {
@@ -123,15 +123,15 @@ public class ActionIfElse extends Action {
     private boolean executeActions(RaContext context, String paramStr) {
         List<StoredAction> actions = new ArrayList<>();
         Param params = Param.parseParams(paramStr);
-        if(!params.hasAnyParam("run")) return false;
+        if (!params.hasAnyParam("run")) return false;
         params = Param.parseParams(params.getParam("run"));
-        if(params.isEmpty() || !params.hasAnyParam("actions")) return false;
+        if (params.isEmpty() || !params.hasAnyParam("actions")) return false;
         params = Param.parseParams(params.getParam("actions"));
 
-        if(!params.isParamsExists("action1")) return false;
+        if (!params.isParamsExists("action1")) return false;
         for (String actionKey : params.keySet()) {
-            if(!((actionKey.toLowerCase()).startsWith("action"))) continue;
-            if(params.isEmpty() || !params.toString().contains("=")) continue;
+            if (!((actionKey.toLowerCase()).startsWith("action"))) continue;
+            if (params.isEmpty() || !params.toString().contains("=")) continue;
             String action = params.getParam(actionKey);
 
             String flag = action.substring(0, action.indexOf("="));
@@ -139,7 +139,7 @@ public class ActionIfElse extends Action {
             actions.add(new StoredAction(Actions.getValidName(flag), param));
         }
 
-        if(actions.isEmpty()) return false;
+        if (actions.isEmpty()) return false;
         Actions.executeActions(context, actions, true);
         actions.clear();
         return true;

@@ -33,8 +33,8 @@ public class MathEvaluator {
     private double thirdImportance() {
         double x = secondImportance();
         while (true) {
-            if(tryNext('+')) x += secondImportance();
-            else if(tryNext('-')) x -= secondImportance();
+            if (tryNext('+')) x += secondImportance();
+            else if (tryNext('-')) x -= secondImportance();
             else
                 return x;
         }
@@ -43,29 +43,29 @@ public class MathEvaluator {
     private double secondImportance() {
         double x = firstImportance();
         while (true) {
-            if(tryNext('*')) x *= firstImportance();
-            else if(tryNext('/')) x /= firstImportance();
-            else if(tryNext('%')) x %= firstImportance();
+            if (tryNext('*')) x *= firstImportance();
+            else if (tryNext('/')) x /= firstImportance();
+            else if (tryNext('%')) x %= firstImportance();
             else
                 return x;
         }
     }
 
     private double firstImportance() {
-        if(tryNext('-')) return -firstImportance(); // "-5", "--5"..
-        if(tryNext('+')) return firstImportance(); // "+5", "++5"..
+        if (tryNext('-')) return -firstImportance(); // "-5", "--5"..
+        if (tryNext('+')) return firstImportance(); // "+5", "++5"..
         double x = 0;
         int start = pointer;
-        if(tryNext('(')) {
+        if (tryNext('(')) {
             x = thirdImportance();
             tryNext(')');
-        } else if(MathBase.isNumberChar(current())) {
+        } else if (MathBase.isNumberChar(current())) {
             while (MathBase.isNumberChar(current())) pointer++;
             x = Util.getDouble(expression.substring(start, pointer), 0);
-        } else if(MathBase.isWordChar(current())) {
+        } else if (MathBase.isWordChar(current())) {
             while (MathBase.isWordChar(current()) || MathBase.isNumberChar(current())) pointer++;
             String str = expression.substring(start, pointer);
-            if(tryNext('(')) {
+            if (tryNext('(')) {
                 MathBase.Function function = MathBase.getFunction(str);
                 x = thirdImportance();
                 double[] args = {};
@@ -80,7 +80,7 @@ public class MathEvaluator {
             }
         }
 
-        if(tryNext('^')) x = Math.pow(x, firstImportance());
+        if (tryNext('^')) x = Math.pow(x, firstImportance());
         return x;
     }
 
@@ -89,7 +89,7 @@ public class MathEvaluator {
     }
 
     private boolean tryNext(char c) {
-        if(current() == c) {
+        if (current() == c) {
             pointer++;
             return true;
         }

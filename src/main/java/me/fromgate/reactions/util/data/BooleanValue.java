@@ -39,10 +39,10 @@ public class BooleanValue implements DataValue {
 
     @Override
     public boolean set(String value) {
-        if(value.equalsIgnoreCase("true")) {
+        if (value.equalsIgnoreCase("true")) {
             this.value = true;
             return true;
-        } else if(value.equalsIgnoreCase("false")) {
+        } else if (value.equalsIgnoreCase("false")) {
             this.value = false;
             return true;
         }

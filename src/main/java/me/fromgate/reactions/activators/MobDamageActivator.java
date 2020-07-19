@@ -48,11 +48,11 @@ public class MobDamageActivator extends Activator {
         String type = param.toString();
         String name = "";
         String itemStr = "";
-        if(param.isParamsExists("type")) {
+        if (param.isParamsExists("type")) {
             type = param.getParam("type");
             name = param.getParam("name");
             itemStr = param.getParam("item");
-        } else if(param.toString().contains("$")) {
+        } else if (param.toString().contains("$")) {
             name = type.substring(0, type.indexOf("$"));
             type = type.substring(name.length() + 1);
         }
@@ -69,27 +69,27 @@ public class MobDamageActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         MobDamageStorage me = (MobDamageStorage) event;
-        if(mobType.isEmpty()) return false;
-        if(me.getEntity() == null) return false;
-        if(!isActivatorMob(me.getEntity())) return false;
+        if (mobType.isEmpty()) return false;
+        if (me.getEntity() == null) return false;
+        if (!isActivatorMob(me.getEntity())) return false;
         return checkItem(me.getPlayer());
     }
 
     private boolean checkItem(Player player) {
-        if(this.itemStr.isEmpty()) return true;
+        if (this.itemStr.isEmpty()) return true;
         return ItemUtil.compareItemStr(player.getInventory().getItemInMainHand(), this.itemStr, true);
     }
 
     private boolean isActivatorMob(LivingEntity mob) {
-        if(!mobName.isEmpty()) {
-            if(!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
+        if (!mobName.isEmpty()) {
+            if (!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
                 return false;
-        } else if(!getMobName(mob).isEmpty()) return false;
+        } else if (!getMobName(mob).isEmpty()) return false;
         return mob.getType().name().equalsIgnoreCase(this.mobType);
     }
 
     private String getMobName(LivingEntity mob) {
-        if(mob.getCustomName() == null) return "";
+        if (mob.getCustomName() == null) return "";
         return mob.getCustomName();
     }
 

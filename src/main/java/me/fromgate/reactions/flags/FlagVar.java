@@ -45,19 +45,19 @@ public class FlagVar implements Flag {
         String playerName = this.personalVar && (player != null) ? player.getName() : "";
 
 
-        if(params.isParamsExists("id")) {
+        if (params.isParamsExists("id")) {
             var = params.getParam("id", "");
-            if(var.isEmpty()) return false;
+            if (var.isEmpty()) return false;
             value = params.getParam("value", "");
             playerName = params.getParam("player", playerName);
         } else {
             String[] ln = params.getParam("param-line", "").split("/", 2);
-            if(ln.length == 0) return false;
+            if (ln.length == 0) return false;
             var = ln[0];
             value = (ln.length > 1) ? ln[1] : "";
         }
-        if(playerName.isEmpty() && this.personalVar) return false;
-        switch(this.flagType) {
+        if (playerName.isEmpty() && this.personalVar) return false;
+        switch (this.flagType) {
             case 0: // VAR_EXIST
                 return Variables.existVar(playerName, var);
             case 1: // VAR_COMPARE

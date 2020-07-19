@@ -46,11 +46,11 @@ public class MoveListener implements Listener {
     private static Map<UUID, Location> prevLocations = new HashMap<>();
 
     public static void init() {
-        if(Cfg.playerMoveTaskUse) {
+        if (Cfg.playerMoveTaskUse) {
             Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(pl -> {
                 Location from = prevLocations.get(pl.getUniqueId());
                 Location to = pl.getLocation();
-                if(to.getWorld() != from.getWorld()) from = null;
+                if (to.getWorld() != from.getWorld()) from = null;
                 processMove(pl, from, to);
                 prevLocations.put(pl.getUniqueId(), to);
             }), 30, Cfg.playerMoveTaskTick);
@@ -65,7 +65,7 @@ public class MoveListener implements Listener {
     }
 
     public static void initLocation(Player player) {
-        if(Cfg.playerMoveTaskUse) {
+        if (Cfg.playerMoveTaskUse) {
             prevLocations.put(player.getUniqueId(), player.getLocation());
         }
     }

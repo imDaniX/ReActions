@@ -37,9 +37,9 @@ public class PlaceholdersManager {
     }
 
     public static boolean add(Placeholder ph) {
-        if(ph == null) return false;
-        if(ph.getKeys().length == 0) return false;
-        if(ph.getId().equalsIgnoreCase("UNKNOWN")) return false;
+        if (ph == null) return false;
+        if (ph.getKeys().length == 0) return false;
+        if (ph.getId().equalsIgnoreCase("UNKNOWN")) return false;
         placeholders.add(ph);
         return true;
     }
@@ -56,7 +56,7 @@ public class PlaceholdersManager {
         }
         matcher.appendTail(sb);
         result = parsePlaceholders(sb.toString(), context);
-        if(!raws.isEmpty()) {
+        if (!raws.isEmpty()) {
             for (int i = 0; i < raws.size(); i++) {
                 result = result.replace("§~[RAW" + i + "]", raws.get(i));
             }
@@ -65,7 +65,7 @@ public class PlaceholdersManager {
     }
 
     private static String parsePlaceholders(String text, RaContext context) {
-        if(text == null || text.length() < 3) return text;
+        if (text == null || text.length() < 3) return text;
         String oldText;
         int limit = countLimit;
         do {
@@ -79,7 +79,7 @@ public class PlaceholdersManager {
     private static String parseRecursive(String text, final Pattern phPattern, final RaContext context) {
         Matcher phMatcher = phPattern.matcher(text);
         // If found at least one
-        if(phMatcher.find()) {
+        if (phMatcher.find()) {
             StringBuffer buf = new StringBuffer();
             processIteration(buf, phMatcher, phPattern, context);
             while (phMatcher.find()) {
@@ -113,13 +113,13 @@ public class PlaceholdersManager {
 
     private static String replacePlaceholder(String text, RaContext context) {
         String result = context.getTempVariable(text);
-        if(result != null) return result;
+        if (result != null) return result;
         result = Variables.getVariable(context.getPlayer(), text, null);
-        if(result != null) return result;
+        if (result != null) return result;
         for (Placeholder placeholder : placeholders) {
             String[] ph = result.split(":", 2);
             result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph.length > 1 ? ph[1] : ph[0]);
-            if(result != null) return result;
+            if (result != null) return result;
         }
         return RaPlaceholderAPI.processPlaceholder(context.getPlayer(), result);
     }
@@ -128,9 +128,9 @@ public class PlaceholdersManager {
         List<String> phList = new ArrayList<>();
         for (Placeholder ph : placeholders) {
             for (String phKey : ph.getKeys()) {
-                if(phKey.toLowerCase().equals(phKey)) continue;
+                if (phKey.toLowerCase().equals(phKey)) continue;
                 Msg desc = Msg.getByName("placeholder_" + phKey);
-                if(desc == null) {
+                if (desc == null) {
                     Msg.LNG_FAIL_PLACEHOLDER_DESC.log(phKey);
                 } else {
                     phList.add("&6" + phKey + "&3: &a" + desc.getText("NOCOLOR"));
@@ -138,10 +138,10 @@ public class PlaceholdersManager {
             }
         }
         for (Flags f : Flags.values()) {
-            if(f != Flags.TIME && f != Flags.CHANCE) continue;
+            if (f != Flags.TIME && f != Flags.CHANCE) continue;
             String name = f.name();
             Msg desc = Msg.getByName("placeholder_" + name);
-            if(desc == null) {
+            if (desc == null) {
                 Msg.LNG_FAIL_PLACEHOLDER_DESC.log(name);
             } else {
                 phList.add("&6" + name + "&3: &a" + desc.getText("NOCOLOR"));

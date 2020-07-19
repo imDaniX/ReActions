@@ -43,7 +43,7 @@ public class FlightActivator extends Activator {
     }
 
     private boolean checkFlight(boolean isFlight) {
-        switch(flight) {
+        switch (flight) {
             case ANY:
                 return true;
             case TRUE:
@@ -69,8 +69,8 @@ public class FlightActivator extends Activator {
         ANY;
 
         public static FlightType getByName(String flightStr) {
-            if(flightStr.equalsIgnoreCase("true")) return FlightType.TRUE;
-            if(flightStr.equalsIgnoreCase("any")) return FlightType.ANY;
+            if (flightStr.equalsIgnoreCase("true")) return FlightType.TRUE;
+            if (flightStr.equalsIgnoreCase("any")) return FlightType.ANY;
             return FlightType.FALSE;
         }
     }

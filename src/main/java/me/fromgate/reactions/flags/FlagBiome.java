@@ -32,7 +32,7 @@ public class FlagBiome implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        if(player != null)
+        if (player != null)
             return player.getLocation().getBlock().getBiome() == Util.getEnumByName(Biome.class, param);
         return false;
     }

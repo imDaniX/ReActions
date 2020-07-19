@@ -33,9 +33,9 @@ public class ActionExecUnstop extends Action {
     public boolean execute(RaContext context, Param params) {
         Player p = context.getPlayer();
         String player = params.getParam("player", (p == null ? "" : p.getName()));
-        if(player.isEmpty()) return false;
+        if (player.isEmpty()) return false;
         String activator = params.getParam("activator", "");
-        if(activator.isEmpty()) return false;
+        if (activator.isEmpty()) return false;
         setMessageParam(activator);
         return ActivatorsManager.isStopped(player, activator, true);
     }

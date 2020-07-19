@@ -5,7 +5,7 @@ import org.bukkit.util.Vector;
 
 public class VelocityUtil {
     public static Vector calculateVelocity(Location locFrom, Location locTo, int heightGain) {
-        if(!locFrom.getWorld().equals(locTo.getWorld())) return new Vector(0, 0, 0);
+        if (!locFrom.getWorld().equals(locTo.getWorld())) return new Vector(0, 0, 0);
         // Gravity of a potion
         double gravity = 0.18; //0.115;
         Vector from = locFrom.toVector();

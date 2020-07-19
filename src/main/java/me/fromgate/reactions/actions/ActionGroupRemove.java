@@ -33,7 +33,7 @@ public class ActionGroupRemove extends Action {
     public boolean execute(RaContext context, Param params) {
         Player player = context.getPlayer();
         String param = params.getParam("param-line", "");
-        if(RaVault.playerInGroup(player, param))
+        if (RaVault.playerInGroup(player, param))
             return RaVault.playerRemoveGroup(player, param);
         return true;
     }

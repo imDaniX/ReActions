@@ -23,7 +23,7 @@ public class Argument {
     private final Argument.Type type;
 
     public Argument(String argument) {
-        switch(argument) {
+        switch (argument) {
             case "~player":
                 this.type = Type.PLAYER;
                 multiple = new HashSet<>();
@@ -41,12 +41,12 @@ public class Argument {
                 multiple = new HashSet<>();
                 break;
             default:
-                if(argument.contains("|") && !argument.contains("\\|")) {
+                if (argument.contains("|") && !argument.contains("\\|")) {
                     this.type = Type.MULTIPLE_TEXT;
                     multiple = new HashSet<>(Arrays.asList(argument.split("\\|")));
                 } else {
                     this.type = Type.TEXT;
-                    if(argument.startsWith("\\~") || argument.equals("\\*")) argument = argument.substring(1);
+                    if (argument.startsWith("\\~") || argument.equals("\\*")) argument = argument.substring(1);
                     multiple = Collections.singleton(argument);
                 }
         }
@@ -60,7 +60,7 @@ public class Argument {
      * @return {@link ExecType#DEFAULT} if everything is OK, some error if not
      */
     public ExecType check(String arg) {
-        switch(type) {
+        switch (type) {
             case PLAYER:
                 Player player = Util.getPlayerExact(arg);
                 return player != null ? ExecType.DEFAULT : ExecType.OFFLINE;
@@ -83,7 +83,7 @@ public class Argument {
      * @param arg      Current argument
      */
     public void tabComplete(List<String> complete, String arg) {
-        switch(type) {
+        switch (type) {
             case PLAYER:
                 StringUtil.copyPartialMatches(arg, Util.getPlayersList(), complete);
                 return;
@@ -108,7 +108,7 @@ public class Argument {
 
     @Override
     public String toString() {
-        switch(type) {
+        switch (type) {
             case TEXT:
                 return argument;
             case MULTIPLE_TEXT:

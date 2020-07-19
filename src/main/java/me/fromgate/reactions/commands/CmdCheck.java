@@ -34,7 +34,7 @@ public class CmdCheck extends Cmd {
                 for (int y = playerY - radius; y <= playerY + radius; y++) {
                     for (int z = playerZ - radius; z <= playerZ + radius; z++) {
                         List<Activator> found = ActivatorsManager.getActivatorInLocation(world, x, y, z);
-                        if(found.isEmpty()) continue;
+                        if (found.isEmpty()) continue;
                         found.forEach(a -> total.add(a.toString()));
                     }
                 }

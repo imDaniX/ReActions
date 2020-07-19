@@ -47,12 +47,12 @@ public class CuboidActivator extends Activator implements Locatable {
         Player player = event.getPlayer();
         UUID id = player.getUniqueId();
         boolean inCuboid = cuboid.isInside(player.getLocation(), true);
-        switch(mode) {
+        switch (mode) {
             case CHECK:
                 return inCuboid;
             case ENTER:
-                if(inCuboid) {
-                    if(within.contains(id)) return false;
+                if (inCuboid) {
+                    if (within.contains(id)) return false;
                     within.add(id);
                     return true;
                 }
@@ -101,7 +101,7 @@ public class CuboidActivator extends Activator implements Locatable {
         CHECK, ENTER, LEAVE;
 
         static CuboidMode getByName(String name) {
-            switch(name.toUpperCase()) {
+            switch (name.toUpperCase()) {
                 case "CHECK":
                     return CHECK;
                 case "LEAVE":

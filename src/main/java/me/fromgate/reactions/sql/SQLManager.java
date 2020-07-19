@@ -80,7 +80,7 @@ public class SQLManager {
 
     public static boolean compareSelect(String value, String query, int column, Param params, String sqlset) {
         String result = executeSelect(query, column, params, sqlset);
-        if(Util.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
+        if (Util.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
         return result.equalsIgnoreCase(value);
     }
 
@@ -97,7 +97,7 @@ public class SQLManager {
         String cPassword = params.getParam("password", password);
         String cCodepage = params.getParam("codepage", codepage);
         Properties prop = new Properties();
-        if(!cCodepage.isEmpty()) {
+        if (!cCodepage.isEmpty()) {
             prop.setProperty("useUnicode", "true");
             prop.setProperty("characterEncoding", cCodepage);
         }
@@ -115,7 +115,7 @@ public class SQLManager {
 
 
     public static String executeSelect(String query, int column, Param params, String sqlset) {
-        if(!enabled) return "";
+        if (!enabled) return "";
 
         Statement selectStmt = null;
         ResultSet result = null;
@@ -124,21 +124,21 @@ public class SQLManager {
 
         try {
             selectStmt = connection.createStatement();
-            if(!Util.isStringEmpty(sqlset)) {
+            if (!Util.isStringEmpty(sqlset)) {
                 selectStmt.execute(sqlset);
             }
             result = selectStmt.executeQuery(query);
-            if(result.first()) {
+            if (result.first()) {
                 int columns = result.getMetaData().getColumnCount();
-                if(column > 0 && column <= columns) resultStr = result.getString(column);
+                if (column > 0 && column <= columns) resultStr = result.getString(column);
             }
         } catch (SQLException e) {
             Msg.logOnce(query, "Failed to execute query: " + query);
         }
         try {
-            if(result != null) result.close();
-            if(selectStmt != null) selectStmt.close();
-            if(connection != null) connection.close();
+            if (result != null) result.close();
+            if (selectStmt != null) selectStmt.close();
+            if (connection != null) connection.close();
         } catch (SQLException ignored) {
         }
         return resultStr;
@@ -146,9 +146,9 @@ public class SQLManager {
 
 
     public static boolean executeUpdate(String query, Param params) {
-        if(!enabled) return false;
+        if (!enabled) return false;
         Connection connection = connectToMySQL(params);
-        if(connection == null) return false;
+        if (connection == null) return false;
         Statement statement = null;
         boolean ok = false;
         try {
@@ -158,12 +158,12 @@ public class SQLManager {
             ok = true;
         } catch (SQLException e) {
             Msg.logOnce(query, "Failed to execute query: " + query);
-            if(e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
+            if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
             e.printStackTrace();
         }
         try {
-            if(statement != null) statement.close();
-            if(connection != null) connection.close();
+            if (statement != null) statement.close();
+            if (connection != null) connection.close();
         } catch (SQLException ignored) {
         }
         return ok;
@@ -175,9 +175,9 @@ public class SQLManager {
     }
 
     public static boolean isSelectResultEmpty(String query) {
-        if(!enabled) return false;
+        if (!enabled) return false;
         Connection connection = connectToMySQL();
-        if(connection == null) return false;
+        if (connection == null) return false;
 
         Statement selectStmt = null;
         ResultSet result = null;
@@ -189,12 +189,12 @@ public class SQLManager {
             resultBool = result.next();
         } catch (SQLException e) {
             Msg.logOnce(query, "Failed to execute query: " + query);
-            if(e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
+            if (e.getMessage() != null) Msg.logOnce(query + e.getMessage(), e.getMessage());
         }
         try {
-            if(result != null) result.close();
-            if(selectStmt != null) selectStmt.close();
-            if(connection != null) connection.close();
+            if (result != null) result.close();
+            if (selectStmt != null) selectStmt.close();
+            if (connection != null) connection.close();
         } catch (SQLException ignored) {
         }
         return resultBool;

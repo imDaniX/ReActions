@@ -44,36 +44,36 @@ public class ActionBlockFill extends Action {
         boolean drop = params.getParam("drop", false);
         Param itemParam = new Param(params.getParam("block", "AIR"), "type");
         ItemStack item = null;
-        if(!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
+        if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
             item = VirtualItem.fromMap(itemParam.getMap());
-            if(item == null || !item.getType().isBlock()) {
+            if (item == null || !item.getType().isBlock()) {
                 Msg.logOnce("wrongblockfill" + params.getParam("block"),
                         "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
                 return false;
             }
         }
 
-        if(!params.isParamsExists("region") && !params.isParamsExists("loc1", "loc2")) return false;
+        if (!params.isParamsExists("region") && !params.isParamsExists("loc1", "loc2")) return false;
 
         Location loc1 = null;
         Location loc2 = null;
 
         String regionName = params.getParam("region", "");
-        if(!regionName.isEmpty()) {
+        if (!regionName.isEmpty()) {
             List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(regionName);
-            if(locs.size() == 2) {
+            if (locs.size() == 2) {
                 loc1 = locs.get(0);
                 loc2 = locs.get(1);
             }
         } else {
             String locStr = params.getParam("loc1", "");
-            if(!locStr.isEmpty()) loc1 = LocationUtil.parseLocation(locStr, null);
+            if (!locStr.isEmpty()) loc1 = LocationUtil.parseLocation(locStr, null);
             locStr = params.getParam("loc2", "");
-            if(!locStr.isEmpty()) loc2 = LocationUtil.parseLocation(locStr, null);
+            if (!locStr.isEmpty()) loc2 = LocationUtil.parseLocation(locStr, null);
         }
-        if(loc1 == null || loc2 == null) return false;
+        if (loc1 == null || loc2 == null) return false;
 
-        if(!loc1.getWorld().equals(loc2.getWorld())) return false;
+        if (!loc1.getWorld().equals(loc2.getWorld())) return false;
         int chance = params.getParam("chance", 100);
         fillArea(item, loc1, loc2, chance, phys, drop);
         return true;
@@ -87,9 +87,9 @@ public class ActionBlockFill extends Action {
         for (int x = min.getBlockX(); x <= max.getBlockX(); x++)
             for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
                 for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
-                    if(Util.rollDiceChance(chance)) {
+                    if (Util.rollDiceChance(chance)) {
                         Block block = min.getWorld().getBlockAt(x, y, z);
-                        if(block.getType() != Material.AIR && drop) block.breakNaturally();
+                        if (block.getType() != Material.AIR && drop) block.breakNaturally();
                         block.setType(blockItem == null ? Material.AIR : blockItem.getType(), phys);
                     }
     }

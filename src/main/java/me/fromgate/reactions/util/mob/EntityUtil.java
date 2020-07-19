@@ -38,7 +38,7 @@ public class EntityUtil {
      * @return LivingEntity or null if shooter was a block
      */
     public static LivingEntity getEntityFromProjectile(ProjectileSource source) {
-        if(source instanceof BlockProjectileSource)
+        if (source instanceof BlockProjectileSource)
             return null;
         return (LivingEntity) source;
     }
@@ -52,7 +52,7 @@ public class EntityUtil {
     public static EntityType getEntityByName(String type) {
         type = type.toUpperCase();
         for (EntityType eType : EntityType.values())
-            if(eType.name().equals(type)) return eType;
+            if (eType.name().equals(type)) return eType;
         return null;
     }
 
@@ -65,7 +65,7 @@ public class EntityUtil {
      */
     public static Collection<Entity> getEntities(Location l1, Location l2) {
         Collection<Entity> entities = new HashSet<>();
-        if(!l1.getWorld().equals(l2.getWorld())) return entities;
+        if (!l1.getWorld().equals(l2.getWorld())) return entities;
         int x1 = Math.min(l1.getBlockX(), l2.getBlockX());
         int x2 = Math.max(l1.getBlockX(), l2.getBlockX());
         int y1 = Math.min(l1.getBlockY(), l2.getBlockY());
@@ -82,7 +82,7 @@ public class EntityUtil {
                     double ex = e.getLocation().getX();
                     double ey = e.getLocation().getY();
                     double ez = e.getLocation().getZ();
-                    if((x1 <= ex) && (ex <= x2) && (y1 <= ey) && (ey <= y2) && (z1 <= ez) && (ez <= z2)) {
+                    if ((x1 <= ex) && (ex <= x2) && (y1 <= ey) && (ey <= y2) && (z1 <= ez) && (ez <= z2)) {
                         entities.add(e);
                     }
                 }
@@ -92,16 +92,16 @@ public class EntityUtil {
     }
 
     public static LivingEntity getDamagerEntity(EntityDamageByEntityEvent event) {
-        if(event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+        if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
             Projectile prj = (Projectile) event.getDamager();
             return getEntityFromProjectile(prj.getShooter());
-        } else if(event.getCause() == EntityDamageEvent.DamageCause.MAGIC) {
+        } else if (event.getCause() == EntityDamageEvent.DamageCause.MAGIC) {
             Entity entityDamager = event.getDamager();
             LivingEntity shooterEntity = null;
-            if(entityDamager instanceof ThrownPotion)
+            if (entityDamager instanceof ThrownPotion)
                 shooterEntity = getEntityFromProjectile(((ThrownPotion) entityDamager).getShooter());
             return shooterEntity;
-        } else if(event.getDamager() instanceof LivingEntity)
+        } else if (event.getDamager() instanceof LivingEntity)
             return (LivingEntity) event.getDamager();
         return null;
     }
@@ -111,10 +111,10 @@ public class EntityUtil {
     }
 
     public static LivingEntity getAnyKiller(EntityDamageEvent event) {
-        if(event instanceof EntityDamageByEntityEvent) {
+        if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-            if(evdmg.getDamager() instanceof LivingEntity) return (LivingEntity) evdmg.getDamager();
-            if(evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+            if (evdmg.getDamager() instanceof LivingEntity) return (LivingEntity) evdmg.getDamager();
+            if (evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();
                 return getEntityFromProjectile(prj.getShooter());
             }
@@ -123,14 +123,14 @@ public class EntityUtil {
     }
 
     public static Player getKiller(EntityDamageEvent event) {
-        if(event instanceof EntityDamageByEntityEvent) {
+        if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-            if(evdmg.getDamager().getType() == EntityType.PLAYER) return (Player) evdmg.getDamager();
-            if(evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
+            if (evdmg.getDamager().getType() == EntityType.PLAYER) return (Player) evdmg.getDamager();
+            if (evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();
                 LivingEntity shooterEntity = getEntityFromProjectile(prj.getShooter());
-                if(shooterEntity == null) return null;
-                if(shooterEntity instanceof Player) return (Player) shooterEntity;
+                if (shooterEntity == null) return null;
+                if (shooterEntity instanceof Player) return (Player) shooterEntity;
             }
         }
         return null;

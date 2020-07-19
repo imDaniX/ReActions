@@ -23,16 +23,16 @@ public class ActionClearRadius extends Action {
     public boolean execute(RaContext context, Param params) {
         int radius = params.getParam("radius", 0);
         String type = params.getParam("type", "all");
-        if(radius == 0) return false;
+        if (radius == 0) return false;
         List<Location> locs = LocationUtil.getMinMaxRadiusLocations(context.getPlayer(), radius);
         context.setTempVariable("loc1", LocationUtil.locationToString(locs.get(0)));
         context.setTempVariable("loc2", LocationUtil.locationToString(locs.get(1)));
-        if(locs.size() != 2) return false;
+        if (locs.size() != 2) return false;
         Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
         int count = 0;
         for (Entity e : en) {
-            if(e.getType() == EntityType.PLAYER) continue;
-            if(isEntityIsTypeOf(e, type)) {
+            if (e.getType() == EntityType.PLAYER) continue;
+            if (isEntityIsTypeOf(e, type)) {
                 e.remove();
                 count++;
             }
@@ -42,13 +42,13 @@ public class ActionClearRadius extends Action {
     }
 
     private boolean isEntityIsTypeOf(Entity e, String type) {
-        if(e == null) return false;
-        if(type.isEmpty()) return true;
-        if(type.equalsIgnoreCase("all")) return true;
-        if(e instanceof LivingEntity) {
-            if(type.equalsIgnoreCase("mob") || type.equalsIgnoreCase("mobs")) return true;
+        if (e == null) return false;
+        if (type.isEmpty()) return true;
+        if (type.equalsIgnoreCase("all")) return true;
+        if (e instanceof LivingEntity) {
+            if (type.equalsIgnoreCase("mob") || type.equalsIgnoreCase("mobs")) return true;
         } else {
-            if(type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
+            if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
         }
         return (Util.isWordInList(e.getType().name().toLowerCase(), type.toLowerCase()));
     }

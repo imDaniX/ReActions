@@ -61,7 +61,7 @@ public class TimeUtil {
         int hours = (int) ((time / 1000 + 6) % 24);
         int minutes = (int) (60 * (time % 1000) / 1000);
         timeStr = String.format("%02d:%02d", hours, minutes);
-        if(showms && (time < 1000)) timeStr = time + "ms";
+        if (showms && (time < 1000)) timeStr = time + "ms";
         return timeStr;
     }
 
@@ -90,13 +90,13 @@ public class TimeUtil {
         int ss = 0; // секунды
         int tt = 0; // тики
         int ms = 0; // миллисекунды
-        if(Util.isInteger(time)) {
+        if (Util.isInteger(time)) {
             ss = Integer.parseInt(time);
-        } else if(TIME_HH_MM.matcher(time).matches()) {
+        } else if (TIME_HH_MM.matcher(time).matches()) {
             String[] ln = time.split(":");
             mm = Integer.parseInt(ln[0]);
             ss = Integer.parseInt(ln[1]);
-        } else if(TIME_HH_MM_SS.matcher(time).matches()) {
+        } else if (TIME_HH_MM_SS.matcher(time).matches()) {
             String[] ln = time.split(":");
             hh = Integer.parseInt(ln[0]);
             mm = Integer.parseInt(ln[1]);
@@ -105,17 +105,17 @@ public class TimeUtil {
             Matcher matcher = TIME_X_MSDHMST.matcher(time);
             while (matcher.find()) {
                 String foundTime = matcher.group();
-                if(TIME_X_MS.matcher(foundTime).matches())
+                if (TIME_X_MS.matcher(foundTime).matches())
                     ms = Integer.parseInt(time.substring(0, time.length() - 2));
-                else if(TIME_X_D.matcher(foundTime).matches())
+                else if (TIME_X_D.matcher(foundTime).matches())
                     dd = Integer.parseInt(time.substring(0, time.length() - 1));
-                else if(TIME_X_H.matcher(foundTime).matches())
+                else if (TIME_X_H.matcher(foundTime).matches())
                     hh = Integer.parseInt(time.substring(0, time.length() - 1));
-                else if(TIME_X_M.matcher(foundTime).matches())
+                else if (TIME_X_M.matcher(foundTime).matches())
                     mm = Integer.parseInt(time.substring(0, time.length() - 1));
-                else if(TIME_X_S.matcher(foundTime).matches())
+                else if (TIME_X_S.matcher(foundTime).matches())
                     ss = Integer.parseInt(time.substring(0, time.length() - 1));
-                else if(TIME_X_T.matcher(foundTime).matches())
+                else if (TIME_X_T.matcher(foundTime).matches())
                     tt = Integer.parseInt(time.substring(0, time.length() - 1));
             }
         }

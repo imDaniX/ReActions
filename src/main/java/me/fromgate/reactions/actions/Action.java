@@ -49,12 +49,12 @@ public abstract class Action {
         this.actionExecuting = action;
         Player player = context.getPlayer();
         //this.activator = a;
-        if(!params.hasAnyParam("param-line")) params.set("param-line", "");
+        if (!params.hasAnyParam("param-line")) params.set("param-line", "");
         setMessageParam(params.getParam("param-line"));
         boolean actionFailed = (!execute(context, params));
-        if((player != null) && (printAction())) {
+        if ((player != null) && (printAction())) {
             Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase());
-            if(msg == null) {
+            if (msg == null) {
                 Msg.LNG_FAIL_ACTION_MSG.print(type.name());
             } else {
                 msg.print(player, messageParam);

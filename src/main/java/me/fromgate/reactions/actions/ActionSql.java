@@ -42,20 +42,20 @@ public class ActionSql extends Action {
         String varName = params.getParam("variable", "");
         int column = params.getParam("column", 1);
         String query = params.getParam("query", "").trim();
-        switch(sqlType) {
+        switch (sqlType) {
             case 0: // SELECT to variable
-                if(query.isEmpty()) return false;
-                if(!query.toLowerCase().startsWith("select")) {
+                if (query.isEmpty()) return false;
+                if (!query.toLowerCase().startsWith("select")) {
                     Msg.logOnce("needselect" + query, "You need to use only \"SELECT\" query in SQL_SELECT action. Query: " + query);
                     return false;
                 }
-                if(varName.isEmpty()) return false;
+                if (varName.isEmpty()) return false;
                 Variables.setVar(playerName, varName, SQLManager.executeSelect(query, column, params, context.getTempVariable("SQL_SET")));
                 break;
             case 1: // INSERT
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
-                if(query.isEmpty()) return false;
-                if(!query.toLowerCase().startsWith("insert")) {
+                if (query.isEmpty()) return false;
+                if (!query.toLowerCase().startsWith("insert")) {
                     Msg.logOnce("needinsert" + query, "You need to use only \"INSERT\" query in SQL_INSERT action. Query: " + query);
                     return false;
                 }
@@ -63,8 +63,8 @@ public class ActionSql extends Action {
                 break;
             case 2: // UPDATE
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
-                if(query.isEmpty()) return false;
-                if(!query.toLowerCase().startsWith("update")) {
+                if (query.isEmpty()) return false;
+                if (!query.toLowerCase().startsWith("update")) {
                     Msg.logOnce("needupdate" + query, "You need to use only \"UPDATE\" query in SQL_UPDATE action. Query: " + query);
                     return false;
                 }
@@ -72,8 +72,8 @@ public class ActionSql extends Action {
                 break;
             case 3: // DELETE
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
-                if(query.isEmpty()) return false;
-                if(!query.toLowerCase().startsWith("delete")) {
+                if (query.isEmpty()) return false;
+                if (!query.toLowerCase().startsWith("delete")) {
                     Msg.logOnce("needdelete" + query, "You need to use only \"DELETE\" query in SQL_DELETE action. Query: " + query);
                     return false;
                 }
@@ -81,8 +81,8 @@ public class ActionSql extends Action {
                 break;
             case 4: // SET
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
-                if(query.isEmpty()) return false;
-                if(!query.toLowerCase().startsWith("set")) {
+                if (query.isEmpty()) return false;
+                if (!query.toLowerCase().startsWith("set")) {
                     Msg.logOnce("needset" + query, "You need to use only \"SET\" query in SQL_SET action. Query: " + query);
                     return false;
                 }

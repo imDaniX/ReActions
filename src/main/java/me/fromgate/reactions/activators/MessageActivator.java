@@ -80,12 +80,12 @@ public class MessageActivator extends Activator {
     }
 
     public boolean filterMessage(Source source, String message) {
-        if(source != this.source && this.source != Source.ALL) return false;
+        if (source != this.source && this.source != Source.ALL) return false;
         return filter(message);
     }
 
     private boolean filter(String message) {
-        switch(type) {
+        switch (type) {
             case CONTAINS:
                 return message.toLowerCase().contains(this.mask.toLowerCase());
             case END:
@@ -119,17 +119,17 @@ public class MessageActivator extends Activator {
         END;
 
         public static CheckType getByName(String name) {
-            if(name.equalsIgnoreCase("contain")) return CheckType.CONTAINS;
-            if(name.equalsIgnoreCase("equals")) return CheckType.EQUAL;
+            if (name.equalsIgnoreCase("contain")) return CheckType.CONTAINS;
+            if (name.equalsIgnoreCase("equals")) return CheckType.EQUAL;
             for (CheckType t : CheckType.values()) {
-                if(t.name().equalsIgnoreCase(name)) return t;
+                if (t.name().equalsIgnoreCase(name)) return t;
             }
             return CheckType.EQUAL;
         }
 
         public static boolean isValid(String name) {
             for (CheckType t : CheckType.values()) {
-                if(t.name().equalsIgnoreCase(name)) return true;
+                if (t.name().equalsIgnoreCase(name)) return true;
             }
             return false;
         }
@@ -145,14 +145,14 @@ public class MessageActivator extends Activator {
 
         public static Source getByName(String name) {
             for (Source source : Source.values()) {
-                if(source.name().equalsIgnoreCase(name)) return source;
+                if (source.name().equalsIgnoreCase(name)) return source;
             }
             return Source.ALL;
         }
 
         public static boolean isValid(String name) {
             for (Source source : Source.values()) {
-                if(source.name().equalsIgnoreCase(name)) return true;
+                if (source.name().equalsIgnoreCase(name)) return true;
             }
             return false;
         }

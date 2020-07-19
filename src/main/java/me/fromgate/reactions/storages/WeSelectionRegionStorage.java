@@ -21,7 +21,7 @@ public class WeSelectionRegionStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        if(selection.isValid()) {
+        if (selection.isValid()) {
             tempVars.put("seltype", selection.getSelType());
             World world = selection.getWorld();
             tempVars.put("world", (world != null) ? world.getName() : "");

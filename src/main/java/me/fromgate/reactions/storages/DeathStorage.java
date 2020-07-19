@@ -46,9 +46,9 @@ public class DeathStorage extends Storage {
     @Override
     void defaultVariables(Map<String, String> tempVars) {
         tempVars.put("cause", cause.name());
-        if(killer != null) {
+        if (killer != null) {
             tempVars.put("killer-type", killer.getType().name());
-            if(killer.getType() == EntityType.PLAYER) {
+            if (killer.getType() == EntityType.PLAYER) {
                 tempVars.put("killer-name", killer.getName());
                 tempVars.put("targetplayer", killer.getName());
             } else {

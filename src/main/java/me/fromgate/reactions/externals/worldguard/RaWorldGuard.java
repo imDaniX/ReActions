@@ -71,7 +71,7 @@ public class RaWorldGuard {
     public static Set<String> getRegions(Location loc) {
         Set<String> regions = new HashSet<>();
         for (String rg : regionActivators) {
-            if(bridge.isLocationInRegion(loc, rg))
+            if (bridge.isLocationInRegion(loc, rg))
                 regions.add(WGBridge7x.getFullRegionName(rg));
         }
         return regions;

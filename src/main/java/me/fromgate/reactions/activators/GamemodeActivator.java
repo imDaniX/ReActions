@@ -35,7 +35,7 @@ public class GamemodeActivator extends Activator {
     }
 
     private boolean gameModeCheck(GameMode gm) {
-        if(gameMode == null) return true;
+        if (gameMode == null) return true;
         return gm == gameMode;
     }
 

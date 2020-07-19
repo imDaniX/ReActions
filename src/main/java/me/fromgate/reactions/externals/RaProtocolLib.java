@@ -52,7 +52,7 @@ public class RaProtocolLib {
     }
 
     public static void connectProtocolLib() {
-        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
             connected = true;
         } else return;
         initPacketListener();
@@ -64,12 +64,12 @@ public class RaProtocolLib {
         StringBuilder result = new StringBuilder();
         for (Object key : source.keySet()) {
             Object value = source.get(key);
-            if(value instanceof String) {
-                if((key instanceof String) && (!((String) key).equalsIgnoreCase("text"))) continue;
+            if (value instanceof String) {
+                if ((key instanceof String) && (!((String) key).equalsIgnoreCase("text"))) continue;
                 result.append(value);
-            } else if(value instanceof JSONObject) {
+            } else if (value instanceof JSONObject) {
                 result.append(jsonToString((JSONObject) value));
-            } else if(value instanceof JSONArray) {
+            } else if (value instanceof JSONArray) {
                 result.append(jsonToString((JSONArray) value));
             }
         }
@@ -79,11 +79,11 @@ public class RaProtocolLib {
     private static String jsonToString(JSONArray source) {
         StringBuilder result = new StringBuilder();
         for (Object value : source) {
-            if(value instanceof String) {
+            if (value instanceof String) {
                 result.append(value);
-            } else if(value instanceof JSONObject) {
+            } else if (value instanceof JSONObject) {
                 result.append(jsonToString((JSONObject) value));
-            } else if(value instanceof JSONArray) {
+            } else if (value instanceof JSONArray) {
                 result.append(jsonToString((JSONArray) value));
             }
         }
@@ -92,15 +92,15 @@ public class RaProtocolLib {
 
     private static String jsonToString(String json) {
         JSONObject jsonObject = (JSONObject) JSONValue.parse(json);
-        if(jsonObject == null || json.isEmpty()) return json;
+        if (jsonObject == null || json.isEmpty()) return json;
         JSONArray array = (JSONArray) jsonObject.get("extra");
-        if(array == null || array.isEmpty()) return json;
+        if (array == null || array.isEmpty()) return json;
         return jsonToString(array);
     }
 
     private static String textToString(String message) {
         String text = message;
-        if(TEXT.matcher(text).matches()) {
+        if (TEXT.matcher(text).matches()) {
             text = TEXT_START.matcher(text).replaceAll("");
             text = TEXT_END.matcher(text).replaceAll("");
         }
@@ -109,7 +109,7 @@ public class RaProtocolLib {
 
 
     private static void initPacketListener() {
-        if(!connected) return;
+        if (!connected) return;
         ProtocolLibrary.getProtocolManager().addPacketListener(
                 new PacketAdapter(ReActions.getPlugin(), PacketType.Play.Server.CHAT) {
                     @Override
@@ -117,16 +117,16 @@ public class RaProtocolLib {
                         String message = "";
                         try {
                             String jsonMessage = event.getPacket().getChatComponents().getValues().get(0).getJson();
-                            if(jsonMessage != null) message = jsonToString(jsonMessage);
+                            if (jsonMessage != null) message = jsonToString(jsonMessage);
                         } catch (Throwable ignore) {
                         }
-                        if(message.isEmpty() && event.getPacket().getStrings().size() > 0) {
+                        if (message.isEmpty() && event.getPacket().getStrings().size() > 0) {
                             String jsonMessage = event.getPacket().getStrings().read(0);
-                            if(jsonMessage != null) message = textToString(jsonMessage);
+                            if (jsonMessage != null) message = textToString(jsonMessage);
                         }
-                        if(message.isEmpty()) return;
+                        if (message.isEmpty()) return;
                         Map<String, DataValue> changeables = StoragesManager.raiseMessageActivator(event.getPlayer(), Source.CHAT_OUTPUT, message);
-                        if(changeables != null && changeables.get(Storage.CANCEL_EVENT).asBoolean())
+                        if (changeables != null && changeables.get(Storage.CANCEL_EVENT).asBoolean())
                             event.setCancelled(true);
 
                     }

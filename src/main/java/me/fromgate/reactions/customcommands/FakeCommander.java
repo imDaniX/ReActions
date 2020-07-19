@@ -31,15 +31,15 @@ public class FakeCommander {
     public static void updateCommands() {
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "commands.yml");
         YamlConfiguration cfg = new YamlConfiguration();
-        if(!FileUtil.loadCfg(cfg, f, "Failed to load commands")) return;
+        if (!FileUtil.loadCfg(cfg, f, "Failed to load commands")) return;
         CommandMap commandMap = getCommandMap();
         unregisterAll(/*commandMap*/);
-        if(commandMap == null) return;
+        if (commandMap == null) return;
         for (String cmdKey : cfg.getKeys(false)) {
             ConfigurationSection cmdSection = cfg.getConfigurationSection(cmdKey);
             String command = cmdSection.getString("command");
             // TODO: Error message
-            if(command == null) continue;
+            if (command == null) continue;
             String prefix = cmdSection.getString("prefix");
             List<String> aliases = cmdSection.getStringList("alias");
             boolean toBukkit = cmdSection.getBoolean("register", true);
@@ -61,7 +61,7 @@ public class FakeCommander {
 
     public static boolean raiseRaCommand(PrecommandStorage storage) {
         RaCommand raCmd = commands.get(storage.getLabel().toLowerCase());
-        if(raCmd == null) return false;
+        if (raCmd == null) return false;
         String exec = raCmd.executeCommand(storage.getSender(), storage.getArgs());
         StoragesManager.raiseExecActivator(storage.getSender(), exec, storage.getTempVars());
         // It's not activator - context will not be generated
@@ -70,7 +70,7 @@ public class FakeCommander {
 
     // @SuppressWarnings("unchecked")
     private static void unregisterAll(/*CommandMap commandMap*/) {
-        if(commands.isEmpty()) return;
+        if (commands.isEmpty()) return;
 		/*
 		TODO: Command unregister
 		try {
@@ -87,19 +87,19 @@ public class FakeCommander {
     }
 
     private static boolean register(String command, String prefix, List<String> aliases, CommandMap commandMap, RaCommand raCommand, boolean toBukkit) {
-        if(Util.isStringEmpty(command)) return false;
+        if (Util.isStringEmpty(command)) return false;
         command = command.toLowerCase();
         prefix = Util.isStringEmpty(prefix) ? command : prefix.toLowerCase();
-        if(aliases == null)
+        if (aliases == null)
             aliases = new ArrayList<>();
         // Registering main command
-        if(toBukkit) commandMap.register(prefix, raCommand);
+        if (toBukkit) commandMap.register(prefix, raCommand);
         commands.put(command, raCommand);
         commands.put(prefix + ":" + command, raCommand);
         // ReActions.getPlugin().getCommand(raCommand.getName()).setTabCompleter(tabCompleter);
         // Registering aliases
         for (String alias : aliases) {
-            if(toBukkit) commandMap.register(alias, prefix, raCommand);
+            if (toBukkit) commandMap.register(alias, prefix, raCommand);
             commands.put(alias, raCommand);
             commands.put(prefix + ":" + alias, raCommand);
         }

@@ -57,9 +57,9 @@ public class VirtualInventory {
         cfg.set(root + ".title", title);
         cfg.set(root + ".size", size);
         for (int i = 0; i < size; i++) {
-            if(!slots.get(i).isEmpty())
+            if (!slots.get(i).isEmpty())
                 cfg.set(root + ".slot" + (i + 1) + ".item", slots.get(i));
-            if(!activators.get(i).isEmpty())
+            if (!activators.get(i).isEmpty())
                 cfg.set(root + ".slot" + (i + 1) + ".activator", activators.get(i));
         }
     }
@@ -81,9 +81,9 @@ public class VirtualInventory {
         Inventory inv = Bukkit.createInventory(holder, (size % 9 == 0) ? size : ((size / 9) + 1) * 9, ChatColor.translateAlternateColorCodes('&', title));
         holder.setInventory(inv);
         for (int i = 0; i < slots.size(); i++) {
-            if(slots.get(i).isEmpty()) continue;
+            if (slots.get(i).isEmpty()) continue;
             ItemStack item = VirtualItem.fromString(slots.get(i));
-            if(item == null) continue;
+            if (item == null) continue;
             inv.setItem(i, item);
         }
         return inv;

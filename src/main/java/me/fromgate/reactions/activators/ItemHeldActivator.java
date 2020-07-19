@@ -45,11 +45,11 @@ public class ItemHeldActivator extends Activator {
         ItemHeldStorage ihe = (ItemHeldStorage) event;
         ItemStack itemNew = ihe.getNewItem();
         ItemStack itemPrev = ihe.getPreviousItem();
-        if(!this.itemNewStr.isEmpty() && (!ItemUtil.compareItemStr(itemNew, this.itemNewStr)))
+        if (!this.itemNewStr.isEmpty() && (!ItemUtil.compareItemStr(itemNew, this.itemNewStr)))
             return false;
-        if(!this.itemPrevStr.isEmpty() && (!ItemUtil.compareItemStr(itemPrev, this.itemPrevStr)))
+        if (!this.itemPrevStr.isEmpty() && (!ItemUtil.compareItemStr(itemPrev, this.itemPrevStr)))
             return false;
-        if(newSlot > -1 && newSlot != ihe.getNewSlot()) return false;
+        if (newSlot > -1 && newSlot != ihe.getNewSlot()) return false;
         return previousSlot <= -1 || previousSlot == ihe.getPreviousSlot();
     }
 

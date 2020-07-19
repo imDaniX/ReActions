@@ -49,7 +49,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
         execs.put(ExecType.DEFAULT, cmdSection.getString("exec"));
         execs.put(ExecType.BACKUP, cmdSection.getString("backup"));
         ConfigurationSection errSection = cmdSection.getConfigurationSection("error");
-        if(errSection == null) return;
+        if (errSection == null) return;
         execs.put(ExecType.ANY_ERROR, errSection.getString("any"));
         execs.put(ExecType.NO_PERMISSIONS, errSection.getString("no_perm"));
         execs.put(ExecType.OFFLINE, errSection.getString("offline"));
@@ -59,7 +59,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
 
     private void loadArguments(ConfigurationSection cmdSection) {
         ConfigurationSection argsSection = cmdSection.getConfigurationSection("args");
-        if(argsSection == null) return;
+        if (argsSection == null) return;
         for (String arg : argsSection.getKeys(false))
             chains.add(new ArgumentsChain(arg.toLowerCase(), argsSection.getConfigurationSection(arg)));
     }
@@ -72,24 +72,24 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
      * @return Name of result EXEC activator
      */
     public final String executeCommand(CommandSender sender, String[] args) {
-        if(sender instanceof ConsoleCommandSender) {
-            if(!consoleAllowed) return getErroredExec(ExecType.CONSOLE_DISALLOWED);
-        } else if(!Util.checkPermission(sender, permission)) return getErroredExec(ExecType.NO_PERMISSIONS);
-        if(args.length == 0)
+        if (sender instanceof ConsoleCommandSender) {
+            if (!consoleAllowed) return getErroredExec(ExecType.CONSOLE_DISALLOWED);
+        } else if (!Util.checkPermission(sender, permission)) return getErroredExec(ExecType.NO_PERMISSIONS);
+        if (args.length == 0)
             return execs.get(ExecType.DEFAULT);
         ExecResult prioritedResult = null;
         for (ArgumentsChain chain : chains) {
             ExecResult result = chain.executeChain(sender, args);
             ExecType type = result.getType();
             String exec = result.getExec();
-            if(type == ExecType.BACKUP) continue;
-            if(type == ExecType.DEFAULT) {
+            if (type == ExecType.BACKUP) continue;
+            if (type == ExecType.DEFAULT) {
                 return exec == null ? execs.getOrDefault(ExecType.DEFAULT, "unknown") : exec;
             } else {
-                if(prioritedResult == null) prioritedResult = result;
+                if (prioritedResult == null) prioritedResult = result;
             }
         }
-        if(prioritedResult != null) {
+        if (prioritedResult != null) {
             String exec = prioritedResult.getExec();
             return exec == null ? getErroredExec(prioritedResult.getType()) : exec;
         }
@@ -100,9 +100,9 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
     @Override
     public final List<String> tabComplete(CommandSender sender, String cmd, String[] args, Location loc) {
         List<String> complete = new ArrayList<>();
-        if(!tab) return complete;
-        if(sender instanceof ConsoleCommandSender && !consoleAllowed) return complete;
-        if(!Util.checkPermission(sender, permission)) return complete;
+        if (!tab) return complete;
+        if (sender instanceof ConsoleCommandSender && !consoleAllowed) return complete;
+        if (!Util.checkPermission(sender, permission)) return complete;
         for (ArgumentsChain chain : chains)
             chain.tabComplete(complete, sender, args);
         return complete;

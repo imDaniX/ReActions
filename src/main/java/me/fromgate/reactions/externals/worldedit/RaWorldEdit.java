@@ -50,44 +50,44 @@ public class RaWorldEdit {
     }
 
     public static org.bukkit.util.Vector getMinimumPoint(Player player) {
-        if(isConnected()) return null;
+        if (isConnected()) return null;
         Region r = null;
         try {
             r = getRegion(player);
         } catch (Exception ignored) {
         }
-        if(r == null) return null;
+        if (r == null) return null;
         BlockVector3 v = r.getMinimumPoint();
         return new org.bukkit.util.Vector(v.getX(), v.getY(), v.getZ());
     }
 
     public static org.bukkit.util.Vector getMaximumPoint(Player player) {
-        if(isConnected()) return null;
+        if (isConnected()) return null;
         Region r = null;
         try {
             r = getRegion(player);
         } catch (Exception ignored) {
         }
-        if(r == null) return null;
+        if (r == null) return null;
         BlockVector3 v = r.getMaximumPoint();
         return new org.bukkit.util.Vector(v.getX(), v.getY(), v.getZ());
     }
 
     public static Region getRegion(Player player) throws IncompleteRegionException {
         RegionSelector rs = getRegionSelector(player);
-        if(rs == null) return null;
+        if (rs == null) return null;
         return rs.getRegion();
     }
 
     public static RegionSelector getRegionSelector(Player player) {
         LocalSession session = worldedit.getSession(player);
-        if(session == null) return null;
+        if (session == null) return null;
         return session.getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
     }
 
     public static Region getSelection(Player player) {
         LocalSession session = worldedit.getSession(player);
-        if(session == null) return null;
+        if (session == null) return null;
         try {
             return session.getSelection(BukkitAdapter.adapt(player.getWorld()));
         } catch (IncompleteRegionException e) {
@@ -105,7 +105,7 @@ public class RaWorldEdit {
 
     public static int getArea(Player player) {
         Region selection = getSelection(player);
-        if(selection == null) return 0;
+        if (selection == null) return 0;
         return selection.getArea();
     }
 
@@ -116,12 +116,12 @@ public class RaWorldEdit {
     public static ProtectedRegion checkRegionFromSelection(Player player, String id) throws CommandException {
         Region selection = getSelection(player);
         // Detect the type of region from WorldEdit
-        if(selection instanceof Polygonal2DRegion) {
+        if (selection instanceof Polygonal2DRegion) {
             Polygonal2DRegion polySel = (Polygonal2DRegion) selection;
             int minY = polySel.getMaximumY();
             int maxY = polySel.getMinimumY();
             return new ProtectedPolygonalRegion(id, polySel.getPoints(), minY, maxY);
-        } else if(selection instanceof CuboidRegion) {
+        } else if (selection instanceof CuboidRegion) {
             BlockVector3 min = selection.getMinimumPoint();
             BlockVector3 max = selection.getMaximumPoint();
             return new ProtectedCuboidRegion(id, min, max);

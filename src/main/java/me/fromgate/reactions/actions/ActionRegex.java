@@ -18,7 +18,7 @@ public class ActionRegex extends Action {
         String regex = params.getParam("regex", "");
         String input = params.getParam("input", removeParams(params.getParam("param-line")));
 
-        if(input.isEmpty()) return false;
+        if (input.isEmpty()) return false;
 
         Pattern pattern = Pattern.compile(regex);
         Matcher m = pattern.matcher(input);
@@ -28,7 +28,7 @@ public class ActionRegex extends Action {
         while (m.find()) {
             count++;
             for (int i = 0; i <= m.groupCount(); i++) {
-                if(m.group(i) != null) group = m.group(i);
+                if (m.group(i) != null) group = m.group(i);
                 else group = "";
                 context.setTempVariable(prefix + "group" + count + "" + i, group);
                 context.setTempVariable(prefix + "group_" + count + "_" + i, group);

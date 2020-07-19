@@ -32,8 +32,8 @@ public class FlagState implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
         Posture pt = Posture.getByName(param);
-        if(pt == null) return false;
-        switch(pt) {
+        if (pt == null) return false;
+        switch (pt) {
             case SNEAK:
                 return player.isSneaking();
             case FLY:
@@ -45,16 +45,16 @@ public class FlagState implements Flag {
             case SLEEP:
                 return player.isSleeping();
             case STAND:
-                if(player.isSleeping()) return false;
-                if(player.isSneaking()) return false;
-                if(player.isSprinting()) return false;
-                if(player.isFlying()) return false;
-                if(player.isGliding()) return false;
+                if (player.isSleeping()) return false;
+                if (player.isSneaking()) return false;
+                if (player.isSprinting()) return false;
+                if (player.isFlying()) return false;
+                if (player.isGliding()) return false;
                 return !player.isInsideVehicle();
             case OP:
                 return player.isOp();
             case VEHICLE_TYPED:
-                if(!player.isInsideVehicle()) return false;
+                if (!player.isInsideVehicle()) return false;
                 return player.getVehicle().getType().name().equalsIgnoreCase(param.substring(8));
             case SPECTATOR_TARGET:
                 return player.getSpectatorTarget() != null;
@@ -62,7 +62,7 @@ public class FlagState implements Flag {
                 return player.isGliding();
             case GOD:
                 GodModeListener.setCheckGod(player);
-                if(GodModeListener.isGod(player)) return true;
+                if (GodModeListener.isGod(player)) return true;
         }
         return false;
     }
@@ -81,10 +81,10 @@ public class FlagState implements Flag {
         GOD;
 
         public static Posture getByName(String name) {
-            if(name.startsWith("VEHICLE_"))
+            if (name.startsWith("VEHICLE_"))
                 return VEHICLE_TYPED;
             for (Posture pt : Posture.values())
-                if(pt.name().equalsIgnoreCase(name)) return pt;
+                if (pt.name().equalsIgnoreCase(name)) return pt;
             return null;
         }
     }

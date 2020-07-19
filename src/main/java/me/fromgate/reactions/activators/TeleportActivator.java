@@ -30,17 +30,17 @@ public class TeleportActivator extends Activator {
     }
 
     private static TeleportCause getCauseByName(String name) {
-        if(Util.isStringEmpty(name)) return null;
+        if (Util.isStringEmpty(name)) return null;
         name = name.toUpperCase();
         for (TeleportCause cause : TeleportCause.values())
-            if(cause.name().equals(name)) return cause;
+            if (cause.name().equals(name)) return cause;
         return null;
     }
 
     @Override
     public boolean activate(Storage storage) {
         TeleportStorage tpStorage = (TeleportStorage) storage;
-        if(cause != null && tpStorage.getCause() != cause) return false;
+        if (cause != null && tpStorage.getCause() != cause) return false;
         return worldTo == null || tpStorage.getWorldTo().equalsIgnoreCase(worldTo);
     }
 
@@ -51,7 +51,7 @@ public class TeleportActivator extends Activator {
 
     @Override
     public void save(ConfigurationSection cfg) {
-        if(cause != null) cfg.set("cause", cause.name());
-        if(worldTo != null) cfg.set("world", worldTo);
+        if (cause != null) cfg.set("cause", cause.name());
+        if (worldTo != null) cfg.set("world", worldTo);
     }
 }

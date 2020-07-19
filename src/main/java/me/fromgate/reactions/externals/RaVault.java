@@ -41,7 +41,7 @@ public class RaVault {
     private static Economy economy = null;
 
     public static void init() {
-        if(checkVault()) {
+        if (checkVault()) {
             vault_perm = setupPermissions();
             vault_eco = setupEconomy();
             Msg.logMessage("Vault connected");
@@ -59,7 +59,7 @@ public class RaVault {
 
     private static boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
-        if(permissionProvider != null) {
+        if (permissionProvider != null) {
             permission = permissionProvider.getProvider();
         }
         return (permission != null);
@@ -67,7 +67,7 @@ public class RaVault {
 
     private static boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if(economyProvider != null) {
+        if (economyProvider != null) {
             economy = economyProvider.getProvider();
         }
         return (economy != null);
@@ -76,34 +76,34 @@ public class RaVault {
 
     @Deprecated
     public static double getBalance(String account) {
-        if(!isEconomyConnected()) return 0;
+        if (!isEconomyConnected()) return 0;
         return economy.getBalance(account);
     }
 
     @Deprecated
     public static void withdrawPlayer(String account, double amount) {
-        if(!isEconomyConnected()) return;
+        if (!isEconomyConnected()) return;
         economy.withdrawPlayer(account, amount);
     }
 
     @Deprecated
     public static void depositPlayer(String account, double amount) {
-        if(!isEconomyConnected()) return;
+        if (!isEconomyConnected()) return;
         economy.depositPlayer(account, amount);
     }
 
     public static boolean playerAddGroup(Player p, String group) {
-        if(!isPermissionConnected()) return false;
+        if (!isPermissionConnected()) return false;
         return permission.playerAddGroup(p, group);
     }
 
     public static boolean playerInGroup(Player p, String group) {
-        if(!isPermissionConnected()) return false;
+        if (!isPermissionConnected()) return false;
         return permission.playerInGroup(p, group);
     }
 
     public static boolean playerRemoveGroup(Player p, String group) {
-        if(!isPermissionConnected()) return false;
+        if (!isPermissionConnected()) return false;
         return permission.playerRemoveGroup(p, group);
     }
 
@@ -115,13 +115,13 @@ public class RaVault {
 
     @SuppressWarnings("deprecation")
     private static void depositAccount(String account, String worldName, double amount) {
-        if(worldName.isEmpty()) economy.depositPlayer(account, amount);
+        if (worldName.isEmpty()) economy.depositPlayer(account, amount);
         else economy.depositPlayer(account, worldName, amount);
     }
 
     @SuppressWarnings("deprecation")
     private static void withdrawAccount(String account, String worldName, double amount) {
-        if(worldName.isEmpty()) economy.withdrawPlayer(account, amount);
+        if (worldName.isEmpty()) economy.withdrawPlayer(account, amount);
         else economy.withdrawPlayer(account, worldName, amount);
     }
 
@@ -131,17 +131,17 @@ public class RaVault {
      */
     @SuppressWarnings("deprecation")
     public static boolean hasMoney(String account, String worldName, double amount) {
-        if(!RaVault.isEconomyConnected()) return false;
-        if(worldName.isEmpty()) return economy.has(account, amount);
-        if(Bukkit.getWorld(worldName) == null) return false;
+        if (!RaVault.isEconomyConnected()) return false;
+        if (worldName.isEmpty()) return economy.has(account, amount);
+        if (Bukkit.getWorld(worldName) == null) return false;
         return economy.has(account, worldName, amount);
     }
 
 
     public static boolean creditAccount(String target, String source, double amount, String worldName) {
-        if(!RaVault.isEconomyConnected()) return false;
-        if(!source.isEmpty()) {
-            if(hasMoney(source, worldName, amount)) return false;
+        if (!RaVault.isEconomyConnected()) return false;
+        if (!source.isEmpty()) {
+            if (hasMoney(source, worldName, amount)) return false;
             withdrawAccount(source, worldName, amount);
         }
         depositAccount(target, worldName, amount);
@@ -149,10 +149,10 @@ public class RaVault {
     }
 
     public static boolean debitAccount(String accountFrom, String accountTo, double amount, String worldName) {
-        if(!RaVault.isEconomyConnected()) return false;
-        if(!hasMoney(accountFrom, worldName, amount)) return false;
+        if (!RaVault.isEconomyConnected()) return false;
+        if (!hasMoney(accountFrom, worldName, amount)) return false;
         withdrawAccount(accountFrom, worldName, amount);
-        if(!accountTo.isEmpty()) depositAccount(accountTo, worldName, amount);
+        if (!accountTo.isEmpty()) depositAccount(accountTo, worldName, amount);
         return true;
     }
 
@@ -160,14 +160,14 @@ public class RaVault {
      * worldName ignored. Vault is not supporting formatting for world's vau
      */
     public static String format(double amount, String worldName) {
-        if(!isEconomyConnected()) return Double.toString(amount);
-        if(worldName.equalsIgnoreCase(Bukkit.getWorlds().get(0).getName())) return Double.toString(amount);
+        if (!isEconomyConnected()) return Double.toString(amount);
+        if (worldName.equalsIgnoreCase(Bukkit.getWorlds().get(0).getName())) return Double.toString(amount);
         return economy.format(amount);
     }
 
     @Deprecated
     public static String formatMoney(String value) {
-        if(!isEconomyConnected()) return value;
+        if (!isEconomyConnected()) return value;
         return economy.format(Double.parseDouble(value)); // Integer???
     }
 
@@ -178,7 +178,7 @@ public class RaVault {
             String key = "money." + world.getName();
             String amount = format(economy.getBalance(name, world.getName()), world.getName());
             bals.put(key, amount);
-            if(Bukkit.getWorlds().get(0).equals(world)) bals.put("money", amount);
+            if (Bukkit.getWorlds().get(0).equals(world)) bals.put("money", amount);
         }
         return bals;
     }

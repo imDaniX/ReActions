@@ -43,8 +43,8 @@ public class LocationHolder {
     private static Map<String, TpLocation> tports = new HashMap<>();
 
     public static void hold(Player p, Location loc) {
-        if(p == null) return;
-        if(loc == null) loc = p.getTargetBlock(null, 100).getLocation();
+        if (p == null) return;
+        if (loc == null) loc = p.getTargetBlock(null, 100).getLocation();
         locs.put(p.getName(), loc);
     }
 
@@ -53,7 +53,7 @@ public class LocationHolder {
     }
 
     public static void saveLocs() {
-        if(tports.size() > 0) {
+        if (tports.size() > 0) {
             File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
             YamlConfiguration lcs = new YamlConfiguration();
             for (String key : tports.keySet()) {
@@ -73,7 +73,7 @@ public class LocationHolder {
         tports.clear();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
         YamlConfiguration lcs = new YamlConfiguration();
-        if(FileUtil.loadCfg(lcs, f, "Failed to load locations configuration file"))
+        if (FileUtil.loadCfg(lcs, f, "Failed to load locations configuration file"))
             for (String key : lcs.getKeys(false))
                 tports.put(key, new TpLocation(lcs.getString(key + ".world"),
                         lcs.getDouble(key + ".x"),
@@ -89,7 +89,7 @@ public class LocationHolder {
     }
 
     public static Location getTpLoc(String locstr) {
-        if(tports.containsKey(locstr)) return tports.get(locstr).getLocation();
+        if (tports.containsKey(locstr)) return tports.get(locstr).getLocation();
         return null;
     }
 
@@ -98,7 +98,7 @@ public class LocationHolder {
     }
 
     public static boolean addTpLoc(String id, Location loc) {
-        if(Util.isStringEmpty(id)) return false;
+        if (Util.isStringEmpty(id)) return false;
         tports.put(id, new TpLocation(loc));
         return true;
     }

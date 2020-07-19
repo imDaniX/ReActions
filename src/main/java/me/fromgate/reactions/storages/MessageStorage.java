@@ -60,15 +60,15 @@ public class MessageStorage extends Storage {
         String[] args = message.split(" ");
         int countInt = 0;
         int countNum = 0;
-        if(args != null && args.length > 0) {
+        if (args != null && args.length > 0) {
             for (int i = 0; i < args.length; i++) {
                 tempVars.put("word" + (i + 1), args[i]);
                 tempVars.put("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
-                if(Util.INT.matcher(args[i]).matches()) {
+                if (Util.INT.matcher(args[i]).matches()) {
                     countInt++;
                     tempVars.put("int" + countInt, args[i]);
                 }
-                if(Util.FLOAT.matcher(args[i]).matches()) {
+                if (Util.FLOAT.matcher(args[i]).matches()) {
                     countNum++;
                     tempVars.put("num" + countNum, args[i]);
                 }

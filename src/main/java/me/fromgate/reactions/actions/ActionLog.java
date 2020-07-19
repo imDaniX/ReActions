@@ -49,22 +49,22 @@ public class ActionLog extends Action {
 
         File file = new File(dir + "/" + fileName);
         context.setTempVariable("fullpath", file.getAbsolutePath());
-        if(fileName.isEmpty()) return;
+        if (fileName.isEmpty()) return;
 
         Date date = new Date();
         String d = DATE_FORMAT.format(date);
         try {
-            if(fileName.contains("/")) {
+            if (fileName.contains("/")) {
                 String ph = file.getAbsolutePath().substring(0, file.getAbsolutePath().lastIndexOf("\\") + 1);
                 File fileDir = new File(ph);
-                if(!fileDir.exists() && !fileDir.mkdirs()) return;
+                if (!fileDir.exists() && !fileDir.mkdirs()) return;
             }
-            if(!file.exists()) {
+            if (!file.exists()) {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
                 bw.close();
             }
 
-            if(file.isFile()) {
+            if (file.isFile()) {
                 BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
                 bw.append("[").append(d).append("] ").append(message).append("\n");
                 bw.close();
@@ -77,15 +77,15 @@ public class ActionLog extends Action {
 
     @Override
     public boolean execute(RaContext context, Param params) {
-        if(params.hasAnyParam("prefix", "color", "file")) {
+        if (params.hasAnyParam("prefix", "color", "file")) {
             String plg_name = ReActions.getPlugin().getDescription().getName();
             boolean prefix = params.getParam("prefix", true);
             boolean color = params.getParam("color", false);
             String file = params.getParam("file", "");
             String message = params.getParam("text", removeParams(params.getParam("param-line")));
-            if(message.isEmpty()) return false;
-            if(file.isEmpty()) {
-                if(prefix) {
+            if (message.isEmpty()) return false;
+            if (file.isEmpty()) {
+                if (prefix) {
                     this.log(message, plg_name, color);
                 } else this.log(message, "", color);
             } else {
@@ -106,8 +106,8 @@ public class ActionLog extends Action {
 
     private void log(String msg, String prefix, boolean color) {
         String px = "";
-        if(!prefix.isEmpty()) px = "[" + prefix + "] ";
-        if(color) LOGGER.info(ChatColor.translateAlternateColorCodes('&', px + msg));
+        if (!prefix.isEmpty()) px = "[" + prefix + "] ";
+        if (color) LOGGER.info(ChatColor.translateAlternateColorCodes('&', px + msg));
         else LOGGER.info(ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', px + msg)));
     }
 }

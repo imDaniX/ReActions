@@ -43,10 +43,10 @@ public class MobKillActivator extends Activator {
     public static MobKillActivator create(ActivatorBase base, Param param) {
         String type = param.toString();
         String name = "";
-        if(param.isParamsExists("type")) {
+        if (param.isParamsExists("type")) {
             type = param.getParam("type");
             name = param.getParam("name");
-        } else if(param.toString().contains("$")) {
+        } else if (param.toString().contains("$")) {
             name = type.substring(0, type.indexOf("$"));
             type = type.substring(name.length() + 1);
         }
@@ -62,21 +62,21 @@ public class MobKillActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         MobKillStorage me = (MobKillStorage) event;
-        if(mobType.isEmpty()) return false;
-        if(me.getEntity() == null) return false;
+        if (mobType.isEmpty()) return false;
+        if (me.getEntity() == null) return false;
         return isActivatorMob(me.getEntity());
     }
 
     private boolean isActivatorMob(LivingEntity mob) {
-        if(!mobName.isEmpty()) {
-            if(!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
+        if (!mobName.isEmpty()) {
+            if (!ChatColor.translateAlternateColorCodes('&', mobName.replace("_", " ")).equals(getMobName(mob)))
                 return false;
-        } else if(!getMobName(mob).isEmpty()) return false;
+        } else if (!getMobName(mob).isEmpty()) return false;
         return mob.getType().name().equalsIgnoreCase(this.mobType);
     }
 
     private String getMobName(LivingEntity mob) {
-        if(mob.getCustomName() == null) return "";
+        if (mob.getCustomName() == null) return "";
         return mob.getCustomName();
     }
 

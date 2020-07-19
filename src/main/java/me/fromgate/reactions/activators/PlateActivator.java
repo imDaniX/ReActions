@@ -48,10 +48,10 @@ public class PlateActivator extends Activator implements Locatable {
     }
 
     public static PlateActivator create(ActivatorBase base, Param p) {
-        if(!(p instanceof BlockParam)) return null;
+        if (!(p instanceof BlockParam)) return null;
         BlockParam param = (BlockParam) p;
         Block targetBlock = param.getBlock();
-        if(targetBlock != null && BlockUtil.isPlate(targetBlock)) {
+        if (targetBlock != null && BlockUtil.isPlate(targetBlock)) {
             String world = targetBlock.getWorld().getName();
             int x = targetBlock.getX();
             int y = targetBlock.getY();
@@ -77,10 +77,10 @@ public class PlateActivator extends Activator implements Locatable {
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(l == null) return false;
-        if(!world.equals(l.getWorld().getName())) return false;
-        if(x != l.getBlockX()) return false;
-        if(y != l.getBlockY()) return false;
+        if (l == null) return false;
+        if (!world.equals(l.getWorld().getName())) return false;
+        if (x != l.getBlockX()) return false;
+        if (y != l.getBlockY()) return false;
         return (z == l.getBlockZ());
     }
 

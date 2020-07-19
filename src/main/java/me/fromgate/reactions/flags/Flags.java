@@ -153,10 +153,10 @@ public enum Flags {
     }
 
     public static boolean checkFlag(RaContext context, Flags flag, String param, boolean not) {
-        if(flag == null || Util.isStringEmpty(param)) return false;
+        if (flag == null || Util.isStringEmpty(param)) return false;
         context.setTempVariable((flag + "_flag").toUpperCase(), param);
         boolean check = flag.check(context, param);
-        if(not) return !check;
+        if (not) return !check;
         context.setTempVariable((flag + "_flag_val").toUpperCase(), String.valueOf(check));
         return check;
     }
@@ -166,11 +166,11 @@ public enum Flags {
     }
 
     public static boolean checkAllFlags(RaContext context, ActivatorBase c) {
-        if(c.getFlags().size() > 0)
+        if (c.getFlags().size() > 0)
             for (int i = 0; i < c.getFlags().size(); i++) {
                 StoredFlag f = c.getFlags().get(i);
                 context.setTempVariable((f.getFlagName() + "_flag").toUpperCase(), f.getValue());
-                if(!checkFlag(context, f.getFlag(),
+                if (!checkFlag(context, f.getFlag(),
                         PlaceholdersManager.replacePlaceholderButRaw(context, f.getValue()), f.isInverted()))
                     return false;
             }
@@ -190,7 +190,7 @@ public enum Flags {
     @SuppressWarnings("unused")
     public static String getValidName(String flag) {
         Flags flg = getByName(flag);
-        if(flg != null) return flg.name();
+        if (flg != null) return flg.name();
         return flag;
     }
 
@@ -201,7 +201,7 @@ public enum Flags {
             String alias = flagType.alias.equalsIgnoreCase(flagName) ? " " : " (" + flagType.alias + ") ";
 
             Msg msg = Msg.getByName("flag_" + flagName);
-            if(msg == null) {
+            if (msg == null) {
                 Msg.LNG_FAIL_FLAG_DESC.log(flagName);
             } else {
                 flagList.add("&6" + flagName + "&e" + alias + "&3: &a" + msg.getText("NOCOLOR"));
@@ -211,7 +211,7 @@ public enum Flags {
     }
 
     public boolean check(RaContext context, String param) {
-        if(this.requirePlayer && (context.getPlayer() == null)) return false;
+        if (this.requirePlayer && (context.getPlayer() == null)) return false;
         return flag.checkFlag(context, param);
     }
 

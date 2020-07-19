@@ -57,12 +57,12 @@ public class PlayerRespawner {
     }
 
     public static void raisePlayerRespawnActivator(Player player, Location respawnLoc) {
-        if(!players.containsKey(player.getUniqueId())) return;
+        if (!players.containsKey(player.getUniqueId())) return;
         LivingEntity killer = getLastKiller(player);
         players.remove(player.getUniqueId());
         DeathCause d = DeathCause.OTHER;
-        if(killer != null && killer.getType() == EntityType.PLAYER) d = DeathCause.PVP;
-        else if(killer instanceof LivingEntity) d = DeathCause.PVE;
+        if (killer != null && killer.getType() == EntityType.PLAYER) d = DeathCause.PVP;
+        else if (killer instanceof LivingEntity) d = DeathCause.PVE;
         ActivatorsManager.activate(new RespawnStorage(player, killer, d, respawnLoc));
     }
 

@@ -28,18 +28,18 @@ public class CmdList extends Cmd {
         String arg1 = args.length >= 2 ? args[1].toLowerCase() : "";
         String arg2 = args.length >= 3 ? args[2] : "";
         String arg3 = args.length >= 4 ? args[3] : "";
-        if(Util.isIntegerGZ(arg1)) printAct(sender, 1, lpp);
+        if (Util.isIntegerGZ(arg1)) printAct(sender, 1, lpp);
         else {
             String mask = "";
-            if(Util.isIntegerGZ(arg2)) {
+            if (Util.isIntegerGZ(arg2)) {
                 page = Integer.parseInt(arg2);
                 mask = arg3;
-            } else if(Util.isIntegerGZ(arg3)) {
+            } else if (Util.isIntegerGZ(arg3)) {
                 page = Integer.parseInt(arg3);
                 mask = arg2;
             }
 
-            switch(arg1) {
+            switch (arg1) {
                 case "type":
                     printActType(sender, mask, page, lpp);
                     break;

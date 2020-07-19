@@ -138,7 +138,7 @@ public enum ActivatorType {
             String name = activatorType.name();
             String alias = activatorType.alias.equalsIgnoreCase(name) ? " " : " (" + activatorType.alias + ") ";
             Msg activatorDesc = Msg.getByName("ACTIVATOR_" + name);
-            if(activatorDesc == null) {
+            if (activatorDesc == null) {
                 Msg.LNG_MISSED_ACTIVATOR_DESC.log(name);
             } else {
                 activatorList.add("&6" + name + "&e" + alias + "&3: &a" + activatorDesc.getText("NOCOLOR"));

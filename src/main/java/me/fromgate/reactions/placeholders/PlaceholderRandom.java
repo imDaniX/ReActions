@@ -17,15 +17,15 @@ public class PlaceholderRandom extends Placeholder {
 
 
     private String random(String rndStr) {
-        if(Util.INT_POSITIVE.matcher(rndStr).matches())
+        if (Util.INT_POSITIVE.matcher(rndStr).matches())
             return Integer.toString(Util.getRandomInt(Integer.parseInt(rndStr)));
 
-        if(Util.INT_MIN_MAX.matcher(rndStr).matches())
+        if (Util.INT_MIN_MAX.matcher(rndStr).matches())
             return Integer.toString(Util.getMinMaxRandom(rndStr));
 
-        if(WORD_LIST.matcher(rndStr).matches()) {
+        if (WORD_LIST.matcher(rndStr).matches()) {
             String[] ln = rndStr.split(",");
-            if(ln.length == 0) return rndStr;
+            if (ln.length == 0) return rndStr;
             return ln[Util.getRandomInt(ln.length)];
         }
         return rndStr;

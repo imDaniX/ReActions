@@ -36,22 +36,22 @@ public class FlagSQL implements Flag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
-        if(!SQLManager.isEnabled()) return false;
+        if (!SQLManager.isEnabled()) return false;
         Param params = new Param(param);
-        if(!params.isParamsExists("value", "select", "from") &&
+        if (!params.isParamsExists("value", "select", "from") &&
                 !(params.isParamsExists("query"))) return false;
         String value = params.getParam("value", "");
         String select = params.getParam("select", "");
         String query = params.getParam("query", "");
-        if(query.isEmpty()) {
-            if(select.isEmpty()) return false;
+        if (query.isEmpty()) {
+            if (select.isEmpty()) return false;
             String from = params.getParam("from", "");
-            if(from.isEmpty()) return false;
+            if (from.isEmpty()) return false;
             String where = params.getParam("where", "");
             query = "SELECT " + select + " FROM " + from + (where.isEmpty() ? "" : " WHERE " + where);
         }
         int column = params.getParam("column", 1);
-        if(check) return SQLManager.compareSelect(value, query, column, params, context.getTempVariable("SQL_SET"));
+        if (check) return SQLManager.compareSelect(value, query, column, params, context.getTempVariable("SQL_SET"));
         else return SQLManager.isSelectResultEmpty(query);
     }
 

@@ -42,7 +42,7 @@ public class WaitTask implements Runnable {
         this.taskId = taskId;
         this.load(cfg, taskId);
         long time = this.executionTime - System.currentTimeMillis();
-        if(time < 0) this.execute();
+        if (time < 0) this.execute();
         else
             task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
     }
@@ -53,10 +53,10 @@ public class WaitTask implements Runnable {
     }
 
     public void execute() {
-        if(this.isExecuted()) return;
+        if (this.isExecuted()) return;
         Player p = playerName == null ? null : Util.getPlayerExact(playerName);
-        if(System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
-        if(p == null && playerName != null) return;
+        if (System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
+        if (p == null && playerName != null) return;
         Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions, isAction));
         this.executed = true;
     }
@@ -87,9 +87,9 @@ public class WaitTask implements Runnable {
         this.isAction = cfg.getBoolean(root + ".actions.action", true);
         List<String> actionList = cfg.getStringList(root + ".actions.list");
         this.actions = new ArrayList<>();
-        if(actionList != null)
+        if (actionList != null)
             for (String a : actionList) {
-                if(a.contains("=")) {
+                if (a.contains("=")) {
                     String av = a.substring(0, a.indexOf("="));
                     String vv = a.substring(a.indexOf("=") + 1);
                     this.actions.add(new StoredAction(av, vv));

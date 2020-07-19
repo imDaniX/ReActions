@@ -32,7 +32,7 @@ public class ActionSound extends Action {
     public boolean execute(RaContext context, Param params) {
         Player player = context.getPlayer();
         String str = Util.soundPlay(player == null ? null : player.getLocation(), params);
-        if(str.isEmpty()) return false;
+        if (str.isEmpty()) return false;
         this.setMessageParam(str);
         return true;
     }

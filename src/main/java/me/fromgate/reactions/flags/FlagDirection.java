@@ -35,9 +35,9 @@ public class FlagDirection implements Flag {
 
     private boolean isPlayerDirected(Player p, String dirstr) {
         Direction d1 = Direction.getByName(dirstr);
-        if(d1 == null) return false;
+        if (d1 == null) return false;
         Direction d2 = Direction.getByYaw(p);
-        if(d2 == null) return false;
+        if (d2 == null) return false;
         return (d1 == d2);
     }
 
@@ -54,7 +54,7 @@ public class FlagDirection implements Flag {
 
         public static Direction getByName(String dirstr) {
             for (Direction d : Direction.values())
-                if(d.name().equalsIgnoreCase(dirstr)) return d;
+                if (d.name().equalsIgnoreCase(dirstr)) return d;
             return null;
 
         }
@@ -62,7 +62,7 @@ public class FlagDirection implements Flag {
         public static Direction getByYaw(Player p) {
             double angle = (p.getLocation().getYaw() < 0) ? (360 + p.getLocation().getYaw()) : p.getLocation().getYaw();
             int sector = (int) (angle - ((angle + 22.5) % 45.0) + 22.5);
-            switch(sector) {
+            switch (sector) {
                 case 45:
                     return SOUTHWEST;
                 case 90:

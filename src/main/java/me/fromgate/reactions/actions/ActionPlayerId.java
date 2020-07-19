@@ -26,7 +26,7 @@ public class ActionPlayerId extends Action {
         String uuid;
         String pName;
 
-        if(playerName.isEmpty()) {
+        if (playerName.isEmpty()) {
             uniqueID = Util.getUUID(playerName);
             uuid = uniqueID.toString();
             pName = context.getPlayer().getName();
@@ -35,9 +35,9 @@ public class ActionPlayerId extends Action {
             uuid = Util.getUUID(offPlayer).toString();
             pName = offPlayer.getName();
         }
-        if(pName == null) pName = "";
-        if(!Util.isStringEmpty(varID)) Variables.setVar(playerName, varID, uuid);
-        if(!Util.isStringEmpty(varName)) Variables.setVar(playerName, varName, pName);
+        if (pName == null) pName = "";
+        if (!Util.isStringEmpty(varID)) Variables.setVar(playerName, varID, uuid);
+        if (!Util.isStringEmpty(varName)) Variables.setVar(playerName, varName, pName);
         context.setTempVariable("playerid", uuid);
         context.setTempVariable("playername", pName);
         return true;

@@ -65,15 +65,15 @@ public class WeListener {
     @Subscribe
     public void onEditSession(EditSessionEvent event) {
         Actor actor = event.getActor();
-        if(actor != null && actor.isPlayer()) {
+        if (actor != null && actor.isPlayer()) {
             Player player = Bukkit.getPlayer(actor.getUniqueId());
             Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
                 Region selection = getSelection(player);
-                if(selection != null) {
+                if (selection != null) {
                     Region region;
                     try {
                         region = getRegion(player);
-                        if(region != null) {
+                        if (region != null) {
                             // Check Region Selection
                             checkChangeSelectionRegion(player, selection, region);
                         }
@@ -82,7 +82,7 @@ public class WeListener {
                 }
             }, 2);
 
-            if(event.getStage() == EditSession.Stage.BEFORE_CHANGE) {
+            if (event.getStage() == EditSession.Stage.BEFORE_CHANGE) {
                 event.setExtent(new WeDelegateExtent(actor, event.getExtent()));
             }
         }
@@ -91,9 +91,9 @@ public class WeListener {
     @Subscribe
     public void onPlayerInput(PlayerInputEvent event) throws IncompleteRegionException {
         Player player = Bukkit.getPlayer(event.getPlayer().getUniqueId());
-        if(player != null) {
+        if (player != null) {
             Region selection = getSelection(player);
-            if(selection != null) {
+            if (selection != null) {
                 Region region = getRegion(player);
                 // Check Region Selection
                 checkChangeSelectionRegion(player, selection, region);
@@ -102,12 +102,12 @@ public class WeListener {
     }
 
     private void checkChangeSelectionRegion(Player player, Region selection, Region region) {
-        if(regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
+        if (regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
             regionSelection = region.clone();
-            if(raiseChangeSelectionRegionActivator(player, selection, regionSelection)) {
+            if (raiseChangeSelectionRegionActivator(player, selection, regionSelection)) {
                 regionSelection = null;
                 RegionSelector rs = getRegionSelector(player);
-                if(rs != null) rs.clear();
+                if (rs != null) rs.clear();
             }
         }
     }

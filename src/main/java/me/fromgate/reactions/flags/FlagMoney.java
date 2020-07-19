@@ -32,13 +32,13 @@ public class FlagMoney implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        if(!RaEconomics.isEconomyFound()) return false;
+        if (!RaEconomics.isEconomyFound()) return false;
         Param params = new Param(param, "amount");
         String amountStr = params.getParam("amount", "a");
-        if(!Util.isFloat(amountStr)) return false;
+        if (!Util.isFloat(amountStr)) return false;
         double amount = Double.parseDouble(amountStr);
         String account = params.getParam("account", params.getParam("player", player == null ? "" : player.getName()));
-        if(account.isEmpty()) return false;
+        if (account.isEmpty()) return false;
         String currency = params.getParam("currency", "");
         String world = params.getParam("world", "");
         return RaEconomics.hasMoney(account, amount, currency, world);

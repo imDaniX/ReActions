@@ -33,7 +33,7 @@ public class FlagWalkBlock implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
         Block walk = player.getLocation().getBlock();
-        if(!walk.getType().isSolid()) walk = walk.getLocation().subtract(0, 0.1, 0).getBlock();
+        if (!walk.getType().isSolid()) walk = walk.getLocation().subtract(0, 0.1, 0).getBlock();
         return walk.getType() == VirtualItem.fromString(param).getType();
     }
 

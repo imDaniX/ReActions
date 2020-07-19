@@ -20,30 +20,30 @@ public class CmdReload extends Cmd {
 
     @Override
     public boolean execute(CommandSender sender, String[] params) {
-        if(params.length >= 2) {
+        if (params.length >= 2) {
             String check = params[1].toLowerCase();
-            if(check.contains("g") && params.length > 2) {
+            if (check.contains("g") && params.length > 2) {
                 ActivatorsManager.loadActivators(params[2].replaceAll("[/\\\\]", File.separator));
-            } else if(check.contains("a")) {
+            } else if (check.contains("a")) {
                 ActivatorsManager.clear();
                 ActivatorsManager.loadActivators();
             }
-            if(check.contains("l"))
+            if (check.contains("l"))
                 LocationHolder.loadLocs();
-            if(check.contains("c")) {
+            if (check.contains("c")) {
                 ReActions.getPlugin().reloadConfig();
                 Cfg.load();
                 FakeCommander.updateCommands();
             }
-            if(check.contains("d"))
+            if (check.contains("d"))
                 Delayer.load();
-            if(check.contains("v")) {
-                if(!Cfg.playerSelfVarFile) Variables.load();
+            if (check.contains("v")) {
+                if (!Cfg.playerSelfVarFile) Variables.load();
                 else Variables.loadVars();
             }
-            if(check.contains("t"))
+            if (check.contains("t"))
                 TimersManager.init();
-            if(check.contains("m"))
+            if (check.contains("m"))
                 InventoryMenu.load();
 
         } else {
@@ -53,7 +53,7 @@ public class CmdReload extends Cmd {
             ReActions.getPlugin().reloadConfig();
             Cfg.load();
             Delayer.load();
-            if(!Cfg.playerSelfVarFile) Variables.load();
+            if (!Cfg.playerSelfVarFile) Variables.load();
             else Variables.loadVars();
             TimersManager.init();
             InventoryMenu.load();

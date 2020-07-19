@@ -43,7 +43,7 @@ public class Cuboid {
         pair = Util.sortedIntPair(loc1.getZ(0), loc2.getZ(0));
         this.zMin = pair[0];
         this.zMax = pair[1];
-        if(loc1.getY() == null || loc2.getY() == null) {
+        if (loc1.getY() == null || loc2.getY() == null) {
             yMin = null;
             yMax = null;
         } else {
@@ -54,13 +54,13 @@ public class Cuboid {
     }
 
     public boolean isInside(Location loc, boolean head) {
-        if(!loc.getWorld().getName().equalsIgnoreCase(world))
+        if (!loc.getWorld().getName().equalsIgnoreCase(world))
             return false;
         int x = loc.getBlockX();
         int z = loc.getBlockZ();
-        if((xMin > x || xMax < x) || (zMin > z || zMax < z))
+        if ((xMin > x || xMax < x) || (zMin > z || zMax < z))
             return false;
-        if(yMin == null)
+        if (yMin == null)
             return true;
         double y = loc.getY();
         return (y >= yMin && y <= yMax) || (head && (y + 1.75 >= yMin && y + 1.75 <= yMax));

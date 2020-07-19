@@ -53,7 +53,7 @@ public class JoinActivator extends Activator {
     }
 
     private boolean isJoinActivate(boolean joinFirstTime) {
-        if(this.firstJoin) return joinFirstTime;
+        if (this.firstJoin) return joinFirstTime;
         return true;
     }
 

@@ -15,7 +15,7 @@ public class Externals {
     private static boolean townyConnected = false;
 
     public static void init() {
-        if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+        if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             try {
                 RaPlaceholderAPI.init();
             } catch (Throwable ignore) {
@@ -23,7 +23,7 @@ public class Externals {
         }
 
 
-        if(Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
+        if (Bukkit.getPluginManager().getPlugin("ProtocolLib") != null) {
             try {
                 RaProtocolLib.connectProtocolLib();
             } catch (Throwable ignore) {
@@ -31,14 +31,14 @@ public class Externals {
         }
 
         // TODO: Actions with WorldEdit API - placing blocks, working with schematics
-        if(Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
+        if (Bukkit.getPluginManager().getPlugin("WorldEdit") != null) {
             try {
                 RaWorldEdit.init();
             } catch (Throwable ignore) {
             }
         }
 
-        if(Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
+        if (Bukkit.getPluginManager().getPlugin("WorldGuard") != null) {
             try {
                 RaWorldGuard.init();
             } catch (Throwable ignore) {

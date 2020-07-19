@@ -22,8 +22,8 @@ public class SelectorsManager {
     }
 
     public static void addSelector(Selector selector) {
-        if(selector == null) return;
-        if(selector.getKey() == null) return;
+        if (selector == null) return;
+        if (selector.getKey() == null) return;
         selectors.add(selector);
         keys.add(selector.getKey());
     }
@@ -32,7 +32,7 @@ public class SelectorsManager {
         Set<Player> players = new HashSet<>();
         for (Selector selector : selectors) {
             String selectorParam = param.getParam(selector.getKey());
-            if(selector.getKey().equalsIgnoreCase("loc") && param.isParamsExists("radius"))
+            if (selector.getKey().equalsIgnoreCase("loc") && param.isParamsExists("radius"))
                 selectorParam = "loc:" + selectorParam + " " + "radius:" + param.getParam("radius", "1");
             players.addAll(selector.selectPlayers(selectorParam));
         }

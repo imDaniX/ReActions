@@ -13,14 +13,14 @@ public class TemporaryOp {
     private static Set<String> tempOps = new HashSet<>();
 
     public static void setTempOp(CommandSender sender) {
-        if(sender instanceof Player && !sender.isOp()) {
+        if (sender instanceof Player && !sender.isOp()) {
             tempOps.add(sender.getName());
             sender.setOp(true);
         }
     }
 
     public static void removeTempOp(CommandSender sender) {
-        if(sender instanceof Player && tempOps.remove(sender.getName()))
+        if (sender instanceof Player && tempOps.remove(sender.getName()))
             sender.setOp(false);
     }
 

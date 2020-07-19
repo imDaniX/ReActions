@@ -42,21 +42,21 @@ public class BlockBreakActivator extends Activator implements Locatable {
     public boolean activate(Storage event) {
         BlockBreakStorage bbe = (BlockBreakStorage) event;
         Block brokenBlock = bbe.getBlock();
-        if(brokenBlock == null) return false;
+        if (brokenBlock == null) return false;
         return isActivatorBlock(brokenBlock);
     }
 
     private boolean isActivatorBlock(Block block) {
-        if(this.blockType != null && blockType != block.getType()) return false;
-        if(Util.isStringEmpty(blockLocation)) return true;
+        if (this.blockType != null && blockType != block.getType()) return false;
+        if (Util.isStringEmpty(blockLocation)) return true;
         return this.isLocatedAt(block.getLocation());
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(Util.isStringEmpty(blockLocation)) return false;
+        if (Util.isStringEmpty(blockLocation)) return false;
         Location loc = LocationUtil.parseLocation(this.blockLocation, null);
-        if(loc == null) return false;
+        if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&
                 l.getBlockY() == loc.getBlockY() &&
@@ -70,7 +70,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
 
     @Override
     public void save(ConfigurationSection cfg) {
-        if(blockType != null) cfg.set("block", this.blockType.name());
+        if (blockType != null) cfg.set("block", this.blockType.name());
         cfg.set("location", Util.isStringEmpty(blockLocation) ? null : this.blockLocation);
     }
 

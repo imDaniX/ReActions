@@ -17,12 +17,12 @@ public class BlockUtil {
 
     static {
         for (Material mat : Material.values())
-            if(mat.name().endsWith("PRESSURE_PLATE")) PLATES.add(mat);
+            if (mat.name().endsWith("PRESSURE_PLATE")) PLATES.add(mat);
     }
 
     public static BlockFace getFaceByName(String name) {
         for (BlockFace face : BlockFace.values())
-            if(face.name().equalsIgnoreCase(name)) return face;
+            if (face.name().equalsIgnoreCase(name)) return face;
         return null;
     }
 
@@ -39,7 +39,7 @@ public class BlockUtil {
     }
 
     public static boolean setOpen(Block b, boolean open) {
-        if(isOpenable(b)) {
+        if (isOpenable(b)) {
             Openable om = (Openable) b.getBlockData();
             om.setOpen(open);
             b.setBlockData(om);
@@ -49,7 +49,7 @@ public class BlockUtil {
     }
 
     public static boolean isOpen(Block b) {
-        if(isOpenable(b)) {
+        if (isOpenable(b)) {
             Openable om = (Openable) b.getBlockData();
             return om.isOpen();
         }
@@ -57,9 +57,9 @@ public class BlockUtil {
     }
 
     public static Block getDoorBottomBlock(Block block) {
-        if(Tag.DOORS.isTagged(block.getType())) {
+        if (Tag.DOORS.isTagged(block.getType())) {
             Block bottomBlock = block.getRelative(BlockFace.DOWN);
-            if(Tag.DOORS.isTagged(bottomBlock.getType()))
+            if (Tag.DOORS.isTagged(bottomBlock.getType()))
                 return bottomBlock;
         }
         return block;

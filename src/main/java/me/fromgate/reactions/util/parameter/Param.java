@@ -33,10 +33,10 @@ public class Param {
         this.params = new HashMap<>(params);
         StringBuilder sb = new StringBuilder();
         for (String key : params.keySet()) {
-            if(sb.length() > 0) sb.append(" ");
+            if (sb.length() > 0) sb.append(" ");
             sb.append(key).append(":");
             String value = params.get(key);
-            if(value.contains(" ") && !PARAM_BRACKET_SE.matcher(value).matches())
+            if (value.contains(" ") && !PARAM_BRACKET_SE.matcher(value).matches())
                 sb.append("{").append(value).append("}");
             else sb.append(value);
         }
@@ -67,12 +67,12 @@ public class Param {
     public static Param fromOldFormat(String oldFormat, String divider, String... keys) {
         Param param = new Param(oldFormat);
         param.paramStr = oldFormat;
-        if(param.hasAnyParam(keys)) return param;
+        if (param.hasAnyParam(keys)) return param;
         param = new Param();
         param.paramStr = oldFormat;
         param.set("param-line", oldFormat); // и снова залипуха
         String[] ln = oldFormat.split(Pattern.quote(divider), keys.length);
-        if(ln.length == 0) return param;
+        if (ln.length == 0) return param;
         for (int i = 0; i < Math.min(ln.length, keys.length); i++)
             param.set(keys[i], ln[i]);
         return param;
@@ -89,15 +89,15 @@ public class Param {
             String paramPart = matcher.group().trim().replace("#BKT1#", "{").replace("#BKT2#", "}");
             String key = paramPart;
             String value = "";
-            if(matcher.group().contains(":")) {
+            if (matcher.group().contains(":")) {
                 key = paramPart.substring(0, paramPart.indexOf(":"));
                 value = paramPart.substring(paramPart.indexOf(":") + 1);
             }
-            if(value.isEmpty()) {
+            if (value.isEmpty()) {
                 value = key;
                 key = defaultKey;
             }
-            if(PARAM_BRACKET.matcher(value).matches()) value = value.substring(1, value.length() - 1);
+            if (PARAM_BRACKET.matcher(value).matches()) value = value.substring(1, value.length() - 1);
             params.put(key, value);
         }
         return params;
@@ -109,11 +109,11 @@ public class Param {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             String a = String.valueOf(c);
-            if(c == '{') {
+            if (c == '{') {
                 count++;
-                if(count != 1) a = "#BKT1#";
-            } else if(c == '}') {
-                if(count != 1) a = "#BKT2#";
+                if (count != 1) a = "#BKT1#";
+            } else if (c == '}') {
+                if (count != 1) a = "#BKT2#";
                 count--;
             }
             r.append(a);
@@ -125,46 +125,46 @@ public class Param {
     public static boolean hasAnyParam(Map<String, String> params, String... param) {
         for (String key : params.keySet())
             for (String prm : param) {
-                if(key.equalsIgnoreCase(prm)) return true;
+                if (key.equalsIgnoreCase(prm)) return true;
             }
         return false;
     }
 
     public String getParam(String key, String defParam) {
-        if(!params.containsKey(key)) return defParam;
+        if (!params.containsKey(key)) return defParam;
         return params.get(key);
     }
 
     public int getParam(String key, int defParam) {
-        if(!params.containsKey(key)) return defParam;
+        if (!params.containsKey(key)) return defParam;
         String str = params.get(key);
-        if(!Util.INT.matcher(str).matches()) return defParam;
+        if (!Util.INT.matcher(str).matches()) return defParam;
         return Integer.parseInt(str);
     }
 
     public float getParam(String key, float defParam) {
-        if(!params.containsKey(key)) return defParam;
+        if (!params.containsKey(key)) return defParam;
         String str = params.get(key);
-        if(!Util.FLOAT.matcher(str).matches()) return defParam;
+        if (!Util.FLOAT.matcher(str).matches()) return defParam;
         return Float.parseFloat(str);
     }
 
     public double getParam(String key, double defParam) {
-        if(!params.containsKey(key)) return defParam;
+        if (!params.containsKey(key)) return defParam;
         String str = params.get(key);
-        if(!Util.FLOAT.matcher(str).matches()) return defParam;
+        if (!Util.FLOAT.matcher(str).matches()) return defParam;
         return Double.parseDouble(str);
     }
 
     public boolean getParam(String key, boolean defValue) {
-        if(!params.containsKey(key)) return defValue;
+        if (!params.containsKey(key)) return defValue;
         String str = params.get(key);
         return BOOLEAN.matcher(str).matches();
     }
 
     public boolean isParamsExists(String... keys) {
         for (String key : keys) {
-            if(!params.containsKey(key)) {
+            if (!params.containsKey(key)) {
                 return false;
             }
         }
@@ -173,14 +173,14 @@ public class Param {
 
     public boolean hasAnyParam(Collection<String> keys) {
         for (String key : keys) {
-            if(params.containsKey(key)) return true;
+            if (params.containsKey(key)) return true;
         }
         return false;
     }
 
     public boolean hasAnyParam(String... keys) {
         for (String key : keys) {
-            if(params.containsKey(key)) return true;
+            if (params.containsKey(key)) return true;
         }
         return false;
     }
@@ -188,7 +188,7 @@ public class Param {
     public boolean matchAnyParam(Pattern... patterns) {
         for (Pattern pattern : patterns) {
             for (String param : params.keySet()) {
-                if(pattern.matcher(param).matches()) return true;
+                if (pattern.matcher(param).matches()) return true;
             }
         }
         return false;
@@ -197,7 +197,7 @@ public class Param {
     public boolean matchAnyParam(String... keys) {
         for (String key : keys) {
             for (String param : params.keySet()) {
-                if(param.matches(key)) return true;
+                if (param.matches(key)) return true;
             }
         }
         return false;

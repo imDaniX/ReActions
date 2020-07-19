@@ -39,29 +39,29 @@ public class ActionSignSet extends Action {
     public boolean execute(RaContext context, Param params) {
         // loc:world,x,y,z line1:text line2:text line3:text line4:text clear:1,2,3,4
         String locStr = params.getParam("loc", context.getTempVariable("sign_loc"));
-        if(Util.isStringEmpty(locStr)) return false;
+        if (Util.isStringEmpty(locStr)) return false;
         Location loc = LocationUtil.parseCoordinates(locStr);
-        if(loc == null) return false;
+        if (loc == null) return false;
         boolean chunkLoad = params.getParam("loadchunk", false);
-        if(!chunkLoad && !loc.getChunk().isLoaded()) return false;
+        if (!chunkLoad && !loc.getChunk().isLoaded()) return false;
         Block block = loc.getBlock();
-        if(!BlockUtil.isSign(block)) return false;
+        if (!BlockUtil.isSign(block)) return false;
         Sign sign = (Sign) block.getState();
         for (int i = 1; i <= 4; i++) {
             String line = params.getParam("line" + i, "");
-            if(line.isEmpty()) continue;
-            if(line.length() > 15) line = line.substring(0, 15);
+            if (line.isEmpty()) continue;
+            if (line.length() > 15) line = line.substring(0, 15);
             sign.setLine(i - 1, ChatColor.translateAlternateColorCodes('&', line));
         }
 
         String clear = params.getParam("clear", "");
-        if(!clear.isEmpty()) {
+        if (!clear.isEmpty()) {
             String[] ln = clear.split(",");
             for (String cl : ln) {
-                if(!Util.isInteger(cl)) continue;
+                if (!Util.isInteger(cl)) continue;
                 int num = Integer.parseInt(cl) - 1;
-                if(num < 0) continue;
-                if(num >= 4) continue;
+                if (num < 0) continue;
+                if (num >= 4) continue;
                 sign.setLine(num, "");
             }
         }

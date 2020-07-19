@@ -36,12 +36,12 @@ public class FlagPowered implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         Param params = new Param(param);
         String locStr = params.isParamsExists("loc") ? params.getParam("loc", "") : param;
-        if(locStr.isEmpty()) return false;
+        if (locStr.isEmpty()) return false;
         Location loc = LocationUtil.parseLocation(locStr, null);
-        if(loc == null) return false;
+        if (loc == null) return false;
         Block b = loc.getBlock();
         BlockData data = b.getBlockData();
-        if(data instanceof Powerable)
+        if (data instanceof Powerable)
             return ((Powerable) data).isPowered();
         return b.isBlockIndirectlyPowered();
     }

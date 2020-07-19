@@ -89,14 +89,14 @@ public class StoragesManager {
     }
 
     public static boolean raiseMobClickActivator(Player player, LivingEntity mob) {
-        if(mob == null) return false;
+        if (mob == null) return false;
         MobClickStorage e = new MobClickStorage(player, mob);
         ActivatorsManager.activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
     public static void raiseMobKillActivator(Player player, LivingEntity mob) {
-        if(mob == null) return;
+        if (mob == null) return;
         MobKillStorage e = new MobKillStorage(player, mob);
         ActivatorsManager.activate(e);
     }
@@ -107,9 +107,9 @@ public class StoragesManager {
     }
 
     public static boolean raiseDoorActivator(PlayerInteractEvent event) {
-        if(!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
+        if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
-        if(!BlockUtil.isOpenable(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND) return false;
+        if (!BlockUtil.isOpenable(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND) return false;
         DoorStorage e = new DoorStorage(event.getPlayer(), BlockUtil.getDoorBottomBlock(event.getClickedBlock()));
         ActivatorsManager.activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -125,18 +125,18 @@ public class StoragesManager {
         ItemClickStorage ice;
         boolean mainHand = event.getHand() == EquipmentSlot.HAND;
         ItemStack item = mainHand ? event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
-        if(item == null || item.getType() == Material.AIR) return false;
+        if (item == null || item.getType() == Material.AIR) return false;
         ice = new ItemClickStorage(event.getPlayer(), item, mainHand);
         ActivatorsManager.activate(ice);
         return ice.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
     public static boolean raiseItemClickActivator(PlayerInteractEvent event) {
-        if(event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return false;
+        if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return false;
         ItemClickStorage ice;
         boolean mainHand = event.getHand() == EquipmentSlot.HAND;
         ItemStack item = mainHand ? event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
-        if(!ItemUtil.isExist(item)) return false;
+        if (!ItemUtil.isExist(item)) return false;
         ice = new ItemClickStorage(event.getPlayer(), item, mainHand);
         ActivatorsManager.activate(ice);
         return ice.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -144,10 +144,10 @@ public class StoragesManager {
 
 
     public static boolean raiseLeverActivator(PlayerInteractEvent event) {
-        if(!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
+        if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
-        if(event.getHand() != EquipmentSlot.HAND) return false;
-        if(event.getClickedBlock().getType() != Material.LEVER) return false;
+        if (event.getHand() != EquipmentSlot.HAND) return false;
+        if (event.getClickedBlock().getType() != Material.LEVER) return false;
         LeverStorage e = new LeverStorage(event.getPlayer(), event.getClickedBlock());
         ActivatorsManager.activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -157,7 +157,7 @@ public class StoragesManager {
     public static void raisePvpKillActivator(PlayerDeathEvent event) {
         Player deadplayer = event.getEntity();
         Player killer = EntityUtil.getKiller(deadplayer.getLastDamageCause());
-        if(killer == null) return;
+        if (killer == null) return;
         PvpKillStorage pe = new PvpKillStorage(killer, deadplayer);
         ActivatorsManager.activate(pe);
     }
@@ -173,12 +173,12 @@ public class StoragesManager {
 
     // Button Event
     public static boolean raiseButtonActivator(PlayerInteractEvent event) {
-        if(!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
+        if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
-        if(!Tag.BUTTONS.isTagged(event.getClickedBlock().getType())) return false;
-        if(event.getHand() != EquipmentSlot.HAND) return false;
+        if (!Tag.BUTTONS.isTagged(event.getClickedBlock().getType())) return false;
+        if (event.getHand() != EquipmentSlot.HAND) return false;
         Switch button = (Switch) event.getClickedBlock().getBlockData();
-        if(button.isPowered()) return false;
+        if (button.isPowered()) return false;
         ButtonStorage be = new ButtonStorage(event.getPlayer(), event.getClickedBlock().getLocation());
         ActivatorsManager.activate(be);
         return be.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -187,7 +187,7 @@ public class StoragesManager {
     public static boolean raiseSignActivator(Player player, String[] lines, Location loc, boolean leftClick) {
         for (Activator act : ActivatorsManager.getActivators(ActivatorType.SIGN)) {
             SignActivator sign = (SignActivator) act;
-            if(sign.checkMask(lines)) {
+            if (sign.checkMask(lines)) {
                 SignStorage se = new SignStorage(player, lines, loc, leftClick);
                 ActivatorsManager.activate(se);
                 return se.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -199,7 +199,7 @@ public class StoragesManager {
     // TODO: I think all of it should be inside ActionExecute class
 
     public static boolean raiseExecActivator(CommandSender sender, String param) {
-        if(param.isEmpty()) return false;
+        if (param.isEmpty()) return false;
         return raiseExecActivator(sender, new Param(param, "player"));
     }
 
@@ -208,16 +208,16 @@ public class StoragesManager {
     }
 
     public static boolean raiseExecActivator(CommandSender sender, Param param, Map<String, String> tempVars) {
-        if(param.isEmpty()) return false;
+        if (param.isEmpty()) return false;
         final Player senderPlayer = (sender instanceof Player) ? (Player) sender : null;
         final String id = param.getParam("activator", param.getParam("exec"));
-        if(id.isEmpty()) return false;
+        if (id.isEmpty()) return false;
         Activator act = ActivatorsManager.get(id);
-        if(act == null) {
+        if (act == null) {
             Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
             return false;
         }
-        if(act.getType() != ActivatorType.EXEC) {
+        if (act.getType() != ActivatorType.EXEC) {
             Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
             return false;
         }
@@ -228,17 +228,17 @@ public class StoragesManager {
 
         final Set<Player> target = new HashSet<>();
 
-        if(param.isParamsExists("player")) {
+        if (param.isParamsExists("player")) {
             target.addAll(SelectorsManager.getPlayerList(new Param(param.getParam("player"), "player")));
         }
         target.addAll(SelectorsManager.getPlayerList(param));   // Оставляем для совместимости со старым вариантом
 
-        if(target.isEmpty() && !param.hasAnyParam(SelectorsManager.getAllKeys())) target.add(senderPlayer);
+        if (target.isEmpty() && !param.hasAnyParam(SelectorsManager.getAllKeys())) target.add(senderPlayer);
 
         for (int i = 0; i < repeat; i++) {
             Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
                 for (Player player : target) {
-                    if(ActivatorsManager.isStopped(player, id, true)) continue;
+                    if (ActivatorsManager.isStopped(player, id, true)) continue;
                     ExecStorage ce = new ExecStorage(player, tempVars);
                     ActivatorsManager.activate(ce, id);
                 }
@@ -250,23 +250,23 @@ public class StoragesManager {
     public static boolean raiseExecActivator(CommandSender sender, String id, Map<String, String> tempVars) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         Activator act = ActivatorsManager.get(id);
-        if(act == null) {
+        if (act == null) {
             Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
             return false;
         }
-        if(act.getType() != ActivatorType.EXEC) {
+        if (act.getType() != ActivatorType.EXEC) {
             Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
             return false;
         }
-        if(ActivatorsManager.isStopped(player, id, true)) return true;
+        if (ActivatorsManager.isStopped(player, id, true)) return true;
         ExecStorage ce = new ExecStorage(player, tempVars);
         ActivatorsManager.activate(ce, id);
         return true;
     }
 
     public static boolean raisePlateActivator(PlayerInteractEvent event) {
-        if(event.getAction() != Action.PHYSICAL) return false;
-        if(!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) return false;
+        if (event.getAction() != Action.PHYSICAL) return false;
+        if (!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) return false;
         PlateStorage pe = new PlateStorage(event.getPlayer(), event.getClickedBlock().getLocation());
         ActivatorsManager.activate(pe);
         return pe.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -277,7 +277,7 @@ public class StoragesManager {
     }
 
     public static void raiseAllRegionActivators(final Player player, final Location to, final Location from) {
-        if(!RaWorldGuard.isConnected()) return;
+        if (!RaWorldGuard.isConnected()) return;
         Bukkit.getScheduler().runTaskLaterAsynchronously(ReActions.getPlugin(), () -> {
 
             final Set<String> regionsTo = RaWorldGuard.getRegions(to);
@@ -292,25 +292,25 @@ public class StoragesManager {
     }
 
     private static void raiseRgEnterActivator(Player player, Set<String> regionTo, Set<String> regionFrom) {
-        if(regionTo.isEmpty()) return;
+        if (regionTo.isEmpty()) return;
         for (String rg : regionTo)
-            if(!regionFrom.contains(rg)) {
+            if (!regionFrom.contains(rg)) {
                 RegionEnterStorage wge = new RegionEnterStorage(player, rg);
                 ActivatorsManager.activate(wge);
             }
     }
 
     private static void raiseRgLeaveActivator(Player player, Set<String> regionTo, Set<String> regionFrom) {
-        if(regionFrom.isEmpty()) return;
+        if (regionFrom.isEmpty()) return;
         for (String rg : regionFrom)
-            if(!regionTo.contains(rg)) {
+            if (!regionTo.contains(rg)) {
                 RegionLeaveStorage wge = new RegionLeaveStorage(player, rg);
                 ActivatorsManager.activate(wge);
             }
     }
 
     private static void raiseRegionActivator(Player player, Set<String> to) {
-        if(to.isEmpty()) return;
+        if (to.isEmpty()) return;
         for (String region : to) {
             setFutureRegionCheck(player.getName(), region, false);
         }
@@ -318,12 +318,12 @@ public class StoragesManager {
 
     private static void setFutureRegionCheck(final String playerName, final String region, boolean repeat) {
         Player player = Util.getPlayerExact(playerName);
-        if(player == null) return;
-        if(!player.isOnline()) return;
-        if(player.isDead()) return;
-        if(!RaWorldGuard.isPlayerInRegion(player, region)) return;
+        if (player == null) return;
+        if (!player.isOnline()) return;
+        if (player.isDead()) return;
+        if (!RaWorldGuard.isPlayerInRegion(player, region)) return;
         String rg = "rg-" + region;
-        if(!isTimeToRaiseEvent(player, rg, Cfg.worldguardRecheck, repeat)) return;
+        if (!isTimeToRaiseEvent(player, rg, Cfg.worldguardRecheck, repeat)) return;
 
         RegionStorage wge = new RegionStorage(player, region);
         ActivatorsManager.activate(wge);
@@ -335,7 +335,7 @@ public class StoragesManager {
         long curTime = System.currentTimeMillis();
         long prevTime = p.hasMetadata("reactions-rchk-" + id) ? p.getMetadata("reactions-rchk-" + id).get(0).asLong() : 0;
         boolean needUpdate = repeat || ((curTime - prevTime) >= (1000 * seconds));
-        if(needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(ReActions.getPlugin(), curTime));
+        if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(ReActions.getPlugin(), curTime));
         return needUpdate;
     }
 
@@ -344,7 +344,7 @@ public class StoragesManager {
         Player player = (sender instanceof Player) ? (Player) sender : null;
         for (Activator act : ActivatorsManager.getActivators(ActivatorType.MESSAGE)) {
             MessageActivator a = (MessageActivator) act;
-            if(a.filterMessage(source, message)) {
+            if (a.filterMessage(source, message)) {
                 MessageStorage me = new MessageStorage(player, a, message);
                 ActivatorsManager.activate(me);
                 return me.getChangeables();
@@ -354,9 +354,9 @@ public class StoragesManager {
     }
 
     public static void raiseVariableActivator(String var, String playerName, String newValue, String prevValue) {
-        if(newValue.equalsIgnoreCase(prevValue)) return;
+        if (newValue.equalsIgnoreCase(prevValue)) return;
         Player player = Util.getPlayerExact(playerName);
-        if(!playerName.isEmpty() && player == null) return;
+        if (!playerName.isEmpty() && player == null) return;
         VariableStorage ve = new VariableStorage(player, var, newValue, prevValue);
         ActivatorsManager.activate(ve);
     }
@@ -375,10 +375,10 @@ public class StoragesManager {
 
     public static boolean raiseBlockClickActivator(PlayerInteractEvent event) {
         boolean leftClick;
-        if(event.getAction() == Action.RIGHT_CLICK_BLOCK) leftClick = false;
-        else if(event.getAction() == Action.LEFT_CLICK_BLOCK) leftClick = true;
+        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) leftClick = false;
+        else if (event.getAction() == Action.LEFT_CLICK_BLOCK) leftClick = true;
         else return false;
-        if(event.getHand() != EquipmentSlot.HAND) return false;
+        if (event.getHand() != EquipmentSlot.HAND) return false;
         BlockClickStorage e = new BlockClickStorage(event.getPlayer(), event.getClickedBlock(), leftClick);
         ActivatorsManager.activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -443,7 +443,7 @@ public class StoragesManager {
     }
 
     public static void raiseProjectileHitActivator(ProjectileHitEvent event) {
-        if(!(event.getEntity().getShooter() instanceof Player)) return;
+        if (!(event.getEntity().getShooter() instanceof Player)) return;
         ProjectileHitStorage ph = new ProjectileHitStorage((Player) event.getEntity().getShooter(),
                 event.getEntityType(),
                 event.getHitBlock(), event.getHitBlockFace(),

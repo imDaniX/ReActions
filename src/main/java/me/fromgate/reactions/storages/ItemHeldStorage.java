@@ -33,16 +33,16 @@ public class ItemHeldStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        if(newItem != null) {
+        if (newItem != null) {
             VirtualItem vi = VirtualItem.fromItemStack(newItem);
-            if(vi != null) {
+            if (vi != null) {
                 tempVars.put("itemnew", vi.toString());
                 tempVars.put("itemnew-str", vi.toDisplayString());
             }
         }
-        if(previousItem != null) {
+        if (previousItem != null) {
             VirtualItem vi = VirtualItem.fromItemStack(previousItem);
-            if(vi != null) {
+            if (vi != null) {
                 tempVars.put("itemprev", vi.toString());
                 tempVars.put("itemprev-str", vi.toDisplayString());
             }

@@ -51,14 +51,14 @@ public class LeverActivator extends Activator implements Locatable {
     }
 
     public static LeverActivator create(ActivatorBase base, Param p) {
-        if(!(p instanceof BlockParam)) return null;
+        if (!(p instanceof BlockParam)) return null;
         BlockParam param = (BlockParam) p;
         Block targetBlock = param.getBlock();
         String line = param.toString();
-        if(targetBlock != null && targetBlock.getType() == Material.LEVER) {
+        if (targetBlock != null && targetBlock.getType() == Material.LEVER) {
             String state = "ANY";
-            if(line.equalsIgnoreCase("on")) state = "ON";
-            if(line.equalsIgnoreCase("off")) state = "OFF";
+            if (line.equalsIgnoreCase("on")) state = "ON";
+            if (line.equalsIgnoreCase("off")) state = "OFF";
             String world = targetBlock.getWorld().getName();
             int x = targetBlock.getX();
             int y = targetBlock.getY();
@@ -73,25 +73,25 @@ public class LeverActivator extends Activator implements Locatable {
         int y = cfg.getInt("y");
         int z = cfg.getInt("z");
         String state = cfg.getString("lever-state", "ANY");
-        if((!state.equalsIgnoreCase("on")) && (!state.equalsIgnoreCase("off"))) state = "ANY";
+        if ((!state.equalsIgnoreCase("on")) && (!state.equalsIgnoreCase("off"))) state = "ANY";
         return new LeverActivator(base, state, world, x, y, z);
     }
 
     @Override
     public boolean activate(Storage event) {
         LeverStorage le = (LeverStorage) event;
-        if(le.getLever() == null) return false;
-        if(!isLocatedAt(le.getLeverLocation())) return false;
-        if(this.state.equalsIgnoreCase("on") && le.isLeverPowered()) return false;
+        if (le.getLever() == null) return false;
+        if (!isLocatedAt(le.getLeverLocation())) return false;
+        if (this.state.equalsIgnoreCase("on") && le.isLeverPowered()) return false;
         return !this.state.equalsIgnoreCase("off") || (le.isLeverPowered());
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(l == null) return false;
-        if(!world.equals(l.getWorld().getName())) return false;
-        if(x != l.getBlockX()) return false;
-        if(y != l.getBlockY()) return false;
+        if (l == null) return false;
+        if (!world.equals(l.getWorld().getName())) return false;
+        if (x != l.getBlockX()) return false;
+        if (y != l.getBlockY()) return false;
         return (z == l.getBlockZ());
     }
 

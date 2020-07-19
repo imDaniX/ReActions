@@ -36,17 +36,17 @@ public class DamageActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         DamageStorage de = (DamageStorage) event;
-        if(!damageCauseCheck(de.getCause())) return false;
+        if (!damageCauseCheck(de.getCause())) return false;
         return sourceCheck(de.getSource());
     }
 
     private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {
-        if(damageCause.equals("ANY")) return true;
+        if (damageCause.equals("ANY")) return true;
         return dc.name().equals(damageCause);
     }
 
     private boolean sourceCheck(String st) {
-        if(source.name().equals("ANY")) return true;
+        if (source.name().equals("ANY")) return true;
         return st.equals(source.name());
     }
 

@@ -58,7 +58,7 @@ public class Timer {
     }
 
     public void parseTime() {
-        if(this.ingameTimer) {
+        if (this.ingameTimer) {
             this.timesIngame = new HashSet<>();
             this.timesIngame.addAll(Arrays.asList(params.getParam("time", "").split(",\\S*")));
         } else {
@@ -75,13 +75,13 @@ public class Timer {
 
 
     public boolean isTimeToRun() {
-        if(isPaused()) return false;
+        if (isPaused()) return false;
         return this.ingameTimer ? isIngameTimeToRun() : isServerTimeToRun();
     }
 
     private boolean isServerTimeToRun() {
-        if(this.ingameTimer) return false;
-        if(this.timeServer == null) return false;
+        if (this.ingameTimer) return false;
+        if (this.timeServer == null) return false;
         return (this.timeServer.isSatisfiedBy(new Date()));
     }
 

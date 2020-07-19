@@ -41,7 +41,7 @@ public class ItemStackValue implements DataValue {
     @Override
     public boolean set(String value) {
         ItemStack item = VirtualItem.fromString(value);
-        if(item != null) {
+        if (item != null) {
             this.value = item;
             return true;
         }

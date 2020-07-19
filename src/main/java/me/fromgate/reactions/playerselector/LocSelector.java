@@ -13,19 +13,19 @@ public class LocSelector implements Selector {
     @Override
     public Set<Player> selectPlayers(String param) {
         Set<Player> players = new HashSet<>();
-        if(param.isEmpty()) return players;
+        if (param.isEmpty()) return players;
         Param params = new Param(param, "loc");
         String locStr = params.getParam("loc");
-        if(locStr.isEmpty()) return players;
+        if (locStr.isEmpty()) return players;
         Location loc = LocationUtil.parseLocation(locStr, null);
-        if(loc == null) return players;
+        if (loc == null) return players;
         loc.setX(loc.getBlockX() + 0.5);
         loc.setY(loc.getBlockY() + 0.5);
         loc.setZ(loc.getBlockZ() + 0.5);
         double radius = params.getParam("radius", 1.0);
         radius *= radius;
         for (Player player : loc.getWorld().getPlayers())
-            if(player.getLocation().distanceSquared(loc) <= radius) players.add(player);
+            if (player.getLocation().distanceSquared(loc) <= radius) players.add(player);
         return players;
     }
 

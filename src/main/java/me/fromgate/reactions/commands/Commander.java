@@ -45,8 +45,8 @@ public class Commander implements CommandExecutor {
     }
 
     private static boolean addNewCommand(Cmd cmd) {
-        if(cmd.getCommand() == null) return false;
-        if(cmd.getCommand().isEmpty()) return false;
+        if (cmd.getCommand() == null) return false;
+        if (cmd.getCommand().isEmpty()) return false;
         plugin.getCommand(cmd.getCommand()).setExecutor(commander);
         commands.add(cmd);
         return true;
@@ -64,8 +64,8 @@ public class Commander implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String cmdLabel, String[] args) {
         for (Cmd cmd : commands) {
-            if(!cmd.getCommand().equalsIgnoreCase(command.getLabel())) continue;
-            if(cmd.executeCommand(sender, args)) return true;
+            if (!cmd.getCommand().equalsIgnoreCase(command.getLabel())) continue;
+            if (cmd.executeCommand(sender, args)) return true;
         }
         return false;
     }

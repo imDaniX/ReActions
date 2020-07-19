@@ -31,7 +31,7 @@ public class FlagChance implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         context.setTempVariable("CHANCE", param + "%");
         int d = 50;
-        if(Util.isInteger(param)) d = Integer.parseInt(param);
+        if (Util.isInteger(param)) d = Integer.parseInt(param);
         d = Math.max(Math.min(d, 100), 0);
         return Util.rollDiceChance(d);
     }

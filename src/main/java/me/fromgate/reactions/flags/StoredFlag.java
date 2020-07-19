@@ -29,7 +29,7 @@ public class StoredFlag {
     @Override
     public String toString() {
         String str = this.getFlagName() + "=" + value;
-        if(this.inverted) str = "!" + str;
+        if (this.inverted) str = "!" + str;
         return str;
     }
 }

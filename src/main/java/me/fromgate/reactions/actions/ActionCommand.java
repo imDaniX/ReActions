@@ -45,7 +45,7 @@ public class ActionCommand extends Action {
 
     private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
         Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
-            if(setOp) {
+            if (setOp) {
                 TemporaryOp.setTempOp(sender);
                 Bukkit.getServer().dispatchCommand(sender, commandLine);
                 TemporaryOp.removeTempOp(sender);
@@ -56,9 +56,9 @@ public class ActionCommand extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         Player player = context.getPlayer();
-        if(commandAs != CONSOLE && player == null) return false;
+        if (commandAs != CONSOLE && player == null) return false;
         String commandLine = params.getParam("param-line");
-        switch(commandAs) {
+        switch (commandAs) {
             case NORMAL:
                 dispatchCommand(false, player, commandLine);
                 break;

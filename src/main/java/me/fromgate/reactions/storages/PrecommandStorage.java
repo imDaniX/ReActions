@@ -52,7 +52,7 @@ public class PrecommandStorage extends Storage {
     @Override
     void defaultVariables(Map<String, String> tempVars) {
         String[] start = label.split(":");
-        if(start.length == 1) {
+        if (start.length == 1) {
             tempVars.put("prefix", start[0]);
             tempVars.put("label", start[0]);
         } else {

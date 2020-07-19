@@ -6,13 +6,13 @@ public enum HandType {
     ANY;
 
     public static HandType getByName(String clickStr) {
-        if(clickStr.equalsIgnoreCase("off")) return HandType.OFF;
-        if(clickStr.equalsIgnoreCase("any")) return HandType.ANY;
+        if (clickStr.equalsIgnoreCase("off")) return HandType.OFF;
+        if (clickStr.equalsIgnoreCase("any")) return HandType.ANY;
         return HandType.MAIN;
     }
 
     public boolean checkMain(boolean isMain) {
-        switch(this) {
+        switch (this) {
             case ANY:
                 return true;
             case MAIN:
@@ -24,7 +24,7 @@ public enum HandType {
     }
 
     public boolean checkOff(boolean isOff) {
-        switch(this) {
+        switch (this) {
             case ANY:
                 return true;
             case MAIN:

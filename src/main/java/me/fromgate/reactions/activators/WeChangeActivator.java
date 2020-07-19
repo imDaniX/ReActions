@@ -36,7 +36,7 @@ public class WeChangeActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         WeChangeStorage e = (WeChangeStorage) event;
-        if(!checkBlockType(e.getBlockType())) return false;
+        if (!checkBlockType(e.getBlockType())) return false;
         return region.isEmpty() || RaWorldGuard.isLocationInRegion(e.getLocation(), region);
     }
 
@@ -46,7 +46,7 @@ public class WeChangeActivator extends Activator {
 
     @Override
     public void save(ConfigurationSection cfg) {
-        if(blockType != null) cfg.set("block-type", this.blockType.name());
+        if (blockType != null) cfg.set("block-type", this.blockType.name());
         cfg.set("region", this.region);
     }
 

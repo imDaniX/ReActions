@@ -43,7 +43,7 @@ public class GodActivator extends Activator {
     }
 
     private boolean checkGod(boolean isGod) {
-        switch(god) {
+        switch (god) {
             case ANY:
                 return true;
             case TRUE:
@@ -69,8 +69,8 @@ public class GodActivator extends Activator {
         ANY;
 
         public static GodType getByName(String godStr) {
-            if(godStr.equalsIgnoreCase("true")) return GodType.TRUE;
-            if(godStr.equalsIgnoreCase("any")) return GodType.ANY;
+            if (godStr.equalsIgnoreCase("true")) return GodType.TRUE;
+            if (godStr.equalsIgnoreCase("any")) return GodType.ANY;
             return GodType.FALSE;
         }
     }

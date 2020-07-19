@@ -42,7 +42,7 @@ public class InventoryMenu implements Listener {
         menu.clear();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
         YamlConfiguration cfg = new YamlConfiguration();
-        if(FileUtil.loadCfg(cfg, f, "Failed to load menu configuration file"))
+        if (FileUtil.loadCfg(cfg, f, "Failed to load menu configuration file"))
             for (String key : cfg.getKeys(false)) {
                 VirtualInventory vi = new VirtualInventory(cfg, key);
                 putMenu(key, vi);
@@ -59,29 +59,29 @@ public class InventoryMenu implements Listener {
     }
 
     public static boolean add(String id, int size, String title) {
-        if(containsMenu(id)) return false;
+        if (containsMenu(id)) return false;
         putMenu(id, new VirtualInventory(size, title));
         save();
         return true;
     }
 
     public static boolean set(String id, Param params) {
-        if(!containsMenu(id)) return false;
+        if (!containsMenu(id)) return false;
         VirtualInventory vi = getMenu(id);
         String title = params.getParam("title", vi.getTitle());
         int size = params.getParam("size", vi.getSize());
         size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 
         List<String> activators = vi.getActivators();
-        if(activators.size() < size)
+        if (activators.size() < size)
             for (int i = activators.size(); i < size; i++) activators.add("");
         List<String> slots = vi.getSlots();
-        if(slots.size() < size)
+        if (slots.size() < size)
             for (int i = slots.size(); i < size; i++) slots.add("");
         for (int i = 1; i <= size; i++) {
-            if(params.isParamsExists("activator" + i))
+            if (params.isParamsExists("activator" + i))
                 activators.set(i - 1, params.getParam("activator" + i, ""));
-            if(params.isParamsExists("item" + i))
+            if (params.isParamsExists("item" + i))
                 slots.set(i - 1, params.getParam("item" + i, ""));
         }
         vi.setTitle(title);
@@ -98,12 +98,12 @@ public class InventoryMenu implements Listener {
     }
 
     private static List<String> getActivators(Param param) {
-        if(param.isParamsExists("menu")) {
+        if (param.isParamsExists("menu")) {
             String id = param.getParam("menu", "");
-            if(containsMenu(id)) return getMenu(id).getActivators();
+            if (containsMenu(id)) return getMenu(id).getActivators();
         } else {
             int size = param.getParam("size", 9);
-            if(size > 0) {
+            if (size > 0) {
                 List<String> activators = new ArrayList<>();
                 for (int i = 1; i <= size; i++)
                     activators.add(param.getParam("exec" + i, ""));
@@ -116,19 +116,19 @@ public class InventoryMenu implements Listener {
     public static Inventory getInventory(Param param) {
         RaInventoryHolder holder = new RaInventoryHolder(getActivators(param));
         Inventory inv = null;
-        if(param.isParamsExists("menu")) {
+        if (param.isParamsExists("menu")) {
             String id = param.getParam("menu", "");
-            if(containsMenu(id)) inv = getMenu(id).getInventory();
+            if (containsMenu(id)) inv = getMenu(id).getInventory();
         } else {
             String title = param.getParam("title", "ReActions Menu");
             int size = param.getParam("size", 9);
-            if(size <= 0) return null;
+            if (size <= 0) return null;
             inv = Bukkit.createInventory(holder, size, title);
             for (int i = 1; i <= size; i++) {
                 String slotStr = "slot" + i;
-                if(!param.isParamsExists(slotStr)) continue;
+                if (!param.isParamsExists(slotStr)) continue;
                 ItemStack slotItem = VirtualItem.fromString(param.getParam(slotStr));
-                if(slotItem == null) continue;
+                if (slotItem == null) continue;
                 inv.setItem(i - 1, slotItem);
             }
         }
@@ -139,14 +139,14 @@ public class InventoryMenu implements Listener {
     public static boolean createAndOpenInventory(Player player, Param params, Map<String, String> tempVars) {
         tempvars = tempVars;
         Inventory inv = getInventory(params);
-        if(inv == null) return false;
+        if (inv == null) return false;
         openInventory(player, inv);
         return true;
     }
 
     private static void openInventory(final Player player, final Inventory inv) {
         Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
-            if(player.isOnline()) {
+            if (player.isOnline()) {
                 player.closeInventory();
                 player.openInventory(inv);
             }
@@ -158,7 +158,7 @@ public class InventoryMenu implements Listener {
     }
 
     private static List<String> getActivators(Inventory inventory) {
-        if(isMenu(inventory)) return ((RaInventoryHolder) inventory.getHolder()).getActivators();
+        if (isMenu(inventory)) return ((RaInventoryHolder) inventory.getHolder()).getActivators();
         return new ArrayList<>();
     }
 
@@ -175,13 +175,13 @@ public class InventoryMenu implements Listener {
     }
 
     public static void printMenu(CommandSender sender, String id) {
-        if(containsMenu(id)) {
+        if (containsMenu(id)) {
             VirtualInventory vi = getMenu(id);
             Msg.printMSG(sender, "msg_menuinfotitle", 'e', '6', id, vi.getSize(), vi.getTitle());
             for (int i = 0; i < vi.getSize(); i++) {
                 String exec = vi.getActivators().get(i);
                 String slot = vi.getSlots().get(i);
-                if(exec.isEmpty() && slot.isEmpty()) continue;
+                if (exec.isEmpty() && slot.isEmpty()) continue;
                 slot = itemToString(slot);
                 Msg.printMSG(sender, "msg_menuinfoslot", i + 1, exec.isEmpty() ? "N/A" : exec, slot.isEmpty() ? "AIR" : slot);
             }
@@ -192,7 +192,7 @@ public class InventoryMenu implements Listener {
         int linesPerPage = (sender instanceof Player) ? 15 : 10000;
         List<String> menuList = new ArrayList<>();
         for (String id : menu.keySet()) {
-            if(mask.isEmpty() || id.toLowerCase().contains(mask.toLowerCase())) {
+            if (mask.isEmpty() || id.toLowerCase().contains(mask.toLowerCase())) {
                 menuList.add(id + " : " + getMenu(id).getTitle());
             }
         }
@@ -200,9 +200,9 @@ public class InventoryMenu implements Listener {
     }
 
     private static String itemToString(String itemStr) {
-        if(itemStr.isEmpty()) return "AIR";
+        if (itemStr.isEmpty()) return "AIR";
         ItemStack item = VirtualItem.fromString(itemStr);
-        if(item == null || item.getType() == Material.AIR) return "AIR";
+        if (item == null || item.getType() == Material.AIR) return "AIR";
         String returnStr = item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : "";
         String itemTypeData = item.getType().name() + (ItemUtil.getDurability(item) == 0 ? "" : ":" + ItemUtil.getDurability(item)) + (item.getAmount() == 1 ? "" : "*" + item.getAmount());
         return ChatColor.stripColor(returnStr.isEmpty() ? itemTypeData : returnStr + "[" + itemTypeData + "]");
@@ -210,15 +210,15 @@ public class InventoryMenu implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        if(!isMenu(event.getInventory())) return;
+        if (!isMenu(event.getInventory())) return;
         event.setCancelled(true);
         Player player = (Player) event.getWhoClicked();
         int clickedSlot = event.getRawSlot();
-        if(clickedSlot < 0 || clickedSlot >= event.getInventory().getSize()) return;
+        if (clickedSlot < 0 || clickedSlot >= event.getInventory().getSize()) return;
         List<String> activators = getActivators(event.getInventory());
-        if(activators.size() > clickedSlot) {
+        if (activators.size() > clickedSlot) {
             String activator = activators.get(clickedSlot);
-            if(!activator.isEmpty()) {
+            if (!activator.isEmpty()) {
                 StoragesManager.raiseExecActivator(player, new Param(activator, "activator"), tempvars);
             }
         }
@@ -228,6 +228,6 @@ public class InventoryMenu implements Listener {
 
     @EventHandler
     public void onInventoryMove(InventoryDragEvent event) {
-        if(isMenu(event.getInventory())) event.setCancelled(true);
+        if (isMenu(event.getInventory())) event.setCancelled(true);
     }
 }

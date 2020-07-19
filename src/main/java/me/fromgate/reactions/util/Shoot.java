@@ -57,31 +57,31 @@ public class Shoot {
         for (LivingEntity le : getEntityBeam(shooter, getBeam(shooter, distance), onehit)) {
             double damage = (double) Util.getMinMaxRandom(params.getParam("damage", "1"));
             boolean shoot = true;
-            if(damage > 0) {
+            if (damage > 0) {
                 shoot = damageEntity(shooter, le, damage, knockbackTarget);
             }
-            if(shoot && params.hasAnyParam("run")) {
+            if (shoot && params.hasAnyParam("run")) {
                 executeActivator(shooter instanceof Player ? (Player) shooter : null, le, params.getParam("run"));
             }
         }
     }
 
     private static String getMobName(LivingEntity mob) {
-        if(mob.getCustomName() == null) return mob.getType().name();
+        if (mob.getCustomName() == null) return mob.getType().name();
         return mob.getCustomName();
     }
 
     private static void executeActivator(Player shooter, LivingEntity target, String paramStr) {
         Param param = Param.parseParams(paramStr);
-        if(param.isEmpty() || !param.hasAnyParam("activator", "exec")) return;
+        if (param.isEmpty() || !param.hasAnyParam("activator", "exec")) return;
         Player player = target instanceof Player ? (Player) target : null;
-        if(player == null && param.getParam("playeronly", true)) return;
+        if (player == null && param.getParam("playeronly", true)) return;
         param.set("player", player == null ? "null" : player.getName());
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("targettype", target.getType().name());
         tempVars.put("targetname", (player == null) ? getMobName(target) : player.getName());
         tempVars.put("targetloc", LocationUtil.locationToString(target.getLocation()));
-        if(shooter != null) {
+        if (shooter != null) {
             tempVars.put("shooter", shooter.getName());
             tempVars.put("shooterloc", LocationUtil.locationToString(shooter.getLocation()));
         }
@@ -93,7 +93,7 @@ public class Shoot {
         BlockIterator bi = new BlockIterator(p, distance);
         while (bi.hasNext()) {
             Block b = bi.next();
-            if(isEmpty(b, p)) beam.add(b);
+            if (isEmpty(b, p)) beam.add(b);
             else break;
         }
         return beam;
@@ -103,21 +103,21 @@ public class Shoot {
         Set<LivingEntity> list = new HashSet<>();
         for (Block b : beam)
             for (Entity e : b.getChunk().getEntities()) {
-                if(!(e instanceof LivingEntity)) continue;
+                if (!(e instanceof LivingEntity)) continue;
                 LivingEntity le = (LivingEntity) e;
-                if(le.equals(shooter)) continue;
-                if(isEntityAffectByBeamBlock(b, le)) {
+                if (le.equals(shooter)) continue;
+                if (isEntityAffectByBeamBlock(b, le)) {
                     list.add(le);
-                    if(hitSingle) return list;
+                    if (hitSingle) return list;
                 }
             }
         return list;
     }
 
     private static boolean isEmpty(Block b, LivingEntity shooter) {
-        if(!b.getType().isSolid()) return true;
-        if(ItemUtil.isItemInList(b.getType(), 0, actionShootThrough)) return true;
-        if((shooter instanceof Player) && (isShotAndBreak(b, (Player) shooter))) {
+        if (!b.getType().isSolid()) return true;
+        if (ItemUtil.isItemInList(b.getType(), 0, actionShootThrough)) return true;
+        if ((shooter instanceof Player) && (isShotAndBreak(b, (Player) shooter))) {
             b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
             b.breakNaturally();
             return true;
@@ -133,12 +133,12 @@ public class Shoot {
     }
 
     private static boolean isShotAndBreak(Block b, Player p) {
-        if(ItemUtil.isItemInList(b.getType(), 0, actionShootBreak)) return breakBlock(b, p);
+        if (ItemUtil.isItemInList(b.getType(), 0, actionShootBreak)) return breakBlock(b, p);
         return false;
     }
 
     private static boolean isEntityAffectByBeamBlock(Block b, LivingEntity le) {
-        if(le.getLocation().getBlock().equals(b)) return true;
+        if (le.getLocation().getBlock().equals(b)) return true;
         return le.getEyeLocation().getBlock().equals(b);
     }
 
@@ -151,7 +151,7 @@ public class Shoot {
 
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(damager, entity, DamageCause.ENTITY_ATTACK, damage);
         Bukkit.getServer().getPluginManager().callEvent(event);
-        if(!(event.isCancelled()))
+        if (!(event.isCancelled()))
             entity.damage(damage);
         return !event.isCancelled();
     }

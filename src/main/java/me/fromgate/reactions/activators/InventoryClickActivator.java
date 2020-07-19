@@ -33,11 +33,11 @@ public class InventoryClickActivator extends Activator {
     }
 
     private static String getNumberKeyByName(String keyStr) {
-        if(keyStr.equalsIgnoreCase("ANY")) return "ANY";
+        if (keyStr.equalsIgnoreCase("ANY")) return "ANY";
         int key = Integer.parseInt(keyStr);
-        if(key > 0) {
+        if (key > 0) {
             for (int i = 1; i < 10; i++) {
-                if(key == i) return String.valueOf(i);
+                if (key == i) return String.valueOf(i);
             }
         }
         return "ANY";
@@ -45,9 +45,9 @@ public class InventoryClickActivator extends Activator {
 
     private static String getSlotByName(String slotStr) {
         int slot = Integer.parseInt(slotStr);
-        if(slot > -1) {
+        if (slot > -1) {
             for (int i = 0; i < 36; i++) {
-                if(slot == i) return String.valueOf(i);
+                if (slot == i) return String.valueOf(i);
             }
         }
         return "ANY";
@@ -80,15 +80,15 @@ public class InventoryClickActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         InventoryClickStorage pice = (InventoryClickStorage) event;
-        if(!inventoryName.isEmpty() && !pice.getInventoryName().equalsIgnoreCase(inventoryName)) return false;
-        if(pice.getClickType() == null) return false;
-        if(!clickCheck(pice.getClickType())) return false;
-        if(!actionCheck(pice.getAction())) return false;
-        if(!inventoryCheck(pice.getInventoryType())) return false;
-        if(!slotTypeCheck(pice.getSlotType())) return false;
+        if (!inventoryName.isEmpty() && !pice.getInventoryName().equalsIgnoreCase(inventoryName)) return false;
+        if (pice.getClickType() == null) return false;
+        if (!clickCheck(pice.getClickType())) return false;
+        if (!actionCheck(pice.getAction())) return false;
+        if (!inventoryCheck(pice.getInventoryType())) return false;
+        if (!slotTypeCheck(pice.getSlotType())) return false;
         int key = pice.getNumberKey();
-        if(!checkItem(pice.getItem(), key, pice.getBottomInventory())) return false;
-        if(!checkNumberKey(key)) return false;
+        if (!checkItem(pice.getItem(), key, pice.getBottomInventory())) return false;
+        if (!checkNumberKey(key)) return false;
         return checkSlot(pice.getSlot());
     }
 
@@ -110,39 +110,39 @@ public class InventoryClickActivator extends Activator {
     }
 
     private boolean clickCheck(org.bukkit.event.inventory.ClickType ct) {
-        if(click.name().equals("ANY")) return true;
+        if (click.name().equals("ANY")) return true;
         return ct.name().equals(click.name());
     }
 
     private boolean actionCheck(org.bukkit.event.inventory.InventoryAction act) {
-        if(action.name().equals("ANY")) return true;
+        if (action.name().equals("ANY")) return true;
         return act.name().equals(action.name());
     }
 
     private boolean inventoryCheck(org.bukkit.event.inventory.InventoryType it) {
-        if(inventory.name().equals("ANY")) return true;
+        if (inventory.name().equals("ANY")) return true;
         return it.name().equals(inventory.name());
     }
 
     private boolean slotTypeCheck(org.bukkit.event.inventory.InventoryType.SlotType sl) {
-        if(slotType.name().equals("ANY")) return true;
+        if (slotType.name().equals("ANY")) return true;
         return sl.name().equals(slotType.name());
     }
 
     private boolean checkItem(ItemStack item, int key, Inventory bottomInventory) {
-        if(this.itemStr.isEmpty()) return true;
+        if (this.itemStr.isEmpty()) return true;
         boolean result = ItemUtil.compareItemStr(item, this.itemStr, true);
-        if(!result && key > -1) return ItemUtil.compareItemStr(bottomInventory.getItem(key), this.itemStr, true);
+        if (!result && key > -1) return ItemUtil.compareItemStr(bottomInventory.getItem(key), this.itemStr, true);
         return result;
     }
 
     private boolean checkNumberKey(int key) {
-        if(numberKey.isEmpty() || numberKey.equals("ANY") || Integer.parseInt(numberKey) <= 0) return true;
+        if (numberKey.isEmpty() || numberKey.equals("ANY") || Integer.parseInt(numberKey) <= 0) return true;
         return key == Integer.parseInt(numberKey) - 1;
     }
 
     private boolean checkSlot(int slot) {
-        if(slotStr.isEmpty() || slotStr.equals("ANY") || Integer.parseInt(slotStr) <= 0) return true;
+        if (slotStr.isEmpty() || slotStr.equals("ANY") || Integer.parseInt(slotStr) <= 0) return true;
         return slot == Integer.parseInt(slotStr);
     }
 
@@ -178,9 +178,9 @@ public class InventoryClickActivator extends Activator {
         WINDOW_BORDER_RIGHT;
 
         public static ClickType getByName(String clickStr) {
-            if(clickStr != null) {
+            if (clickStr != null) {
                 for (ClickType clickType : values()) {
-                    if(clickStr.equalsIgnoreCase(clickType.name())) {
+                    if (clickStr.equalsIgnoreCase(clickType.name())) {
                         return clickType;
                     }
                 }
@@ -212,9 +212,9 @@ public class InventoryClickActivator extends Activator {
         UNKNOWN;
 
         public static InventoryAction getByName(String actionStr) {
-            if(actionStr != null) {
+            if (actionStr != null) {
                 for (InventoryAction action : values()) {
-                    if(actionStr.equalsIgnoreCase(action.name())) {
+                    if (actionStr.equalsIgnoreCase(action.name())) {
                         return action;
                     }
                 }
@@ -242,9 +242,9 @@ public class InventoryClickActivator extends Activator {
         WORKBENCH;
 
         public static InventoryType getByName(String inventoryStr) {
-            if(inventoryStr != null) {
+            if (inventoryStr != null) {
                 for (InventoryType inventoryType : values()) {
-                    if(inventoryStr.equalsIgnoreCase(inventoryType.name())) {
+                    if (inventoryStr.equalsIgnoreCase(inventoryType.name())) {
                         return inventoryType;
                     }
                 }
@@ -264,9 +264,9 @@ public class InventoryClickActivator extends Activator {
         RESULT;
 
         public static SlotType getByName(String slotStr) {
-            if(slotStr != null) {
+            if (slotStr != null) {
                 for (SlotType slotType : values()) {
-                    if(slotStr.equalsIgnoreCase(slotType.name())) {
+                    if (slotStr.equalsIgnoreCase(slotType.name())) {
                         return slotType;
                     }
                 }

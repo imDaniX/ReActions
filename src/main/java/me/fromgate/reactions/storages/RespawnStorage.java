@@ -54,9 +54,9 @@ public class RespawnStorage extends Storage {
     @Override
     void defaultVariables(Map<String, String> tempVars) {
         tempVars.put("cause", deathCause.name());
-        if(killer != null) {
+        if (killer != null) {
             tempVars.put("killer-type", killer.getType().name());
-            if(killer.getType() == EntityType.PLAYER) {
+            if (killer.getType() == EntityType.PLAYER) {
                 tempVars.put("targetplayer", killer.getName());
                 tempVars.put("killer-name", killer.getName());
             } else {

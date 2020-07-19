@@ -43,7 +43,7 @@ public class FlagDelay implements Flag {
         String id = param;
 
         Param params = new Param(param);
-        if(params.isParamsExists("id")) {
+        if (params.isParamsExists("id")) {
             id = params.getParam("id");
             updateTime = TimeUtil.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
             playerName = params.getParam("player", playerName);

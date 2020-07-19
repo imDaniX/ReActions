@@ -6,13 +6,13 @@ public enum ClickType {
     ANY;
 
     public static ClickType getByName(String clickStr) {
-        if(clickStr.equalsIgnoreCase("left")) return ClickType.LEFT;
-        if(clickStr.equalsIgnoreCase("any")) return ClickType.ANY;
+        if (clickStr.equalsIgnoreCase("left")) return ClickType.LEFT;
+        if (clickStr.equalsIgnoreCase("any")) return ClickType.ANY;
         return ClickType.RIGHT;
     }
 
     public boolean checkLeft(boolean left) {
-        switch(this) {
+        switch (this) {
             case ANY:
                 return true;
             case LEFT:
@@ -24,7 +24,7 @@ public enum ClickType {
     }
 
     public boolean checkRight(boolean right) {
-        switch(this) {
+        switch (this) {
             case ANY:
                 return true;
             case LEFT:

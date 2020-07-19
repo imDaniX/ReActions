@@ -54,7 +54,7 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
 
     @Override
     public boolean activate(Storage event) {
-        if(itemStr.isEmpty() || (VirtualItem.fromString(itemStr) == null)) {
+        if (itemStr.isEmpty() || (VirtualItem.fromString(itemStr) == null)) {
             Msg.logOnce(getBase().getName() + "activatorholdempty", "Failed to parse itemStr of activator " + getBase().getName());
             return false;
         }

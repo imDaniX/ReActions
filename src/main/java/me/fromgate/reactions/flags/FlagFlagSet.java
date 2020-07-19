@@ -40,11 +40,11 @@ public class FlagFlagSet implements Flag {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             String a = String.valueOf(c);
-            if(c == '{') {
+            if (c == '{') {
                 count++;
-                if(count != 1) a = "#BKT1#";
-            } else if(c == '}') {
-                if(count != 1) a = "#BKT2#";
+                if (count != 1) a = "#BKT1#";
+            } else if (c == '}') {
+                if (count != 1) a = "#BKT2#";
                 count--;
             }
             r.append(a);
@@ -55,13 +55,13 @@ public class FlagFlagSet implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         List<String> flagList = parseParamsList(param);
-        if(flagList.isEmpty()) return false;
+        if (flagList.isEmpty()) return false;
         for (String flagStr : flagList) {
             boolean negative = flagStr.startsWith("!");
-            if(negative) flagStr = flagStr.replaceFirst("!", "");
+            if (negative) flagStr = flagStr.replaceFirst("!", "");
             String[] fnv = flagStr.split(":", 2);
-            if(fnv.length != 2) continue;
-            if(Flags.checkFlag(context, fnv[0], BRACES.matcher(fnv[1]).replaceAll(""), negative)) {
+            if (fnv.length != 2) continue;
+            if (Flags.checkFlag(context, fnv[0], BRACES.matcher(fnv[1]).replaceAll(""), negative)) {
                 return true;
             }
         }

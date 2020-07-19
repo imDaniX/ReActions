@@ -28,9 +28,9 @@ public class DamageByBlockActivator extends Activator implements Locatable {
     }
 
     private static String getCauseByName(String damageCauseStr) {
-        if(damageCauseStr != null) {
+        if (damageCauseStr != null) {
             for (EntityDamageEvent.DamageCause damageCause : EntityDamageEvent.DamageCause.values()) {
-                if(damageCauseStr.equalsIgnoreCase(damageCause.name())) {
+                if (damageCauseStr.equalsIgnoreCase(damageCause.name())) {
                     return damageCause.name();
                 }
             }
@@ -57,26 +57,26 @@ public class DamageByBlockActivator extends Activator implements Locatable {
     public boolean activate(Storage event) {
         DamageByBlockStorage db = (DamageByBlockStorage) event;
         Block damagerBlock = db.getBlockDamager();
-        if(damagerBlock == null) return false;
-        if(!isActivatorBlock(damagerBlock)) return false;
+        if (damagerBlock == null) return false;
+        if (!isActivatorBlock(damagerBlock)) return false;
         return damageCauseCheck(db.getCause());
     }
 
     private boolean checkLocations(Block block) {
-        if(this.blockLocation.isEmpty()) return true;
+        if (this.blockLocation.isEmpty()) return true;
         return this.isLocatedAt(block.getLocation());
     }
 
     private boolean isActivatorBlock(Block block) {
-        if(!this.blockStr.isEmpty() && !ItemUtil.compareItemStr(block, this.blockStr)) return false;
+        if (!this.blockStr.isEmpty() && !ItemUtil.compareItemStr(block, this.blockStr)) return false;
         return checkLocations(block);
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(this.blockLocation.isEmpty()) return false;
+        if (this.blockLocation.isEmpty()) return false;
         Location loc = LocationUtil.parseLocation(this.blockLocation, null);
-        if(loc == null) return false;
+        if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&
                 l.getBlockY() == loc.getBlockY() &&
@@ -89,7 +89,7 @@ public class DamageByBlockActivator extends Activator implements Locatable {
     }
 
     private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {
-        if(damageCause.equals("ANY")) return true;
+        if (damageCause.equals("ANY")) return true;
         return dc.name().equals(damageCause);
     }
 

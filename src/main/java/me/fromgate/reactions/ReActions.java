@@ -63,7 +63,7 @@ public class ReActions extends JavaPlugin {
         Cfg.save();
         Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
 
-        if(!getDataFolder().exists()) getDataFolder().mkdirs();
+        if (!getDataFolder().exists()) getDataFolder().mkdirs();
 
         Commander.init(this);
         TimersManager.init();
@@ -74,7 +74,7 @@ public class ReActions extends JavaPlugin {
         RaVault.init();
         WaitingManager.init();
         Delayer.load();
-        if(!Cfg.playerSelfVarFile) Variables.load();
+        if (!Cfg.playerSelfVarFile) Variables.load();
         else Variables.loadVars();
         LocationHolder.loadLocs();
         SQLManager.init();

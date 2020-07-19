@@ -35,7 +35,7 @@ public class ItemWearStorage extends Storage {
 
     public boolean isItemWeared(String itemStr) {
         for (ItemStack armour : getPlayer().getInventory().getArmorContents())
-            if(ItemUtil.compareItemStr(armour, itemStr)) return true;
+            if (ItemUtil.compareItemStr(armour, itemStr)) return true;
         return false;
     }
 

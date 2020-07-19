@@ -13,10 +13,10 @@ public class CmdExec extends Cmd {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if(args.length == 0) return false;
+        if (args.length == 0) return false;
         String commandLine = String.join(" ", args);
         Param param = new Param(commandLine, "activator");
-        if(StoragesManager.raiseExecActivator(sender, param)) {
+        if (StoragesManager.raiseExecActivator(sender, param)) {
             Msg.printMSG(sender, "cmd_runplayer", commandLine);
         } else Msg.printMSG(sender, "cmd_runplayerfail", 'c', '6', commandLine);
         return true;

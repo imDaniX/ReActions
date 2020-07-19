@@ -19,11 +19,11 @@ public class CmdInfo extends Cmd {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         String id = args.length > 1 ? args[1] : "";
-        if(id.isEmpty()) return false;
+        if (id.isEmpty()) return false;
         String far = args.length > 2 ? args[2] : "";
-        if(ActivatorsManager.contains(id)) {
+        if (ActivatorsManager.contains(id)) {
             printActInfo(sender, id, far);
-        } else if(id.equalsIgnoreCase("menu")) {
+        } else if (id.equalsIgnoreCase("menu")) {
             InventoryMenu.printMenu(sender, far);
         } else Msg.printMSG(sender, "cmd_unknownbutton", id);
         return true;
@@ -36,7 +36,7 @@ public class CmdInfo extends Cmd {
         boolean f;
         boolean a;
         boolean r;
-        if(far.isEmpty()) {
+        if (far.isEmpty()) {
             f = true;
             a = true;
             r = true;
@@ -49,7 +49,7 @@ public class CmdInfo extends Cmd {
         Msg.printMSG(sender, "&5☆ &d&l" + Msg.MSG_ACTINFOTITLE.getText("NOCOLOR") + " &r&5☆");
         Msg.printMSG(sender, "msg_actinfo", base.getName(), act.getType(), base.getGroup());
         Msg.printMSG(sender, "msg_actinfo2", base.getFlags().size(), base.getActions().size(), base.getReactions().size());
-        if(f && (!base.getFlags().isEmpty())) {
+        if (f && (!base.getFlags().isEmpty())) {
             List<String> flg = new ArrayList<>();
             for (int i = 0; i < base.getFlags().size(); i++) {
                 StoredFlag flag = base.getFlags().get(i);
@@ -57,27 +57,27 @@ public class CmdInfo extends Cmd {
             }
             Msg.printPage(sender, flg, Msg.LST_FLAGS, 1, 100, true);
         }
-        if(a && (!base.getActions().isEmpty())) {
+        if (a && (!base.getActions().isEmpty())) {
             List<String> flg = new ArrayList<>();
             for (int i = 0; i < base.getActions().size(); i++) {
                 String action = base.getActions().get(i).getActionName();
                 String param = base.getActions().get(i).getValue();
-                if(action.equalsIgnoreCase("tp")) {
+                if (action.equalsIgnoreCase("tp")) {
                     Location loc = LocationUtil.parseCoordinates(param);//Util.parseLocation(param);
-                    if(loc != null) param = LocationUtil.locationToStringFormatted(loc);
+                    if (loc != null) param = LocationUtil.locationToStringFormatted(loc);
                 }
                 flg.add("  &e" + action + " &3= &a" + param);
             }
             Msg.printPage(sender, flg, Msg.LST_ACTIONS, 1, 100, true);
         }
-        if(r && (!base.getReactions().isEmpty())) {
+        if (r && (!base.getReactions().isEmpty())) {
             List<String> flg = new ArrayList<>();
             for (int i = 0; i < base.getReactions().size(); i++) {
                 String action = base.getReactions().get(i).getActionName();
                 String param = base.getReactions().get(i).getValue();
-                if(action.equalsIgnoreCase("tp")) {
+                if (action.equalsIgnoreCase("tp")) {
                     Location loc = LocationUtil.parseCoordinates(param);
-                    if(loc != null) param = LocationUtil.locationToStringFormatted(loc);
+                    if (loc != null) param = LocationUtil.locationToStringFormatted(loc);
                 }
                 flg.add("  &e" + action + " &3= &a" + param);
             }

@@ -42,21 +42,21 @@ public class ActionBlockSet extends Action {
         boolean drop = params.getParam("drop", false);
         Param itemParam = new Param(params.getParam("block", "AIR"), "type");
         ItemStack item = null;
-        if(!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
+        if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
             item = VirtualItem.fromMap(itemParam.getMap());
-            if((item == null) || ((!item.getType().isBlock()))) {
+            if ((item == null) || ((!item.getType().isBlock()))) {
                 Msg.logOnce("wrongblock" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
                 return false;
             }
         }
 
         Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), null);
-        if(loc == null) return false;
+        if (loc == null) return false;
         Block b = loc.getBlock();
 
-        if(b.getType() != Material.AIR && drop) b.breakNaturally();
+        if (b.getType() != Material.AIR && drop) b.breakNaturally();
 
-        if(item != null) {
+        if (item != null) {
             b.setType(item.getType());
             //b.setBlockData(item.getData(),phys);
             //b.setTypeIdAndData(item.getTypeId(), item.getData().getData(), phys);

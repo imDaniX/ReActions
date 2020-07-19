@@ -54,7 +54,7 @@ public class VariableActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         VariableStorage ve = (VariableStorage) event;
-        if(!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
+        if (!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
         return !personal || ve.getPlayer() == null;
     }
 
@@ -79,7 +79,7 @@ public class VariableActivator extends Activator {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
         sb.append("variable id:").append(this.id);
-        if(this.personal) sb.append(" personal:true");
+        if (this.personal) sb.append(" personal:true");
         sb.append(")");
         return sb.toString();
     }

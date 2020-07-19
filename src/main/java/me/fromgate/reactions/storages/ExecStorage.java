@@ -50,7 +50,7 @@ public class ExecStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        if(this.tempVars != null && !this.tempVars.isEmpty())
+        if (this.tempVars != null && !this.tempVars.isEmpty())
             tempVars.putAll(this.tempVars);
     }
 }

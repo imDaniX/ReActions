@@ -29,9 +29,9 @@ public class DamageByMobActivator extends Activator {
     }
 
     private static String getCauseByName(String damageCauseStr) {
-        if(damageCauseStr != null) {
+        if (damageCauseStr != null) {
             for (EntityDamageEvent.DamageCause damageCause : EntityDamageEvent.DamageCause.values()) {
-                if(damageCauseStr.equalsIgnoreCase(damageCause.name())) {
+                if (damageCauseStr.equalsIgnoreCase(damageCause.name())) {
                     return damageCause.name();
                 }
             }
@@ -40,10 +40,10 @@ public class DamageByMobActivator extends Activator {
     }
 
     private static String getEntityTypeByName(String sType) {
-        if(sType != null) {
+        if (sType != null) {
             sType = sType.toUpperCase();
             for (EntityType type : EntityType.values()) {
-                if(sType.equals(type.name()))
+                if (sType.equals(type.name()))
                     return type.name();
             }
         }
@@ -53,7 +53,7 @@ public class DamageByMobActivator extends Activator {
     public static DamageByMobActivator create(ActivatorBase base, Param param) {
         String damagerType = param.toString();
         String damagerName;
-        if(damagerType.contains("$")) {
+        if (damagerType.contains("$")) {
             damagerName = getEntityTypeByName(damagerType.substring(0, damagerType.indexOf("$")));
             damagerType = damagerType.substring(damagerName.length() + 1);
         } else {
@@ -77,20 +77,20 @@ public class DamageByMobActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         DamageByMobStorage pde = (DamageByMobStorage) event;
-        if(damagerType.isEmpty()) return false;
+        if (damagerType.isEmpty()) return false;
         Entity damager = pde.getDamager();
-        if(damager != null && !isActivatorDamager(damager)) return false;
+        if (damager != null && !isActivatorDamager(damager)) return false;
         return damageCauseCheck(pde.getCause());
     }
 
     private boolean isActivatorDamager(Entity damager) {
-        if(!damagerName.isEmpty() && damagerName.equals(getMobName(damager))) return false;
-        if(damagerType.equalsIgnoreCase("ANY")) return true;
+        if (!damagerName.isEmpty() && damagerName.equals(getMobName(damager))) return false;
+        if (damagerType.equalsIgnoreCase("ANY")) return true;
         return damager.getType().name().equalsIgnoreCase(this.damagerType);
     }
 
     private boolean isActivatorEntity(Entity entity) {
-        if(entityType.equalsIgnoreCase("ANY")) return true;
+        if (entityType.equalsIgnoreCase("ANY")) return true;
         return entity.getType().name().equalsIgnoreCase(this.entityType);
     }
 
@@ -99,7 +99,7 @@ public class DamageByMobActivator extends Activator {
     }
 
     private boolean damageCauseCheck(EntityDamageEvent.DamageCause dc) {
-        if(damageCause.equals("ANY")) return true;
+        if (damageCause.equals("ANY")) return true;
         return dc.name().equals(damageCause);
     }
 

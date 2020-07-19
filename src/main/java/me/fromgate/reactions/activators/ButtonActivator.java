@@ -48,7 +48,7 @@ public class ButtonActivator extends Activator implements Locatable {
     }
 
     public static ButtonActivator create(ActivatorBase base, Param p) {
-        if(!(p instanceof BlockParam)) return null;
+        if (!(p instanceof BlockParam)) return null;
         BlockParam param = (BlockParam) p;
         Location loc = param.getBlock().getLocation();
         return new ButtonActivator(base, loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
@@ -70,10 +70,10 @@ public class ButtonActivator extends Activator implements Locatable {
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if(l == null) return false;
-        if(!world.equalsIgnoreCase(l.getWorld().getName())) return false;
-        if(x != l.getBlockX()) return false;
-        if(y != l.getBlockY()) return false;
+        if (l == null) return false;
+        if (!world.equalsIgnoreCase(l.getWorld().getName())) return false;
+        if (x != l.getBlockX()) return false;
+        if (y != l.getBlockY()) return false;
         return (z == l.getBlockZ());
     }
 

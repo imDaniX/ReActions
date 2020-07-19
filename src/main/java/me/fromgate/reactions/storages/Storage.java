@@ -78,12 +78,12 @@ public abstract class Storage {
     }
 
     private void setDefaultVariables(Map<String, String> tempVars) {
-        if(this.tempVars != null) return;
+        if (this.tempVars != null) return;
         this.tempVars = Collections.unmodifiableMap(tempVars);
     }
 
     private void setDefaultChangeables(Map<String, DataValue> changeables) {
-        if(this.changeables != null) return;
+        if (this.changeables != null) return;
         this.changeables = changeables;
     }
 

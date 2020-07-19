@@ -24,13 +24,13 @@ public class PlaceholderPlayer extends Placeholder {
     static {
         NON_SOLID = new HashSet<>();
         for (Material mat : Material.values())
-            if(!mat.isSolid()) NON_SOLID.add(mat);
+            if (!mat.isSolid()) NON_SOLID.add(mat);
     }
 
     @Override
     public String processPlaceholder(Player player, String key, String param) {
-        if(player == null) return null;
-        switch(key.toLowerCase()) {
+        if (player == null) return null;
+        switch (key.toLowerCase()) {
             case "player_name":
             case "player":
                 return player.getName();
@@ -53,7 +53,7 @@ public class PlaceholderPlayer extends Placeholder {
             case "player_loc_death":
             case "deathpoint":
                 Location loc = PlayerRespawner.getLastDeathPoint(player);
-                if(loc == null) loc = player.getLocation();
+                if (loc == null) loc = player.getLocation();
                 return LocationUtil.locationToString(loc);
             case "player_loc_eye":
                 return LocationUtil.locationToString(player.getEyeLocation());
@@ -86,7 +86,7 @@ public class PlaceholderPlayer extends Placeholder {
      */
     private Location getViewLocation(Player p, boolean solid) {
         Block b = p.getTargetBlock(solid ? NON_SOLID : null, 100);
-        if(b == null) return p.getLocation();
+        if (b == null) return p.getLocation();
         // Does it work ok on negative coordinates?
         return b.getLocation().add(0.5, 0.5, 0.5);
     }
@@ -100,18 +100,18 @@ public class PlaceholderPlayer extends Placeholder {
      */
     private String getPlayerItemInHand(Player player, boolean offhand) {
         VirtualItem vi = VirtualItem.fromItemStack(offhand ? player.getInventory().getItemInOffHand() : player.getInventory().getItemInMainHand());
-        if(vi == null) return "";
+        if (vi == null) return "";
         return vi.toString();
     }
 
     private String getPlayerInventory(Player player, String value) {
         VirtualItem vi = null;
-        if(Util.isInteger(value)) {
+        if (Util.isInteger(value)) {
             int slotNum = Integer.parseInt(value);
-            if(slotNum < 0 || slotNum >= player.getInventory().getSize()) return "";
+            if (slotNum < 0 || slotNum >= player.getInventory().getSize()) return "";
             vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));
         } else {
-            switch(value.toLowerCase()) {
+            switch (value.toLowerCase()) {
                 case "mainhand":
                 case "hand":
                     return getPlayerItemInHand(player, false);
@@ -136,7 +136,7 @@ public class PlaceholderPlayer extends Placeholder {
                     break;
             }
         }
-        if(vi == null) return "";
+        if (vi == null) return "";
         return vi.toString();
     }
 }

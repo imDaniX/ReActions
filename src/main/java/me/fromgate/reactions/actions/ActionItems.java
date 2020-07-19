@@ -50,7 +50,7 @@ public class ActionItems extends Action {
 
     @Override
     public boolean execute(RaContext context, Param params) {
-        switch(actionType) {
+        switch (actionType) {
             case GIVE_ITEM:
                 return giveItemPlayer(context, params.getParam("param-line", ""));
             case REMOVE_ITEM_HAND:
@@ -88,25 +88,25 @@ public class ActionItems extends Action {
     private boolean setInventorySlot(RaContext context, Param params) {
         Player player = context.getPlayer();
         String itemStr = params.getParam("item", "");
-        if(itemStr.isEmpty()) return false;
+        if (itemStr.isEmpty()) return false;
         String slotStr = params.getParam("slot", "");
-        if(slotStr.isEmpty()) return false;
-        if(!Util.isInteger(slotStr)) return wearItem(context, params);
+        if (slotStr.isEmpty()) return false;
+        if (!Util.isInteger(slotStr)) return wearItem(context, params);
         int slotNum = Integer.parseInt(slotStr);
-        if(slotNum >= player.getInventory().getSize()) return false;
+        if (slotNum >= player.getInventory().getSize()) return false;
         String existStr = params.getParam("exist", "remove");
         ItemStack oldItem = player.getInventory().getItem(slotNum) == null ? null : player.getInventory().getItem(slotNum).clone();
-        if(itemStr.equalsIgnoreCase("AIR") || itemStr.equalsIgnoreCase("NULL")) {
+        if (itemStr.equalsIgnoreCase("AIR") || itemStr.equalsIgnoreCase("NULL")) {
             player.getInventory().setItem(slotNum, null);
         } else {
             VirtualItem vi = VirtualItem.fromString(itemStr);
-            if(vi == null) return false;
+            if (vi == null) return false;
             player.getInventory().setItem(slotNum, vi);
         }
-        if(ItemUtil.isExist(oldItem)) return true;
-        if(existStr.equalsIgnoreCase("drop")) player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
-        else if(existStr.equalsIgnoreCase("undress")) ItemUtil.giveItemOrDrop(player, oldItem);
-        else if(existStr.equalsIgnoreCase("keep")) player.getInventory().setItem(slotNum, oldItem);
+        if (ItemUtil.isExist(oldItem)) return true;
+        if (existStr.equalsIgnoreCase("drop")) player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
+        else if (existStr.equalsIgnoreCase("undress")) ItemUtil.giveItemOrDrop(player, oldItem);
+        else if (existStr.equalsIgnoreCase("keep")) player.getInventory().setItem(slotNum, oldItem);
         String actionItems = ItemUtil.toDisplayString(itemStr);
         setMessageParam(actionItems);
         context.setTempVariable("item_str", actionItems);
@@ -117,13 +117,13 @@ public class ActionItems extends Action {
     private boolean getInventorySlot(RaContext context, Param params) {
         Player player = context.getPlayer();
         String slotStr = params.getParam("slot", "");
-        if(slotStr.isEmpty()) return false;
-        if(!Util.isInteger(slotStr)) return wearItemView(context, params);
+        if (slotStr.isEmpty()) return false;
+        if (!Util.isInteger(slotStr)) return wearItemView(context, params);
         int slotNum = Integer.parseInt(slotStr);
-        if(slotNum >= player.getInventory().getSize()) return false;
+        if (slotNum >= player.getInventory().getSize()) return false;
         ItemStack item = player.getInventory().getItem(slotNum);
         String actionItems = "";
-        if(item != null) actionItems = ItemUtil.itemToString(item);
+        if (item != null) actionItems = ItemUtil.itemToString(item);
         context.setTempVariable("item_str", actionItems);
         context.setTempVariable("item_str_esc", Util.escapeJava(actionItems));
 
@@ -134,11 +134,11 @@ public class ActionItems extends Action {
         Player player = context.getPlayer();
         int slot; //4 - auto, 3 - helmet, 2 - chestplate, 1 - leggins, 0 - boots
         slot = this.getSlotNum(params.getParam("slot", "auto"));
-        if(slot == -1) return getItemInOffhand(context, params);
+        if (slot == -1) return getItemInOffhand(context, params);
         ItemStack[] armour = player.getInventory().getArmorContents();
         ItemStack item = armour[slot];
         String actionItems = "";
-        if(item != null) actionItems = ItemUtil.itemToString(item);
+        if (item != null) actionItems = ItemUtil.itemToString(item);
         context.setTempVariable("item_str", actionItems);
         context.setTempVariable("item_str_esc", Util.escapeJava(actionItems));
         return true;
@@ -147,8 +147,8 @@ public class ActionItems extends Action {
     private boolean getItemInOffhand(RaContext context, Param params) {
         Player player = context.getPlayer();
         String itemStr = params.getParam("slot", "");
-        if(itemStr.isEmpty()) return false;
-        if(!itemStr.equalsIgnoreCase("offhand")) {
+        if (itemStr.isEmpty()) return false;
+        if (!itemStr.equalsIgnoreCase("offhand")) {
             context.setTempVariable("item_str", "");
             context.setTempVariable("item_str_esc", "");
             return true;
@@ -174,24 +174,24 @@ public class ActionItems extends Action {
         String itemStr = params.getParam("item", "");
         int slot = -1; //4 - auto, 3 - helmete, 2 - chestplate, 1 - leggins, 0 - boots
         int existDrop = 1; // 0 - remove, 1 - undress, 2 - drop, 3 - keep
-        if(itemStr.isEmpty()) itemStr = params.getParam("param-line", "");
+        if (itemStr.isEmpty()) itemStr = params.getParam("param-line", "");
         else {
             slot = this.getSlotNum(params.getParam("slot", "auto"));
             String existStr = params.getParam("exist", "undress");
-            if(existStr.equalsIgnoreCase("remove")) existDrop = 0;
-            else if(existStr.equalsIgnoreCase("undress")) existDrop = 1;
-            else if(existStr.equalsIgnoreCase("drop")) existDrop = 2;
-            else if(existStr.equalsIgnoreCase("keep")) existDrop = 3;
+            if (existStr.equalsIgnoreCase("remove")) existDrop = 0;
+            else if (existStr.equalsIgnoreCase("undress")) existDrop = 1;
+            else if (existStr.equalsIgnoreCase("drop")) existDrop = 2;
+            else if (existStr.equalsIgnoreCase("keep")) existDrop = 3;
             else existDrop = 1;
         }
         ItemStack item = null;
-        if(itemStr.equalsIgnoreCase("AIR") || itemStr.equalsIgnoreCase("NULL")) {
-            if(slot == -1) return setItemInOffhand(context, params, null);
+        if (itemStr.equalsIgnoreCase("AIR") || itemStr.equalsIgnoreCase("NULL")) {
+            if (slot == -1) return setItemInOffhand(context, params, null);
             //if (slot == -1) slot = 3;
         } else {
             item = VirtualItem.fromString(itemStr);
-            if(item == null) return false;
-            if(slot == -1) return setItemInOffhand(context, params, item);
+            if (item == null) return false;
+            if (slot == -1) return setItemInOffhand(context, params, item);
             // if (slot == -1) slot = getSlotByItem(item);
         }
         return setArmourItem(player, slot, item, existDrop);
@@ -200,8 +200,8 @@ public class ActionItems extends Action {
     private boolean setItemInOffhand(RaContext context, Param params, ItemStack item) {
         Player player = context.getPlayer();
         String itemStr = params.getParam("slot", "");
-        if(itemStr.isEmpty()) return false;
-        if(!itemStr.equalsIgnoreCase("offhand")) return false;
+        if (itemStr.isEmpty()) return false;
+        if (!itemStr.equalsIgnoreCase("offhand")) return false;
         player.getInventory().setItemInOffHand(item);
         ItemStoragesManager.raiseItemWearActivator(player);
         return true;
@@ -210,15 +210,15 @@ public class ActionItems extends Action {
     private boolean setArmourItem(Player player, int slot, ItemStack item, int existDrop) {
         ItemStack[] armour = player.getInventory().getArmorContents().clone();
         ItemStack oldItem = armour[slot] == null ? null : armour[slot].clone();
-        if(ItemUtil.isExist(oldItem) && (existDrop == 3)) {
+        if (ItemUtil.isExist(oldItem) && (existDrop == 3)) {
             return false; // сохраняем и уходим
         }
         armour[slot] = item;
         player.getInventory().setArmorContents(armour);
-        if(oldItem != null) {
-            if(existDrop == 1) {
+        if (oldItem != null) {
+            if (existDrop == 1) {
                 ItemUtil.giveItemOrDrop(player, oldItem);
-            } else if(existDrop == 2) {
+            } else if (existDrop == 2) {
                 player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
             }
         }
@@ -227,8 +227,8 @@ public class ActionItems extends Action {
     }
 
     private boolean removeItem(RaContext context, VirtualItem search, ItemStack item, boolean all) {
-        if(!ItemUtil.isExist(search)) return false;
-        if(search.isSimilar(item)) {
+        if (!ItemUtil.isExist(search)) return false;
+        if (search.isSimilar(item)) {
             context.setTempVariable("item", ItemUtil.itemToString(item));
             String display = ItemUtil.toDisplayString(item);
             context.setTempVariable("item_str", display);
@@ -254,9 +254,9 @@ public class ActionItems extends Action {
         boolean all = !params.hasAnyParam("amount");
         int remCount = search.getAmount();
         for (ItemStack item : context.getPlayer().getInventory()) {
-            if(removeItem(context, search, item, all) && !all) {
+            if (removeItem(context, search, item, all) && !all) {
                 remCount -= item.getAmount();
-                if(remCount <= 0) break;
+                if (remCount <= 0) break;
                 search.setAmount(remCount);
             }
         }
@@ -266,7 +266,7 @@ public class ActionItems extends Action {
     private boolean giveItemPlayer(RaContext context, final String param) {
         Player player = context.getPlayer();
         final List<ItemStack> items = ItemUtil.parseRandomItemsStr(param);
-        if(items == null || items.isEmpty()) return false;
+        if (items == null || items.isEmpty()) return false;
         String actionItems = ItemUtil.toDisplayString(items);
         setMessageParam(actionItems);
         context.setTempVariable("item_str", actionItems);
@@ -280,7 +280,7 @@ public class ActionItems extends Action {
 
     private boolean openInventory(RaContext context, String itemStr) {
         List<ItemStack> items = ItemUtil.parseRandomItemsStr(itemStr);
-        if(items.isEmpty()) return false;
+        if (items.isEmpty()) return false;
         String actionItems = ItemUtil.toDisplayString(items);
         setMessageParam(actionItems);
         context.setTempVariable("item_str", actionItems);
@@ -296,16 +296,16 @@ public class ActionItems extends Action {
         Player player = context.getPlayer();
         int radius = params.getParam("radius", 0);
         Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), player.getLocation());
-        if(loc == null) loc = player.getLocation();
+        if (loc == null) loc = player.getLocation();
         boolean scatter = params.getParam("scatter", true);
         boolean land = params.getParam("land", true);
         List<ItemStack> items = ItemUtil.parseRandomItemsStr(params.getParam("item", ""));
-        if(items == null || items.isEmpty()) return false;
-        if(radius == 0) scatter = false;
+        if (items == null || items.isEmpty()) return false;
+        if (radius == 0) scatter = false;
         Location l = LocationUtil.getRadiusLocation(loc, radius, land);
         for (ItemStack i : items) {
             loc.getWorld().dropItemNaturally(l, i);
-            if(scatter) l = LocationUtil.getRadiusLocation(loc, radius, land);
+            if (scatter) l = LocationUtil.getRadiusLocation(loc, radius, land);
         }
         String actionItems = ItemUtil.toDisplayString(items);
         setMessageParam(actionItems);
@@ -336,25 +336,25 @@ public class ActionItems extends Action {
 
         ItemStack[] armor = player.getInventory().getArmorContents();
 
-        if(slot == -1 && !itemStr.isEmpty()) {
+        if (slot == -1 && !itemStr.isEmpty()) {
             for (int i = 0; i < armor.length; i++) {
-                if(ItemUtil.compareItemStr(armor[i], itemStr)) {
+                if (ItemUtil.compareItemStr(armor[i], itemStr)) {
                     vi = VirtualItem.fromItemStack(armor[i]);
                     slot = i;
                 }
             }
-        } else if(slot >= 0) {
+        } else if (slot >= 0) {
             ItemStack itemSlot = armor[slot];
-            if(itemStr.isEmpty() || ItemUtil.compareItemStr(itemSlot, itemStr))
+            if (itemStr.isEmpty() || ItemUtil.compareItemStr(itemSlot, itemStr))
                 vi = VirtualItem.fromItemStack(itemSlot);
         }
-        if(vi == null || vi.getType() == Material.AIR) return false;
+        if (vi == null || vi.getType() == Material.AIR) return false;
         armor[slot] = null;
         player.getInventory().setArmorContents(armor);
 
-        if(action.equalsIgnoreCase("drop")) {
+        if (action.equalsIgnoreCase("drop")) {
             player.getWorld().dropItemNaturally(LocationUtil.getRadiusLocation(player.getLocation().add(0, 2, 0), 2, false), vi);
-        } else if(action.equalsIgnoreCase("undress") || action.equalsIgnoreCase("inventory")) {
+        } else if (action.equalsIgnoreCase("undress") || action.equalsIgnoreCase("inventory")) {
             ItemUtil.giveItemOrDrop(player, vi);
         }
 
@@ -364,10 +364,10 @@ public class ActionItems extends Action {
     }
 
     private int getSlotNum(String slotStr) {
-        if(slotStr.equalsIgnoreCase("helmet") || slotStr.equalsIgnoreCase("helm")) return 3;
-        if(slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest")) return 2;
-        if(slotStr.equalsIgnoreCase("leggins") || slotStr.equalsIgnoreCase("leg")) return 1;
-        if(slotStr.equalsIgnoreCase("boots") || slotStr.equalsIgnoreCase("boot")) return 0;
+        if (slotStr.equalsIgnoreCase("helmet") || slotStr.equalsIgnoreCase("helm")) return 3;
+        if (slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest")) return 2;
+        if (slotStr.equalsIgnoreCase("leggins") || slotStr.equalsIgnoreCase("leg")) return 1;
+        if (slotStr.equalsIgnoreCase("boots") || slotStr.equalsIgnoreCase("boot")) return 0;
         return -1;
     }
 

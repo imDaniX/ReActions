@@ -39,7 +39,7 @@ public class RaDebug {
     }
 
     public static boolean checkFlagAndDebug(Player p, boolean flag) {
-        if((p != null) && debug.containsKey(p.getUniqueId())) return (debug.get(p.getUniqueId()));
+        if ((p != null) && debug.containsKey(p.getUniqueId())) return (debug.get(p.getUniqueId()));
         return flag;
     }
 

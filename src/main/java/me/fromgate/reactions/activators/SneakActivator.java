@@ -48,7 +48,7 @@ public class SneakActivator extends Activator {
     }
 
     private boolean checkSneak(boolean isSneak) {
-        switch(sneak) {
+        switch (sneak) {
             case ANY:
                 return true;
             case TRUE:
@@ -74,8 +74,8 @@ public class SneakActivator extends Activator {
         ANY;
 
         public static SneakType getByName(String sneakStr) {
-            if(sneakStr.equalsIgnoreCase("true")) return SneakType.TRUE;
-            if(sneakStr.equalsIgnoreCase("any")) return SneakType.ANY;
+            if (sneakStr.equalsIgnoreCase("true")) return SneakType.TRUE;
+            if (sneakStr.equalsIgnoreCase("any")) return SneakType.ANY;
             return SneakType.FALSE;
         }
     }

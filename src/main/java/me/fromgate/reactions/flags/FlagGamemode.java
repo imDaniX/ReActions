@@ -32,7 +32,7 @@ public class FlagGamemode implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        if(player != null)
+        if (player != null)
             return player.getGameMode() == Util.getEnumByName(GameMode.class, param);
         return false;
     }

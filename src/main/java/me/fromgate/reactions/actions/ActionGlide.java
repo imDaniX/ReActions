@@ -12,14 +12,14 @@ public class ActionGlide extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         Player player = context.getPlayer();
-        if(params.hasAnyParam("player"))
+        if (params.hasAnyParam("player"))
             player = Util.getPlayerExact(params.getParam("player"));
         boolean isGlide = params.getParam("glide", true);
         return glidePlayer(player, isGlide);
     }
 
     private boolean glidePlayer(Player player, boolean isGlide) {
-        if(player == null || player.isDead() || !player.isOnline()) return false;
+        if (player == null || player.isDead() || !player.isOnline()) return false;
         player.setGliding(isGlide);
         return true;
     }

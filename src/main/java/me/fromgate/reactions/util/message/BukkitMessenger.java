@@ -54,13 +54,13 @@ public class BukkitMessenger implements Messenger {
 
     public static void printPage(CommandSender sender, List<String> list, Msg title, int page) {
         int pageHeight = (sender instanceof Player) ? 9 : 1000;
-        if(title != null) title.print(sender);
+        if (title != null) title.print(sender);
         ChatPaginator.ChatPage chatPage = paginate(list, page, Cfg.chatLength, pageHeight);
         for (String str : chatPage.getLines()) {
             Msg.printMessage(sender, str);
         }
 
-        if(pageHeight == 9) {
+        if (pageHeight == 9) {
             Msg.LST_FOOTER.print(sender, 'e', '6', chatPage.getPageNumber(), chatPage.getTotalPages());
         }
     }
@@ -108,7 +108,7 @@ public class BukkitMessenger implements Messenger {
     @Override
     public boolean tip(Object sender, String text) {
         Player player = toPlayer(sender);
-        if(player == null)
+        if (player == null)
             return false;
         player.sendTitle(null, text, 10, 70, 20);
         return true;
@@ -117,7 +117,7 @@ public class BukkitMessenger implements Messenger {
     @Override
     public boolean print(Object obj, String text) {
         CommandSender sender = toSender(obj);
-        if(sender != null) {
+        if (sender != null) {
             sender.sendMessage(text);
         } else {
             log("Failed to print message - wrong recipient: " + (obj == null ? "null" : obj.toString()));
@@ -128,7 +128,7 @@ public class BukkitMessenger implements Messenger {
     @Override
     public boolean broadcast(String permission, String text) {
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if(permission == null || permission.isEmpty() || player.hasPermission(permission)) {
+            if (permission == null || permission.isEmpty() || player.hasPermission(permission)) {
                 player.sendMessage(text);
             }
         }
@@ -137,11 +137,11 @@ public class BukkitMessenger implements Messenger {
 
     @Override
     public String toString(Object obj, boolean fullFloat) {
-        if(obj == null) return "'null'";
+        if (obj == null) return "'null'";
         String s = obj.toString();
-        if(obj instanceof Location) {
+        if (obj instanceof Location) {
             Location loc = (Location) obj;
-            if(fullFloat)
+            if (fullFloat)
                 s = loc.getWorld() + "[" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + "]";
             else
                 s = loc.getWorld() + "[" + TWO_DECIMALS.format(loc.getX()) + ", " + TWO_DECIMALS.format(loc.getY()) + ", " + TWO_DECIMALS.format(loc.getZ()) + "]";
@@ -155,10 +155,10 @@ public class BukkitMessenger implements Messenger {
         YamlConfiguration lng = new YamlConfiguration();
         File f = new File(plugin.getDataFolder() + File.separator + language + ".lng");
         try {
-            if(f.exists()) lng.load(f);
+            if (f.exists()) lng.load(f);
             else {
                 InputStream is = plugin.getClass().getResourceAsStream("/language/" + language + ".lng");
-                if(is != null) lng.load(new InputStreamReader(is, StandardCharsets.UTF_8));
+                if (is != null) lng.load(new InputStreamReader(is, StandardCharsets.UTF_8));
             }
         } catch (Exception e) {
             Msg.LNG_LOAD_FAIL.log();
@@ -166,7 +166,7 @@ public class BukkitMessenger implements Messenger {
         }
 
         for (String key : lng.getKeys(true)) {
-            if(lng.isConfigurationSection(key)) continue;
+            if (lng.isConfigurationSection(key)) continue;
             msg.put(key, lng.getString(key));
         }
         return msg;
@@ -177,7 +177,7 @@ public class BukkitMessenger implements Messenger {
         YamlConfiguration lng = new YamlConfiguration();
         File f = new File(plugin.getDataFolder() + File.separator + language + ".lng");
         try {
-            if(f.exists()) lng.load(f);
+            if (f.exists()) lng.load(f);
         } catch (Exception ignore) {
         }
 

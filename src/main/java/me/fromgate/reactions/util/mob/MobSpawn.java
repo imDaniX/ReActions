@@ -52,7 +52,7 @@ public class MobSpawn {
 
     public static void mobSpawn(Player p, Param params) {
         String mob = params.getParam("type", "").toUpperCase();
-        if(mob.isEmpty()) {
+        if (mob.isEmpty()) {
             Msg.logMessage("Failed to spawn mob: " + params.getParam("param-line"));
             return;
         }
@@ -82,9 +82,9 @@ public class MobSpawn {
         String exec = params.getParam("run", "");
         String exec_delay = params.getParam("rundelay", "1t");
 
-        if(RaWorldGuard.isRegionExists(region)) loc = LocationUtil.getRegionLocation(region, land);
-        else if(radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
-        if(loc == null) return;
+        if (RaWorldGuard.isRegionExists(region)) loc = LocationUtil.getRegionLocation(region, land);
+        else if (radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
+        if (loc == null) return;
 
         for (int i = 0; i < num; i++) {
             List<LivingEntity> mobs = spawnMob(loc, mob);
@@ -92,7 +92,7 @@ public class MobSpawn {
                 setMobHealth(le, health);
                 setMobName(le, name);
                 potionEffect(le, potionEff);
-                if(equip.isEmpty()) setMobEquipment(le, helm, chest, leg, boot, weapon, offhand);
+                if (equip.isEmpty()) setMobEquipment(le, helm, chest, leg, boot, weapon, offhand);
                 else setMobEquipment(le, equip);
                 setMobDrop(le, drop);
                 setMobXP(le, xp);
@@ -110,13 +110,13 @@ public class MobSpawn {
     private static List<LivingEntity> spawnMob(Location loc, String mobstr) {
         List<LivingEntity> mobs = new ArrayList<>();
         String[] ln = mobstr.split(":");
-        if(ln.length < 1) return mobs;
+        if (ln.length < 1) return mobs;
 
         //for (int i = 0; i < Math.min(2, ln.length); i++) {
         int k = 0;
         for (String mbs : ln) {
             String name = "";
-            if(mbs.contains("$")) {
+            if (mbs.contains("$")) {
                 name = mbs.substring(0, mbs.indexOf("$"));
                 mbs = mbs.substring(name.length() + 1);
             }
@@ -124,12 +124,12 @@ public class MobSpawn {
             EntityType et = Util.getEnumByName(EntityType.class, mbs, EntityType.ZOMBIE);
 
             Entity e = loc.getWorld().spawnEntity(loc, et);
-            if(e == null) {
+            if (e == null) {
                 Msg.logOnce("mobspawnfail_" + mobstr, "Cannot spawn mob " + mbs + " (" + mobstr + ")");
                 continue;
             }
 
-            if(!(e instanceof LivingEntity)) {
+            if (!(e instanceof LivingEntity)) {
                 e.remove();
                 Msg.logOnce("mobspawnnotmob_" + mobstr, "Cannot spawn mob " + mbs + " (" + mobstr + ")");
                 continue;
@@ -138,7 +138,7 @@ public class MobSpawn {
             LivingEntity mob = (LivingEntity) e;
             setMobName(mob, name);
             mobs.add(mob);
-            if(k > 0) mobs.get(k).addPassenger(mobs.get(k - 1));
+            if (k > 0) mobs.get(k).addPassenger(mobs.get(k - 1));
             k++;
         }
         //if (mobs.size() == 2) mobs.get(1).setPassenger(mobs.get(0));
@@ -146,75 +146,75 @@ public class MobSpawn {
     }
 
     private static void setMobName(LivingEntity e, String name) {
-        if(name.isEmpty()) return;
-        if((e.getCustomName() != null) && (!e.getCustomName().isEmpty())) return;
+        if (name.isEmpty()) return;
+        if ((e.getCustomName() != null) && (!e.getCustomName().isEmpty())) return;
         e.setCustomName(ChatColor.translateAlternateColorCodes('&', name.replace("_", " ")));
         e.setCustomNameVisible(true);
     }
 
     private static void setMobXP(LivingEntity e, String xp) {
-        if(xp.isEmpty()) return;
+        if (xp.isEmpty()) return;
         e.setMetadata("ReActions-xp", new FixedMetadataValue(ReActions.getPlugin(), xp));
     }
 
     private static void setMobMoney(LivingEntity e, String money) {
-        if(money.isEmpty()) return;
+        if (money.isEmpty()) return;
         e.setMetadata("ReActions-money", new FixedMetadataValue(ReActions.getPlugin(), money));
     }
 
     private static void setMobExec(LivingEntity e, String exec_activator, String exec_delay) {
-        if(exec_activator.isEmpty()) return;
+        if (exec_activator.isEmpty()) return;
         e.setMetadata("ReActions-activator", new FixedMetadataValue(ReActions.getPlugin(), "activator:" + exec_activator + (exec_delay.isEmpty() ? "" : " delay:" + exec_delay)));
     }
 
     private static void setMobDrop(LivingEntity e, String drop) {
         //id:data*amount,id:dat*amount%chance;id:data*amount;id:dat*amount%chance;id:data*amount;id:dat*amount%chance
-        if(drop.isEmpty()) return;
+        if (drop.isEmpty()) return;
         List<ItemStack> stack = ItemUtil.parseRandomItemsStr(drop);
-        if(stack.isEmpty()) return;
+        if (stack.isEmpty()) return;
         setMobDropStack(e, stack);
     }
 
     private static void setMobDmgMultiplier(LivingEntity e, double dmg) {
-        if(dmg < 0) return;
+        if (dmg < 0) return;
         e.setMetadata("ReActions-dmg", new FixedMetadataValue(ReActions.getPlugin(), dmg));
     }
 
     private static void setMobCry(LivingEntity e, String cry) {
-        if(cry.isEmpty()) return;
+        if (cry.isEmpty()) return;
         e.setMetadata("ReActions-cry", new FixedMetadataValue(ReActions.getPlugin(), cry));
     }
 
     private static void setMobGrowl(LivingEntity e, String growl) {
-        if(growl.isEmpty()) return;
+        if (growl.isEmpty()) return;
         e.setMetadata("ReActions-growl", new FixedMetadataValue(ReActions.getPlugin(), growl));
     }
 
     private static void setMobDropStack(LivingEntity e, List<ItemStack> stack) {
-        if(stack.isEmpty()) return;
+        if (stack.isEmpty()) return;
         drops.put(e, stack);
         //e.setMetadata("ReActions-drop", new FixedMetadataValue(ReActions.getPlugin(), stack));
     }
 
     private static void setDeathEffect(LivingEntity e, String dtheffect) {
-        if(dtheffect.isEmpty()) return;
+        if (dtheffect.isEmpty()) return;
         e.setMetadata("ReActions-deatheffect", new FixedMetadataValue(ReActions.getPlugin(), dtheffect));
     }
 
 
     private static void setMobHealth(LivingEntity e, double health) {
-        if(health > 0) {
-            if(health > e.getHealth())
+        if (health > 0) {
+            if (health > e.getHealth())
                 e.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(health);
         } else health = e.getAttribute(Attribute.GENERIC_MAX_HEALTH).getBaseValue();
         e.setHealth(health);
     }
 
     private static void setMobEquipment(LivingEntity e, String equip) {
-        if(equip.isEmpty()) return;
-        if(!Util.isWordInList(e.getType().name(), "zombie,skeleton")) return;
+        if (equip.isEmpty()) return;
+        if (!Util.isWordInList(e.getType().name(), "zombie,skeleton")) return;
         String[] ln = equip.split(";");
-        if(ln.length == 0) return;
+        if (ln.length == 0) return;
         String[] eq = {"", "", "", "", "", ""};
         System.arraycopy(ln, 0, eq, 0, Math.min(ln.length, 6));
         setMobEquipment(e, eq[0], eq[1], eq[2], eq[3], eq[4], eq[5]);
@@ -222,35 +222,35 @@ public class MobSpawn {
 
     private static void setMobEquipment(LivingEntity e, String helm, String chest, String leg, String boot, String weapon, String offhand) {
         // if (!Util.isWordInList(e.getType().name(), "zombie,skeleton,villager")) return;
-        if(!helm.isEmpty()) {
+        if (!helm.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(helm);
-            if(item != null) e.getEquipment().setHelmet(item);
+            if (item != null) e.getEquipment().setHelmet(item);
         }
-        if(!chest.isEmpty()) {
+        if (!chest.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(chest);
-            if(item != null) e.getEquipment().setChestplate(item);
+            if (item != null) e.getEquipment().setChestplate(item);
         }
-        if(!leg.isEmpty()) {
+        if (!leg.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(leg);
-            if(item != null) e.getEquipment().setLeggings(item);
+            if (item != null) e.getEquipment().setLeggings(item);
         }
-        if(!boot.isEmpty()) {
+        if (!boot.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(boot);
-            if(item != null) e.getEquipment().setBoots(item);
+            if (item != null) e.getEquipment().setBoots(item);
         }
-        if(!weapon.isEmpty()) {
+        if (!weapon.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(weapon);
-            if(item != null) e.getEquipment().setItemInMainHand(item);
+            if (item != null) e.getEquipment().setItemInMainHand(item);
         }
 
-        if(!offhand.isEmpty()) {
+        if (!offhand.isEmpty()) {
             ItemStack item = ItemUtil.getRndItem(offhand);
-            if(item != null) e.getEquipment().setItemInOffHand(item);
+            if (item != null) e.getEquipment().setItemInOffHand(item);
         }
     }
 
     private static void potionEffect(LivingEntity e, String potion) {
-        if(potion.isEmpty()) return;
+        if (potion.isEmpty()) return;
         String[] pts = potion.split(",");
         for (String pot : pts) {
             String pef;
@@ -258,22 +258,22 @@ public class MobSpawn {
             String[] ln = pot.split(":");
             pef = ln[0];
             PotionEffectType pet = PotionEffectType.getByName(pef);
-            if(pet == null) continue;
-            if((ln.length == 2) && Util.isInteger(ln[1])) level = Integer.parseInt(ln[1]);
+            if (pet == null) continue;
+            if ((ln.length == 2) && Util.isInteger(ln[1])) level = Integer.parseInt(ln[1]);
             PotionEffect pe = new PotionEffect(pet, Integer.MAX_VALUE, level, true);
             e.addPotionEffect(pe);
         }
     }
 
     public static List<ItemStack> getMobDrop(LivingEntity le) {
-        if(drops.containsKey(le)) {
+        if (drops.containsKey(le)) {
             List<ItemStack> drop = drops.get(le);
             drops.remove(le);
             return drop;
         } else {
             List<LivingEntity> deadMobs = new ArrayList<>();
             for (LivingEntity l : drops.keySet())
-                if(l.isDead()) deadMobs.add(l);
+                if (l.isDead()) deadMobs.add(l);
             for (LivingEntity l : deadMobs)
                 drops.remove(l);
         }

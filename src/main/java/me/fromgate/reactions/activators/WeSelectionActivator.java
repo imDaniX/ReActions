@@ -36,12 +36,12 @@ public class WeSelectionActivator extends Activator {
     public boolean activate(Storage event) {
         WeSelectionRegionStorage e = (WeSelectionRegionStorage) event;
         WeSelection selection = e.getSelection();
-        if(!selection.isValid()) return false;
+        if (!selection.isValid()) return false;
         int selectionBlocks = selection.getArea();
-        if(selectionBlocks < minBlocks) return false;
-        if(selectionBlocks > maxBlocks && maxBlocks != 0) return false;
+        if (selectionBlocks < minBlocks) return false;
+        if (selectionBlocks > maxBlocks && maxBlocks != 0) return false;
         String selType = selection.getSelType();
-        if(!checkTypeSelection(selType)) return false;
+        if (!checkTypeSelection(selType)) return false;
         String region = selection.getRegion();
         return region != null && !region.isEmpty();
     }

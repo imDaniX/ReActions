@@ -69,8 +69,8 @@ public class ProjectileHitActivator extends Activator {
         ENTITY, BLOCK, ANY;
 
         public static HitType getByName(String name) {
-            if(name.equalsIgnoreCase("ENTITY")) return ENTITY;
-            if(name.equalsIgnoreCase("BLOCK")) return BLOCK;
+            if (name.equalsIgnoreCase("ENTITY")) return ENTITY;
+            if (name.equalsIgnoreCase("BLOCK")) return BLOCK;
             return ANY;
         }
     }

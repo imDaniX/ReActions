@@ -160,29 +160,29 @@ public enum Actions {
 
     public static String getValidName(String name) {
         Actions act = getByName(name);
-        if(act != null) return act.name();
+        if (act != null) return act.name();
         return name;
     }
 
     public static void executeActions(RaContext context, ActivatorBase act, boolean isAction) {
         List<StoredAction> actions = isAction ? act.getActions() : act.getReactions();
-        if(actions.isEmpty()) return;
+        if (actions.isEmpty()) return;
         executeActions(context, actions, isAction);
     }
 
     public static void executeActions(RaContext context, List<StoredAction> actions, boolean isAction) {
         for (int i = 0; i < actions.size(); i++) {
             StoredAction av = actions.get(i);
-            if(av.getAction() == null) continue;
+            if (av.getAction() == null) continue;
             Actions at = av.getAction();
             // TODO: Should be inside ActionWait
-            if(at == Actions.WAIT) {
-                if(i == actions.size() - 1) return;
+            if (at == Actions.WAIT) {
+                if (i == actions.size() - 1) return;
                 ActionWait aw = (ActionWait) at.action;
                 Param param = new Param(PlaceholdersManager.replacePlaceholderButRaw(context, av.getValue()), "time");
                 String timeStr = param.getParam("time", "0");
                 long time = TimeUtil.parseTime(timeStr);
-                if(time == 0) continue;
+                if (time == 0) continue;
                 List<StoredAction> futureList = new ArrayList<>(actions.subList(i + 1, actions.size()));
                 aw.executeDelayed(context.getPlayer(), futureList, isAction, time);
                 return;
@@ -201,7 +201,7 @@ public enum Actions {
             String name = actionType.name();
             String alias = actionType.alias.equalsIgnoreCase(name) ? " " : " (" + actionType.alias + ") ";
             Msg msg = Msg.getByName("action_" + name);
-            if(msg == null) {
+            if (msg == null) {
                 Msg.LNG_FAIL_ACTION_DESC.log(name);
             } else {
                 actionList.add("&6" + name + "&e" + alias + "&3: &a" + msg.getText("NOCOLOR"));
@@ -211,7 +211,7 @@ public enum Actions {
     }
 
     public void performAction(RaContext context, boolean action, Param actionParam) {
-        if(context.getPlayer() == null && this.requirePlayer) return;
+        if (context.getPlayer() == null && this.requirePlayer) return;
         this.action.executeAction(context, action, actionParam);
     }
 }

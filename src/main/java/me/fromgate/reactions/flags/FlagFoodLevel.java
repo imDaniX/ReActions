@@ -31,7 +31,7 @@ public class FlagFoodLevel implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        if(!Util.isInteger(param)) return false;
+        if (!Util.isInteger(param)) return false;
         return player.getFoodLevel() >= Integer.parseInt(param);
     }
 

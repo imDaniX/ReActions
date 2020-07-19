@@ -51,7 +51,7 @@ public class PickupItemActivator extends Activator {
     }
 
     private boolean checkItem(ItemStack item) {
-        if(this.itemStr.isEmpty()) return true;
+        if (this.itemStr.isEmpty()) return true;
         return ItemUtil.compareItemStr(item, this.itemStr, true);
     }
 

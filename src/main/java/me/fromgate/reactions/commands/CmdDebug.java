@@ -10,10 +10,10 @@ public class CmdDebug extends Cmd {
     @Override
     public boolean execute(Player player, String[] args) {
         String arg = args.length >= 2 ? args[1] : "off";
-        if(arg.equalsIgnoreCase("false")) {
+        if (arg.equalsIgnoreCase("false")) {
             RaDebug.setPlayerDebug(player, false);
             Msg.printMSG(player, "cmd_debugfalse");
-        } else if(arg.equalsIgnoreCase("true")) {
+        } else if (arg.equalsIgnoreCase("true")) {
             RaDebug.setPlayerDebug(player, true);
             Msg.printMSG(player, "cmd_debugtrue");
         } else {

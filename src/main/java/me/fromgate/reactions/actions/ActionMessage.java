@@ -51,23 +51,23 @@ public class ActionMessage extends Action {
 
     private void sendMessage(Player player, Param params) {
         Set<Player> players = new HashSet<>();
-        if(params.hasAnyParam(SelectorsManager.getAllKeys())) {
+        if (params.hasAnyParam(SelectorsManager.getAllKeys())) {
             players.addAll(SelectorsManager.getPlayerList(params));
-            if(players.isEmpty() && params.isParamsExists("player")) {
+            if (players.isEmpty() && params.isParamsExists("player")) {
                 players.addAll(SelectorsManager.getPlayerList(new Param(params.getParam("player"))));
             }
-        } else if(player != null) {
+        } else if (player != null) {
             players.add(player);
         }
-        if(players.isEmpty()) return;
+        if (players.isEmpty()) return;
 
         String type = params.getParam("type", "");
         String message = params.getParam("text", removeParams(params.getParam("param-line")));
-        if(message.isEmpty()) return;
+        if (message.isEmpty()) return;
         String annoymentTime = params.getParam("hide");
         for (Player p : players) {
-            if(showMessage(p, message, annoymentTime)) {
-                switch(type.toLowerCase()) {
+            if (showMessage(p, message, annoymentTime)) {
+                switch (type.toLowerCase()) {
                     case "title":
                         p.sendTitle(Msg.colorize(message),
                                 params.getParam("subtitle", null),
@@ -92,12 +92,12 @@ public class ActionMessage extends Action {
     }
 
     private boolean showMessage(Player player, String message, String annoymentTime) {
-        if(annoymentTime.isEmpty()) return true;
+        if (annoymentTime.isEmpty()) return true;
         long time = TimeUtil.parseTime(annoymentTime);
-        if(time == 0) return false;
+        if (time == 0) return false;
         String key = "reactions-msg-" +/*.append(this.getActivatorName())*/message.hashCode() + (this.isAction() ? "act" : "react");
-        if(player.hasMetadata(key)) {
-            if((player.getMetadata(key).get(0).asLong() - System.currentTimeMillis()) > 0)
+        if (player.hasMetadata(key)) {
+            if ((player.getMetadata(key).get(0).asLong() - System.currentTimeMillis()) > 0)
                 return false;
         }
         player.setMetadata(key, new FixedMetadataValue(ReActions.getPlugin(), System.currentTimeMillis() + time));

@@ -57,7 +57,7 @@ public class Variables {
     public static void setVar(String player, String var, String value) {
         String prevVal = Variables.getVariable(player, var, "");
         vars.put(varId(player, var), value);
-        if(!Cfg.playerSelfVarFile) save();
+        if (!Cfg.playerSelfVarFile) save();
         else save(player);
         StoragesManager.raiseVariableActivator(var, player, value, prevVal);
     }
@@ -65,9 +65,9 @@ public class Variables {
     public static boolean clearVar(String player, String var) {
         String prevVal = Variables.getVariable(player, var, "");
         String id = varId(player, var);
-        if(!vars.containsKey(id)) return false;
+        if (!vars.containsKey(id)) return false;
         vars.remove(id);
-        if(!Cfg.playerSelfVarFile) save();
+        if (!Cfg.playerSelfVarFile) save();
         else save(player);
         StoragesManager.raiseVariableActivator(var, player, "", prevVal);
         return true;
@@ -84,23 +84,23 @@ public class Variables {
 
     public static boolean compareVariable(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
-        if(!vars.containsKey(id)) return false;
+        if (!vars.containsKey(id)) return false;
         String value = getVariable(playerName, var, "");
-        if(Util.isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
+        if (Util.isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
         return value.equalsIgnoreCase(cmpvalue);
     }
 
     public static boolean cmpGreaterVar(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
-        if(!vars.containsKey(id)) return false;
-        if(!Util.isNumber(vars.get(id), cmpvalue)) return false;
+        if (!vars.containsKey(id)) return false;
+        if (!Util.isNumber(vars.get(id), cmpvalue)) return false;
         return Double.parseDouble(vars.get(id)) > Double.parseDouble(cmpvalue);
     }
 
     public static boolean cmpLowerVar(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
-        if(!vars.containsKey(id)) return false;
-        if(!Util.isNumber(vars.get(id), cmpvalue)) return false;
+        if (!vars.containsKey(id)) return false;
+        if (!Util.isNumber(vars.get(id), cmpvalue)) return false;
         return Double.parseDouble(vars.get(id)) < Double.parseDouble(cmpvalue);
     }
 
@@ -110,9 +110,9 @@ public class Variables {
 
     public static boolean incVar(String player, String var, double addValue) {
         String id = varId(player, var);
-        if(!vars.containsKey(id)) setVar(player, var, "0");
+        if (!vars.containsKey(id)) setVar(player, var, "0");
         String valueStr = vars.get(id);
-        if(!Util.isNumber(valueStr)) return false;
+        if (!Util.isNumber(valueStr)) return false;
         setVar(player, var, String.valueOf(Double.parseDouble(valueStr) + addValue));
         return true;
     }
@@ -131,7 +131,7 @@ public class Variables {
     }
 
     public static void save(String player) {
-        if(Cfg.playerAsynchSaveSelfVarFile) saveAsync(player);
+        if (Cfg.playerAsynchSaveSelfVarFile) saveAsync(player);
         else savePlayer(player);
     }
 
@@ -139,16 +139,16 @@ public class Variables {
         YamlConfiguration cfg = new YamlConfiguration();
         String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
         File dir = new File(varDir);
-        if(!dir.exists() && !dir.mkdirs()) return;
+        if (!dir.exists() && !dir.mkdirs()) return;
         saveGeneral();
-        if(player == null || player.isEmpty()) return;
+        if (player == null || player.isEmpty()) return;
         UUID id = Util.getUUID(player);
-        if(id == null) return;
+        if (id == null) return;
         File f = new File(varDir + File.separator + id.toString() + ".yml");
         for (String key : vars.keySet()) {
-            if(key.contains(player)) cfg.set(key, vars.get(key));
+            if (key.contains(player)) cfg.set(key, vars.get(key));
         }
-        if(FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file"))
+        if (FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file"))
             removePlayerVars(player);
     }
 
@@ -162,7 +162,7 @@ public class Variables {
         String varDir = ReActions.getPlugin().getDataFolder() + File.separator + "variables";
         File f = new File(varDir + File.separator + "general.yml");
         for (String key : vars.keySet())
-            if(key.contains("general")) cfg.set(key, vars.get(key));
+            if (key.contains("general")) cfg.set(key, vars.get(key));
         FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file");
     }
 
@@ -171,16 +171,16 @@ public class Variables {
         try {
             YamlConfiguration cfg = new YamlConfiguration();
             File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml");
-            if(!f.exists()) return;
+            if (!f.exists()) return;
             cfg.load(f);
             for (String key : cfg.getKeys(true)) {
-                if(!key.contains(".")) continue;
+                if (!key.contains(".")) continue;
                 vars.put(key, cfg.getString(key));
             }
-            if(!Cfg.playerSelfVarFile) {
+            if (!Cfg.playerSelfVarFile) {
                 loadVars();
                 File dir = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables");
-                if(!dir.exists() || !dir.isDirectory()) return;
+                if (!dir.exists() || !dir.isDirectory()) return;
                 String[] files = dir.list();
                 for (String file : files) {
                     File fl = new File(dir, file);
@@ -193,24 +193,24 @@ public class Variables {
     }
 
     public static void loadVars() {
-        if(Cfg.playerSelfVarFile) load();
+        if (Cfg.playerSelfVarFile) load();
         try {
             int deleted = 0;
             YamlConfiguration cfg = new YamlConfiguration();
             File dir = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables");
-            if(!dir.exists()) return;
+            if (!dir.exists()) return;
             for (File f : dir.listFiles()) {
-                if(!f.isDirectory()) {
-                    if(f.length() == 0) {
+                if (!f.isDirectory()) {
+                    if (f.length() == 0) {
                         f.delete();
                         deleted++;
                         continue;
                     }
                     String fstr = f.getName();
-                    if(fstr.endsWith(".yml")) {
+                    if (fstr.endsWith(".yml")) {
                         cfg.load(f);
                         for (String key : cfg.getKeys(true)) {
-                            if(key.contains(".")) vars.put(key, cfg.getString(key));
+                            if (key.contains(".")) vars.put(key, cfg.getString(key));
                         }
                     }
                 }
@@ -225,18 +225,18 @@ public class Variables {
         YamlConfiguration cfg = new YamlConfiguration();
         String fileName = ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml";
         File f = new File(fileName);
-        if(!f.exists()) return;
-        if(!FileUtil.loadCfg(cfg, f, "Failed to load variable file")) return;
+        if (!f.exists()) return;
+        if (!FileUtil.loadCfg(cfg, f, "Failed to load variable file")) return;
         for (String key : cfg.getKeys(true)) {
-            if(!key.contains(".")) continue;
-            if(key.contains(player) || key.contains("general")) continue;
+            if (!key.contains(".")) continue;
+            if (key.contains(player) || key.contains("general")) continue;
             varsTmp.put(key, cfg.getString(key));
         }
 
         YamlConfiguration cfg2 = new YamlConfiguration();
         for (String key : varsTmp.keySet())
             cfg2.set(key, varsTmp.get(key));
-        if(!FileUtil.saveCfg(cfg2, f, "Failed to save variable file")) return;
+        if (!FileUtil.saveCfg(cfg2, f, "Failed to save variable file")) return;
         varsTmp.clear();
     }
 
@@ -244,7 +244,7 @@ public class Variables {
         int linesPerPage = (sender instanceof Player) ? 15 : 10000;
         List<String> varList = new ArrayList<>();
         for (String key : vars.keySet()) {
-            if(mask.isEmpty() || key.contains(mask)) {
+            if (mask.isEmpty() || key.contains(mask)) {
                 varList.add(key + " : " + vars.get(key));
             }
         }
@@ -253,7 +253,7 @@ public class Variables {
 
     public static boolean matchVar(String playerName, String var, String value) {
         String id = varId(playerName, var);
-        if(!vars.containsKey(id)) return false;
+        if (!vars.containsKey(id)) return false;
         String varValue = vars.get(id);
         return varValue.matches(value);
     }

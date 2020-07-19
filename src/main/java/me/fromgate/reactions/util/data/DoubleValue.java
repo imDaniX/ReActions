@@ -37,13 +37,13 @@ public class DoubleValue implements DataValue {
     public ItemStack asItemStack() {
         int i = 0;
         for (Material mat : Material.values())
-            if(value <= i++) return new ItemStack(mat);
+            if (value <= i++) return new ItemStack(mat);
         return new ItemStack(Material.STONE);
     }
 
     @Override
     public boolean set(String value) {
-        if(Util.FLOAT.matcher(value).matches()) {
+        if (Util.FLOAT.matcher(value).matches()) {
             this.value = Double.valueOf(value);
             return true;
         }

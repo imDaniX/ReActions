@@ -6,7 +6,7 @@ import java.util.Set;
 
 public interface Selector {
     default String getKey() {
-        if(!this.getClass().isAnnotationPresent(SelectorDefine.class)) return null;
+        if (!this.getClass().isAnnotationPresent(SelectorDefine.class)) return null;
         SelectorDefine sd = this.getClass().getAnnotation(SelectorDefine.class);
         return sd.key();
     }

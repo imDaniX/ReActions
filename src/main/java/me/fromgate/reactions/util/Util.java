@@ -59,13 +59,13 @@ public class Util {
         StringBuilder bld = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
-            if(c != ' ') bld.append(c);
+            if (c != ' ') bld.append(c);
         }
         return bld.toString();
     }
 
     public static double getDouble(String str, double def) {
-        if(isStringEmpty(str) || !FLOAT.matcher(str).matches()) return def;
+        if (isStringEmpty(str) || !FLOAT.matcher(str).matches()) return def;
         return Double.parseDouble(str);
     }
 
@@ -76,7 +76,7 @@ public class Util {
      * @return Random value
      */
     public static int getMinMaxRandom(String numsStr) {
-        if(numsStr.contains("-")) {
+        if (numsStr.contains("-")) {
             int min = 0;
             int max = 0;
             String minStr;
@@ -84,15 +84,15 @@ public class Util {
             int index = numsStr.indexOf('-');
             minStr = numsStr.substring(0, index);
             maxStr = numsStr.substring(index + 1);
-            if(INT_POSITIVE.matcher(minStr).matches())
+            if (INT_POSITIVE.matcher(minStr).matches())
                 min = Integer.parseInt(minStr);
-            if(INT_POSITIVE.matcher(maxStr).matches())
+            if (INT_POSITIVE.matcher(maxStr).matches())
                 max = Integer.parseInt(maxStr);
-            if(max > min)
+            if (max > min)
                 return min + getRandomInt(1 + max - min);
             return min;
         } else {
-            if(INT_POSITIVE.matcher(numsStr).matches())
+            if (INT_POSITIVE.matcher(numsStr).matches())
                 return Integer.parseInt(numsStr);
             return 0;
         }
@@ -106,26 +106,26 @@ public class Util {
      * @return Name of played sound
      */
     public static String soundPlay(Location loc, Param params) {
-        if(params.isEmpty()) return "";
+        if (params.isEmpty()) return "";
         Location soundLoc = loc;
         String sndstr = "";
         String strvolume = "1";
         String strpitch = "1";
         float pitch = 1;
         float volume = 1;
-        if(params.hasAnyParam("param")) {
+        if (params.hasAnyParam("param")) {
             String param = params.getParam("param", "");
-            if(param.isEmpty()) return "";
-            if(param.contains("/")) {
+            if (param.isEmpty()) return "";
+            if (param.contains("/")) {
                 String[] prm = param.split("/");
-                if(prm.length > 1) {
+                if (prm.length > 1) {
                     sndstr = prm[0];
                     strvolume = prm[1];
-                    if(prm.length > 2) strpitch = prm[2];
+                    if (prm.length > 2) strpitch = prm[2];
                 }
             } else sndstr = param;
-            if(FLOAT_POSITIVE.matcher(strvolume).matches()) volume = Float.parseFloat(strvolume);
-            if(FLOAT_POSITIVE.matcher(strpitch).matches()) pitch = Float.parseFloat(strpitch);
+            if (FLOAT_POSITIVE.matcher(strvolume).matches()) volume = Float.parseFloat(strvolume);
+            if (FLOAT_POSITIVE.matcher(strpitch).matches()) pitch = Float.parseFloat(strpitch);
         } else {
             String locationStr = params.getParam("loc");
             soundLoc = locationStr.isEmpty() ? loc : LocationUtil.parseLocation(locationStr, null);
@@ -134,7 +134,7 @@ public class Util {
             volume = params.getParam("volume", 1.0f);
         }
         Sound sound = getEnumByName(Sound.class, sndstr, Sound.UI_BUTTON_CLICK);
-        if(soundLoc != null) soundLoc.getWorld().playSound(soundLoc, sound, volume, pitch);
+        if (soundLoc != null) soundLoc.getWorld().playSound(soundLoc, sound, volume, pitch);
         return sound.name();
     }
 
@@ -145,7 +145,7 @@ public class Util {
      * @param param Parameters of sound
      */
     public static void soundPlay(Location loc, String param) {
-        if(param.isEmpty()) return;
+        if (param.isEmpty()) return;
         Param params = new Param(param, "param");
         soundPlay(loc, params);
     }
@@ -169,9 +169,9 @@ public class Util {
      */
     public static boolean isWordInList(String word, String str) {
         String[] ln = str.split(",");
-        if(ln.length > 0)
+        if (ln.length > 0)
             for (String wordInList : ln) {
-                if(wordInList.equalsIgnoreCase(word)) return true;
+                if (wordInList.equalsIgnoreCase(word)) return true;
             }
         return false;
     }
@@ -199,9 +199,9 @@ public class Util {
     // TODO: Should be removed or refactored
 
     public static boolean isIntegerSigned(String... str) {
-        if(str.length == 0) return false;
+        if (str.length == 0) return false;
         for (String s : str)
-            if(!INT.matcher(s).matches()) return false;
+            if (!INT.matcher(s).matches()) return false;
         return true;
     }
 
@@ -210,9 +210,9 @@ public class Util {
     }
 
     public static boolean isInteger(String... str) {
-        if(str.length == 0) return false;
+        if (str.length == 0) return false;
         for (String s : str)
-            if(!INT_POSITIVE.matcher(s).matches()) return false;
+            if (!INT_POSITIVE.matcher(s).matches()) return false;
         return true;
     }
 
@@ -221,16 +221,16 @@ public class Util {
     }
 
     public static boolean isIntegerGZ(String... str) {
-        if(str.length == 0) return false;
+        if (str.length == 0) return false;
         for (String s : str)
-            if(!INT_NOTZERO_POSITIVE.matcher(s).matches()) return false;
+            if (!INT_NOTZERO_POSITIVE.matcher(s).matches()) return false;
         return true;
     }
 
     public static boolean isNumber(String... str) {
-        if(str.length == 0) return false;
+        if (str.length == 0) return false;
         for (String s : str)
-            if(!FLOAT.matcher(s).matches()) return false;
+            if (!FLOAT.matcher(s).matches()) return false;
         return true;
     }
 
@@ -253,8 +253,8 @@ public class Util {
      * @return Final int
      */
     public static int safeLongToInt(long l) {
-        if(l < Integer.MIN_VALUE) return Integer.MIN_VALUE;
-        if(l > Integer.MAX_VALUE) return Integer.MAX_VALUE;
+        if (l < Integer.MIN_VALUE) return Integer.MIN_VALUE;
+        if (l > Integer.MAX_VALUE) return Integer.MAX_VALUE;
         return (int) l;
     }
 
@@ -267,9 +267,9 @@ public class Util {
     @SuppressWarnings("deprecation")
     public static UUID getUUID(String player) {
         Player p = getPlayerExact(player);
-        if(p == null) {
+        if (p == null) {
             OfflinePlayer offP = Bukkit.getOfflinePlayer(player);
-            if(offP != null) return getUUID(offP);
+            if (offP != null) return getUUID(offP);
         } else return getUUID(p);
         return null;
     }
@@ -281,12 +281,12 @@ public class Util {
      * @return Escaped string
      */
     public static String escapeJava(String doco) {
-        if(doco == null)
+        if (doco == null)
             return "";
 
         StringBuilder b = new StringBuilder();
         for (char c : doco.toCharArray()) {
-            switch(c) {
+            switch (c) {
                 case '\r':
                     b.append("\\r");
                     continue;
@@ -315,7 +315,7 @@ public class Util {
      */
     public static int[] sortedIntPair(int arg1, int arg2) {
         int[] pair = new int[2];
-        if(arg1 > arg2) {
+        if (arg1 > arg2) {
             pair[0] = arg2;
             pair[1] = arg1;
         } else {
@@ -344,9 +344,9 @@ public class Util {
      * @return Player with specified name or null
      */
     public static Player getPlayerExact(String name) {
-        if(name != null)
+        if (name != null)
             for (Player player : Bukkit.getOnlinePlayers())
-                if(player.getName().equalsIgnoreCase(name)) return player;
+                if (player.getName().equalsIgnoreCase(name)) return player;
         return null;
     }
 
@@ -383,7 +383,7 @@ public class Util {
     @SafeVarargs
     public static <T> T searchNotNull(T def, T... obj) {
         for (T searched : obj)
-            if(searched != null) return searched;
+            if (searched != null) return searched;
         return def;
 
     }
@@ -406,7 +406,7 @@ public class Util {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < data.length - 1; i++) {
             //data.length - 1 => to not add separator at the end
-            if(!data[i].matches(" *")) {//empty string are ""; " "; "  "; and so on
+            if (!data[i].matches(" *")) {//empty string are ""; " "; "  "; and so on
                 sb.append(data[i]);
                 sb.append(File.separator);
             }
@@ -436,7 +436,7 @@ public class Util {
      * @return Corresponding enum, or null if not found
      */
     public static <T extends Enum<T>> T getEnumByName(Class<T> clazz, String name, T def) {
-        if(clazz != null && !Util.isStringEmpty(name)) {
+        if (clazz != null && !Util.isStringEmpty(name)) {
             try {
                 return Enum.valueOf(clazz, name.toUpperCase());
             } catch (IllegalArgumentException ignored) {
@@ -447,7 +447,7 @@ public class Util {
 
     public static boolean containsValue(String str, String... values) {
         for (String s : values)
-            if(s.equalsIgnoreCase(str)) return true;
+            if (s.equalsIgnoreCase(str)) return true;
         return false;
     }
 }

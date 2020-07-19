@@ -35,7 +35,7 @@ public class ActionTp extends Action {
     @Override
     public boolean execute(RaContext context, Param params) {
         Location loc = teleportPlayer(context, params);
-        if(loc != null) this.setMessageParam(LocationUtil.locationToStringFormatted(loc));
+        if (loc != null) this.setMessageParam(LocationUtil.locationToStringFormatted(loc));
         return (loc != null);
     }
 
@@ -43,8 +43,8 @@ public class ActionTp extends Action {
         Player player = context.getPlayer();
         Location loc;
         int radius = 0;
-        if(params.isEmpty()) return null;
-        if(params.isParamsExists("param")) {
+        if (params.isEmpty()) return null;
+        if (params.isParamsExists("param")) {
             loc = LocationUtil.parseLocation(params.getParam("param", ""), player.getLocation());
         } else {
             loc = LocationUtil.parseLocation(params.getParam("loc", ""), player.getLocation());
@@ -52,9 +52,9 @@ public class ActionTp extends Action {
         }
         boolean land = params.getParam("land", true);
 
-        if(loc != null) {
-            if(radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
-            if(Cfg.centerTpCoords) {
+        if (loc != null) {
+            if (radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
+            if (Cfg.centerTpCoords) {
                 loc.setX(loc.getBlockX() + 0.5);
                 loc.setZ(loc.getBlockZ() + 0.5);
             }
@@ -69,8 +69,8 @@ public class ActionTp extends Action {
             context.setTempVariable("loc-to-str", LocationUtil.locationToStringFormatted(loc));
             Teleporter.teleport(player, loc);
             String playeffect = params.getParam("effect", "");
-            if(!playeffect.isEmpty()) {
-                if(playeffect.equalsIgnoreCase("smoke") && (!params.isParamsExists("wind"))) params.set("wind", "all");
+            if (!playeffect.isEmpty()) {
+                if (playeffect.equalsIgnoreCase("smoke") && (!params.isParamsExists("wind"))) params.set("wind", "all");
             }
         }
         return loc;

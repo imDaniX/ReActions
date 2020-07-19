@@ -30,7 +30,7 @@ public class EntityClickActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         EntityClickStorage ece = (EntityClickStorage) event;
-        if(ece.getEntity() == null) return false;
+        if (ece.getEntity() == null) return false;
         return isActivatorEntity(ece.getEntity());
     }
 
