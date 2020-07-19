@@ -10,9 +10,17 @@ import me.fromgate.reactions.events.PlayerAttacksEntityEvent;
 import me.fromgate.reactions.events.PlayerPickupItemEvent;
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
+import me.fromgate.reactions.storages.BlockBreakStorage;
+import me.fromgate.reactions.storages.DamageStorage;
+import me.fromgate.reactions.storages.DropStorage;
+import me.fromgate.reactions.storages.InventoryClickStorage;
 import me.fromgate.reactions.storages.ItemStoragesManager;
+import me.fromgate.reactions.storages.MessageStorage;
+import me.fromgate.reactions.storages.MobDamageStorage;
+import me.fromgate.reactions.storages.PickupItemStorage;
 import me.fromgate.reactions.storages.Storage;
 import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.storages.TeleportStorage;
 import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.TemporaryOp;
@@ -102,7 +110,7 @@ public class BukkitListener implements Listener {
 												event.getPlayer(),
 												event.getCause(),
 												event.getTo());
-		event.setTo(changeables.get("loc_to").asLocation());
+		event.setTo(changeables.get(TeleportStorage.LOCATION_TO).asLocation());
 		event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 	}
 
@@ -128,7 +136,7 @@ public class BukkitListener implements Listener {
 																						MessageActivator.Source.CHAT_INPUT,
 																						event.getMessage());
 			if(changeables == null) return;
-			event.setMessage(changeables.get("message").asString());
+			event.setMessage(changeables.get(MessageStorage.MESSAGE).asString());
 			event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 		} catch(IllegalStateException ignore) {
 			Msg.logOnce("asyncchaterror", "Chat is in async thread. Because of that you should use " +
@@ -186,8 +194,8 @@ public class BukkitListener implements Listener {
 	@EventHandler
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 		Map<String, DataValue> changeables = StoragesManager.raisePickupItemActivator(event.getPlayer(), event.getItem(), event.getItem().getPickupDelay());
-		event.getItem().setPickupDelay((int)changeables.get("pickupdelay").asDouble());
-		event.getItem().setItemStack(changeables.get("item").asItemStack());
+		event.getItem().setPickupDelay((int)changeables.get(PickupItemStorage.PICKUP_DELAY).asDouble());
+		event.getItem().setItemStack(changeables.get(PickupItemStorage.ITEM).asItemStack());
 		event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 		if(event.isCancelled()) return;
 		ItemStoragesManager.raiseItemHoldActivator(event.getPlayer());
@@ -298,7 +306,7 @@ public class BukkitListener implements Listener {
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onMobDamageByPlayer(PlayerAttacksEntityEvent event) {
 		Map<String, DataValue> changeables = StoragesManager.raiseMobDamageActivator(event.getPlayer(), event.getEntity(), event.getDamage(), event.getCause());
-		event.setDamage(changeables.get("damage").asDouble());
+		event.setDamage(changeables.get(MobDamageStorage.DAMAGE).asDouble());
 		event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 	}
 
@@ -320,21 +328,21 @@ public class BukkitListener implements Listener {
 			source = "ENTITY";
 			EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
 			Map<String, DataValue> changeables = StoragesManager.raiseDamageByMobActivator(evdmg);
-			event.setDamage(changeables.get("damage").asDouble());
+			event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
 			event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 		} else if ((event instanceof EntityDamageByBlockEvent)) {
 			source = "BLOCK";
 			EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
 			Block blockDamager = evdmg.getDamager();
 			Map<String, DataValue> changeables = StoragesManager.raiseDamageByBlockActivator(evdmg, blockDamager);
-			event.setDamage(changeables.get("damage").asDouble());
+			event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
 			event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 		} else {
 			source = "OTHER";
 		}
 
 		Map<String, DataValue> changeables = StoragesManager.raiseDamageActivator(event, source);
-		event.setDamage(changeables.get("damage").asDouble());
+		event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
 		event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 	}
 
@@ -417,15 +425,15 @@ public class BukkitListener implements Listener {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		Map<String, DataValue> changeables = StoragesManager.raiseInventoryClickActivator(event);
-		event.setCurrentItem(changeables.get("item").asItemStack());
+		event.setCurrentItem(changeables.get(InventoryClickStorage.ITEM).asItemStack());
 		event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 	}
 
 	@EventHandler
 	public void onDrop(PlayerDropItemEvent event) {
 		Map<String, DataValue> changeables = StoragesManager.raiseDropActivator(event.getPlayer(), event.getItemDrop(), event.getItemDrop().getPickupDelay());
-		event.getItemDrop().setPickupDelay((int)changeables.get("pickupdelay").asDouble());
-		event.getItemDrop().setItemStack(changeables.get("item").asItemStack());
+		event.getItemDrop().setPickupDelay((int)changeables.get(DropStorage.PICKUP_DELAY).asDouble());
+		event.getItemDrop().setItemStack(changeables.get(DropStorage.ITEM).asItemStack());
 		event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 	}
 
@@ -443,7 +451,7 @@ public class BukkitListener implements Listener {
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Map<String, DataValue> changeables = StoragesManager.raiseBlockBreakActivator(event.getPlayer(), event.getBlock(), event.isDropItems());
-		event.setDropItems(changeables.get("is_drop").asBoolean());
+		event.setDropItems(changeables.get(BlockBreakStorage.DO_DROP).asBoolean());
 		event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
 	}
 

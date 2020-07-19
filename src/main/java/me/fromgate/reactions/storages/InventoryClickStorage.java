@@ -41,6 +41,8 @@ import java.util.Map;
 
 
 public class InventoryClickStorage extends Storage {
+	public static final String ITEM = "item";
+
 	@Getter private final ItemStack item;
 	@Getter private final InventoryAction action;
 	@Getter private final ClickType clickType;
@@ -84,7 +86,7 @@ public class InventoryClickStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("item", new ItemStackValue(item));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(ITEM, new ItemStackValue(item));
 	}
 }

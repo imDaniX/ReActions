@@ -18,6 +18,9 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-09-04.
  */
 public class PickupItemStorage extends Storage {
+	public static final String PICKUP_DELAY = "pickupdelay";
+	public static final String ITEM = "item";
+
 	@Getter private ItemStack item;
 	@Getter private int pickupDelay;
 	private final Location dropLoc;
@@ -36,8 +39,8 @@ public class PickupItemStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("pickupdelay", new DoubleValue(pickupDelay));
-		changeables.put("item", new ItemStackValue(item));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(PICKUP_DELAY, new DoubleValue(pickupDelay));
+		changeables.put(ITEM, new ItemStackValue(item));
 	}
 }

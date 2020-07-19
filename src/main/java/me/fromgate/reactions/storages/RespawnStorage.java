@@ -36,6 +36,8 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class RespawnStorage extends Storage {
+	public static final String RESPAWN_LOCATION = "respawn_loc";
+
 	@Getter private final DeathCause deathCause;
 	@Getter private final LivingEntity killer;
 	private final Location respawnLoc;
@@ -64,6 +66,6 @@ public class RespawnStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put("respawn_loc", new LocationValue(respawnLoc));
+		changeables.put(RESPAWN_LOCATION, new LocationValue(respawnLoc));
 	}
 }

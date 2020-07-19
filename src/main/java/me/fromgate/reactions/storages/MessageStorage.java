@@ -36,6 +36,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class MessageStorage extends Storage {
+	public static final String MESSAGE = "message";
+
 	private final static Pattern NOT_D = Pattern.compile("\\D+");
 	@Getter private final String message;
 	private final MessageActivator activator;
@@ -78,8 +80,8 @@ public class MessageStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("message", new StringValue(message));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(MESSAGE, new StringValue(message));
 	}
 
 }

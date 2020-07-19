@@ -36,6 +36,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import java.util.Map;
 
 public class MobDamageStorage extends Storage {
+	public static final String DAMAGE = "damage";
+
 	@Getter private final LivingEntity entity;
 	@Getter private final DamageCause cause;
 	@Getter private double damage;
@@ -58,7 +60,7 @@ public class MobDamageStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("damage", new DoubleValue(damage));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(DAMAGE, new DoubleValue(damage));
 	}
 }

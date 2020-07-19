@@ -33,4 +33,6 @@ public class JoinStorage extends Storage {
 		super(p, ActivatorType.JOIN);
 		this.firstJoin = firstJoin;
 	}
+
+	// TODO: Message
 }

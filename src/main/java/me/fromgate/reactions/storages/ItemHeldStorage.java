@@ -49,6 +49,6 @@ public class ItemHeldStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
 	}
 }

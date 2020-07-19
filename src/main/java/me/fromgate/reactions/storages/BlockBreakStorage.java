@@ -16,6 +16,8 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-05-14.
  */
 public class BlockBreakStorage extends Storage {
+	public static final String DO_DROP = "is_drop";
+
 	@Getter private final Block block;
 	@Getter private final boolean dropItems;
 
@@ -34,12 +36,8 @@ public class BlockBreakStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("is_drop", new BooleanValue(dropItems));
-	}
-
-	public Location getBlockBreakLocation() {
-		return block.getLocation();
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(DO_DROP, new BooleanValue(dropItems));
 	}
 
 }

@@ -14,6 +14,8 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-07-23.
  */
 public class DamageStorage extends Storage {
+	public static final String DAMAGE = "damage";
+
 	@Getter private final DamageCause cause;
 	@Getter private final String source;
 	@Getter private final double damage;
@@ -34,7 +36,7 @@ public class DamageStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("damage", new DoubleValue(damage));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(DAMAGE, new DoubleValue(damage));
 	}
 }

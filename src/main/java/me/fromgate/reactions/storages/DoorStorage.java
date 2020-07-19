@@ -27,6 +27,7 @@ import me.fromgate.reactions.activators.ActivatorType;
 import me.fromgate.reactions.util.BlockUtil;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
+import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -34,6 +35,7 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class DoorStorage extends Storage {
+	public static final String DOOR_LOCATION = "door_loc";
 	@Getter private final Block doorBlock;
 
 	public DoorStorage(Player p, Block block) {
@@ -50,7 +52,12 @@ public class DoorStorage extends Storage {
 	}
 
 	@Override
+	void defaultVariables(Map<String, String> tempVars) {
+		tempVars.put(DOOR_LOCATION, LocationUtil.locationToString(doorBlock));
+	}
+
+	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
 	}
 }

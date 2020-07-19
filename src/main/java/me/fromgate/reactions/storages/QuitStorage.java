@@ -31,6 +31,7 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 
 public class QuitStorage extends Storage {
+	public static final String QUIT_MESSAGE = "quit-message";
 	@Getter private String quitMessage;
 
 	public QuitStorage(Player p, String quitMessage) {
@@ -40,6 +41,6 @@ public class QuitStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put("quit-message", new StringValue(quitMessage));
+		changeables.put(QUIT_MESSAGE, new StringValue(quitMessage));
 	}
 }

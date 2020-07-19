@@ -12,6 +12,8 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import java.util.Map;
 
 public class TeleportStorage extends Storage {
+	public static final String LOCATION_TO = "loc_to";
+
 	@Getter private final TeleportCause cause;
 	@Getter private final String worldTo;
 	private final Location to;
@@ -25,7 +27,7 @@ public class TeleportStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("loc_to", new LocationValue(to));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(LOCATION_TO, new LocationValue(to));
 	}
 }

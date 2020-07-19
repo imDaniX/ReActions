@@ -41,7 +41,7 @@ public class DamageByMobStorage extends Storage {
 
 	@Override
 	void defaultChangeables(Map<String, DataValue> changeables) {
-		changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
-		changeables.put("damage", new DoubleValue(damage));
+		changeables.put(CANCEL_EVENT, new BooleanValue(false));
+		changeables.put(DAMAGE, new DoubleValue(damage));
 	}
 }

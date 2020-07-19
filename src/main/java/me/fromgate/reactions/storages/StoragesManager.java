@@ -367,7 +367,7 @@ public class StoragesManager {
 	public static String raiseQuitActivator(PlayerQuitEvent event) {
 		QuitStorage qu = new QuitStorage(event.getPlayer(), event.getQuitMessage());
 		ActivatorsManager.activate(qu);
-		return qu.getChangeables().get("quit-message").asString();
+		return qu.getChangeables().get(QuitStorage.QUIT_MESSAGE).asString();
 	}
 
 	public static boolean raiseBlockClickActivator(PlayerInteractEvent event) {
