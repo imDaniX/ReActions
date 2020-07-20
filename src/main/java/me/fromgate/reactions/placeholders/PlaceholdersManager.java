@@ -36,6 +36,7 @@ public class PlaceholdersManager {
         add(new PlaceholderRandom());
         add(new PlaceholderTime());
         add(new PlaceholderCalc());
+        add(new PlaceholderActivator());
     }
 
     public static boolean add(Placeholder ph) {
