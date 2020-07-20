@@ -67,7 +67,7 @@ public class ReActions extends JavaPlugin {
         Commander.init(this);
         TimersManager.init();
         ActivatorsManager.init();
-        Bukkit.getScheduler().runTaskLater(this, FakeCommander::init, 1);
+        FakeCommander.init();
         SelectorsManager.init();
         Externals.init();
         RaVault.init();

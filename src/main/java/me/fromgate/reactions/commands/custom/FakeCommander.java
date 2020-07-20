@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class FakeCommander {
+    // TODO: Use Brigadier.. somehow
     private final static Map<String, RaCommand> commands = new HashMap<>();
 
     public static void init() {

@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * One chain of arguments
  */
-public class ArgumentsChain implements Comparable {
+public class ArgumentsChain implements Comparable<ArgumentsChain> {
     // TODO: Prebuild ExecResults maybe?
     private final Map<ExecType, String> execs;
     private final List<Argument> arguments;
@@ -90,7 +90,8 @@ public class ArgumentsChain implements Comparable {
      * @return Result of command
      */
     public ExecResult executeChain(CommandSender sender, String[] args) {
-        if (!ignoreAfter && args.length > arguments.size()) return ExecResult.BLANK_BACKUP;
+        if (args.length < arguments.size() || (!ignoreAfter && args.length > arguments.size()))
+            return ExecResult.BLANK_BACKUP;
 
         if (sender instanceof ConsoleCommandSender) {
             if (!consoleAllowed)
@@ -114,10 +115,8 @@ public class ArgumentsChain implements Comparable {
     }
 
     @Override
-    public int compareTo(Object obj) {
-        if (!(obj instanceof ArgumentsChain)) return -1;
-        if (this.priority == ((ArgumentsChain) obj).priority) return 1;
-        return -1;
+    public int compareTo(ArgumentsChain obj) {
+        return this.priority == obj.priority ? 1 : -1;
     }
 
     @Override

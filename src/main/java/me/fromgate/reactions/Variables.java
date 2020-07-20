@@ -37,12 +37,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 public class Variables {
     // TODO: Something like classes and objects that just contains variables - actually just global variables
 
-    private final static Pattern VARP = Pattern.compile("(?i).*%varp?:\\S+%.*");
     // TODO: Why treemap?
     private static Map<String, String> vars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 

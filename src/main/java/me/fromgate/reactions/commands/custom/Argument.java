@@ -3,7 +3,6 @@ package me.fromgate.reactions.commands.custom;
 import lombok.Getter;
 import me.fromgate.reactions.util.Util;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import java.util.Arrays;
@@ -62,14 +61,17 @@ public class Argument {
     public ExecType check(String arg) {
         switch (type) {
             case PLAYER:
-                Player player = Util.getPlayerExact(arg);
-                return player != null ? ExecType.DEFAULT : ExecType.OFFLINE;
+                return Util.getPlayerExact(arg) != null ? ExecType.DEFAULT : ExecType.OFFLINE;
+
             case TEXT:
                 return argument.equalsIgnoreCase(arg) ? ExecType.DEFAULT : ExecType.BACKUP;
+
             case MULTIPLE_TEXT:
                 return multiple.contains(arg) ? ExecType.DEFAULT : ExecType.BACKUP;
+
             case INTEGER:
                 return Util.INT.matcher(arg).matches() ? ExecType.DEFAULT : ExecType.NOT_INTEGER;
+
             case FLOAT:
                 return Util.FLOAT.matcher(arg).matches() ? ExecType.DEFAULT : ExecType.NOT_FLOAT;
         }
