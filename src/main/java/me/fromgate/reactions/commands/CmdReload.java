@@ -13,6 +13,7 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
 import java.io.File;
+import java.util.Locale;
 
 @CmdDefine(command = "react", description = Msg.CMD_RELOAD, permission = "reactions.config",
         subCommands = {"reload"}, allowConsole = true, shortDescription = "&3/react reload [galcdvtm] [groupId]")
@@ -21,7 +22,7 @@ public class CmdReload extends Cmd {
     @Override
     public boolean execute(CommandSender sender, String[] params) {
         if (params.length >= 2) {
-            String check = params[1].toLowerCase();
+            String check = params[1].toLowerCase(Locale.ENGLISH);
             if (check.contains("g") && params.length > 2) {
                 ActivatorsManager.loadActivators(params[2].replaceAll("[/\\\\]", File.separator));
             } else if (check.contains("a")) {

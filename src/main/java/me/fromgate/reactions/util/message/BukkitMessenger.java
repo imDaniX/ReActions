@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class BukkitMessenger implements Messenger {
@@ -182,7 +183,7 @@ public class BukkitMessenger implements Messenger {
         }
 
         for (Map.Entry<String, String> message : messages.entrySet())
-            lng.set(message.getKey().toLowerCase(), message.getValue());
+            lng.set(message.getKey().toLowerCase(Locale.ENGLISH), message.getValue());
 
         try {
             lng.save(f);

@@ -11,6 +11,8 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Locale;
+
 public class WeChangeActivator extends Activator {
     private final Material blockType;
     private final String region;
@@ -28,7 +30,7 @@ public class WeChangeActivator extends Activator {
     }
 
     public static WeChangeActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        Material blockType = ItemUtil.getMaterial(cfg.getString("block-type").toUpperCase());
+        Material blockType = ItemUtil.getMaterial(cfg.getString("block-type"));
         String region = cfg.getString("region", "");
         return new WeChangeActivator(base, blockType, region);
     }
@@ -65,7 +67,7 @@ public class WeChangeActivator extends Activator {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
         sb.append("block-type:").append(blockType != null ? blockType : "ANY");
-        sb.append(" region:").append(region.isEmpty() ? "-" : region.toUpperCase());
+        sb.append(" region:").append(region.isEmpty() ? "-" : region.toUpperCase(Locale.ENGLISH));
         sb.append(")");
         return sb.toString();
     }

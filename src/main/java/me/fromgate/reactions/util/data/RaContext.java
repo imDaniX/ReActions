@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class RaContext {
@@ -37,23 +38,23 @@ public class RaContext {
     }
 
     public String getTempVariable(String key) {
-        return tempVariables.get(key);
+        return tempVariables.get(key.toLowerCase(Locale.ENGLISH));
     }
 
     public String getTempVariable(String key, String def) {
-        return tempVariables.getOrDefault(key, def);
+        return tempVariables.getOrDefault(key.toLowerCase(Locale.ENGLISH), def);
     }
 
     public String setTempVariable(String key, String str) {
-        return tempVariables.put(key.toLowerCase(), str);
+        return tempVariables.put(key.toLowerCase(Locale.ENGLISH), str);
     }
 
     public String setTempVariable(String key, Object obj) {
-        return tempVariables.put(key.toLowerCase(), obj.toString());
+        return tempVariables.put(key.toLowerCase(Locale.ENGLISH), obj.toString());
     }
 
     public boolean setChangeable(String key, double value) {
-        key = key.toLowerCase();
+        key = key.toLowerCase(Locale.ENGLISH);
         DataValue dataValue = changeables.get(key);
         if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());
@@ -61,7 +62,7 @@ public class RaContext {
     }
 
     public boolean setChangeable(String key, String value) {
-        key = key.toLowerCase();
+        key = key.toLowerCase(Locale.ENGLISH);
         DataValue dataValue = changeables.get(key);
         if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());
@@ -69,7 +70,7 @@ public class RaContext {
     }
 
     public boolean setChangeable(String key, boolean value) {
-        key = key.toLowerCase();
+        key = key.toLowerCase(Locale.ENGLISH);
         DataValue dataValue = changeables.get(key);
         if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());
@@ -77,7 +78,7 @@ public class RaContext {
     }
 
     public boolean setChangeable(String key, Location value) {
-        key = key.toLowerCase();
+        key = key.toLowerCase(Locale.ENGLISH);
         DataValue dataValue = changeables.get(key);
         if (dataValue == null || !dataValue.set(value)) return false;
         tempVariables.put(key, dataValue.asString());

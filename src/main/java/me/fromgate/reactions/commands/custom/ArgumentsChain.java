@@ -9,6 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -100,7 +101,7 @@ public class ArgumentsChain implements Comparable<ArgumentsChain> {
             return new ExecResult(ExecType.NO_PERMISSIONS, getErroredExec(ExecType.NO_PERMISSIONS));
 
         for (int i = 0; i < arguments.size(); i++) {
-            ExecType resultType = arguments.get(i).check(args[i].toLowerCase());
+            ExecType resultType = arguments.get(i).check(args[i].toLowerCase(Locale.ENGLISH));
             if (resultType != ExecType.DEFAULT)
                 return new ExecResult(resultType, getErroredExec(resultType));
             if (i == arguments.size() - 1)

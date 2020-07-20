@@ -96,7 +96,7 @@ public class ItemWearActivator extends Activator /*implements Manageable*/ {
 
 		public static WearSlot getByName(String name) {
 			if(Util.isStringEmpty(name)) return ANY;
-			switch(name.toLowerCase()) {
+			switch(name.toLowerCase(Locale.ENGLISH)) {
 				case "head": return HEAD;
 				case "chest": return CHEST;
 				case "legs": return LEGS;

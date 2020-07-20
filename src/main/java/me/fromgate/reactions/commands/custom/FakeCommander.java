@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class FakeCommander {
     }
 
     public static boolean raiseRaCommand(CommandStorage storage) {
-        RaCommand raCmd = commands.get(storage.getLabel().toLowerCase());
+        RaCommand raCmd = commands.get(storage.getLabel().toLowerCase(Locale.ENGLISH));
         if (raCmd == null) return false;
         String exec = raCmd.executeCommand(storage.getSender(), storage.getArgs());
         StoragesManager.raiseExecActivator(storage.getSender(), exec, storage.getTempVars());
@@ -89,8 +90,8 @@ public class FakeCommander {
 
     private static boolean register(String command, String prefix, List<String> aliases, CommandMap commandMap, RaCommand raCommand, boolean toBukkit) {
         if (Util.isStringEmpty(command)) return false;
-        command = command.toLowerCase();
-        prefix = Util.isStringEmpty(prefix) ? command : prefix.toLowerCase();
+        command = command.toLowerCase(Locale.ENGLISH);
+        prefix = Util.isStringEmpty(prefix) ? command : prefix.toLowerCase(Locale.ENGLISH);
         if (aliases == null)
             aliases = new ArrayList<>();
         // Registering main command

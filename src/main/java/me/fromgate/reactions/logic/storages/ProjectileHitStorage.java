@@ -21,7 +21,7 @@ public class ProjectileHitStorage extends Storage {
     private final boolean entityHit;
 
     public ProjectileHitStorage(Player player, EntityType projType, Block block, BlockFace face, Entity entity) {
-        super(player, ActivatorType.PROJECTILE_HIT);
+        super(player, ActivatorType.EXEC);
         this.projType = projType;
         this.entityHit = entity != null;
         this.block = block;

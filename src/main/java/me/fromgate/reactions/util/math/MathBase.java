@@ -1,6 +1,7 @@
 package me.fromgate.reactions.util.math;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class MathBase {
@@ -26,7 +27,7 @@ public class MathBase {
     }
 
     public static boolean registerFunction(String name, Function function) {
-        name = name.toLowerCase();
+        name = name.toLowerCase(Locale.ENGLISH);
         if (isAllowedName(name) && !functions.containsKey(name)) {
             functions.put(name, function);
             return true;
@@ -35,7 +36,7 @@ public class MathBase {
     }
 
     public static boolean registerConstant(String name, double value) {
-        name = name.toLowerCase();
+        name = name.toLowerCase(Locale.ENGLISH);
         if (isAllowedName(name) && !constants.containsKey(name)) {
             constants.put(name, value);
             return true;

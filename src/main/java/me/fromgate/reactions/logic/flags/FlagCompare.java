@@ -27,6 +27,8 @@ import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 
+import java.util.Locale;
+
 public class FlagCompare implements Flag {
 
     @Override
@@ -36,7 +38,7 @@ public class FlagCompare implements Flag {
         if (paramValue.isEmpty()) return false;
         if (!params.isParamsExists("value1")) return false;
         for (String valueKey : params.keySet()) {
-            if (!((valueKey.toLowerCase()).startsWith("value"))) continue;
+            if (!((valueKey.toLowerCase(Locale.ENGLISH)).startsWith("value"))) continue;
             String value = params.getParam(valueKey);
             if (Util.isIntegerSigned(value, paramValue) && (Integer.parseInt(value) == Integer.parseInt(paramValue)))
                 return true;

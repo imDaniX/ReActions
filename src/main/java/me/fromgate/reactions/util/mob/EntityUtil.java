@@ -44,19 +44,6 @@ public class EntityUtil {
     }
 
     /**
-     * Get EntityType by it's name
-     *
-     * @param type Name of EntityType
-     * @return EntityType or null if there's no types with this name
-     */
-    public static EntityType getEntityByName(String type) {
-        type = type.toUpperCase();
-        for (EntityType eType : EntityType.values())
-            if (eType.name().equals(type)) return eType;
-        return null;
-    }
-
-    /**
      * Get all entities inside cuboid
      *
      * @param l1 Point of cuboid

@@ -33,6 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -571,8 +572,8 @@ public enum Msg {
     private static void initMessages() {
         Map<String, String> lng = messenger.load(language);
         for (Msg key : Msg.values()) {
-            if (lng.containsKey(key.name().toLowerCase())) {
-                key.initMessage(lng.get(key.name().toLowerCase()));
+            if (lng.containsKey(key.name().toLowerCase(Locale.ENGLISH))) {
+                key.initMessage(lng.get(key.name().toLowerCase(Locale.ENGLISH)));
             } else if (!(language.equalsIgnoreCase("default") || language.equalsIgnoreCase("english"))) {
                 Msg.LNG_TRANSLATION_NOT_FOUND.log(key.name());
             }
@@ -582,19 +583,19 @@ public enum Msg {
     private static void testRequiredMessages() {
         String key;
         for (ActivatorType activator : ActivatorType.values()) {
-            key = "ACTIVATOR_" + activator.name().toUpperCase();
+            key = "ACTIVATOR_" + activator.name().toUpperCase(Locale.ENGLISH);
             if (!exists(key)) {
                 Msg.LNG_MISSED_ACTIVATOR_DESC.log(key);
             }
         }
         for (Actions action : Actions.values()) {
-            key = "ACTION_" + action.name().toUpperCase();
+            key = "ACTION_" + action.name().toUpperCase(Locale.ENGLISH);
             if (!exists(key)) {
                 Msg.LNG_FAIL_ACTION_DESC.log(key);
             }
         }
         for (Flags flag : Flags.values()) {
-            key = "FLAG_" + flag.name().toUpperCase();
+            key = "FLAG_" + flag.name().toUpperCase(Locale.ENGLISH);
             if (!exists(key)) {
                 Msg.LNG_FAIL_FLAG_DESC.log(key);
             }
@@ -611,7 +612,7 @@ public enum Msg {
     private static void saveMessages() {
         Map<String, String> messages = new LinkedHashMap<>();
         for (Msg msg : Msg.values()) {
-            messages.put(msg.name().toLowerCase(), msg.message);
+            messages.put(msg.name().toLowerCase(Locale.ENGLISH), msg.message);
         }
         messenger.save(language, messages);
     }
@@ -695,7 +696,7 @@ public enum Msg {
     }
 
     public static boolean printMSG(Object sender, String key, Object... s) {
-        Msg m = getByName(key.toUpperCase());
+        Msg m = getByName(key.toUpperCase(Locale.ENGLISH));
         if (m == null) {
             LNG_PRINT_FAIL_M.print(sender, key);
             return LNG_PRINT_FAIL_M.log(sender, key);

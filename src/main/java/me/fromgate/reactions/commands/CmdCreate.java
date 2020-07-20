@@ -14,6 +14,8 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 @CmdDefine(command = "react", description = Msg.CMD_CREATE, permission = "reactions.config",
         subCommands = {"create"}, allowConsole = true,
         shortDescription = "&3/react create <loc|timer|menu|activatorType> <id> [param]")
@@ -24,7 +26,7 @@ public class CmdCreate extends Cmd {
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length < 3) return false;
         Player player = (sender instanceof Player) ? (Player) sender : null;
-        String type = args[1].toLowerCase();
+        String type = args[1].toLowerCase(Locale.ENGLISH);
         String id = args[2];
         StringBuilder param = new StringBuilder(args.length >= 4 ? args[3] : "");
         if (args.length > 4) {

@@ -28,6 +28,8 @@ import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 
+import java.util.Locale;
+
 public class ActionSql extends Action {
     // TODO: More functionality like working with arrays
     private final int sqlType;
@@ -45,7 +47,7 @@ public class ActionSql extends Action {
         switch (sqlType) {
             case 0: // SELECT to variable
                 if (query.isEmpty()) return false;
-                if (!query.toLowerCase().startsWith("select")) {
+                if (!query.toLowerCase(Locale.ENGLISH).startsWith("select")) {
                     Msg.logOnce("needselect" + query, "You need to use only \"SELECT\" query in SQL_SELECT action. Query: " + query);
                     return false;
                 }
@@ -55,7 +57,7 @@ public class ActionSql extends Action {
             case 1: // INSERT
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
-                if (!query.toLowerCase().startsWith("insert")) {
+                if (!query.toLowerCase(Locale.ENGLISH).startsWith("insert")) {
                     Msg.logOnce("needinsert" + query, "You need to use only \"INSERT\" query in SQL_INSERT action. Query: " + query);
                     return false;
                 }
@@ -64,7 +66,7 @@ public class ActionSql extends Action {
             case 2: // UPDATE
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
-                if (!query.toLowerCase().startsWith("update")) {
+                if (!query.toLowerCase(Locale.ENGLISH).startsWith("update")) {
                     Msg.logOnce("needupdate" + query, "You need to use only \"UPDATE\" query in SQL_UPDATE action. Query: " + query);
                     return false;
                 }
@@ -73,7 +75,7 @@ public class ActionSql extends Action {
             case 3: // DELETE
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
-                if (!query.toLowerCase().startsWith("delete")) {
+                if (!query.toLowerCase(Locale.ENGLISH).startsWith("delete")) {
                     Msg.logOnce("needdelete" + query, "You need to use only \"DELETE\" query in SQL_DELETE action. Query: " + query);
                     return false;
                 }
@@ -82,7 +84,7 @@ public class ActionSql extends Action {
             case 4: // SET
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
-                if (!query.toLowerCase().startsWith("set")) {
+                if (!query.toLowerCase(Locale.ENGLISH).startsWith("set")) {
                     Msg.logOnce("needset" + query, "You need to use only \"SET\" query in SQL_SET action. Query: " + query);
                     return false;
                 }

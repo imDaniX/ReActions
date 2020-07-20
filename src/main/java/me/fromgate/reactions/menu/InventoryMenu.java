@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class InventoryMenu implements Listener {
@@ -163,15 +164,15 @@ public class InventoryMenu implements Listener {
     }
 
     private static VirtualInventory getMenu(String id) {
-        return menu.get(id.toLowerCase());
+        return menu.get(id.toLowerCase(Locale.ENGLISH));
     }
 
     private static void putMenu(String id, VirtualInventory inventory) {
-        menu.put(id.toLowerCase(), inventory);
+        menu.put(id.toLowerCase(Locale.ENGLISH), inventory);
     }
 
     private static boolean containsMenu(String id) {
-        return menu.containsKey(id.toLowerCase());
+        return menu.containsKey(id.toLowerCase(Locale.ENGLISH));
     }
 
     public static void printMenu(CommandSender sender, String id) {
@@ -192,7 +193,7 @@ public class InventoryMenu implements Listener {
         int linesPerPage = (sender instanceof Player) ? 15 : 10000;
         List<String> menuList = new ArrayList<>();
         for (String id : menu.keySet()) {
-            if (mask.isEmpty() || id.toLowerCase().contains(mask.toLowerCase())) {
+            if (mask.isEmpty() || id.toLowerCase(Locale.ENGLISH).contains(mask.toLowerCase(Locale.ENGLISH))) {
                 menuList.add(id + " : " + getMenu(id).getTitle());
             }
         }

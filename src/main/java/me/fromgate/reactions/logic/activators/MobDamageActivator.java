@@ -32,6 +32,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 public class MobDamageActivator extends Activator {
     private final String mobName;
     // TODO: EntityType
@@ -115,8 +117,8 @@ public class MobDamageActivator extends Activator {
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
-        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
-        sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());
+        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase(Locale.ENGLISH));
+        sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName);
         sb.append(")");
         return sb.toString();
     }

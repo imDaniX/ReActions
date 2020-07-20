@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 // TODO: Will be irrelevant because of modules(externals) system
@@ -132,7 +133,7 @@ public enum Actions {
         Map<String, Actions> byName = new HashMap<>();
         for (Actions act : Actions.values()) {
             byName.put(act.name(), act);
-            byName.put(act.alias.toUpperCase(), act);
+            byName.put(act.alias.toUpperCase(Locale.ENGLISH), act);
         }
         BY_NAME = Collections.unmodifiableMap(byName);
     }
@@ -144,7 +145,7 @@ public enum Actions {
     private final Action action;
 
     Actions(String alias, Action action, boolean requirePlayer) {
-        this.alias = alias.toUpperCase();
+        this.alias = alias.toUpperCase(Locale.ENGLISH);
         this.requirePlayer = requirePlayer;
         this.action = action;
         this.action.init(this);
@@ -155,7 +156,7 @@ public enum Actions {
     }
 
     public static Actions getByName(String name) {
-        return BY_NAME.get(name.toUpperCase());
+        return BY_NAME.get(name.toUpperCase(Locale.ENGLISH));
     }
 
     public static String getValidName(String name) {
@@ -179,7 +180,7 @@ public enum Actions {
             if (at == Actions.WAIT) {
                 if (i == actions.size() - 1) return;
                 ActionWait aw = (ActionWait) at.action;
-                Parameters param = new Parameters(PlaceholdersManager.replacePlaceholderButRaw(context, av.getValue()), "time");
+                Parameters param = new Parameters(PlaceholdersManager.replacePlaceholders(context, av.getValue()), "time");
                 String timeStr = param.getParam("time", "0");
                 long time = TimeUtil.parseTime(timeStr);
                 if (time == 0) continue;
@@ -187,7 +188,7 @@ public enum Actions {
                 aw.executeDelayed(context.getPlayer(), futureList, isAction, time);
                 return;
             }
-            at.performAction(context, isAction, new Parameters(PlaceholdersManager.replacePlaceholderButRaw(context, av.getValue())));
+            at.performAction(context, isAction, new Parameters(PlaceholdersManager.replacePlaceholders(context, av.getValue())));
         }
     }
 

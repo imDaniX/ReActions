@@ -34,6 +34,7 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class ActionClearRegion extends Action {
     // TODO: Too weird. Optimize, simplify
@@ -69,6 +70,6 @@ public class ActionClearRegion extends Action {
         } else {
             if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
         }
-        return (Util.isWordInList(e.getType().name().toLowerCase(), type.toLowerCase()));
+        return (Util.isWordInList(e.getType().name().toLowerCase(Locale.ENGLISH), type.toLowerCase(Locale.ENGLISH)));
     }
 }

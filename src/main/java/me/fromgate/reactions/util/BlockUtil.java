@@ -14,16 +14,9 @@ import java.util.Set;
  */
 public class BlockUtil {
     private final static Set<Material> PLATES = new HashSet<>();
-
     static {
         for (Material mat : Material.values())
             if (mat.name().endsWith("PRESSURE_PLATE")) PLATES.add(mat);
-    }
-
-    public static BlockFace getFaceByName(String name) {
-        for (BlockFace face : BlockFace.values())
-            if (face.name().equalsIgnoreCase(name)) return face;
-        return null;
     }
 
     public static boolean isPlate(Block block) {

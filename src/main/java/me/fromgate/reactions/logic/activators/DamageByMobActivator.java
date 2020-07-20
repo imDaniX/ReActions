@@ -9,6 +9,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import java.util.Locale;
+
 /**
  * Created by MaxDikiy on 2017-06-25.
  */
@@ -41,7 +43,7 @@ public class DamageByMobActivator extends Activator {
 
     private static String getEntityTypeByName(String sType) {
         if (sType != null) {
-            sType = sType.toUpperCase();
+            sType = sType.toUpperCase(Locale.ENGLISH);
             for (EntityType type : EntityType.values()) {
                 if (sType.equals(type.name()))
                     return type.name();
@@ -125,9 +127,9 @@ public class DamageByMobActivator extends Activator {
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
-        sb.append("type:").append(damagerType.isEmpty() ? "-" : damagerType.toUpperCase());
+        sb.append("type:").append(damagerType.isEmpty() ? "-" : damagerType.toUpperCase(Locale.ENGLISH));
         sb.append("; name:").append(damagerName.isEmpty() ? "-" : damagerName);
-        sb.append("; etype:").append(entityType.isEmpty() ? "-" : entityType.toUpperCase());
+        sb.append("; etype:").append(entityType.isEmpty() ? "-" : entityType.toUpperCase(Locale.ENGLISH));
         sb.append("; cause:").append(damageCause);
         sb.append(")");
         return sb.toString();

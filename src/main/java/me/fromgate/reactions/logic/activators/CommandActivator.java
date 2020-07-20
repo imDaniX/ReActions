@@ -32,6 +32,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class CommandActivator extends Activator {
@@ -98,7 +99,7 @@ public class CommandActivator extends Activator {
                 return pattern.matcher(cs.getCommand()).matches();
             } else
                 return starts ?
-                        cs.getCommand().toLowerCase().startsWith(command) :
+                        cs.getCommand().toLowerCase(Locale.ENGLISH).startsWith(command) :
                         command.equalsIgnoreCase(cs.getCommand());
         } else {
             if (args.size() != cs.getArgs().length + 1) return false;

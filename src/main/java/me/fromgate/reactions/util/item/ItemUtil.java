@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -42,7 +43,7 @@ public class ItemUtil {
     public static Enchantment getEnchantmentByName(String name) {
         if (!Util.isStringEmpty(name))
             try {
-                return Enchantment.getByKey(NamespacedKey.minecraft(name.toLowerCase()));
+                return Enchantment.getByKey(NamespacedKey.minecraft(name.toLowerCase(Locale.ENGLISH)));
             } catch (IllegalArgumentException ignore) {
             }
         return null;
@@ -365,7 +366,7 @@ public class ItemUtil {
      */
     public static Material getMaterial(String name) {
         if (Util.isStringEmpty(name)) return null;
-        name = name.toUpperCase();
+        name = name.toUpperCase(Locale.ENGLISH);
         Material material = Material.getMaterial(name, false);
         return material == null ? Material.getMaterial(name, true) : material;
     }
@@ -540,7 +541,7 @@ public class ItemUtil {
                 amount = Math.max(Util.getMinMaxRandom(si[1]), 1);
             String[] ti = si[0].split(":");
             if (ti.length > 0) {
-                Material m = Material.getMaterial(ti[0].toUpperCase());
+                Material m = Material.getMaterial(ti[0].toUpperCase(Locale.ENGLISH));
                 if (m == null)
                     return null;
                 id = m;

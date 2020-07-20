@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -169,9 +170,9 @@ public class ActivatorsManager {
      * @return Was activator added or not
      */
     public static boolean addActivator(Activator act) {
-        if (containsActivator(act.getBase().getName().toLowerCase())) return false;
+        if (containsActivator(act.getBase().getName().toLowerCase(Locale.ENGLISH))) return false;
         typeActivators.get(act.getType()).add(act);
-        activators.put(act.getBase().getName().toLowerCase(), act);
+        activators.put(act.getBase().getName().toLowerCase(Locale.ENGLISH), act);
         return true;
     }
 
@@ -181,7 +182,7 @@ public class ActivatorsManager {
      * @param name Name of activator to remove
      */
     public static void removeActivator(String name) {
-        Activator act = activators.remove(name.toLowerCase());
+        Activator act = activators.remove(name.toLowerCase(Locale.ENGLISH));
         if (act != null)
             typeActivators.get(act.getType()).remove(act);
     }
@@ -193,7 +194,7 @@ public class ActivatorsManager {
      * @return Does activator with this name exist
      */
     public static boolean containsActivator(String name) {
-        return activators.containsKey(name.toLowerCase());
+        return activators.containsKey(name.toLowerCase(Locale.ENGLISH));
     }
 
     /**
@@ -203,7 +204,7 @@ public class ActivatorsManager {
      * @return Activator or null
      */
     public static Activator getActivator(String name) {
-        return activators.get(name.toLowerCase());
+        return activators.get(name.toLowerCase(Locale.ENGLISH));
     }
 
     /**
@@ -408,7 +409,7 @@ public class ActivatorsManager {
                 ActivatorBase base = iter.next().getBase();
                 if (!base.getGroup().equalsIgnoreCase(name))
                     continue;
-                activators.remove(base.getName().toLowerCase());
+                activators.remove(base.getName().toLowerCase(Locale.ENGLISH));
                 iter.remove();
             }
         }
@@ -458,7 +459,7 @@ public class ActivatorsManager {
      * @param id      Name of activator
      */
     public static void activate(Storage storage, String id) {
-        Activator activator = activators.get(id.toLowerCase());
+        Activator activator = activators.get(id.toLowerCase(Locale.ENGLISH));
         activate(storage, activator);
     }
 

@@ -13,6 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.Locale;
 
 
 @CmdDefine(command = "react", description = Msg.CMD_LIST, permission = "reactions.config",
@@ -25,7 +26,7 @@ public class CmdList extends Cmd {
         Player player = (sender instanceof Player) ? (Player) sender : null;
         int lpp = (player == null) ? 1000 : 15;
         int page = 1;
-        String arg1 = args.length >= 2 ? args[1].toLowerCase() : "";
+        String arg1 = args.length >= 2 ? args[1].toLowerCase(Locale.ENGLISH) : "";
         String arg2 = args.length >= 3 ? args[2] : "";
         String arg3 = args.length >= 4 ? args[3] : "";
         if (Util.isIntegerGZ(arg1)) printAct(sender, 1, lpp);

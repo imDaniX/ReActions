@@ -6,7 +6,7 @@
 
     <groupId>me.fromgate.reactions</groupId>
     <artifactId>reactions</artifactId>
-    <version>0.13.0</version>
+    <version>0.13.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>ReActions</name>

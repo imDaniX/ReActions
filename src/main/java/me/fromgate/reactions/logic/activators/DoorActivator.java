@@ -34,6 +34,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Locale;
+
 public class DoorActivator extends Activator implements Locatable {
     private final String state; //open, close
     //координаты нижнего блока двери
@@ -127,7 +129,7 @@ public class DoorActivator extends Activator implements Locatable {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
         sb.append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
-        sb.append("; state:").append(this.state.toUpperCase());
+        sb.append("; state:").append(this.state.toUpperCase(Locale.ENGLISH));
         sb.append(")");
         return sb.toString();
     }

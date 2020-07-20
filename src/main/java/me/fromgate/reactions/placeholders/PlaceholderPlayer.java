@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @PlaceholderDefine(id = "BasicPlayer",
@@ -30,7 +31,7 @@ public class PlaceholderPlayer extends Placeholder {
     @Override
     public String processPlaceholder(Player player, String key, String param) {
         if (player == null) return null;
-        switch (key.toLowerCase()) {
+        switch (key.toLowerCase(Locale.ENGLISH)) {
             case "player_name":
             case "player":
                 return player.getName();
@@ -111,7 +112,7 @@ public class PlaceholderPlayer extends Placeholder {
             if (slotNum < 0 || slotNum >= player.getInventory().getSize()) return "";
             vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));
         } else {
-            switch (value.toLowerCase()) {
+            switch (value.toLowerCase(Locale.ENGLISH)) {
                 case "mainhand":
                 case "hand":
                     return getPlayerItemInHand(player, false);

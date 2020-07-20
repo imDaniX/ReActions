@@ -32,6 +32,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 public class ActionMessage extends Action {
@@ -67,7 +68,7 @@ public class ActionMessage extends Action {
         String annoymentTime = params.getParam("hide");
         for (Player p : players) {
             if (showMessage(p, message, annoymentTime)) {
-                switch (type.toLowerCase()) {
+                switch (type.toLowerCase(Locale.ENGLISH)) {
                     case "title":
                         p.sendTitle(Msg.colorize(message),
                                 params.getParam("subtitle", null),

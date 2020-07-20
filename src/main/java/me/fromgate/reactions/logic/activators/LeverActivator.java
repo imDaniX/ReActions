@@ -33,6 +33,8 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Locale;
+
 public class LeverActivator extends Activator implements Locatable {
     // TODO: Use enum
     private final String state; //on, off
@@ -126,7 +128,7 @@ public class LeverActivator extends Activator implements Locatable {
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (").append(world).append(", ").append(x).append(", ").append(y).append(", ").append(z);
-        sb.append(" state:").append(this.state.toUpperCase()).append(")");
+        sb.append(" state:").append(this.state.toUpperCase(Locale.ENGLISH)).append(")");
         return sb.toString();
     }
 }

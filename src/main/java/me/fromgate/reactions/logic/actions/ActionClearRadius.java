@@ -12,6 +12,7 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by MaxDikiy on 20/10/2017.
@@ -50,7 +51,7 @@ public class ActionClearRadius extends Action {
         } else {
             if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
         }
-        return (Util.isWordInList(e.getType().name().toLowerCase(), type.toLowerCase()));
+        return (Util.isWordInList(e.getType().name().toLowerCase(Locale.ENGLISH), type.toLowerCase(Locale.ENGLISH)));
     }
 
 }

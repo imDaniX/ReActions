@@ -30,6 +30,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 
+import java.util.Locale;
+
 public class MobKillActivator extends Activator {
     // TODO: EntityType
     private final String mobType;
@@ -101,8 +103,8 @@ public class MobKillActivator extends Activator {
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
-        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
-        sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName.isEmpty());
+        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase(Locale.ENGLISH));
+        sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName);
         sb.append(")");
         return sb.toString();
     }

@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 // TODO: Will be irrelevant because of modules(externals) system
@@ -121,7 +122,7 @@ public enum Flags {
         Map<String, Flags> byName = new HashMap<>();
         for (Flags flg : Flags.values()) {
             byName.put(flg.name(), flg);
-            byName.put(flg.alias.toUpperCase(), flg);
+            byName.put(flg.alias.toUpperCase(Locale.ENGLISH), flg);
         }
         BY_NAME = Collections.unmodifiableMap(byName);
     }
@@ -141,7 +142,7 @@ public enum Flags {
     }
 
     public static Flags getByName(String name) {
-        return BY_NAME.get(name.toUpperCase());
+        return BY_NAME.get(name.toUpperCase(Locale.ENGLISH));
     }
 
     public static boolean isValid(String name) {
@@ -154,10 +155,10 @@ public enum Flags {
 
     public static boolean checkFlag(RaContext context, Flags flag, String param, boolean not) {
         if (flag == null || Util.isStringEmpty(param)) return false;
-        context.setTempVariable((flag + "_flag").toUpperCase(), param);
+        context.setTempVariable((flag + "_flag").toUpperCase(Locale.ENGLISH), param);
         boolean check = flag.check(context, param);
         if (not) return !check;
-        context.setTempVariable((flag + "_flag_val").toUpperCase(), String.valueOf(check));
+        context.setTempVariable((flag + "_flag_val").toUpperCase(Locale.ENGLISH), String.valueOf(check));
         return check;
     }
 
@@ -169,9 +170,9 @@ public enum Flags {
         if (c.getFlags().size() > 0)
             for (int i = 0; i < c.getFlags().size(); i++) {
                 StoredFlag f = c.getFlags().get(i);
-                context.setTempVariable((f.getFlagName() + "_flag").toUpperCase(), f.getValue());
+                context.setTempVariable((f.getFlagName() + "_flag").toUpperCase(Locale.ENGLISH), f.getValue());
                 if (!checkFlag(context, f.getFlag(),
-                        PlaceholdersManager.replacePlaceholderButRaw(context, f.getValue()), f.isInverted()))
+                        PlaceholdersManager.replacePlaceholders(context, f.getValue()), f.isInverted()))
                     return false;
             }
         return true;

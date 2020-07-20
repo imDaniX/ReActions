@@ -30,6 +30,8 @@ import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
+import java.util.Locale;
+
 
 public abstract class Action {
     private Actions type = null;
@@ -53,7 +55,7 @@ public abstract class Action {
         setMessageParam(params.getParam("param-line"));
         boolean actionFailed = (!execute(context, params));
         if ((player != null) && (printAction())) {
-            Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase());
+            Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase(Locale.ENGLISH));
             if (msg == null) {
                 Msg.LNG_FAIL_ACTION_MSG.print(type.name());
             } else {

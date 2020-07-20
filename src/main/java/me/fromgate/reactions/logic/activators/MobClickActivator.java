@@ -34,6 +34,8 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 
+import java.util.Locale;
+
 public class MobClickActivator extends Activator implements Locatable {
     // TODO: EntityType
     private final String mobType;
@@ -128,7 +130,7 @@ public class MobClickActivator extends Activator implements Locatable {
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
-        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase());
+        sb.append("type:").append(mobType.isEmpty() ? "-" : mobType.toUpperCase(Locale.ENGLISH));
         sb.append(" name:").append(mobName.isEmpty() ? "-" : mobName);
         sb.append(" loc:").append(mobLocation.isEmpty() ? "-" : mobLocation);
         sb.append(")");

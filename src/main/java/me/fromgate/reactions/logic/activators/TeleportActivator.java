@@ -18,23 +18,15 @@ public class TeleportActivator extends Activator {
     }
 
     public static TeleportActivator create(ActivatorBase base, Parameters param) {
-        TeleportCause cause = getCauseByName(param.getParam("cause"));
+        TeleportCause cause = Util.getEnum(TeleportCause.class, param.getParam("cause"));
         String worldTo = param.getParam("world");
         return new TeleportActivator(base, cause, worldTo);
     }
 
     public static TeleportActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        TeleportCause cause = getCauseByName(cfg.getString("cause"));
+        TeleportCause cause = Util.getEnum(TeleportCause.class, cfg.getString("cause"));
         String worldTo = cfg.getString("world");
         return new TeleportActivator(base, cause, worldTo);
-    }
-
-    private static TeleportCause getCauseByName(String name) {
-        if (Util.isStringEmpty(name)) return null;
-        name = name.toUpperCase();
-        for (TeleportCause cause : TeleportCause.values())
-            if (cause.name().equals(name)) return cause;
-        return null;
     }
 
     @Override

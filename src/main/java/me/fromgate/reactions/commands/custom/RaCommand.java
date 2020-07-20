@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -61,7 +62,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
         ConfigurationSection argsSection = cmdSection.getConfigurationSection("args");
         if (argsSection == null) return;
         for (String arg : argsSection.getKeys(false))
-            chains.add(new ArgumentsChain(arg.toLowerCase(), argsSection.getConfigurationSection(arg)));
+            chains.add(new ArgumentsChain(arg.toLowerCase(Locale.ENGLISH), argsSection.getConfigurationSection(arg)));
     }
 
     /**

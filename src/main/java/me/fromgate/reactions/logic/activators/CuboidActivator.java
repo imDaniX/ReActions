@@ -11,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -101,7 +102,7 @@ public class CuboidActivator extends Activator implements Locatable {
         CHECK, ENTER, LEAVE;
 
         static CuboidMode getByName(String name) {
-            switch (name.toUpperCase()) {
+            switch (name.toUpperCase(Locale.ENGLISH)) {
                 case "CHECK":
                     return CHECK;
                 case "LEAVE":

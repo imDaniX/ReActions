@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 // TODO: Will be irrelevant because of modules(externals) system
@@ -79,7 +80,7 @@ public enum ActivatorType {
     GAMEMODE("gamemode", GamemodeActivator::create, GamemodeActivator::load),
     GOD("god", GodActivator::create, GodActivator::load),
     CUBOID("cube", CuboidActivator::create, CuboidActivator::load, true),
-    PROJECTILE_HIT("projhit", ProjectileHitActivator::create, ProjectileHitActivator::load),
+    //PROJECTILE_HIT("projhit", ProjectileHitActivator::create, ProjectileHitActivator::load),
     /* WorldGuard */
     REGION("rg", RegionActivator::create, RegionActivator::load, true),
     REGION_ENTER("rgenter", RegionEnterActivator::create, RegionEnterActivator::load, true),
@@ -94,7 +95,7 @@ public enum ActivatorType {
         Map<String, ActivatorType> byName = new HashMap<>();
         for (ActivatorType act : ActivatorType.values()) {
             byName.put(act.name(), act);
-            byName.put(act.alias.toUpperCase(), act);
+            byName.put(act.alias.toUpperCase(Locale.ENGLISH), act);
         }
         BY_NAME = Collections.unmodifiableMap(byName);
     }
@@ -108,7 +109,7 @@ public enum ActivatorType {
     private final boolean locatable;
 
     ActivatorType(String alias, RaFunction<Parameters> creator, RaFunction<ConfigurationSection> loader, boolean locatable, boolean needBlock) {
-        this.alias = alias.toUpperCase();
+        this.alias = alias.toUpperCase(Locale.ENGLISH);
         this.creator = creator;
         this.loader = loader;
         this.needBlock = needBlock;
@@ -129,7 +130,7 @@ public enum ActivatorType {
     }
 
     public static ActivatorType getByName(String name) {
-        return BY_NAME.get(name.toUpperCase());
+        return BY_NAME.get(name.toUpperCase(Locale.ENGLISH));
     }
 
     public static void listActivators(CommandSender sender, int pageNum) {
@@ -170,8 +171,8 @@ public abstract class ActivatorType {
 	}
 
 	public static register(ActivatorType type, String alias) {
-		byName.put(type.getame.toUpperCase(), this);
-		byName.put(alias.toUpperCase(), this);
+		byName.put(type.getame.toUpperCase(Locale.ENGLISH), this);
+		byName.put(alias.toUpperCase(Locale.ENGLISH), this);
 	}
 
 	public abstract Activator create(ActivatorBase base, Param params);

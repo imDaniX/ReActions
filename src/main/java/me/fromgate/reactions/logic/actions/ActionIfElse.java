@@ -14,6 +14,7 @@ import javax.script.SimpleScriptContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -130,7 +131,7 @@ public class ActionIfElse extends Action {
 
         if (!params.isParamsExists("action1")) return false;
         for (String actionKey : params.keySet()) {
-            if (!((actionKey.toLowerCase()).startsWith("action"))) continue;
+            if (!((actionKey.toLowerCase(Locale.ENGLISH)).startsWith("action"))) continue;
             if (params.isEmpty() || !params.toString().contains("=")) continue;
             String action = params.getParam(actionKey);
 
@@ -157,7 +158,7 @@ public class ActionIfElse extends Action {
 			Map<String, ConditionType> byName = new HashMap<>();
 			for(ConditionType cnd : ConditionType.values()) {
 				byName.put(cnd.name(), cnd);
-				byName.put(cnd.alias.toUpperCase(), cnd);
+				byName.put(cnd.alias.toUpperCase(Locale.ENGLISH), cnd);
 			}
 			BY_NAME = Collections.unmodifiableMap(byName);
 		}

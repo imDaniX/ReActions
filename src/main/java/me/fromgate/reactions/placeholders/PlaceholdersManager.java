@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,10 +23,11 @@ public class PlaceholdersManager {
     private final static Pattern PATTERN_RAW = Pattern.compile("%raw:((%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%))%");
     private static final Pattern PLACEHOLDER_GREEDY = Pattern.compile("%\\S+%");
     private static final Pattern PLACEHOLDER_NONGREEDY = Pattern.compile("%\\S+?%");
-    private static int placeholderCounter = 0;
+
     @Getter
     @Setter
     private static int countLimit = 127;
+
     private static Set<Placeholder> placeholders = new HashSet<>();
 
     public static void init() {
@@ -44,9 +46,10 @@ public class PlaceholdersManager {
         return true;
     }
 
-    public static String replacePlaceholderButRaw(RaContext context, String original) {
+    public static String replacePlaceholders(RaContext context, String original) {
         List<String> raws = new ArrayList<>();
         String result = original;
+
         Matcher matcher = PATTERN_RAW.matcher(Matcher.quoteReplacement(result));
         StringBuffer sb = new StringBuffer();
         while (matcher.find()) {
@@ -55,12 +58,13 @@ public class PlaceholdersManager {
             raws.add(group.substring(5, group.length() - 1));
         }
         matcher.appendTail(sb);
+
         result = parsePlaceholders(sb.toString(), context);
-        if (!raws.isEmpty()) {
-            for (int i = 0; i < raws.size(); i++) {
-                result = result.replace("§~[RAW" + i + "]", raws.get(i));
-            }
+
+        for (int i = 0; i < raws.size(); i++) {
+            result = result.replace("§~[RAW" + i + "]", raws.get(i));
         }
+
         return result;
     }
 
@@ -114,21 +118,37 @@ public class PlaceholdersManager {
     private static String replacePlaceholder(String text, RaContext context) {
         String result = context.getTempVariable(text);
         if (result != null) return result;
-        result = Variables.getVariable(context.getPlayer(), text, null);
-        if (result != null) return result;
-        for (Placeholder placeholder : placeholders) {
-            String[] ph = result.split(":", 2);
-            result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph.length > 1 ? ph[1] : ph[0]);
-            if (result != null) return result;
+        String[] ph = text.split(":", 2);
+        if(ph.length > 1) {
+            if(ph[0].equalsIgnoreCase("var")) {
+                String[] varSplit = ph[1].split("\\.", 2);
+                if(varSplit.length > 1)
+                    result = Variables.getVariable(varSplit[0], varSplit[1]);
+                else
+                    result = Variables.getVariable("", varSplit[0]);
+                return result == null ? "%" + text + "%" : result;
+            } else if(ph[0].equalsIgnoreCase("varp")) {
+                result = Variables.getVariable(context.getPlayer(), text, ph[1]);
+                return result == null ? "%" + text + "%" : result;
+            }
+            for (Placeholder placeholder : placeholders) {
+                result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph[1]);
+                if (result != null) return result;
+            }
+        } else {
+            for (Placeholder placeholder : placeholders) {
+                result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph[0]);
+                if (result != null) return result;
+            }
         }
-        return RaPlaceholderAPI.processPlaceholder(context.getPlayer(), result);
+        return RaPlaceholderAPI.processPlaceholder(context.getPlayer(), "%" + text + "%");
     }
 
     public static void listPlaceholders(CommandSender sender, int pageNum) {
         List<String> phList = new ArrayList<>();
         for (Placeholder ph : placeholders) {
             for (String phKey : ph.getKeys()) {
-                if (phKey.toLowerCase().equals(phKey)) continue;
+                if (phKey.toLowerCase(Locale.ENGLISH).equals(phKey)) continue;
                 Msg desc = Msg.getByName("placeholder_" + phKey);
                 if (desc == null) {
                     Msg.LNG_FAIL_PLACEHOLDER_DESC.log(phKey);

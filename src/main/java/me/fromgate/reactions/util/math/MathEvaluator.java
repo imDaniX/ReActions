@@ -3,6 +3,7 @@ package me.fromgate.reactions.util.math;
 import me.fromgate.reactions.util.Util;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 /*
    All the code is inspired by Boann's answer on https://stackoverflow.com/questions/3422673
@@ -18,7 +19,7 @@ public class MathEvaluator {
     private int pointer;
 
     private MathEvaluator(String expression) {
-        this.expression = Util.removeSpaces(expression.toLowerCase());
+        this.expression = Util.removeSpaces(expression.toLowerCase(Locale.ENGLISH));
     }
 
     public static double eval(String expression) {

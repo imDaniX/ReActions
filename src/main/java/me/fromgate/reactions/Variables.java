@@ -71,8 +71,15 @@ public class Variables {
         return true;
     }
 
+    public static String getVariable(String player, String var) {
+        return vars.get(varId(player, var));
+    }
 
-    public static String getVariable(String player, String var, String defvar) {
+    public static String getVariable(Player player, String var) {
+        return vars.get(varId(player, var));
+    }
+
+        public static String getVariable(String player, String var, String defvar) {
         return vars.getOrDefault(varId(player, var), defvar);
     }
 

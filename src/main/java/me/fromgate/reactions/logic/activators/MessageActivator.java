@@ -29,6 +29,8 @@ import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
+import java.util.Locale;
+
 public class MessageActivator extends Activator {
 
     private CheckType type;
@@ -87,15 +89,15 @@ public class MessageActivator extends Activator {
     private boolean filter(String message) {
         switch (type) {
             case CONTAINS:
-                return message.toLowerCase().contains(this.mask.toLowerCase());
+                return message.toLowerCase(Locale.ENGLISH).contains(this.mask.toLowerCase(Locale.ENGLISH));
             case END:
-                return message.toLowerCase().endsWith(this.mask.toLowerCase());
+                return message.toLowerCase(Locale.ENGLISH).endsWith(this.mask.toLowerCase(Locale.ENGLISH));
             case EQUAL:
                 return message.equalsIgnoreCase(this.mask);
             case REGEX:
                 return message.matches(this.mask);
             case START:
-                return message.toLowerCase().startsWith(this.mask.toLowerCase());
+                return message.toLowerCase(Locale.ENGLISH).startsWith(this.mask.toLowerCase(Locale.ENGLISH));
         }
         return false;
     }

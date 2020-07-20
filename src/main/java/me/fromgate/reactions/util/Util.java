@@ -35,6 +35,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
@@ -438,7 +439,7 @@ public class Util {
     public static <T extends Enum<T>> T getEnum(Class<T> clazz, String name, T def) {
         if (clazz != null && !Util.isStringEmpty(name)) {
             try {
-                return Enum.valueOf(clazz, name.toUpperCase());
+                return Enum.valueOf(clazz, name.toUpperCase(Locale.ENGLISH));
             } catch (IllegalArgumentException ignored) {
             }
         }

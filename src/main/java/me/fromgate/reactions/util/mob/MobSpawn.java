@@ -44,6 +44,7 @@ import org.bukkit.potion.PotionEffectType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class MobSpawn {
@@ -51,7 +52,7 @@ public class MobSpawn {
     private static Map<LivingEntity, List<ItemStack>> drops = new HashMap<>();
 
     public static void mobSpawn(Player p, Parameters params) {
-        String mob = params.getParam("type", "").toUpperCase();
+        String mob = params.getParam("type", "").toUpperCase(Locale.ENGLISH);
         if (mob.isEmpty()) {
             Msg.logMessage("Failed to spawn mob: " + params.getParam("param-line"));
             return;
