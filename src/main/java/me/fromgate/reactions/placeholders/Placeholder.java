@@ -1,7 +1,7 @@
 package me.fromgate.reactions.placeholders;
 
 import lombok.Getter;
-import org.bukkit.entity.Player;
+import me.fromgate.reactions.util.data.RaContext;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -34,10 +34,10 @@ public abstract class Placeholder {
     /**
      * Замена ключеового слова
      *
-     * @param player - игрок, если он есть
+     * @param context - игрок, если он есть
      * @param key    - Ключевое слово, без параметра и символа "%" в начале
      * @param param  - Параметр (без завершающего символа "%")
      * @return - возврат подстановки.
      */
-    public abstract String processPlaceholder(Player player, String key, String param);
+    public abstract String processPlaceholder(RaContext context, String key, String param);
 }

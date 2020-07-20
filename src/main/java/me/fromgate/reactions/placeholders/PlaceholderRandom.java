@@ -1,7 +1,7 @@
 package me.fromgate.reactions.placeholders;
 
 import me.fromgate.reactions.util.Util;
-import org.bukkit.entity.Player;
+import me.fromgate.reactions.util.data.RaContext;
 
 import java.util.regex.Pattern;
 
@@ -11,7 +11,7 @@ public class PlaceholderRandom extends Placeholder {
     private final static Pattern WORD_LIST = Pattern.compile("[\\S,]*[\\S]");
 
     @Override
-    public String processPlaceholder(Player player, String key, String param) {
+    public String processPlaceholder(RaContext context, String key, String param) {
         return random(param);
     }
 

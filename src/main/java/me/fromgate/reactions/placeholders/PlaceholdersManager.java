@@ -134,13 +134,13 @@ public class PlaceholdersManager {
             }
             for (Placeholder placeholder : placeholders) {
                 if(!placeholder.checkKey(ph[0])) continue;
-                result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph[1]);
+                result = placeholder.processPlaceholder(context, ph[0], ph[1]);
                 if (result != null) return result;
             }
         } else {
             for (Placeholder placeholder : placeholders) {
                 if(!placeholder.checkKey(ph[0])) continue;
-                result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph[0]);
+                result = placeholder.processPlaceholder(context, ph[0], ph[0]);
                 if (result != null) return result;
             }
         }

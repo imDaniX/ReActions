@@ -10,7 +10,9 @@ import java.util.Locale;
 import java.util.Map;
 
 public class RaContext {
-    public final static RaContext EMPTY_CONTEXT = new RaContext("", null, null, null);
+    public final static RaContext EMPTY_CONTEXT = new RaContext("unknown", null, null, null);
+    @Getter
+    private final String activatorName;
     @Getter
     private final boolean async;
     @Getter
@@ -26,7 +28,7 @@ public class RaContext {
 
     public RaContext(String activator, Map<String, String> tempVariables, Map<String, DataValue> changeables, Player player, boolean async) {
         this.tempVariables = tempVariables != null ? new HashMap<>(tempVariables) : new HashMap<>();
-        this.tempVariables.put("activator_name", activator);
+        this.activatorName = activator;
         if (changeables == null || changeables.isEmpty()) {
             this.changeables = Collections.emptyMap();
         } else {

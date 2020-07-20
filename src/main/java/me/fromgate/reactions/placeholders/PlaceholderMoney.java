@@ -1,7 +1,7 @@
 package me.fromgate.reactions.placeholders;
 
 import me.fromgate.reactions.externals.RaEconomics;
-import org.bukkit.entity.Player;
+import me.fromgate.reactions.util.data.RaContext;
 
 import java.util.Map;
 
@@ -9,8 +9,8 @@ import java.util.Map;
 public class PlaceholderMoney extends Placeholder {
 
     @Override
-    public String processPlaceholder(Player player, String key, String param) {
-        Map<String, String> params = RaEconomics.getBalances(player);
+    public String processPlaceholder(RaContext context, String key, String param) {
+        Map<String, String> params = RaEconomics.getBalances(context.getPlayer());
         return params.getOrDefault(key, null);
     }
 

@@ -1,6 +1,7 @@
 package me.fromgate.reactions.placeholders;
 
 import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.location.PlayerRespawner;
@@ -29,7 +30,8 @@ public class PlaceholderPlayer extends Placeholder {
     }
 
     @Override
-    public String processPlaceholder(Player player, String key, String param) {
+    public String processPlaceholder(RaContext context, String key, String param) {
+        Player player = context.getPlayer();
         if (player == null) return null;
         switch (key.toLowerCase(Locale.ENGLISH)) {
             case "player_name":
