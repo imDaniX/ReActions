@@ -25,7 +25,7 @@ package me.fromgate.reactions.time;
 import lombok.Getter;
 import lombok.Setter;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.quartz.CronExpression;
 
 import java.text.ParseException;
@@ -42,12 +42,12 @@ public class Timer {
     @Getter
     private boolean ingameTimer;
     @Getter
-    private Param params;
+    private Parameters params;
     @Getter
     private Set<String> timesIngame;
     private CronExpression timeServer;
 
-    public Timer(Param params2) {
+    public Timer(Parameters params2) {
         this.timesIngame = new HashSet<>();
         this.params = params2;
         this.ingameTimer = params2.getParam("timer-type", "ingame").equalsIgnoreCase("ingame");

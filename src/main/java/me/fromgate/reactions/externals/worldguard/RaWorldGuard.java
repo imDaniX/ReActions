@@ -24,12 +24,12 @@ package me.fromgate.reactions.externals.worldguard;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import me.fromgate.reactions.activators.Activator;
-import me.fromgate.reactions.activators.ActivatorType;
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.RegionActivator;
-import me.fromgate.reactions.activators.RegionEnterActivator;
-import me.fromgate.reactions.activators.RegionLeaveActivator;
+import me.fromgate.reactions.logic.ActivatorType;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.activators.Activator;
+import me.fromgate.reactions.logic.activators.RegionActivator;
+import me.fromgate.reactions.logic.activators.RegionEnterActivator;
+import me.fromgate.reactions.logic.activators.RegionLeaveActivator;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;

@@ -1,7 +1,7 @@
 package me.fromgate.reactions.util;
 
-import me.fromgate.reactions.activators.Activator;
-import me.fromgate.reactions.activators.ActivatorBase;
+import me.fromgate.reactions.logic.activators.Activator;
+import me.fromgate.reactions.logic.activators.ActivatorBase;
 
 /**
  * Used to generate activators

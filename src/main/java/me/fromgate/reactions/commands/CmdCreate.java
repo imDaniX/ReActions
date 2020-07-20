@@ -1,16 +1,16 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.activators.Activator;
-import me.fromgate.reactions.activators.ActivatorType;
-import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.holders.LocationHolder;
+import me.fromgate.reactions.logic.ActivatorType;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.BlockParam;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.BlockParameters;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -41,7 +41,7 @@ public class CmdCreate extends Cmd {
                 return true;
             case "timer":
                 if (param.length() == 0) return false;
-                return TimersManager.addTimer(sender, id, Param.parseParams(param.toString()), true);
+                return TimersManager.addTimer(sender, id, Parameters.parseParams(param.toString()), true);
             case "menu":
                 // TODO: Create menu from chest
                 if (param.length() == 0) return false;
@@ -62,17 +62,17 @@ public class CmdCreate extends Cmd {
     private boolean addActivator(CommandSender sender, String type, String name, String param) {
         ActivatorType at = ActivatorType.getByName(type);
         if (at == null) return false;
-        Param params;
+        Parameters params;
         if (sender instanceof Player) {
             Player player = (Player) sender;
             param = LocationUtil.replaceStandardLocations(player, param);
             if (at.isNeedBlock())
-                params = new BlockParam(param, player.getTargetBlock(null, 100));
+                params = new BlockParameters(param, player.getTargetBlock(null, 100));
             else
-                params = new Param(param);
+                params = new Parameters(param);
         } else {
             if (at.isNeedBlock()) return false;
-            params = new Param(param);
+            params = new Parameters(param);
         }
         Activator activator = at.create(name, "activators", params);
         if (activator == null || !activator.isValid()) {

@@ -32,7 +32,7 @@ package me.fromgate.reactions.util.item;
 
 import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -123,7 +123,7 @@ public class VirtualItem extends ItemStack {
      * @return - New VirtualItem object or null (if parse failed)
      */
     public static VirtualItem fromString(String itemStr) {
-        Map<String, String> params = Param.parseParams(itemStr, "");
+        Map<String, String> params = Parameters.parseParams(itemStr, "");
         VirtualItem vi = fromMap(params);
         if (vi != null) return vi;
         ItemStack item = ItemUtil.parseOldItemStack(itemStr);
@@ -532,7 +532,7 @@ public class VirtualItem extends ItemStack {
         if (fireworkStr == null || fireworkStr.isEmpty()) return;
         if (!(this.getItemMeta() instanceof FireworkEffectMeta)) return;
         FireworkEffectMeta fm = (FireworkEffectMeta) this.getItemMeta();
-        Map<String, String> params = Param.parseParams(fireworkStr, "");
+        Map<String, String> params = Parameters.parseParams(fireworkStr, "");
         FireworkEffect.Type fType;
         List<Color> colors;
         List<Color> fadeColors;
@@ -567,7 +567,7 @@ public class VirtualItem extends ItemStack {
             String[] fireworks = fireworkStr.split(";");
             List<FireworkEffect> fe = new ArrayList<>();
             for (String fStr : fireworks) {
-                Map<String, String> params = Param.parseParams(fStr, "");
+                Map<String, String> params = Parameters.parseParams(fStr, "");
                 FireworkEffect.Type fType = null;
                 List<Color> colors;
                 List<Color> fadeColors;
@@ -661,7 +661,7 @@ public class VirtualItem extends ItemStack {
     }
 
     public boolean compare(String itemStr, int amount) {
-        Map<String, String> params = Param.parseParams(itemStr, "");
+        Map<String, String> params = Parameters.parseParams(itemStr, "");
         if (amount > 0) params.put("amount", Integer.toString(amount));
         return compare(params, amount);
     }

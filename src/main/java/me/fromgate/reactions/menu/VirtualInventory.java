@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.VirtualItem;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,7 +41,7 @@ public class VirtualInventory {
     }
 
     @SuppressWarnings("unused")
-    public VirtualInventory(Param params) {
+    public VirtualInventory(Parameters params) {
         title = params.getParam("title", "&4Re&6Actions &eMenu");
         size = params.getParam("size", 9);
         size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;

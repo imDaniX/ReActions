@@ -23,8 +23,8 @@
 
 package me.fromgate.reactions.util.message;
 
-import me.fromgate.reactions.activators.MessageActivator;
-import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.logic.activators.MessageActivator;
 
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;

@@ -1,6 +1,6 @@
 package me.fromgate.reactions.playerselector;
 
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -28,7 +28,7 @@ public class SelectorsManager {
         keys.add(selector.getKey());
     }
 
-    public static Set<Player> getPlayerList(Param param) {
+    public static Set<Player> getPlayerList(Parameters param) {
         Set<Player> players = new HashSet<>();
         for (Selector selector : selectors) {
             String selectorParam = param.getParam(selector.getKey());

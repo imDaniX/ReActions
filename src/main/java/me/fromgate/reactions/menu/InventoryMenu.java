@@ -1,12 +1,12 @@
 package me.fromgate.reactions.menu;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -65,7 +65,7 @@ public class InventoryMenu implements Listener {
         return true;
     }
 
-    public static boolean set(String id, Param params) {
+    public static boolean set(String id, Parameters params) {
         if (!containsMenu(id)) return false;
         VirtualInventory vi = getMenu(id);
         String title = params.getParam("title", vi.getTitle());
@@ -97,7 +97,7 @@ public class InventoryMenu implements Listener {
         return menu.remove(id) != null;
     }
 
-    private static List<String> getActivators(Param param) {
+    private static List<String> getActivators(Parameters param) {
         if (param.isParamsExists("menu")) {
             String id = param.getParam("menu", "");
             if (containsMenu(id)) return getMenu(id).getActivators();
@@ -113,7 +113,7 @@ public class InventoryMenu implements Listener {
         return new ArrayList<>();
     }
 
-    public static Inventory getInventory(Param param) {
+    public static Inventory getInventory(Parameters param) {
         RaInventoryHolder holder = new RaInventoryHolder(getActivators(param));
         Inventory inv = null;
         if (param.isParamsExists("menu")) {
@@ -136,7 +136,7 @@ public class InventoryMenu implements Listener {
         return inv;
     }
 
-    public static boolean createAndOpenInventory(Player player, Param params, Map<String, String> tempVars) {
+    public static boolean createAndOpenInventory(Player player, Parameters params, Map<String, String> tempVars) {
         tempvars = tempVars;
         Inventory inv = getInventory(params);
         if (inv == null) return false;
@@ -219,7 +219,7 @@ public class InventoryMenu implements Listener {
         if (activators.size() > clickedSlot) {
             String activator = activators.get(clickedSlot);
             if (!activator.isEmpty()) {
-                StoragesManager.raiseExecActivator(player, new Param(activator, "activator"), tempvars);
+                StoragesManager.raiseExecActivator(player, new Parameters(activator, "activator"), tempvars);
             }
         }
         // TODO: Do not close menu option?

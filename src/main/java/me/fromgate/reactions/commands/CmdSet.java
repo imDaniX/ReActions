@@ -5,7 +5,7 @@ import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,7 +25,7 @@ public class CmdSet extends Cmd {
 
     private boolean setVariable(CommandSender sender, String var, String param) {
         Player p = (sender instanceof Player) ? (Player) sender : null;
-        Param params = new Param(param, "id");
+        Parameters params = new Parameters(param, "id");
         String id = params.getParam("id", "");
         if (id.isEmpty()) return Msg.MSG_NEEDVDMID.print(sender, 'c');
         if (var.equalsIgnoreCase("delay") || var.equalsIgnoreCase("d")) {

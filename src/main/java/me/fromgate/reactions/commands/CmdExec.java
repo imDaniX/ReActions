@@ -1,8 +1,8 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.command.CommandSender;
 
 
@@ -15,7 +15,7 @@ public class CmdExec extends Cmd {
     public boolean execute(CommandSender sender, String[] args) {
         if (args.length == 0) return false;
         String commandLine = String.join(" ", args);
-        Param param = new Param(commandLine, "activator");
+        Parameters param = new Parameters(commandLine, "activator");
         if (StoragesManager.raiseExecActivator(sender, param)) {
             Msg.printMSG(sender, "cmd_runplayer", commandLine);
         } else Msg.printMSG(sender, "cmd_runplayerfail", 'c', '6', commandLine);

@@ -1,7 +1,7 @@
 package me.fromgate.reactions.util.item;
 
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -78,12 +78,12 @@ public class ItemUtil {
     }
 
     public static boolean removeItemInInventory(Inventory inventory, String itemStr) {
-        Map<String, String> itemParams = Param.parseParams(itemStr, "");
+        Map<String, String> itemParams = Parameters.parseParams(itemStr, "");
         return removeItemInInventory(inventory, itemParams);
     }
 
     public static int countItemsInInventory(Inventory inventory, String itemStr) {
-        Map<String, String> itemMap = Param.parseParams(itemStr, "");
+        Map<String, String> itemMap = Parameters.parseParams(itemStr, "");
         return countItemsInventory(inventory, itemMap);
     }
 
@@ -137,7 +137,7 @@ public class ItemUtil {
     }
 
     public static int getAmount(String itemStr) {
-        Map<String, String> itemMap = Param.parseParams(itemStr, "");
+        Map<String, String> itemMap = Parameters.parseParams(itemStr, "");
         String amountStr = itemMap.getOrDefault("amount", "1");
         if (Util.INT_NOTZERO_POSITIVE.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
         return 1;
@@ -213,12 +213,12 @@ public class ItemUtil {
 
     //item:{item1:{[...] chance:50} item2:{} item3:{}
 
-    public static VirtualItem itemFromMap(Param params) {
+    public static VirtualItem itemFromMap(Parameters params) {
         return VirtualItem.fromMap(params.getMap());
 
     }
 
-    public static List<ItemStack> parseItemsSet(Param params) {
+    public static List<ItemStack> parseItemsSet(Parameters params) {
         List<ItemStack> items = new ArrayList<>();
         for (String key : params.keySet()) {
             if (ITEM_D.matcher(key).matches()) {
@@ -241,14 +241,14 @@ public class ItemUtil {
      * @return List of items
      */
     public static List<ItemStack> parseRandomItemsStr(String items) {
-        Param params = new Param(items);
+        Parameters params = new Parameters(items);
         if (params.matchAnyParam(SET_D)) {
             Map<List<ItemStack>, Integer> sets = new HashMap<>();
             int maxChance = 0;
             int nochcount = 0;
             for (String key : params.keySet()) {
                 if (!SET_D.matcher(key).matches()) continue;
-                Param itemParams = new Param(params.getParam(key));
+                Parameters itemParams = new Parameters(params.getParam(key));
                 List<ItemStack> itemList = parseItemsSet(itemParams);
                 if (itemList == null || itemList.isEmpty()) continue;
                 int chance = itemParams.getParam("chance", -1);
@@ -315,7 +315,7 @@ public class ItemUtil {
     public static String toDisplayString(String itemStr) {
         VirtualItem vi = VirtualItem.fromString(itemStr);
         if (vi != null) return vi.toDisplayString();
-        Map<String, String> itemMap = Param.parseParams(itemStr, "");
+        Map<String, String> itemMap = Parameters.parseParams(itemStr, "");
         String name = itemMap.containsKey("name") ? itemMap.get("name") : itemMap.getOrDefault("type", null);
         if (name == null) return itemStr;
         int amount = getAmount(itemStr);

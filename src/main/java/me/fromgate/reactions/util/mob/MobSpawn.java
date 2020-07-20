@@ -28,7 +28,7 @@ import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.LocationUtil;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -50,7 +50,7 @@ public class MobSpawn {
 
     private static Map<LivingEntity, List<ItemStack>> drops = new HashMap<>();
 
-    public static void mobSpawn(Player p, Param params) {
+    public static void mobSpawn(Player p, Parameters params) {
         String mob = params.getParam("type", "").toUpperCase();
         if (mob.isEmpty()) {
             Msg.logMessage("Failed to spawn mob: " + params.getParam("param-line"));
@@ -121,7 +121,7 @@ public class MobSpawn {
                 mbs = mbs.substring(name.length() + 1);
             }
 
-            EntityType et = Util.getEnumByName(EntityType.class, mbs, EntityType.ZOMBIE);
+            EntityType et = Util.getEnum(EntityType.class, mbs, EntityType.ZOMBIE);
 
             Entity e = loc.getWorld().spawnEntity(loc, et);
             if (e == null) {

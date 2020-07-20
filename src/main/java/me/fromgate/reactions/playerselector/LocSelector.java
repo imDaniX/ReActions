@@ -1,7 +1,7 @@
 package me.fromgate.reactions.playerselector;
 
 import me.fromgate.reactions.util.location.LocationUtil;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ public class LocSelector implements Selector {
     public Set<Player> selectPlayers(String param) {
         Set<Player> players = new HashSet<>();
         if (param.isEmpty()) return players;
-        Param params = new Param(param, "loc");
+        Parameters params = new Parameters(param, "loc");
         String locStr = params.getParam("loc");
         if (locStr.isEmpty()) return players;
         Location loc = LocationUtil.parseLocation(locStr, null);

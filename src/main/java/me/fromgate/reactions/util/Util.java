@@ -23,7 +23,7 @@
 package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.util.location.LocationUtil;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
@@ -105,7 +105,7 @@ public class Util {
      * @param params Parameters of sound
      * @return Name of played sound
      */
-    public static String soundPlay(Location loc, Param params) {
+    public static String soundPlay(Location loc, Parameters params) {
         if (params.isEmpty()) return "";
         Location soundLoc = loc;
         String sndstr = "";
@@ -133,7 +133,7 @@ public class Util {
             pitch = params.getParam("pitch", 1.0f);
             volume = params.getParam("volume", 1.0f);
         }
-        Sound sound = getEnumByName(Sound.class, sndstr, Sound.UI_BUTTON_CLICK);
+        Sound sound = getEnum(Sound.class, sndstr, Sound.UI_BUTTON_CLICK);
         if (soundLoc != null) soundLoc.getWorld().playSound(soundLoc, sound, volume, pitch);
         return sound.name();
     }
@@ -146,7 +146,7 @@ public class Util {
      */
     public static void soundPlay(Location loc, String param) {
         if (param.isEmpty()) return;
-        Param params = new Param(param, "param");
+        Parameters params = new Parameters(param, "param");
         soundPlay(loc, params);
     }
 
@@ -423,8 +423,8 @@ public class Util {
      * @param name  Name of enum
      * @return Corresponding enum, or null if not found
      */
-    public static <T extends Enum<T>> T getEnumByName(Class<T> clazz, String name) {
-        return getEnumByName(clazz, name, null);
+    public static <T extends Enum<T>> T getEnum(Class<T> clazz, String name) {
+        return getEnum(clazz, name, null);
     }
 
     /**
@@ -435,7 +435,7 @@ public class Util {
      * @param name  Name of enum
      * @return Corresponding enum, or null if not found
      */
-    public static <T extends Enum<T>> T getEnumByName(Class<T> clazz, String name, T def) {
+    public static <T extends Enum<T>> T getEnum(Class<T> clazz, String name, T def) {
         if (clazz != null && !Util.isStringEmpty(name)) {
             try {
                 return Enum.valueOf(clazz, name.toUpperCase());

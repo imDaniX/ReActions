@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.util.location;
 
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.storages.RespawnStorage;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.storages.RespawnStorage;
 import me.fromgate.reactions.util.enums.DeathCause;
 import me.fromgate.reactions.util.mob.EntityUtil;
 import org.bukkit.Location;

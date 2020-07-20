@@ -23,10 +23,10 @@
 package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -78,7 +78,7 @@ public class TimersManager {
     private static Map<String, Timer> timers;
     private static Set<String> timersIngame;
 
-    public static boolean addTimer(String name, Param params) {
+    public static boolean addTimer(String name, Parameters params) {
         return addTimer(null, name, params, false);
     }
 
@@ -111,7 +111,7 @@ public class TimersManager {
         return Msg.MSG_TIMERREMOVED.print(sender, name);
     }
 
-    public static boolean addTimer(CommandSender sender, String name, Param params, boolean save) {
+    public static boolean addTimer(CommandSender sender, String name, Parameters params, boolean save) {
         if (name.isEmpty()) return false;
         if (timers.containsKey(name)) {
             Msg.MSG_TIMEREXIST.print(sender, name);
@@ -227,7 +227,7 @@ public class TimersManager {
                 for (String timerId : cs.getKeys(false)) {
                     ConfigurationSection csParams = cs.getConfigurationSection(timerId);
                     if (csParams == null) continue;
-                    Param params = new Param();
+                    Parameters params = new Parameters();
                     params.set("timer-type", timerType);
                     for (String param : csParams.getKeys(true)) {
                         if (!csParams.isString(param)) continue;
@@ -244,7 +244,7 @@ public class TimersManager {
         if (f.exists()) f.delete();
         for (String name : timers.keySet()) {
             Timer timer = timers.get(name);
-            Param params = timer.getParams();
+            Parameters params = timer.getParams();
             if (params.isEmpty()) continue;
             String timerType = timer.isIngameTimer() ? "INGAME" : "SERVER";
             String root = timerType + "." + name + ".";

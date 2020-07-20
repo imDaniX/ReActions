@@ -26,7 +26,7 @@ package me.fromgate.reactions.util.location;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -65,11 +65,11 @@ public class LocationUtil {
      * @return Location
      */
     public static Location parseLocation(String param, Location defaultLocation) {
-        Param params = new Param(param, "loc");
+        Parameters params = new Parameters(param, "loc");
         return parseLocation(params, defaultLocation);
     }
 
-    public static Location parseLocation(Param params, Location defaultLocation) {
+    public static Location parseLocation(Parameters params, Location defaultLocation) {
         Location location = null;
         if (params.isParamsExists("loc")) {
             String locStr = params.getParam("loc", "");

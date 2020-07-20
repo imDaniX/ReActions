@@ -1,14 +1,14 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.activators.ActivatorBase;
-import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.holders.LocationHolder;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.activators.ActivatorBase;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -71,7 +71,7 @@ public class CmdRemove extends Cmd {
 
     private boolean removeVariable(CommandSender sender, String param) {
         Player p = (sender instanceof Player) ? (Player) sender : null;
-        Param params = new Param(param);
+        Parameters params = new Parameters(param);
         String player = params.getParam("player", "");
         if (player.equalsIgnoreCase("%player%") && p != null) player = p.getName();
         String id = params.getParam("id", "");

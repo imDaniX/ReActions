@@ -2,7 +2,7 @@ package me.fromgate.reactions.util.location;
 
 import lombok.Getter;
 import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -65,7 +65,7 @@ public class VirtualLocation {
         this.hash = calcHash();
     }
 
-    public VirtualLocation(Param params) {
+    public VirtualLocation(Parameters params) {
         this.world = params.getParam("world", null);
         this.x = params.hasAnyParam("x") ? params.getParam("x", 0) : null;
         this.y = params.hasAnyParam("y") ? params.getParam("y", 0) : null;

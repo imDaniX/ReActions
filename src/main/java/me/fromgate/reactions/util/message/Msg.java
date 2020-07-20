@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.util.message;
 
-import me.fromgate.reactions.actions.Actions;
-import me.fromgate.reactions.activators.ActivatorType;
-import me.fromgate.reactions.flags.Flags;
+import me.fromgate.reactions.logic.Actions;
+import me.fromgate.reactions.logic.ActivatorType;
+import me.fromgate.reactions.logic.Flags;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

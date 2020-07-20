@@ -22,10 +22,10 @@
 
 package me.fromgate.reactions.util;
 
-import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.item.ItemUtil;
 import me.fromgate.reactions.util.location.LocationUtil;
-import me.fromgate.reactions.util.parameter.Param;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.block.Block;
@@ -50,7 +50,7 @@ public class Shoot {
     public static String actionShootBreak = "GLASS,THIN_GLASS,STAINED_GLASS,STAINED_GLASS_PANE,GLOWSTONE,REDSTONE_LAMP_OFF,REDSTONE_LAMP_ON";
     public static String actionShootThrough = "FENCE,FENCE_GATE,IRON_BARDING,IRON_FENCE,NETHER_FENCE";
 
-    public static void shoot(LivingEntity shooter, Param params) {
+    public static void shoot(LivingEntity shooter, Parameters params) {
         boolean onehit = params.getParam("singlehit", true);
         int distance = params.getParam("distance", 100);
         float knockbackTarget = params.getParam("knockbackTarget", 0);
@@ -72,7 +72,7 @@ public class Shoot {
     }
 
     private static void executeActivator(Player shooter, LivingEntity target, String paramStr) {
-        Param param = Param.parseParams(paramStr);
+        Parameters param = Parameters.parseParams(paramStr);
         if (param.isEmpty() || !param.hasAnyParam("activator", "exec")) return;
         Player player = target instanceof Player ? (Player) target : null;
         if (player == null && param.getParam("playeronly", true)) return;

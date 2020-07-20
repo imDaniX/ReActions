@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions;
 
-import me.fromgate.reactions.storages.StoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.FileUtil;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.message.Msg;

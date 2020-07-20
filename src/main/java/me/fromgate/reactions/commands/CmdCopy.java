@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
