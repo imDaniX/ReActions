@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.storages.ItemStoragesManager;
+import me.fromgate.reactions.logic.ItemStoragesManager;
 import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.ItemUtil;

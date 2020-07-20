@@ -1,6 +1,5 @@
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.logic.Actions;
 import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.data.RaContext;

@@ -2,7 +2,7 @@ package me.fromgate.reactions.time.waiter;
 
 import lombok.Getter;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.Actions;
+import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.actions.StoredAction;
 import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.Util;

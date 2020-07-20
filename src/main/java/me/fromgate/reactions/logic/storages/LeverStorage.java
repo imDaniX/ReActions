@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.storages;
 
-import me.fromgate.reactions.logic.ActivatorType;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import org.bukkit.Location;

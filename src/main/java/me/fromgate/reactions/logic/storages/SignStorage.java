@@ -25,7 +25,7 @@ package me.fromgate.reactions.logic.storages;
 
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.ActivatorType;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.location.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;

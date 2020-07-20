@@ -1,6 +1,5 @@
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.logic.Actions;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;

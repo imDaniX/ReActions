@@ -27,6 +27,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.logic.activators.Activator;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.MessageActivator;
 import me.fromgate.reactions.logic.activators.SignActivator;
 import me.fromgate.reactions.logic.storages.BlockBreakStorage;

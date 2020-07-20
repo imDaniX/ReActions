@@ -20,54 +20,9 @@
  *
  */
 
-package me.fromgate.reactions.logic;
+package me.fromgate.reactions.logic.activators;
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorBase;
-import me.fromgate.reactions.logic.activators.BlockBreakActivator;
-import me.fromgate.reactions.logic.activators.BlockClickActivator;
-import me.fromgate.reactions.logic.activators.ButtonActivator;
-import me.fromgate.reactions.logic.activators.CommandActivator;
-import me.fromgate.reactions.logic.activators.CuboidActivator;
-import me.fromgate.reactions.logic.activators.DamageActivator;
-import me.fromgate.reactions.logic.activators.DamageByBlockActivator;
-import me.fromgate.reactions.logic.activators.DamageByMobActivator;
-import me.fromgate.reactions.logic.activators.DeathActivator;
-import me.fromgate.reactions.logic.activators.DoorActivator;
-import me.fromgate.reactions.logic.activators.DropActivator;
-import me.fromgate.reactions.logic.activators.EntityClickActivator;
-import me.fromgate.reactions.logic.activators.ExecActivator;
-import me.fromgate.reactions.logic.activators.FlightActivator;
-import me.fromgate.reactions.logic.activators.GamemodeActivator;
-import me.fromgate.reactions.logic.activators.GodActivator;
-import me.fromgate.reactions.logic.activators.InventoryClickActivator;
-import me.fromgate.reactions.logic.activators.ItemClickActivator;
-import me.fromgate.reactions.logic.activators.ItemConsumeActivator;
-import me.fromgate.reactions.logic.activators.ItemHeldActivator;
-import me.fromgate.reactions.logic.activators.ItemHoldActivator;
-import me.fromgate.reactions.logic.activators.ItemWearActivator;
-import me.fromgate.reactions.logic.activators.JoinActivator;
-import me.fromgate.reactions.logic.activators.LeverActivator;
-import me.fromgate.reactions.logic.activators.MessageActivator;
-import me.fromgate.reactions.logic.activators.MobClickActivator;
-import me.fromgate.reactions.logic.activators.MobDamageActivator;
-import me.fromgate.reactions.logic.activators.MobKillActivator;
-import me.fromgate.reactions.logic.activators.PickupItemActivator;
-import me.fromgate.reactions.logic.activators.PlateActivator;
-import me.fromgate.reactions.logic.activators.ProjectileHitActivator;
-import me.fromgate.reactions.logic.activators.PvpKillActivator;
-import me.fromgate.reactions.logic.activators.QuitActivator;
-import me.fromgate.reactions.logic.activators.RegionActivator;
-import me.fromgate.reactions.logic.activators.RegionEnterActivator;
-import me.fromgate.reactions.logic.activators.RegionLeaveActivator;
-import me.fromgate.reactions.logic.activators.RespawnActivator;
-import me.fromgate.reactions.logic.activators.SignActivator;
-import me.fromgate.reactions.logic.activators.SneakActivator;
-import me.fromgate.reactions.logic.activators.TeleportActivator;
-import me.fromgate.reactions.logic.activators.VariableActivator;
-import me.fromgate.reactions.logic.activators.WeChangeActivator;
-import me.fromgate.reactions.logic.activators.WeSelectionActivator;
 import me.fromgate.reactions.util.RaFunction;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;

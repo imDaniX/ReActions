@@ -20,47 +20,9 @@
  *
  */
 
-package me.fromgate.reactions.logic;
+package me.fromgate.reactions.logic.flags;
 
 import me.fromgate.reactions.logic.activators.ActivatorBase;
-import me.fromgate.reactions.logic.flags.Flag;
-import me.fromgate.reactions.logic.flags.FlagBiome;
-import me.fromgate.reactions.logic.flags.FlagBlock;
-import me.fromgate.reactions.logic.flags.FlagChance;
-import me.fromgate.reactions.logic.flags.FlagCheckOnline;
-import me.fromgate.reactions.logic.flags.FlagCompare;
-import me.fromgate.reactions.logic.flags.FlagDelay;
-import me.fromgate.reactions.logic.flags.FlagDirection;
-import me.fromgate.reactions.logic.flags.FlagExecStop;
-import me.fromgate.reactions.logic.flags.FlagFlagSet;
-import me.fromgate.reactions.logic.flags.FlagFlySpeed;
-import me.fromgate.reactions.logic.flags.FlagFoodLevel;
-import me.fromgate.reactions.logic.flags.FlagGamemode;
-import me.fromgate.reactions.logic.flags.FlagGreaterLower;
-import me.fromgate.reactions.logic.flags.FlagGroup;
-import me.fromgate.reactions.logic.flags.FlagHealth;
-import me.fromgate.reactions.logic.flags.FlagHeldSlot;
-import me.fromgate.reactions.logic.flags.FlagItem;
-import me.fromgate.reactions.logic.flags.FlagLevel;
-import me.fromgate.reactions.logic.flags.FlagLightLevel;
-import me.fromgate.reactions.logic.flags.FlagMoney;
-import me.fromgate.reactions.logic.flags.FlagOnline;
-import me.fromgate.reactions.logic.flags.FlagPerm;
-import me.fromgate.reactions.logic.flags.FlagPowered;
-import me.fromgate.reactions.logic.flags.FlagPvp;
-import me.fromgate.reactions.logic.flags.FlagRegex;
-import me.fromgate.reactions.logic.flags.FlagRegion;
-import me.fromgate.reactions.logic.flags.FlagSQL;
-import me.fromgate.reactions.logic.flags.FlagState;
-import me.fromgate.reactions.logic.flags.FlagTime;
-import me.fromgate.reactions.logic.flags.FlagTimerActive;
-import me.fromgate.reactions.logic.flags.FlagVar;
-import me.fromgate.reactions.logic.flags.FlagWalkBlock;
-import me.fromgate.reactions.logic.flags.FlagWalkSpeed;
-import me.fromgate.reactions.logic.flags.FlagWeather;
-import me.fromgate.reactions.logic.flags.FlagWorld;
-import me.fromgate.reactions.logic.flags.FlagXP;
-import me.fromgate.reactions.logic.flags.StoredFlag;
 import me.fromgate.reactions.logic.flags.worldedit.FlagRegionInRadius;
 import me.fromgate.reactions.logic.flags.worldedit.FlagSelectionBlocks;
 import me.fromgate.reactions.logic.flags.worldedit.FlagSuperPickAxe;

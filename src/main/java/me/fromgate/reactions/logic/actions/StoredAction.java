@@ -1,7 +1,6 @@
 package me.fromgate.reactions.logic.actions;
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.Actions;
 
 public class StoredAction {
     @Getter

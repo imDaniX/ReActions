@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
-import me.fromgate.reactions.logic.Flags;
+import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;

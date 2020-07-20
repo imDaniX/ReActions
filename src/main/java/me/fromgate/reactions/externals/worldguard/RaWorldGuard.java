@@ -24,9 +24,9 @@ package me.fromgate.reactions.externals.worldguard;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import me.fromgate.reactions.logic.ActivatorType;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.activators.Activator;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.RegionActivator;
 import me.fromgate.reactions.logic.activators.RegionEnterActivator;
 import me.fromgate.reactions.logic.activators.RegionLeaveActivator;

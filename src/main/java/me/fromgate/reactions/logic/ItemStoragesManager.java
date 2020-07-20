@@ -1,13 +1,13 @@
-package me.fromgate.reactions.logic.storages;
+package me.fromgate.reactions.logic;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.ActivatorType;
-import me.fromgate.reactions.logic.ActivatorsManager;
-import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.activators.Activator;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.ItemHoldActivator;
 import me.fromgate.reactions.logic.activators.ItemWearActivator;
+import me.fromgate.reactions.logic.storages.ItemHoldStorage;
+import me.fromgate.reactions.logic.storages.ItemWearStorage;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.storages;
 
-import me.fromgate.reactions.logic.ActivatorType;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.item.ItemUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

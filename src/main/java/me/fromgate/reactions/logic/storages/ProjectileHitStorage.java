@@ -1,7 +1,7 @@
 package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.ActivatorType;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;

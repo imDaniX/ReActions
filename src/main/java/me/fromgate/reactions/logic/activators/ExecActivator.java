@@ -1,6 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import me.fromgate.reactions.logic.ActivatorType;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;

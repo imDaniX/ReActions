@@ -25,7 +25,6 @@ package me.fromgate.reactions.logic.activators;
 import lombok.Getter;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.externals.worldguard.WGBridge;
-import me.fromgate.reactions.logic.ActivatorType;
 import me.fromgate.reactions.logic.storages.RegionLeaveStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Util;

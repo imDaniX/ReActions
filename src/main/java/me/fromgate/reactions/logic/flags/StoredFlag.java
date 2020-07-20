@@ -1,7 +1,6 @@
 package me.fromgate.reactions.logic.flags;
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.Flags;
 
 public class StoredFlag {
     @Getter

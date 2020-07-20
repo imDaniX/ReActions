@@ -1,6 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import me.fromgate.reactions.logic.ActivatorType;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.location.Cuboid;
 import me.fromgate.reactions.util.location.VirtualLocation;

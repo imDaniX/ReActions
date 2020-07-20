@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.logic.Flags;
 import me.fromgate.reactions.util.data.RaContext;
 
 import java.util.ArrayList;

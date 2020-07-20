@@ -1,8 +1,7 @@
 package me.fromgate.reactions.logic.activators;
 
-import me.fromgate.reactions.logic.Actions;
-import me.fromgate.reactions.logic.ActivatorType;
-import me.fromgate.reactions.logic.Flags;
+import me.fromgate.reactions.logic.actions.Actions;
+import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.configuration.ConfigurationSection;
