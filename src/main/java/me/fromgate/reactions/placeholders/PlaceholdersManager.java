@@ -119,6 +119,7 @@ public class PlaceholdersManager {
         String result = context.getTempVariable(text);
         if (result != null) return result;
         String[] ph = text.split(":", 2);
+        ph[0] = ph[0].toLowerCase(Locale.ENGLISH);
         if(ph.length > 1) {
             if(ph[0].equalsIgnoreCase("var")) {
                 String[] varSplit = ph[1].split("\\.", 2);

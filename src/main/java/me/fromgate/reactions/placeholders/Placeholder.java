@@ -3,7 +3,6 @@ package me.fromgate.reactions.placeholders;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
@@ -18,8 +17,10 @@ public abstract class Placeholder {
         if (this.getClass().isAnnotationPresent(PlaceholderDefine.class)) {
             PlaceholderDefine pd = this.getClass().getAnnotation(PlaceholderDefine.class);
             this.id = pd.id();
-            this.keys = new HashSet<>(Arrays.asList(pd.keys()));
-            this.keys.add(this.id);
+            this.keys = new HashSet<>();
+            for(String key : pd.keys())
+                keys.add(key.toLowerCase(Locale.ENGLISH));
+            this.keys.add(this.id.toLowerCase(Locale.ENGLISH));
         } else {
             this.id = "UNKNOWN";
             this.keys = Collections.emptySet();
@@ -27,7 +28,7 @@ public abstract class Placeholder {
     }
 
     public boolean checkKey(String key) {
-        return keys.contains(key.toLowerCase(Locale.ENGLISH));
+        return keys.contains(key);
     }
 
     /**
