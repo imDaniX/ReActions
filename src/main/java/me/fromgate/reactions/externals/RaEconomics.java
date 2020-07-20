@@ -35,13 +35,13 @@ public class RaEconomics {
         return RaVault.isEconomyConnected();
     }
 
-    public static boolean hasMoney(String account, double amount, String currencyName, String worldName) {
+    public static boolean hasMoney(String account, double amount, String worldName) {
         if (RaVault.isEconomyConnected()) return RaVault.hasMoney(account, worldName, amount);
         return false;
     }
 
 
-    public static String creditAccount(String target, String source, String amountStr, String currencyName, String worldName) {
+    public static String creditAccount(String target, String source, String amountStr, String worldName) {
         if (target.isEmpty()) return "";
         if (!Util.isFloat(amountStr)) return "";
         double amount = Double.parseDouble(amountStr);
@@ -52,7 +52,7 @@ public class RaEconomics {
         return "";
     }
 
-    public static String debitAccount(String accountFrom, String accountTo, String amountStr, String currencyName, String worldName) {
+    public static String debitAccount(String accountFrom, String accountTo, String amountStr, String worldName) {
         if (accountFrom.isEmpty()) return "";
         if (!Util.isFloat(amountStr)) return "";
         double amount = Double.parseDouble(amountStr);

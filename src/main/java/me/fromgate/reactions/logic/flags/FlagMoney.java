@@ -39,8 +39,7 @@ public class FlagMoney implements Flag {
         double amount = Double.parseDouble(amountStr);
         String account = params.getParam("account", params.getParam("player", player == null ? "" : player.getName()));
         if (account.isEmpty()) return false;
-        String currency = params.getParam("currency", "");
         String world = params.getParam("world", "");
-        return RaEconomics.hasMoney(account, amount, currency, world);
+        return RaEconomics.hasMoney(account, amount, world);
     }
 }

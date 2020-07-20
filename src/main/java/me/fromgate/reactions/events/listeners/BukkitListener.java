@@ -262,7 +262,7 @@ public class BukkitListener implements Listener {
             if (!RaVault.isEconomyConnected()) return;
             if (killer != null) {
                 int money = Util.getMinMaxRandom(event.getEntity().getMetadata("ReActions-money").get(0).asString());
-                RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "", "");
+                RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "");
                 Msg.MSG_MOBBOUNTY.print(killer, 'e', '6', RaEconomics.format(money, "", ""), event.getEntity().getType().name());
             }
         }

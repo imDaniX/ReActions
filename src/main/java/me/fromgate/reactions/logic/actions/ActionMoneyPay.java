@@ -41,12 +41,11 @@ public class ActionMoneyPay extends Action {
         if (params.size() <= 2) params = parseOldFormat(player, params.getParam("param-line"));
         String amountStr = params.getParam("amount", "");
         if (amountStr.isEmpty()) return false;
-        String currencyName = params.getParam("currency", "");
         String worldName = params.getParam("world", "");
         String target = params.getParam("target", "");
         String source = params.getParam("source", params.getParam("player", (player != null ? player.getName() : "")));
         if (source.isEmpty()) return false;
-        String message = RaEconomics.debitAccount(source, target, amountStr, currencyName, worldName);
+        String message = RaEconomics.debitAccount(source, target, amountStr, worldName);
         if (message.isEmpty()) return false;
         setMessageParam(message);
         return true;
