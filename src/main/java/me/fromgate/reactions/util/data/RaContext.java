@@ -25,7 +25,7 @@ public class RaContext {
 
     public RaContext(String activator, Map<String, String> tempVariables, Map<String, DataValue> changeables, Player player, boolean async) {
         this.tempVariables = tempVariables != null ? new HashMap<>(tempVariables) : new HashMap<>();
-        tempVariables.put("activator_name", activator);
+        this.tempVariables.put("activator_name", activator);
         if (changeables == null || changeables.isEmpty()) {
             this.changeables = Collections.emptyMap();
         } else {
