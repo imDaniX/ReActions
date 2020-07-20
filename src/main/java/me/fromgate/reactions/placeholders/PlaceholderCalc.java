@@ -7,11 +7,12 @@ import org.bukkit.entity.Player;
 public class PlaceholderCalc extends Placeholder {
     @Override
     public String processPlaceholder(Player player, String key, String param) {
-        try {
+        if(!param.contains("%")) try {
             double result = MathEvaluator.eval(param);
-            return (result == (int) result) ? Integer.toString((int) result) : Double.toString(result);
-        } catch (NumberFormatException | ArithmeticException ignore) {
-        }
+            return (result == (int) result) ?
+                    Integer.toString((int) result) :
+                    Double.toString(result);
+        } catch (NumberFormatException | ArithmeticException ignore) {}
         return null;
     }
 }
