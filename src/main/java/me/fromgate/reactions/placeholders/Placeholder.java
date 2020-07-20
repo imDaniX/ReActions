@@ -3,24 +3,31 @@ package me.fromgate.reactions.placeholders;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
-import java.util.stream.Stream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 @Getter
 public abstract class Placeholder {
-    private String id = "UNKNOWN";
-
-    private String[] keys = new String[]{};
+    private final String id;
+    private final Set<String> keys;
 
     public Placeholder() {
         if (this.getClass().isAnnotationPresent(PlaceholderDefine.class)) {
             PlaceholderDefine pd = this.getClass().getAnnotation(PlaceholderDefine.class);
             this.id = pd.id();
-            this.keys = pd.keys();
+            this.keys = new HashSet<>(Arrays.asList(pd.keys()));
+            this.keys.add(this.id);
+        } else {
+            this.id = "UNKNOWN";
+            this.keys = Collections.emptySet();
         }
     }
 
     public boolean checkKey(String key) {
-        return Stream.of(this.keys).anyMatch(k -> k.equalsIgnoreCase(key));
+        return keys.contains(key.toLowerCase(Locale.ENGLISH));
     }
 
     /**

@@ -40,7 +40,7 @@ public class PlaceholdersManager {
 
     public static boolean add(Placeholder ph) {
         if (ph == null) return false;
-        if (ph.getKeys().length == 0) return false;
+        if (ph.getKeys().isEmpty()) return false;
         if (ph.getId().equalsIgnoreCase("UNKNOWN")) return false;
         placeholders.add(ph);
         return true;
@@ -132,11 +132,13 @@ public class PlaceholdersManager {
                 return result == null ? "%" + text + "%" : result;
             }
             for (Placeholder placeholder : placeholders) {
+                if(!placeholder.checkKey(ph[0])) continue;
                 result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph[1]);
                 if (result != null) return result;
             }
         } else {
             for (Placeholder placeholder : placeholders) {
+                if(!placeholder.checkKey(ph[0])) continue;
                 result = placeholder.processPlaceholder(context.getPlayer(), ph[0], ph[0]);
                 if (result != null) return result;
             }
