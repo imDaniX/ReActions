@@ -30,10 +30,12 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class FlagItem implements Flag {
-    private final byte flagType;
+import java.util.Locale;
 
-    public FlagItem(byte flagType) {
+public class FlagItem implements Flag {
+    private final Type flagType;
+
+    public FlagItem(Type flagType) {
         this.flagType = flagType;
     }
 
@@ -41,17 +43,17 @@ public class FlagItem implements Flag {
     public boolean checkFlag(RaContext context, String itemStr) {
         Player player = context.getPlayer();
         switch (flagType) {
-            case 0:
+            case HAND:
                 ItemStack inHand = player.getInventory().getItemInMainHand();
-                context.setTempVariable("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
+                context.setTempVariable("item_amount", String.valueOf(inHand.getAmount()));
                 return ItemUtils.compareItemStr(inHand, itemStr, true);
-            case 1:
+            case INVENTORY:
                 return hasItemInInventory(context, itemStr);
-            case 2:
+            case WEAR:
                 return isItemWeared(player, itemStr);
-            case 3:
+            case OFFHAND:
                 ItemStack inOffhand = player.getInventory().getItemInOffHand();
-                context.setTempVariable("item_amount", inOffhand == null ? "0" : String.valueOf(inOffhand.getAmount()));
+                context.setTempVariable("item_amount", String.valueOf(inOffhand.getAmount()));
                 return ItemUtils.compareItemStr(inOffhand, itemStr, true);
         }
         return false;
@@ -82,14 +84,24 @@ public class FlagItem implements Flag {
         VirtualItem vi = null;
 
         if (slotNum < 0) {
-            if (slotStr.equalsIgnoreCase("helm") || slotStr.equalsIgnoreCase("helmet"))
-                vi = VirtualItem.fromItemStack(player.getInventory().getHelmet());
-            else if (slotStr.equalsIgnoreCase("chestplate") || slotStr.equalsIgnoreCase("chest"))
-                vi = VirtualItem.fromItemStack(player.getInventory().getChestplate());
-            else if (slotStr.equalsIgnoreCase("Leggings") || slotStr.equalsIgnoreCase("Leg"))
-                vi = VirtualItem.fromItemStack(player.getInventory().getLeggings());
-            else if (slotStr.equalsIgnoreCase("boot") || slotStr.equalsIgnoreCase("boots"))
-                VirtualItem.fromItemStack(player.getInventory().getBoots());
+            switch (slotStr.toLowerCase(Locale.ENGLISH)) {
+                case "helm":
+                case "helmet":
+                    vi = VirtualItem.fromItemStack(player.getInventory().getHelmet());
+                    break;
+                case "chest":
+                case "chestplate":
+                    vi = VirtualItem.fromItemStack(player.getInventory().getChestplate());
+                    break;
+                case "legs":
+                case "leggings":
+                    vi = VirtualItem.fromItemStack(player.getInventory().getLeggings());
+                    break;
+                case "boot":
+                case "boots":
+                    vi = VirtualItem.fromItemStack(player.getInventory().getBoots());
+                    break;
+            }
         } else vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));
 
         // vi = VirtualItem.fromItemStack(player.getInventoryType().getItem(slotNum));
@@ -97,5 +109,9 @@ public class FlagItem implements Flag {
         if (vi == null) return false;
 
         return vi.compare(itemStr);
+    }
+
+    public enum Type {
+        HAND, INVENTORY, WEAR, OFFHAND
     }
 }

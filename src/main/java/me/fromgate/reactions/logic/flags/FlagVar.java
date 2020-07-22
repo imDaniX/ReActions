@@ -28,10 +28,10 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
 public class FlagVar implements Flag {
-    private final byte flagType;
+    private final Type flagType;
     private final boolean personalVar;
 
-    public FlagVar(byte flagType, boolean personalVar) {
+    public FlagVar(Type flagType, boolean personalVar) {
         this.flagType = flagType;
         this.personalVar = personalVar;
     }
@@ -58,17 +58,21 @@ public class FlagVar implements Flag {
         }
         if (playerName.isEmpty() && this.personalVar) return false;
         switch (this.flagType) {
-            case 0: // VAR_EXIST
+            case EXIST: // VAR_EXIST
                 return Variables.existVar(playerName, var);
-            case 1: // VAR_COMPARE
+            case COMPARE: // VAR_COMPARE
                 return Variables.compareVariable(playerName, var, value);
-            case 2: // VAR_GREATER
+            case GREATER: // VAR_GREATER
                 return Variables.cmpGreaterVar(playerName, var, value);
-            case 3: // VAR_LOWER
+            case LOWER: // VAR_LOWER
                 return Variables.cmpLowerVar(playerName, var, value);
-            case 4: // VAR_MATCH
+            case MATCH: // VAR_MATCH
                 return Variables.matchVar(playerName, var, value);
         }
         return false;
+    }
+
+    public enum Type {
+        EXIST, COMPARE, GREATER, LOWER, MATCH
     }
 }

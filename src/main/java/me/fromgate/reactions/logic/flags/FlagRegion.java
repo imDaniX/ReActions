@@ -29,16 +29,9 @@ import org.bukkit.entity.Player;
 
 public class FlagRegion implements Flag {
 
-    // TODO: Enums
-    public final static byte REGION = 0;
-    public final static byte REGION_PLAYERS = 1;
-    public final static byte REGION_MEMBER = 2;
-    public final static byte REGION_OWNER = 3;
-    public final static byte REGION_STATE = 4;
+    private Type flagType;
 
-    private int flagType;
-
-    public FlagRegion(byte flagType) {
+    public FlagRegion(Type flagType) {
         this.flagType = flagType;
     }
 
@@ -66,5 +59,9 @@ public class FlagRegion implements Flag {
         String rg = params.getParam("region");
         int minp = params.getParam("players", 1);
         return (minp <= RaWorldGuard.countPlayersInRegion(rg));
+    }
+
+    public enum Type {
+        REGION, REGION_PLAYERS, REGION_MEMBER, REGION_OWNER, REGION_STATE;
     }
 }

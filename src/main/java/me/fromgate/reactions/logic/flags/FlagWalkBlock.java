@@ -34,6 +34,7 @@ public class FlagWalkBlock implements Flag {
         Player player = context.getPlayer();
         Block walk = player.getLocation().getBlock();
         if (!walk.getType().isSolid()) walk = walk.getLocation().subtract(0, 0.1, 0).getBlock();
+        // TODO: Use Parameters
         return walk.getType() == VirtualItem.fromString(param).getType();
     }
 
