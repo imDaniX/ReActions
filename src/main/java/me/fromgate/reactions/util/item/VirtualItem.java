@@ -68,12 +68,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/*
- 	TODO: Should not extend ItemStack
-	New VirtualItem is generated on every check of item-related activators(and even flags)
-	It would be better to create some custom implementation of item that will be stored in Activators
-*/
-
 public class VirtualItem extends ItemStack {
 
     private final static String DIVIDER = "\\n";

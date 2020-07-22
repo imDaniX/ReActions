@@ -47,20 +47,18 @@ public interface Rng {
      * @return Random value
      */
     static int nextIntFromString(String numsStr) {
-        if (numsStr.contains("-")) {
+        int index = numsStr.indexOf('-');
+        if (index > -1) {
             int min = 0;
             int max = 0;
-            String minStr;
-            String maxStr;
-            int index = numsStr.indexOf('-');
-            minStr = numsStr.substring(0, index);
-            maxStr = numsStr.substring(index + 1);
+            String minStr = numsStr.substring(0, index);
+            String maxStr = numsStr.substring(index + 1);
             if (NumberUtils.INT_POSITIVE.matcher(minStr).matches())
                 min = Integer.parseInt(minStr);
             if (NumberUtils.INT_POSITIVE.matcher(maxStr).matches())
                 max = Integer.parseInt(maxStr);
             if (max > min)
-                return min + nextInt(1 + max - min);
+                return nextInt(min, max);
             return min;
         } else {
             if (NumberUtils.INT_POSITIVE.matcher(numsStr).matches())

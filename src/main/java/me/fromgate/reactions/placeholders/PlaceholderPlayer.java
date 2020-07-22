@@ -7,9 +7,10 @@ import me.fromgate.reactions.util.location.PlayerRespawner;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -22,11 +23,11 @@ import java.util.Set;
 public class PlaceholderPlayer extends Placeholder {
 
     private static final Set<Material> NON_SOLID;
-
     static {
-        NON_SOLID = new HashSet<>();
+        Set<Material> nonSolid = new HashSet<>();
         for (Material mat : Material.values())
-            if (!mat.isSolid()) NON_SOLID.add(mat);
+            if (!mat.isSolid()) nonSolid.add(mat);
+        NON_SOLID = Collections.unmodifiableSet(EnumSet.copyOf(nonSolid));
     }
 
     @Override
@@ -88,10 +89,8 @@ public class PlaceholderPlayer extends Placeholder {
      * @return Location of block
      */
     private Location getViewLocation(Player p, boolean solid) {
-        Block b = p.getTargetBlock(solid ? NON_SOLID : null, 100);
-        if (b == null) return p.getLocation();
         // Does it work ok on negative coordinates?
-        return b.getLocation().add(0.5, 0.5, 0.5);
+        return p.getTargetBlock(solid ? NON_SOLID : null, 100).getLocation().add(0.5, 0.5, 0.5);
     }
 
     /**
