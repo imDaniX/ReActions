@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.EntityEffect;
@@ -36,7 +36,7 @@ public class ActionDamage extends Action {
         double damage = params.getParam("damage", params.getParam("param-line", 0));
         if (params.hasAnyParam("player"))
             // TODO: Selector?
-            player = Util.getPlayerExact(params.getParam("player"));
+            player = Utils.getPlayerExact(params.getParam("player"));
         return damagePlayer(player, damage);
     }
 

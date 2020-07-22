@@ -1,7 +1,7 @@
 package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -27,19 +27,19 @@ public class ProjectileHitActivator extends Activator {
     }
 
     public static ProjectileHitActivator create(ActivatorBase base, Parameters param) {
-        EntityType projType = Util.getEnum(EntityType.class, param.getParam("projectile", "ARROW"));
+        EntityType projType = Utils.getEnum(EntityType.class, param.getParam("projectile", "ARROW"));
         Material hitBlock = Material.getMaterial(param.getParam("block", ""));
-        BlockFace hitFace = Util.getEnum(BlockFace.class, param.getParam("face", ""));
-        EntityType hitEntity = Util.getEnum(EntityType.class, param.getParam("entity", ""));
+        BlockFace hitFace = Utils.getEnum(BlockFace.class, param.getParam("face", ""));
+        EntityType hitEntity = Utils.getEnum(EntityType.class, param.getParam("entity", ""));
         HitType hitType = HitType.getByName(param.getParam("hit", "ANY"));
         return new ProjectileHitActivator(base, projType, hitBlock, hitFace, hitEntity, hitType);
     }
 
     public static ProjectileHitActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        EntityType projType = Util.getEnum(EntityType.class, cfg.getString("projectile-type", "ARROW"));
+        EntityType projType = Utils.getEnum(EntityType.class, cfg.getString("projectile-type", "ARROW"));
         Material hitBlock = Material.getMaterial(cfg.getString("block-type", ""));
-        BlockFace hitFace =Util.getEnum(BlockFace.class, cfg.getString("block=face", ""));
-        EntityType hitEntity = Util.getEnum(EntityType.class, cfg.getString("entity-type", ""));
+        BlockFace hitFace = Utils.getEnum(BlockFace.class, cfg.getString("block=face", ""));
+        EntityType hitEntity = Utils.getEnum(EntityType.class, cfg.getString("entity-type", ""));
         HitType hitType = HitType.getByName(cfg.getString("hit", "ANY"));
         return new ProjectileHitActivator(base, projType, hitBlock, hitFace, hitEntity, hitType);
     }

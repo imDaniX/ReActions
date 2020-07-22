@@ -25,8 +25,8 @@ package me.fromgate.reactions.logic.activators;
 import lombok.Getter;
 import me.fromgate.reactions.logic.storages.ItemHoldStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -60,7 +60,7 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
             return false;
         }
         ItemHoldStorage ie = (ItemHoldStorage) event;
-        return ItemUtil.compareItemStr(ie.getItem(), this.itemStr);
+        return ItemUtils.compareItemStr(ie.getItem(), this.itemStr);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(itemStr);
+        return !Utils.isStringEmpty(itemStr);
     }
 }
 

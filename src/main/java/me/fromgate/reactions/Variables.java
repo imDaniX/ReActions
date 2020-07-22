@@ -23,8 +23,9 @@
 package me.fromgate.reactions;
 
 import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.util.FileUtil;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.FileUtils;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -91,21 +92,21 @@ public class Variables {
         String id = varId(playerName, var);
         if (!vars.containsKey(id)) return false;
         String value = getVariable(playerName, var, "");
-        if (Util.isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
+        if (NumberUtils.isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
         return value.equalsIgnoreCase(cmpvalue);
     }
 
     public static boolean cmpGreaterVar(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
         if (!vars.containsKey(id)) return false;
-        if (!Util.isNumber(vars.get(id), cmpvalue)) return false;
+        if (!NumberUtils.isNumber(vars.get(id), cmpvalue)) return false;
         return Double.parseDouble(vars.get(id)) > Double.parseDouble(cmpvalue);
     }
 
     public static boolean cmpLowerVar(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
         if (!vars.containsKey(id)) return false;
-        if (!Util.isNumber(vars.get(id), cmpvalue)) return false;
+        if (!NumberUtils.isNumber(vars.get(id), cmpvalue)) return false;
         return Double.parseDouble(vars.get(id)) < Double.parseDouble(cmpvalue);
     }
 
@@ -117,7 +118,7 @@ public class Variables {
         String id = varId(player, var);
         if (!vars.containsKey(id)) setVar(player, var, "0");
         String valueStr = vars.get(id);
-        if (!Util.isNumber(valueStr)) return false;
+        if (!NumberUtils.isNumber(valueStr)) return false;
         setVar(player, var, String.valueOf(Double.parseDouble(valueStr) + addValue));
         return true;
     }
@@ -132,7 +133,7 @@ public class Variables {
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml");
         for (String key : vars.keySet())
             cfg.set(key, vars.get(key));
-        FileUtil.saveCfg(cfg, f, "Failed to save variables configuration file");
+        FileUtils.saveCfg(cfg, f, "Failed to save variables configuration file");
     }
 
     public static void save(String player) {
@@ -147,13 +148,13 @@ public class Variables {
         if (!dir.exists() && !dir.mkdirs()) return;
         saveGeneral();
         if (player == null || player.isEmpty()) return;
-        UUID id = Util.getUUID(player);
+        UUID id = Utils.getUUID(player);
         if (id == null) return;
         File f = new File(varDir + File.separator + id.toString() + ".yml");
         for (String key : vars.keySet()) {
             if (key.contains(player)) cfg.set(key, vars.get(key));
         }
-        if (FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file"))
+        if (FileUtils.saveCfg(cfg, f, "Failed to save variable configuration file"))
             removePlayerVars(player);
     }
 
@@ -168,7 +169,7 @@ public class Variables {
         File f = new File(varDir + File.separator + "general.yml");
         for (String key : vars.keySet())
             if (key.contains("general")) cfg.set(key, vars.get(key));
-        FileUtil.saveCfg(cfg, f, "Failed to save variable configuration file");
+        FileUtils.saveCfg(cfg, f, "Failed to save variable configuration file");
     }
 
     public static void load() {
@@ -231,7 +232,7 @@ public class Variables {
         String fileName = ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml";
         File f = new File(fileName);
         if (!f.exists()) return;
-        if (!FileUtil.loadCfg(cfg, f, "Failed to load variable file")) return;
+        if (!FileUtils.loadCfg(cfg, f, "Failed to load variable file")) return;
         for (String key : cfg.getKeys(true)) {
             if (!key.contains(".")) continue;
             if (key.contains(player) || key.contains("general")) continue;
@@ -241,7 +242,7 @@ public class Variables {
         YamlConfiguration cfg2 = new YamlConfiguration();
         for (String key : varsTmp.keySet())
             cfg2.set(key, varsTmp.get(key));
-        if (!FileUtil.saveCfg(cfg2, f, "Failed to save variable file")) return;
+        if (!FileUtils.saveCfg(cfg2, f, "Failed to save variable file")) return;
         varsTmp.clear();
     }
 

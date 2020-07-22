@@ -24,9 +24,9 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.MobClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.location.LocationUtil;
-import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.mob.EntityUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -87,16 +87,16 @@ public class MobClickActivator extends Activator implements Locatable {
     private boolean isActivatorMob(LivingEntity mob) {
         if (!mob.getType().name().equalsIgnoreCase(this.mobType)) return false;
         if (!mobName.isEmpty()) {
-            if (!ChatColor.translateAlternateColorCodes('&', mobName).equals(EntityUtil.getMobName(mob)))
+            if (!ChatColor.translateAlternateColorCodes('&', mobName).equals(EntityUtils.getMobName(mob)))
                 return false;
-        } else if (!EntityUtil.getMobName(mob).isEmpty()) return false;
+        } else if (!EntityUtils.getMobName(mob).isEmpty()) return false;
         return checkLocations(mob);
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
         if (this.mobLocation.isEmpty()) return false;
-        Location loc = LocationUtil.parseCoordinates(this.mobLocation);
+        Location loc = LocationUtils.parseCoordinates(this.mobLocation);
         if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&
@@ -123,7 +123,7 @@ public class MobClickActivator extends Activator implements Locatable {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(mobType);
+        return !Utils.isStringEmpty(mobType);
     }
 
     @Override

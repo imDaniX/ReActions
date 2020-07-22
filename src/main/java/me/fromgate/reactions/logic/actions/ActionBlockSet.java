@@ -23,9 +23,9 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
@@ -50,7 +50,7 @@ public class ActionBlockSet extends Action {
             }
         }
 
-        Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), null);
+        Location loc = LocationUtils.parseLocation(params.getParam("loc", ""), null);
         if (loc == null) return false;
         Block b = loc.getBlock();
 
@@ -61,7 +61,7 @@ public class ActionBlockSet extends Action {
             //b.setBlockData(item.getData(),phys);
             //b.setTypeIdAndData(item.getTypeId(), item.getData().getData(), phys);
         } else b.setType(Material.AIR, phys);
-        setMessageParam(ItemUtil.itemToString(item));
+        setMessageParam(ItemUtils.itemToString(item));
         return true;
     }
 

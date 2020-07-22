@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -45,7 +45,7 @@ public class FlagTime implements Flag {
             String[] tln = time.split(",");
             if (tln.length > 0) {
                 for (String timeStr : tln)
-                    if (Util.INT_POSITIVE.matcher(timeStr).matches()) {
+                    if (NumberUtils.INT_POSITIVE.matcher(timeStr).matches()) {
                         int ct = (int) ((currentTime / 1000 + 6) % 24);
                         if (ct == Integer.parseInt(timeStr)) return true;
                     }
@@ -60,7 +60,7 @@ public class FlagTime implements Flag {
             String[] ln = time.split(",");
             if (ln.length > 0)
                 for (int i = 0; i < ln.length; i++) {
-                    if (!Util.isInteger(ln[i])) continue;
+                    if (!NumberUtils.isInteger(ln[i])) continue;
                     String tmp = String.format("%02d:00", Integer.parseInt(ln[i]));
                     if (i == 0) result = new StringBuilder(tmp);
                     else result.append(", ").append(tmp);

@@ -23,8 +23,9 @@
 package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
@@ -55,7 +56,7 @@ public class Shoot {
         int distance = params.getParam("distance", 100);
         float knockbackTarget = params.getParam("knockbackTarget", 0);
         for (LivingEntity le : getEntityBeam(shooter, getBeam(shooter, distance), onehit)) {
-            double damage = (double) Util.getMinMaxRandom(params.getParam("damage", "1"));
+            double damage = (double) Rng.nextIntFromString(params.getParam("damage", "1"));
             boolean shoot = true;
             if (damage > 0) {
                 shoot = damageEntity(shooter, le, damage, knockbackTarget);
@@ -80,10 +81,10 @@ public class Shoot {
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("targettype", target.getType().name());
         tempVars.put("targetname", (player == null) ? getMobName(target) : player.getName());
-        tempVars.put("targetloc", LocationUtil.locationToString(target.getLocation()));
+        tempVars.put("targetloc", LocationUtils.locationToString(target.getLocation()));
         if (shooter != null) {
             tempVars.put("shooter", shooter.getName());
-            tempVars.put("shooterloc", LocationUtil.locationToString(shooter.getLocation()));
+            tempVars.put("shooterloc", LocationUtils.locationToString(shooter.getLocation()));
         }
         StoragesManager.raiseExecActivator(shooter, param, tempVars);
     }
@@ -116,7 +117,7 @@ public class Shoot {
 
     private static boolean isEmpty(Block b, LivingEntity shooter) {
         if (!b.getType().isSolid()) return true;
-        if (ItemUtil.isItemInList(b.getType(), 0, actionShootThrough)) return true;
+        if (ItemUtils.isItemInList(b.getType(), 0, actionShootThrough)) return true;
         if ((shooter instanceof Player) && (isShotAndBreak(b, (Player) shooter))) {
             b.getWorld().playEffect(b.getLocation(), Effect.STEP_SOUND, b.getType());
             b.breakNaturally();
@@ -133,7 +134,7 @@ public class Shoot {
     }
 
     private static boolean isShotAndBreak(Block b, Player p) {
-        if (ItemUtil.isItemInList(b.getType(), 0, actionShootBreak)) return breakBlock(b, p);
+        if (ItemUtils.isItemInList(b.getType(), 0, actionShootBreak)) return breakBlock(b, p);
         return false;
     }
 

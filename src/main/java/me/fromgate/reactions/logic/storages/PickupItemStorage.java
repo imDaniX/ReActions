@@ -6,7 +6,7 @@ import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
 import me.fromgate.reactions.util.data.ItemStackValue;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class PickupItemStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("droplocation", LocationUtil.locationToString(dropLoc));
+        tempVars.put("droplocation", LocationUtils.locationToString(dropLoc));
     }
 
     @Override

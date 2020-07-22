@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.externals;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -43,7 +43,7 @@ public class RaEconomics {
 
     public static String creditAccount(String target, String source, String amountStr, String worldName) {
         if (target.isEmpty()) return "";
-        if (!Util.isFloat(amountStr)) return "";
+        if (!NumberUtils.isFloat(amountStr)) return "";
         double amount = Double.parseDouble(amountStr);
         if (RaVault.isEconomyConnected()) {
             if (RaVault.creditAccount(target, source, amount, worldName))
@@ -54,7 +54,7 @@ public class RaEconomics {
 
     public static String debitAccount(String accountFrom, String accountTo, String amountStr, String worldName) {
         if (accountFrom.isEmpty()) return "";
-        if (!Util.isFloat(amountStr)) return "";
+        if (!NumberUtils.isFloat(amountStr)) return "";
         double amount = Double.parseDouble(amountStr);
         if (RaVault.isEconomyConnected()) {
             if (RaVault.debitAccount(accountFrom, accountTo, amount, worldName))

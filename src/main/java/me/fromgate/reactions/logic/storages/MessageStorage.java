@@ -26,10 +26,10 @@ package me.fromgate.reactions.logic.storages;
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.MessageActivator;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.StringValue;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -64,11 +64,11 @@ public class MessageStorage extends Storage {
             for (int i = 0; i < args.length; i++) {
                 tempVars.put("word" + (i + 1), args[i]);
                 tempVars.put("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
-                if (Util.INT.matcher(args[i]).matches()) {
+                if (NumberUtils.INT.matcher(args[i]).matches()) {
                     countInt++;
                     tempVars.put("int" + countInt, args[i]);
                 }
-                if (Util.FLOAT.matcher(args[i]).matches()) {
+                if (NumberUtils.FLOAT.matcher(args[i]).matches()) {
                     countNum++;
                     tempVars.put("num" + countNum, args[i]);
                 }

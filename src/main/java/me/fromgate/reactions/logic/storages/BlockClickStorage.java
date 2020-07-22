@@ -26,8 +26,8 @@ import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
-import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -47,9 +47,9 @@ public class BlockClickStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("blocklocation", LocationUtil.locationToString(block.getLocation()));
+        tempVars.put("blocklocation", LocationUtils.locationToString(block.getLocation()));
         tempVars.put("blocktype", block.getType().name());
-        tempVars.put("block", ItemUtil.itemFromBlock(block).toString());
+        tempVars.put("block", ItemUtils.itemFromBlock(block).toString());
     }
 
     @Override

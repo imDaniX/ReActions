@@ -26,7 +26,7 @@ import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.events.PlayerMoveByBlockEvent;
 import me.fromgate.reactions.events.PlayerStayEvent;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.location.PushBack;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -59,7 +59,7 @@ public class MoveListener implements Listener {
 
     private static void processMove(Player player, Location from, Location to) {
         PushBack.rememberLocations(player, from, to);
-        PlayerEvent event = LocationUtil.isSameLocation(from, to) ?
+        PlayerEvent event = LocationUtils.equals(from, to) ?
                 new PlayerStayEvent(player, to) : new PlayerMoveByBlockEvent(player, to, from);
         Bukkit.getPluginManager().callEvent(event);
     }

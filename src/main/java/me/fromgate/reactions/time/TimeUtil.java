@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.time;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
 
 import java.text.DateFormat;
@@ -90,7 +90,7 @@ public class TimeUtil {
         int ss = 0; // секунды
         int tt = 0; // тики
         int ms = 0; // миллисекунды
-        if (Util.isInteger(time)) {
+        if (NumberUtils.isInteger(time)) {
             ss = Integer.parseInt(time);
         } else if (TIME_HH_MM.matcher(time).matches()) {
             String[] ln = time.split(":");

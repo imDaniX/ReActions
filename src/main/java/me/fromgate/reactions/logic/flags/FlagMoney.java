@@ -23,8 +23,8 @@
 package me.fromgate.reactions.logic.flags;
 
 import me.fromgate.reactions.externals.RaEconomics;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
@@ -35,7 +35,7 @@ public class FlagMoney implements Flag {
         if (!RaEconomics.isEconomyFound()) return false;
         Parameters params = new Parameters(param, "amount");
         String amountStr = params.getParam("amount", "a");
-        if (!Util.isFloat(amountStr)) return false;
+        if (!NumberUtils.isFloat(amountStr)) return false;
         double amount = Double.parseDouble(amountStr);
         String account = params.getParam("account", params.getParam("player", player == null ? "" : player.getName()));
         if (account.isEmpty()) return false;

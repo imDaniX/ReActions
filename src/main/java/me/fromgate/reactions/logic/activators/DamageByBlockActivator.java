@@ -2,8 +2,8 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.DamageByBlockStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -68,14 +68,14 @@ public class DamageByBlockActivator extends Activator implements Locatable {
     }
 
     private boolean isActivatorBlock(Block block) {
-        if (!this.blockStr.isEmpty() && !ItemUtil.compareItemStr(block, this.blockStr)) return false;
+        if (!this.blockStr.isEmpty() && !ItemUtils.compareItemStr(block, this.blockStr)) return false;
         return checkLocations(block);
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
         if (this.blockLocation.isEmpty()) return false;
-        Location loc = LocationUtil.parseLocation(this.blockLocation, null);
+        Location loc = LocationUtils.parseLocation(this.blockLocation, null);
         if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&

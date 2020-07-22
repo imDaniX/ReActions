@@ -2,7 +2,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.PickupItemStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -52,7 +52,7 @@ public class PickupItemActivator extends Activator {
 
     private boolean checkItem(ItemStack item) {
         if (this.itemStr.isEmpty()) return true;
-        return ItemUtil.compareItemStr(item, this.itemStr, true);
+        return ItemUtils.compareItemStr(item, this.itemStr, true);
     }
 
     @Override

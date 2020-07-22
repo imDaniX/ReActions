@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands;
 
 import lombok.Getter;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ public class Cmd {
 
     @SuppressWarnings("unused")
     public boolean isValidCommand() {
-        return !Util.isStringEmpty(command);
+        return !Utils.isStringEmpty(command);
     }
 
     public boolean checkParams(String[] params) {

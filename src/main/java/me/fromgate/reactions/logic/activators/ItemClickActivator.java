@@ -24,9 +24,9 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.ItemClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.enums.HandType;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -63,7 +63,7 @@ public class ItemClickActivator extends Activator {
         }
         ItemClickStorage ie = (ItemClickStorage) event;
         if (hand.checkOff(ie.isMainHand())) return false;
-        return ItemUtil.compareItemStr(ie.getItem(), this.item);
+        return ItemUtils.compareItemStr(ie.getItem(), this.item);
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ItemClickActivator extends Activator {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(item);
+        return !Utils.isStringEmpty(item);
     }
 
     @Override

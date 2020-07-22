@@ -25,7 +25,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.ButtonStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.BlockParameters;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
@@ -100,7 +100,7 @@ public class ButtonActivator extends Activator implements Locatable {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(world);
+        return !Utils.isStringEmpty(world);
     }
 
     @Override

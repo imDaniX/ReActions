@@ -1,6 +1,8 @@
 package me.fromgate.reactions.util.item;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.math.NumberUtils;
+import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -24,7 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class ItemUtil {
+public final class ItemUtils {
 
     private final static Pattern BYTES_RGB = Pattern.compile("^[0-9]{1,3},[0-9]{1,3},[0-9]{1,3}$");
 
@@ -41,7 +43,7 @@ public class ItemUtil {
     }
 
     public static Enchantment getEnchantmentByName(String name) {
-        if (!Util.isStringEmpty(name))
+        if (!Utils.isStringEmpty(name))
             try {
                 return Enchantment.getByKey(NamespacedKey.minecraft(name.toLowerCase(Locale.ENGLISH)));
             } catch (IllegalArgumentException ignore) {
@@ -126,7 +128,7 @@ public class ItemUtil {
      * @return - item stack contained left items (if all items removed - remove
      */
     private static VirtualItem removeItemFromStack(VirtualItem stack, String itemStr) {
-        if (!ItemUtil.compareItemStr(stack, itemStr)) return null;
+        if (!ItemUtils.compareItemStr(stack, itemStr)) return null;
         int amountToRemove = getAmount(itemStr);
         if (amountToRemove <= 0) return null;
         int leftAmount = stack.getAmount() - amountToRemove;
@@ -140,7 +142,7 @@ public class ItemUtil {
     public static int getAmount(String itemStr) {
         Map<String, String> itemMap = Parameters.parseParams(itemStr, "");
         String amountStr = itemMap.getOrDefault("amount", "1");
-        if (Util.INT_NOTZERO_POSITIVE.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
+        if (NumberUtils.INT_NONZERO_POSITIVE.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
         return 1;
     }
 
@@ -175,7 +177,7 @@ public class ItemUtil {
         String[] ln = str.split(",");
         if (ln.length == 0) return new ItemStack(Material.AIR);
 
-        ItemStack item = VirtualItem.fromString(ln[Util.getRandomInt(ln.length)]);
+        ItemStack item = VirtualItem.fromString(ln[Rng.nextInt(ln.length)]);
 
         if (item == null) return new ItemStack(Material.AIR);
         item.setAmount(1);
@@ -259,7 +261,7 @@ public class ItemUtil {
             }
             int eqperc = (nochcount * 100) / sets.size();
             maxChance = maxChance + eqperc * nochcount;
-            int rnd = Util.getRandomInt(maxChance);
+            int rnd = Rng.nextInt(maxChance);
             int curchance = 0;
             for (List<ItemStack> stack : sets.keySet()) {
                 curchance = curchance + (sets.get(stack) < 0 ? eqperc : sets.get(stack));
@@ -294,7 +296,7 @@ public class ItemUtil {
                 String stacks = ln[0];
                 if (stacks.isEmpty()) continue;
                 int chance = -1;
-                if ((ln.length == 2) && (Util.INT_NOTZERO_POSITIVE.matcher(ln[1]).matches())) {
+                if ((ln.length == 2) && (NumberUtils.INT_NONZERO_POSITIVE.matcher(ln[1]).matches())) {
                     chance = Integer.parseInt(ln[1]);
                     maxchance += chance;
                 } else nochcount++;
@@ -304,7 +306,7 @@ public class ItemUtil {
         if (drops.isEmpty()) return "";
         int eqperc = (nochcount * 100) / drops.size();
         maxchance = maxchance + eqperc * nochcount;
-        int rnd = Util.getRandomInt(maxchance);
+        int rnd = Rng.nextInt(maxchance);
         int curchance = 0;
         for (String stack : drops.keySet()) {
             curchance = curchance + (drops.get(stack) < 0 ? eqperc : drops.get(stack));
@@ -365,7 +367,7 @@ public class ItemUtil {
      * @return Material (may be legacy)
      */
     public static Material getMaterial(String name) {
-        if (Util.isStringEmpty(name)) return null;
+        if (Utils.isStringEmpty(name)) return null;
         name = name.toUpperCase(Locale.ENGLISH);
         Material material = Material.getMaterial(name, false);
         return material == null ? Material.getMaterial(name, true) : material;
@@ -431,7 +433,7 @@ public class ItemUtil {
             int green = Integer.parseInt(rgb[1]);
             int blue = Integer.parseInt(rgb[2]);
             return Color.fromRGB(red, green, blue);
-        } else if (Util.BYTE.matcher(colorStr).matches()) {
+        } else if (NumberUtils.BYTE.matcher(colorStr).matches()) {
             int num = Integer.parseInt(colorStr);
             if (num > 15)
                 num = 15;
@@ -495,7 +497,7 @@ public class ItemUtil {
             if (eType.contains(":")) {
                 String powerStr = eType.substring(eType.indexOf(":") + 1);
                 eType = eType.substring(0, eType.indexOf(":"));
-                power = Util.getMinMaxRandom(powerStr);
+                power = Rng.nextIntFromString(powerStr);
             }
             Enchantment enchantment = getEnchantmentByName(eType);
             if (enchantment == null)
@@ -513,7 +515,7 @@ public class ItemUtil {
      * @return - ItemStack
      */
     protected static ItemStack parseOldItemStack(String itemStr) {
-        if (Util.isStringEmpty(itemStr))
+        if (Utils.isStringEmpty(itemStr))
             return null;
         String iStr = itemStr;
         String enchant = "";
@@ -538,14 +540,14 @@ public class ItemUtil {
         String[] si = iStr.split("\\*");
         if (si.length > 0) {
             if (si.length == 2)
-                amount = Math.max(Util.getMinMaxRandom(si[1]), 1);
+                amount = Math.max(Rng.nextIntFromString(si[1]), 1);
             String[] ti = si[0].split(":");
             if (ti.length > 0) {
                 Material m = Material.getMaterial(ti[0].toUpperCase(Locale.ENGLISH));
                 if (m == null)
                     return null;
                 id = m;
-                if ((ti.length == 2) && (Util.INT_POSITIVE.matcher(ti[1]).matches()))
+                if ((ti.length == 2) && (NumberUtils.INT_POSITIVE.matcher(ti[1]).matches()))
                     data = Short.parseShort(ti[1]);
                 ItemStack item = new ItemStack(id, amount);
                 setDurability(item, data);
@@ -569,10 +571,10 @@ public class ItemUtil {
                             int level = 1;
                             if (ec.contains(":")) {
                                 ench = ec.substring(0, ec.indexOf(":"));
-                                level = Math.max(1, Util.getMinMaxRandom(ec.substring(ench
+                                level = Math.max(1, Rng.nextIntFromString(ec.substring(ench
                                         .length() + 1)));
                             }
-                            Enchantment e = ItemUtil.getEnchantmentByName(ench);
+                            Enchantment e = ItemUtils.getEnchantmentByName(ench);
                             if (e == null)
                                 continue;
                             item.addUnsafeEnchantment(e, level);

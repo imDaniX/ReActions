@@ -27,7 +27,7 @@ import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.externals.worldguard.WGBridge;
 import me.fromgate.reactions.logic.storages.RegionStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -84,7 +84,7 @@ public class RegionActivator extends Activator implements Locatable {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(region);
+        return !Utils.isStringEmpty(region);
     }
 
     @Override

@@ -2,7 +2,7 @@ package me.fromgate.reactions.menu;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
@@ -31,8 +31,8 @@ public class VirtualInventory {
     public VirtualInventory(int size, String title) {
         this.size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
         this.title = title;
-        this.slots = Util.getEmptyList(this.size);
-        this.activators = Util.getEmptyList(this.size);
+        this.slots = Utils.getEmptyList(this.size);
+        this.activators = Utils.getEmptyList(this.size);
     }
 
     public VirtualInventory(YamlConfiguration cfg, String root) {
@@ -68,8 +68,8 @@ public class VirtualInventory {
         this.title = cfg.getString(root + ".title", "&4Re&6Actions menu");
         this.size = cfg.getInt(root + ".size", 9);
         size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
-        this.slots = Util.getEmptyList(this.size);
-        this.activators = Util.getEmptyList(this.size);
+        this.slots = Utils.getEmptyList(this.size);
+        this.activators = Utils.getEmptyList(this.size);
         for (int i = 1; i <= size; i++) {
             this.slots.set(i - 1, cfg.getString(root + ".slot" + i + ".item", ""));
             this.activators.set(i - 1, cfg.getString(root + ".slot" + i + ".activator", ""));

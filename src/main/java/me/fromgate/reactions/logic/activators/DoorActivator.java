@@ -25,8 +25,8 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.DoorStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.BlockUtils;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.BlockParameters;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
@@ -57,7 +57,7 @@ public class DoorActivator extends Activator implements Locatable {
         if (!(p instanceof BlockParameters)) return null;
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
-        if (targetBlock == null || BlockUtil.isOpenable(targetBlock)) {
+        if (targetBlock == null || BlockUtils.isOpenable(targetBlock)) {
             String state = param.getParam("state", "ANY");
             if (!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
             String world = targetBlock.getWorld().getName();
@@ -121,7 +121,7 @@ public class DoorActivator extends Activator implements Locatable {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(world);
+        return !Utils.isStringEmpty(world);
     }
 
     @Override

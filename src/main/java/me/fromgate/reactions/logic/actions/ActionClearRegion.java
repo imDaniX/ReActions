@@ -23,9 +23,9 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.mob.EntityUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -47,7 +47,7 @@ public class ActionClearRegion extends Action {
         if (!RaWorldGuard.isConnected()) return false;
         List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(region);
         if (locs.size() != 2) return false;
-        Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
+        Collection<Entity> en = EntityUtils.getEntities(locs.get(0), locs.get(1));
         int count = 0;
         for (Entity e : en) {
             if (e.getType() == EntityType.PLAYER) continue;
@@ -70,6 +70,6 @@ public class ActionClearRegion extends Action {
         } else {
             if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
         }
-        return (Util.isWordInList(e.getType().name().toLowerCase(Locale.ENGLISH), type.toLowerCase(Locale.ENGLISH)));
+        return (Utils.isWordInList(e.getType().name().toLowerCase(Locale.ENGLISH), type.toLowerCase(Locale.ENGLISH)));
     }
 }

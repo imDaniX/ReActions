@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.mob.EntityUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
@@ -34,13 +34,13 @@ public class ActionHeal extends Action {
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         if (params.hasAnyParam("player"))
-            player = Util.getPlayerExact(params.getParam("player"));
+            player = Utils.getPlayerExact(params.getParam("player"));
         if (player == null) return false;
         double hp = params.getParam("hp", 0);
         boolean playHearts = params.getParam("hearts", true);
         if (params.isParamsExists("params")) hp = params.getParam("params", 0);
         double health = player.getHealth();
-        double healthMax = EntityUtil.getMaxHealth(player);
+        double healthMax = EntityUtils.getMaxHealth(player);
         if (health < healthMax && hp >= 0) {
             player.setHealth(hp == 0 ? healthMax : Math.min(hp + health, healthMax));
         }

@@ -24,9 +24,11 @@ package me.fromgate.reactions.util.mob;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.item.ItemUtils;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.math.NumberUtils;
+import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
@@ -58,11 +60,11 @@ public class MobSpawn {
             return;
         }
         String locationStr = params.getParam("loc", "");
-        Location loc = LocationUtil.parseLocation(locationStr, p == null ? null : p.getLocation());
+        Location loc = LocationUtils.parseLocation(locationStr, p == null ? null : p.getLocation());
         String region = params.getParam("region", "");
         int radius = params.getParam("radius", 0);
-        int num = Util.getMinMaxRandom(params.getParam("num", "1"));
-        double health = Util.getMinMaxRandom(params.getParam("health", "0"));
+        int num = Rng.nextIntFromString(params.getParam("num", "1"));
+        double health = Rng.nextIntFromString(params.getParam("health", "0"));
         String dtheffect = params.getParam("dtheffect", "");
         String chest = params.getParam("chest", "");
         String leg = params.getParam("leg", "");
@@ -83,8 +85,8 @@ public class MobSpawn {
         String exec = params.getParam("run", "");
         String exec_delay = params.getParam("rundelay", "1t");
 
-        if (RaWorldGuard.isRegionExists(region)) loc = LocationUtil.getRegionLocation(region, land);
-        else if (radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
+        if (RaWorldGuard.isRegionExists(region)) loc = LocationUtils.getRegionLocation(region, land);
+        else if (radius > 0) loc = LocationUtils.getRadiusLocation(loc, radius, land);
         if (loc == null) return;
 
         for (int i = 0; i < num; i++) {
@@ -122,7 +124,7 @@ public class MobSpawn {
                 mbs = mbs.substring(name.length() + 1);
             }
 
-            EntityType et = Util.getEnum(EntityType.class, mbs, EntityType.ZOMBIE);
+            EntityType et = Utils.getEnum(EntityType.class, mbs, EntityType.ZOMBIE);
 
             Entity e = loc.getWorld().spawnEntity(loc, et);
             if (e == null) {
@@ -171,7 +173,7 @@ public class MobSpawn {
     private static void setMobDrop(LivingEntity e, String drop) {
         //id:data*amount,id:dat*amount%chance;id:data*amount;id:dat*amount%chance;id:data*amount;id:dat*amount%chance
         if (drop.isEmpty()) return;
-        List<ItemStack> stack = ItemUtil.parseRandomItemsStr(drop);
+        List<ItemStack> stack = ItemUtils.parseRandomItemsStr(drop);
         if (stack.isEmpty()) return;
         setMobDropStack(e, stack);
     }
@@ -213,7 +215,7 @@ public class MobSpawn {
 
     private static void setMobEquipment(LivingEntity e, String equip) {
         if (equip.isEmpty()) return;
-        if (!Util.isWordInList(e.getType().name(), "zombie,skeleton")) return;
+        if (!Utils.isWordInList(e.getType().name(), "zombie,skeleton")) return;
         String[] ln = equip.split(";");
         if (ln.length == 0) return;
         String[] eq = {"", "", "", "", "", ""};
@@ -224,28 +226,28 @@ public class MobSpawn {
     private static void setMobEquipment(LivingEntity e, String helm, String chest, String leg, String boot, String weapon, String offhand) {
         // if (!Util.isWordInList(e.getType().name(), "zombie,skeleton,villager")) return;
         if (!helm.isEmpty()) {
-            ItemStack item = ItemUtil.getRndItem(helm);
+            ItemStack item = ItemUtils.getRndItem(helm);
             if (item != null) e.getEquipment().setHelmet(item);
         }
         if (!chest.isEmpty()) {
-            ItemStack item = ItemUtil.getRndItem(chest);
+            ItemStack item = ItemUtils.getRndItem(chest);
             if (item != null) e.getEquipment().setChestplate(item);
         }
         if (!leg.isEmpty()) {
-            ItemStack item = ItemUtil.getRndItem(leg);
+            ItemStack item = ItemUtils.getRndItem(leg);
             if (item != null) e.getEquipment().setLeggings(item);
         }
         if (!boot.isEmpty()) {
-            ItemStack item = ItemUtil.getRndItem(boot);
+            ItemStack item = ItemUtils.getRndItem(boot);
             if (item != null) e.getEquipment().setBoots(item);
         }
         if (!weapon.isEmpty()) {
-            ItemStack item = ItemUtil.getRndItem(weapon);
+            ItemStack item = ItemUtils.getRndItem(weapon);
             if (item != null) e.getEquipment().setItemInMainHand(item);
         }
 
         if (!offhand.isEmpty()) {
-            ItemStack item = ItemUtil.getRndItem(offhand);
+            ItemStack item = ItemUtils.getRndItem(offhand);
             if (item != null) e.getEquipment().setItemInOffHand(item);
         }
     }
@@ -260,7 +262,7 @@ public class MobSpawn {
             pef = ln[0];
             PotionEffectType pet = PotionEffectType.getByName(pef);
             if (pet == null) continue;
-            if ((ln.length == 2) && Util.isInteger(ln[1])) level = Integer.parseInt(ln[1]);
+            if ((ln.length == 2) && NumberUtils.isInteger(ln[1])) level = Integer.parseInt(ln[1]);
             PotionEffect pe = new PotionEffect(pet, Integer.MAX_VALUE, level, true);
             e.addPotionEffect(pe);
         }

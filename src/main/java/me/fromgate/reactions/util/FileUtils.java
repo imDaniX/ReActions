@@ -7,8 +7,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class FileUtil {
-    public static boolean loadCfg(YamlConfiguration cfg, File f, String error) {
+public interface FileUtils {
+    static boolean loadCfg(YamlConfiguration cfg, File f, String error) {
         if (cfg == null) return false;
         try {
             if (!createFile(f, error)) return false;
@@ -21,7 +21,7 @@ public class FileUtil {
         }
     }
 
-    public static boolean saveCfg(YamlConfiguration cfg, File f, String error) {
+    static boolean saveCfg(YamlConfiguration cfg, File f, String error) {
         if (cfg == null) return false;
         try {
             if (recreateFile(f, error)) {
@@ -36,7 +36,7 @@ public class FileUtil {
         }
     }
 
-    private static boolean createFile(File f, String error) {
+    static boolean createFile(File f, String error) {
         if (f == null) return false;
         try {
             if (!f.exists()) f.createNewFile();
@@ -48,7 +48,7 @@ public class FileUtil {
         }
     }
 
-    private static boolean recreateFile(File f, String error) {
+    static boolean recreateFile(File f, String error) {
         if (f == null) return false;
         try {
             if (f.exists()) f.delete();

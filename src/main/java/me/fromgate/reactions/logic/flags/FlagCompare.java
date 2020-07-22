@@ -23,8 +23,8 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 
 import java.util.Locale;
@@ -40,7 +40,7 @@ public class FlagCompare implements Flag {
         for (String valueKey : params.keySet()) {
             if (!((valueKey.toLowerCase(Locale.ENGLISH)).startsWith("value"))) continue;
             String value = params.getParam(valueKey);
-            if (Util.isIntegerSigned(value, paramValue) && (Integer.parseInt(value) == Integer.parseInt(paramValue)))
+            if (NumberUtils.isIntegerSigned(value, paramValue) && (Integer.parseInt(value) == Integer.parseInt(paramValue)))
                 return true;
             else if (paramValue.equalsIgnoreCase(value)) return true;
         }

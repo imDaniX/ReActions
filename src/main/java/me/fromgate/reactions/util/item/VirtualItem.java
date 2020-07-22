@@ -31,7 +31,9 @@
 package me.fromgate.reactions.util.item;
 
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.math.NumberUtils;
+import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -111,7 +113,7 @@ public class VirtualItem extends ItemStack {
     }
 
     public static VirtualItem fromItemStack(ItemStack item) {
-        if (!ItemUtil.isExist(item))
+        if (!ItemUtils.isExist(item))
             return null;
         return new VirtualItem(item);
     }
@@ -127,7 +129,7 @@ public class VirtualItem extends ItemStack {
         Map<String, String> params = Parameters.parseParams(itemStr, "");
         VirtualItem vi = fromMap(params);
         if (vi != null) return vi;
-        ItemStack item = ItemUtil.parseOldItemStack(itemStr);
+        ItemStack item = ItemUtils.parseOldItemStack(itemStr);
         if (item != null) return new VirtualItem(item);
         return null;
     }
@@ -159,7 +161,7 @@ public class VirtualItem extends ItemStack {
             type = Material.getMaterial(itemStr.toUpperCase(Locale.ENGLISH), false);
             if (type == null)
                 type = Material.getMaterial(itemStr.toUpperCase(Locale.ENGLISH), true);
-            amount = Util.getMinMaxRandom(amountStr);
+            amount = Rng.nextIntFromString(amountStr);
             if (amount == 0) return null;
         } else if (params.containsKey("type")) {
             String typeStr = params.getOrDefault("type", "");
@@ -168,15 +170,15 @@ public class VirtualItem extends ItemStack {
             return null;
         if (type == null)
             return null;
-        data = Util.getMinMaxRandom(params.getOrDefault("data", "0"));
-        amount = Util.getMinMaxRandom(params.getOrDefault("amount", "1"));
+        data = Rng.nextIntFromString(params.getOrDefault("data", "0"));
+        amount = Rng.nextIntFromString(params.getOrDefault("amount", "1"));
         VirtualItem vi = new VirtualItem(type, data, amount);
 
         vi.setName(params.get("name"));
         vi.setLore(params.get("lore"));
         vi.setEnchantments(params.get("enchantments"));
         vi.setBook(params.get("book-author"), params.get("book-title"), params.get("book-pages"));
-        vi.setFireworks(Util.getMinMaxRandom(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
+        vi.setFireworks(Rng.nextIntFromString(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
         vi.setColor(params.get("color"));
         vi.setSkull(params.get("skull-owner"));
         vi.setPotionMeta(params.get("potion-effects"));
@@ -193,7 +195,7 @@ public class VirtualItem extends ItemStack {
      * @return VirtualItem generated from JSON-string
      */
     public static VirtualItem fromJSONString(String itemJSON) {
-        if (Util.isStringEmpty(itemJSON))
+        if (Utils.isStringEmpty(itemJSON))
             return null;
         JSONParser parser = new JSONParser();
         Object object = null;
@@ -256,7 +258,7 @@ public class VirtualItem extends ItemStack {
 
     // ////////////////////////////////////////////////////
     protected void setEnchantStorage(String enchStr) {
-        if (Util.isStringEmpty(enchStr)) return;
+        if (Utils.isStringEmpty(enchStr)) return;
         if (!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
         EnchantmentStorageMeta esm = (EnchantmentStorageMeta) this.getItemMeta();
         String[] enchLn = enchStr.split(";");
@@ -266,9 +268,9 @@ public class VirtualItem extends ItemStack {
             if (eType.contains(":")) {
                 String powerStr = eType.substring(eType.indexOf(":") + 1);
                 eType = eType.substring(0, eType.indexOf(":"));
-                power = Util.INT_POSITIVE.matcher(powerStr).matches() ? Integer.valueOf(powerStr) : 0;
+                power = NumberUtils.INT_POSITIVE.matcher(powerStr).matches() ? Integer.valueOf(powerStr) : 0;
             }
-            Enchantment enchantment = ItemUtil.getEnchantmentByName(eType);
+            Enchantment enchantment = ItemUtils.getEnchantmentByName(eType);
             if (enchantment == null) continue;
             esm.addStoredEnchant(enchantment, power, true);
         }
@@ -285,7 +287,7 @@ public class VirtualItem extends ItemStack {
 
 
     protected void setPotionMeta(String potions) {
-        if (Util.isStringEmpty(potions))
+        if (Utils.isStringEmpty(potions))
             return;
         if (!(this.getItemMeta() instanceof PotionMeta))
             return;
@@ -300,7 +302,7 @@ public class VirtualItem extends ItemStack {
                     .toUpperCase(Locale.ENGLISH));
             if (pType == null)
                 continue;
-            int amplifier = (ln.length > 1) ? Util.getMinMaxRandom(ln[1]) : 0;
+            int amplifier = (ln.length > 1) ? Rng.nextIntFromString(ln[1]) : 0;
             int duration = (ln.length > 2) ? (int) (TimeUtil.parseTime(ln[2]) / 50) : Integer.MAX_VALUE;
             pm.addCustomEffect(new PotionEffect(pType, duration, amplifier, true), true);
         }
@@ -309,7 +311,7 @@ public class VirtualItem extends ItemStack {
 
     @SuppressWarnings("deprecation")
     private void setSkull(String owner) {
-        if (Util.isStringEmpty(owner))
+        if (Utils.isStringEmpty(owner))
             return;
         if (this.getItemMeta() instanceof SkullMeta) {
             SkullMeta sm = (SkullMeta) this.getItemMeta();
@@ -324,10 +326,10 @@ public class VirtualItem extends ItemStack {
      * @param colorStr
      */
     private void setColor(String colorStr) {
-        if (Util.isStringEmpty(colorStr)) return;
+        if (Utils.isStringEmpty(colorStr)) return;
 
         if (this.getItemMeta() instanceof LeatherArmorMeta) {
-            Color c = ItemUtil.parseColor(colorStr);
+            Color c = ItemUtils.parseColor(colorStr);
             if (c == null) return;
             LeatherArmorMeta lm = (LeatherArmorMeta) this.getItemMeta();
             lm.setColor(c);
@@ -409,7 +411,7 @@ public class VirtualItem extends ItemStack {
 
         if (itemMeta instanceof LeatherArmorMeta) {
             LeatherArmorMeta lm = (LeatherArmorMeta) itemMeta;
-            put(params, "color", ItemUtil.colorToString(lm.getColor(), true));
+            put(params, "color", ItemUtils.colorToString(lm.getColor(), true));
         }
         if (itemMeta instanceof SkullMeta) {
             SkullMeta sm = (SkullMeta) itemMeta;
@@ -439,7 +441,7 @@ public class VirtualItem extends ItemStack {
 
     private void putFireworkEffectMeta(Map<String, String> params, FireworkEffectMeta fwm) {
         if (!fwm.hasEffect()) return;
-        put(params, "firework-effects", ItemUtil.fireworksToString(fwm.getEffect()));
+        put(params, "firework-effects", ItemUtils.fireworksToString(fwm.getEffect()));
 
     }
 
@@ -493,7 +495,7 @@ public class VirtualItem extends ItemStack {
 
     private void setEnchantments(String enchStr) {
         clearEnchantments();
-        Map<Enchantment, Integer> enchantments = ItemUtil.parseEnchantmentsString(enchStr);
+        Map<Enchantment, Integer> enchantments = ItemUtils.parseEnchantmentsString(enchStr);
         if (enchantments.isEmpty()) return;
         this.addUnsafeEnchantments(enchantments);
     }
@@ -543,8 +545,8 @@ public class VirtualItem extends ItemStack {
                 .toUpperCase(Locale.ENGLISH));
         flicker = "true".equalsIgnoreCase(params.getOrDefault("flicker", "false"));
         trail = "true".equalsIgnoreCase(params.getOrDefault("trail", "false"));
-        colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
-        fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
+        colors = ItemUtils.parseColors(params.getOrDefault("colors", ""));
+        fadeColors = ItemUtils.parseColors(params.getOrDefault("fade-colors", ""));
         Builder b = FireworkEffect.builder().with(fType);
         if (flicker)
             b = b.withFlicker();
@@ -583,8 +585,8 @@ public class VirtualItem extends ItemStack {
                         "false"));
                 trail = "true".equalsIgnoreCase(params.getOrDefault("trail",
                         "false"));
-                colors = ItemUtil.parseColors(params.getOrDefault("colors", ""));
-                fadeColors = ItemUtil.parseColors(params.getOrDefault("fade-colors", ""));
+                colors = ItemUtils.parseColors(params.getOrDefault("colors", ""));
+                fadeColors = ItemUtils.parseColors(params.getOrDefault("fade-colors", ""));
                 if (fType == null)
                     continue;
                 Builder b = FireworkEffect.builder().with(fType);
@@ -614,7 +616,7 @@ public class VirtualItem extends ItemStack {
             if (j > 0)
                 sb.append(";");
             FireworkEffect fe = fireworks.get(j);
-            sb.append(ItemUtil.fireworksToString(fe));
+            sb.append(ItemUtils.fireworksToString(fe));
         }
         fireList.add(sb.toString());
         return fireList;
@@ -653,7 +655,7 @@ public class VirtualItem extends ItemStack {
         if (this.getAmount() < amountToRemove)
             return false; // Сравниваем ТЕКУЩИЙ предмет с целевым. Т.е. текущего должно быть столько же или больше
         if (this.getType() != item.getType()) return false;
-        if (this.getDamage() != ItemUtil.getDurability(item)) return false;
+        if (this.getDamage() != ItemUtils.getDurability(item)) return false;
         return Bukkit.getItemFactory().equals(this.getItemMeta(), item.getItemMeta());
     }
 
@@ -692,8 +694,8 @@ public class VirtualItem extends ItemStack {
             }
             itemMap.put("type", Material.getMaterial(itemStr.toUpperCase(Locale.ENGLISH)).name());
 
-            if (Util.INT_POSITIVE.matcher(dataStr).matches()) itemMap.put("data", dataStr);
-            if (Util.INT_POSITIVE.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
+            if (NumberUtils.INT_POSITIVE.matcher(dataStr).matches()) itemMap.put("data", dataStr);
+            if (NumberUtils.INT_POSITIVE.matcher(amountStr).matches()) itemMap.put("amount", amountStr);
             itemMap.remove("item");
             itemMap.remove("default-param");
         }
@@ -719,12 +721,12 @@ public class VirtualItem extends ItemStack {
 
         if (itemMap.containsKey("data")) {
             String dataStr = itemMap.get("data");
-            int reqData = Util.INT_POSITIVE.matcher(dataStr).matches() ? Integer.parseInt(dataStr) : -1;
+            int reqData = NumberUtils.INT_POSITIVE.matcher(dataStr).matches() ? Integer.parseInt(dataStr) : -1;
             if (reqData != this.getDamage()) return false;
         }
         if (itemMap.containsKey("amount")) {
             String amountStr = itemMap.get("amount");
-            if (Util.INT_POSITIVE.matcher(amountStr).matches() && this.getAmount() < Integer.parseInt(amountStr))
+            if (NumberUtils.INT_POSITIVE.matcher(amountStr).matches() && this.getAmount() < Integer.parseInt(amountStr))
                 return false;//this.getAmount()>=Integer.parseInt(amountStr);
             else if (AMOUNT_RANDOM.matcher(amountStr).matches()) {
                 boolean greater = amountStr.startsWith(">");

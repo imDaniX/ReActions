@@ -2,7 +2,7 @@ package me.fromgate.reactions.time.waiter;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.StoredAction;
-import me.fromgate.reactions.util.FileUtil;
+import me.fromgate.reactions.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -51,7 +51,7 @@ public class WaitingManager {
         tasks.clear();
         YamlConfiguration cfg = new YamlConfiguration();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
-        if (!FileUtil.loadCfg(cfg, f, "Failed to load delayed actions")) return;
+        if (!FileUtils.loadCfg(cfg, f, "Failed to load delayed actions")) return;
         for (String key : cfg.getKeys(false)) {
             WaitTask t = new WaitTask(cfg, key);
             tasks.add(t);
@@ -95,7 +95,7 @@ public class WaitingManager {
             for (WaitTask t : tasks) {
                 if (!t.isExecuted()) t.save(cfg);
             }
-            FileUtil.saveCfg(cfg, f, "Failed to save delayed actions");
+            FileUtils.saveCfg(cfg, f, "Failed to save delayed actions");
         }, 1);
     }
 

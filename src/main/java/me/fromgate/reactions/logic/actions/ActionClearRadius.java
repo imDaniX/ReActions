@@ -1,9 +1,9 @@
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.location.LocationUtil;
-import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.mob.EntityUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -25,11 +25,11 @@ public class ActionClearRadius extends Action {
         int radius = params.getParam("radius", 0);
         String type = params.getParam("type", "all");
         if (radius == 0) return false;
-        List<Location> locs = LocationUtil.getMinMaxRadiusLocations(context.getPlayer(), radius);
-        context.setTempVariable("loc1", LocationUtil.locationToString(locs.get(0)));
-        context.setTempVariable("loc2", LocationUtil.locationToString(locs.get(1)));
+        List<Location> locs = LocationUtils.getMinMaxRadiusLocations(context.getPlayer(), radius);
+        context.setTempVariable("loc1", LocationUtils.locationToString(locs.get(0)));
+        context.setTempVariable("loc2", LocationUtils.locationToString(locs.get(1)));
         if (locs.size() != 2) return false;
-        Collection<Entity> en = EntityUtil.getEntities(locs.get(0), locs.get(1));
+        Collection<Entity> en = EntityUtils.getEntities(locs.get(0), locs.get(1));
         int count = 0;
         for (Entity e : en) {
             if (e.getType() == EntityType.PLAYER) continue;
@@ -51,7 +51,7 @@ public class ActionClearRadius extends Action {
         } else {
             if (type.equalsIgnoreCase("item") || type.equalsIgnoreCase("items")) return true;
         }
-        return (Util.isWordInList(e.getType().name().toLowerCase(Locale.ENGLISH), type.toLowerCase(Locale.ENGLISH)));
+        return (Utils.isWordInList(e.getType().name().toLowerCase(Locale.ENGLISH), type.toLowerCase(Locale.ENGLISH)));
     }
 
 }

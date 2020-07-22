@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class FlagBiome implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
         if (player != null)
-            return player.getLocation().getBlock().getBiome() == Util.getEnum(Biome.class, param);
+            return player.getLocation().getBlock().getBiome() == Utils.getEnum(Biome.class, param);
         return false;
     }
 

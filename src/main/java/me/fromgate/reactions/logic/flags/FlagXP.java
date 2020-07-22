@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 
 public class FlagXP implements Flag {
@@ -31,7 +31,7 @@ public class FlagXP implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        if (!Util.isInteger(param)) return false;
+        if (!NumberUtils.isInteger(param)) return false;
         return player.getTotalExperience() >= Integer.parseInt(param);
     }
 

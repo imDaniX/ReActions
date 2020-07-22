@@ -1,6 +1,6 @@
 package me.fromgate.reactions.playerselector;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -21,7 +21,7 @@ public class PlayerSelector implements Selector {
         } else {
             String[] arrPlayers = param.split(",\\s*");
             for (String playerName : arrPlayers) {
-                Player targetPlayer = Util.getPlayerExact(playerName);
+                Player targetPlayer = Utils.getPlayerExact(playerName);
                 if ((targetPlayer != null) && (targetPlayer.isOnline())) players.add(targetPlayer);
             }
         }

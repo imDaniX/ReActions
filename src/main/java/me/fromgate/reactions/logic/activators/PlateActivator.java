@@ -24,8 +24,8 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.PlateStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.BlockUtil;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.BlockUtils;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.BlockParameters;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
@@ -52,7 +52,7 @@ public class PlateActivator extends Activator implements Locatable {
         if (!(p instanceof BlockParameters)) return null;
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
-        if (targetBlock != null && BlockUtil.isPlate(targetBlock)) {
+        if (targetBlock != null && BlockUtils.isPlate(targetBlock)) {
             String world = targetBlock.getWorld().getName();
             int x = targetBlock.getX();
             int y = targetBlock.getY();
@@ -108,7 +108,7 @@ public class PlateActivator extends Activator implements Locatable {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(world);
+        return !Utils.isStringEmpty(world);
     }
 
     @Override

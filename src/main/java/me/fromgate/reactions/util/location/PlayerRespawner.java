@@ -25,7 +25,7 @@ package me.fromgate.reactions.util.location;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.storages.RespawnStorage;
 import me.fromgate.reactions.util.enums.DeathCause;
-import me.fromgate.reactions.util.mob.EntityUtil;
+import me.fromgate.reactions.util.mob.EntityUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -44,7 +44,7 @@ public class PlayerRespawner {
     public static void addPlayerRespawn(PlayerDeathEvent event) {
         Player deadPlayer = event.getEntity();
         deathPoints.put(deadPlayer.getUniqueId(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
-        LivingEntity killer = EntityUtil.getAnyKiller(deadPlayer.getLastDamageCause());
+        LivingEntity killer = EntityUtils.getAnyKiller(deadPlayer.getLastDamageCause());
         players.put(deadPlayer.getUniqueId(), killer);
     }
 

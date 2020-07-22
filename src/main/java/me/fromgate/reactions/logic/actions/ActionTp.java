@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.location.Teleporter;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
@@ -35,7 +35,7 @@ public class ActionTp extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Location loc = teleportPlayer(context, params);
-        if (loc != null) this.setMessageParam(LocationUtil.locationToStringFormatted(loc));
+        if (loc != null) this.setMessageParam(LocationUtils.locationToStringFormatted(loc));
         return (loc != null);
     }
 
@@ -45,15 +45,15 @@ public class ActionTp extends Action {
         int radius = 0;
         if (params.isEmpty()) return null;
         if (params.isParamsExists("param")) {
-            loc = LocationUtil.parseLocation(params.getParam("param", ""), player.getLocation());
+            loc = LocationUtils.parseLocation(params.getParam("param", ""), player.getLocation());
         } else {
-            loc = LocationUtil.parseLocation(params.getParam("loc", ""), player.getLocation());
+            loc = LocationUtils.parseLocation(params.getParam("loc", ""), player.getLocation());
             radius = params.getParam("radius", 0);
         }
         boolean land = params.getParam("land", true);
 
         if (loc != null) {
-            if (radius > 0) loc = LocationUtil.getRadiusLocation(loc, radius, land);
+            if (radius > 0) loc = LocationUtils.getRadiusLocation(loc, radius, land);
             if (Cfg.centerTpCoords) {
                 loc.setX(loc.getBlockX() + 0.5);
                 loc.setZ(loc.getBlockZ() + 0.5);
@@ -63,10 +63,10 @@ public class ActionTp extends Action {
             } catch (Exception ignore) {
             }
 
-            context.setTempVariable("loc-from", LocationUtil.locationToString(player.getLocation()));
-            context.setTempVariable("loc-from-str", LocationUtil.locationToStringFormatted(player.getLocation()));
-            context.setTempVariable("loc-to", LocationUtil.locationToString(loc));
-            context.setTempVariable("loc-to-str", LocationUtil.locationToStringFormatted(loc));
+            context.setTempVariable("loc-from", LocationUtils.locationToString(player.getLocation()));
+            context.setTempVariable("loc-from-str", LocationUtils.locationToStringFormatted(player.getLocation()));
+            context.setTempVariable("loc-to", LocationUtils.locationToString(loc));
+            context.setTempVariable("loc-to-str", LocationUtils.locationToStringFormatted(loc));
             Teleporter.teleport(player, loc);
             String playeffect = params.getParam("effect", "");
             if (!playeffect.isEmpty()) {

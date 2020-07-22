@@ -23,8 +23,8 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.location.LocationUtil;
-import me.fromgate.reactions.util.location.VelocityUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.location.VelocityUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
@@ -39,10 +39,10 @@ public class ActionVelocityJump extends Action {
         Msg.logOnce("velocity-jump-warning", "&cWarning! VELOCITY_JUMP action is under construction. In next version of plugin it could be changed, renamed or removed!");
         String locStr = params.getParam("loc", "");
         if (locStr.isEmpty()) return false;
-        Location loc = LocationUtil.parseCoordinates(locStr);
+        Location loc = LocationUtils.parseCoordinates(locStr);
         if (loc == null) return false;
         int jumpHeight = params.getParam("jump", 5);
-        Vector velocity = VelocityUtil.calculateVelocity(player.getLocation(), loc, jumpHeight);
+        Vector velocity = VelocityUtils.calculateVelocity(player.getLocation(), loc, jumpHeight);
         player.setVelocity(velocity);
         return false;
     }

@@ -2,8 +2,8 @@ package me.fromgate.reactions.menu;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.util.FileUtil;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.FileUtils;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -43,7 +43,7 @@ public class InventoryMenu implements Listener {
         menu.clear();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
         YamlConfiguration cfg = new YamlConfiguration();
-        if (FileUtil.loadCfg(cfg, f, "Failed to load menu configuration file"))
+        if (FileUtils.loadCfg(cfg, f, "Failed to load menu configuration file"))
             for (String key : cfg.getKeys(false)) {
                 VirtualInventory vi = new VirtualInventory(cfg, key);
                 putMenu(key, vi);
@@ -56,7 +56,7 @@ public class InventoryMenu implements Listener {
         for (String key : menu.keySet()) {
             getMenu(key).save(cfg, key);
         }
-        FileUtil.saveCfg(cfg, f, "Failed to save menu configuration file");
+        FileUtils.saveCfg(cfg, f, "Failed to save menu configuration file");
     }
 
     public static boolean add(String id, int size, String title) {
@@ -205,7 +205,7 @@ public class InventoryMenu implements Listener {
         ItemStack item = VirtualItem.fromString(itemStr);
         if (item == null || item.getType() == Material.AIR) return "AIR";
         String returnStr = item.hasItemMeta() && item.getItemMeta().hasDisplayName() ? item.getItemMeta().getDisplayName() : "";
-        String itemTypeData = item.getType().name() + (ItemUtil.getDurability(item) == 0 ? "" : ":" + ItemUtil.getDurability(item)) + (item.getAmount() == 1 ? "" : "*" + item.getAmount());
+        String itemTypeData = item.getType().name() + (ItemUtils.getDurability(item) == 0 ? "" : ":" + ItemUtils.getDurability(item)) + (item.getAmount() == 1 ? "" : "*" + item.getAmount());
         return ChatColor.stripColor(returnStr.isEmpty() ? itemTypeData : returnStr + "[" + itemTypeData + "]");
     }
 

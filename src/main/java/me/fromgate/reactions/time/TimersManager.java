@@ -24,7 +24,7 @@ package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.util.FileUtil;
+import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
@@ -219,7 +219,7 @@ public class TimersManager {
         timers.clear();
         YamlConfiguration cfg = new YamlConfiguration();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "timers.yml");
-        if (FileUtil.loadCfg(cfg, f, "Failed to load timers.yml file"))
+        if (FileUtils.loadCfg(cfg, f, "Failed to load timers.yml file"))
             for (String timerType : cfg.getKeys(false)) {
                 if (!(timerType.equalsIgnoreCase("INGAME") || timerType.equalsIgnoreCase("SERVER"))) continue;
                 ConfigurationSection cs = cfg.getConfigurationSection(timerType);
@@ -254,7 +254,7 @@ public class TimersManager {
                 cfg.set(root + key, key.equalsIgnoreCase("time") ? params.getParam(key).replace("_", " ") : params.getParam(key));
             }
         }
-        FileUtil.saveCfg(cfg, f, "Failed to save timers.yml file");
+        FileUtils.saveCfg(cfg, f, "Failed to save timers.yml file");
     }
 
     public static boolean isTimerExists(String timerName) {

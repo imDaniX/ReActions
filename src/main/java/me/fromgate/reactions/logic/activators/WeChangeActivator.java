@@ -6,7 +6,7 @@ package me.fromgate.reactions.logic.activators;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.WeChangeStorage;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -24,13 +24,13 @@ public class WeChangeActivator extends Activator {
     }
 
     public static WeChangeActivator create(ActivatorBase base, Parameters param) {
-        Material blockType = ItemUtil.getMaterial(param.getParam("blocktype"));
+        Material blockType = ItemUtils.getMaterial(param.getParam("blocktype"));
         String region = param.getParam("region", "");
         return new WeChangeActivator(base, blockType, region);
     }
 
     public static WeChangeActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        Material blockType = ItemUtil.getMaterial(cfg.getString("block-type"));
+        Material blockType = ItemUtils.getMaterial(cfg.getString("block-type"));
         String region = cfg.getString("region", "");
         return new WeChangeActivator(base, blockType, region);
     }

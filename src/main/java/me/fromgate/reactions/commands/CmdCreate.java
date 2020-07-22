@@ -6,8 +6,8 @@ import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.BlockParameters;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -49,7 +49,7 @@ public class CmdCreate extends Cmd {
                 if (param.length() == 0) return false;
                 String arg3 = args[3];
                 if (InventoryMenu.add(id,
-                        Util.isInteger(arg3) ? Integer.parseInt(arg3) : 9,
+                        NumberUtils.isInteger(arg3) ? Integer.parseInt(arg3) : 9,
                         (param.length() == 1) ? "" : param.toString().substring(arg3.length()))) {
                     Msg.CMD_ADDMENUADDED.print(sender, id);
                     return true;
@@ -67,7 +67,7 @@ public class CmdCreate extends Cmd {
         Parameters params;
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            param = LocationUtil.replaceStandardLocations(player, param);
+            param = LocationUtils.parsePlaceholders(player, param);
             if (at.isNeedBlock())
                 params = new BlockParameters(param, player.getTargetBlock(null, 100));
             else

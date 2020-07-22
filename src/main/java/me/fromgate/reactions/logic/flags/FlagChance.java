@@ -22,8 +22,9 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
+import me.fromgate.reactions.util.math.Rng;
 
 public class FlagChance implements Flag {
 
@@ -31,9 +32,9 @@ public class FlagChance implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         context.setTempVariable("CHANCE", param + "%");
         int d = 50;
-        if (Util.isInteger(param)) d = Integer.parseInt(param);
+        if (NumberUtils.isInteger(param)) d = Integer.parseInt(param);
         d = Math.max(Math.min(d, 100), 0);
-        return Util.rollDiceChance(d);
+        return Rng.percentChance(d);
     }
 
 }

@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,7 +35,7 @@ public class ActionPowerSet extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), null);
+        Location loc = LocationUtils.parseLocation(params.getParam("loc", ""), null);
         setMessageParam("UNKNOWN");
         if (loc == null) return false;
         Block b = loc.getBlock();
@@ -53,8 +53,8 @@ public class ActionPowerSet extends Action {
             if (b.getType() == Material.LEVER) {
                 Switch sw = (Switch) b.getBlockData();
                 power = sw.isPowered();
-            } else if (BlockUtil.isOpenable(b)) {
-                power = BlockUtil.isOpen(b);
+            } else if (BlockUtils.isOpenable(b)) {
+                power = BlockUtils.isOpen(b);
             } else power = true;
         }
         return power;
@@ -65,14 +65,14 @@ public class ActionPowerSet extends Action {
             Switch sw = (Switch) b.getBlockData();
             sw.setPowered(power);
             b.setBlockData(sw, true);
-        } else if (BlockUtil.isOpenable(b)) {
-            BlockUtil.setOpen(b, power);
+        } else if (BlockUtils.isOpenable(b)) {
+            BlockUtils.setOpen(b, power);
         } else return false;
         return true;
     }
 
     private boolean isPowerBlock(Block b) {
         if (b.getType() == Material.LEVER) return true;
-        return BlockUtil.isOpenable(b);
+        return BlockUtils.isOpenable(b);
     }
 }

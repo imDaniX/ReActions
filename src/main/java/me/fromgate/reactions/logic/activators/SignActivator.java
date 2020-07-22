@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.SignStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.enums.ClickType;
 import me.fromgate.reactions.util.parameter.BlockParameters;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -51,7 +51,7 @@ public class SignActivator extends Activator {
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
         Sign sign = null;
-        if (targetBlock != null && BlockUtil.isSign(targetBlock))
+        if (targetBlock != null && BlockUtils.isSign(targetBlock))
             sign = (Sign) targetBlock.getState();
         ClickType click = ClickType.getByName(param.getParam("click", "RIGHT"));
         List<String> maskLines = new ArrayList<>();

@@ -1,6 +1,6 @@
 package me.fromgate.reactions.util.parameter;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.math.NumberUtils;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -138,21 +138,21 @@ public class Parameters {
     public int getParam(String key, int defParam) {
         if (!params.containsKey(key)) return defParam;
         String str = params.get(key);
-        if (!Util.INT.matcher(str).matches()) return defParam;
+        if (!NumberUtils.INT.matcher(str).matches()) return defParam;
         return Integer.parseInt(str);
     }
 
     public float getParam(String key, float defParam) {
         if (!params.containsKey(key)) return defParam;
         String str = params.get(key);
-        if (!Util.FLOAT.matcher(str).matches()) return defParam;
+        if (!NumberUtils.FLOAT.matcher(str).matches()) return defParam;
         return Float.parseFloat(str);
     }
 
     public double getParam(String key, double defParam) {
         if (!params.containsKey(key)) return defParam;
         String str = params.get(key);
-        if (!Util.FLOAT.matcher(str).matches()) return defParam;
+        if (!NumberUtils.FLOAT.matcher(str).matches()) return defParam;
         return Double.parseDouble(str);
     }
 

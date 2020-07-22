@@ -1,7 +1,8 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
+import me.fromgate.reactions.util.math.Rng;
 
 import java.util.regex.Pattern;
 
@@ -12,22 +13,18 @@ public class PlaceholderRandom extends Placeholder {
 
     @Override
     public String processPlaceholder(RaContext context, String key, String param) {
-        return random(param);
-    }
 
+        if (NumberUtils.INT_POSITIVE.matcher(param).matches())
+            return Integer.toString(Rng.nextInt(Integer.parseInt(param)));
 
-    private String random(String rndStr) {
-        if (Util.INT_POSITIVE.matcher(rndStr).matches())
-            return Integer.toString(Util.getRandomInt(Integer.parseInt(rndStr)));
+        if (NumberUtils.INT_MIN_MAX.matcher(param).matches())
+            return Integer.toString(Rng.nextIntFromString(param));
 
-        if (Util.INT_MIN_MAX.matcher(rndStr).matches())
-            return Integer.toString(Util.getMinMaxRandom(rndStr));
-
-        if (WORD_LIST.matcher(rndStr).matches()) {
-            String[] ln = rndStr.split(",");
-            if (ln.length == 0) return rndStr;
-            return ln[Util.getRandomInt(ln.length)];
+        if (WORD_LIST.matcher(param).matches()) {
+            String[] ln = param.split(",");
+            if (ln.length == 0) return param;
+            return ln[Rng.nextInt(ln.length)];
         }
-        return rndStr;
+        return param;
     }
 }

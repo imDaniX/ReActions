@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.storages;
 
 import me.fromgate.reactions.logic.activators.ActivatorType;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -35,7 +35,7 @@ public class ItemWearStorage extends Storage {
 
     public boolean isItemWeared(String itemStr) {
         for (ItemStack armour : getPlayer().getInventory().getArmorContents())
-            if (ItemUtil.compareItemStr(armour, itemStr)) return true;
+            if (ItemUtils.compareItemStr(armour, itemStr)) return true;
         return false;
     }
 

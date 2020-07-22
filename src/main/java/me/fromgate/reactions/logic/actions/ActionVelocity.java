@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -52,13 +52,13 @@ public class ActionVelocity extends Action {
         if (velstr.isEmpty()) return null;
         Vector v = p.getVelocity();
         String[] ln = velstr.split(",");
-        if ((ln.length == 1) && (Util.FLOAT.matcher(velstr).matches())) {
+        if ((ln.length == 1) && (NumberUtils.FLOAT.matcher(velstr).matches())) {
             double power = Double.parseDouble(velstr);
             v.setY(Math.min(10, kick ? power * p.getVelocity().getY() : power));
         } else if ((ln.length == 3) &&
-                Util.FLOAT.matcher(ln[0]).matches() &&
-                Util.FLOAT.matcher(ln[1]).matches() &&
-                Util.FLOAT.matcher(ln[2]).matches()) {
+                NumberUtils.FLOAT.matcher(ln[0]).matches() &&
+                NumberUtils.FLOAT.matcher(ln[1]).matches() &&
+                NumberUtils.FLOAT.matcher(ln[2]).matches()) {
             double powerx = Double.parseDouble(ln[0]);
             double powery = Double.parseDouble(ln[1]);
             double powerz = Double.parseDouble(ln[2]);

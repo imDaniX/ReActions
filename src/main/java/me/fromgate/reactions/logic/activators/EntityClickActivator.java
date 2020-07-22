@@ -2,7 +2,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.EntityClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -16,7 +16,7 @@ public class EntityClickActivator extends Activator {
 
     private EntityClickActivator(ActivatorBase base, String entityType) {
         super(base);
-        this.entityType = Util.getEnum(EntityType.class, entityType);
+        this.entityType = Utils.getEnum(EntityType.class, entityType);
     }
 
     public static EntityClickActivator load(ActivatorBase base, ConfigurationSection cfg) {

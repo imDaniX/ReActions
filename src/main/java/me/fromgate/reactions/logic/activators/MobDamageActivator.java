@@ -24,8 +24,8 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.MobDamageStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -80,7 +80,7 @@ public class MobDamageActivator extends Activator {
 
     private boolean checkItem(Player player) {
         if (this.itemStr.isEmpty()) return true;
-        return ItemUtil.compareItemStr(player.getInventory().getItemInMainHand(), this.itemStr, true);
+        return ItemUtils.compareItemStr(player.getInventory().getItemInMainHand(), this.itemStr, true);
     }
 
     private boolean isActivatorMob(LivingEntity mob) {
@@ -110,7 +110,7 @@ public class MobDamageActivator extends Activator {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(mobType);
+        return !Utils.isStringEmpty(mobType);
     }
 
     @Override

@@ -24,8 +24,8 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.ItemConsumeStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -57,7 +57,7 @@ public class ItemConsumeActivator extends Activator {
             return false;
         }
         ItemConsumeStorage ie = (ItemConsumeStorage) event;
-        return ItemUtil.compareItemStr(ie.getItem(), this.item);
+        return ItemUtils.compareItemStr(ie.getItem(), this.item);
     }
 
     public void save(ConfigurationSection cfg) {
@@ -70,7 +70,7 @@ public class ItemConsumeActivator extends Activator {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(item);
+        return !Utils.isStringEmpty(item);
     }
 
     public String toString() {

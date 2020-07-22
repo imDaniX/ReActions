@@ -1,7 +1,8 @@
 package me.fromgate.reactions.util.location;
 
 import lombok.Getter;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -36,7 +37,7 @@ public class VirtualLocation {
     }
 
     public VirtualLocation(String loc) {
-        if (Util.isStringEmpty(loc)) {
+        if (Utils.isStringEmpty(loc)) {
             this.world = null;
             this.x = null;
             this.y = null;
@@ -44,13 +45,13 @@ public class VirtualLocation {
         } else {
             String[] locSplit = loc.split(",");
             this.world = locSplit[0];
-            if (locSplit.length > 1 && Util.FLOAT.matcher(locSplit[1]).matches())
+            if (locSplit.length > 1 && NumberUtils.FLOAT.matcher(locSplit[1]).matches())
                 this.x = Double.valueOf(locSplit[1]).intValue();
             else this.x = null;
-            if (locSplit.length > 2 && Util.FLOAT.matcher(locSplit[2]).matches())
+            if (locSplit.length > 2 && NumberUtils.FLOAT.matcher(locSplit[2]).matches())
                 this.y = Double.valueOf(locSplit[2]).intValue();
             else this.y = null;
-            if (locSplit.length > 3 && Util.FLOAT.matcher(locSplit[3]).matches())
+            if (locSplit.length > 3 && NumberUtils.FLOAT.matcher(locSplit[3]).matches())
                 this.z = Double.valueOf(locSplit[3]).intValue();
             else this.z = null;
         }

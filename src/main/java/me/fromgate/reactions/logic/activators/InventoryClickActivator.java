@@ -2,7 +2,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.InventoryClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
@@ -131,8 +131,8 @@ public class InventoryClickActivator extends Activator {
 
     private boolean checkItem(ItemStack item, int key, Inventory bottomInventory) {
         if (this.itemStr.isEmpty()) return true;
-        boolean result = ItemUtil.compareItemStr(item, this.itemStr, true);
-        if (!result && key > -1) return ItemUtil.compareItemStr(bottomInventory.getItem(key), this.itemStr, true);
+        boolean result = ItemUtils.compareItemStr(item, this.itemStr, true);
+        if (!result && key > -1) return ItemUtils.compareItemStr(bottomInventory.getItem(key), this.itemStr, true);
         return result;
     }
 

@@ -19,7 +19,7 @@ import java.util.HashSet;
 /**
  * Some helpful methods related to entities to minify size of code
  */
-public class EntityUtil {
+public interface EntityUtils {
 
     /**
      * Get maximal health of entity
@@ -27,7 +27,7 @@ public class EntityUtil {
      * @param entity Entity to check
      * @return Maximal health of entity
      */
-    public static double getMaxHealth(LivingEntity entity) {
+    static double getMaxHealth(LivingEntity entity) {
         return entity.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
     }
 
@@ -37,7 +37,7 @@ public class EntityUtil {
      * @param source Original source
      * @return LivingEntity or null if shooter was a block
      */
-    public static LivingEntity getEntityFromProjectile(ProjectileSource source) {
+    static LivingEntity getEntityFromProjectile(ProjectileSource source) {
         if (source instanceof BlockProjectileSource)
             return null;
         return (LivingEntity) source;
@@ -50,7 +50,7 @@ public class EntityUtil {
      * @param l2 Point of cuboid
      * @return List of entities
      */
-    public static Collection<Entity> getEntities(Location l1, Location l2) {
+    static Collection<Entity> getEntities(Location l1, Location l2) {
         Collection<Entity> entities = new HashSet<>();
         if (!l1.getWorld().equals(l2.getWorld())) return entities;
         int x1 = Math.min(l1.getBlockX(), l2.getBlockX());
@@ -78,7 +78,7 @@ public class EntityUtil {
         return entities;
     }
 
-    public static LivingEntity getDamagerEntity(EntityDamageByEntityEvent event) {
+    static LivingEntity getDamagerEntity(EntityDamageByEntityEvent event) {
         if (event.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
             Projectile prj = (Projectile) event.getDamager();
             return getEntityFromProjectile(prj.getShooter());
@@ -93,11 +93,11 @@ public class EntityUtil {
         return null;
     }
 
-    public static String getMobName(LivingEntity mob) {
+    static String getMobName(LivingEntity mob) {
         return mob.getCustomName() == null ? "" : mob.getCustomName();
     }
 
-    public static LivingEntity getAnyKiller(EntityDamageEvent event) {
+    static LivingEntity getAnyKiller(EntityDamageEvent event) {
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             if (evdmg.getDamager() instanceof LivingEntity) return (LivingEntity) evdmg.getDamager();
@@ -109,7 +109,7 @@ public class EntityUtil {
         return null;
     }
 
-    public static Player getKiller(EntityDamageEvent event) {
+    static Player getKiller(EntityDamageEvent event) {
         if (event instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             if (evdmg.getDamager().getType() == EntityType.PLAYER) return (Player) evdmg.getDamager();

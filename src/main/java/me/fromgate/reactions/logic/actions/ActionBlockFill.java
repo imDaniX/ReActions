@@ -23,10 +23,10 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.VirtualItem;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
@@ -67,9 +67,9 @@ public class ActionBlockFill extends Action {
             }
         } else {
             String locStr = params.getParam("loc1", "");
-            if (!locStr.isEmpty()) loc1 = LocationUtil.parseLocation(locStr, null);
+            if (!locStr.isEmpty()) loc1 = LocationUtils.parseLocation(locStr, null);
             locStr = params.getParam("loc2", "");
-            if (!locStr.isEmpty()) loc2 = LocationUtil.parseLocation(locStr, null);
+            if (!locStr.isEmpty()) loc2 = LocationUtils.parseLocation(locStr, null);
         }
         if (loc1 == null || loc2 == null) return false;
 
@@ -87,7 +87,7 @@ public class ActionBlockFill extends Action {
         for (int x = min.getBlockX(); x <= max.getBlockX(); x++)
             for (int y = min.getBlockY(); y <= max.getBlockY(); y++)
                 for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++)
-                    if (Util.rollDiceChance(chance)) {
+                    if (Rng.percentChance(chance)) {
                         Block block = min.getWorld().getBlockAt(x, y, z);
                         if (block.getType() != Material.AIR && drop) block.breakNaturally();
                         block.setType(blockItem == null ? Material.AIR : blockItem.getType(), phys);

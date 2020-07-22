@@ -24,10 +24,10 @@ package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
-import me.fromgate.reactions.util.BlockUtil;
+import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -45,7 +45,7 @@ public class DoorStorage extends Storage {
     }
 
     public boolean isDoorOpened() {
-        return BlockUtil.isOpen(doorBlock);
+        return BlockUtils.isOpen(doorBlock);
     }
 
     public Location getDoorLocation() {
@@ -54,7 +54,7 @@ public class DoorStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put(DOOR_LOCATION, LocationUtil.locationToString(doorBlock));
+        tempVars.put(DOOR_LOCATION, LocationUtils.locationToString(doorBlock));
     }
 
     @Override

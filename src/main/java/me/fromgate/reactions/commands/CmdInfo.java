@@ -5,7 +5,7 @@ import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.ActivatorBase;
 import me.fromgate.reactions.logic.flags.StoredFlag;
 import me.fromgate.reactions.menu.InventoryMenu;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -63,8 +63,8 @@ public class CmdInfo extends Cmd {
                 String action = base.getActions().get(i).getActionName();
                 String param = base.getActions().get(i).getValue();
                 if (action.equalsIgnoreCase("tp")) {
-                    Location loc = LocationUtil.parseCoordinates(param);//Util.parseLocation(param);
-                    if (loc != null) param = LocationUtil.locationToStringFormatted(loc);
+                    Location loc = LocationUtils.parseCoordinates(param);//Util.parseLocation(param);
+                    if (loc != null) param = LocationUtils.locationToStringFormatted(loc);
                 }
                 flg.add("  &e" + action + " &3= &a" + param);
             }
@@ -76,8 +76,8 @@ public class CmdInfo extends Cmd {
                 String action = base.getReactions().get(i).getActionName();
                 String param = base.getReactions().get(i).getValue();
                 if (action.equalsIgnoreCase("tp")) {
-                    Location loc = LocationUtil.parseCoordinates(param);
-                    if (loc != null) param = LocationUtil.locationToStringFormatted(loc);
+                    Location loc = LocationUtils.parseCoordinates(param);
+                    if (loc != null) param = LocationUtils.locationToStringFormatted(loc);
                 }
                 flg.add("  &e" + action + " &3= &a" + param);
             }

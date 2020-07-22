@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.LocationValue;
 import me.fromgate.reactions.util.enums.DeathCause;
@@ -61,7 +61,7 @@ public class RespawnStorage extends Storage {
                 tempVars.put("killer-name", killer.getName());
             } else {
                 String mobName = killer.getCustomName();
-                tempVars.put("killer-name", Util.isStringEmpty(mobName) ? killer.getType().name() : mobName);
+                tempVars.put("killer-name", Utils.isStringEmpty(mobName) ? killer.getType().name() : mobName);
             }
         }
     }

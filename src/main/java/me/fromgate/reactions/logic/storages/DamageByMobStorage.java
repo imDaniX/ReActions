@@ -5,7 +5,7 @@ import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -33,7 +33,7 @@ public class DamageByMobStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("damagerlocation", (damager != null) ? LocationUtil.locationToString(damager.getLocation()) : "");
+        tempVars.put("damagerlocation", (damager != null) ? LocationUtils.locationToString(damager.getLocation()) : "");
         tempVars.put("damagertype", (damager != null) ? damager.getType().name() : "");
         tempVars.put("entitytype", damager.getType().name());
         Player player = damager instanceof Player ? (Player) damager : null;

@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.MobKillStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
@@ -96,7 +96,7 @@ public class MobKillActivator extends Activator {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(mobType);
+        return !Utils.isStringEmpty(mobType);
     }
 
     @Override

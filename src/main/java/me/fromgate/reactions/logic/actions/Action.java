@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.actions;
 
 import lombok.Setter;
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -65,7 +65,7 @@ public abstract class Action {
     }
 
     private boolean printAction() {
-        return (Util.isWordInList(this.type.name(), Cfg.actionMsg) || Util.isWordInList(this.type.getAlias(), Cfg.actionMsg));
+        return (Utils.isWordInList(this.type.name(), Cfg.actionMsg) || Utils.isWordInList(this.type.getAlias(), Cfg.actionMsg));
     }
 
     /**

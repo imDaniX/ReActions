@@ -2,7 +2,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.TeleportStorage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -18,13 +18,13 @@ public class TeleportActivator extends Activator {
     }
 
     public static TeleportActivator create(ActivatorBase base, Parameters param) {
-        TeleportCause cause = Util.getEnum(TeleportCause.class, param.getParam("cause"));
+        TeleportCause cause = Utils.getEnum(TeleportCause.class, param.getParam("cause"));
         String worldTo = param.getParam("world");
         return new TeleportActivator(base, cause, worldTo);
     }
 
     public static TeleportActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        TeleportCause cause = Util.getEnum(TeleportCause.class, cfg.getString("cause"));
+        TeleportCause cause = Utils.getEnum(TeleportCause.class, cfg.getString("cause"));
         String worldTo = cfg.getString("world");
         return new TeleportActivator(base, cause, worldTo);
     }

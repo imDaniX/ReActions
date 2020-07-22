@@ -25,7 +25,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.CommandStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -127,7 +127,7 @@ public class CommandActivator extends Activator {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(command);
+        return !Utils.isStringEmpty(command);
     }
 
     @Override

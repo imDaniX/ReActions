@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class ActionWait extends Action {
+public class ActionWait extends Action /*TODO: implements Stopper*/ {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

@@ -1,6 +1,6 @@
 package me.fromgate.reactions.util.data;
 
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -14,7 +14,7 @@ public class LocationValue implements DataValue {
 
     @Override
     public String asString() {
-        return LocationUtil.locationToString(value);
+        return LocationUtils.locationToString(value);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class LocationValue implements DataValue {
 
     @Override
     public boolean set(String value) {
-        Location loc = LocationUtil.parseLocation(value, null);
+        Location loc = LocationUtils.parseLocation(value, null);
         if (loc != null) {
             this.value = loc;
             return true;

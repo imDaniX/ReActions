@@ -4,7 +4,7 @@ import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
@@ -18,7 +18,7 @@ public class CmdHelp extends Cmd {
 
         if (args.length > 1)
             for (int i = 1; i < Math.min(args.length, 3); i++) {
-                if (Util.isIntegerGZ(args[i])) page = Integer.parseInt(args[i]);
+                if (NumberUtils.isNonzeroInteger(args[i])) page = Integer.parseInt(args[i]);
                 else arg1 = args[i];
             }
         if (arg1.equalsIgnoreCase("flag") || arg1.equalsIgnoreCase("flags")) {

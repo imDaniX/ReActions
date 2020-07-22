@@ -1,6 +1,6 @@
 package me.fromgate.reactions.util.math;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -19,7 +19,7 @@ public class MathEvaluator {
     private int pointer;
 
     private MathEvaluator(String expression) {
-        this.expression = Util.removeSpaces(expression.toLowerCase(Locale.ENGLISH));
+        this.expression = Utils.removeSpaces(expression.toLowerCase(Locale.ENGLISH));
     }
 
     public static double eval(String expression) {
@@ -62,7 +62,7 @@ public class MathEvaluator {
             tryNext(')');
         } else if (MathBase.isNumberChar(current())) {
             while (MathBase.isNumberChar(current())) pointer++;
-            x = Util.getDouble(expression.substring(start, pointer), 0);
+            x = NumberUtils.getDouble(expression.substring(start, pointer), 0);
         } else if (MathBase.isWordChar(current())) {
             while (MathBase.isWordChar(current()) || MathBase.isNumberChar(current())) pointer++;
             String str = expression.substring(start, pointer);

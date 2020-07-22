@@ -28,7 +28,7 @@ import me.fromgate.reactions.logic.flags.worldedit.FlagSelectionBlocks;
 import me.fromgate.reactions.logic.flags.worldedit.FlagSuperPickAxe;
 import me.fromgate.reactions.logic.flags.worldedit.FlagToolControl;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
@@ -154,7 +154,7 @@ public enum Flags {
     }
 
     public static boolean checkFlag(RaContext context, Flags flag, String param, boolean not) {
-        if (flag == null || Util.isStringEmpty(param)) return false;
+        if (flag == null || Utils.isStringEmpty(param)) return false;
         context.setTempVariable((flag + "_flag").toUpperCase(Locale.ENGLISH), param);
         boolean check = flag.check(context, param);
         if (not) return !check;

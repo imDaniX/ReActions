@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.flags;
 
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -37,7 +37,7 @@ public class FlagPowered implements Flag {
         Parameters params = new Parameters(param);
         String locStr = params.isParamsExists("loc") ? params.getParam("loc", "") : param;
         if (locStr.isEmpty()) return false;
-        Location loc = LocationUtil.parseLocation(locStr, null);
+        Location loc = LocationUtils.parseLocation(locStr, null);
         if (loc == null) return false;
         Block b = loc.getBlock();
         BlockData data = b.getBlockData();

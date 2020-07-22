@@ -23,8 +23,8 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.time.TimeUtil;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -54,13 +54,13 @@ public class ActionPotion extends Action {
                 String[] prm = param.split("/");
                 if (prm.length > 1) {
                     peffstr = prm[0];
-                    if (Util.isIntegerGZ(prm[1])) duration = Integer.parseInt(prm[1]);
-                    if ((prm.length > 2) && Util.isIntegerGZ(prm[2])) amplifier = Integer.parseInt(prm[2]);
+                    if (NumberUtils.isNonzeroInteger(prm[1])) duration = Integer.parseInt(prm[1]);
+                    if ((prm.length > 2) && NumberUtils.isNonzeroInteger(prm[2])) amplifier = Integer.parseInt(prm[2]);
                 }
             } else peffstr = param;
         } else {
             peffstr = params.getParam("type", "");
-            duration = Util.safeLongToInt(TimeUtil.timeToTicks(TimeUtil.parseTime(params.getParam("time", "3s"))));
+            duration = NumberUtils.safeLongToInt(TimeUtil.timeToTicks(TimeUtil.parseTime(params.getParam("time", "3s"))));
             amplifier = Math.max(params.getParam("level", 1) - 1, 0);
             ambient = params.getParam("ambient", false);
         }

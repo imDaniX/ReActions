@@ -22,10 +22,10 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -44,7 +44,7 @@ public class FlagItem implements Flag {
             case 0:
                 ItemStack inHand = player.getInventory().getItemInMainHand();
                 context.setTempVariable("item_amount", inHand == null ? "0" : String.valueOf(inHand.getAmount()));
-                return ItemUtil.compareItemStr(inHand, itemStr, true);
+                return ItemUtils.compareItemStr(inHand, itemStr, true);
             case 1:
                 return hasItemInInventory(context, itemStr);
             case 2:
@@ -52,14 +52,14 @@ public class FlagItem implements Flag {
             case 3:
                 ItemStack inOffhand = player.getInventory().getItemInOffHand();
                 context.setTempVariable("item_amount", inOffhand == null ? "0" : String.valueOf(inOffhand.getAmount()));
-                return ItemUtil.compareItemStr(inOffhand, itemStr, true);
+                return ItemUtils.compareItemStr(inOffhand, itemStr, true);
         }
         return false;
     }
 
     private boolean isItemWeared(Player player, String itemStr) {
         for (ItemStack armour : player.getInventory().getArmorContents())
-            if (ItemUtil.compareItemStr(armour, itemStr)) return true;
+            if (ItemUtils.compareItemStr(armour, itemStr)) return true;
         return false;
     }
 
@@ -68,15 +68,15 @@ public class FlagItem implements Flag {
         Parameters params = new Parameters(itemStr);
 
         if (!params.isParamsExists("slot", "item")) {
-            int countAmount = ItemUtil.countItemsInInventory(player.getInventory(), itemStr);
+            int countAmount = ItemUtils.countItemsInInventory(player.getInventory(), itemStr);
             context.setTempVariable("item_amount", countAmount == 0 ? "0" : String.valueOf(countAmount));
-            int amount = ItemUtil.getAmount(itemStr);
+            int amount = ItemUtils.getAmount(itemStr);
             return countAmount >= amount;
         }
 
         String slotStr = params.getParam("slot", "");
         if (slotStr.isEmpty()) return false;
-        int slotNum = Util.isInteger(slotStr) ? Integer.parseInt(slotStr) : -1;
+        int slotNum = NumberUtils.isInteger(slotStr) ? Integer.parseInt(slotStr) : -1;
         if (slotNum >= player.getInventory().getSize()) return false;
 
         VirtualItem vi = null;

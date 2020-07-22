@@ -6,7 +6,7 @@ import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
 import me.fromgate.reactions.util.data.ItemStackValue;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -33,7 +33,7 @@ public class DropStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("droplocation", LocationUtil.locationToString(getPlayer().getLocation()));
+        tempVars.put("droplocation", LocationUtils.locationToString(getPlayer().getLocation()));
     }
 
     @Override

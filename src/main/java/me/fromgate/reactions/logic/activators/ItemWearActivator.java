@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.ItemWearStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -87,7 +87,7 @@ public class ItemWearActivator extends Activator /*implements Manageable*/ {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(item);
+        return !Utils.isStringEmpty(item);
     }
 
 	/*

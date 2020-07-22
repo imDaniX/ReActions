@@ -22,7 +22,8 @@
 
 package me.fromgate.reactions;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 
@@ -79,7 +80,7 @@ public class SQLManager {
 
     public static boolean compareSelect(String value, String query, int column, Parameters params, String sqlset) {
         String result = executeSelect(query, column, params, sqlset);
-        if (Util.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
+        if (NumberUtils.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
         return result.equalsIgnoreCase(value);
     }
 
@@ -123,7 +124,7 @@ public class SQLManager {
 
         try {
             selectStmt = connection.createStatement();
-            if (!Util.isStringEmpty(sqlset)) {
+            if (!Utils.isStringEmpty(sqlset)) {
                 selectStmt.execute(sqlset);
             }
             result = selectStmt.executeQuery(query);

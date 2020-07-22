@@ -3,8 +3,8 @@ package me.fromgate.reactions.commands.custom;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.storages.CommandStorage;
-import me.fromgate.reactions.util.FileUtil;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.FileUtils;
+import me.fromgate.reactions.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandMap;
@@ -33,7 +33,7 @@ public class FakeCommander {
     public static void updateCommands() {
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "commands.yml");
         YamlConfiguration cfg = new YamlConfiguration();
-        if (!FileUtil.loadCfg(cfg, f, "Failed to load commands")) return;
+        if (!FileUtils.loadCfg(cfg, f, "Failed to load commands")) return;
         CommandMap commandMap = getCommandMap();
         unregisterAll(/*commandMap*/);
         if (commandMap == null) return;
@@ -89,9 +89,9 @@ public class FakeCommander {
     }
 
     private static boolean register(String command, String prefix, List<String> aliases, CommandMap commandMap, RaCommand raCommand, boolean toBukkit) {
-        if (Util.isStringEmpty(command)) return false;
+        if (Utils.isStringEmpty(command)) return false;
         command = command.toLowerCase(Locale.ENGLISH);
-        prefix = Util.isStringEmpty(prefix) ? command : prefix.toLowerCase(Locale.ENGLISH);
+        prefix = Utils.isStringEmpty(prefix) ? command : prefix.toLowerCase(Locale.ENGLISH);
         if (aliases == null)
             aliases = new ArrayList<>();
         // Registering main command

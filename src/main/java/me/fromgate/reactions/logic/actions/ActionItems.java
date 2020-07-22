@@ -24,11 +24,12 @@ package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.ItemStoragesManager;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -91,7 +92,7 @@ public class ActionItems extends Action {
         if (itemStr.isEmpty()) return false;
         String slotStr = params.getParam("slot", "");
         if (slotStr.isEmpty()) return false;
-        if (!Util.isInteger(slotStr)) return wearItem(context, params);
+        if (!NumberUtils.isInteger(slotStr)) return wearItem(context, params);
         int slotNum = Integer.parseInt(slotStr);
         if (slotNum >= player.getInventory().getSize()) return false;
         String existStr = params.getParam("exist", "remove");
@@ -103,11 +104,11 @@ public class ActionItems extends Action {
             if (vi == null) return false;
             player.getInventory().setItem(slotNum, vi);
         }
-        if (ItemUtil.isExist(oldItem)) return true;
+        if (ItemUtils.isExist(oldItem)) return true;
         if (existStr.equalsIgnoreCase("drop")) player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
-        else if (existStr.equalsIgnoreCase("undress")) ItemUtil.giveItemOrDrop(player, oldItem);
+        else if (existStr.equalsIgnoreCase("undress")) ItemUtils.giveItemOrDrop(player, oldItem);
         else if (existStr.equalsIgnoreCase("keep")) player.getInventory().setItem(slotNum, oldItem);
-        String actionItems = ItemUtil.toDisplayString(itemStr);
+        String actionItems = ItemUtils.toDisplayString(itemStr);
         setMessageParam(actionItems);
         context.setTempVariable("item_str", actionItems);
 
@@ -118,14 +119,14 @@ public class ActionItems extends Action {
         Player player = context.getPlayer();
         String slotStr = params.getParam("slot", "");
         if (slotStr.isEmpty()) return false;
-        if (!Util.isInteger(slotStr)) return wearItemView(context, params);
+        if (!NumberUtils.isInteger(slotStr)) return wearItemView(context, params);
         int slotNum = Integer.parseInt(slotStr);
         if (slotNum >= player.getInventory().getSize()) return false;
         ItemStack item = player.getInventory().getItem(slotNum);
         String actionItems = "";
-        if (item != null) actionItems = ItemUtil.itemToString(item);
+        if (item != null) actionItems = ItemUtils.itemToString(item);
         context.setTempVariable("item_str", actionItems);
-        context.setTempVariable("item_str_esc", Util.escapeJava(actionItems));
+        context.setTempVariable("item_str_esc", Utils.escapeJava(actionItems));
 
         return true;
     }
@@ -138,9 +139,9 @@ public class ActionItems extends Action {
         ItemStack[] armour = player.getInventory().getArmorContents();
         ItemStack item = armour[slot];
         String actionItems = "";
-        if (item != null) actionItems = ItemUtil.itemToString(item);
+        if (item != null) actionItems = ItemUtils.itemToString(item);
         context.setTempVariable("item_str", actionItems);
-        context.setTempVariable("item_str_esc", Util.escapeJava(actionItems));
+        context.setTempVariable("item_str_esc", Utils.escapeJava(actionItems));
         return true;
     }
 
@@ -153,9 +154,9 @@ public class ActionItems extends Action {
             context.setTempVariable("item_str_esc", "");
             return true;
         }
-        String item = ItemUtil.itemToString(player.getInventory().getItemInOffHand());
+        String item = ItemUtils.itemToString(player.getInventory().getItemInOffHand());
         context.setTempVariable("item_str", item);
-        context.setTempVariable("item_str_esc", Util.escapeJava(item));
+        context.setTempVariable("item_str_esc", Utils.escapeJava(item));
         return true;
     }
 
@@ -210,14 +211,14 @@ public class ActionItems extends Action {
     private boolean setArmourItem(Player player, int slot, ItemStack item, int existDrop) {
         ItemStack[] armour = player.getInventory().getArmorContents().clone();
         ItemStack oldItem = armour[slot] == null ? null : armour[slot].clone();
-        if (ItemUtil.isExist(oldItem) && (existDrop == 3)) {
+        if (ItemUtils.isExist(oldItem) && (existDrop == 3)) {
             return false; // сохраняем и уходим
         }
         armour[slot] = item;
         player.getInventory().setArmorContents(armour);
         if (oldItem != null) {
             if (existDrop == 1) {
-                ItemUtil.giveItemOrDrop(player, oldItem);
+                ItemUtils.giveItemOrDrop(player, oldItem);
             } else if (existDrop == 2) {
                 player.getWorld().dropItemNaturally(player.getLocation(), oldItem);
             }
@@ -227,12 +228,12 @@ public class ActionItems extends Action {
     }
 
     private boolean removeItem(RaContext context, VirtualItem search, ItemStack item, boolean all) {
-        if (!ItemUtil.isExist(search)) return false;
+        if (!ItemUtils.isExist(search)) return false;
         if (search.isSimilar(item)) {
-            context.setTempVariable("item", ItemUtil.itemToString(item));
-            String display = ItemUtil.toDisplayString(item);
+            context.setTempVariable("item", ItemUtils.itemToString(item));
+            String display = ItemUtils.toDisplayString(item);
             context.setTempVariable("item_str", display);
-            ItemUtil.removeItemAmount(item, all ? item.getAmount() : search.getAmount());
+            ItemUtils.removeItemAmount(item, all ? item.getAmount() : search.getAmount());
             setMessageParam(display);
             return true;
         }
@@ -265,23 +266,23 @@ public class ActionItems extends Action {
 
     private boolean giveItemPlayer(RaContext context, final String param) {
         Player player = context.getPlayer();
-        final List<ItemStack> items = ItemUtil.parseRandomItemsStr(param);
+        final List<ItemStack> items = ItemUtils.parseRandomItemsStr(param);
         if (items == null || items.isEmpty()) return false;
-        String actionItems = ItemUtil.toDisplayString(items);
+        String actionItems = ItemUtils.toDisplayString(items);
         setMessageParam(actionItems);
         context.setTempVariable("item_str", actionItems);
         Bukkit.getScheduler().scheduleSyncDelayedTask(ReActions.getPlugin(), () -> {
             for (ItemStack i : items)
-                ItemUtil.giveItemOrDrop(player, i);
+                ItemUtils.giveItemOrDrop(player, i);
             ItemStoragesManager.raiseItemHoldActivator(player);
         }, 1);
         return true;
     }
 
     private boolean openInventory(RaContext context, String itemStr) {
-        List<ItemStack> items = ItemUtil.parseRandomItemsStr(itemStr);
+        List<ItemStack> items = ItemUtils.parseRandomItemsStr(itemStr);
         if (items.isEmpty()) return false;
-        String actionItems = ItemUtil.toDisplayString(items);
+        String actionItems = ItemUtils.toDisplayString(items);
         setMessageParam(actionItems);
         context.setTempVariable("item_str", actionItems);
         int size = Math.min(items.size(), 36);
@@ -295,19 +296,19 @@ public class ActionItems extends Action {
     public boolean dropItems(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         int radius = params.getParam("radius", 0);
-        Location loc = LocationUtil.parseLocation(params.getParam("loc", ""), player.getLocation());
+        Location loc = LocationUtils.parseLocation(params.getParam("loc", ""), player.getLocation());
         if (loc == null) loc = player.getLocation();
         boolean scatter = params.getParam("scatter", true);
         boolean land = params.getParam("land", true);
-        List<ItemStack> items = ItemUtil.parseRandomItemsStr(params.getParam("item", ""));
+        List<ItemStack> items = ItemUtils.parseRandomItemsStr(params.getParam("item", ""));
         if (items == null || items.isEmpty()) return false;
         if (radius == 0) scatter = false;
-        Location l = LocationUtil.getRadiusLocation(loc, radius, land);
+        Location l = LocationUtils.getRadiusLocation(loc, radius, land);
         for (ItemStack i : items) {
             loc.getWorld().dropItemNaturally(l, i);
-            if (scatter) l = LocationUtil.getRadiusLocation(loc, radius, land);
+            if (scatter) l = LocationUtils.getRadiusLocation(loc, radius, land);
         }
-        String actionItems = ItemUtil.toDisplayString(items);
+        String actionItems = ItemUtils.toDisplayString(items);
         setMessageParam(actionItems);
         context.setTempVariable("item_str", actionItems);
         return true;
@@ -338,14 +339,14 @@ public class ActionItems extends Action {
 
         if (slot == -1 && !itemStr.isEmpty()) {
             for (int i = 0; i < armor.length; i++) {
-                if (ItemUtil.compareItemStr(armor[i], itemStr)) {
+                if (ItemUtils.compareItemStr(armor[i], itemStr)) {
                     vi = VirtualItem.fromItemStack(armor[i]);
                     slot = i;
                 }
             }
         } else if (slot >= 0) {
             ItemStack itemSlot = armor[slot];
-            if (itemStr.isEmpty() || ItemUtil.compareItemStr(itemSlot, itemStr))
+            if (itemStr.isEmpty() || ItemUtils.compareItemStr(itemSlot, itemStr))
                 vi = VirtualItem.fromItemStack(itemSlot);
         }
         if (vi == null || vi.getType() == Material.AIR) return false;
@@ -353,9 +354,9 @@ public class ActionItems extends Action {
         player.getInventory().setArmorContents(armor);
 
         if (action.equalsIgnoreCase("drop")) {
-            player.getWorld().dropItemNaturally(LocationUtil.getRadiusLocation(player.getLocation().add(0, 2, 0), 2, false), vi);
+            player.getWorld().dropItemNaturally(LocationUtils.getRadiusLocation(player.getLocation().add(0, 2, 0), 2, false), vi);
         } else if (action.equalsIgnoreCase("undress") || action.equalsIgnoreCase("inventory")) {
-            ItemUtil.giveItemOrDrop(player, vi);
+            ItemUtils.giveItemOrDrop(player, vi);
         }
 
         context.setTempVariable("item", vi.toString());

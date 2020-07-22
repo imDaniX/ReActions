@@ -2,7 +2,7 @@ package me.fromgate.reactions.commands.custom;
 
 import lombok.Getter;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -75,7 +75,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
     public final String executeCommand(CommandSender sender, String[] args) {
         if (sender instanceof ConsoleCommandSender) {
             if (!consoleAllowed) return getErroredExec(ExecType.CONSOLE_DISALLOWED);
-        } else if (!Util.checkPermission(sender, permission)) return getErroredExec(ExecType.NO_PERMISSIONS);
+        } else if (!Utils.checkPermission(sender, permission)) return getErroredExec(ExecType.NO_PERMISSIONS);
         if (args.length == 0)
             return execs.get(ExecType.DEFAULT);
         ExecResult prioritedResult = null;
@@ -103,7 +103,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
         List<String> complete = new ArrayList<>();
         if (!tab) return complete;
         if (sender instanceof ConsoleCommandSender && !consoleAllowed) return complete;
-        if (!Util.checkPermission(sender, permission)) return complete;
+        if (!Utils.checkPermission(sender, permission)) return complete;
         for (ArgumentsChain chain : chains)
             chain.tabComplete(complete, sender, args);
         return complete;
@@ -120,12 +120,12 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
     }
 
     public final List<String> list() {
-        List<String> list = Util.getEmptyList(1);
+        List<String> list = Utils.getEmptyList(1);
         chains.forEach(c -> list.add(c.toString()));
         return list;
     }
 
     private String getErroredExec(ExecType type) {
-        return Util.searchNotNull("unknown", execs.get(type), execs.get(ExecType.ANY_ERROR), execs.get(ExecType.BACKUP), execs.get(ExecType.DEFAULT));
+        return Utils.searchNotNull("unknown", execs.get(type), execs.get(ExecType.ANY_ERROR), execs.get(ExecType.BACKUP), execs.get(ExecType.DEFAULT));
     }
 }

@@ -4,7 +4,7 @@ import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.flags.Flags;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ public class CmdAdd extends Cmd {
             arg4 = new StringBuilder(arg4.toString().trim());
         }
         if (ActivatorsManager.containsActivator(arg1)) {
-            String param = LocationUtil.replaceStandardLocations(player, arg4.toString()); // используется в addActions
+            String param = LocationUtils.parsePlaceholders(player, arg4.toString()); // используется в addActions
             Activator act = ActivatorsManager.getActivator(arg1);
             switch (arg2) {
                 case "a":

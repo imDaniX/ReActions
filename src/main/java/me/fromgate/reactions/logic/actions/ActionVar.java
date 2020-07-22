@@ -23,8 +23,8 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.Variables;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
@@ -68,10 +68,10 @@ public class ActionVar extends Action {
                 Variables.clearVar(player, var);
                 return true;
             case 2: //VAR_INC, VAR_PLAYER_INC
-                int incValue = value.isEmpty() || !(Util.isInteger(value)) ? 1 : Integer.parseInt(value);
+                int incValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
                 return Variables.incVar(player, var, incValue);
             case 3: //VAR_DEC, VAR_PLAYER_DEC
-                int decValue = value.isEmpty() || !(Util.isInteger(value)) ? 1 : Integer.parseInt(value);
+                int decValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
                 return Variables.decVar(player, var, decValue);
             case 4:  //VAR_TEMP_SET
                 context.setTempVariable(var, value);

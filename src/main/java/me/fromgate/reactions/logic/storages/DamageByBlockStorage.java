@@ -5,8 +5,8 @@ import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
-import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -34,9 +34,9 @@ public class DamageByBlockStorage extends Storage {
 
     @Override
     void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("blocklocation", LocationUtil.locationToString(blockDamager.getLocation()));
+        tempVars.put("blocklocation", LocationUtils.locationToString(blockDamager.getLocation()));
         tempVars.put("blocktype", blockDamager.getType().name());
-        tempVars.put("block", ItemUtil.itemFromBlock(blockDamager).toString());
+        tempVars.put("block", ItemUtils.itemFromBlock(blockDamager).toString());
         tempVars.put("cause", cause.name());
     }
 

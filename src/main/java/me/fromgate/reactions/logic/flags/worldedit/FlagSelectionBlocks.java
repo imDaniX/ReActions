@@ -24,8 +24,8 @@ package me.fromgate.reactions.logic.flags.worldedit;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
 import me.fromgate.reactions.logic.flags.Flag;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -45,6 +45,6 @@ public class FlagSelectionBlocks implements Flag {
         context.setTempVariable("maxY", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockY()));
         context.setTempVariable("maxZ", (maxPoint == null) ? "" : Integer.toString(maxPoint.getBlockZ()));
         context.setTempVariable("selblocks", Integer.toString(selectionBlocks));
-        return Util.isInteger(param) && selectionBlocks <= Integer.parseInt(param);
+        return NumberUtils.isInteger(param) && selectionBlocks <= Integer.parseInt(param);
     }
 }

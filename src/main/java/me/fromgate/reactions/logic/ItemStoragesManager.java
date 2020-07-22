@@ -8,7 +8,7 @@ import me.fromgate.reactions.logic.activators.ItemHoldActivator;
 import me.fromgate.reactions.logic.activators.ItemWearActivator;
 import me.fromgate.reactions.logic.storages.ItemHoldStorage;
 import me.fromgate.reactions.logic.storages.ItemWearStorage;
-import me.fromgate.reactions.util.item.ItemUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -53,10 +53,10 @@ public class ItemStoragesManager {
         Player player = Bukkit.getPlayer(playerId);
         if (player == null || !player.isOnline() || player.isDead()) return;
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!ItemUtil.isExist(item)) return;
+        if (!ItemUtils.isExist(item)) return;
         String rg = "ih-" + itemStr;
         if (!StoragesManager.isTimeToRaiseEvent(player, rg, Cfg.itemHoldRecheck, repeat)) return;
-        if (!ItemUtil.compareItemStr(item, itemStr)) return;
+        if (!ItemUtils.compareItemStr(item, itemStr)) return;
         ItemHoldStorage ihe = new ItemHoldStorage(player, item, true);
         ActivatorsManager.activate(ihe);
 

@@ -26,7 +26,7 @@ package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -51,7 +51,7 @@ public class SignStorage extends Storage {
     void defaultVariables(Map<String, String> tempVars) {
         for (int i = 0; i < signLines.length; i++)
             tempVars.put("sign_line" + (i + 1), signLines[i]);
-        tempVars.put("sign_loc", LocationUtil.locationToString(location));
+        tempVars.put("sign_loc", LocationUtils.locationToString(location));
         tempVars.put("click", leftClick ? "left" : "right");
     }
 }

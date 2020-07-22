@@ -2,9 +2,9 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.BlockBreakStorage;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.Util;
-import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.item.ItemUtils;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -27,13 +27,13 @@ public class BlockBreakActivator extends Activator implements Locatable {
     }
 
     public static BlockBreakActivator create(ActivatorBase base, Parameters param) {
-        Material block = ItemUtil.getMaterial(param.getParam("block"));
+        Material block = ItemUtils.getMaterial(param.getParam("block"));
         String loc = param.getParam("loc");
         return new BlockBreakActivator(base, block, loc);
     }
 
     public static BlockBreakActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        Material block = ItemUtil.getMaterial(cfg.getString("block"));
+        Material block = ItemUtils.getMaterial(cfg.getString("block"));
         String loc = cfg.getString("loc");
         return new BlockBreakActivator(base, block, loc);
     }
@@ -48,14 +48,14 @@ public class BlockBreakActivator extends Activator implements Locatable {
 
     private boolean isActivatorBlock(Block block) {
         if (this.blockType != null && blockType != block.getType()) return false;
-        if (Util.isStringEmpty(blockLocation)) return true;
+        if (Utils.isStringEmpty(blockLocation)) return true;
         return this.isLocatedAt(block.getLocation());
     }
 
     @Override
     public boolean isLocatedAt(Location l) {
-        if (Util.isStringEmpty(blockLocation)) return false;
-        Location loc = LocationUtil.parseLocation(this.blockLocation, null);
+        if (Utils.isStringEmpty(blockLocation)) return false;
+        Location loc = LocationUtils.parseLocation(this.blockLocation, null);
         if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&
@@ -71,7 +71,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
     @Override
     public void save(ConfigurationSection cfg) {
         if (blockType != null) cfg.set("block", this.blockType.name());
-        cfg.set("location", Util.isStringEmpty(blockLocation) ? null : this.blockLocation);
+        cfg.set("location", Utils.isStringEmpty(blockLocation) ? null : this.blockLocation);
     }
 
     @Override

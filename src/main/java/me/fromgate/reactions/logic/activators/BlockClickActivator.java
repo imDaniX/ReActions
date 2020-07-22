@@ -25,8 +25,8 @@ package me.fromgate.reactions.logic.activators;
 import me.fromgate.reactions.logic.storages.BlockClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.enums.ClickType;
-import me.fromgate.reactions.util.item.ItemUtil;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.item.ItemUtils;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -47,14 +47,14 @@ public class BlockClickActivator extends Activator implements Locatable {
     }
 
     public static BlockClickActivator create(ActivatorBase base, Parameters param) {
-        Material block = ItemUtil.getMaterial(param.getParam("block-type"));
+        Material block = ItemUtils.getMaterial(param.getParam("block-type"));
         ClickType click = ClickType.getByName(param.getParam("click-type"));
         String loc = param.getParam("location");
         return new BlockClickActivator(base, block, loc, click);
     }
 
     public static BlockClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        Material block = ItemUtil.getMaterial(cfg.getString("block-type"));
+        Material block = ItemUtils.getMaterial(cfg.getString("block-type"));
         ClickType click = ClickType.getByName(cfg.getString("click-type"));
         String loc = cfg.getString("location");
         return new BlockClickActivator(base, block, loc, click);
@@ -82,7 +82,7 @@ public class BlockClickActivator extends Activator implements Locatable {
     public boolean isLocatedAt(Location l) {
         if (this.blockLocation.isEmpty()) return false;
         // Location loc = Locator.parseCoordinates(this.blockLocation);
-        Location loc = LocationUtil.parseLocation(this.blockLocation, null);
+        Location loc = LocationUtils.parseLocation(this.blockLocation, null);
         if (loc == null) return false;
         return l.getWorld().equals(loc.getWorld()) &&
                 l.getBlockX() == loc.getBlockX() &&

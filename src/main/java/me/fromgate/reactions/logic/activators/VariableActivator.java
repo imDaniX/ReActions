@@ -25,7 +25,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.VariableStorage;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -71,7 +71,7 @@ public class VariableActivator extends Activator {
 
     @Override
     public boolean isValid() {
-        return !Util.isStringEmpty(id);
+        return !Utils.isStringEmpty(id);
     }
 
     @Override

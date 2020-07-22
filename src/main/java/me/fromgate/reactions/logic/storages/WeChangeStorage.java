@@ -7,7 +7,7 @@ import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class WeChangeStorage extends Storage {
     @Override
     void defaultVariables(Map<String, String> tempVars) {
         tempVars.put("blocktype", blockType.name());
-        tempVars.put("blocklocation", LocationUtil.locationToString(location));
+        tempVars.put("blocklocation", LocationUtils.locationToString(location));
     }
 
     @Override

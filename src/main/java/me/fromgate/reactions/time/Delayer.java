@@ -23,7 +23,7 @@
 package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.util.FileUtil;
+import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
@@ -48,14 +48,14 @@ public class Delayer {
             if (delayTime > System.currentTimeMillis())
                 cfg.set(key, delayTime);
         }
-        FileUtil.saveCfg(cfg, f, "Failed to save delays configuration file");
+        FileUtils.saveCfg(cfg, f, "Failed to save delays configuration file");
     }
 
     public static void load() {
         delays.clear();
         YamlConfiguration cfg = new YamlConfiguration();
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
-        if (FileUtil.loadCfg(cfg, f, "Failed to load delay configuration file"))
+        if (FileUtils.loadCfg(cfg, f, "Failed to load delay configuration file"))
             for (String key : cfg.getKeys(true)) {
                 if (!key.contains(".")) continue;
                 long delayTime = cfg.getLong(key);

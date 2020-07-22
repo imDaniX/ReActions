@@ -23,8 +23,8 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.externals.RaEconomics;
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
@@ -57,10 +57,10 @@ public class ActionMoneyPay extends Action {
         if (mstr.contains("/")) {
             String[] m = mstr.split("/");
             if (m.length >= 2) {
-                newParams.put("amount", m[0].contains("-") ? Integer.toString(Util.getMinMaxRandom(m[0])) : m[0]);
+                newParams.put("amount", m[0].contains("-") ? Integer.toString(Rng.nextIntFromString(m[0])) : m[0]);
                 newParams.put("target", m[1]);
             }
-        } else newParams.put("amount", mstr.contains("-") ? Integer.toString(Util.getMinMaxRandom(mstr)) : mstr);
+        } else newParams.put("amount", mstr.contains("-") ? Integer.toString(Rng.nextIntFromString(mstr)) : mstr);
         return new Parameters(newParams);
     }
 }

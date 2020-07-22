@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ public class ActionSound extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        String str = Util.soundPlay(player == null ? null : player.getLocation(), params);
+        String str = Utils.soundPlay(player == null ? null : player.getLocation(), params);
         if (str.isEmpty()) return false;
         this.setMessageParam(str);
         return true;

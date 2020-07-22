@@ -32,8 +32,8 @@ import me.fromgate.reactions.logic.activators.Locatable;
 import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.logic.flags.StoredFlag;
 import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.util.FileUtil;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.FileUtils;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -334,7 +334,7 @@ public class ActivatorsManager {
      * @param group Name of group
      */
     public static void saveActivators(String group) {
-        String g = Util.implode(group.split("/"));
+        String g = Utils.implode(group.split("/"));
 
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
         File dir = f.getParentFile();
@@ -346,7 +346,7 @@ public class ActivatorsManager {
                 a.saveActivator(cfg.createSection(a.getType().name() + "." + a.getBase().getName()));
         }
 
-        FileUtil.saveCfg(cfg, f, "Failed to save activators to file " + f.getAbsolutePath());
+        FileUtils.saveCfg(cfg, f, "Failed to save activators to file " + f.getAbsolutePath());
     }
 
     /**
@@ -359,7 +359,7 @@ public class ActivatorsManager {
         File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + group + ".yml");
         if (!f.exists()) return;
         YamlConfiguration cfg = new YamlConfiguration();
-        FileUtil.loadCfg(cfg, f, "Failed to load configuration from file " + f.getAbsolutePath());
+        FileUtils.loadCfg(cfg, f, "Failed to load configuration from file " + f.getAbsolutePath());
 
         if (clear)
             clearGroup(group);

@@ -1,10 +1,10 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.util.Util;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.VirtualItem;
-import me.fromgate.reactions.util.location.LocationUtil;
+import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.location.PlayerRespawner;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -52,18 +52,18 @@ public class PlaceholderPlayer extends Placeholder {
             case "dplayer":
                 return player.getDisplayName();
             case "player_loc":
-                return LocationUtil.locationToString(player.getLocation());
+                return LocationUtils.locationToString(player.getLocation());
             case "player_loc_death":
             case "deathpoint":
                 Location loc = PlayerRespawner.getLastDeathPoint(player);
                 if (loc == null) loc = player.getLocation();
-                return LocationUtil.locationToString(loc);
+                return LocationUtils.locationToString(loc);
             case "player_loc_eye":
-                return LocationUtil.locationToString(player.getEyeLocation());
+                return LocationUtils.locationToString(player.getEyeLocation());
             case "player_loc_view":
-                return LocationUtil.locationToString(getViewLocation(player, false));
+                return LocationUtils.locationToString(getViewLocation(player, false));
             case "player_loc_view_solid":
-                return LocationUtil.locationToString(getViewLocation(player, true));
+                return LocationUtils.locationToString(getViewLocation(player, true));
             case "player_level":
             case "level":
                 return Integer.toString(player.getLevel());
@@ -109,7 +109,7 @@ public class PlaceholderPlayer extends Placeholder {
 
     private String getPlayerInventory(Player player, String value) {
         VirtualItem vi = null;
-        if (Util.isInteger(value)) {
+        if (NumberUtils.isInteger(value)) {
             int slotNum = Integer.parseInt(value);
             if (slotNum < 0 || slotNum >= player.getInventory().getSize()) return "";
             vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));

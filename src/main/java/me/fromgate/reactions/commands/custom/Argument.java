@@ -1,7 +1,8 @@
 package me.fromgate.reactions.commands.custom;
 
 import lombok.Getter;
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.util.StringUtil;
 
@@ -61,7 +62,7 @@ public class Argument {
     public ExecType check(String arg) {
         switch (type) {
             case PLAYER:
-                return Util.getPlayerExact(arg) != null ? ExecType.DEFAULT : ExecType.OFFLINE;
+                return Utils.getPlayerExact(arg) != null ? ExecType.DEFAULT : ExecType.OFFLINE;
 
             case TEXT:
                 return argument.equalsIgnoreCase(arg) ? ExecType.DEFAULT : ExecType.BACKUP;
@@ -70,10 +71,10 @@ public class Argument {
                 return multiple.contains(arg) ? ExecType.DEFAULT : ExecType.BACKUP;
 
             case INTEGER:
-                return Util.INT.matcher(arg).matches() ? ExecType.DEFAULT : ExecType.NOT_INTEGER;
+                return NumberUtils.INT.matcher(arg).matches() ? ExecType.DEFAULT : ExecType.NOT_INTEGER;
 
             case FLOAT:
-                return Util.FLOAT.matcher(arg).matches() ? ExecType.DEFAULT : ExecType.NOT_FLOAT;
+                return NumberUtils.FLOAT.matcher(arg).matches() ? ExecType.DEFAULT : ExecType.NOT_FLOAT;
         }
         return ExecType.DEFAULT;
     }
@@ -87,7 +88,7 @@ public class Argument {
     public void tabComplete(List<String> complete, String arg) {
         switch (type) {
             case PLAYER:
-                StringUtil.copyPartialMatches(arg, Util.getPlayersList(), complete);
+                StringUtil.copyPartialMatches(arg, Utils.getPlayersList(), complete);
                 return;
             case TEXT:
             case MULTIPLE_TEXT:

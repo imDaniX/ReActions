@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.util.Util;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ public class FlagGamemode implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
         if (player != null)
-            return player.getGameMode() == Util.getEnum(GameMode.class, param);
+            return player.getGameMode() == Utils.getEnum(GameMode.class, param);
         return false;
     }
 
