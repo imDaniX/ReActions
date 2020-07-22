@@ -38,6 +38,7 @@ public class ActionRegex extends Action {
         return true;
     }
 
+    // TODO: Remove it somehow
     private String removeParams(String message) {
         String sb = "(?i)(" + String.join("|", SelectorsManager.getAllKeys()) +
                 "|hide|regex|prefix):(\\{.*\\}|\\S+)\\s?";

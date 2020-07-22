@@ -29,10 +29,10 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
 public class ActionVar extends Action {
-    private final int actType;
+    private final Type actType;
     private final boolean personalVar;
 
-    public ActionVar(int actType, boolean personalVar) {
+    public ActionVar(Type actType, boolean personalVar) {
         this.actType = actType;
         this.personalVar = personalVar;
     }
@@ -61,23 +61,26 @@ public class ActionVar extends Action {
         if (this.personalVar && player.isEmpty()) return false;
 
         switch (this.actType) {
-            case 0: //VAR_SET, VAR_PLAYER_SET
+            case SET: //VAR_SET, VAR_PLAYER_SET
                 Variables.setVar(player, var, value);
                 return true;
-            case 1: //VAR_CLEAR, VAR_PLAYER_CLEAR
+            case CLEAR: //VAR_CLEAR, VAR_PLAYER_CLEAR
                 Variables.clearVar(player, var);
                 return true;
-            case 2: //VAR_INC, VAR_PLAYER_INC
+            case INCREASE: //VAR_INC, VAR_PLAYER_INC
                 int incValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
                 return Variables.incVar(player, var, incValue);
-            case 3: //VAR_DEC, VAR_PLAYER_DEC
+            case DECREASE: //VAR_DEC, VAR_PLAYER_DEC
                 int decValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
                 return Variables.decVar(player, var, decValue);
-            case 4:  //VAR_TEMP_SET
+            case TEMPORARY_SET:  //VAR_TEMP_SET
                 context.setTempVariable(var, value);
                 return true;
         }
         return false;
     }
 
+    public enum Type {
+        SET, CLEAR, INCREASE, DECREASE, TEMPORARY_SET
+    }
 }

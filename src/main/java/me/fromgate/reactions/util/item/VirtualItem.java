@@ -68,12 +68,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+/*
+    TODO: Such a mess. Better to make it from scratch
+ */
 public class VirtualItem extends ItemStack {
 
     private final static String DIVIDER = "\\n";
     private final static Pattern AMOUNT_RANDOM = Pattern.compile("<\\d+|>\\d+|<=\\d+|>=\\d+");
-    // private static boolean ALLOW_RANDOM = true;
-    private static boolean ADD_REGEX = true;
 
     /**
      * Constructor Create new VirtualItem object
@@ -209,8 +210,6 @@ public class VirtualItem extends ItemStack {
         if (map.isEmpty())
             return null;
         ItemStack item = ItemStack.deserialize(map);
-        if (item == null)
-            return null;
         return new VirtualItem(item);
     }
 
@@ -226,7 +225,8 @@ public class VirtualItem extends ItemStack {
         params.put("amount", Integer.toString(this.getAmount()));
         putEnchants(params, "enchantments", this.getEnchantments());
         putItemMeta(params, this.getItemMeta());
-        if (ADD_REGEX) params.put("regex", "false");
+        // private static boolean ALLOW_RANDOM = true;
+        params.put("regex", "false");
         return params;
     }
 
@@ -235,7 +235,7 @@ public class VirtualItem extends ItemStack {
      *
      * @return JSON-string generated from ItemStack
      */
-    @SuppressWarnings({"unchecked", "unused"})
+    @SuppressWarnings({"unchecked"})
     public String toJSON() {
         Map<String, Object> itemS = this.serialize();
         JSONObject json = new JSONObject();
@@ -244,14 +244,12 @@ public class VirtualItem extends ItemStack {
         return json.toJSONString();
     }
 
-    // ///////////////////////////////////////////////////////
-    public void giveItemOrDrop(Player player) {
+    public void giveItem(Player player) {
         for (ItemStack i : player.getInventory().addItem(this.clone()).values())
             player.getWorld().dropItemNaturally(player.getLocation(), i);
     }
 
-    // ////////////////////////////////////////////////////
-    protected void setEnchantStorage(String enchStr) {
+    public void setEnchantStorage(String enchStr) {
         if (Utils.isStringEmpty(enchStr)) return;
         if (!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
         EnchantmentStorageMeta esm = (EnchantmentStorageMeta) this.getItemMeta();
@@ -271,7 +269,7 @@ public class VirtualItem extends ItemStack {
         this.setItemMeta(esm);
     }
 
-    protected void setMap(boolean scale) {
+    public void setMap(boolean scale) {
         if (this.getItemMeta() instanceof MapMeta) {
             MapMeta mm = (MapMeta) this.getItemMeta();
             mm.setScaling(scale);
@@ -280,7 +278,7 @@ public class VirtualItem extends ItemStack {
     }
 
 
-    protected void setPotionMeta(String potions) {
+    public void setPotionMeta(String potions) {
         if (Utils.isStringEmpty(potions))
             return;
         if (!(this.getItemMeta() instanceof PotionMeta))

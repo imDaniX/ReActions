@@ -11,7 +11,7 @@ public class ActionChatMessage extends Action {
     public boolean execute(RaContext context, Parameters params) {
         if (context.getPlayer() != null) {
             String msg = params.getParam("param-line");
-            msg = msg.replaceFirst("^[\\s\\/]+", "");
+            msg = msg.replaceFirst("^[\\s/]+", "");
             context.getPlayer().chat(msg);
         }
         return true;

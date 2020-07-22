@@ -37,7 +37,6 @@ public class ActionHeal extends Action {
             player = Utils.getPlayerExact(params.getParam("player"));
         if (player == null) return false;
         double hp = params.getParam("hp", 0);
-        boolean playHearts = params.getParam("hearts", true);
         if (params.isParamsExists("params")) hp = params.getParam("params", 0);
         double health = player.getHealth();
         double healthMax = EntityUtils.getMaxHealth(player);

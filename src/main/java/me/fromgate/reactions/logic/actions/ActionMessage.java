@@ -43,8 +43,9 @@ public class ActionMessage extends Action {
         return true;
     }
 
+    // TODO: Remove it somehow
     private String removeParams(String message) {
-        String sb = "(?i)(" + String.join("|", SelectorsManager.getAllKeys()) + "|hide):(\\{.*\\}|\\S+)\\s?";
+        String sb = "(?i)(" + String.join("|", SelectorsManager.getAllKeys()) + "|hide):(\\{.*}|\\S+)\\s?";
         return message.replaceAll(sb, "");
         //String message = params.getParam("text", params.getParam("param-line").replaceAll("(?i)(region|loc|radius|rgplayer|player|world|faction|group|perm):(\\{.*\\}|\\S+)\\s{0,1}", ""));
 

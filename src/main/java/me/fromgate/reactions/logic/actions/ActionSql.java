@@ -32,9 +32,9 @@ import java.util.Locale;
 
 public class ActionSql extends Action {
     // TODO: More functionality like working with arrays
-    private final int sqlType;
+    private final Type sqlType;
 
-    public ActionSql(int sqlType) {
+    public ActionSql(Type sqlType) {
         this.sqlType = sqlType;
     }
 
@@ -45,7 +45,7 @@ public class ActionSql extends Action {
         int column = params.getParam("column", 1);
         String query = params.getParam("query", "").trim();
         switch (sqlType) {
-            case 0: // SELECT to variable
+            case SELECT: // SELECT to variable
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("select")) {
                     Msg.logOnce("needselect" + query, "You need to use only \"SELECT\" query in SQL_SELECT action. Query: " + query);
@@ -54,7 +54,7 @@ public class ActionSql extends Action {
                 if (varName.isEmpty()) return false;
                 Variables.setVar(playerName, varName, SQLManager.executeSelect(query, column, params, context.getTempVariable("SQL_SET")));
                 break;
-            case 1: // INSERT
+            case INSERT: // INSERT
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("insert")) {
@@ -63,7 +63,7 @@ public class ActionSql extends Action {
                 }
                 SQLManager.executeUpdate(query, params);
                 break;
-            case 2: // UPDATE
+            case UPDATE: // UPDATE
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("update")) {
@@ -72,7 +72,7 @@ public class ActionSql extends Action {
                 }
                 SQLManager.executeUpdate(query, params);
                 break;
-            case 3: // DELETE
+            case DELETE: // DELETE
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("delete")) {
@@ -81,7 +81,7 @@ public class ActionSql extends Action {
                 }
                 SQLManager.executeUpdate(query, params);
                 break;
-            case 4: // SET
+            case SET: // SET
                 query = params.getParam("query", params.getParam("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("set")) {
@@ -94,5 +94,7 @@ public class ActionSql extends Action {
         return true;
     }
 
-
+    public enum Type {
+        SELECT, INSERT, UPDATE, DELETE, SET
+    }
 }

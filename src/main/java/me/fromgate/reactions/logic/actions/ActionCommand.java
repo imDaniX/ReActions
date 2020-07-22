@@ -32,14 +32,9 @@ import org.bukkit.entity.Player;
 
 public class ActionCommand extends Action {
 
-    public final static int NORMAL = 0;
-    public final static int OP = 1;
-    public final static int CONSOLE = 2;
-    public final static int CHAT = 3;
+    private final Type commandAs;
 
-    private final int commandAs;
-
-    public ActionCommand(int commandAs) {
+    public ActionCommand(Type commandAs) {
         this.commandAs = commandAs;
     }
 
@@ -56,7 +51,7 @@ public class ActionCommand extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        if (commandAs != CONSOLE && player == null) return false;
+        if (commandAs != Type.CONSOLE && player == null) return false;
         String commandLine = params.getParam("param-line");
         switch (commandAs) {
             case NORMAL:
@@ -76,4 +71,7 @@ public class ActionCommand extends Action {
         return true;
     }
 
+    public enum Type {
+        NORMAL, OP, CONSOLE, CHAT;
+    }
 }
