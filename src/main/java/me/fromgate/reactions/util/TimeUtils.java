@@ -20,7 +20,7 @@
  *
  */
 
-package me.fromgate.reactions.time;
+package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
@@ -31,11 +31,10 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class TimeUtil {
-
+public class TimeUtils {
     private final static Pattern TIME_HH_MM = Pattern.compile("^[0-5][0-9]:[0-5][0-9]$");
-    private final static Pattern TIME_HH_MM_SS = Pattern.compile("^([0-9]|0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$");
-    private final static Pattern TIME_X_MSDHMST = Pattern.compile("\\d+(ms|d|h|m|s|t)");
+    private final static Pattern TIME_HH_MM_SS = Pattern.compile("^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$");
+    private final static Pattern TIME_X_MSDHMST = Pattern.compile("\\d+([dhmst]|ms)");
     private final static Pattern TIME_X_MS = Pattern.compile("^\\d+ms$");
     private final static Pattern TIME_X_D = Pattern.compile("^\\d+d$");
     private final static Pattern TIME_X_H = Pattern.compile("^\\d+h$");
@@ -43,26 +42,18 @@ public class TimeUtil {
     private final static Pattern TIME_X_S = Pattern.compile("^\\d+s$");
     private final static Pattern TIME_X_T = Pattern.compile("^\\d+t$");
 
-    @SuppressWarnings("unused")
-    public static long getIngameTime() {
+    public static long ingameTime() {
         return Bukkit.getWorlds().get(0).getTime();
     }
 
-    public static String currentIngameTime() {
-        return ingameTimeToString(Bukkit.getWorlds().get(0).getTime());
+    public static String formattedIngameTime() {
+        return formattedIngameTime(Bukkit.getWorlds().get(0).getTime(), false);
     }
 
-    public static String ingameTimeToString(long ingameTime) {
-        return ingameTimeToString(ingameTime, false);
-    }
-
-    public static String ingameTimeToString(long time, boolean showms) {
-        String timeStr;
-        int hours = (int) ((time / 1000 + 6) % 24);
-        int minutes = (int) (60 * (time % 1000) / 1000);
-        timeStr = String.format("%02d:%02d", hours, minutes);
-        if (showms && (time < 1000)) timeStr = time + "ms";
-        return timeStr;
+    public static String formattedIngameTime(long time, boolean showms) {
+        return showms && (time < 1000) ?
+                time + "ms" :
+                (int) ((time / 1000 + 6) % 24) + ":" + (int) (60 * (time % 1000) / 1000);
     }
 
     public static String fullTimeToString(long time, String format) {
@@ -106,17 +97,17 @@ public class TimeUtil {
             while (matcher.find()) {
                 String foundTime = matcher.group();
                 if (TIME_X_MS.matcher(foundTime).matches())
-                    ms = Integer.parseInt(time.substring(0, time.length() - 2));
+                    ms = Integer.parseInt(foundTime.substring(0, foundTime.length() - 2));
                 else if (TIME_X_D.matcher(foundTime).matches())
-                    dd = Integer.parseInt(time.substring(0, time.length() - 1));
+                    dd = Integer.parseInt(foundTime.substring(0, foundTime.length() - 1));
                 else if (TIME_X_H.matcher(foundTime).matches())
-                    hh = Integer.parseInt(time.substring(0, time.length() - 1));
+                    hh = Integer.parseInt(foundTime.substring(0, foundTime.length() - 1));
                 else if (TIME_X_M.matcher(foundTime).matches())
-                    mm = Integer.parseInt(time.substring(0, time.length() - 1));
+                    mm = Integer.parseInt(foundTime.substring(0, foundTime.length() - 1));
                 else if (TIME_X_S.matcher(foundTime).matches())
-                    ss = Integer.parseInt(time.substring(0, time.length() - 1));
+                    ss = Integer.parseInt(foundTime.substring(0, foundTime.length() - 1));
                 else if (TIME_X_T.matcher(foundTime).matches())
-                    tt = Integer.parseInt(time.substring(0, time.length() - 1));
+                    tt = Integer.parseInt(foundTime.substring(0, foundTime.length() - 1));
             }
         }
         return Math.max(1, (dd * 86400000L) + (hh * 3600000L) + (mm * 60000L) + (ss * 1000L) + (tt * 50L) + ms);

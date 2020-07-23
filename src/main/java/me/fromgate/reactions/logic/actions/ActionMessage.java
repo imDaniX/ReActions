@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.playerselector.SelectorsManager;
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -95,7 +95,7 @@ public class ActionMessage extends Action {
 
     private boolean showMessage(Player player, String message, String annoymentTime) {
         if (annoymentTime.isEmpty()) return true;
-        long time = TimeUtil.parseTime(annoymentTime);
+        long time = TimeUtils.parseTime(annoymentTime);
         if (time == 0) return false;
         String key = "reactions-msg-" +/*.append(this.getActivatorName())*/message.hashCode() + (this.isAction() ? "act" : "react");
         if (player.hasMetadata(key)) {

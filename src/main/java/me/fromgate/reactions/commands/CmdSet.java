@@ -3,7 +3,7 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.command.CommandSender;
@@ -32,10 +32,10 @@ public class CmdSet extends Cmd {
             boolean add = params.getParam("add", false);
             String player = params.getParam("player", "");
             if (player.equalsIgnoreCase("%player%") && (p != null)) player = p.getName();
-            long time = /*System.currentTimeMillis()+*/TimeUtil.parseTime(params.getParam("delay", "3s")); //дефолтная задержка три секунды
+            long time = /*System.currentTimeMillis()+*/TimeUtils.parseTime(params.getParam("delay", "3s")); //дефолтная задержка три секунды
             if (player.isEmpty()) Delayer.setDelay(id, time, add);
             else Delayer.setPersonalDelay(player, id, time, add);
-            Msg.printMSG(sender, "cmd_delayset", player.isEmpty() ? id : player + "." + id, TimeUtil.fullTimeToString(System.currentTimeMillis() + time));
+            Msg.printMSG(sender, "cmd_delayset", player.isEmpty() ? id : player + "." + id, TimeUtils.fullTimeToString(System.currentTimeMillis() + time));
         } else if (var.equalsIgnoreCase("var") || var.equalsIgnoreCase("variable") || var.equalsIgnoreCase("v")) {
             String value = params.getParam("value", "");
             String player = params.getParam("player", "");

@@ -24,6 +24,7 @@ package me.fromgate.reactions.time;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.quartz.CronExpression;
@@ -86,7 +87,7 @@ public class Timer {
     }
 
     private boolean isIngameTimeToRun() {
-        return ingameTimer && timesIngame.contains(TimeUtil.currentIngameTime());
+        return ingameTimer && timesIngame.contains(TimeUtils.formattedIngameTime());
     }
 
     @Override

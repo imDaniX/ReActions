@@ -1,6 +1,6 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.Bukkit;
@@ -12,9 +12,9 @@ public class PlaceholderTime extends Placeholder {
     public String processPlaceholder(RaContext context, String key, String param) {
         Player player = context.getPlayer();
         if (Utils.containsValue(key, "TIME_INGAME", "curtime"))
-            return TimeUtil.ingameTimeToString((player == null ? Bukkit.getWorlds().get(0).getTime() : player.getWorld().getTime()), false);
+            return TimeUtils.formattedIngameTime((player == null ? Bukkit.getWorlds().get(0).getTime() : player.getWorld().getTime()), false);
         if (Utils.containsValue(key, "TIME_SERVER", "servertime"))
-            return TimeUtil.fullTimeToString(System.currentTimeMillis(), param.isEmpty() ? "dd-MM-YYYY HH:mm:ss" : param);
+            return TimeUtils.fullTimeToString(System.currentTimeMillis(), param.isEmpty() ? "dd-MM-YYYY HH:mm:ss" : param);
         return null;
     }
 }

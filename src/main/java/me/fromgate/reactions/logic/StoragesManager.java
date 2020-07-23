@@ -70,8 +70,8 @@ import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.TeleportStorage;
 import me.fromgate.reactions.logic.storages.VariableStorage;
 import me.fromgate.reactions.playerselector.SelectorsManager;
-import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.util.BlockUtils;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.enums.DeathCause;
@@ -261,7 +261,7 @@ public class StoragesManager {
 
         int repeat = Math.min(param.getParam("repeat", 1), 1);
 
-        long delay = TimeUtil.timeToTicks(TimeUtil.parseTime(param.getParam("delay", "1t")));
+        long delay = TimeUtils.timeToTicks(TimeUtils.parseTime(param.getParam("delay", "1t")));
 
         final Set<Player> target = new HashSet<>();
 

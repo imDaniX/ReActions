@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.flags;
 
 import me.fromgate.reactions.time.Delayer;
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
@@ -45,7 +45,7 @@ public class FlagDelay implements Flag {
         Parameters params = new Parameters(param);
         if (params.isParamsExists("id")) {
             id = params.getParam("id");
-            updateTime = TimeUtil.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
+            updateTime = TimeUtils.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
             playerName = params.getParam("player", playerName);
         }
         boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);

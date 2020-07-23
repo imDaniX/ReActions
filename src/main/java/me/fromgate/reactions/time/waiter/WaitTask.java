@@ -4,7 +4,7 @@ import lombok.Getter;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.actions.StoredAction;
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.Bukkit;
@@ -35,7 +35,7 @@ public class WaitTask implements Runnable {
         this.isAction = isAction;
         this.executed = false;
         this.executionTime = System.currentTimeMillis() + time;
-        task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
+        task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtils.timeToTicks(time));
     }
 
     public WaitTask(YamlConfiguration cfg, String taskId) {
@@ -44,7 +44,7 @@ public class WaitTask implements Runnable {
         long time = this.executionTime - System.currentTimeMillis();
         if (time < 0) this.execute();
         else
-            task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtil.timeToTicks(time));
+            task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtils.timeToTicks(time));
     }
 
     @Override

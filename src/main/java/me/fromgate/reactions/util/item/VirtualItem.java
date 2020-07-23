@@ -30,7 +30,7 @@
 
 package me.fromgate.reactions.util.item;
 
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.math.Rng;
@@ -295,7 +295,7 @@ public class VirtualItem extends ItemStack {
             if (pType == null)
                 continue;
             int amplifier = (ln.length > 1) ? Rng.nextIntFromString(ln[1]) : 0;
-            int duration = (ln.length > 2) ? (int) (TimeUtil.parseTime(ln[2]) / 50) : Integer.MAX_VALUE;
+            int duration = (ln.length > 2) ? (int) (TimeUtils.parseTime(ln[2]) / 50) : Integer.MAX_VALUE;
             pm.addCustomEffect(new PotionEffect(pType, duration, amplifier, true), true);
         }
         this.setItemMeta(pm);

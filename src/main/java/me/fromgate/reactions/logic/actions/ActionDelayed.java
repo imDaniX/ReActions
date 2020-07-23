@@ -1,7 +1,7 @@
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.time.TimeUtil;
 import me.fromgate.reactions.time.waiter.WaitingManager;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -10,7 +10,7 @@ public class ActionDelayed extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        long delay = TimeUtil.parseTime(params.getParam("time", "0"));
+        long delay = TimeUtils.parseTime(params.getParam("time", "0"));
         if (delay == 0) return false;
 
         String actionSource = params.getParam("action", "");

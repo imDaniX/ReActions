@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.time.Delayer;
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
@@ -61,7 +61,7 @@ public class ActionDelay extends Action {
 
         if (timeStr.isEmpty()) return false;
         if (variableId.isEmpty()) return false;
-        setDelay(playerName, variableId, TimeUtil.parseTime(timeStr), add);
+        setDelay(playerName, variableId, TimeUtils.parseTime(timeStr), add);
         Delayer.setTempPlaceholders(context, playerName, variableId);
         setMessageParam(context.getTempVariable("delay-left-hms", timeStr));
         return true;

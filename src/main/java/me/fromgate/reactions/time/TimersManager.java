@@ -25,6 +25,7 @@ package me.fromgate.reactions.time;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.FileUtils;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
@@ -181,7 +182,7 @@ public class TimersManager {
     public static void initIngameTimer() {
         if (ingameTimer != null) return;
         ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
-            String currentTime = TimeUtil.currentIngameTime();
+            String currentTime = TimeUtils.formattedIngameTime();
             if (currentIngameTime.equalsIgnoreCase(currentTime)) return;
             currentIngameTime = currentTime;
             if (!timersIngame.contains(currentIngameTime)) return;
@@ -204,15 +205,6 @@ public class TimersManager {
                 }
             }
         }, 1, 20);
-    }
-
-    public static String getCurrentIngameTime() {
-        return currentIngameTime;
-    }
-
-    public static void onDisable() {
-        ingameTimer.cancel();
-        serverTimer.cancel();
     }
 
     public static void load() {

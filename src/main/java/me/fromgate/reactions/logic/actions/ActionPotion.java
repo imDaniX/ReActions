@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.time.TimeUtil;
+import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -60,7 +60,7 @@ public class ActionPotion extends Action {
             } else peffstr = param;
         } else {
             peffstr = params.getParam("type", "");
-            duration = NumberUtils.safeLongToInt(TimeUtil.timeToTicks(TimeUtil.parseTime(params.getParam("time", "3s"))));
+            duration = NumberUtils.safeLongToInt(TimeUtils.timeToTicks(TimeUtils.parseTime(params.getParam("time", "3s"))));
             amplifier = Math.max(params.getParam("level", 1) - 1, 0);
             ambient = params.getParam("ambient", false);
         }
