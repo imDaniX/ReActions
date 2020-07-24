@@ -13,7 +13,9 @@ import java.util.Set;
 
 /**
  * Basically this is a wrapper for HashMap<String, V> which allows to ignore case of the key string
- * Works ~2.3 times faster than TreeMap<String, V>(String.CASE_INSENSITIVE_ORDER)
+ * Works ~2.3 times faster than TreeMap<String, V>(String.CASE_INSENSITIVE_ORDER) for Map#get and Map#put
+ *
+ * Should be used when keys are needed to save/proceed, otherwise HashMap<String, V> with String#toLowerCase
  * @param <V> Type of value
  */
 public class CaseInsensitiveMap<V> implements Map<String, V> {

@@ -24,6 +24,7 @@ package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.util.CaseInsensitiveMap;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.message.Msg;
@@ -40,7 +41,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class TimersManager {
 	/*
@@ -142,7 +142,7 @@ public class TimersManager {
     }
 
     public static Map<String, Timer> getIngameTimers() {
-        Map<String, Timer> ingameTimers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, Timer> ingameTimers = new CaseInsensitiveMap<>();
         for (String key : timers.keySet()) {
             Timer timer = timers.get(key);
             if (timer.isIngameTimer()) ingameTimers.put(key, timer);
@@ -151,7 +151,7 @@ public class TimersManager {
     }
 
     public static Map<String, Timer> getServerTimers() {
-        Map<String, Timer> serverTimers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, Timer> serverTimers = new CaseInsensitiveMap<>();
         for (String key : timers.keySet()) {
             Timer timer = timers.get(key);
             if (!timer.isIngameTimer()) serverTimers.put(key, timer);
@@ -173,7 +173,7 @@ public class TimersManager {
     public static void init() {
         currentIngameTime = "";
         timersIngame = new HashSet<>();
-        timers = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        timers = new CaseInsensitiveMap<>();
         load();
         initIngameTimer();
         initServerTimer();

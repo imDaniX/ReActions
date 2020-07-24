@@ -23,6 +23,7 @@
 package me.fromgate.reactions;
 
 import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.util.CaseInsensitiveMap;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.math.NumberUtils;
@@ -36,14 +37,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.UUID;
 
 public class Variables {
     // TODO: Something like classes and objects that just contains variables - actually just global variables
 
-    // TODO: Why treemap?
-    private static Map<String, String> vars = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+    private static Map<String, String> vars = new CaseInsensitiveMap<>();
 
     private static String varId(Player player, String var) {
         return (player == null ? "general." + var : player.getName() + "." + var);
@@ -227,7 +226,7 @@ public class Variables {
     }
 
     private static void removePlayerVars(String player) {
-        Map<String, String> varsTmp = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
+        Map<String, String> varsTmp = new CaseInsensitiveMap<>();
         YamlConfiguration cfg = new YamlConfiguration();
         String fileName = ReActions.getPlugin().getDataFolder() + File.separator + "variables.yml";
         File f = new File(fileName);
