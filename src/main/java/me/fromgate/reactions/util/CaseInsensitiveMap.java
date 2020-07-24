@@ -11,6 +11,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Basically this is a wrapper for HashMap<String, V> which allows to ignore case of the key string.
+ * It's pretty much experimental because this is my first implementation for Map class.
+ * I don't even know if this is faster than TreeMap<String, V>(String.CASE_INSENSITIVE_ORDER)
+ * @param <V> Type of value
+ */
 public class CaseInsensitiveMap<V> implements Map<String, V> {
     private final Map<String, KeyedValue<V>> origin;
     private final KeySet keySet;
