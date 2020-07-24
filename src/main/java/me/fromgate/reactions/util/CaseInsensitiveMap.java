@@ -1,0 +1,193 @@
+package me.fromgate.reactions.util;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.AbstractSet;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
+public class CaseInsensitiveMap<V> implements Map<String, V> {
+    private final Map<String, KeyedValue<V>> origin;
+    private final KeySet keySet;
+    private final ValueSet valueSet;
+    private final EntrySet entrySet;
+
+    public CaseInsensitiveMap() {
+        origin = new HashMap<>();
+        keySet = new KeySet();
+        valueSet = new ValueSet();
+        entrySet = new EntrySet();
+    }
+
+    public CaseInsensitiveMap(Map<String, V> copy) {
+        this();
+        putAll(copy);
+    }
+
+    @Override
+    public int size() {
+        return origin.size();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return origin.isEmpty();
+    }
+
+    @Override
+    public boolean containsKey(Object o) {
+        return origin.containsKey(((String)o).toLowerCase(Locale.ENGLISH));
+    }
+
+    @Override
+    public boolean containsValue(Object o) {
+        return origin.containsValue(new KeyedValue<>(null, o));
+    }
+
+    @Override
+    public V get(Object o) {
+        return origin.getOrDefault(((String)o).toLowerCase(Locale.ENGLISH), KeyedValue.empty()).getValue();
+    }
+
+    @Override
+    public V put(String s, V v) {
+        KeyedValue<V> result = origin.put(s.toLowerCase(Locale.ENGLISH), new KeyedValue<>(s, v));
+        return result == null ? null : result.getValue();
+    }
+
+    @Override
+    public V remove(Object o) {
+        KeyedValue<V> result = origin.remove(((String)o).toLowerCase(Locale.ENGLISH));
+        return result == null ? null : result.getValue();
+    }
+
+    @Override
+    public void putAll(Map<? extends String, ? extends V> map) {
+        map.forEach((k, v) -> origin.put(k.toLowerCase(Locale.ENGLISH), new KeyedValue<>(k, v)));
+    }
+
+    @Override
+    public void clear() {
+        origin.clear();
+    }
+
+    @Override
+    public Set<String> keySet() {
+        return keySet;
+    }
+
+    @Override
+    public Collection<V> values() {
+        return valueSet;
+    }
+
+    @Override
+    public Set<Entry<String, V>> entrySet() {
+        return entrySet;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @SuppressWarnings("unchecked")
+    private static class KeyedValue<V> implements Map.Entry<String, V> {
+        private static final KeyedValue EMPTY = new KeyedValue(null, null);
+
+        private final String key;
+        @Setter
+        private V value;
+
+        @Override
+        public boolean equals(Object o) {
+            return value == ((KeyedValue) o).value || value.equals(((KeyedValue) o).value);
+        }
+
+        @Override
+        public int hashCode() {
+            return value.hashCode();
+        }
+
+        public static <T> KeyedValue<T> empty() {
+            return (KeyedValue<T>) EMPTY;
+        }
+    }
+
+    private abstract class InternalSet<E> extends AbstractSet<E>{
+        @Override
+        public int size() {
+            return CaseInsensitiveMap.this.size();
+        }
+
+        @Override
+        public void clear() {
+            CaseInsensitiveMap.this.clear();
+        }
+        // TODO etc?
+
+        public abstract class InternalIterator implements Iterator<E> {
+            final Iterator<KeyedValue<V>> internal;
+
+            public InternalIterator() {
+                this.internal = CaseInsensitiveMap.this.origin.values().iterator();
+            }
+
+            @Override
+            public boolean hasNext() {
+                return internal.hasNext();
+            }
+
+            @Override
+            public void remove() {
+                internal.remove();
+            }
+        }
+    }
+
+    private class KeySet extends InternalSet<String> {
+        @Override
+        public Iterator<String> iterator() {
+            return new KeyIterator();
+        }
+
+        private class KeyIterator extends InternalIterator {
+            @Override
+            public String next() {
+                return internal.next().getKey();
+            }
+        }
+    }
+
+    private class ValueSet extends InternalSet<V> {
+        @Override
+        public Iterator<V> iterator() {
+            return new ValueIterator();
+        }
+
+        private class ValueIterator extends InternalIterator {
+            @Override
+            public V next() {
+                return internal.next().getValue();
+            }
+        }
+    }
+
+    private class EntrySet extends InternalSet<Entry<String, V>> {
+        @Override
+        public Iterator<Entry<String, V>> iterator() {
+            return new EntrySet.EntryIterator();
+        }
+
+        private class EntryIterator extends InternalIterator {
+            @Override
+            public Entry<String, V> next() {
+                return internal.next();
+            }
+        }
+    }
+
+}
