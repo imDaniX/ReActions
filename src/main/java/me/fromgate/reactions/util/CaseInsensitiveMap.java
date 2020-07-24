@@ -2,7 +2,6 @@ package me.fromgate.reactions.util;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.AbstractSet;
 import java.util.Collection;
@@ -99,8 +98,13 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
         private static final KeyedValue EMPTY = new KeyedValue(null, null);
 
         private final String key;
-        @Setter
         private V value;
+
+        @Override
+        public V setValue(V value) {
+            this.value = value;
+            return value;
+        }
 
         @Override
         public boolean equals(Object o) {
