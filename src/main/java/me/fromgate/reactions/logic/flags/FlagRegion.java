@@ -45,9 +45,9 @@ public class FlagRegion implements Flag {
             case REGION_PLAYERS:
                 return playersInRegion(param);
             case REGION_MEMBER:
-                return RaWorldGuard.isPlayerIsMember(player, param);
+                return RaWorldGuard.isMember(player, param);
             case REGION_OWNER:
-                return RaWorldGuard.isPlayerIsOwner(player, param);
+                return RaWorldGuard.isOwner(player, param);
             case REGION_STATE:
                 return RaWorldGuard.isFlagInRegion(player, param);
         }

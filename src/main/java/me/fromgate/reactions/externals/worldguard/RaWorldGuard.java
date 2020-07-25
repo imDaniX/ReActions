@@ -105,16 +105,16 @@ public class RaWorldGuard {
         return bridge.getRegionLocations(rg, land);
     }
 
-    public static boolean isPlayerIsMemberOrOwner(Player p, String region) {
-        return bridge.isPlayerIsMemberOrOwner(p, region);
+    public static boolean isMemberOrOwner(Player p, String region) {
+        return bridge.isMemberOrOwner(p, region);
     }
 
-    public static boolean isPlayerIsOwner(Player p, String region) {
-        return bridge.isPlayerIsOwner(p, region);
+    public static boolean isOwner(Player p, String region) {
+        return bridge.isOwner(p, region);
     }
 
-    public static boolean isPlayerIsMember(Player p, String region) {
-        return bridge.isPlayerIsMember(p, region);
+    public static boolean isMember(Player p, String region) {
+        return bridge.isMember(p, region);
     }
 
     public static boolean isConnected() {

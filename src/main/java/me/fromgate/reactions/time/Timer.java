@@ -46,14 +46,15 @@ public class Timer {
     private Parameters params;
     @Getter
     private Set<String> timesIngame;
+
     private CronExpression timeServer;
 
-    public Timer(Parameters params2) {
+    public Timer(Parameters params) {
         this.timesIngame = new HashSet<>();
-        this.params = params2;
-        this.ingameTimer = params2.getParam("timer-type", "ingame").equalsIgnoreCase("ingame");
-        this.paused = params2.getParam("paused", false);
-        params2.set("paused", String.valueOf(this.paused));
+        this.params = params;
+        this.ingameTimer = params.getParam("timer-type", "ingame").equalsIgnoreCase("ingame");
+        this.paused = params.getParam("paused", false);
+        params.set("paused", String.valueOf(this.paused));
         this.parseTime();
 
     }

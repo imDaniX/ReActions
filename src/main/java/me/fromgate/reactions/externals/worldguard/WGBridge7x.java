@@ -193,7 +193,7 @@ public class WGBridge7x extends WGBridge {
     }
 
     @Override
-    public boolean isPlayerIsMemberOrOwner(Player p, String region) {
+    public boolean isMemberOrOwner(Player p, String region) {
         if (!connected) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
         if (localPlayer == null) return false;
@@ -207,7 +207,7 @@ public class WGBridge7x extends WGBridge {
 
 
     @Override
-    public boolean isPlayerIsOwner(Player p, String region) {
+    public boolean isOwner(Player p, String region) {
         if (!connected) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
         if (localPlayer == null) return false;
@@ -220,7 +220,7 @@ public class WGBridge7x extends WGBridge {
     }
 
     @Override
-    public boolean isPlayerIsMember(Player p, String region) {
+    public boolean isMember(Player p, String region) {
         if (!connected) return false;
         LocalPlayer localPlayer = p != null ? worldguard.wrapPlayer(p) : null;
         if (localPlayer == null) return false;

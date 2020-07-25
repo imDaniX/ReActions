@@ -60,7 +60,6 @@ public abstract class WGBridge {
     private void connectToWorldGuard() {
         Plugin twn = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
         if (twn == null) return;
-        if (!twn.getClass().getName().equals("com.sk89q.worldguard.bukkit.WorldGuardPlugin")) return;
         wgPlugin = twn;
         connected = true;
     }
@@ -89,11 +88,11 @@ public abstract class WGBridge {
 
     public abstract List<Location> getRegionLocations(String rg, boolean land);
 
-    public abstract boolean isPlayerIsMemberOrOwner(Player p, String region);
+    public abstract boolean isMemberOrOwner(Player p, String region);
 
-    public abstract boolean isPlayerIsOwner(Player p, String region);
+    public abstract boolean isOwner(Player p, String region);
 
-    public abstract boolean isPlayerIsMember(Player p, String region);
+    public abstract boolean isMember(Player p, String region);
 
     public abstract boolean isFlagInRegion(Player p, String region);
 

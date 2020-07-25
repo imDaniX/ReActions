@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class WaitTask implements Runnable {
     @Getter
-    private String taskId;
+    private final String taskId;
     @Getter
     private String playerName;
     @Getter
