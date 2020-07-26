@@ -28,7 +28,7 @@ public class CmdHelp extends Cmd {
         } else if (arg1.equalsIgnoreCase("activator") || arg1.equalsIgnoreCase("activators")) {
             ActivatorType.listActivators(sender, page);
         } else if (arg1.equalsIgnoreCase("placeholder") || arg1.equalsIgnoreCase("placeholders")) {
-            PlaceholdersManager.listPlaceholders(sender, page);
+            PlaceholdersManager.getInstance().listPlaceholders(sender, page);
         } else {
             if (!arg1.equalsIgnoreCase("help")) page = 1;
             Commander.printHelp(sender, page);

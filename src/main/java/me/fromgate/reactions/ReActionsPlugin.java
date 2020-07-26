@@ -22,7 +22,6 @@
 
 package me.fromgate.reactions;
 
-import lombok.Getter;
 import me.fromgate.reactions.commands.Commander;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.events.listeners.BukkitListener;
@@ -46,16 +45,26 @@ import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ReActionsPlugin extends JavaPlugin {
+public class ReActionsPlugin extends JavaPlugin implements ReActions.Provider {
 
-    @Getter
+    // TODO: Better to remove;
     private static ReActionsPlugin instance;
+    public static JavaPlugin getInstance() {
+        return instance;
+    }
+
+    private ActivatorsManager activatorsManager;
+    private PlaceholdersManager placeholdersManager;
+
+    @Override
+    public void onLoad() {
+        ReActionsPlugin.instance = this;
+        ReActions.register(this);
+    }
 
     @Override
     public void onEnable() {
         // TODO: More OOP style
-
-        instance = this;
         Cfg.load();
         Cfg.save();
         Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
@@ -64,7 +73,7 @@ public class ReActionsPlugin extends JavaPlugin {
 
         Commander.init(this);
         TimersManager.init();
-        new ActivatorsManager();
+        this.activatorsManager = new ActivatorsManager();
         FakeCommander.init();
         SelectorsManager.init();
         Externals.init();
@@ -76,7 +85,7 @@ public class ReActionsPlugin extends JavaPlugin {
         LocationHolder.loadLocs();
         SQLManager.init();
         InventoryMenu.init();
-        PlaceholdersManager.init();
+        this.placeholdersManager = new PlaceholdersManager();
         Bukkit.getLogger().addHandler(new LogHandler());
         Bukkit.getPluginManager().registerEvents(new BukkitListener(), this);
         Bukkit.getPluginManager().registerEvents(new RaListener(), this);
@@ -86,4 +95,13 @@ public class ReActionsPlugin extends JavaPlugin {
         new MetricsLite(this, 1894);
     }
 
+    @Override
+    public ActivatorsManager getActivatorsManager() {
+        return activatorsManager;
+    }
+
+    @Override
+    public PlaceholdersManager getPlaceholdersManager() {
+        return placeholdersManager;
+    }
 }

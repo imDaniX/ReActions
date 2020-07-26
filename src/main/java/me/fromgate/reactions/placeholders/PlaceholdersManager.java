@@ -20,26 +20,29 @@ import java.util.regex.Pattern;
 
 // TODO: Redesign all the system of placeholders.
 public class PlaceholdersManager {
-    private final static Pattern PATTERN_RAW = Pattern.compile("%raw:((%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%))%");
+    private static final Pattern PATTERN_RAW = Pattern.compile("%raw:((%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%))%");
     private static final Pattern PLACEHOLDER_GREEDY = Pattern.compile("%\\S+%");
     private static final Pattern PLACEHOLDER_NONGREEDY = Pattern.compile("%\\S+?%");
 
     @Getter
+    private static PlaceholdersManager instance;
+
+    private final Set<Placeholder> placeholders = new HashSet<>();
+    @Getter
     @Setter
-    private static int countLimit = 127;
+    private int countLimit = 127;
 
-    private static Set<Placeholder> placeholders = new HashSet<>();
-
-    public static void init() {
+    public PlaceholdersManager() {
         add(new PlaceholderPlayer());
         add(new PlaceholderMoney());
         add(new PlaceholderRandom());
         add(new PlaceholderTime());
         add(new PlaceholderCalc());
         add(new PlaceholderActivator());
+        PlaceholdersManager.instance = this;
     }
 
-    public static boolean add(Placeholder ph) {
+    public boolean add(Placeholder ph) {
         if (ph == null) return false;
         if (ph.getKeys().isEmpty()) return false;
         if (ph.getId().equalsIgnoreCase("UNKNOWN")) return false;
@@ -47,7 +50,7 @@ public class PlaceholdersManager {
         return true;
     }
 
-    public static String replacePlaceholders(RaContext context, String original) {
+    public String replacePlaceholders(RaContext context, String original) {
         List<String> raws = new ArrayList<>();
         String result = original;
 
@@ -69,7 +72,7 @@ public class PlaceholdersManager {
         return result;
     }
 
-    private static String parsePlaceholders(String text, RaContext context) {
+    private String parsePlaceholders(String text, RaContext context) {
         if (text == null || text.length() < 3) return text;
         String oldText;
         int limit = countLimit;
@@ -81,7 +84,7 @@ public class PlaceholdersManager {
         return text;
     }
 
-    private static String parseRecursive(String text, final Pattern phPattern, final RaContext context) {
+    private String parseRecursive(String text, final Pattern phPattern, final RaContext context) {
         Matcher phMatcher = phPattern.matcher(text);
         // If found at least one
         if (phMatcher.find()) {
@@ -96,7 +99,7 @@ public class PlaceholdersManager {
     }
 
     // Just some sh!tty stuff
-    private static void processIteration(StringBuffer buffer, Matcher matcher, Pattern pattern, RaContext context) {
+    private void processIteration(StringBuffer buffer, Matcher matcher, Pattern pattern, RaContext context) {
         matcher.appendReplacement(
                 buffer,
                 Matcher.quoteReplacement(
@@ -116,7 +119,7 @@ public class PlaceholdersManager {
         return text.substring(1, text.length() - 1);
     }
 
-    private static String replacePlaceholder(String text, RaContext context) {
+    private String replacePlaceholder(String text, RaContext context) {
         String result = context.getTempVariable(text);
         if (result != null) return result;
         String[] ph = text.split(":", 2);
@@ -148,7 +151,7 @@ public class PlaceholdersManager {
         return RaPlaceholderAPI.processPlaceholder(context.getPlayer(), "%" + text + "%");
     }
 
-    public static void listPlaceholders(CommandSender sender, int pageNum) {
+    public void listPlaceholders(CommandSender sender, int pageNum) {
         List<String> phList = new ArrayList<>();
         for (Placeholder ph : placeholders) {
             for (String phKey : ph.getKeys()) {

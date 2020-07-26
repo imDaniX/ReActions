@@ -180,7 +180,7 @@ public enum Actions {
             if (at == Actions.WAIT) {
                 if (i == actions.size() - 1) return;
                 ActionWait aw = (ActionWait) at.action;
-                Parameters param = new Parameters(PlaceholdersManager.replacePlaceholders(context, av.getValue()), "time");
+                Parameters param = new Parameters(PlaceholdersManager.getInstance().replacePlaceholders(context, av.getValue()), "time");
                 String timeStr = param.getParam("time", "0");
                 long time = TimeUtils.parseTime(timeStr);
                 if (time == 0) continue;
@@ -188,7 +188,7 @@ public enum Actions {
                 aw.executeDelayed(context.getPlayer(), futureList, isAction, time);
                 return;
             }
-            at.performAction(context, isAction, new Parameters(PlaceholdersManager.replacePlaceholders(context, av.getValue())));
+            at.performAction(context, isAction, new Parameters(PlaceholdersManager.getInstance().replacePlaceholders(context, av.getValue())));
         }
     }
 

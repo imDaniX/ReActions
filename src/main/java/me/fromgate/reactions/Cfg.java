@@ -39,7 +39,7 @@ public class Cfg {
         config.set("general.player-asynch-save-self-variable-file", playerAsynchSaveSelfVarFile);
         config.set("general.player-move-event.use-task", playerMoveTaskUse);
         config.set("general.player-move-event.task-tick", playerMoveTaskTick);
-        config.set("general.placeholder-limit", PlaceholdersManager.getCountLimit());
+        config.set("general.placeholder-limit", PlaceholdersManager.getInstance().getCountLimit());
         config.set("general.waiter-hours-limit", WaitingManager.getTimeLimit());
         config.set("reactions.activators.god.enable", godActivatorEnable);
         config.set("reactions.activators.god.recheck-ticks", godActivatorCheckTicks);
@@ -66,7 +66,7 @@ public class Cfg {
         playerAsynchSaveSelfVarFile = config.getBoolean("general.player-asynch-save-self-variable-file", false);
         playerMoveTaskUse = config.getBoolean("general.player-move-event.use-task", false);
         playerMoveTaskTick = config.getInt("general.player-move-event.task-tick", 5);
-        PlaceholdersManager.setCountLimit(config.getInt("general.placeholder-limit", 127));
+        PlaceholdersManager.getInstance().setCountLimit(config.getInt("general.placeholder-limit", 127));
         WaitingManager.setTimeLimit(config.getInt("general.waiter-hours-limit", 720));
         godActivatorEnable = config.getBoolean("reactions.activators.god.enable", true);
         godActivatorCheckTicks = config.getInt("reactions.activators.god.recheck-ticks", 10);
