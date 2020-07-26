@@ -1,7 +1,7 @@
 package me.fromgate.reactions.time.waiter;
 
 import lombok.Getter;
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.actions.StoredAction;
 import me.fromgate.reactions.util.TimeUtils;
@@ -35,7 +35,7 @@ public class WaitTask implements Runnable {
         this.isAction = isAction;
         this.executed = false;
         this.executionTime = System.currentTimeMillis() + time;
-        task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtils.timeToTicks(time));
+        task = Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), this, TimeUtils.timeToTicks(time));
     }
 
     public WaitTask(YamlConfiguration cfg, String taskId) {
@@ -44,7 +44,7 @@ public class WaitTask implements Runnable {
         long time = this.executionTime - System.currentTimeMillis();
         if (time < 0) this.execute();
         else
-            task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtils.timeToTicks(time));
+            task = Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), this, TimeUtils.timeToTicks(time));
     }
 
     @Override
@@ -57,7 +57,7 @@ public class WaitTask implements Runnable {
         Player p = playerName == null ? null : Utils.getPlayerExact(playerName);
         if (System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
         if (p == null && playerName != null) return;
-        Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions, isAction));
+        Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions, isAction));
         this.executed = true;
     }
 

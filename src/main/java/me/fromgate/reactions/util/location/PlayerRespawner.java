@@ -58,7 +58,7 @@ public class PlayerRespawner {
         DeathCause d = killer == null ?
                 DeathCause.OTHER :
                 killer.getType() == EntityType.PLAYER ? DeathCause.PVP : DeathCause.PVE;
-        ActivatorsManager.activate(new RespawnStorage(player, killer, d, respawnLoc));
+        ActivatorsManager.getInstance().activate(new RespawnStorage(player, killer, d, respawnLoc));
     }
 
 }

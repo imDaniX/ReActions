@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.util.mob;
 
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.item.ItemUtils;
@@ -157,17 +157,17 @@ public class MobSpawn {
 
     private static void setMobXP(LivingEntity e, String xp) {
         if (xp.isEmpty()) return;
-        e.setMetadata("ReActions-xp", new FixedMetadataValue(ReActions.getPlugin(), xp));
+        e.setMetadata("ReActions-xp", new FixedMetadataValue(ReActionsPlugin.getInstance(), xp));
     }
 
     private static void setMobMoney(LivingEntity e, String money) {
         if (money.isEmpty()) return;
-        e.setMetadata("ReActions-money", new FixedMetadataValue(ReActions.getPlugin(), money));
+        e.setMetadata("ReActions-money", new FixedMetadataValue(ReActionsPlugin.getInstance(), money));
     }
 
     private static void setMobExec(LivingEntity e, String exec_activator, String exec_delay) {
         if (exec_activator.isEmpty()) return;
-        e.setMetadata("ReActions-activator", new FixedMetadataValue(ReActions.getPlugin(), "activator:" + exec_activator + (exec_delay.isEmpty() ? "" : " delay:" + exec_delay)));
+        e.setMetadata("ReActions-activator", new FixedMetadataValue(ReActionsPlugin.getInstance(), "activator:" + exec_activator + (exec_delay.isEmpty() ? "" : " delay:" + exec_delay)));
     }
 
     private static void setMobDrop(LivingEntity e, String drop) {
@@ -180,17 +180,17 @@ public class MobSpawn {
 
     private static void setMobDmgMultiplier(LivingEntity e, double dmg) {
         if (dmg < 0) return;
-        e.setMetadata("ReActions-dmg", new FixedMetadataValue(ReActions.getPlugin(), dmg));
+        e.setMetadata("ReActions-dmg", new FixedMetadataValue(ReActionsPlugin.getInstance(), dmg));
     }
 
     private static void setMobCry(LivingEntity e, String cry) {
         if (cry.isEmpty()) return;
-        e.setMetadata("ReActions-cry", new FixedMetadataValue(ReActions.getPlugin(), cry));
+        e.setMetadata("ReActions-cry", new FixedMetadataValue(ReActionsPlugin.getInstance(), cry));
     }
 
     private static void setMobGrowl(LivingEntity e, String growl) {
         if (growl.isEmpty()) return;
-        e.setMetadata("ReActions-growl", new FixedMetadataValue(ReActions.getPlugin(), growl));
+        e.setMetadata("ReActions-growl", new FixedMetadataValue(ReActionsPlugin.getInstance(), growl));
     }
 
     private static void setMobDropStack(LivingEntity e, List<ItemStack> stack) {
@@ -201,7 +201,7 @@ public class MobSpawn {
 
     private static void setDeathEffect(LivingEntity e, String dtheffect) {
         if (dtheffect.isEmpty()) return;
-        e.setMetadata("ReActions-deatheffect", new FixedMetadataValue(ReActions.getPlugin(), dtheffect));
+        e.setMetadata("ReActions-deatheffect", new FixedMetadataValue(ReActionsPlugin.getInstance(), dtheffect));
     }
 
 

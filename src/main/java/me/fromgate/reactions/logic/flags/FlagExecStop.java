@@ -31,7 +31,7 @@ public class FlagExecStop implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        return ActivatorsManager.isStopped(player, param, false);
+        return ActivatorsManager.getInstance().isStopped(player, param, false);
     }
 
 }

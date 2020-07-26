@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions;
 
+import lombok.Getter;
 import me.fromgate.reactions.commands.Commander;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.events.listeners.BukkitListener;
@@ -45,13 +46,10 @@ import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class ReActions extends JavaPlugin {
+public class ReActionsPlugin extends JavaPlugin {
 
-    private static ReActions instance;
-
-    public static JavaPlugin getPlugin() {
-        return instance;
-    }
+    @Getter
+    private static ReActionsPlugin instance;
 
     @Override
     public void onEnable() {
@@ -66,7 +64,7 @@ public class ReActions extends JavaPlugin {
 
         Commander.init(this);
         TimersManager.init();
-        ActivatorsManager.init();
+        new ActivatorsManager();
         FakeCommander.init();
         SelectorsManager.init();
         Externals.init();

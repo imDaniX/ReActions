@@ -23,7 +23,7 @@
 package me.fromgate.reactions.events.listeners;
 
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.events.PlayerMoveByBlockEvent;
 import me.fromgate.reactions.events.PlayerStayEvent;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -47,14 +47,14 @@ public class MoveListener implements Listener {
 
     public static void init() {
         if (Cfg.playerMoveTaskUse) {
-            Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(pl -> {
+            Bukkit.getScheduler().runTaskTimer(ReActionsPlugin.getInstance(), () -> Bukkit.getOnlinePlayers().forEach(pl -> {
                 Location from = prevLocations.get(pl.getUniqueId());
                 Location to = pl.getLocation();
                 if (to.getWorld() != from.getWorld()) from = null;
                 processMove(pl, from, to);
                 prevLocations.put(pl.getUniqueId(), to);
             }), 30, Cfg.playerMoveTaskTick);
-        } else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
+        } else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActionsPlugin.getInstance());
     }
 
     private static void processMove(Player player, Location from, Location to) {

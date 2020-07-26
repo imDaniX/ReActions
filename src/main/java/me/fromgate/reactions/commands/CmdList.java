@@ -80,19 +80,19 @@ public class CmdList extends Cmd {
     }
 
     private void printAct(CommandSender sender, int page, int lpp) {
-        List<String> ag = ActivatorsManager.getNames();
+        List<String> ag = ActivatorsManager.getInstance().getNames();
         Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
-        Msg.MSG_LISTCOUNT.print(sender, ActivatorsManager.size(), LocationHolder.sizeTpLoc());
+        Msg.MSG_LISTCOUNT.print(sender, ActivatorsManager.getInstance().size(), LocationHolder.sizeTpLoc());
     }
 
     private void printActGroup(CommandSender sender, String group, int page, int lpp) {
-        List<String> ag = ActivatorsManager.getNamesByGroup(group);
+        List<String> ag = ActivatorsManager.getInstance().getNamesByGroup(group);
         Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
         Msg.printPage(sender, ag, null, page, lpp, true);
     }
 
     private void printActType(CommandSender sender, String type, int page, int lpp) {
-        List<String> ag = ActivatorsManager.getNamesByType(type);
+        List<String> ag = ActivatorsManager.getInstance().getNamesByType(type);
         Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
         Msg.printPage(sender, ag, null, page, lpp, true);
     }

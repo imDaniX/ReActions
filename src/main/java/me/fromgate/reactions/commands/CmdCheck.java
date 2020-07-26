@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.util.math.NumberUtils;
@@ -28,18 +28,18 @@ public class CmdCheck extends Cmd {
         int playerY = player.getLocation().getBlockY();
         int playerZ = player.getLocation().getBlockZ();
         World world = player.getWorld();
-        Bukkit.getScheduler().runTaskAsynchronously(ReActions.getPlugin(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(ReActionsPlugin.getInstance(), () -> {
             List<String> total = new ArrayList<>();
             for (int x = playerX - radius; x <= playerX + radius; x++) {
                 for (int y = playerY - radius; y <= playerY + radius; y++) {
                     for (int z = playerZ - radius; z <= playerZ + radius; z++) {
-                        List<Activator> found = ActivatorsManager.getActivatorInLocation(world, x, y, z);
+                        List<Activator> found = ActivatorsManager.getInstance().getActivatorInLocation(world, x, y, z);
                         if (found.isEmpty()) continue;
                         found.forEach(a -> total.add(a.toString()));
                     }
                 }
             }
-            Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Msg.printPage(player, total, Msg.MSG_CHECK, 1, 100, true));
+            Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> Msg.printPage(player, total, Msg.MSG_CHECK, 1, 100, true));
         });
     }
 }

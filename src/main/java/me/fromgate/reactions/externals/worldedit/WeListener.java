@@ -31,7 +31,7 @@ import com.sk89q.worldedit.extension.platform.Actor;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.util.eventbus.Subscribe;
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.WeChangeStorage;
@@ -52,13 +52,13 @@ public class WeListener {
                 BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
                 selection.getArea(), BukkitAdapter.adapt(selection.getWorld()), region.toString());
         WeSelectionRegionStorage e = new WeSelectionRegionStorage(player, weSelection);
-        ActivatorsManager.activate(e);
+        ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
     public static boolean raiseWEChangeActivator(Player player, Location location, Material blockType) {
         WeChangeStorage e = new WeChangeStorage(player, location, blockType);
-        ActivatorsManager.activate(e);
+        ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
@@ -67,7 +67,7 @@ public class WeListener {
         Actor actor = event.getActor();
         if (actor != null && actor.isPlayer()) {
             Player player = Bukkit.getPlayer(actor.getUniqueId());
-            Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
+            Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
                 Region selection = getSelection(player);
                 if (selection != null) {
                     Region region;

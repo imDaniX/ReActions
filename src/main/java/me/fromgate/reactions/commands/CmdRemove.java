@@ -29,10 +29,10 @@ public class CmdRemove extends Cmd {
         }
         if (arg2.isEmpty()) return false;
         if (arg1.equalsIgnoreCase("act") || arg1.equalsIgnoreCase("activator")) {
-            if (ActivatorsManager.containsActivator(arg2)) {
-                ActivatorsManager.removeActivator(arg2);
+            if (ActivatorsManager.getInstance().containsActivator(arg2)) {
+                ActivatorsManager.getInstance().removeActivator(arg2);
                 Msg.printMSG(sender, "msg_removebok", arg2);
-                ActivatorsManager.saveActivators();
+                ActivatorsManager.getInstance().saveActivators();
             } else Msg.printMSG(sender, "msg_removebnf", arg2);
         } else if (arg1.equalsIgnoreCase("loc")) {
             if (LocationHolder.removeTpLoc(arg2)) {
@@ -46,8 +46,8 @@ public class CmdRemove extends Cmd {
         } else if (arg1.equalsIgnoreCase("menu") || arg1.equalsIgnoreCase("m")) {
             if (InventoryMenu.remove(arg2)) Msg.printMSG(sender, "msg_removemenu", arg2);
             else Msg.printMSG(sender, "msg_removemenufail", 'c', '4', arg2);
-        } else if (ActivatorsManager.containsActivator(arg1)) {
-            ActivatorBase act = ActivatorsManager.getActivator(arg1).getBase();
+        } else if (ActivatorsManager.getInstance().containsActivator(arg1)) {
+            ActivatorBase act = ActivatorsManager.getInstance().getActivator(arg1).getBase();
             if (NumberUtils.isNonzeroInteger(arg3.toString())) {
                 int num = Integer.parseInt(arg3.toString());
                 if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
@@ -63,7 +63,7 @@ public class CmdRemove extends Cmd {
                         Msg.printMSG(sender, "msg_reactionremoved", act.getName(), num);
                     else Msg.printMSG(sender, "msg_failedtoremovereaction", act.getName(), num);
                 } else return false;
-                ActivatorsManager.saveActivators();
+                ActivatorsManager.getInstance().saveActivators();
             } else Msg.printMSG(sender, "msg_wrongnumber", arg3.toString());
         }
         return true;

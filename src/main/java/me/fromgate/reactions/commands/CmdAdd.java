@@ -27,9 +27,9 @@ public class CmdAdd extends Cmd {
                 arg4.append(" ").append(args[i]);
             arg4 = new StringBuilder(arg4.toString().trim());
         }
-        if (ActivatorsManager.containsActivator(arg1)) {
+        if (ActivatorsManager.getInstance().containsActivator(arg1)) {
             String param = LocationUtils.parsePlaceholders(player, arg4.toString()); // используется в addActions
-            Activator act = ActivatorsManager.getActivator(arg1);
+            Activator act = ActivatorsManager.getInstance().getActivator(arg1);
             switch (arg2) {
                 case "a":
                 case "action":
@@ -62,7 +62,7 @@ public class CmdAdd extends Cmd {
                     Msg.CMD_UNKNOWNBUTTON.print(sender, arg2);
                     return true;
             }
-            ActivatorsManager.saveActivators(act.getBase().getGroup());
+            ActivatorsManager.getInstance().saveActivators(act.getBase().getGroup());
         } else {
             Msg.CMD_UNKNOWNADD.print(sender, 'c');
         }
@@ -71,7 +71,7 @@ public class CmdAdd extends Cmd {
 
     private boolean addAction(String activator, String act, String param) {
         if (Actions.isValid(act)) {
-            ActivatorsManager.addAction(activator, act, param);
+            ActivatorsManager.getInstance().addAction(activator, act, param);
             return true;
         }
         return false;
@@ -79,7 +79,7 @@ public class CmdAdd extends Cmd {
 
     private boolean addReaction(String activator, String act, String param) {
         if (Actions.isValid(act)) {
-            ActivatorsManager.addReaction(activator, act, param);
+            ActivatorsManager.getInstance().addReaction(activator, act, param);
             return true;
         }
         return false;
@@ -90,7 +90,7 @@ public class CmdAdd extends Cmd {
         boolean not = fl.startsWith("!");
         if (Flags.isValid(flag)) {
             // TODO: все эти проверки вынести в соответствующие классы
-            ActivatorsManager.addFlag(activator, flag, param, not);
+            ActivatorsManager.getInstance().addFlag(activator, flag, param, not);
             return true;
         }
         return false;

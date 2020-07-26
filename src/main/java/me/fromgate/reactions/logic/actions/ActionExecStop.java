@@ -36,7 +36,7 @@ public class ActionExecStop extends Action {
         if (player.isEmpty()) return false;
         String activator = params.getParam("activator", "");
         if (activator.isEmpty()) return false;
-        ActivatorsManager.stopExec(player, activator);
+        ActivatorsManager.getInstance().stopExec(player, activator);
         setMessageParam(activator);
         return true;
     }

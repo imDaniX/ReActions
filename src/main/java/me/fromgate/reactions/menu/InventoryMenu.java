@@ -1,6 +1,6 @@
 package me.fromgate.reactions.menu;
 
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.item.ItemUtils;
@@ -36,12 +36,12 @@ public class InventoryMenu implements Listener {
     public static void init() {
         load();
         save();
-        Bukkit.getPluginManager().registerEvents(new InventoryMenu(), ReActions.getPlugin());
+        Bukkit.getPluginManager().registerEvents(new InventoryMenu(), ReActionsPlugin.getInstance());
     }
 
     public static void load() {
         menu.clear();
-        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
+        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "menu.yml");
         YamlConfiguration cfg = new YamlConfiguration();
         if (FileUtils.loadCfg(cfg, f, "Failed to load menu configuration file"))
             for (String key : cfg.getKeys(false)) {
@@ -51,7 +51,7 @@ public class InventoryMenu implements Listener {
     }
 
     public static void save() {
-        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "menu.yml");
+        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "menu.yml");
         YamlConfiguration cfg = new YamlConfiguration();
         for (String key : menu.keySet()) {
             getMenu(key).save(cfg, key);
@@ -146,7 +146,7 @@ public class InventoryMenu implements Listener {
     }
 
     private static void openInventory(final Player player, final Inventory inv) {
-        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
+        Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
             if (player.isOnline()) {
                 player.closeInventory();
                 player.openInventory(inv);

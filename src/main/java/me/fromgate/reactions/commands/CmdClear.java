@@ -12,19 +12,19 @@ public class CmdClear extends Cmd {
         String activatorId = args.length >= 2 ? args[1] : "";
         if (activatorId.isEmpty()) return false;
         String arg2 = args.length >= 3 ? args[2] : "";
-        if (ActivatorsManager.containsActivator(activatorId)) {
+        if (ActivatorsManager.getInstance().containsActivator(activatorId)) {
             if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
-                ActivatorsManager.clearFlags(activatorId);
+                ActivatorsManager.getInstance().clearFlags(activatorId);
                 Msg.MSG_CLEARFLAG.print(sender, activatorId);
             } else if (arg2.equalsIgnoreCase("a") || arg2.equalsIgnoreCase("action")) {
-                ActivatorsManager.clearActions(activatorId);
+                ActivatorsManager.getInstance().clearActions(activatorId);
                 Msg.MSG_CLEARACT.print(sender, activatorId);
             } else if (arg2.equalsIgnoreCase("r") || arg2.equalsIgnoreCase("reaction")) {
-                ActivatorsManager.clearReactions(activatorId);
+                ActivatorsManager.getInstance().clearReactions(activatorId);
                 Msg.MSG_CLEARREACT.print(sender, activatorId);
             }
             // TODO: Save just one group
-            ActivatorsManager.saveActivators();
+            ActivatorsManager.getInstance().saveActivators();
         } else return Msg.CMD_UNKNOWNBUTTON.print(sender, activatorId);
         return false;
     }

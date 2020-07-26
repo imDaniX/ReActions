@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.Variables;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.holders.LocationHolder;
@@ -24,15 +24,15 @@ public class CmdReload extends Cmd {
         if (params.length >= 2) {
             String check = params[1].toLowerCase(Locale.ENGLISH);
             if (check.contains("g") && params.length > 2) {
-                ActivatorsManager.loadActivators(params[2].replaceAll("[/\\\\]", File.separator));
+                ActivatorsManager.getInstance().loadActivators(params[2].replaceAll("[/\\\\]", File.separator));
             } else if (check.contains("a")) {
-                ActivatorsManager.clear();
-                ActivatorsManager.loadActivators();
+                ActivatorsManager.getInstance().clear();
+                ActivatorsManager.getInstance().loadActivators();
             }
             if (check.contains("l"))
                 LocationHolder.loadLocs();
             if (check.contains("c")) {
-                ReActions.getPlugin().reloadConfig();
+                ReActionsPlugin.getInstance().reloadConfig();
                 Cfg.load();
                 FakeCommander.updateCommands();
             }
@@ -48,10 +48,10 @@ public class CmdReload extends Cmd {
                 InventoryMenu.load();
 
         } else {
-            ActivatorsManager.clear();
-            ActivatorsManager.loadActivators();
+            ActivatorsManager.getInstance().clear();
+            ActivatorsManager.getInstance().loadActivators();
             LocationHolder.loadLocs();
-            ReActions.getPlugin().reloadConfig();
+            ReActionsPlugin.getInstance().reloadConfig();
             Cfg.load();
             Delayer.load();
             if (!Cfg.playerSelfVarFile) Variables.load();
@@ -60,7 +60,7 @@ public class CmdReload extends Cmd {
             InventoryMenu.load();
             FakeCommander.updateCommands();
         }
-        Msg.MSG_CMDRELOAD.print(sender, ActivatorsManager.size(), LocationHolder.sizeTpLoc());
+        Msg.MSG_CMDRELOAD.print(sender, ActivatorsManager.getInstance().size(), LocationHolder.sizeTpLoc());
         return true;
     }
 

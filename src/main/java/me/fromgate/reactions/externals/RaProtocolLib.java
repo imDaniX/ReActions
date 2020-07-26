@@ -26,7 +26,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.activators.MessageActivator.Source;
 import me.fromgate.reactions.logic.storages.Storage;
@@ -56,7 +56,7 @@ public class RaProtocolLib {
             connected = true;
         } else return;
         initPacketListener();
-        ReActions.getPlugin().getLogger().info("ProtocolLib connected");
+        ReActionsPlugin.getInstance().getLogger().info("ProtocolLib connected");
 
     }
 
@@ -111,7 +111,7 @@ public class RaProtocolLib {
     private static void initPacketListener() {
         if (!connected) return;
         ProtocolLibrary.getProtocolManager().addPacketListener(
-                new PacketAdapter(ReActions.getPlugin(), PacketType.Play.Server.CHAT) {
+                new PacketAdapter(ReActionsPlugin.getInstance(), PacketType.Play.Server.CHAT) {
                     @Override
                     public void onPacketSending(PacketEvent event) {
                         String message = "";

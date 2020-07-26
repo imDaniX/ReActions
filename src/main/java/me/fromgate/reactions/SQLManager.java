@@ -60,22 +60,22 @@ public class SQLManager {
     }
 
     public static void loadCfg() {
-        serverAddress = ReActions.getPlugin().getConfig().getString("MySQL.server", "localhost");
-        port = ReActions.getPlugin().getConfig().getString("MySQL.port", "3306");
-        dataBase = ReActions.getPlugin().getConfig().getString("MySQL.database", "ReActions");
-        userName = ReActions.getPlugin().getConfig().getString("MySQL.username", "root");
-        password = ReActions.getPlugin().getConfig().getString("MySQL.password", "password");
-        codepage = ReActions.getPlugin().getConfig().getString("MySQL.codepage", "UTF-8");
+        serverAddress = ReActionsPlugin.getInstance().getConfig().getString("MySQL.server", "localhost");
+        port = ReActionsPlugin.getInstance().getConfig().getString("MySQL.port", "3306");
+        dataBase = ReActionsPlugin.getInstance().getConfig().getString("MySQL.database", "ReActions");
+        userName = ReActionsPlugin.getInstance().getConfig().getString("MySQL.username", "root");
+        password = ReActionsPlugin.getInstance().getConfig().getString("MySQL.password", "password");
+        codepage = ReActionsPlugin.getInstance().getConfig().getString("MySQL.codepage", "UTF-8");
     }
 
     public static void saveCfg() {
-        ReActions.getPlugin().getConfig().set("MySQL.server", serverAddress);
-        ReActions.getPlugin().getConfig().set("MySQL.port", port);
-        ReActions.getPlugin().getConfig().set("MySQL.database", dataBase);
-        ReActions.getPlugin().getConfig().set("MySQL.username", userName);
-        ReActions.getPlugin().getConfig().set("MySQL.password", password);
-        ReActions.getPlugin().getConfig().set("MySQL.codepage", codepage);
-        ReActions.getPlugin().saveConfig();
+        ReActionsPlugin.getInstance().getConfig().set("MySQL.server", serverAddress);
+        ReActionsPlugin.getInstance().getConfig().set("MySQL.port", port);
+        ReActionsPlugin.getInstance().getConfig().set("MySQL.database", dataBase);
+        ReActionsPlugin.getInstance().getConfig().set("MySQL.username", userName);
+        ReActionsPlugin.getInstance().getConfig().set("MySQL.password", password);
+        ReActionsPlugin.getInstance().getConfig().set("MySQL.codepage", codepage);
+        ReActionsPlugin.getInstance().saveConfig();
     }
 
     public static boolean compareSelect(String value, String query, int column, Parameters params, String sqlset) {

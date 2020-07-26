@@ -37,7 +37,7 @@ public class ActionExecUnstop extends Action {
         String activator = params.getParam("activator", "");
         if (activator.isEmpty()) return false;
         setMessageParam(activator);
-        return ActivatorsManager.isStopped(player, activator, true);
+        return ActivatorsManager.getInstance().isStopped(player, activator, true);
     }
 
 }

@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
@@ -78,7 +78,7 @@ public class ActionLog extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         if (params.hasAnyParam("prefix", "color", "file")) {
-            String plg_name = ReActions.getPlugin().getDescription().getName();
+            String plg_name = ReActionsPlugin.getInstance().getDescription().getName();
             boolean prefix = params.getParam("prefix", true);
             boolean color = params.getParam("color", false);
             String file = params.getParam("file", "");

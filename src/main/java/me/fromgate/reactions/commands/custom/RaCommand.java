@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands.custom;
 
 import lombok.Getter;
-import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -116,7 +116,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
 
     @Override
     public final Plugin getPlugin() {
-        return ReActions.getPlugin();
+        return ReActionsPlugin.getInstance();
     }
 
     public final List<String> list() {

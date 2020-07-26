@@ -28,7 +28,7 @@ public class Cfg {
     private static FileConfiguration config;
 
     static {
-        config = ReActions.getPlugin().getConfig();
+        config = ReActionsPlugin.getInstance().getConfig();
     }
 
     public static void save() {
@@ -54,7 +54,7 @@ public class Cfg {
         config.set("actions.shoot.break-block", Shoot.actionShootBreak);
         config.set("actions.shoot.penetrable", Shoot.actionShootThrough);
 
-        ReActions.getPlugin().saveConfig();
+        ReActionsPlugin.getInstance().saveConfig();
     }
 
     public static void load() {
