@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -62,17 +62,17 @@ public class ActionVar extends Action {
 
         switch (this.actType) {
             case SET: //VAR_SET, VAR_PLAYER_SET
-                Variables.setVar(player, var, value);
+                VariablesManager.getInstance().setVar(player, var, value);
                 return true;
             case CLEAR: //VAR_CLEAR, VAR_PLAYER_CLEAR
-                Variables.clearVar(player, var);
+                VariablesManager.getInstance().clearVar(player, var);
                 return true;
             case INCREASE: //VAR_INC, VAR_PLAYER_INC
                 int incValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
-                return Variables.incVar(player, var, incValue);
+                return VariablesManager.getInstance().incVar(player, var, incValue);
             case DECREASE: //VAR_DEC, VAR_PLAYER_DEC
                 int decValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
-                return Variables.decVar(player, var, decValue);
+                return VariablesManager.getInstance().decVar(player, var, decValue);
             case TEMPORARY_SET:  //VAR_TEMP_SET
                 context.setTempVariable(var, value);
                 return true;

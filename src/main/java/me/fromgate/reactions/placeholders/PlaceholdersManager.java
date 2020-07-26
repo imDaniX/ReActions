@@ -2,7 +2,7 @@ package me.fromgate.reactions.placeholders;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
@@ -128,12 +128,12 @@ public class PlaceholdersManager {
             if(ph[0].equalsIgnoreCase("var")) {
                 String[] varSplit = ph[1].split("\\.", 2);
                 if(varSplit.length > 1)
-                    result = Variables.getVariable(varSplit[0], varSplit[1]);
+                    result = VariablesManager.getInstance().getVariable(varSplit[0], varSplit[1]);
                 else
-                    result = Variables.getVariable("", varSplit[0]);
+                    result = VariablesManager.getInstance().getVariable("", varSplit[0]);
                 return result == null ? "%" + text + "%" : result;
             } else if(ph[0].equalsIgnoreCase("varp")) {
-                result = Variables.getVariable(context.getPlayer(), text, ph[1]);
+                result = VariablesManager.getInstance().getVariable(context.getPlayer(), text, ph[1]);
                 return result == null ? "%" + text + "%" : result;
             }
             for (Placeholder placeholder : placeholders) {

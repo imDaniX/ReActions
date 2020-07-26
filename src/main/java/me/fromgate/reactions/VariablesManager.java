@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions;
 
+import lombok.Getter;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.CaseInsensitiveMap;
 import me.fromgate.reactions.util.FileUtils;
@@ -39,29 +40,36 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class Variables {
+public class VariablesManager {
     // TODO: Something like classes and objects that just contains variables - actually just global variables
+    private final Map<String, String> vars;
 
-    private static Map<String, String> vars = new CaseInsensitiveMap<>();
+    @Getter
+    private static VariablesManager instance;
 
-    private static String varId(Player player, String var) {
+    public VariablesManager() {
+        this.vars = new CaseInsensitiveMap<>();
+        VariablesManager.instance = this;
+    }
+
+    private String varId(Player player, String var) {
         return (player == null ? "general." + var : player.getName() + "." + var);
     }
 
-    private static String varId(String player, String var) {
+    private String varId(String player, String var) {
         return (player.isEmpty() ? "general." + var : player + "." + var);
     }
 
-    public static void setVar(String player, String var, String value) {
-        String prevVal = Variables.getVariable(player, var, "");
+    public void setVar(String player, String var, String value) {
+        String prevVal = getVariable(player, var, "");
         vars.put(varId(player, var), value);
         if (!Cfg.playerSelfVarFile) save();
         else save(player);
         StoragesManager.raiseVariableActivator(var, player, value, prevVal);
     }
 
-    public static boolean clearVar(String player, String var) {
-        String prevVal = Variables.getVariable(player, var, "");
+    public boolean clearVar(String player, String var) {
+        String prevVal = getVariable(player, var, "");
         String id = varId(player, var);
         if (!vars.containsKey(id)) return false;
         vars.remove(id);
@@ -71,23 +79,23 @@ public class Variables {
         return true;
     }
 
-    public static String getVariable(String player, String var) {
+    public String getVariable(String player, String var) {
         return vars.get(varId(player, var));
     }
 
-    public static String getVariable(Player player, String var) {
+    public String getVariable(Player player, String var) {
         return vars.get(varId(player, var));
     }
 
-        public static String getVariable(String player, String var, String defvar) {
+        public String getVariable(String player, String var, String defvar) {
         return vars.getOrDefault(varId(player, var), defvar);
     }
 
-    public static String getVariable(Player player, String var, String defvar) {
+    public String getVariable(Player player, String var, String defvar) {
         return vars.getOrDefault(varId(player, var), defvar);
     }
 
-    public static boolean compareVariable(String playerName, String var, String cmpvalue) {
+    public boolean compareVariable(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
         if (!vars.containsKey(id)) return false;
         String value = getVariable(playerName, var, "");
@@ -95,25 +103,25 @@ public class Variables {
         return value.equalsIgnoreCase(cmpvalue);
     }
 
-    public static boolean cmpGreaterVar(String playerName, String var, String cmpvalue) {
+    public boolean cmpGreaterVar(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
         if (!vars.containsKey(id)) return false;
         if (!NumberUtils.isNumber(vars.get(id), cmpvalue)) return false;
         return Double.parseDouble(vars.get(id)) > Double.parseDouble(cmpvalue);
     }
 
-    public static boolean cmpLowerVar(String playerName, String var, String cmpvalue) {
+    public boolean cmpLowerVar(String playerName, String var, String cmpvalue) {
         String id = varId(playerName, var);
         if (!vars.containsKey(id)) return false;
         if (!NumberUtils.isNumber(vars.get(id), cmpvalue)) return false;
         return Double.parseDouble(vars.get(id)) < Double.parseDouble(cmpvalue);
     }
 
-    public static boolean existVar(String playerName, String var) {
+    public boolean existVar(String playerName, String var) {
         return (vars.containsKey(varId(playerName, var)));
     }
 
-    public static boolean incVar(String player, String var, double addValue) {
+    public boolean incVar(String player, String var, double addValue) {
         String id = varId(player, var);
         if (!vars.containsKey(id)) setVar(player, var, "0");
         String valueStr = vars.get(id);
@@ -123,11 +131,11 @@ public class Variables {
     }
 
 
-    public static boolean decVar(String player, String var, double decValue) {
+    public boolean decVar(String player, String var, double decValue) {
         return incVar(player, var, decValue * (-1));
     }
 
-    public static void save() {
+    public void save() {
         YamlConfiguration cfg = new YamlConfiguration();
         File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "variables.yml");
         for (String key : vars.keySet())
@@ -135,12 +143,12 @@ public class Variables {
         FileUtils.saveCfg(cfg, f, "Failed to save variables configuration file");
     }
 
-    public static void save(String player) {
+    public void save(String player) {
         if (Cfg.playerAsynchSaveSelfVarFile) saveAsync(player);
         else savePlayer(player);
     }
 
-    public static void savePlayer(String player) {
+    public void savePlayer(String player) {
         YamlConfiguration cfg = new YamlConfiguration();
         String varDir = ReActionsPlugin.getInstance().getDataFolder() + File.separator + "variables";
         File dir = new File(varDir);
@@ -157,12 +165,12 @@ public class Variables {
             removePlayerVars(player);
     }
 
-    public static void saveAsync(String player) {
+    public void saveAsync(String player) {
         JavaPlugin pluginInstance = ReActionsPlugin.getInstance();
         pluginInstance.getServer().getScheduler().runTaskAsynchronously(pluginInstance, () -> savePlayer(player));
     }
 
-    private static void saveGeneral() {
+    private void saveGeneral() {
         YamlConfiguration cfg = new YamlConfiguration();
         String varDir = ReActionsPlugin.getInstance().getDataFolder() + File.separator + "variables";
         File f = new File(varDir + File.separator + "general.yml");
@@ -171,7 +179,7 @@ public class Variables {
         FileUtils.saveCfg(cfg, f, "Failed to save variable configuration file");
     }
 
-    public static void load() {
+    public void load() {
         vars.clear();
         try {
             YamlConfiguration cfg = new YamlConfiguration();
@@ -197,7 +205,7 @@ public class Variables {
         }
     }
 
-    public static void loadVars() {
+    public void loadVars() {
         if (Cfg.playerSelfVarFile) load();
         try {
             int deleted = 0;
@@ -225,7 +233,7 @@ public class Variables {
         }
     }
 
-    private static void removePlayerVars(String player) {
+    private void removePlayerVars(String player) {
         Map<String, String> varsTmp = new CaseInsensitiveMap<>();
         YamlConfiguration cfg = new YamlConfiguration();
         String fileName = ReActionsPlugin.getInstance().getDataFolder() + File.separator + "variables.yml";
@@ -245,7 +253,7 @@ public class Variables {
         varsTmp.clear();
     }
 
-    public static void printList(CommandSender sender, int pageNum, String mask) {
+    public void printList(CommandSender sender, int pageNum, String mask) {
         int linesPerPage = (sender instanceof Player) ? 15 : 10000;
         List<String> varList = new ArrayList<>();
         for (String key : vars.keySet()) {
@@ -256,7 +264,7 @@ public class Variables {
         Msg.printPage(sender, varList, Msg.MSG_VARLIST, pageNum, linesPerPage);
     }
 
-    public static boolean matchVar(String playerName, String var, String value) {
+    public boolean matchVar(String playerName, String var, String value) {
         String id = varId(playerName, var);
         if (!vars.containsKey(id)) return false;
         String varValue = vars.get(id);

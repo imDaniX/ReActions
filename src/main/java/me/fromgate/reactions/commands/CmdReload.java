@@ -2,7 +2,7 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActionsPlugin;
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.logic.ActivatorsManager;
@@ -39,8 +39,8 @@ public class CmdReload extends Cmd {
             if (check.contains("d"))
                 Delayer.load();
             if (check.contains("v")) {
-                if (!Cfg.playerSelfVarFile) Variables.load();
-                else Variables.loadVars();
+                if (!Cfg.playerSelfVarFile) VariablesManager.getInstance().load();
+                else VariablesManager.getInstance().loadVars();
             }
             if (check.contains("t"))
                 TimersManager.init();
@@ -54,8 +54,8 @@ public class CmdReload extends Cmd {
             ReActionsPlugin.getInstance().reloadConfig();
             Cfg.load();
             Delayer.load();
-            if (!Cfg.playerSelfVarFile) Variables.load();
-            else Variables.loadVars();
+            if (!Cfg.playerSelfVarFile) VariablesManager.getInstance().load();
+            else VariablesManager.getInstance().loadVars();
             TimersManager.init();
             InventoryMenu.load();
             FakeCommander.updateCommands();

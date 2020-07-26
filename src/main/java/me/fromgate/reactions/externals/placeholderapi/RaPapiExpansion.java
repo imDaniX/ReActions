@@ -1,7 +1,7 @@
 package me.fromgate.reactions.externals.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import org.bukkit.OfflinePlayer;
 
 import java.util.regex.Pattern;
@@ -30,7 +30,7 @@ public class RaPapiExpansion extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String s) {
         if (VARP.matcher(s).find()) {
-            return Variables.getVariable(player.getName(), s, null);
+            return VariablesManager.getInstance().getVariable(player.getName(), s, null);
         }
         return "";
     }

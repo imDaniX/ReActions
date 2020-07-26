@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
@@ -59,15 +59,15 @@ public class FlagVar implements Flag {
         if (playerName.isEmpty() && this.personalVar) return false;
         switch (this.flagType) {
             case EXIST: // VAR_EXIST
-                return Variables.existVar(playerName, var);
+                return VariablesManager.getInstance().existVar(playerName, var);
             case COMPARE: // VAR_COMPARE
-                return Variables.compareVariable(playerName, var, value);
+                return VariablesManager.getInstance().compareVariable(playerName, var, value);
             case GREATER: // VAR_GREATER
-                return Variables.cmpGreaterVar(playerName, var, value);
+                return VariablesManager.getInstance().cmpGreaterVar(playerName, var, value);
             case LOWER: // VAR_LOWER
-                return Variables.cmpLowerVar(playerName, var, value);
+                return VariablesManager.getInstance().cmpLowerVar(playerName, var, value);
             case MATCH: // VAR_MATCH
-                return Variables.matchVar(playerName, var, value);
+                return VariablesManager.getInstance().matchVar(playerName, var, value);
         }
         return false;
     }

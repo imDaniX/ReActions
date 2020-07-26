@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.activators.ActivatorBase;
@@ -78,7 +78,7 @@ public class CmdRemove extends Cmd {
         if (id.isEmpty()) {
             return Msg.MSG_VARNEEDID.print(sender);
         }
-        if (Variables.clearVar(player, id)) {
+        if (VariablesManager.getInstance().clearVar(player, id)) {
             return Msg.MSG_VARREMOVED.print(sender, id);
         }
         return Msg.MSG_VARREMOVEFAIL.print(sender);

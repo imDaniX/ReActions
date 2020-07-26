@@ -55,10 +55,12 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Provider {
 
     private ActivatorsManager activatorsManager;
     private PlaceholdersManager placeholdersManager;
+    private VariablesManager variablesManager;
 
     @Override
     public void onLoad() {
         ReActionsPlugin.instance = this;
+        this.variablesManager = new VariablesManager();
         ReActions.register(this);
     }
 
@@ -80,8 +82,8 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Provider {
         RaVault.init();
         WaitingManager.init();
         Delayer.load();
-        if (!Cfg.playerSelfVarFile) Variables.load();
-        else Variables.loadVars();
+        if (!Cfg.playerSelfVarFile) VariablesManager.getInstance().load();
+        else VariablesManager.getInstance().loadVars();
         LocationHolder.loadLocs();
         SQLManager.init();
         InventoryMenu.init();
@@ -96,12 +98,17 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Provider {
     }
 
     @Override
-    public ActivatorsManager getActivatorsManager() {
+    public ActivatorsManager getActivators() {
         return activatorsManager;
     }
 
     @Override
-    public PlaceholdersManager getPlaceholdersManager() {
+    public PlaceholdersManager getPlaceholders() {
         return placeholdersManager;
+    }
+
+    @Override
+    public VariablesManager getVariables() {
+        return variablesManager;
     }
 }

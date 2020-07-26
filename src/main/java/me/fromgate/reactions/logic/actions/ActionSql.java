@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.actions;
 
 import me.fromgate.reactions.SQLManager;
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -52,7 +52,7 @@ public class ActionSql extends Action {
                     return false;
                 }
                 if (varName.isEmpty()) return false;
-                Variables.setVar(playerName, varName, SQLManager.executeSelect(query, column, params, context.getTempVariable("SQL_SET")));
+                VariablesManager.getInstance().setVar(playerName, varName, SQLManager.executeSelect(query, column, params, context.getTempVariable("SQL_SET")));
                 break;
             case INSERT: // INSERT
                 query = params.getParam("query", params.getParam("param-line", "")).trim();

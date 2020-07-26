@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.logic.ActivatorsManager;
@@ -62,7 +62,7 @@ public class CmdList extends Cmd {
                 case "var":
                 case "variables":
                 case "variable":
-                    Variables.printList(sender, page, mask);
+                    VariablesManager.getInstance().printList(sender, page, mask);
                     break;
                 case "menu":
                 case "menus":

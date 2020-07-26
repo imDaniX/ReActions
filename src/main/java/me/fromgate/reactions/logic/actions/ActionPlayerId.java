@@ -1,6 +1,6 @@
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.Variables;
+import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -36,8 +36,8 @@ public class ActionPlayerId extends Action {
             pName = offPlayer.getName();
         }
         if (pName == null) pName = "";
-        if (!Utils.isStringEmpty(varID)) Variables.setVar(playerName, varID, uuid);
-        if (!Utils.isStringEmpty(varName)) Variables.setVar(playerName, varName, pName);
+        if (!Utils.isStringEmpty(varID)) VariablesManager.getInstance().setVar(playerName, varID, uuid);
+        if (!Utils.isStringEmpty(varName)) VariablesManager.getInstance().setVar(playerName, varName, pName);
         context.setTempVariable("playerid", uuid);
         context.setTempVariable("playername", pName);
         return true;

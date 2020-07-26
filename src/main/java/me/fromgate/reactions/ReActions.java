@@ -10,17 +10,22 @@ public final class ReActions {
         ReActions.provider = provider;
     }
 
-    public static ActivatorsManager getActivatorsManager() {
-        return provider.getActivatorsManager();
+    public static ActivatorsManager getActivators() {
+        return provider.getActivators();
     }
 
-    public static PlaceholdersManager placeholdersManager() {
-        return provider.getPlaceholdersManager();
+    public static PlaceholdersManager getPlaceholders() {
+        return provider.getPlaceholders();
+    }
+
+    public static VariablesManager getVariables() {
+        return provider.getVariables();
     }
 
     public interface Provider {
-        ActivatorsManager getActivatorsManager();
-        PlaceholdersManager getPlaceholdersManager();
-        // TODO: Variables, Placeholders, Selectors, Flags, Actions
+        ActivatorsManager getActivators();
+        PlaceholdersManager getPlaceholders();
+        VariablesManager getVariables();
+        // TODO: Selectors, Flags, Actions
     }
 }
