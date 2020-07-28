@@ -61,6 +61,7 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Provider {
     public void onLoad() {
         ReActionsPlugin.instance = this;
         this.variablesManager = new VariablesManager();
+        this.placeholdersManager = new PlaceholdersManager();
         ReActions.register(this);
     }
 
@@ -87,7 +88,6 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Provider {
         LocationHolder.loadLocs();
         SQLManager.init();
         InventoryMenu.init();
-        this.placeholdersManager = new PlaceholdersManager();
         Bukkit.getLogger().addHandler(new LogHandler());
         Bukkit.getPluginManager().registerEvents(new BukkitListener(), this);
         Bukkit.getPluginManager().registerEvents(new RaListener(), this);
