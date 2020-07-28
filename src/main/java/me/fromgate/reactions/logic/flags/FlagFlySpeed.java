@@ -13,7 +13,7 @@ public class FlagFlySpeed implements Flag {
         Player player = context.getPlayer();
         if (!NumberUtils.isInteger(param)) return false;
         long flySpeed = Math.round(player.getFlySpeed() * 10);
-        context.setTempVariable("flyspeed", Integer.toString((int) flySpeed));
+        context.setVariable("flyspeed", Integer.toString((int) flySpeed));
         return flySpeed >= Integer.parseInt(param);
     }
 }

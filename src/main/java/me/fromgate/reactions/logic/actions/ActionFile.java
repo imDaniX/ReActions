@@ -22,7 +22,7 @@ public class ActionFile extends Action {
         if (action.isEmpty() || fileName.isEmpty()) return false;
 
         File file = new File(dir + File.separator + fileName);
-        context.setTempVariable("fullpath", file.getAbsolutePath());
+        context.setVariable("fullpath", file.getAbsolutePath());
 
         if (action.equalsIgnoreCase("remove")) {
             int c = 0;
@@ -34,7 +34,7 @@ public class ActionFile extends Action {
             } else {
                 if (file.delete()) c = 1;
             }
-            context.setTempVariable("removecount", Integer.toString(c));
+            context.setVariable("removecount", Integer.toString(c));
             return true;
 
         } else {
@@ -52,7 +52,7 @@ public class ActionFile extends Action {
                     return true;
                 }
             } catch (IOException e) {
-                context.setTempVariable("filedebug", e.getLocalizedMessage());
+                context.setVariable("filedebug", e.getLocalizedMessage());
             }
 
         }

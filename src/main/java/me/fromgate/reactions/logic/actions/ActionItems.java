@@ -110,7 +110,7 @@ public class ActionItems extends Action {
         else if (existStr.equalsIgnoreCase("keep")) player.getInventory().setItem(slotNum, oldItem);
         String actionItems = ItemUtils.toDisplayString(itemStr);
         setMessageParam(actionItems);
-        context.setTempVariable("item_str", actionItems);
+        context.setVariable("item_str", actionItems);
 
         return true;
     }
@@ -125,8 +125,8 @@ public class ActionItems extends Action {
         ItemStack item = player.getInventory().getItem(slotNum);
         String actionItems = "";
         if (item != null) actionItems = ItemUtils.itemToString(item);
-        context.setTempVariable("item_str", actionItems);
-        context.setTempVariable("item_str_esc", Utils.escapeJava(actionItems));
+        context.setVariable("item_str", actionItems);
+        context.setVariable("item_str_esc", Utils.escapeJava(actionItems));
 
         return true;
     }
@@ -140,8 +140,8 @@ public class ActionItems extends Action {
         ItemStack item = armour[slot];
         String actionItems = "";
         if (item != null) actionItems = ItemUtils.itemToString(item);
-        context.setTempVariable("item_str", actionItems);
-        context.setTempVariable("item_str_esc", Utils.escapeJava(actionItems));
+        context.setVariable("item_str", actionItems);
+        context.setVariable("item_str_esc", Utils.escapeJava(actionItems));
         return true;
     }
 
@@ -150,13 +150,13 @@ public class ActionItems extends Action {
         String itemStr = params.getString("slot", "");
         if (itemStr.isEmpty()) return false;
         if (!itemStr.equalsIgnoreCase("offhand")) {
-            context.setTempVariable("item_str", "");
-            context.setTempVariable("item_str_esc", "");
+            context.setVariable("item_str", "");
+            context.setVariable("item_str_esc", "");
             return true;
         }
         String item = ItemUtils.itemToString(player.getInventory().getItemInOffHand());
-        context.setTempVariable("item_str", item);
-        context.setTempVariable("item_str_esc", Utils.escapeJava(item));
+        context.setVariable("item_str", item);
+        context.setVariable("item_str_esc", Utils.escapeJava(item));
         return true;
     }
 
@@ -230,9 +230,9 @@ public class ActionItems extends Action {
     private boolean removeItem(RaContext context, VirtualItem search, ItemStack item, boolean all) {
         if (!ItemUtils.isExist(search)) return false;
         if (search.isSimilar(item)) {
-            context.setTempVariable("item", ItemUtils.itemToString(item));
+            context.setVariable("item", ItemUtils.itemToString(item));
             String display = ItemUtils.toDisplayString(item);
-            context.setTempVariable("item_str", display);
+            context.setVariable("item_str", display);
             ItemUtils.removeItemAmount(item, all ? item.getAmount() : search.getAmount());
             setMessageParam(display);
             return true;
@@ -270,7 +270,7 @@ public class ActionItems extends Action {
         if (items == null || items.isEmpty()) return false;
         String actionItems = ItemUtils.toDisplayString(items);
         setMessageParam(actionItems);
-        context.setTempVariable("item_str", actionItems);
+        context.setVariable("item_str", actionItems);
         Bukkit.getScheduler().scheduleSyncDelayedTask(ReActionsPlugin.getInstance(), () -> {
             for (ItemStack i : items)
                 ItemUtils.giveItemOrDrop(player, i);
@@ -284,7 +284,7 @@ public class ActionItems extends Action {
         if (items.isEmpty()) return false;
         String actionItems = ItemUtils.toDisplayString(items);
         setMessageParam(actionItems);
-        context.setTempVariable("item_str", actionItems);
+        context.setVariable("item_str", actionItems);
         int size = Math.min(items.size(), 36);
         Inventory inv = Bukkit.createInventory(null, size);
         for (int i = 0; i < size; i++)
@@ -310,7 +310,7 @@ public class ActionItems extends Action {
         }
         String actionItems = ItemUtils.toDisplayString(items);
         setMessageParam(actionItems);
-        context.setTempVariable("item_str", actionItems);
+        context.setVariable("item_str", actionItems);
         return true;
     }
 
@@ -359,8 +359,8 @@ public class ActionItems extends Action {
             ItemUtils.giveItemOrDrop(player, vi);
         }
 
-        context.setTempVariable("item", vi.toString());
-        context.setTempVariable("item_str", vi.getDescription());
+        context.setVariable("item", vi.toString());
+        context.setVariable("item_str", vi.getDescription());
         return true;
     }
 

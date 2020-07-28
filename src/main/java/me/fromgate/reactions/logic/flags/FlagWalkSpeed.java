@@ -13,7 +13,7 @@ public class FlagWalkSpeed implements Flag {
         Player player = context.getPlayer();
         if (!NumberUtils.isInteger(param)) return false;
         long walkSpeed = Math.round(player.getWalkSpeed() * 10);
-        context.setTempVariable("walkspeed", Long.toString(walkSpeed));
+        context.setVariable("walkspeed", Long.toString(walkSpeed));
         return walkSpeed >= Integer.parseInt(param);
 
     }

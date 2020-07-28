@@ -45,7 +45,7 @@ public class FlagItem implements Flag {
         switch (flagType) {
             case HAND:
                 ItemStack inHand = player.getInventory().getItemInMainHand();
-                context.setTempVariable("item_amount", String.valueOf(inHand.getAmount()));
+                context.setVariable("item_amount", String.valueOf(inHand.getAmount()));
                 return ItemUtils.compareItemStr(inHand, itemStr, true);
             case INVENTORY:
                 return hasItemInInventory(context, itemStr);
@@ -53,7 +53,7 @@ public class FlagItem implements Flag {
                 return isItemWeared(player, itemStr);
             case OFFHAND:
                 ItemStack inOffhand = player.getInventory().getItemInOffHand();
-                context.setTempVariable("item_amount", String.valueOf(inOffhand.getAmount()));
+                context.setVariable("item_amount", String.valueOf(inOffhand.getAmount()));
                 return ItemUtils.compareItemStr(inOffhand, itemStr, true);
         }
         return false;
@@ -71,7 +71,7 @@ public class FlagItem implements Flag {
 
         if (!params.containsEvery("slot", "item")) {
             int countAmount = ItemUtils.countItemsInInventory(player.getInventory(), itemStr);
-            context.setTempVariable("item_amount", countAmount == 0 ? "0" : String.valueOf(countAmount));
+            context.setVariable("item_amount", countAmount == 0 ? "0" : String.valueOf(countAmount));
             int amount = ItemUtils.getAmount(itemStr);
             return countAmount >= amount;
         }

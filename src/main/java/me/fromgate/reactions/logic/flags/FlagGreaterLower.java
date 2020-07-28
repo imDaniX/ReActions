@@ -19,10 +19,10 @@ public class FlagGreaterLower implements Flag {
         double paramValue = params.getDouble("param", 0d);
         double value = params.getDouble("value", 0d);
         if (greater) {
-            context.setTempVariable("gparam", Double.toString(paramValue));
+            context.setVariable("gparam", Double.toString(paramValue));
             return paramValue > value;
         } else {
-            context.setTempVariable("lparam", Double.toString(paramValue));
+            context.setVariable("lparam", Double.toString(paramValue));
             return paramValue < value;
         }
     }

@@ -48,7 +48,7 @@ public class ActionLog extends Action {
         String dir = path.getAbsolutePath();
 
         File file = new File(dir + "/" + fileName);
-        context.setTempVariable("fullpath", file.getAbsolutePath());
+        context.setVariable("fullpath", file.getAbsolutePath());
         if (fileName.isEmpty()) return;
 
         Date date = new Date();
@@ -71,7 +71,7 @@ public class ActionLog extends Action {
             }
 
         } catch (IOException e) {
-            context.setTempVariable("logdebug", e.getLocalizedMessage());
+            context.setVariable("logdebug", e.getLocalizedMessage());
         }
     }
 

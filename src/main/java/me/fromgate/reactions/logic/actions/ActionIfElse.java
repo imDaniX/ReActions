@@ -111,9 +111,9 @@ public class ActionIfElse extends Action {
                 boolean result = (boolean) engine.eval(condition, scriptContext);
                 if (!executeActivator(player, condition, (result) ? then_ : else_)
                         && !executeActions(context, (result) ? then_ : else_))
-                    context.setTempVariable("ifelseresult" + suffix, (result) ? then_ : else_);
+                    context.setVariable("ifelseresult" + suffix, (result) ? then_ : else_);
             } catch (ScriptException e) {
-                context.setTempVariable("ifelsedebug", e.getMessage());
+                context.setVariable("ifelsedebug", e.getMessage());
                 return false;
             }
             return true;

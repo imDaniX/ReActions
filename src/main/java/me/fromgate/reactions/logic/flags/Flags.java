@@ -155,10 +155,10 @@ public enum Flags {
 
     public static boolean checkFlag(RaContext context, Flags flag, String param, boolean not) {
         if (flag == null || Utils.isStringEmpty(param)) return false;
-        context.setTempVariable((flag + "_flag").toUpperCase(Locale.ENGLISH), param);
+        context.setVariable((flag + "_flag").toUpperCase(Locale.ENGLISH), param);
         boolean check = flag.check(context, param);
         if (not) return !check;
-        context.setTempVariable((flag + "_flag_val").toUpperCase(Locale.ENGLISH), String.valueOf(check));
+        context.setVariable((flag + "_flag_val").toUpperCase(Locale.ENGLISH), String.valueOf(check));
         return check;
     }
 
@@ -170,7 +170,7 @@ public enum Flags {
         if (c.getFlags().size() > 0)
             for (int i = 0; i < c.getFlags().size(); i++) {
                 StoredFlag f = c.getFlags().get(i);
-                context.setTempVariable((f.getFlagName() + "_flag").toUpperCase(Locale.ENGLISH), f.getValue());
+                context.setVariable((f.getFlagName() + "_flag").toUpperCase(Locale.ENGLISH), f.getValue());
                 if (!checkFlag(context, f.getFlag(),
                         PlaceholdersManager.getInstance().parsePlaceholders(context, f.getValue()), f.isInverted()))
                     return false;

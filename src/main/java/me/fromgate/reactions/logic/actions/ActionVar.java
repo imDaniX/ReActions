@@ -74,7 +74,7 @@ public class ActionVar extends Action {
                 int decValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
                 return VariablesManager.getInstance().decVar(player, var, decValue);
             case TEMPORARY_SET:  //VAR_TEMP_SET
-                context.setTempVariable(var, value);
+                context.setVariable(var, value);
                 return true;
         }
         return false;

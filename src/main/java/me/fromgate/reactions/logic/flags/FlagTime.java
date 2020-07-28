@@ -66,7 +66,7 @@ public class FlagTime implements Flag {
                     else result.append(", ").append(tmp);
                 }
         }
-        context.setTempVariable("TIME", result.toString());
+        context.setVariable("TIME", result.toString());
     }
 }
 

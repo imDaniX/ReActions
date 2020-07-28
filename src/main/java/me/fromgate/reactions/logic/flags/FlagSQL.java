@@ -51,7 +51,7 @@ public class FlagSQL implements Flag {
             query = "SELECT " + select + " FROM " + from + (where.isEmpty() ? "" : " WHERE " + where);
         }
         int column = params.getInteger("column", 1);
-        if (check) return SQLManager.compareSelect(value, query, column, params, context.getTempVariable("SQL_SET"));
+        if (check) return SQLManager.compareSelect(value, query, column, params, context.getVariable("SQL_SET"));
         else return SQLManager.isSelectResultEmpty(query);
     }
 

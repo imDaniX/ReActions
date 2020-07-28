@@ -138,14 +138,14 @@ public class Delayer {
     public static void setTempPlaceholders(RaContext context, String playerName, String id) {
         String[] times = Delayer.getStringTime(playerName, id);
         if (times != null) {
-            context.setTempVariable("delay-fulltime", times[0]);
-            context.setTempVariable("delay-time", times[1]);
-            context.setTempVariable("delay-left", times[7]);
-            context.setTempVariable("delay-left-full", times[2]);
-            context.setTempVariable("delay-left-hms", times[3]);
-            context.setTempVariable("delay-left-hh", times[4]);
-            context.setTempVariable("delay-left-mm", times[5]);
-            context.setTempVariable("delay-left-ss", times[6]);
+            context.setVariable("delay-fulltime", times[0]);
+            context.setVariable("delay-time", times[1]);
+            context.setVariable("delay-left", times[7]);
+            context.setVariable("delay-left-full", times[2]);
+            context.setVariable("delay-left-hms", times[3]);
+            context.setVariable("delay-left-hh", times[4]);
+            context.setVariable("delay-left-mm", times[5]);
+            context.setVariable("delay-left-ss", times[6]);
         }
     }
 

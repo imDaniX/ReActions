@@ -38,8 +38,8 @@ public class ActionPlayerId extends Action {
         if (pName == null) pName = "";
         if (!Utils.isStringEmpty(varID)) VariablesManager.getInstance().setVar(playerName, varID, uuid);
         if (!Utils.isStringEmpty(varName)) VariablesManager.getInstance().setVar(playerName, varName, pName);
-        context.setTempVariable("playerid", uuid);
-        context.setTempVariable("playername", pName);
+        context.setVariable("playerid", uuid);
+        context.setVariable("playername", pName);
         return true;
     }
 

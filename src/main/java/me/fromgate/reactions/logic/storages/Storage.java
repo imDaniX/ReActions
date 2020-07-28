@@ -59,7 +59,7 @@ public abstract class Storage {
     }
 
     public final void init() {
-        variables = Collections.unmodifiableMap(prepareVariables());
+        variables = prepareVariables();
         changeables = prepareChangeables();
     }
 

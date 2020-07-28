@@ -63,10 +63,10 @@ public class ActionTp extends Action {
             } catch (Exception ignore) {
             }
 
-            context.setTempVariable("loc-from", LocationUtils.locationToString(player.getLocation()));
-            context.setTempVariable("loc-from-str", LocationUtils.locationToStringFormatted(player.getLocation()));
-            context.setTempVariable("loc-to", LocationUtils.locationToString(loc));
-            context.setTempVariable("loc-to-str", LocationUtils.locationToStringFormatted(loc));
+            context.setVariable("loc-from", LocationUtils.locationToString(player.getLocation()));
+            context.setVariable("loc-from-str", LocationUtils.locationToStringFormatted(player.getLocation()));
+            context.setVariable("loc-to", LocationUtils.locationToString(loc));
+            context.setVariable("loc-to-str", LocationUtils.locationToStringFormatted(loc));
             Teleporter.teleport(player, loc);
             String playeffect = params.getString("effect", "");
             if (!playeffect.isEmpty()) {

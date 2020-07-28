@@ -30,7 +30,7 @@ public class FlagChance implements Flag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
-        context.setTempVariable("CHANCE", param + "%");
+        context.setVariable("CHANCE", param + "%");
         int d = 50;
         if (NumberUtils.isInteger(param)) d = Integer.parseInt(param);
         d = Math.max(Math.min(d, 100), 0);

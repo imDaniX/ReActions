@@ -30,9 +30,9 @@ public class ActionRegex extends Action {
             for (int i = 0; i <= m.groupCount(); i++) {
                 if (m.group(i) != null) group = m.group(i);
                 else group = "";
-                context.setTempVariable(prefix + "group" + count + "" + i, group);
-                context.setTempVariable(prefix + "group_" + count + "_" + i, group);
-                context.setTempVariable(prefix + "group:" + count + ":" + i, group);
+                context.setVariable(prefix + "group" + count + "" + i, group);
+                context.setVariable(prefix + "group_" + count + "_" + i, group);
+                context.setVariable(prefix + "group:" + count + ":" + i, group);
             }
         }
         return true;

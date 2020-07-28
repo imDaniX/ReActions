@@ -39,7 +39,7 @@ public class ActionSignSet extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         // loc:world,x,y,z line1:text line2:text line3:text line4:text clear:1,2,3,4
-        String locStr = params.getString("loc", context.getTempVariable("sign_loc"));
+        String locStr = params.getString("loc", context.getVariable("sign_loc"));
         if (Utils.isStringEmpty(locStr)) return false;
         Location loc = LocationUtils.parseCoordinates(locStr);
         if (loc == null) return false;

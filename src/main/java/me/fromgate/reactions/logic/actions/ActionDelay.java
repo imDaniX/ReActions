@@ -63,7 +63,7 @@ public class ActionDelay extends Action {
         if (variableId.isEmpty()) return false;
         setDelay(playerName, variableId, TimeUtils.parseTime(timeStr), add);
         Delayer.setTempPlaceholders(context, playerName, variableId);
-        setMessageParam(context.getTempVariable("delay-left-hms", timeStr));
+        setMessageParam(context.getVariable("delay-left-hms", timeStr));
         return true;
     }
 

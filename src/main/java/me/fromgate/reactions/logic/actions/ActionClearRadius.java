@@ -26,8 +26,8 @@ public class ActionClearRadius extends Action {
         String type = params.getString("type", "all");
         if (radius == 0) return false;
         List<Location> locs = LocationUtils.getMinMaxRadiusLocations(context.getPlayer(), radius);
-        context.setTempVariable("loc1", LocationUtils.locationToString(locs.get(0)));
-        context.setTempVariable("loc2", LocationUtils.locationToString(locs.get(1)));
+        context.setVariable("loc1", LocationUtils.locationToString(locs.get(0)));
+        context.setVariable("loc2", LocationUtils.locationToString(locs.get(1)));
         if (locs.size() != 2) return false;
         Collection<Entity> en = EntityUtils.getEntities(locs.get(0), locs.get(1));
         int count = 0;
