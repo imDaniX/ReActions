@@ -36,7 +36,6 @@ public class Parameters implements Iterable<String> {
         Map<String, String> params = new CaseInsensitiveMap<>();
         IterationState state = IterationState.SPACE;
         String param = "";
-        StringBuilder text = new StringBuilder(str.length() + 10);
         StringBuilder bld = null;
         int brCount = 0;
         for(int i = 0; i < str.length(); i++) {
@@ -44,7 +43,6 @@ public class Parameters implements Iterable<String> {
             switch (state) {
                 case SPACE:
                     if(c == ' ') {
-                        text.append(c);
                         continue;
                     }
                     bld = new StringBuilder().append(c);
@@ -52,12 +50,9 @@ public class Parameters implements Iterable<String> {
                     break;
                 case TEXT:
                     if(c == ' ') {
-                        if(Utils.isStringEmpty(defKey)){
-                            text.append(bld).append(c);
-                        } else {
+                        if(!Utils.isStringEmpty(defKey)) {
                             String value = bld.toString();
                             params.put(defKey, value);
-                            text.append(defKey).append(':').append(bld).append(c);
                         }
                         state = IterationState.SPACE;
                         continue;
@@ -72,7 +67,6 @@ public class Parameters implements Iterable<String> {
                     break;
                 case DOTS:
                     if(c == ' ') {
-                        text.append(bld).append(c);
                         state = IterationState.SPACE;
                         continue;
                     }
@@ -80,15 +74,14 @@ public class Parameters implements Iterable<String> {
                         state = IterationState.BR_PARAM;
                         continue;
                     }
-                    state = IterationState.PARAM;
                     bld.append(c);
+                    state = IterationState.PARAM;
                     break;
                 case PARAM:
                     if(c == ' ') {
                         state = IterationState.SPACE;
                         String value = bld.toString();
                         params.put(param, value);
-                        text.append(value).append(c);
                         continue;
                     }
                     bld.append(c);
@@ -99,7 +92,6 @@ public class Parameters implements Iterable<String> {
                             state = IterationState.SPACE;
                             String value = bld.toString();
                             params.put(param, value);
-                            text.append(value).append(c);
                             continue;
                         } else brCount--;
                     } else if(c == '{')
@@ -108,13 +100,15 @@ public class Parameters implements Iterable<String> {
                     break;
             }
         }
+
         if(state == IterationState.PARAM) {
-            String value = bld.toString();
-            params.put(param, value);
-            text.append(value);
+            params.put(param, bld.toString());
+        } else if(state == IterationState.TEXT && !Utils.isStringEmpty(defKey)) {
+            params.put(defKey, bld.toString());
         }
+
         params.put("param-line", str);
-        return new Parameters(text.toString(), params);
+        return new Parameters(str, params);
     }
 
     public String getString(String key) {
