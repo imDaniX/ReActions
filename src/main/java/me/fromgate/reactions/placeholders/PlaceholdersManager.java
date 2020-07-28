@@ -31,7 +31,8 @@ public class PlaceholdersManager {;
         register(new PlaceholderTime());
         register(new PlaceholderCalc());
         register(new PlaceholderActivator());
-        register(new PlaceholderVariables());
+        register(new PlaceholderVariable());
+        register((c,p,t) -> c.getVariable(p)); // Temporary variables
         register(new PlaceholderPAPI());
         PlaceholdersManager.instance = this;
     }

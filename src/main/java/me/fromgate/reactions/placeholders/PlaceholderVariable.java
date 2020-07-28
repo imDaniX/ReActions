@@ -5,7 +5,7 @@ import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 
 @Alias({"varp", "variable"})
-public class PlaceholderVariables implements Placeholder.Prefixed {
+public class PlaceholderVariable implements Placeholder.Prefixed {
     @Override
     public String processPlaceholder(RaContext context, String prefix, String text) {
         String result;
