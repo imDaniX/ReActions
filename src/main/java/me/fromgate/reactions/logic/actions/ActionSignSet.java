@@ -39,23 +39,23 @@ public class ActionSignSet extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         // loc:world,x,y,z line1:text line2:text line3:text line4:text clear:1,2,3,4
-        String locStr = params.getParam("loc", context.getTempVariable("sign_loc"));
+        String locStr = params.getString("loc", context.getTempVariable("sign_loc"));
         if (Utils.isStringEmpty(locStr)) return false;
         Location loc = LocationUtils.parseCoordinates(locStr);
         if (loc == null) return false;
-        boolean chunkLoad = params.getParam("loadchunk", false);
+        boolean chunkLoad = params.getBoolean("loadchunk", false);
         if (!chunkLoad && !loc.getChunk().isLoaded()) return false;
         Block block = loc.getBlock();
         if (!BlockUtils.isSign(block)) return false;
         Sign sign = (Sign) block.getState();
         for (int i = 1; i <= 4; i++) {
-            String line = params.getParam("line" + i, "");
+            String line = params.getString("line" + i, "");
             if (line.isEmpty()) continue;
             if (line.length() > 15) line = line.substring(0, 15);
             sign.setLine(i - 1, ChatColor.translateAlternateColorCodes('&', line));
         }
 
-        String clear = params.getParam("clear", "");
+        String clear = params.getString("clear", "");
         if (!clear.isEmpty()) {
             String[] ln = clear.split(",");
             for (String cl : ln) {

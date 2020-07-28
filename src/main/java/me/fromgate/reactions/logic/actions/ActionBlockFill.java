@@ -40,25 +40,25 @@ public class ActionBlockFill extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        boolean phys = params.getParam("physics", false);
-        boolean drop = params.getParam("drop", false);
-        Parameters itemParam = new Parameters(params.getParam("block", "AIR"), "type");
+        boolean phys = params.getBoolean("physics", false);
+        boolean drop = params.getBoolean("drop", false);
+        Parameters itemParam = Parameters.fromString(params.getString("block", "AIR"), "type");
         ItemStack item = null;
-        if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
+        if (!itemParam.getString("type", "AIR").equalsIgnoreCase("air")) {
             item = VirtualItem.fromMap(itemParam.getMap());
             if (item == null || !item.getType().isBlock()) {
-                Msg.logOnce("wrongblockfill" + params.getParam("block"),
-                        "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
+                Msg.logOnce("wrongblockfill" + params.getString("block"),
+                        "Failed to execute action BLOCK_FILL. Wrong block " + params.getString("block"));
                 return false;
             }
         }
 
-        if (!params.isParamsExists("region") && !params.isParamsExists("loc1", "loc2")) return false;
+        if (!params.containsEvery("region") && !params.containsEvery("loc1", "loc2")) return false;
 
         Location loc1 = null;
         Location loc2 = null;
 
-        String regionName = params.getParam("region", "");
+        String regionName = params.getString("region", "");
         if (!regionName.isEmpty()) {
             List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(regionName);
             if (locs.size() == 2) {
@@ -66,15 +66,15 @@ public class ActionBlockFill extends Action {
                 loc2 = locs.get(1);
             }
         } else {
-            String locStr = params.getParam("loc1", "");
+            String locStr = params.getString("loc1", "");
             if (!locStr.isEmpty()) loc1 = LocationUtils.parseLocation(locStr, null);
-            locStr = params.getParam("loc2", "");
+            locStr = params.getString("loc2", "");
             if (!locStr.isEmpty()) loc2 = LocationUtils.parseLocation(locStr, null);
         }
         if (loc1 == null || loc2 == null) return false;
 
         if (!loc1.getWorld().equals(loc2.getWorld())) return false;
-        int chance = params.getParam("chance", 100);
+        int chance = params.getInteger("chance", 100);
         fillArea(item, loc1, loc2, chance, phys, drop);
         return true;
     }

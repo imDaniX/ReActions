@@ -30,8 +30,8 @@ public class BlockBreakActivator extends Activator implements Locatable {
     }
 
     public static BlockBreakActivator create(ActivatorBase base, Parameters param) {
-        Material block = ItemUtils.getMaterial(param.getParam("block"));
-        String loc = param.getParam("loc");
+        Material block = ItemUtils.getMaterial(param.getString("block"));
+        String loc = param.getString("loc");
         return new BlockBreakActivator(base, block, loc);
     }
 

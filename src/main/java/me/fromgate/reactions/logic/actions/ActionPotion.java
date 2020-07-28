@@ -47,8 +47,8 @@ public class ActionPotion extends Action {
         int duration = 20;
         int amplifier = 1;
         boolean ambient = false;
-        if (params.isParamsExists("param")) {
-            String param = params.getParam("param", "");
+        if (params.containsEvery("param")) {
+            String param = params.getString("param", "");
             if (param.isEmpty()) return "";
             if (param.contains("/")) {
                 String[] prm = param.split("/");
@@ -59,10 +59,10 @@ public class ActionPotion extends Action {
                 }
             } else peffstr = param;
         } else {
-            peffstr = params.getParam("type", "");
-            duration = NumberUtils.safeLongToInt(TimeUtils.timeToTicks(TimeUtils.parseTime(params.getParam("time", "3s"))));
-            amplifier = Math.max(params.getParam("level", 1) - 1, 0);
-            ambient = params.getParam("ambient", false);
+            peffstr = params.getString("type", "");
+            duration = NumberUtils.safeLongToInt(TimeUtils.timeToTicks(TimeUtils.parseTime(params.getString("time", "3s"))));
+            amplifier = Math.max(params.getInteger("level", 1) - 1, 0);
+            ambient = params.getBoolean("ambient", false);
         }
         PotionEffectType pef = PotionEffectType.getByName(peffstr);
         if (pef == null) return "";

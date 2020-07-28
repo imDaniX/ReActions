@@ -74,8 +74,12 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void putAll(Map<? extends String, ? extends V> map) {
-        map.forEach((k, v) -> origin.put(k.toLowerCase(Locale.ENGLISH), new KeyedValue<>(k, v)));
+        if(map instanceof CaseInsensitiveMap)
+            origin.putAll(((CaseInsensitiveMap)map).origin);
+        else
+            map.forEach((k, v) -> origin.put(k.toLowerCase(Locale.ENGLISH), new KeyedValue<>(k, v)));
     }
 
     @Override

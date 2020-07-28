@@ -13,9 +13,9 @@ public class ActionWeSuperPickaxe extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        boolean isSP = params.getParam("value", params.getParam("param-line", false));
-        if (params.hasAnyParam("player"))
-            player = Utils.getPlayerExact(params.getParam("player"));
+        boolean isSP = params.getBoolean("value", params.getBoolean("param-line", false));
+        if (params.containsAny("player"))
+            player = Utils.getPlayerExact(params.getString("player"));
         if (isSP) RaWorldEdit.getSession(player).enableSuperPickAxe();
         else RaWorldEdit.getSession(player).disableSuperPickAxe();
         return true;

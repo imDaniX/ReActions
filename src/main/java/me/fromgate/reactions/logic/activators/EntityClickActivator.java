@@ -25,7 +25,7 @@ public class EntityClickActivator extends Activator {
     }
 
     public static EntityClickActivator create(ActivatorBase base, Parameters param) {
-        String entityType = param.getParam("type", "");
+        String entityType = param.getString("type", "");
         return new EntityClickActivator(base, entityType);
     }
 

@@ -33,10 +33,10 @@ public class ActionDamage extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        double damage = params.getParam("damage", params.getParam("param-line", 0));
-        if (params.hasAnyParam("player"))
+        double damage = params.getInteger("damage", params.getInteger("param-line", 0));
+        if (params.containsAny("player"))
             // TODO: Selector?
-            player = Utils.getPlayerExact(params.getParam("player"));
+            player = Utils.getPlayerExact(params.getString("player"));
         return damagePlayer(player, damage);
     }
 

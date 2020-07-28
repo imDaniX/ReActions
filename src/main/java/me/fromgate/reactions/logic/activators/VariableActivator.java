@@ -43,8 +43,8 @@ public class VariableActivator extends Activator {
     }
 
     public static VariableActivator create(ActivatorBase base, Parameters param) {
-        String id = param.getParam("id", "UnknownVariable");
-        boolean personal = param.getParam("personal", false);
+        String id = param.getString("id", "UnknownVariable");
+        boolean personal = param.getBoolean("personal", false);
         return new VariableActivator(base, id, personal);
     }
 

@@ -19,7 +19,7 @@ public class GamemodeActivator extends Activator {
     }
 
     public static GamemodeActivator create(ActivatorBase base, Parameters param) {
-        GameMode gameMode = Utils.getEnum(GameMode.class, param.getParam("gamemode", "ANY"));
+        GameMode gameMode = Utils.getEnum(GameMode.class, param.getString("gamemode", "ANY"));
         return new GamemodeActivator(base, gameMode);
     }
 

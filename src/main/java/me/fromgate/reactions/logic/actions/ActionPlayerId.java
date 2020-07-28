@@ -18,9 +18,9 @@ public class ActionPlayerId extends Action {
     @SuppressWarnings("deprecation")
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        String playerName = params.getParam("player", "");
-        String varID = params.getParam("varid", "");
-        String varName = params.getParam("varname", "");
+        String playerName = params.getString("player", "");
+        String varID = params.getString("varid", "");
+        String varName = params.getString("varname", "");
 
         UUID uniqueID;
         String uuid;

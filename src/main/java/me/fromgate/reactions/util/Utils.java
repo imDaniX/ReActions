@@ -67,8 +67,8 @@ public class Utils {
         String strpitch = "1";
         float pitch = 1;
         float volume = 1;
-        if (params.hasAnyParam("param")) {
-            String param = params.getParam("param", "");
+        if (params.containsAny("param")) {
+            String param = params.getString("param", "");
             if (param.isEmpty()) return "";
             if (param.contains("/")) {
                 String[] prm = param.split("/");
@@ -81,11 +81,11 @@ public class Utils {
             if (NumberUtils.FLOAT_POSITIVE.matcher(strvolume).matches()) volume = Float.parseFloat(strvolume);
             if (NumberUtils.FLOAT_POSITIVE.matcher(strpitch).matches()) pitch = Float.parseFloat(strpitch);
         } else {
-            String locationStr = params.getParam("loc");
+            String locationStr = params.getString("loc");
             soundLoc = locationStr.isEmpty() ? loc : LocationUtils.parseLocation(locationStr, null);
-            sndstr = params.getParam("type", "");
-            pitch = params.getParam("pitch", 1.0f);
-            volume = params.getParam("volume", 1.0f);
+            sndstr = params.getString("type", "");
+            pitch = (float) params.getDouble("pitch", 1.0f);
+            volume = (float) params.getDouble("volume", 1.0f);
         }
         Sound sound = getEnum(Sound.class, sndstr, Sound.UI_BUTTON_CLICK);
         if (soundLoc != null) soundLoc.getWorld().playSound(soundLoc, sound, volume, pitch);
@@ -100,7 +100,7 @@ public class Utils {
      */
     public void soundPlay(Location loc, String param) {
         if (param.isEmpty()) return;
-        Parameters params = new Parameters(param, "param");
+        Parameters params = Parameters.fromString(param, "param");
         soundPlay(loc, params);
     }
 

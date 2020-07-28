@@ -38,7 +38,7 @@ public class ActionTimer extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        String timer = params.getParam("timer", "");
+        String timer = params.getString("timer", "");
         if (timer.isEmpty()) return false;
         return TimersManager.setPause(timer, pauseTimer);
     }

@@ -41,12 +41,12 @@ public class ActionVelocity extends Action {
     private Vector setPlayerVelocity(Player p, Parameters params) {
         String velstr;
         boolean kick = false;
-        if (params.isParamsExists("param")) {
-            velstr = params.getParam("param", "");
+        if (params.containsEvery("param")) {
+            velstr = params.getString("param", "");
         } else {
-            velstr = params.getParam("vector", "");
-            if (velstr.isEmpty()) velstr = params.getParam("direction", "");
-            kick = params.getParam("kick", false);
+            velstr = params.getString("vector", "");
+            if (velstr.isEmpty()) velstr = params.getString("direction", "");
+            kick = params.getBoolean("kick", false);
         }
 
         if (velstr.isEmpty()) return null;

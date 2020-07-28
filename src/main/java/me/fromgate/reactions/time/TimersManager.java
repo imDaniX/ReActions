@@ -122,15 +122,15 @@ public class TimersManager {
             Msg.MSG_TIMERNEEDPARAMS.print(sender);
             return false;
         }
-        if (params.getParam("activator", "").isEmpty()) {
+        if (params.getString("activator", "").isEmpty()) {
             Msg.MSG_TIMERNEEDACTIVATOR.print(sender);
             return false;
         }
-        if (!params.isParamsExists("timer-type")) {
+        if (!params.containsEvery("timer-type")) {
             Msg.MSG_TIMERNEEDTYPE.print(sender);
             return false;
         }
-        if (!params.isParamsExists("time")) {
+        if (!params.containsEvery("time")) {
             Msg.MSG_TIMERNEEDTIME.print(sender);
             return false;
         }
@@ -219,11 +219,11 @@ public class TimersManager {
                 for (String timerId : cs.getKeys(false)) {
                     ConfigurationSection csParams = cs.getConfigurationSection(timerId);
                     if (csParams == null) continue;
-                    Parameters params = new Parameters();
-                    params.set("timer-type", timerType);
+                    Parameters params = Parameters.fromString("");
+                    params.put("timer-type", timerType);
                     for (String param : csParams.getKeys(true)) {
                         if (!csParams.isString(param)) continue;
-                        params.set(param, csParams.getString(param));
+                        params.put(param, csParams.getString(param));
                     }
                     addTimer(timerId, params);
                 }
@@ -243,7 +243,7 @@ public class TimersManager {
             for (String key : params.keySet()) {
                 if (key.equalsIgnoreCase("timer-type")) continue;
                 if (key.equalsIgnoreCase("param-line")) continue;
-                cfg.set(root + key, key.equalsIgnoreCase("time") ? params.getParam(key).replace("_", " ") : params.getParam(key));
+                cfg.set(root + key, key.equalsIgnoreCase("time") ? params.getString(key).replace("_", " ") : params.getString(key));
             }
         }
         FileUtils.saveCfg(cfg, f, "Failed to save timers.yml file");

@@ -42,11 +42,11 @@ public class FlagDelay implements Flag {
         long updateTime = 0;
         String id = param;
 
-        Parameters params = new Parameters(param);
-        if (params.isParamsExists("id")) {
-            id = params.getParam("id");
-            updateTime = TimeUtils.parseTime(params.getParam("set-delay", params.getParam("set-time", "0")));
-            playerName = params.getParam("player", playerName);
+        Parameters params = Parameters.fromString(param);
+        if (params.containsEvery("id")) {
+            id = params.getString("id");
+            updateTime = TimeUtils.parseTime(params.getString("set-delay", params.getString("set-time", "0")));
+            playerName = params.getString("player", playerName);
         }
         boolean result = playerName.isEmpty() ? Delayer.checkDelay(id, updateTime) : Delayer.checkPersonalDelay(playerName, id, updateTime);
         Delayer.setTempPlaceholders(context, playerName, id);

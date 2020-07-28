@@ -37,20 +37,20 @@ public class FlagSQL implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         if (!SQLManager.isEnabled()) return false;
-        Parameters params = new Parameters(param);
-        if (!params.isParamsExists("value", "select", "from") &&
-                !(params.isParamsExists("query"))) return false;
-        String value = params.getParam("value", "");
-        String select = params.getParam("select", "");
-        String query = params.getParam("query", "");
+        Parameters params = Parameters.fromString(param);
+        if (!params.containsEvery("value", "select", "from") &&
+                !(params.containsEvery("query"))) return false;
+        String value = params.getString("value", "");
+        String select = params.getString("select", "");
+        String query = params.getString("query", "");
         if (query.isEmpty()) {
             if (select.isEmpty()) return false;
-            String from = params.getParam("from", "");
+            String from = params.getString("from", "");
             if (from.isEmpty()) return false;
-            String where = params.getParam("where", "");
+            String where = params.getString("where", "");
             query = "SELECT " + select + " FROM " + from + (where.isEmpty() ? "" : " WHERE " + where);
         }
-        int column = params.getParam("column", 1);
+        int column = params.getInteger("column", 1);
         if (check) return SQLManager.compareSelect(value, query, column, params, context.getTempVariable("SQL_SET"));
         else return SQLManager.isSelectResultEmpty(query);
     }

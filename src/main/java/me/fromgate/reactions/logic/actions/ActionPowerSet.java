@@ -35,13 +35,13 @@ public class ActionPowerSet extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        Location loc = LocationUtils.parseLocation(params.getParam("loc", ""), null);
+        Location loc = LocationUtils.parseLocation(params.getString("loc", ""), null);
         setMessageParam("UNKNOWN");
         if (loc == null) return false;
         Block b = loc.getBlock();
         setMessageParam(b.getType().name());
         if (!isPowerBlock(b)) return false;
-        String state = params.getParam("power", "on");
+        String state = params.getString("power", "on");
         boolean power = getPower(b, state);
         return setPower(b, power);
     }

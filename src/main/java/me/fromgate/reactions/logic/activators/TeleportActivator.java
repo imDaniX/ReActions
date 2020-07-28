@@ -21,8 +21,8 @@ public class TeleportActivator extends Activator {
     }
 
     public static TeleportActivator create(ActivatorBase base, Parameters param) {
-        TeleportCause cause = Utils.getEnum(TeleportCause.class, param.getParam("cause"));
-        String worldTo = param.getParam("world");
+        TeleportCause cause = Utils.getEnum(TeleportCause.class, param.getString("cause"));
+        String worldTo = param.getString("world");
         return new TeleportActivator(base, cause, worldTo);
     }
 

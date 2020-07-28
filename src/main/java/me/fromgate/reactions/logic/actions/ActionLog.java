@@ -77,12 +77,12 @@ public class ActionLog extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        if (params.hasAnyParam("prefix", "color", "file")) {
+        if (params.containsAny("prefix", "color", "file")) {
             String plg_name = ReActionsPlugin.getInstance().getDescription().getName();
-            boolean prefix = params.getParam("prefix", true);
-            boolean color = params.getParam("color", false);
-            String file = params.getParam("file", "");
-            String message = params.getParam("text", removeParams(params.getParam("param-line")));
+            boolean prefix = params.getBoolean("prefix", true);
+            boolean color = params.getBoolean("color", false);
+            String file = params.getString("file", "");
+            String message = params.getString("text", removeParams(params.getString("param-line")));
             if (message.isEmpty()) return false;
             if (file.isEmpty()) {
                 if (prefix) {
@@ -91,7 +91,7 @@ public class ActionLog extends Action {
             } else {
                 saveToFile(context, file, message);
             }
-        } else Msg.logMessage(params.getParam("param-line"));
+        } else Msg.logMessage(params.getString("param-line"));
 
         return true;
     }

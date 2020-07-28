@@ -83,12 +83,12 @@ public class ItemUtils {
     }
 
     public boolean removeItemInInventory(Inventory inventory, String itemStr) {
-        Map<String, String> itemParams = Parameters.parseParams(itemStr, "");
+        Map<String, String> itemParams = Parameters.parametersMap(itemStr);
         return removeItemInInventory(inventory, itemParams);
     }
 
     public int countItemsInInventory(Inventory inventory, String itemStr) {
-        Map<String, String> itemMap = Parameters.parseParams(itemStr, "");
+        Map<String, String> itemMap = Parameters.parametersMap(itemStr);
         return countItemsInventory(inventory, itemMap);
     }
 
@@ -142,7 +142,7 @@ public class ItemUtils {
     }
 
     public int getAmount(String itemStr) {
-        Map<String, String> itemMap = Parameters.parseParams(itemStr, "");
+        Map<String, String> itemMap = Parameters.parametersMap(itemStr);
         String amountStr = itemMap.getOrDefault("amount", "1");
         if (NumberUtils.INT_NONZERO_POSITIVE.matcher(amountStr).matches()) return Integer.parseInt(amountStr);
         return 1;
@@ -227,7 +227,7 @@ public class ItemUtils {
         List<ItemStack> items = new ArrayList<>();
         for (String key : params.keySet()) {
             if (ITEM_D.matcher(key).matches()) {
-                String itemStr = params.getParam(key, "");
+                String itemStr = params.getString(key, "");
                 VirtualItem vi = VirtualItem.fromString(itemStr);
                 if (vi != null) items.add(vi);
             }
@@ -246,17 +246,17 @@ public class ItemUtils {
      * @return List of items
      */
     public List<ItemStack> parseRandomItemsStr(String items) {
-        Parameters params = new Parameters(items);
-        if (params.matchAnyParam(SET_D)) {
+        Parameters params = Parameters.fromString(items);
+        if (params.matchesAny(SET_D)) {
             Map<List<ItemStack>, Integer> sets = new HashMap<>();
             int maxChance = 0;
             int nochcount = 0;
             for (String key : params.keySet()) {
                 if (!SET_D.matcher(key).matches()) continue;
-                Parameters itemParams = new Parameters(params.getParam(key));
+                Parameters itemParams = Parameters.fromString(params.getString(key));
                 List<ItemStack> itemList = parseItemsSet(itemParams);
                 if (itemList == null || itemList.isEmpty()) continue;
-                int chance = itemParams.getParam("chance", -1);
+                int chance = itemParams.getInteger("chance", -1);
                 if (chance > 0) maxChance += chance;
                 else nochcount++;
                 sets.put(itemList, chance);
@@ -269,7 +269,7 @@ public class ItemUtils {
                 curchance = curchance + (sets.get(stack) < 0 ? eqperc : sets.get(stack));
                 if (rnd <= curchance) return stack;
             }
-        } else if (params.matchAnyParam("item\\d+|ITEM\\d+")) {
+        } else if (params.matchesAny("item\\d+|ITEM\\d+")) {
             return parseItemsSet(params);
         } else {
             VirtualItem vi = VirtualItem.fromString(items);
@@ -320,7 +320,7 @@ public class ItemUtils {
     public String toDisplayString(String itemStr) {
         VirtualItem vi = VirtualItem.fromString(itemStr);
         if (vi != null) return vi.toDisplayString();
-        Map<String, String> itemMap = Parameters.parseParams(itemStr, "");
+        Map<String, String> itemMap = Parameters.parametersMap(itemStr);
         String name = itemMap.containsKey("name") ? itemMap.get("name") : itemMap.getOrDefault("type", null);
         if (name == null) return itemStr;
         int amount = getAmount(itemStr);

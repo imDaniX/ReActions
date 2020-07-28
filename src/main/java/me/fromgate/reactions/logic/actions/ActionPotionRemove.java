@@ -32,7 +32,7 @@ public class ActionPotionRemove extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        String str = removePotionEffect(context.getPlayer(), params.getParam("param-line", ""));
+        String str = removePotionEffect(context.getPlayer(), params.getString("param-line", ""));
         if (str.isEmpty()) return false;
         this.setMessageParam(str);
         return true;

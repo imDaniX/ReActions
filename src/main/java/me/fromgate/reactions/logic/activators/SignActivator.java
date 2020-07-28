@@ -56,18 +56,18 @@ public class SignActivator extends Activator {
         Sign sign = null;
         if (targetBlock != null && BlockUtils.isSign(targetBlock))
             sign = (Sign) targetBlock.getState();
-        ClickType click = ClickType.getByName(param.getParam("click", "RIGHT"));
+        ClickType click = ClickType.getByName(param.getString("click", "RIGHT"));
         List<String> maskLines = new ArrayList<>();
         if (sign == null) {
-            maskLines.add(param.getParam("line1", ""));
-            maskLines.add(param.getParam("line2", ""));
-            maskLines.add(param.getParam("line3", ""));
-            maskLines.add(param.getParam("line4", ""));
+            maskLines.add(param.getString("line1", ""));
+            maskLines.add(param.getString("line2", ""));
+            maskLines.add(param.getString("line3", ""));
+            maskLines.add(param.getString("line4", ""));
         } else {
-            maskLines.add(param.getParam("line1", sign.getLine(0)));
-            maskLines.add(param.getParam("line2", sign.getLine(1)));
-            maskLines.add(param.getParam("line3", sign.getLine(2)));
-            maskLines.add(param.getParam("line4", sign.getLine(3)));
+            maskLines.add(param.getString("line1", sign.getLine(0)));
+            maskLines.add(param.getString("line2", sign.getLine(1)));
+            maskLines.add(param.getString("line3", sign.getLine(2)));
+            maskLines.add(param.getString("line4", sign.getLine(3)));
         }
         return new SignActivator(base, click, maskLines);
     }

@@ -17,7 +17,7 @@ public class FlightActivator extends Activator {
     }
 
     public static FlightActivator create(ActivatorBase base, Parameters param) {
-        FlightType type = FlightType.getByName(param.getParam("flight", "ANY"));
+        FlightType type = FlightType.getByName(param.getString("flight", "ANY"));
         return new FlightActivator(base, type);
     }
 

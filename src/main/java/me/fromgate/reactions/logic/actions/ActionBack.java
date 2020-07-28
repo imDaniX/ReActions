@@ -30,7 +30,7 @@ public class ActionBack extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        return PushBack.teleportToPrev(context.getPlayer(), params.getParam("param-line", 1));
+        return PushBack.teleportToPrev(context.getPlayer(), params.getInteger("param-line", 1));
     }
 
 }

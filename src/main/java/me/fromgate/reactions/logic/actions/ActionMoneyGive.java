@@ -38,13 +38,13 @@ public class ActionMoneyGive extends Action {
         Player player = context.getPlayer();
         if (!RaEconomics.isEconomyFound()) return false;
         if (params.isEmpty()) return false;
-        if (params.size() <= 2) params = parseOldFormat(player, params.getParam("param-line"));
-        String amountStr = params.getParam("amount", "");
+        if (params.size() <= 2) params = parseOldFormat(player, params.getString("param-line"));
+        String amountStr = params.getString("amount", "");
         if (amountStr.isEmpty()) return false;
-        String worldName = params.getParam("world", "");
-        String target = params.getParam("target", params.getParam("player", (player == null ? "" : player.getName())));
+        String worldName = params.getString("world", "");
+        String target = params.getString("target", params.getString("player", (player == null ? "" : player.getName())));
         if (target.isEmpty()) return false;
-        String source = params.getParam("source", "");
+        String source = params.getString("source", "");
         String message = RaEconomics.creditAccount(target, source, amountStr, worldName);
         if (message.isEmpty()) return false;
         setMessageParam(message);
@@ -61,6 +61,6 @@ public class ActionMoneyGive extends Action {
                 newParams.put("sourse", m[1]);
             }
         } else newParams.put("amount", mstr.contains("-") ? Integer.toString(Rng.nextIntFromString(mstr)) : mstr);
-        return new Parameters(newParams);
+        return Parameters.fromMap(newParams);
     }
 }

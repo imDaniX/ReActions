@@ -43,7 +43,7 @@ public class CmdCreate extends Cmd {
                 return true;
             case "timer":
                 if (param.length() == 0) return false;
-                return TimersManager.addTimer(sender, id, Parameters.parseParams(param.toString()), true);
+                return TimersManager.addTimer(sender, id, Parameters.fromString(param.toString()), true);
             case "menu":
                 // TODO: Create menu from chest
                 if (param.length() == 0) return false;
@@ -71,10 +71,10 @@ public class CmdCreate extends Cmd {
             if (at.isNeedBlock())
                 params = new BlockParameters(param, player.getTargetBlock(null, 100));
             else
-                params = new Parameters(param);
+                params = Parameters.fromString(param);
         } else {
             if (at.isNeedBlock()) return false;
-            params = new Parameters(param);
+            params = Parameters.fromString(param);
         }
         Activator activator = at.create(name, "activators", params);
         if (activator == null || !activator.isValid()) {

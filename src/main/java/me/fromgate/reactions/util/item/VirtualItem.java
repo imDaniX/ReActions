@@ -121,7 +121,7 @@ public class VirtualItem extends ItemStack {
      * @return - New VirtualItem object or null (if parse failed)
      */
     public static VirtualItem fromString(String itemStr) {
-        Map<String, String> params = Parameters.parseParams(itemStr, "");
+        Map<String, String> params = Parameters.parametersMap(itemStr);
         VirtualItem vi = fromMap(params);
         if (vi != null) return vi;
         ItemStack item = ItemUtils.parseOldItemStack(itemStr);
@@ -527,7 +527,7 @@ public class VirtualItem extends ItemStack {
         if (fireworkStr == null || fireworkStr.isEmpty()) return;
         if (!(this.getItemMeta() instanceof FireworkEffectMeta)) return;
         FireworkEffectMeta fm = (FireworkEffectMeta) this.getItemMeta();
-        Map<String, String> params = Parameters.parseParams(fireworkStr, "");
+        Map<String, String> params = Parameters.parametersMap(fireworkStr);
         FireworkEffect.Type fType;
         List<Color> colors;
         List<Color> fadeColors;
@@ -562,7 +562,7 @@ public class VirtualItem extends ItemStack {
             String[] fireworks = fireworkStr.split(";");
             List<FireworkEffect> fe = new ArrayList<>();
             for (String fStr : fireworks) {
-                Map<String, String> params = Parameters.parseParams(fStr, "");
+                Map<String, String> params = Parameters.parametersMap(fStr);
                 FireworkEffect.Type fType = null;
                 List<Color> colors;
                 List<Color> fadeColors;
@@ -656,7 +656,7 @@ public class VirtualItem extends ItemStack {
     }
 
     public boolean compare(String itemStr, int amount) {
-        Map<String, String> params = Parameters.parseParams(itemStr, "");
+        Map<String, String> params = Parameters.parametersMap(itemStr);
         if (amount > 0) params.put("amount", Integer.toString(amount));
         return compare(params, amount);
     }

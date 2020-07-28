@@ -38,19 +38,19 @@ public class ActionBlockSet extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         //String istr = params.getParam("block", "");
-        boolean phys = params.getParam("physics", false);
-        boolean drop = params.getParam("drop", false);
-        Parameters itemParam = new Parameters(params.getParam("block", "AIR"), "type");
+        boolean phys = params.getBoolean("physics", false);
+        boolean drop = params.getBoolean("drop", false);
+        Parameters itemParam = Parameters.fromString(params.getString("block", "AIR"), "type");
         ItemStack item = null;
-        if (!itemParam.getParam("type", "AIR").equalsIgnoreCase("air")) {
+        if (!itemParam.getString("type", "AIR").equalsIgnoreCase("air")) {
             item = VirtualItem.fromMap(itemParam.getMap());
             if ((item == null) || ((!item.getType().isBlock()))) {
-                Msg.logOnce("wrongblock" + params.getParam("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getParam("block"));
+                Msg.logOnce("wrongblock" + params.getString("block"), "Failed to execute action BLOCK_FILL. Wrong block " + params.getString("block"));
                 return false;
             }
         }
 
-        Location loc = LocationUtils.parseLocation(params.getParam("loc", ""), null);
+        Location loc = LocationUtils.parseLocation(params.getString("loc", ""), null);
         if (loc == null) return false;
         Block b = loc.getBlock();
 

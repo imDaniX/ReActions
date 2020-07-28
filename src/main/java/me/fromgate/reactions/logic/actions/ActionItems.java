@@ -53,7 +53,7 @@ public class ActionItems extends Action {
     public boolean execute(RaContext context, Parameters params) {
         switch (actionType) {
             case GIVE_ITEM:
-                return giveItemPlayer(context, params.getParam("param-line", ""));
+                return giveItemPlayer(context, params.getString("param-line", ""));
             case REMOVE_ITEM_HAND:
                 return removeItemInHand(context, params);
             case REMOVE_ITEM_OFFHAND:
@@ -65,7 +65,7 @@ public class ActionItems extends Action {
             case WEAR_ITEM:
                 return wearItem(context, params);
             case OPEN_INVENTORY:
-                return openInventory(context, params.getParam("param-line", ""));
+                return openInventory(context, params.getString("param-line", ""));
             case SET_INVENTORY:
                 return setInventorySlot(context, params);
             case GET_INVENTORY:
@@ -88,14 +88,14 @@ public class ActionItems extends Action {
      */
     private boolean setInventorySlot(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        String itemStr = params.getParam("item", "");
+        String itemStr = params.getString("item", "");
         if (itemStr.isEmpty()) return false;
-        String slotStr = params.getParam("slot", "");
+        String slotStr = params.getString("slot", "");
         if (slotStr.isEmpty()) return false;
         if (!NumberUtils.isInteger(slotStr)) return wearItem(context, params);
         int slotNum = Integer.parseInt(slotStr);
         if (slotNum >= player.getInventory().getSize()) return false;
-        String existStr = params.getParam("exist", "remove");
+        String existStr = params.getString("exist", "remove");
         ItemStack oldItem = player.getInventory().getItem(slotNum) == null ? null : player.getInventory().getItem(slotNum).clone();
         if (itemStr.equalsIgnoreCase("AIR") || itemStr.equalsIgnoreCase("NULL")) {
             player.getInventory().setItem(slotNum, null);
@@ -117,7 +117,7 @@ public class ActionItems extends Action {
 
     private boolean getInventorySlot(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        String slotStr = params.getParam("slot", "");
+        String slotStr = params.getString("slot", "");
         if (slotStr.isEmpty()) return false;
         if (!NumberUtils.isInteger(slotStr)) return wearItemView(context, params);
         int slotNum = Integer.parseInt(slotStr);
@@ -134,7 +134,7 @@ public class ActionItems extends Action {
     private boolean wearItemView(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         int slot; //4 - auto, 3 - helmet, 2 - chestplate, 1 - leggins, 0 - boots
-        slot = this.getSlotNum(params.getParam("slot", "auto"));
+        slot = this.getSlotNum(params.getString("slot", "auto"));
         if (slot == -1) return getItemInOffhand(context, params);
         ItemStack[] armour = player.getInventory().getArmorContents();
         ItemStack item = armour[slot];
@@ -147,7 +147,7 @@ public class ActionItems extends Action {
 
     private boolean getItemInOffhand(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        String itemStr = params.getParam("slot", "");
+        String itemStr = params.getString("slot", "");
         if (itemStr.isEmpty()) return false;
         if (!itemStr.equalsIgnoreCase("offhand")) {
             context.setTempVariable("item_str", "");
@@ -172,13 +172,13 @@ public class ActionItems extends Action {
      */
     private boolean wearItem(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        String itemStr = params.getParam("item", "");
+        String itemStr = params.getString("item", "");
         int slot = -1; //4 - auto, 3 - helmete, 2 - chestplate, 1 - leggins, 0 - boots
         int existDrop = 1; // 0 - remove, 1 - undress, 2 - drop, 3 - keep
-        if (itemStr.isEmpty()) itemStr = params.getParam("param-line", "");
+        if (itemStr.isEmpty()) itemStr = params.getString("param-line", "");
         else {
-            slot = this.getSlotNum(params.getParam("slot", "auto"));
-            String existStr = params.getParam("exist", "undress");
+            slot = this.getSlotNum(params.getString("slot", "auto"));
+            String existStr = params.getString("exist", "undress");
             if (existStr.equalsIgnoreCase("remove")) existDrop = 0;
             else if (existStr.equalsIgnoreCase("undress")) existDrop = 1;
             else if (existStr.equalsIgnoreCase("drop")) existDrop = 2;
@@ -200,7 +200,7 @@ public class ActionItems extends Action {
 
     private boolean setItemInOffhand(RaContext context, Parameters params, ItemStack item) {
         Player player = context.getPlayer();
-        String itemStr = params.getParam("slot", "");
+        String itemStr = params.getString("slot", "");
         if (itemStr.isEmpty()) return false;
         if (!itemStr.equalsIgnoreCase("offhand")) return false;
         player.getInventory().setItemInOffHand(item);
@@ -242,17 +242,17 @@ public class ActionItems extends Action {
 
     private boolean removeItemInHand(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        return removeItem(context, search, context.getPlayer().getInventory().getItemInMainHand(), !params.hasAnyParam("amount"));
+        return removeItem(context, search, context.getPlayer().getInventory().getItemInMainHand(), !params.containsAny("amount"));
     }
 
     private boolean removeItemInOffHand(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        return removeItem(context, search, context.getPlayer().getInventory().getItemInOffHand(), !params.hasAnyParam("amount"));
+        return removeItem(context, search, context.getPlayer().getInventory().getItemInOffHand(), !params.containsAny("amount"));
     }
 
     private boolean removeItemInInventory(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        boolean all = !params.hasAnyParam("amount");
+        boolean all = !params.containsAny("amount");
         int remCount = search.getAmount();
         for (ItemStack item : context.getPlayer().getInventory()) {
             if (removeItem(context, search, item, all) && !all) {
@@ -295,12 +295,12 @@ public class ActionItems extends Action {
 
     public boolean dropItems(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        int radius = params.getParam("radius", 0);
-        Location loc = LocationUtils.parseLocation(params.getParam("loc", ""), player.getLocation());
+        int radius = params.getInteger("radius", 0);
+        Location loc = LocationUtils.parseLocation(params.getString("loc", ""), player.getLocation());
         if (loc == null) loc = player.getLocation();
-        boolean scatter = params.getParam("scatter", true);
-        boolean land = params.getParam("land", true);
-        List<ItemStack> items = ItemUtils.parseRandomItemsStr(params.getParam("item", ""));
+        boolean scatter = params.getBoolean("scatter", true);
+        boolean land = params.getBoolean("land", true);
+        List<ItemStack> items = ItemUtils.parseRandomItemsStr(params.getString("item", ""));
         if (items == null || items.isEmpty()) return false;
         if (radius == 0) scatter = false;
         Location l = LocationUtils.getRadiusLocation(loc, radius, land);
@@ -329,9 +329,9 @@ public class ActionItems extends Action {
      */
     private boolean unwearItem(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        int slot = getSlotNum(params.getParam("slot"));
-        String itemStr = params.getParam("item");
-        String action = params.getParam("item-action", "remove");
+        int slot = getSlotNum(params.getString("slot"));
+        String itemStr = params.getString("item");
+        String action = params.getString("item-action", "remove");
 
         VirtualItem vi = null;
 

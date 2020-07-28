@@ -44,7 +44,7 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
     }
 
     public static ItemHoldActivator create(ActivatorBase base, Parameters param) {
-        String item = param.getParam("item", "");
+        String item = param.getString("item", "");
         return new ItemHoldActivator(base, item);
     }
 

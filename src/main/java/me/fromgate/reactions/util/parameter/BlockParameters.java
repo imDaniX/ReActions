@@ -8,7 +8,7 @@ public class BlockParameters extends Parameters {
     private final Block block;
 
     public BlockParameters(String param, Block block) {
-        super(param);
+        super(param, Parameters.parametersMap(param));
         this.block = block;
     }
 }

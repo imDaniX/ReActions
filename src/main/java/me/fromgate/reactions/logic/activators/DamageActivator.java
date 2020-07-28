@@ -25,8 +25,8 @@ public class DamageActivator extends Activator {
     }
 
     public static DamageActivator create(ActivatorBase base, Parameters param) {
-        String cause = param.getParam("cause", "ANY");
-        DamageType source = DamageType.getByName(param.getParam("source", "ANY"));
+        String cause = param.getString("cause", "ANY");
+        DamageType source = DamageType.getByName(param.getString("source", "ANY"));
         return new DamageActivator(base, cause, source);
     }
 

@@ -25,20 +25,20 @@ public class CmdSet extends Cmd {
 
     private boolean setVariable(CommandSender sender, String var, String param) {
         Player p = (sender instanceof Player) ? (Player) sender : null;
-        Parameters params = new Parameters(param, "id");
-        String id = params.getParam("id", "");
+        Parameters params = Parameters.fromString(param, "id");
+        String id = params.getString("id", "");
         if (id.isEmpty()) return Msg.MSG_NEEDVDMID.print(sender, 'c');
         if (var.equalsIgnoreCase("delay") || var.equalsIgnoreCase("d")) {
-            boolean add = params.getParam("add", false);
-            String player = params.getParam("player", "");
+            boolean add = params.getBoolean("add", false);
+            String player = params.getString("player", "");
             if (player.equalsIgnoreCase("%player%") && (p != null)) player = p.getName();
-            long time = /*System.currentTimeMillis()+*/TimeUtils.parseTime(params.getParam("delay", "3s")); //дефолтная задержка три секунды
+            long time = /*System.currentTimeMillis()+*/TimeUtils.parseTime(params.getString("delay", "3s")); //дефолтная задержка три секунды
             if (player.isEmpty()) Delayer.setDelay(id, time, add);
             else Delayer.setPersonalDelay(player, id, time, add);
             Msg.printMSG(sender, "cmd_delayset", player.isEmpty() ? id : player + "." + id, TimeUtils.fullTimeToString(System.currentTimeMillis() + time));
         } else if (var.equalsIgnoreCase("var") || var.equalsIgnoreCase("variable") || var.equalsIgnoreCase("v")) {
-            String value = params.getParam("value", "");
-            String player = params.getParam("player", "");
+            String value = params.getString("value", "");
+            String player = params.getString("player", "");
             VariablesManager.getInstance().setVar(player, id, value);
             return Msg.CMD_VARSET.print(sender, player.isEmpty() ? id : player + "." + id, VariablesManager.getInstance().getVariable(player, id, ""));
         } else if (var.equalsIgnoreCase("menu") || var.equalsIgnoreCase("m")) {

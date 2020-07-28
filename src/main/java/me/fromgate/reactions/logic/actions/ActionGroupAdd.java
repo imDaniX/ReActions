@@ -30,7 +30,7 @@ public class ActionGroupAdd extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        return RaVault.playerAddGroup(context.getPlayer(), params.getParam("param-line", ""));
+        return RaVault.playerAddGroup(context.getPlayer(), params.getString("param-line", ""));
     }
 
 }

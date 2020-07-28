@@ -53,36 +53,36 @@ public class ActionMessage extends Action {
 
     private void sendMessage(Player player, Parameters params) {
         Set<Player> players = new HashSet<>();
-        if (params.hasAnyParam(SelectorsManager.getAllKeys())) {
+        if (params.containsAny(SelectorsManager.getAllKeys())) {
             players.addAll(SelectorsManager.getPlayerList(params));
-            if (players.isEmpty() && params.isParamsExists("player")) {
-                players.addAll(SelectorsManager.getPlayerList(new Parameters(params.getParam("player"))));
+            if (players.isEmpty() && params.containsEvery("player")) {
+                players.addAll(SelectorsManager.getPlayerList(Parameters.fromString(params.getString("player"))));
             }
         } else if (player != null) {
             players.add(player);
         }
         if (players.isEmpty()) return;
 
-        String type = params.getParam("type", "");
-        String message = params.getParam("text", removeParams(params.getParam("param-line")));
+        String type = params.getString("type", "");
+        String message = params.getString("text", removeParams(params.getString("param-line")));
         if (message.isEmpty()) return;
-        String annoymentTime = params.getParam("hide");
+        String annoymentTime = params.getString("hide");
         for (Player p : players) {
             if (showMessage(p, message, annoymentTime)) {
                 switch (type.toLowerCase(Locale.ENGLISH)) {
                     case "title":
                         p.sendTitle(Msg.colorize(message),
-                                params.getParam("subtitle", null),
-                                params.getParam("fadein", 10),
-                                params.getParam("stay", 70),
-                                params.getParam("fadeout", 20));
+                                params.getString("subtitle", null),
+                                params.getInteger("fadein", 10),
+                                params.getInteger("stay", 70),
+                                params.getInteger("fadeout", 20));
                         break;
                     case "subtitle":
                         p.sendTitle(null,
-                                Msg.colorize(params.getParam("subtitle", null)),
-                                params.getParam("fadein", 10),
-                                params.getParam("stay", 70),
-                                params.getParam("fadeout", 20));
+                                Msg.colorize(params.getString("subtitle", null)),
+                                params.getInteger("fadein", 10),
+                                params.getInteger("stay", 70),
+                                params.getInteger("fadeout", 20));
                         break;
                     case "actionbar":
                         // TODO: Spigot-api or reflections/nms

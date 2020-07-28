@@ -13,9 +13,9 @@ public class ActionWeToolControl extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        boolean isToolControl = params.getParam("value", params.getParam("param-line", false));
-        if (params.hasAnyParam("player"))
-            player = Utils.getPlayerExact(params.getParam("player"));
+        boolean isToolControl = params.getBoolean("value", params.getBoolean("param-line", false));
+        if (params.containsAny("player"))
+            player = Utils.getPlayerExact(params.getString("player"));
 
         RaWorldEdit.getSession(player).setToolControl(isToolControl);
         return true;

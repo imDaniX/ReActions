@@ -41,8 +41,8 @@ public class ActionClearRegion extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        String region = params.getParam("region", "");
-        String type = params.getParam("type", "all");
+        String region = params.getString("region", "");
+        String type = params.getString("type", "all");
         if (region.isEmpty()) return false;
         if (!RaWorldGuard.isConnected()) return false;
         List<Location> locs = RaWorldGuard.getRegionMinMaxLocations(region);

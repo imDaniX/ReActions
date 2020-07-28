@@ -38,12 +38,12 @@ public class ActionMoneyPay extends Action {
         Player player = context.getPlayer();
         if (!RaEconomics.isEconomyFound()) return false;
         if (params.size() == 0) return false;
-        if (params.size() <= 2) params = parseOldFormat(player, params.getParam("param-line"));
-        String amountStr = params.getParam("amount", "");
+        if (params.size() <= 2) params = parseOldFormat(player, params.getString("param-line"));
+        String amountStr = params.getString("amount", "");
         if (amountStr.isEmpty()) return false;
-        String worldName = params.getParam("world", "");
-        String target = params.getParam("target", "");
-        String source = params.getParam("source", params.getParam("player", (player != null ? player.getName() : "")));
+        String worldName = params.getString("world", "");
+        String target = params.getString("target", "");
+        String source = params.getString("source", params.getString("player", (player != null ? player.getName() : "")));
         if (source.isEmpty()) return false;
         String message = RaEconomics.debitAccount(source, target, amountStr, worldName);
         if (message.isEmpty()) return false;
@@ -61,6 +61,6 @@ public class ActionMoneyPay extends Action {
                 newParams.put("target", m[1]);
             }
         } else newParams.put("amount", mstr.contains("-") ? Integer.toString(Rng.nextIntFromString(mstr)) : mstr);
-        return new Parameters(newParams);
+        return Parameters.fromMap(newParams);
     }
 }

@@ -33,11 +33,11 @@ public class ActionHeal extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        if (params.hasAnyParam("player"))
-            player = Utils.getPlayerExact(params.getParam("player"));
+        if (params.containsAny("player"))
+            player = Utils.getPlayerExact(params.getString("player"));
         if (player == null) return false;
-        double hp = params.getParam("hp", 0);
-        if (params.isParamsExists("params")) hp = params.getParam("params", 0);
+        double hp = params.getInteger("hp", 0);
+        if (params.containsEvery("params")) hp = params.getInteger("params", 0);
         double health = player.getHealth();
         double healthMax = EntityUtils.getMaxHealth(player);
         if (health < healthMax && hp >= 0) {

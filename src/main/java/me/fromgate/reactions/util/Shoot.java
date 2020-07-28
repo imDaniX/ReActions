@@ -54,17 +54,17 @@ public class Shoot {
     public String actionShootThrough = "FENCE,FENCE_GATE,IRON_BARDING,IRON_FENCE,NETHER_FENCE";
 
     public void shoot(LivingEntity shooter, Parameters params) {
-        boolean onehit = params.getParam("singlehit", true);
-        int distance = params.getParam("distance", 100);
-        float knockbackTarget = params.getParam("knockbackTarget", 0);
+        boolean onehit = params.getBoolean("singlehit", true);
+        int distance = params.getInteger("distance", 100);
+        float knockbackTarget = params.getInteger("knockbackTarget", 0);
         for (LivingEntity le : getEntityBeam(shooter, getBeam(shooter, distance), onehit)) {
-            double damage = (double) Rng.nextIntFromString(params.getParam("damage", "1"));
+            double damage = (double) Rng.nextIntFromString(params.getString("damage", "1"));
             boolean shoot = true;
             if (damage > 0) {
                 shoot = damageEntity(shooter, le, damage, knockbackTarget);
             }
-            if (shoot && params.hasAnyParam("run")) {
-                executeActivator(shooter instanceof Player ? (Player) shooter : null, le, params.getParam("run"));
+            if (shoot && params.containsAny("run")) {
+                executeActivator(shooter instanceof Player ? (Player) shooter : null, le, params.getString("run"));
             }
         }
     }
@@ -75,11 +75,11 @@ public class Shoot {
     }
 
     private void executeActivator(Player shooter, LivingEntity target, String paramStr) {
-        Parameters param = Parameters.parseParams(paramStr);
-        if (param.isEmpty() || !param.hasAnyParam("activator", "exec")) return;
+        Parameters param = Parameters.fromString(paramStr);
+        if (param.isEmpty() || !param.containsAny("activator", "exec")) return;
         Player player = target instanceof Player ? (Player) target : null;
-        if (player == null && param.getParam("playeronly", true)) return;
-        param.set("player", player == null ? "null" : player.getName());
+        if (player == null && param.getBoolean("playeronly", true)) return;
+        param.put("player", player == null ? "null" : player.getName());
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("targettype", target.getType().name());
         tempVars.put("targetname", (player == null) ? getMobName(target) : player.getName());

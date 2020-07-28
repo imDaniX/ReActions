@@ -14,15 +14,15 @@ public class LocSelector implements Selector {
     public Set<Player> selectPlayers(String param) {
         Set<Player> players = new HashSet<>();
         if (param.isEmpty()) return players;
-        Parameters params = new Parameters(param, "loc");
-        String locStr = params.getParam("loc");
+        Parameters params = Parameters.fromString(param, "loc");
+        String locStr = params.getString("loc");
         if (locStr.isEmpty()) return players;
         Location loc = LocationUtils.parseLocation(locStr, null);
         if (loc == null) return players;
         loc.setX(loc.getBlockX() + 0.5);
         loc.setY(loc.getBlockY() + 0.5);
         loc.setZ(loc.getBlockZ() + 0.5);
-        double radius = params.getParam("radius", 1.0);
+        double radius = params.getDouble("radius", 1.0);
         radius *= radius;
         for (Player player : loc.getWorld().getPlayers())
             if (player.getLocation().distanceSquared(loc) <= radius) players.add(player);

@@ -42,9 +42,9 @@ public class DamageByBlockActivator extends Activator implements Locatable {
     }
 
     public static DamageByBlockActivator create(ActivatorBase base, Parameters param) {
-        String block = param.getParam("block", "");
-        String location = param.getParam("loc", "");
-        String cause = param.getParam("cause", "ANY");
+        String block = param.getString("block", "");
+        String location = param.getString("loc", "");
+        String cause = param.getString("cause", "ANY");
         return new DamageByBlockActivator(base, block, location, cause);
     }
 

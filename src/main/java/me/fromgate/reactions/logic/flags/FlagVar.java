@@ -39,19 +39,19 @@ public class FlagVar implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        Parameters params = new Parameters(param, "param-line");
+        Parameters params = Parameters.fromString(param, "param-line");
         String var;
         String value;
         String playerName = this.personalVar && (player != null) ? player.getName() : "";
 
 
-        if (params.isParamsExists("id")) {
-            var = params.getParam("id", "");
+        if (params.containsEvery("id")) {
+            var = params.getString("id", "");
             if (var.isEmpty()) return false;
-            value = params.getParam("value", "");
-            playerName = params.getParam("player", playerName);
+            value = params.getString("value", "");
+            playerName = params.getString("player", playerName);
         } else {
-            String[] ln = params.getParam("param-line", "").split("/", 2);
+            String[] ln = params.getString("param-line", "").split("/", 2);
             if (ln.length == 0) return false;
             var = ln[0];
             value = (ln.length > 1) ? ln[1] : "";

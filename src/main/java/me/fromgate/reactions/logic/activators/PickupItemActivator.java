@@ -20,7 +20,7 @@ public class PickupItemActivator extends Activator {
     }
 
     public static PickupItemActivator create(ActivatorBase base, Parameters param) {
-        String item = param.getParam("item", param.toString());
+        String item = param.getString("item", param.toString());
         return new PickupItemActivator(base, item);
     }
 

@@ -46,13 +46,13 @@ public class ActionVar extends Action {
         String var;
         String value;
 
-        if (params.isParamsExists("id")) {
-            var = params.getParam("id", "");
-            value = params.getParam("value", "");
-            player = params.getParam("player", player);
+        if (params.containsEvery("id")) {
+            var = params.getString("id", "");
+            value = params.getString("value", "");
+            player = params.getString("player", player);
             if (var.isEmpty()) return false;
         } else {
-            String[] ln = params.getParam("param-line", "").split("/", 2);
+            String[] ln = params.getString("param-line", "").split("/", 2);
             if (ln.length == 0) return false;
             var = ln[0];
             value = (ln.length > 1) ? ln[1] : "";

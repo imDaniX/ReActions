@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.flags;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.parameter.Parameters;
+import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 
 public class FlagRegion implements Flag {
@@ -55,10 +55,9 @@ public class FlagRegion implements Flag {
     }
 
     private boolean playersInRegion(String param) {
-        Parameters params = Parameters.fromOldFormat(param, "/", "region", "players");
-        String rg = params.getParam("region");
-        int minp = params.getParam("players", 1);
-        return (minp <= RaWorldGuard.countPlayersInRegion(rg));
+        String[] split = param.split("/");
+        if(split.length != 2) return false;
+        return (NumberUtils.getInteger(split[1], 1) <= RaWorldGuard.countPlayersInRegion(split[0]));
     }
 
     public enum Type {

@@ -27,8 +27,8 @@ public class WeChangeActivator extends Activator {
     }
 
     public static WeChangeActivator create(ActivatorBase base, Parameters param) {
-        Material blockType = ItemUtils.getMaterial(param.getParam("blocktype"));
-        String region = param.getParam("region", "");
+        Material blockType = ItemUtils.getMaterial(param.getString("blocktype"));
+        String region = param.getString("region", "");
         return new WeChangeActivator(base, blockType, region);
     }
 

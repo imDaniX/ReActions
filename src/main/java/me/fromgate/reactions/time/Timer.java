@@ -52,9 +52,9 @@ public class Timer {
     public Timer(Parameters params) {
         this.timesIngame = new HashSet<>();
         this.params = params;
-        this.ingameTimer = params.getParam("timer-type", "ingame").equalsIgnoreCase("ingame");
-        this.paused = params.getParam("paused", false);
-        params.set("paused", String.valueOf(this.paused));
+        this.ingameTimer = params.getString("timer-type", "ingame").equalsIgnoreCase("ingame");
+        this.paused = params.getBoolean("paused", false);
+        params.put("paused", String.valueOf(this.paused));
         this.parseTime();
 
     }
@@ -62,9 +62,9 @@ public class Timer {
     public void parseTime() {
         if (this.ingameTimer) {
             this.timesIngame = new HashSet<>();
-            this.timesIngame.addAll(Arrays.asList(params.getParam("time", "").split(",\\S*")));
+            this.timesIngame.addAll(Arrays.asList(params.getString("time", "").split(",\\S*")));
         } else {
-            String time = params.getParam("time", "").replace("_", " ");
+            String time = params.getString("time", "").replace("_", " ");
             try {
                 this.timeServer = new CronExpression(time);
             } catch (ParseException e) {
@@ -93,6 +93,6 @@ public class Timer {
 
     @Override
     public String toString() {
-        return params.getParam("activator", "Undefined") + " : " + params.getParam("time", "Undefined") + (this.isIngameTimer() ? " (ingame)" : " (server)");
+        return params.getString("activator", "Undefined") + " : " + params.getString("time", "Undefined") + (this.isIngameTimer() ? " (ingame)" : " (server)");
     }
 }

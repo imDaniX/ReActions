@@ -71,10 +71,10 @@ public class CmdRemove extends Cmd {
 
     private boolean removeVariable(CommandSender sender, String param) {
         Player p = (sender instanceof Player) ? (Player) sender : null;
-        Parameters params = new Parameters(param);
-        String player = params.getParam("player", "");
+        Parameters params = Parameters.fromString(param);
+        String player = params.getString("player", "");
         if (player.equalsIgnoreCase("%player%") && p != null) player = p.getName();
-        String id = params.getParam("id", "");
+        String id = params.getString("id", "");
         if (id.isEmpty()) {
             return Msg.MSG_VARNEEDID.print(sender);
         }

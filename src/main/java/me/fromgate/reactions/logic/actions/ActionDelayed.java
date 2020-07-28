@@ -10,10 +10,10 @@ public class ActionDelayed extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        long delay = TimeUtils.parseTime(params.getParam("time", "0"));
+        long delay = TimeUtils.parseTime(params.getString("time", "0"));
         if (delay == 0) return false;
 
-        String actionSource = params.getParam("action", "");
+        String actionSource = params.getString("action", "");
         if (actionSource.isEmpty()) return false;
         String actionStr;
         String paramStr = "";

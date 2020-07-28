@@ -67,16 +67,16 @@ public class FlagItem implements Flag {
 
     private boolean hasItemInInventory(RaContext context, String itemStr) {
         Player player = context.getPlayer();
-        Parameters params = new Parameters(itemStr);
+        Parameters params = Parameters.fromString(itemStr);
 
-        if (!params.isParamsExists("slot", "item")) {
+        if (!params.containsEvery("slot", "item")) {
             int countAmount = ItemUtils.countItemsInInventory(player.getInventory(), itemStr);
             context.setTempVariable("item_amount", countAmount == 0 ? "0" : String.valueOf(countAmount));
             int amount = ItemUtils.getAmount(itemStr);
             return countAmount >= amount;
         }
 
-        String slotStr = params.getParam("slot", "");
+        String slotStr = params.getString("slot", "");
         if (slotStr.isEmpty()) return false;
         int slotNum = NumberUtils.isInteger(slotStr) ? Integer.parseInt(slotStr) : -1;
         if (slotNum >= player.getInventory().getSize()) return false;

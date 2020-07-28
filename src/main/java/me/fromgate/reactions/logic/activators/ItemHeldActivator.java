@@ -29,10 +29,10 @@ public class ItemHeldActivator extends Activator {
     }
 
     public static ItemHeldActivator create(ActivatorBase base, Parameters param) {
-        String itemNewStr = param.getParam("itemnew", "");
-        String itemPrevStr = param.getParam("itemprev", "");
-        int newSlot = param.getParam("slotnew", 1);
-        int previousSlot = param.getParam("slotprev", 1);
+        String itemNewStr = param.getString("itemnew", "");
+        String itemPrevStr = param.getString("itemprev", "");
+        int newSlot = param.getInteger("slotnew", 1);
+        int previousSlot = param.getInteger("slotprev", 1);
         return new ItemHeldActivator(base, itemPrevStr, itemNewStr, --newSlot, --previousSlot);
     }
 

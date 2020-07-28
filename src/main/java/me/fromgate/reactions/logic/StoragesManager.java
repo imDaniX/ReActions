@@ -239,7 +239,7 @@ public class StoragesManager {
 
     public boolean raiseExecActivator(CommandSender sender, String param) {
         if (param.isEmpty()) return false;
-        return raiseExecActivator(sender, new Parameters(param, "player"));
+        return raiseExecActivator(sender, Parameters.fromString(param, "player"));
     }
 
     public boolean raiseExecActivator(CommandSender sender, Parameters param) {
@@ -249,7 +249,7 @@ public class StoragesManager {
     public boolean raiseExecActivator(CommandSender sender, Parameters param, Map<String, String> tempVars) {
         if (param.isEmpty()) return false;
         final Player senderPlayer = (sender instanceof Player) ? (Player) sender : null;
-        final String id = param.getParam("activator", param.getParam("exec"));
+        final String id = param.getString("activator", param.getString("exec"));
         if (id.isEmpty()) return false;
         Activator act = ActivatorsManager.getInstance().getActivator(id);
         if (act == null) {
@@ -261,18 +261,18 @@ public class StoragesManager {
             return false;
         }
 
-        int repeat = Math.min(param.getParam("repeat", 1), 1);
+        int repeat = Math.min(param.getInteger("repeat", 1), 1);
 
-        long delay = TimeUtils.timeToTicks(TimeUtils.parseTime(param.getParam("delay", "1t")));
+        long delay = TimeUtils.timeToTicks(TimeUtils.parseTime(param.getString("delay", "1t")));
 
         final Set<Player> target = new HashSet<>();
 
-        if (param.isParamsExists("player")) {
-            target.addAll(SelectorsManager.getPlayerList(new Parameters(param.getParam("player"), "player")));
+        if (param.containsEvery("player")) {
+            target.addAll(SelectorsManager.getPlayerList(Parameters.fromString(param.getString("player"), "player")));
         }
         target.addAll(SelectorsManager.getPlayerList(param));   // Оставляем для совместимости со старым вариантом
 
-        if (target.isEmpty() && !param.hasAnyParam(SelectorsManager.getAllKeys())) target.add(senderPlayer);
+        if (target.isEmpty() && !param.containsAny(SelectorsManager.getAllKeys())) target.add(senderPlayer);
 
         for (int i = 0; i < repeat; i++) {
             Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {

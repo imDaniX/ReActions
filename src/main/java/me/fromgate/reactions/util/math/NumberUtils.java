@@ -25,6 +25,11 @@ public class NumberUtils {
         return Double.parseDouble(str);
     }
 
+    public int getInteger(String str, int def) {
+        if (Utils.isStringEmpty(str) || !INT.matcher(str).matches()) return def;
+        return Integer.parseInt(str);
+    }
+
     // TODO: Should be removed or refactored
     public boolean isIntegerSigned(String... str) {
         if (str.length == 0) return false;

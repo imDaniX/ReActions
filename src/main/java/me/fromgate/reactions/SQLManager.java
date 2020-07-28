@@ -85,17 +85,17 @@ public class SQLManager {
     }
 
     private static Connection connectToMySQL() {
-        return connectToMySQL(new Parameters());
+        return connectToMySQL(Parameters.fromString(""));
     }
 
     // server port db user password codepage
     private static Connection connectToMySQL(Parameters params) {
-        String cAddress = params.getParam("server", serverAddress);
-        String cPort = params.getParam("port", port);
-        String cDataBase = params.getParam("db", dataBase);
-        String cUser = params.getParam("user", userName);
-        String cPassword = params.getParam("password", password);
-        String cCodepage = params.getParam("codepage", codepage);
+        String cAddress = params.getString("server", serverAddress);
+        String cPort = params.getString("port", port);
+        String cDataBase = params.getString("db", dataBase);
+        String cUser = params.getString("user", userName);
+        String cPassword = params.getString("password", password);
+        String cCodepage = params.getString("codepage", codepage);
         Properties prop = new Properties();
         if (!cCodepage.isEmpty()) {
             prop.setProperty("useUnicode", "true");

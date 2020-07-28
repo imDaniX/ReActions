@@ -68,40 +68,40 @@ public class LocationUtils {
      * @return Location
      */
     public Location parseLocation(String param, Location defaultLocation) {
-        Parameters params = new Parameters(param, "loc");
+        Parameters params = Parameters.fromString(param, "loc");
         return parseLocation(params, defaultLocation);
     }
 
     public Location parseLocation(Parameters params, Location defaultLocation) {
         Location location = null;
-        if (params.isParamsExists("loc")) {
-            String locStr = params.getParam("loc", "");
+        if (params.containsEvery("loc")) {
+            String locStr = params.getString("loc", "");
             location = LocationHolder.getTpLoc(locStr);
             if (location == null) location = parseCoordinates(locStr);
         }
 
-        boolean land = params.getParam("land", true);
-        if (params.isParamsExists("region")) {
-            location = getRegionLocation(params.getParam("region", ""), land);
+        boolean land = params.getBoolean("land", true);
+        if (params.containsEvery("region")) {
+            location = getRegionLocation(params.getString("region", ""), land);
             location = copyYawPitch(location, defaultLocation);
         }
 
-        if (params.isParamsExists("loc1", "loc2")) {
-            Location loc1 = parseCoordinates(params.getParam("loc1", ""));
-            Location loc2 = parseCoordinates(params.getParam("loc2", ""));
+        if (params.containsEvery("loc1", "loc2")) {
+            Location loc1 = parseCoordinates(params.getString("loc1", ""));
+            Location loc2 = parseCoordinates(params.getString("loc2", ""));
             if (loc1 != null && loc2 != null) {
                 location = getCubeLocation(loc1, loc2, land);
                 location = copyYawPitch(location, defaultLocation);
             }
         }
-        if (params.isParamsExists("radius")) {
-            int radius = params.getParam("radius", -1);
+        if (params.containsEvery("radius")) {
+            int radius = params.getInteger("radius", -1);
             if (radius > 0) {
                 location = getRadiusLocation(location == null ? defaultLocation : location, radius, land);
                 location = copyYawPitch(location, defaultLocation);
             }
         }
-        Vector vector = LocationUtils.parseVector(params.getParam("add-vector", ""));
+        Vector vector = LocationUtils.parseVector(params.getString("add-vector", ""));
         if (vector == null) vector = new Vector(0, 0, 0);
         Location result = location == null ? defaultLocation : location;
         if (result != null) result.add(vector);

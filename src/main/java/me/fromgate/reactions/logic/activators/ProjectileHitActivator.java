@@ -31,11 +31,11 @@ public class ProjectileHitActivator extends Activator {
     }
 
     public static ProjectileHitActivator create(ActivatorBase base, Parameters param) {
-        EntityType projType = Utils.getEnum(EntityType.class, param.getParam("projectile", "ARROW"));
-        Material hitBlock = Material.getMaterial(param.getParam("block", ""));
-        BlockFace hitFace = Utils.getEnum(BlockFace.class, param.getParam("face", ""));
-        EntityType hitEntity = Utils.getEnum(EntityType.class, param.getParam("entity", ""));
-        HitType hitType = HitType.getByName(param.getParam("hit", "ANY"));
+        EntityType projType = Utils.getEnum(EntityType.class, param.getString("projectile", "ARROW"));
+        Material hitBlock = Material.getMaterial(param.getString("block", ""));
+        BlockFace hitFace = Utils.getEnum(BlockFace.class, param.getString("face", ""));
+        EntityType hitEntity = Utils.getEnum(EntityType.class, param.getString("entity", ""));
+        HitType hitType = HitType.getByName(param.getString("hit", "ANY"));
         return new ProjectileHitActivator(base, projType, hitBlock, hitFace, hitEntity, hitType);
     }
 

@@ -15,9 +15,9 @@ public class FlagGreaterLower implements Flag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
-        Parameters params = new Parameters(param, "unknown");
-        double paramValue = params.getParam("param", 0d);
-        double value = params.getParam("value", 0d);
+        Parameters params = Parameters.fromString(param, "unknown");
+        double paramValue = params.getDouble("param", 0d);
+        double value = params.getDouble("value", 0d);
         if (greater) {
             context.setTempVariable("gparam", Double.toString(paramValue));
             return paramValue > value;

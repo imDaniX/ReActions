@@ -57,14 +57,14 @@ public class InventoryClickActivator extends Activator {
     }
 
     public static InventoryClickActivator create(ActivatorBase base, Parameters param) {
-        String inventoryName = param.getParam("name", "");
-        ClickType click = ClickType.getByName(param.getParam("click", "ANY"));
-        InventoryAction action = InventoryAction.getByName(param.getParam("action", "ANY"));
-        InventoryType inventory = InventoryType.getByName(param.getParam("inventory", "ANY"));
-        SlotType slotType = SlotType.getByName(param.getParam("slotType", "ANY"));
-        String numberKey = getNumberKeyByName(param.getParam("key", "ANY"));
-        String slotStr = getSlotByName(param.getParam("slot", "ANY"));
-        String itemStr = param.getParam("item");
+        String inventoryName = param.getString("name", "");
+        ClickType click = ClickType.getByName(param.getString("click", "ANY"));
+        InventoryAction action = InventoryAction.getByName(param.getString("action", "ANY"));
+        InventoryType inventory = InventoryType.getByName(param.getString("inventory", "ANY"));
+        SlotType slotType = SlotType.getByName(param.getString("slotType", "ANY"));
+        String numberKey = getNumberKeyByName(param.getString("key", "ANY"));
+        String slotStr = getSlotByName(param.getString("slot", "ANY"));
+        String itemStr = param.getString("item");
         return new InventoryClickActivator(base, inventoryName, click, action, inventory, slotType, numberKey, slotStr, itemStr);
     }
 

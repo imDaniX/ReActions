@@ -33,8 +33,8 @@ public class FlagPvp implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
         if (!player.hasMetadata("reactions-pvp-time")) return false;
-        Parameters params = new Parameters(param, "time");
-        String timeStr = params.getParam("time");
+        Parameters params = Parameters.fromString(param, "time");
+        String timeStr = params.getString("time");
         long delay = TimeUtils.parseTime(timeStr);
         if (delay == 0) return false;
         return ((System.currentTimeMillis() - player.getMetadata("reactions-pvp-time").get(0).asLong()) < delay);

@@ -17,7 +17,7 @@ public class SneakActivator extends Activator {
     }
 
     public static SneakActivator create(ActivatorBase base, Parameters param) {
-        SneakType sneak = SneakType.getByName(param.getParam("sneak", "ANY"));
+        SneakType sneak = SneakType.getByName(param.getString("sneak", "ANY"));
         return new SneakActivator(base, sneak);
     }
 

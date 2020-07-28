@@ -69,8 +69,8 @@ public class InventoryMenu implements Listener {
     public static boolean set(String id, Parameters params) {
         if (!containsMenu(id)) return false;
         VirtualInventory vi = getMenu(id);
-        String title = params.getParam("title", vi.getTitle());
-        int size = params.getParam("size", vi.getSize());
+        String title = params.getString("title", vi.getTitle());
+        int size = params.getInteger("size", vi.getSize());
         size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
 
         List<String> activators = vi.getActivators();
@@ -80,10 +80,10 @@ public class InventoryMenu implements Listener {
         if (slots.size() < size)
             for (int i = slots.size(); i < size; i++) slots.add("");
         for (int i = 1; i <= size; i++) {
-            if (params.isParamsExists("activator" + i))
-                activators.set(i - 1, params.getParam("activator" + i, ""));
-            if (params.isParamsExists("item" + i))
-                slots.set(i - 1, params.getParam("item" + i, ""));
+            if (params.containsEvery("activator" + i))
+                activators.set(i - 1, params.getString("activator" + i, ""));
+            if (params.containsEvery("item" + i))
+                slots.set(i - 1, params.getString("item" + i, ""));
         }
         vi.setTitle(title);
         vi.setSize(size);
@@ -99,15 +99,15 @@ public class InventoryMenu implements Listener {
     }
 
     private static List<String> getActivators(Parameters param) {
-        if (param.isParamsExists("menu")) {
-            String id = param.getParam("menu", "");
+        if (param.containsEvery("menu")) {
+            String id = param.getString("menu", "");
             if (containsMenu(id)) return getMenu(id).getActivators();
         } else {
-            int size = param.getParam("size", 9);
+            int size = param.getInteger("size", 9);
             if (size > 0) {
                 List<String> activators = new ArrayList<>();
                 for (int i = 1; i <= size; i++)
-                    activators.add(param.getParam("exec" + i, ""));
+                    activators.add(param.getString("exec" + i, ""));
                 return activators;
             }
         }
@@ -117,18 +117,18 @@ public class InventoryMenu implements Listener {
     public static Inventory getInventory(Parameters param) {
         RaInventoryHolder holder = new RaInventoryHolder(getActivators(param));
         Inventory inv = null;
-        if (param.isParamsExists("menu")) {
-            String id = param.getParam("menu", "");
+        if (param.containsEvery("menu")) {
+            String id = param.getString("menu", "");
             if (containsMenu(id)) inv = getMenu(id).getInventory();
         } else {
-            String title = param.getParam("title", "ReActions Menu");
-            int size = param.getParam("size", 9);
+            String title = param.getString("title", "ReActions Menu");
+            int size = param.getInteger("size", 9);
             if (size <= 0) return null;
             inv = Bukkit.createInventory(holder, size, title);
             for (int i = 1; i <= size; i++) {
                 String slotStr = "slot" + i;
-                if (!param.isParamsExists(slotStr)) continue;
-                ItemStack slotItem = VirtualItem.fromString(param.getParam(slotStr));
+                if (!param.containsEvery(slotStr)) continue;
+                ItemStack slotItem = VirtualItem.fromString(param.getString(slotStr));
                 if (slotItem == null) continue;
                 inv.setItem(i - 1, slotItem);
             }
@@ -220,7 +220,7 @@ public class InventoryMenu implements Listener {
         if (activators.size() > clickedSlot) {
             String activator = activators.get(clickedSlot);
             if (!activator.isEmpty()) {
-                StoragesManager.raiseExecActivator(player, new Parameters(activator, "activator"), tempvars);
+                StoragesManager.raiseExecActivator(player, Parameters.fromString(activator, "activator"), tempvars);
             }
         }
         // TODO: Do not close menu option?

@@ -65,12 +65,12 @@ public class DamageByMobActivator extends Activator {
             damagerName = getEntityTypeByName(damagerType.substring(0, damagerType.indexOf("$")));
             damagerType = damagerType.substring(damagerName.length() + 1);
         } else {
-            damagerType = getEntityTypeByName(param.getParam("type", "ANY"));
-            damagerName = param.getParam("name");
+            damagerType = getEntityTypeByName(param.getString("type", "ANY"));
+            damagerName = param.getString("name");
         }
         damagerName = ChatColor.translateAlternateColorCodes('&', damagerName.replace("\\_", " "));
-        String entityType = getEntityTypeByName(param.getParam("etype", "ANY"));
-        String damageCause = getCauseByName(param.getParam("cause", "ANY"));
+        String entityType = getEntityTypeByName(param.getString("etype", "ANY"));
+        String damageCause = getCauseByName(param.getString("cause", "ANY"));
         return new DamageByMobActivator(base, damagerType, damagerName, entityType, damageCause);
     }
 

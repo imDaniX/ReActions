@@ -1,168 +1,165 @@
 package me.fromgate.reactions.util.parameter;
 
+import me.fromgate.reactions.util.CaseInsensitiveMap;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.math.NumberUtils;
 
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
+import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
-public class Parameters {
-    private final static Pattern PARAM_PATTERN = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+:\\S+|\\S+");
-    private final static Pattern PARAM_BRACKET = Pattern.compile("\\{.*\\}");
-    private final static Pattern PARAM_BRACKET_SE = Pattern.compile("^\\{.*\\}$");
-    private final static Pattern BOOLEAN = Pattern.compile("(?i)true|on|yes");
-    private String paramStr;
+public class Parameters implements Iterable<String> {
+    private String origin;
     private Map<String, String> params;
 
-    public Parameters(String param) {
-        this.paramStr = param;
-        this.params = parseParams(param, "param");
-        this.params.put("param-line", this.paramStr);
+    protected Parameters(String origin, Map<String, String> params) {
+        this.origin = origin;
+        this.params = params;
     }
 
-    public Parameters(String param, String defaultKey) {
-        this.paramStr = param;
-        this.params = parseParams(param, defaultKey);
-        this.params.put("param-line", this.paramStr); // очередная залипуха
+    public static Parameters fromMap(Map<String, String> map) {
+        StringBuilder bld = new StringBuilder();
+        Map<String, String> params = new CaseInsensitiveMap<>(map);
+        params.forEach((k, v) -> bld.append(k).append(":{").append(v).append("} "));
+        String str = bld.toString();
+        return new Parameters(str.isEmpty() ? str : str.substring(0, str.length() - 1), params);
     }
 
-    public Parameters(Map<String, String> params) {
-        this.params = new HashMap<>(params);
-        StringBuilder sb = new StringBuilder();
-        for (String key : params.keySet()) {
-            if (sb.length() > 0) sb.append(" ");
-            sb.append(key).append(":");
-            String value = params.get(key);
-            if (value.contains(" ") && !PARAM_BRACKET_SE.matcher(value).matches())
-                sb.append("{").append(value).append("}");
-            else sb.append(value);
+    public static Parameters fromString(String str) {
+        return fromString(str, null);
+    }
+
+    public static Parameters fromString(String str, String defKey) {
+        Map<String, String> params = new CaseInsensitiveMap<>();
+        IterationState state = IterationState.SPACE;
+        String param = "";
+        StringBuilder text = new StringBuilder();
+        StringBuilder bld = null;
+        int brCount = 0;
+        for(int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            switch (state) {
+                case SPACE:
+                    if(c == ' ') {
+                        text.append(c);
+                        continue;
+                    }
+                    bld = new StringBuilder().append(c);
+                    state = IterationState.TEXT;
+                    break;
+                case TEXT:
+                    if(c == ' ') {
+                        if(defKey != null) {
+                            String value = bld.toString();
+                            params.put(defKey, value);
+                            text.append(defKey).append(':').append(bld).append(c);
+                        } else {
+                            text.append(bld).append(c);
+                        }
+                        state = IterationState.SPACE;
+                        continue;
+                    }
+                    if(c == ':') {
+                        state = IterationState.DOTS;
+                        param = bld.toString();
+                        bld = new StringBuilder();
+                        continue;
+                    }
+                    bld.append(c);
+                    break;
+                case DOTS:
+                    if(c == ' ') {
+                        text.append(bld).append(c);
+                        state = IterationState.SPACE;
+                        continue;
+                    }
+                    if(c == '{') {
+                        state = IterationState.BR_PARAM;
+                        continue;
+                    }
+                    state = IterationState.PARAM;
+                    bld.append(c);
+                    break;
+                case PARAM:
+                    if(c == ' ') {
+                        state = IterationState.SPACE;
+                        String value = bld.toString();
+                        params.put(param, value);
+                        text.append(value).append(c);
+                        continue;
+                    }
+                    bld.append(c);
+                    break;
+                case BR_PARAM:
+                    if(c == '}') {
+                        if(brCount == 0) {
+                            state = IterationState.SPACE;
+                            String value = bld.toString();
+                            params.put(param, value);
+                            text.append(value).append(c);
+                            continue;
+                        } else brCount--;
+                    } else if(c == '{')
+                        brCount++;
+                    bld.append(c);
+                    break;
+            }
         }
-        this.paramStr = sb.toString();
-    }
-
-    public Parameters() {
-        this.params = new HashMap<>();
-        this.paramStr = "";
-    }
-
-    /**
-     * Преобразует строку вида <параметр>/<параметр>/<параметр> в объект Param
-     *
-     * @param oldFormat — строка старого формата
-     * @param divider   — разделитель (любой, а не только "/")
-     * @param keys      — перечень ключей для параметров
-     * @return — возвращает
-     * <p>
-     * Пример:
-     * fromOldFormat ("123/test/953","/","num1","word1","num2");
-     * - создаст объект Param со следующими параметрами и значениями:
-     * - param-line: 123/test/953
-     * - num1: 123
-     * - word1: test
-     * - num2: 953
-     */
-    public static Parameters fromOldFormat(String oldFormat, String divider, String... keys) {
-        Parameters param = new Parameters(oldFormat);
-        param.paramStr = oldFormat;
-        if (param.hasAnyParam(keys)) return param;
-        param = new Parameters();
-        param.paramStr = oldFormat;
-        param.set("param-line", oldFormat); // и снова залипуха
-        String[] ln = oldFormat.split(Pattern.quote(divider), keys.length);
-        if (ln.length == 0) return param;
-        for (int i = 0; i < Math.min(ln.length, keys.length); i++)
-            param.set(keys[i], ln[i]);
-        return param;
-    }
-
-    public static Parameters parseParams(String paramStr) {
-        return new Parameters(paramStr);
-    }
-
-    public static Map<String, String> parseParams(String param, String defaultKey) {
-        Map<String, String> params = new HashMap<>();
-        Matcher matcher = PARAM_PATTERN.matcher(hideBkts(param));
-        while (matcher.find()) {
-            String paramPart = matcher.group().trim().replace("#BKT1#", "{").replace("#BKT2#", "}");
-            String key = paramPart;
-            String value = "";
-            if (matcher.group().contains(":")) {
-                key = paramPart.substring(0, paramPart.indexOf(":"));
-                value = paramPart.substring(paramPart.indexOf(":") + 1);
-            }
-            if (value.isEmpty()) {
-                value = key;
-                key = defaultKey;
-            }
-            if (PARAM_BRACKET.matcher(value).matches()) value = value.substring(1, value.length() - 1);
-            params.put(key, value);
+        if(state == IterationState.PARAM) {
+            String value = bld.toString();
+            params.put(param, value);
+            text.append(value);
         }
-        return params;
+        params.put("param-line", str);
+        return new Parameters(text.toString(), params);
     }
 
-    private static String hideBkts(String s) {
-        int count = 0;
-        StringBuilder r = new StringBuilder();
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            String a = String.valueOf(c);
-            if (c == '{') {
-                count++;
-                if (count != 1) a = "#BKT1#";
-            } else if (c == '}') {
-                if (count != 1) a = "#BKT2#";
-                count--;
-            }
-            r.append(a);
-        }
-        return r.toString();
+    public String getString(String key) {
+        return getString(key, "");
     }
 
-    @SuppressWarnings("unused")
-    public static boolean hasAnyParam(Map<String, String> params, String... param) {
-        for (String key : params.keySet())
-            for (String prm : param) {
-                if (key.equalsIgnoreCase(prm)) return true;
-            }
-        return false;
+    public String getString(String key, String def) {
+        return params.getOrDefault(key, def);
     }
 
-    public String getParam(String key, String defParam) {
-        if (!params.containsKey(key)) return defParam;
-        return params.get(key);
+    public double getDouble(String key) {
+        return getDouble(key, 0);
     }
 
-    public int getParam(String key, int defParam) {
-        if (!params.containsKey(key)) return defParam;
-        String str = params.get(key);
-        if (!NumberUtils.INT.matcher(str).matches()) return defParam;
-        return Integer.parseInt(str);
+    public double getDouble(String key, double def) {
+        return NumberUtils.getDouble(params.get(key), def);
     }
 
-    public float getParam(String key, float defParam) {
-        if (!params.containsKey(key)) return defParam;
-        String str = params.get(key);
-        if (!NumberUtils.FLOAT.matcher(str).matches()) return defParam;
-        return Float.parseFloat(str);
+    public int getInteger(String key) {
+        return getInteger(key, 0);
     }
 
-    public double getParam(String key, double defParam) {
-        if (!params.containsKey(key)) return defParam;
-        String str = params.get(key);
-        if (!NumberUtils.FLOAT.matcher(str).matches()) return defParam;
-        return Double.parseDouble(str);
+    public int getInteger(String key, int def) {
+        return NumberUtils.getInteger(params.get(key), def);
     }
 
-    public boolean getParam(String key, boolean defValue) {
-        if (!params.containsKey(key)) return defValue;
-        String str = params.get(key);
-        return BOOLEAN.matcher(str).matches();
+    public boolean getBoolean(String key) {
+        return getBoolean(key, false);
     }
 
-    public boolean isParamsExists(String... keys) {
+    public boolean getBoolean(String key, boolean def) {
+        String value = params.get(key);
+        if(Utils.isStringEmpty(value)) return def;
+        if(key.equalsIgnoreCase("true"))
+            return true;
+        if(key.equalsIgnoreCase("false"))
+            return false;
+        return def;
+    }
+
+    public boolean contains(String key) {
+        return params.containsKey(key);
+    }
+
+    public boolean containsEvery(String... keys) {
         for (String key : keys) {
             if (!params.containsKey(key)) {
                 return false;
@@ -171,21 +168,21 @@ public class Parameters {
         return true;
     }
 
-    public boolean hasAnyParam(Collection<String> keys) {
+    public boolean containsAny(Collection<String> keys) {
         for (String key : keys) {
             if (params.containsKey(key)) return true;
         }
         return false;
     }
 
-    public boolean hasAnyParam(String... keys) {
+    public boolean containsAny(String... keys) {
         for (String key : keys) {
             if (params.containsKey(key)) return true;
         }
         return false;
     }
 
-    public boolean matchAnyParam(Pattern... patterns) {
+    public boolean matchesAny(Pattern... patterns) {
         for (Pattern pattern : patterns) {
             for (String param : params.keySet()) {
                 if (pattern.matcher(param).matches()) return true;
@@ -194,7 +191,7 @@ public class Parameters {
         return false;
     }
 
-    public boolean matchAnyParam(String... keys) {
+    public boolean matchesAny(String... keys) {
         for (String key : keys) {
             for (String param : params.keySet()) {
                 if (param.matches(key)) return true;
@@ -207,10 +204,6 @@ public class Parameters {
         return this.params.keySet();
     }
 
-    public String getParam(String key) {
-        return this.params.getOrDefault(key, "");
-    }
-
     public Map<String, String> getMap() {
         return this.params;
     }
@@ -219,12 +212,12 @@ public class Parameters {
         return this.params.isEmpty();
     }
 
-    public void set(String key, String value) {
-        params.put(key, value);
+    public String put(String key, String value) {
+        return params.put(key, value);
     }
 
-    public void remove(String key) {
-        this.params.remove(key);
+    public String remove(String key) {
+        return this.params.remove(key);
     }
 
     public int size() {
@@ -233,6 +226,23 @@ public class Parameters {
 
     @Override
     public String toString() {
-        return this.paramStr;
+        return this.origin;
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return params.keySet().iterator();
+    }
+
+    public void forEach(BiConsumer<String, String> consumer) {
+        params.forEach(consumer);
+    }
+
+    public static Map<String, String> parametersMap(String param) {
+        return fromString(param).getMap();
+    }
+
+    private enum IterationState {
+        SPACE, TEXT, DOTS, PARAM, BR_PARAM
     }
 }

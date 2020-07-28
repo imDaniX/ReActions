@@ -51,8 +51,8 @@ public abstract class Action {
         this.actionExecuting = action;
         Player player = context.getPlayer();
         //this.activator = a;
-        if (!params.hasAnyParam("param-line")) params.set("param-line", "");
-        setMessageParam(params.getParam("param-line"));
+        if (!params.containsAny("param-line")) params.put("param-line", "");
+        setMessageParam(params.getString("param-line"));
         boolean actionFailed = (!execute(context, params));
         if ((player != null) && (printAction())) {
             Msg msg = Msg.getByName(("ACT_" + type.name() + (actionFailed ? "FAIL" : "")).toUpperCase(Locale.ENGLISH));

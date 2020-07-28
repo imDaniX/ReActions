@@ -12,9 +12,9 @@ public class ActionFlySpeed extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        double speed = params.getParam("speed", params.getParam("param-line", 0));
-        if (params.hasAnyParam("player"))
-            player = Utils.getPlayerExact(params.getParam("player"));
+        double speed = params.getInteger("speed", params.getInteger("param-line", 0));
+        if (params.containsAny("player"))
+            player = Utils.getPlayerExact(params.getString("player"));
         return flySpeedPlayer(player, speed / 10);
     }
 

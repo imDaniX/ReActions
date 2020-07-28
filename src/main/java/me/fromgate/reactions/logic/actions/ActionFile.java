@@ -16,9 +16,9 @@ public class ActionFile extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        String action = params.getParam("action", "");
-        String fileName = params.getParam("fileName", "");
-        String fileNameTo = params.getParam("fileNameTo", "");
+        String action = params.getString("action", "");
+        String fileName = params.getString("fileName", "");
+        String fileNameTo = params.getString("fileNameTo", "");
         if (action.isEmpty() || fileName.isEmpty()) return false;
 
         File file = new File(dir + File.separator + fileName);

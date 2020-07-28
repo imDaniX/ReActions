@@ -37,11 +37,11 @@ public class ActionVelocityJump extends Action {
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         Msg.logOnce("velocity-jump-warning", "&cWarning! VELOCITY_JUMP action is under construction. In next version of plugin it could be changed, renamed or removed!");
-        String locStr = params.getParam("loc", "");
+        String locStr = params.getString("loc", "");
         if (locStr.isEmpty()) return false;
         Location loc = LocationUtils.parseCoordinates(locStr);
         if (loc == null) return false;
-        int jumpHeight = params.getParam("jump", 5);
+        int jumpHeight = params.getInteger("jump", 5);
         Vector velocity = VelocityUtils.calculateVelocity(player.getLocation(), loc, jumpHeight);
         player.setVelocity(velocity);
         return false;

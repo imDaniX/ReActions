@@ -61,7 +61,7 @@ public class DoorActivator extends Activator implements Locatable {
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
         if (targetBlock == null || BlockUtils.isOpenable(targetBlock)) {
-            String state = param.getParam("state", "ANY");
+            String state = param.getString("state", "ANY");
             if (!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
             String world = targetBlock.getWorld().getName();
             int x = targetBlock.getX();

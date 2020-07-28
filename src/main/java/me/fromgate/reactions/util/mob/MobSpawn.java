@@ -56,36 +56,36 @@ public class MobSpawn {
     private Map<LivingEntity, List<ItemStack>> drops = new HashMap<>();
 
     public void mobSpawn(Player p, Parameters params) {
-        String mob = params.getParam("type", "").toUpperCase(Locale.ENGLISH);
+        String mob = params.getString("type", "").toUpperCase(Locale.ENGLISH);
         if (mob.isEmpty()) {
-            Msg.logMessage("Failed to spawn mob: " + params.getParam("param-line"));
+            Msg.logMessage("Failed to spawn mob: " + params.getString("param-line"));
             return;
         }
-        String locationStr = params.getParam("loc", "");
+        String locationStr = params.getString("loc", "");
         Location loc = LocationUtils.parseLocation(locationStr, p == null ? null : p.getLocation());
-        String region = params.getParam("region", "");
-        int radius = params.getParam("radius", 0);
-        int num = Rng.nextIntFromString(params.getParam("num", "1"));
-        double health = Rng.nextIntFromString(params.getParam("health", "0"));
-        String dtheffect = params.getParam("dtheffect", "");
-        String chest = params.getParam("chest", "");
-        String leg = params.getParam("leg", "");
-        String helm = params.getParam("helm", "");
-        String boot = params.getParam("boot", "");
-        String weapon = params.getParam("weapon", "");
-        String offhand = params.getParam("offhand", "");
-        boolean land = params.getParam("land", true);
-        String potionEff = params.getParam("potion", "");
-        String name = params.getParam("name", "");
-        String drop = params.getParam("drop", "");
-        String xp = params.getParam("xp", "");
-        String money = params.getParam("money", "");
-        String growl = params.getParam("growl", "");
-        String cry = params.getParam("cry", "");
-        String equip = params.getParam("equip", "");
-        double dmg = params.getParam("dmg", 1.0D);
-        String exec = params.getParam("run", "");
-        String exec_delay = params.getParam("rundelay", "1t");
+        String region = params.getString("region", "");
+        int radius = params.getInteger("radius", 0);
+        int num = Rng.nextIntFromString(params.getString("num", "1"));
+        double health = Rng.nextIntFromString(params.getString("health", "0"));
+        String dtheffect = params.getString("dtheffect", "");
+        String chest = params.getString("chest", "");
+        String leg = params.getString("leg", "");
+        String helm = params.getString("helm", "");
+        String boot = params.getString("boot", "");
+        String weapon = params.getString("weapon", "");
+        String offhand = params.getString("offhand", "");
+        boolean land = params.getBoolean("land", true);
+        String potionEff = params.getString("potion", "");
+        String name = params.getString("name", "");
+        String drop = params.getString("drop", "");
+        String xp = params.getString("xp", "");
+        String money = params.getString("money", "");
+        String growl = params.getString("growl", "");
+        String cry = params.getString("cry", "");
+        String equip = params.getString("equip", "");
+        double dmg = params.getDouble("dmg", 1.0D);
+        String exec = params.getString("run", "");
+        String exec_delay = params.getString("rundelay", "1t");
 
         if (RaWorldGuard.isRegionExists(region)) loc = LocationUtils.getRegionLocation(region, land);
         else if (radius > 0) loc = LocationUtils.getRadiusLocation(loc, radius, land);

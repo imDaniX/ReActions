@@ -47,9 +47,9 @@ public class MessageActivator extends Activator {
     }
 
     public static MessageActivator create(ActivatorBase base, Parameters param) {
-        CheckType type = CheckType.getByName(param.getParam("type", "EQUAL"));
-        Source source = Source.getByName(param.getParam("source", "CHAT_MESSAGE"));
-        String mask = param.getParam("mask", param.getParam("message", "Message mask"));
+        CheckType type = CheckType.getByName(param.getString("type", "EQUAL"));
+        Source source = Source.getByName(param.getString("source", "CHAT_MESSAGE"));
+        String mask = param.getString("mask", param.getString("message", "Message mask"));
         return new MessageActivator(base, type, source, mask);
     }
 

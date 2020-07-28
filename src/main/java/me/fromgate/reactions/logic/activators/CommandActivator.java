@@ -58,13 +58,13 @@ public class CommandActivator extends Activator {
         super(base);
         command = command == null ? "unknown" : command;
         this.command = command;
-        Parameters cmdParams = new Parameters(command);
-        if (cmdParams.hasAnyParam("cmd")) {
+        Parameters cmdParams = Parameters.fromString(command);
+        if (cmdParams.containsAny("cmd")) {
             this.args = new ArrayList<>();
-            this.args.add(cmdParams.getParam("cmd"));
+            this.args.add(cmdParams.getString("cmd"));
             int i = 1;
-            while (cmdParams.hasAnyParam("arg" + i))
-                this.args.add(cmdParams.getParam("arg" + i));
+            while (cmdParams.containsAny("arg" + i))
+                this.args.add(cmdParams.getString("arg" + i));
             this.checkExact = false;
             this.pattern = null;
         } else {
@@ -78,10 +78,10 @@ public class CommandActivator extends Activator {
     }
 
     public static CommandActivator create(ActivatorBase base, Parameters param) {
-        String command = param.getParam("command", param.toString());
-        boolean starts = param.getParam("starts", true);
-        boolean useRegex = param.getParam("regex", false);
-        boolean consoleAllowed = param.getParam("console", true);
+        String command = param.getString("command", param.toString());
+        boolean starts = param.getBoolean("starts", true);
+        boolean useRegex = param.getBoolean("regex", false);
+        boolean consoleAllowed = param.getBoolean("console", true);
         return new CommandActivator(base, command, starts, useRegex, consoleAllowed);
     }
 

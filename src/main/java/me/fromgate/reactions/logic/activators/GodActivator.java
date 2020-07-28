@@ -17,7 +17,7 @@ public class GodActivator extends Activator {
     }
 
     public static GodActivator create(ActivatorBase base, Parameters param) {
-        GodType type = GodType.getByName(param.getParam("god", "ANY"));
+        GodType type = GodType.getByName(param.getString("god", "ANY"));
         return new GodActivator(base, type);
     }
 

@@ -44,13 +44,13 @@ public class ActionTp extends Action {
         Location loc;
         int radius = 0;
         if (params.isEmpty()) return null;
-        if (params.isParamsExists("param")) {
-            loc = LocationUtils.parseLocation(params.getParam("param", ""), player.getLocation());
+        if (params.containsEvery("param")) {
+            loc = LocationUtils.parseLocation(params.getString("param", ""), player.getLocation());
         } else {
-            loc = LocationUtils.parseLocation(params.getParam("loc", ""), player.getLocation());
-            radius = params.getParam("radius", 0);
+            loc = LocationUtils.parseLocation(params.getString("loc", ""), player.getLocation());
+            radius = params.getInteger("radius", 0);
         }
-        boolean land = params.getParam("land", true);
+        boolean land = params.getBoolean("land", true);
 
         if (loc != null) {
             if (radius > 0) loc = LocationUtils.getRadiusLocation(loc, radius, land);
@@ -68,9 +68,9 @@ public class ActionTp extends Action {
             context.setTempVariable("loc-to", LocationUtils.locationToString(loc));
             context.setTempVariable("loc-to-str", LocationUtils.locationToStringFormatted(loc));
             Teleporter.teleport(player, loc);
-            String playeffect = params.getParam("effect", "");
+            String playeffect = params.getString("effect", "");
             if (!playeffect.isEmpty()) {
-                if (playeffect.equalsIgnoreCase("smoke") && (!params.isParamsExists("wind"))) params.set("wind", "all");
+                if (playeffect.equalsIgnoreCase("smoke") && (!params.containsEvery("wind"))) params.put("wind", "all");
             }
         }
         return loc;

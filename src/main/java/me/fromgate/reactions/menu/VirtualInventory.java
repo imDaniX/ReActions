@@ -42,14 +42,14 @@ public class VirtualInventory {
 
     @SuppressWarnings("unused")
     public VirtualInventory(Parameters params) {
-        title = params.getParam("title", "&4Re&6Actions &eMenu");
-        size = params.getParam("size", 9);
+        title = params.getString("title", "&4Re&6Actions &eMenu");
+        size = params.getInteger("size", 9);
         size = (size % 9 == 0) ? size : ((size / 9) + 1) * 9;
         slots = new ArrayList<>();
         activators = new ArrayList<>();
         for (int i = 1; i <= size; i++) {
-            activators.add(params.getParam("exec" + i, ""));
-            slots.add(params.getParam("exec" + i, ""));
+            activators.add(params.getString("exec" + i, ""));
+            slots.add(params.getString("exec" + i, ""));
         }
     }
 

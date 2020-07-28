@@ -32,9 +32,9 @@ public class ActionExecStop extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player p = context.getPlayer();
-        String player = params.getParam("player", (p == null ? "" : p.getName()));
+        String player = params.getString("player", (p == null ? "" : p.getName()));
         if (player.isEmpty()) return false;
-        String activator = params.getParam("activator", "");
+        String activator = params.getString("activator", "");
         if (activator.isEmpty()) return false;
         ActivatorsManager.getInstance().stopExec(player, activator);
         setMessageParam(activator);

@@ -47,8 +47,8 @@ public class ItemClickActivator extends Activator {
     }
 
     public static ItemClickActivator create(ActivatorBase base, Parameters param) {
-        String item = param.getParam("item", param.getParam("param-line"));
-        HandType hand = HandType.getByName(param.getParam("hand", "ANY"));
+        String item = param.getString("item", param.getString("param-line"));
+        HandType hand = HandType.getByName(param.getString("hand", "ANY"));
         return new ItemClickActivator(base, item, hand);
     }
 

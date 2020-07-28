@@ -33,13 +33,13 @@ public class FlagCompare implements Flag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
-        Parameters params = new Parameters(param, "unknown");
-        String paramValue = params.getParam("param", "");
+        Parameters params = Parameters.fromString(param, "unknown");
+        String paramValue = params.getString("param", "");
         if (paramValue.isEmpty()) return false;
-        if (!params.isParamsExists("value1")) return false;
+        if (!params.containsEvery("value1")) return false;
         for (String valueKey : params.keySet()) {
             if (!((valueKey.toLowerCase(Locale.ENGLISH)).startsWith("value"))) continue;
-            String value = params.getParam(valueKey);
+            String value = params.getString(valueKey);
             if (NumberUtils.isIntegerSigned(value, paramValue) && (Integer.parseInt(value) == Integer.parseInt(paramValue)))
                 return true;
             else if (paramValue.equalsIgnoreCase(value)) return true;

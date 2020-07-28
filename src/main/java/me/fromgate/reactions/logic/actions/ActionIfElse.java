@@ -26,11 +26,11 @@ public class ActionIfElse extends Action {
     private static final ScriptEngine engine = factory.getEngineByName("JavaScript");
 
     private static boolean executeActivator(Player p, String condition, String paramStr) {
-        Parameters param = Parameters.parseParams(paramStr);
-        if (!param.hasAnyParam("run")) return false;
-        param = Parameters.parseParams(param.getParam("run"));
-        if (param.isEmpty() || !param.hasAnyParam("activator", "exec")) return false;
-        param.set("player", p == null ? "null" : p.getName());
+        Parameters param = Parameters.fromString(paramStr);
+        if (!param.containsAny("run")) return false;
+        param = Parameters.fromString(param.getString("run"));
+        if (param.isEmpty() || !param.containsAny("activator", "exec")) return false;
+        param.put("player", p == null ? "null" : p.getName());
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("condition", condition);
         StoragesManager.raiseExecActivator(p, param, tempVars);
@@ -40,7 +40,7 @@ public class ActionIfElse extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        if (params.isParamsExists("if") && params.hasAnyParam("then", "else")) {
+        if (params.containsEvery("if") && params.containsAny("then", "else")) {
 			/*
 			TODO: Meh, not really good - does not support multiply checks
 			String condition = params.getParam("if", "");
@@ -102,10 +102,10 @@ public class ActionIfElse extends Action {
             final ScriptContext scriptContext = new SimpleScriptContext();
             scriptContext.setBindings(new SimpleBindings(), ScriptContext.ENGINE_SCOPE);
 
-            String condition = params.getParam("if", "");
-            String then_ = params.getParam("then", "");
-            String else_ = params.getParam("else", "");
-            String suffix = params.getParam("suffix", "");
+            String condition = params.getString("if", "");
+            String then_ = params.getString("then", "");
+            String else_ = params.getString("else", "");
+            String suffix = params.getString("suffix", "");
 
             try {
                 boolean result = (boolean) engine.eval(condition, scriptContext);
@@ -123,17 +123,17 @@ public class ActionIfElse extends Action {
 
     private boolean executeActions(RaContext context, String paramStr) {
         List<StoredAction> actions = new ArrayList<>();
-        Parameters params = Parameters.parseParams(paramStr);
-        if (!params.hasAnyParam("run")) return false;
-        params = Parameters.parseParams(params.getParam("run"));
-        if (params.isEmpty() || !params.hasAnyParam("actions")) return false;
-        params = Parameters.parseParams(params.getParam("actions"));
+        Parameters params = Parameters.fromString(paramStr);
+        if (!params.containsAny("run")) return false;
+        params = Parameters.fromString(params.getString("run"));
+        if (params.isEmpty() || !params.containsAny("actions")) return false;
+        params = Parameters.fromString(params.getString("actions"));
 
-        if (!params.isParamsExists("action1")) return false;
+        if (!params.containsEvery("action1")) return false;
         for (String actionKey : params.keySet()) {
             if (!((actionKey.toLowerCase(Locale.ENGLISH)).startsWith("action"))) continue;
             if (params.isEmpty() || !params.toString().contains("=")) continue;
-            String action = params.getParam(actionKey);
+            String action = params.getString(actionKey);
 
             String flag = action.substring(0, action.indexOf("="));
             String param = action.substring(action.indexOf("=") + 1);

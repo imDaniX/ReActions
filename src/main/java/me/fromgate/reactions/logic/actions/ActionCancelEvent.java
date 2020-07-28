@@ -30,7 +30,7 @@ public class ActionCancelEvent extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        return context.setChangeable(Storage.CANCEL_EVENT, params.getParam("param-line", false));
+        return context.setChangeable(Storage.CANCEL_EVENT, params.getBoolean("param-line", false));
     }
 
 }
