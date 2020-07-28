@@ -172,7 +172,7 @@ public enum Flags {
                 StoredFlag f = c.getFlags().get(i);
                 context.setTempVariable((f.getFlagName() + "_flag").toUpperCase(Locale.ENGLISH), f.getValue());
                 if (!checkFlag(context, f.getFlag(),
-                        PlaceholdersManager.getInstance().replacePlaceholders(context, f.getValue()), f.isInverted()))
+                        PlaceholdersManager.getInstance().parsePlaceholders(context, f.getValue()), f.isInverted()))
                     return false;
             }
         return true;

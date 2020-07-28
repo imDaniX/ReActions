@@ -42,12 +42,12 @@ import java.util.UUID;
 
 @UtilityClass
 public class Utils {
+    private final String[] EMPTY_ARRAY = new String[0];
 
-    public String removeSpaces(String str) {
+    public String removeChar(String str, char remove) {
         StringBuilder bld = new StringBuilder();
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (c != ' ') bld.append(c);
+        for (char c : str.toCharArray()) {
+            if (c != remove) bld.append(c);
         }
         return bld.toString();
     }
@@ -291,5 +291,13 @@ public class Utils {
         for (String s : values)
             if (s.equalsIgnoreCase(str)) return true;
         return false;
+    }
+
+    public static String[] getAliases(Object obj) {
+        Class<?> clazz = obj.getClass();
+        if(clazz.isAnnotationPresent(Alias.class)) {
+            return clazz.getAnnotation(Alias.class).value();
+        }
+        return EMPTY_ARRAY;
     }
 }

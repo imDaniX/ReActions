@@ -1,11 +1,17 @@
 package me.fromgate.reactions.placeholders;
 
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 
-@PlaceholderDefine(id = "activator_name", keys = {"activatorname"})
-public class PlaceholderActivator extends Placeholder {
+@Alias("activatorname")
+public class PlaceholderActivator implements Placeholder.Equal {
     @Override
     public String processPlaceholder(RaContext context, String key, String param) {
         return context.getActivatorName();
+    }
+
+    @Override
+    public String getId() {
+        return "activator_name";
     }
 }

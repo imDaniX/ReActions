@@ -1,5 +1,6 @@
 package me.fromgate.reactions.placeholders;
 
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -15,12 +16,12 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-@PlaceholderDefine(id = "BasicPlayer",
-        keys = {"player_loc", "player_loc_eye", "player_loc_view", "player_name", "player",
+// TODO: Split to different classes
+@Alias({"player_loc", "player_loc_eye", "player_loc_view", "player_name",
                 "player_display", "dplayer", "player_item_hand", "itemplayer", "player_inv", "invplayer",
                 "health", "player_loc_death", "deathpoint", "player_id", "uuid", "player_level", "level",
                 "player_held_slot", "slot"})
-public class PlaceholderPlayer extends Placeholder {
+public class PlaceholderPlayer implements Placeholder.Prefixed {
 
     private static final Set<Material> NON_SOLID;
     static {
@@ -34,9 +35,9 @@ public class PlaceholderPlayer extends Placeholder {
     public String processPlaceholder(RaContext context, String key, String param) {
         Player player = context.getPlayer();
         if (player == null) return null;
-        switch (key.toLowerCase(Locale.ENGLISH)) {
-            case "player_name":
+        switch (key) {
             case "player":
+            case "player_name":
                 return player.getName();
             case "health":
                 return Double.toString(player.getHealth());
@@ -140,5 +141,10 @@ public class PlaceholderPlayer extends Placeholder {
         }
         if (vi == null) return "";
         return vi.toString();
+    }
+
+    @Override
+    public String getPrefix() {
+        return "player";
     }
 }

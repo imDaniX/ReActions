@@ -2,8 +2,6 @@ package me.fromgate.reactions.placeholders;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.fromgate.reactions.VariablesManager;
-import me.fromgate.reactions.externals.placeholderapi.RaPlaceholderAPI;
 import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
@@ -11,86 +9,59 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-// TODO: Redesign all the system of placeholders.
-public class PlaceholdersManager {
-    private static final Pattern PATTERN_RAW = Pattern.compile("%raw:((%\\w+%)|(%\\w+:\\w+%)|(%\\w+:\\S+%))%");
-    private static final Pattern PLACEHOLDER_GREEDY = Pattern.compile("%\\S+%");
-    private static final Pattern PLACEHOLDER_NONGREEDY = Pattern.compile("%\\S+?%");
-
+@Getter
+@Setter
+public class PlaceholdersManager {;
+    private static final Pattern PLACEHOLDER_GREEDY = Pattern.compile("(?<!&\\\\)%\\S+%");
+    private static final Pattern PLACEHOLDER_NONGREEDY = Pattern.compile("(?<!&\\\\)%\\S+?%");
+    private static final Pattern PLACEHOLDER_RAW = Pattern.compile("&\\\\(%\\S+%)");
     @Getter
     private static PlaceholdersManager instance;
 
-    private final Set<Placeholder> placeholders = new HashSet<>();
-    @Getter
-    @Setter
     private int countLimit = 127;
 
     public PlaceholdersManager() {
-        add(new PlaceholderPlayer());
-        add(new PlaceholderMoney());
-        add(new PlaceholderRandom());
-        add(new PlaceholderTime());
-        add(new PlaceholderCalc());
-        add(new PlaceholderActivator());
+        register(new PlaceholderPlayer());
+        register(new PlaceholderMoney());
+        register(new PlaceholderRandom());
+        register(new PlaceholderTime());
+        register(new PlaceholderCalc());
+        register(new PlaceholderActivator());
+        register(new PlaceholderVariables());
+        register(new PlaceholderPAPI());
         PlaceholdersManager.instance = this;
     }
 
-    public boolean add(Placeholder ph) {
-        if (ph == null) return false;
-        if (ph.getKeys().isEmpty()) return false;
-        if (ph.getId().equalsIgnoreCase("UNKNOWN")) return false;
-        placeholders.add(ph);
-        return true;
+    public boolean register(Placeholder ph) {
+        if(ph == null) return false;
+        return InternalParsers.EQUAL.put(ph) || InternalParsers.PREFIXED.put(ph) || InternalParsers.SIMPLE.put(ph);
     }
 
-    public String replacePlaceholders(RaContext context, String original) {
-        List<String> raws = new ArrayList<>();
-        String result = original;
+    public String parsePlaceholders(RaContext context, String text) {
+        if(text == null || text.length() < 3) return text;
 
-        Matcher matcher = PATTERN_RAW.matcher(Matcher.quoteReplacement(result));
-        StringBuffer sb = new StringBuffer();
-        while (matcher.find()) {
-            String group = matcher.group();
-            matcher.appendReplacement(sb, "§~[RAW" + raws.size() + "]");
-            raws.add(group.substring(5, group.length() - 1));
-        }
-        matcher.appendTail(sb);
-
-        result = parsePlaceholders(sb.toString(), context);
-
-        for (int i = 0; i < raws.size(); i++) {
-            result = result.replace("§~[RAW" + i + "]", raws.get(i));
-        }
-
-        return result;
-    }
-
-    private String parsePlaceholders(String text, RaContext context) {
-        if (text == null || text.length() < 3) return text;
         String oldText;
         int limit = countLimit;
         do {
             oldText = text;
             text = parseRecursive(text, PLACEHOLDER_GREEDY, context);
             text = parseRecursive(text, PLACEHOLDER_NONGREEDY, context);
-        } while (--limit > 0 && !text.equals(oldText));
-        return text;
+        } while(--limit > 0 && !text.equals(oldText));
+
+        return PLACEHOLDER_RAW.matcher(text).replaceAll("$1");
     }
 
-    private String parseRecursive(String text, final Pattern phPattern, final RaContext context) {
+    private static String parseRecursive(String text, final Pattern phPattern, final RaContext context) {
         Matcher phMatcher = phPattern.matcher(text);
         // If found at least one
-        if (phMatcher.find()) {
+        if(phMatcher.find()) {
             StringBuffer buf = new StringBuffer();
             processIteration(buf, phMatcher, phPattern, context);
-            while (phMatcher.find()) {
+            while(phMatcher.find()) {
                 processIteration(buf, phMatcher, phPattern, context);
             }
             return phMatcher.appendTail(buf).toString();
@@ -99,11 +70,11 @@ public class PlaceholdersManager {
     }
 
     // Just some sh!tty stuff
-    private void processIteration(StringBuffer buffer, Matcher matcher, Pattern pattern, RaContext context) {
+    private static void processIteration(StringBuffer buffer, Matcher matcher, Pattern pattern, RaContext context) {
         matcher.appendReplacement(
                 buffer,
                 Matcher.quoteReplacement(
-                        replacePlaceholder(
+                        InternalParsers.process(
                                 parseRecursive(
                                         crop(matcher.group()),
                                         pattern,
@@ -119,51 +90,26 @@ public class PlaceholdersManager {
         return text.substring(1, text.length() - 1);
     }
 
-    private String replacePlaceholder(String text, RaContext context) {
-        String result = context.getTempVariable(text);
-        if (result != null) return result;
-        String[] ph = text.split(":", 2);
-        ph[0] = ph[0].toLowerCase(Locale.ENGLISH);
-        if(ph.length > 1) {
-            if(ph[0].equalsIgnoreCase("var")) {
-                String[] varSplit = ph[1].split("\\.", 2);
-                if(varSplit.length > 1)
-                    result = VariablesManager.getInstance().getVariable(varSplit[0], varSplit[1]);
-                else
-                    result = VariablesManager.getInstance().getVariable("", varSplit[0]);
-                return result == null ? "%" + text + "%" : result;
-            } else if(ph[0].equalsIgnoreCase("varp")) {
-                result = VariablesManager.getInstance().getVariable(context.getPlayer(), text, ph[1]);
-                return result == null ? "%" + text + "%" : result;
-            }
-            for (Placeholder placeholder : placeholders) {
-                if(!placeholder.checkKey(ph[0])) continue;
-                result = placeholder.processPlaceholder(context, ph[0], ph[1]);
-                if (result != null) return result;
-            }
-        } else {
-            for (Placeholder placeholder : placeholders) {
-                if(!placeholder.checkKey(ph[0])) continue;
-                result = placeholder.processPlaceholder(context, ph[0], ph[0]);
-                if (result != null) return result;
-            }
-        }
-        return RaPlaceholderAPI.processPlaceholder(context.getPlayer(), "%" + text + "%");
-    }
-
+    // TODO: That's terrible. Better to rewrite help system...
     public void listPlaceholders(CommandSender sender, int pageNum) {
         List<String> phList = new ArrayList<>();
-        for (Placeholder ph : placeholders) {
-            for (String phKey : ph.getKeys()) {
-                if (phKey.toLowerCase(Locale.ENGLISH).equals(phKey)) continue;
-                Msg desc = Msg.getByName("placeholder_" + phKey);
-                if (desc == null) {
-                    Msg.LNG_FAIL_PLACEHOLDER_DESC.log(phKey);
-                } else {
-                    phList.add("&6" + phKey + "&3: &a" + desc.getText("NOCOLOR"));
-                }
-            }
+        for (Placeholder ph : InternalParsers.EQUAL.getPlaceholders()) {
+            phList.add(((Placeholder.Equal)ph).getId());
         }
+        for (Placeholder ph : InternalParsers.PREFIXED.getPlaceholders()) {
+            phList.add(((Placeholder.Equal)ph).getId());
+        }
+
+        phList.replaceAll(s -> {
+            Msg desc = Msg.getByName("placeholder_" + s);
+            if (desc == null) {
+                Msg.LNG_FAIL_PLACEHOLDER_DESC.log(s);
+                return s;
+            } else {
+                return "&6" + s + "&3: &a" + desc.getText("NOCOLOR");
+            }
+        });
+
         for (Flags f : Flags.values()) {
             if (f != Flags.TIME && f != Flags.CHANCE) continue;
             String name = f.name();

@@ -1,12 +1,13 @@
 package me.fromgate.reactions.placeholders;
 
 import me.fromgate.reactions.externals.RaEconomics;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 
 import java.util.Map;
 
-@PlaceholderDefine(id = "Money", keys = {"MONEY"})
-public class PlaceholderMoney extends Placeholder {
+@Alias("balance")
+public class PlaceholderMoney implements Placeholder.Equal {
 
     @Override
     public String processPlaceholder(RaContext context, String key, String param) {
@@ -14,4 +15,8 @@ public class PlaceholderMoney extends Placeholder {
         return params.getOrDefault(key, null);
     }
 
+    @Override
+    public String getId() {
+        return "money";
+    }
 }

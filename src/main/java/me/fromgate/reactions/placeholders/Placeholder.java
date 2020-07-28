@@ -1,43 +1,31 @@
 package me.fromgate.reactions.placeholders;
 
-import lombok.Getter;
 import me.fromgate.reactions.util.data.RaContext;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-
-@Getter
-public abstract class Placeholder {
-    private final String id;
-    private final Set<String> keys;
-
-    public Placeholder() {
-        if (this.getClass().isAnnotationPresent(PlaceholderDefine.class)) {
-            PlaceholderDefine pd = this.getClass().getAnnotation(PlaceholderDefine.class);
-            this.id = pd.id();
-            this.keys = new HashSet<>();
-            for(String key : pd.keys())
-                keys.add(key.toLowerCase(Locale.ENGLISH));
-            this.keys.add(this.id.toLowerCase(Locale.ENGLISH));
-        } else {
-            this.id = "UNKNOWN";
-            this.keys = Collections.emptySet();
-        }
-    }
-
-    public boolean checkKey(String key) {
-        return keys.contains(key);
-    }
-
+@FunctionalInterface
+public interface Placeholder {
     /**
-     * Замена ключеового слова
-     *
-     * @param context - игрок, если он есть
-     * @param key    - Ключевое слово, без параметра и символа "%" в начале
-     * @param param  - Параметр (без завершающего символа "%")
-     * @return - возврат подстановки.
+     * Process this placeholder
+     * @param context Context of activation
+     * @param ph Key of placeholder(e.g. %var:test% - var) in lower case
+     * @param text Text of placeholder(e.g. %var:test% - test)
+     * @return Processed placeholder
      */
-    public abstract String processPlaceholder(RaContext context, String key, String param);
+    String processPlaceholder(RaContext context, String ph, String text);
+
+    interface Equal extends Placeholder {
+        /**
+         * Get all the ids for this placeholder
+         * @return Ids of placeholder
+         */
+        String getId();
+    }
+
+    interface Prefixed extends Placeholder {
+        /**
+         * Get all the prefixes for this placeholder
+         * @return Prefixes of placeholder
+         */
+        String getPrefix();
+    }
 }

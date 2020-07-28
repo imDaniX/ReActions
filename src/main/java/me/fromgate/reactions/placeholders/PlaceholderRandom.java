@@ -1,13 +1,14 @@
 package me.fromgate.reactions.placeholders;
 
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.math.Rng;
 
 import java.util.regex.Pattern;
 
-@PlaceholderDefine(id = "Random", keys = {"RANDOM", "rnd"})
-public class PlaceholderRandom extends Placeholder {
+@Alias({"rnd", "rng"})
+public class PlaceholderRandom implements Placeholder.Prefixed {
 
     private final static Pattern WORD_LIST = Pattern.compile("[\\S,]*[\\S]");
 
@@ -26,5 +27,10 @@ public class PlaceholderRandom extends Placeholder {
             return ln[Rng.nextInt(ln.length)];
         }
         return param;
+    }
+
+    @Override
+    public String getPrefix() {
+        return "random";
     }
 }
