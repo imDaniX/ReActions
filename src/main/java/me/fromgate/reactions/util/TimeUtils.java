@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.util;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
 
@@ -31,37 +32,38 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@UtilityClass
 public class TimeUtils {
-    private final static Pattern TIME_HH_MM = Pattern.compile("^[0-5][0-9]:[0-5][0-9]$");
-    private final static Pattern TIME_HH_MM_SS = Pattern.compile("^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$");
-    private final static Pattern TIME_X_MSDHMST = Pattern.compile("\\d+([dhmst]|ms)");
-    private final static Pattern TIME_X_MS = Pattern.compile("^\\d+ms$");
-    private final static Pattern TIME_X_D = Pattern.compile("^\\d+d$");
-    private final static Pattern TIME_X_H = Pattern.compile("^\\d+h$");
-    private final static Pattern TIME_X_M = Pattern.compile("^\\d+m$");
-    private final static Pattern TIME_X_S = Pattern.compile("^\\d+s$");
-    private final static Pattern TIME_X_T = Pattern.compile("^\\d+t$");
+    private final Pattern TIME_HH_MM = Pattern.compile("^[0-5][0-9]:[0-5][0-9]$");
+    private final Pattern TIME_HH_MM_SS = Pattern.compile("^([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$");
+    private final Pattern TIME_X_MSDHMST = Pattern.compile("\\d+([dhmst]|ms)");
+    private final Pattern TIME_X_MS = Pattern.compile("^\\d+ms$");
+    private final Pattern TIME_X_D = Pattern.compile("^\\d+d$");
+    private final Pattern TIME_X_H = Pattern.compile("^\\d+h$");
+    private final Pattern TIME_X_M = Pattern.compile("^\\d+m$");
+    private final Pattern TIME_X_S = Pattern.compile("^\\d+s$");
+    private final Pattern TIME_X_T = Pattern.compile("^\\d+t$");
 
-    public static long ingameTime() {
+    public long ingameTime() {
         return Bukkit.getWorlds().get(0).getTime();
     }
 
-    public static String formattedIngameTime() {
+    public String formattedIngameTime() {
         return formattedIngameTime(Bukkit.getWorlds().get(0).getTime(), false);
     }
 
-    public static String formattedIngameTime(long time, boolean showms) {
+    public String formattedIngameTime(long time, boolean showms) {
         return showms && (time < 1000) ?
                 time + "ms" :
                 (int) ((time / 1000 + 6) % 24) + ":" + (int) (60 * (time % 1000) / 1000);
     }
 
-    public static String fullTimeToString(long time, String format) {
+    public String fullTimeToString(long time, String format) {
         DateFormat formatter = new SimpleDateFormat(format);
         return formatter.format(new Date(time));
     }
 
-    public static String fullTimeToString(long time) {
+    public String fullTimeToString(long time) {
         return fullTimeToString(time, "dd-MM-YYYY HH:mm:ss");
 		/*Date date = new Date(time);
 		DateFormat formatter = new SimpleDateFormat("dd-MM-YYYY HH:mm:ss");
@@ -69,12 +71,12 @@ public class TimeUtils {
     }
 
 
-    public static long timeToTicks(long time) {
+    public long timeToTicks(long time) {
         //1000 ms = 20 ticks
         return Math.max(1, (time / 50));
     }
 
-    public static long parseTime(String time) {
+    public long parseTime(String time) {
         int dd = 0; // дни
         int hh = 0; // часы
         int mm = 0; // минуты

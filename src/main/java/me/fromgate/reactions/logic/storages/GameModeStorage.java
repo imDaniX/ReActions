@@ -12,8 +12,9 @@ import java.util.Map;
 /**
  * Created by MaxDikiy on 2017-10-27.
  */
+@Getter
 public class GameModeStorage extends Storage {
-    @Getter
+
     private GameMode gameMode;
 
     public GameModeStorage(Player player, GameMode gameMode) {

@@ -26,8 +26,9 @@ import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
+@Getter
 public class RegionEnterStorage extends Storage {
-    @Getter
+
     private final String region;
 
     public RegionEnterStorage(Player player, String region) {

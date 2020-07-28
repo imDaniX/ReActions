@@ -22,7 +22,9 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.RaContext;
@@ -35,18 +37,17 @@ import java.util.Map;
 /**
  * Storages are used to transfer some data to activators
  */
+@Getter
+@FieldDefaults(level=AccessLevel.PRIVATE)
 public abstract class Storage {
     public static final String CANCEL_EVENT = "cancel_event";
-    @Getter
-    private final Player player;
-    @Getter
-    private final ActivatorType type;
-    private final boolean async;
+
+    final Player player;
+    final ActivatorType type;
+    final boolean async;
     // Default temporary placeholders
-    @Getter
-    private Map<String, String> tempVars;
-    @Getter
-    private Map<String, DataValue> changeables;
+    Map<String, String> variables;
+    Map<String, DataValue> changeables;
 
     public Storage(Player player, ActivatorType type) {
         this.player = player;
@@ -78,8 +79,8 @@ public abstract class Storage {
     }
 
     private void setDefaultVariables(Map<String, String> tempVars) {
-        if (this.tempVars != null) return;
-        this.tempVars = Collections.unmodifiableMap(tempVars);
+        if (this.variables != null) return;
+        this.variables = Collections.unmodifiableMap(tempVars);
     }
 
     private void setDefaultChangeables(Map<String, DataValue> changeables) {
@@ -88,7 +89,7 @@ public abstract class Storage {
     }
 
     public final RaContext generateContext(String activator) {
-        return new RaContext(activator, tempVars, changeables, player);
+        return new RaContext(activator, variables, changeables, player);
     }
 
 }

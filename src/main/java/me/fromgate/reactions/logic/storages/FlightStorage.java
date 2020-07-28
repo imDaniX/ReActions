@@ -11,8 +11,9 @@ import java.util.Map;
 /**
  * Created by MaxDikiy on 5/2/2017.
  */
+@Getter
 public class FlightStorage extends Storage {
-    @Getter
+
     private boolean flying;
 
     public FlightStorage(Player p, boolean flying) {

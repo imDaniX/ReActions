@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.BlockClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.enums.ClickType;
@@ -34,10 +36,11 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class BlockClickActivator extends Activator implements Locatable {
-    private final Material blockType;
-    private final String blockLocation;
-    private final ClickType click;
+    Material blockType;
+    String blockLocation;
+    ClickType click;
 
     private BlockClickActivator(ActivatorBase base, Material block, String location, ClickType click) {
         super(base);

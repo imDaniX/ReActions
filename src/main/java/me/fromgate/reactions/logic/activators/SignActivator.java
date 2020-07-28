@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.SignStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.BlockUtils;
@@ -36,9 +38,10 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.util.ArrayList;
 import java.util.List;
 
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class SignActivator extends Activator {
-    private List<String> maskLines;
-    private ClickType click;
+    List<String> maskLines;
+    ClickType click;
 
     private SignActivator(ActivatorBase base, ClickType click, List<String> maskLines) {
         super(base);

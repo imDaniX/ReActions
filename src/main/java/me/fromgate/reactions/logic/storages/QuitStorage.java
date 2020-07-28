@@ -30,9 +30,10 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
 public class QuitStorage extends Storage {
     public static final String QUIT_MESSAGE = "quit-message";
-    @Getter
+
     private String quitMessage;
 
     public QuitStorage(Player p, String quitMessage) {

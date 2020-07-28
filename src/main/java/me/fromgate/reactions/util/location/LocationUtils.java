@@ -23,6 +23,7 @@
 
 package me.fromgate.reactions.util.location;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.util.math.NumberUtils;
@@ -42,8 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface LocationUtils {
-    Location ZERO_LOCATION = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
+@UtilityClass
+public class LocationUtils {
+    public Location ZERO_LOCATION = new Location(Bukkit.getWorlds().get(0), 0, 0, 0);
 
     /**
      * Returns location defined by group of parameter:
@@ -65,12 +67,12 @@ public interface LocationUtils {
      * @param defaultLocation default location, used when definitions of locations is wrong or missed
      * @return Location
      */
-    static Location parseLocation(String param, Location defaultLocation) {
+    public Location parseLocation(String param, Location defaultLocation) {
         Parameters params = new Parameters(param, "loc");
         return parseLocation(params, defaultLocation);
     }
 
-    static Location parseLocation(Parameters params, Location defaultLocation) {
+    public Location parseLocation(Parameters params, Location defaultLocation) {
         Location location = null;
         if (params.isParamsExists("loc")) {
             String locStr = params.getParam("loc", "");
@@ -106,14 +108,14 @@ public interface LocationUtils {
         return result;
     }
 
-    static Location copyYawPitch(Location targetLoc, Location sourceLoc) {
+    public Location copyYawPitch(Location targetLoc, Location sourceLoc) {
         if (targetLoc == null || sourceLoc == null) return targetLoc;
         targetLoc.setYaw(sourceLoc.getYaw());
         targetLoc.setPitch(sourceLoc.getPitch());
         return targetLoc;
     }
 
-    static Location getCubeLocation(Location loc1, Location loc2, boolean land) {
+    public Location getCubeLocation(Location loc1, Location loc2, boolean land) {
         List<Location> minmax = new ArrayList<>();
         minmax.add(new Location(loc1.getWorld(), Math.min(loc1.getBlockX(), loc2.getBlockX()),
                 Math.min(loc1.getBlockY(), loc2.getBlockY()),
@@ -124,14 +126,14 @@ public interface LocationUtils {
         return getMinMaxLocation(minmax, land);
     }
 
-    static Location getRegionLocation(String regionStr, boolean land) {
+    public Location getRegionLocation(String regionStr, boolean land) {
         List<Location> minmax = RaWorldGuard.getRegionMinMaxLocations(regionStr);
         if (minmax.isEmpty()) return null;
         return getMinMaxLocation(minmax, land);
     }
 
 
-    static Location getRadiusLocation(Location center, int radius, boolean land) {
+    public Location getRadiusLocation(Location center, int radius, boolean land) {
         List<Location> locs = new ArrayList<>();
         if (radius <= 16) {
             for (int x = -radius; x <= radius; x++)
@@ -162,7 +164,7 @@ public interface LocationUtils {
         return getEmptyOrLandedLocations(locs, land);
     }
 
-    static Location parseCoordinates(String strloc) {
+    public Location parseCoordinates(String strloc) {
         Location loc;
         if (strloc.isEmpty()) return null;
         String[] ln = strloc.split(",");
@@ -180,7 +182,7 @@ public interface LocationUtils {
         return loc;
     }
 
-    static Vector parseVector(String vectorStr) {
+    public Vector parseVector(String vectorStr) {
         if (vectorStr.isEmpty()) return null;
         String[] ln = vectorStr.split(",");
         if (ln.length != 3) return null;
@@ -190,23 +192,23 @@ public interface LocationUtils {
         return new Vector(Double.parseDouble(ln[0]), Double.parseDouble(ln[1]), Double.parseDouble(ln[2]));
     }
 
-    static boolean isLocationEmpty(Location loc) {
+    public boolean isLocationEmpty(Location loc) {
         Block block = loc.getBlock();
         return block.isPassable() && block.getRelative(BlockFace.UP).isPassable();
     }
 
-    static boolean isLocationLandable(Location loc) {
+    public boolean isLocationLandable(Location loc) {
         Block block = loc.getBlock();
         if (block.getRelative(BlockFace.DOWN).isPassable()) return false;
         return isLocationEmpty(loc);
     }
 
-    static Location getRandomLocation(List<Location> locs) {
+    public Location getRandomLocation(List<Location> locs) {
         if (locs.isEmpty()) return null;
         return locs.get(Rng.nextInt(locs.size()));
     }
 
-    static Location getEmptyOrLandedLocations(List<Location> locs, boolean land) {
+    public Location getEmptyOrLandedLocations(List<Location> locs, boolean land) {
         List<Location> landLocs = new ArrayList<>();
         for (Location loc : locs) {
             if (land) {
@@ -218,7 +220,7 @@ public interface LocationUtils {
         return landLocs.isEmpty() ? getRandomLocation(locs) : getRandomLocation(landLocs);
     }
 
-    static Location getMinMaxLocation(List<Location> minmax, boolean land) {
+    public Location getMinMaxLocation(List<Location> minmax, boolean land) {
         if (minmax.isEmpty()) return null;
         int x = minmax.get(0).getBlockX() + Rng.nextInt(minmax.get(1).getBlockX() - minmax.get(0).getBlockX() + 1);
         int z = minmax.get(0).getBlockZ() + Rng.nextInt(minmax.get(1).getBlockZ() - minmax.get(0).getBlockZ() + 1);
@@ -229,7 +231,7 @@ public interface LocationUtils {
         return getEmptyOrLandedLocations(locations, land);
     }
 
-    static String locationToStringFormatted(Location loc) {
+    public String locationToStringFormatted(Location loc) {
         if (loc == null) return "";
         DecimalFormat fmt = new DecimalFormat("####0.##");
         String lstr = loc.toString();
@@ -240,7 +242,7 @@ public interface LocationUtils {
         return lstr;
     }
 
-    static String locationToString(Block block) {
+    public String locationToString(Block block) {
         if (block == null) return "";
         return block.getWorld().getName()
                 + "," + block.getX()
@@ -248,7 +250,7 @@ public interface LocationUtils {
                 + "," + block.getZ();
     }
 
-    static String locationToString(Location loc) {
+    public String locationToString(Location loc) {
         if (loc == null || loc.getWorld() == null) return "";
         return loc.getWorld().getName() + "," +
                 NumberUtils.trimDouble(loc.getX()) + "," +
@@ -258,7 +260,7 @@ public interface LocationUtils {
                 (float) NumberUtils.trimDouble(loc.getPitch());
     }
 
-    static List<Location> getMinMaxRadiusLocations(Player p, int radius) {
+    public List<Location> getMinMaxRadiusLocations(Player p, int radius) {
         List<Location> locs = new ArrayList<>();
         Location loc = p.getLocation();
         World world = p.getWorld();
@@ -267,14 +269,14 @@ public interface LocationUtils {
         return locs;
     }
 
-    static boolean equals(Location loc1, Location loc2) {
+    public boolean equals(Location loc1, Location loc2) {
         return loc1.getWorld().equals(loc2.getWorld()) &&
                 loc1.getX() == loc2.getX() &&
                 loc1.getZ() == loc2.getZ() &&
                 loc1.getY() == loc2.getY();
     }
 
-    static String parsePlaceholders(Player p, String param) {
+    public String parsePlaceholders(Player p, String param) {
         if (p == null) return param;
         Location targetBlock = null;
         try {

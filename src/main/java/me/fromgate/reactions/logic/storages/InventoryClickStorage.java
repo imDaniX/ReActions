@@ -22,7 +22,9 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -39,27 +41,20 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
-
+@Getter
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class InventoryClickStorage extends Storage {
     public static final String ITEM = "item";
 
-    @Getter
-    private final ItemStack item;
-    @Getter
-    private final InventoryAction action;
-    @Getter
-    private final ClickType clickType;
-    @Getter
-    private final SlotType slotType;
-    @Getter
-    private final InventoryType inventoryType;
-    @Getter
-    private final int numberKey;
-    @Getter
-    private final int slot;
-    @Getter
-    private final String inventoryName;
-    private final InventoryView inventoryView;
+    ItemStack item;
+    InventoryAction action;
+    ClickType clickType;
+    SlotType slotType;
+    InventoryType inventoryType;
+    int numberKey;
+    int slot;
+    String inventoryName;
+    InventoryView inventoryView;
 
     public InventoryClickStorage(Player p, InventoryAction action, ClickType clickType, Inventory inventory, SlotType
             slotType, ItemStack item, int numberKey, InventoryView inventoryView, int slot) {

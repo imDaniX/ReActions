@@ -22,7 +22,9 @@
 
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.actions.StoredAction;
@@ -36,19 +38,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 
+@Getter
+@FieldDefaults(level= AccessLevel.PRIVATE)
 public class ActivatorBase {
-    private int hash;
+    int hash;
 
-    @Getter
-    private String name;
-    @Getter
-    private String group;
-    @Getter
-    private List<StoredFlag> flags = new ArrayList<>();
-    @Getter
-    private List<StoredAction> actions = new ArrayList<>();
-    @Getter
-    private List<StoredAction> reactions = new ArrayList<>();
+    String name;
+    String group;
+    final List<StoredFlag> flags = new ArrayList<>();
+    final List<StoredAction> actions = new ArrayList<>();
+    final List<StoredAction> reactions = new ArrayList<>();
 
     public ActivatorBase(String name, String group) {
         this.name = name;
@@ -252,7 +251,7 @@ public class ActivatorBase {
     }
 
     private void calcHash() {
-        this.hash = group.hashCode() * 31 + name.hashCode() / 37;
+        this.hash = group.hashCode() * 31 >> name.hashCode() / 37;
     }
 
     @Override

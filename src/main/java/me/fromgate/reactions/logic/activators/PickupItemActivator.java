@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class PickupItemActivator extends Activator {
     // TODO: Store VirtualItem
-    private String itemStr;
+    private final String itemStr;
 
     private PickupItemActivator(ActivatorBase base, String item) {
         super(base);

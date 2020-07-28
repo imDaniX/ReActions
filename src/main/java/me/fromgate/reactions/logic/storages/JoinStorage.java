@@ -26,8 +26,9 @@ import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
+@Getter
 public class JoinStorage extends Storage {
-    @Getter
+
     private final boolean firstJoin;
 
     public JoinStorage(Player p, boolean firstJoin) {

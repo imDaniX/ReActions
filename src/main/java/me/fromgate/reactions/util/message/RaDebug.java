@@ -22,23 +22,26 @@
 
 package me.fromgate.reactions.util.message;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+@UtilityClass
 public class RaDebug {
-    private static HashMap<UUID, Boolean> debug = new HashMap<>();
+    private Map<UUID, Boolean> debug = new HashMap<>();
 
-    public static void setPlayerDebug(Player p, boolean debugMode) {
+    public void setPlayerDebug(Player p, boolean debugMode) {
         debug.put(p.getUniqueId(), debugMode);
     }
 
-    public static void offPlayerDebug(Player p) {
+    public void offPlayerDebug(Player p) {
         debug.remove(p.getUniqueId());
     }
 
-    public static boolean checkFlagAndDebug(Player p, boolean flag) {
+    public boolean checkFlagAndDebug(Player p, boolean flag) {
         if ((p != null) && debug.containsKey(p.getUniqueId())) return (debug.get(p.getUniqueId()));
         return flag;
     }

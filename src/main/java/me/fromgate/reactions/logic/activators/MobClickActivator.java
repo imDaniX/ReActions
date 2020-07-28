@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.MobClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -36,11 +38,12 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.Locale;
 
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class MobClickActivator extends Activator implements Locatable {
     // TODO: EntityType
-    private final String mobType;
-    private final String mobName;
-    private final String mobLocation;
+    String mobType;
+    String mobName;
+    String mobLocation;
 
     private MobClickActivator(ActivatorBase base, String type, String name, String location) {
         super(base);

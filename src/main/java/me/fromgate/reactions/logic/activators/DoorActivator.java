@@ -23,6 +23,8 @@
 
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.DoorStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.BlockUtils;
@@ -36,13 +38,14 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
 
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class DoorActivator extends Activator implements Locatable {
-    private final String state; //open, close
+    String state; //open, close
     //координаты нижнего блока двери
-    private final String world;
-    private final int x;
-    private final int y;
-    private final int z;
+    String world;
+    int x;
+    int y;
+    int z;
 
     private DoorActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
         super(base);

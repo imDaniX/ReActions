@@ -22,19 +22,20 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
-
+@Getter
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class VariableStorage extends Storage {
-    @Getter
-    private final String variableId;
-    @Getter
-    private final String newValue;
-    @Getter
-    private final String oldValue;
+    
+    String variableId;
+    String newValue;
+    String oldValue;
 
     public VariableStorage(Player player, String var, String newValue, String prevValue) {
         super(player, ActivatorType.VARIABLE);

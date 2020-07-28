@@ -34,9 +34,10 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
 public class DoorStorage extends Storage {
     public static final String DOOR_LOCATION = "door_loc";
-    @Getter
+
     private final Block doorBlock;
 
     public DoorStorage(Player p, Block block) {

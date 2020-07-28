@@ -22,7 +22,8 @@
 
 package me.fromgate.reactions.logic.activators;
 
-
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.MessageStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -31,11 +32,12 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
 
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class MessageActivator extends Activator {
 
-    private CheckType type;
-    private Source source;
-    private String mask;
+    CheckType type;
+    Source source;
+    String mask;
 
     private MessageActivator(ActivatorBase base, CheckType type, Source source, String mask) {
         super(base);

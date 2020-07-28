@@ -9,8 +9,9 @@ import java.util.Map;
 /**
  * Created by MaxDikiy on 2017-05-16.
  */
+@Getter
 public class SneakStorage extends Storage {
-    @Getter
+
     private final boolean sneaking;
 
     public SneakStorage(Player player, boolean sneaking) {

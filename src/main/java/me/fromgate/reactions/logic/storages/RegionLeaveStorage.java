@@ -26,8 +26,9 @@ import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import org.bukkit.entity.Player;
 
+@Getter
 public class RegionLeaveStorage extends Storage {
-    @Getter
+
     private final String region;
 
     public RegionLeaveStorage(Player player, String region) {

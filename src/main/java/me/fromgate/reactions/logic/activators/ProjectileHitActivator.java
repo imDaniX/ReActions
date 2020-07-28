@@ -1,5 +1,7 @@
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -9,19 +11,21 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
 // TODO
-public class ProjectileHitActivator extends Activator {
-    private EntityType projType;
-    private Material hitBlock;
-    private BlockFace hitFace;
-    private EntityType hitEntity;
 
-    private HitType hitType;
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
+public class ProjectileHitActivator extends Activator {
+    EntityType projType;
+    Material hitBlock;
+    BlockFace hitFace;
+    EntityType hitEntity;
+
+    HitType hitType;
 
     private ProjectileHitActivator(ActivatorBase base, EntityType projType, Material hitBlock, BlockFace hitFace, EntityType hitEntity, HitType hitType) {
         super(base);
         this.projType = projType;
         this.hitBlock = hitBlock;
-        this.hitBlock = hitBlock;
+        this.hitFace = hitFace;
         this.hitEntity = hitEntity;
         this.hitType = hitType;
     }

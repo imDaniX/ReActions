@@ -23,15 +23,18 @@
 package me.fromgate.reactions.logic.activators;
 
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.VariableStorage;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class VariableActivator extends Activator {
-    private final String id;
-    private final boolean personal;
+    String id;
+    boolean personal;
 
     private VariableActivator(ActivatorBase base, String id, boolean personal) {
         super(base);

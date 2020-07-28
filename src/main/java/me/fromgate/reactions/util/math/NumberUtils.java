@@ -1,59 +1,61 @@
 package me.fromgate.reactions.util.math;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.util.Utils;
 
 import java.util.regex.Pattern;
 
-public interface NumberUtils {
+@UtilityClass
+public class NumberUtils {
     // Byte
-    Pattern BYTE = Pattern.compile("(2[1-5][1-6]|\\d{1,2})");
+    public Pattern BYTE = Pattern.compile("(2[1-5][1-6]|\\d{1,2})");
     // Integer
-    Pattern INT_POSITIVE = Pattern.compile("\\d+");
-    Pattern INT = Pattern.compile("-?\\d+");
-    Pattern INT_NONZERO_POSITIVE = Pattern.compile("[1-9]\\d*");
-    Pattern INT_NONZERO = Pattern.compile("-?[1-9]\\d*");
-    Pattern INT_MIN_MAX = Pattern.compile("\\d+(-\\d+)?");
+    public Pattern INT_POSITIVE = Pattern.compile("\\d+");
+    public Pattern INT = Pattern.compile("-?\\d+");
+    public Pattern INT_NONZERO_POSITIVE = Pattern.compile("[1-9]\\d*");
+    public Pattern INT_NONZERO = Pattern.compile("-?[1-9]\\d*");
+    public Pattern INT_MIN_MAX = Pattern.compile("\\d+(-\\d+)?");
     // Float
-    Pattern FLOAT_POSITIVE = Pattern.compile("\\d+(\\.\\d+)?");
-    Pattern FLOAT = Pattern.compile("-?\\d+(\\.\\d+)?");
-    Pattern FLOAT_WITHZERO = Pattern.compile("^\\d+\\.0$");
+    public Pattern FLOAT_POSITIVE = Pattern.compile("\\d+(\\.\\d+)?");
+    public Pattern FLOAT = Pattern.compile("-?\\d+(\\.\\d+)?");
+    public Pattern FLOAT_WITHZERO = Pattern.compile("^\\d+\\.0$");
 
-    static double getDouble(String str, double def) {
+    public double getDouble(String str, double def) {
         if (Utils.isStringEmpty(str) || !FLOAT.matcher(str).matches()) return def;
         return Double.parseDouble(str);
     }
 
     // TODO: Should be removed or refactored
-    static boolean isIntegerSigned(String... str) {
+    public boolean isIntegerSigned(String... str) {
         if (str.length == 0) return false;
         for (String s : str)
             if (!INT.matcher(s).matches()) return false;
         return true;
     }
 
-    static boolean isInteger(String str) {
+    public boolean isInteger(String str) {
         return (INT_POSITIVE.matcher(str).matches());
     }
 
-    static boolean isInteger(String... str) {
+    public boolean isInteger(String... str) {
         if (str.length == 0) return false;
         for (String s : str)
             if (!INT_POSITIVE.matcher(s).matches()) return false;
         return true;
     }
 
-    static boolean isNonzeroInteger(String str) {
+    public boolean isNonzeroInteger(String str) {
         return INT_NONZERO_POSITIVE.matcher(str).matches();
     }
 
-    static boolean isNonzeroInteger(String... str) {
+    public boolean isNonzeroInteger(String... str) {
         if (str.length == 0) return false;
         for (String s : str)
             if (!INT_NONZERO_POSITIVE.matcher(s).matches()) return false;
         return true;
     }
 
-    static boolean isNumber(String... str) {
+    public boolean isNumber(String... str) {
         if (str.length == 0) return false;
         for (String s : str)
             if (!FLOAT.matcher(s).matches()) return false;
@@ -66,7 +68,7 @@ public interface NumberUtils {
      * @param numStr String to check
      * @return Is string contains positive float
      */
-    static boolean isFloat(String numStr) {
+    public boolean isFloat(String numStr) {
         return FLOAT_POSITIVE.matcher(numStr).matches();
     }
 
@@ -76,7 +78,7 @@ public interface NumberUtils {
      * @param l Long to transit
      * @return Final int
      */
-    static int safeLongToInt(long l) {
+    public int safeLongToInt(long l) {
         if (l < Integer.MIN_VALUE) return Integer.MIN_VALUE;
         if (l > Integer.MAX_VALUE) return Integer.MAX_VALUE;
         return (int) l;
@@ -89,7 +91,7 @@ public interface NumberUtils {
      * @param arg2 Second integer
      * @return Array of integers, where first value is minimal
      */
-    static int[] sortedIntPair(int arg1, int arg2) {
+    public int[] sortedIntPair(int arg1, int arg2) {
         int[] pair = new int[2];
         if (arg1 > arg2) {
             pair[0] = arg2;
@@ -107,7 +109,7 @@ public interface NumberUtils {
      * @param d Number to trim
      * @return Trimed double
      */
-    static double trimDouble(double d) {
+    public double trimDouble(double d) {
         return Math.round(d * 1000) / 1000;
     }
 }

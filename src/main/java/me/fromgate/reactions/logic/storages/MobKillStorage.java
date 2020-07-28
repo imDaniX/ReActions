@@ -31,8 +31,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
 public class MobKillStorage extends Storage {
-    @Getter
+
     private final LivingEntity entity;
 
     public MobKillStorage(Player p, LivingEntity entity) {

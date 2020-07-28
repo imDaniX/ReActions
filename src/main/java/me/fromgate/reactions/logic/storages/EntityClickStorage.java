@@ -1,9 +1,5 @@
 package me.fromgate.reactions.logic.storages;
 
-/**
- * Created by MaxDikiy on 2017-05-14.
- */
-
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -13,8 +9,12 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+/**
+ * Created by MaxDikiy on 2017-05-14.
+ */
+@Getter
 public class EntityClickStorage extends Storage {
-    @Getter
+
     private final Entity entity;
 
     public EntityClickStorage(Player p, Entity entity) {

@@ -28,8 +28,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
 public class PvpKillStorage extends Storage {
-    @Getter
+
     private final Player killedPlayer;
 
     public PvpKillStorage(Player player, Player killedPlayer) {

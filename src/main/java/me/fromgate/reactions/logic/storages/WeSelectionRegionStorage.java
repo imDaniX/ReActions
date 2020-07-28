@@ -10,8 +10,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
 public class WeSelectionRegionStorage extends Storage {
-    @Getter
+
     private final WeSelection selection;
 
     public WeSelectionRegionStorage(Player player, WeSelection weSelection) {

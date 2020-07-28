@@ -1,5 +1,7 @@
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.BlockBreakStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -15,10 +17,11 @@ import org.bukkit.configuration.ConfigurationSection;
 /**
  * Created by MaxDikiy on 2017-05-14.
  */
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class BlockBreakActivator extends Activator implements Locatable {
-    private final Material blockType;
+    Material blockType;
     // TODO: VirtualLocation
-    private final String blockLocation;
+    String blockLocation;
 
     private BlockBreakActivator(ActivatorBase base, Material block, String location) {
         super(base);

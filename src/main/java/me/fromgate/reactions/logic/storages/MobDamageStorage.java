@@ -22,7 +22,9 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -35,15 +37,14 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
 import java.util.Map;
 
+@Getter
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class MobDamageStorage extends Storage {
     public static final String DAMAGE = "damage";
 
-    @Getter
-    private final LivingEntity entity;
-    @Getter
-    private final DamageCause cause;
-    @Getter
-    private double damage;
+    LivingEntity entity;
+    DamageCause cause;
+    double damage;
 
     public MobDamageStorage(LivingEntity entity, Player damager, double damage, DamageCause cause) {
         super(damager, ActivatorType.MOB_DAMAGE);

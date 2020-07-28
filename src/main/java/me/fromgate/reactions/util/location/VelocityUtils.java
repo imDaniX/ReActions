@@ -1,10 +1,12 @@
 package me.fromgate.reactions.util.location;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.util.Vector;
 
-public interface VelocityUtils {
-    static Vector calculateVelocity(Location locFrom, Location locTo, int heightGain) {
+@UtilityClass
+public class VelocityUtils {
+    public Vector calculateVelocity(Location locFrom, Location locTo, int heightGain) {
         if (!locFrom.getWorld().equals(locTo.getWorld())) return new Vector(0, 0, 0);
         // Gravity of a potion
         double gravity = 0.18; //0.115;
@@ -47,7 +49,7 @@ public interface VelocityUtils {
         return new Vector(vx, vy, vz);
     }
 
-    static double distanceSquared(Vector from, Vector to) {
+    public double distanceSquared(Vector from, Vector to) {
         double dx = to.getBlockX() - from.getBlockX();
         double dz = to.getBlockZ() - from.getBlockZ();
         return dx * dx + dz * dz;

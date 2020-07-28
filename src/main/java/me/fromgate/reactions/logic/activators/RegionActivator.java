@@ -34,9 +34,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 // TODO: Maybe it should work like Cuboid activator instead of using different activators just for one check
+@Getter
 public class RegionActivator extends Activator implements Locatable {
 
-    @Getter
     private final String region;
 
     private RegionActivator(ActivatorBase base, String region) {

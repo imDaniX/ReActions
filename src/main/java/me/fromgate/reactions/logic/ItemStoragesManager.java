@@ -1,5 +1,6 @@
 package me.fromgate.reactions.logic;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.activators.Activator;
@@ -18,10 +19,11 @@ import java.util.UUID;
 /**
  * To manage some item-related activators
  */
+@UtilityClass
 public class ItemStoragesManager {
     // TODO: Recode.
 
-    private static void setFutureItemWearCheck(final UUID playerId, final String itemStr, boolean repeat) {
+    private void setFutureItemWearCheck(final UUID playerId, final String itemStr, boolean repeat) {
         Player player = Bukkit.getPlayer(playerId);
         if (player == null) return;
         if (!player.isOnline()) return;
@@ -33,7 +35,7 @@ public class ItemStoragesManager {
         Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
     }
 
-    public static void raiseItemWearActivator(Player player) {
+    public void raiseItemWearActivator(Player player) {
         final UUID playerId = player.getUniqueId();
         Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
             for (Activator iw : ActivatorsManager.getInstance().getActivators(ActivatorType.ITEM_WEAR))
@@ -41,7 +43,7 @@ public class ItemStoragesManager {
         }, 1);
     }
 
-    public static void raiseItemHoldActivator(Player player) {
+    public void raiseItemHoldActivator(Player player) {
         final UUID playerId = player.getUniqueId();
         Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
             for (Activator ih : ActivatorsManager.getInstance().getActivators(ActivatorType.ITEM_HOLD))
@@ -49,7 +51,7 @@ public class ItemStoragesManager {
         }, 1);
     }
 
-    private static void setFutureItemHoldCheck(final UUID playerId, final String itemStr, boolean repeat) {
+    private void setFutureItemHoldCheck(final UUID playerId, final String itemStr, boolean repeat) {
         Player player = Bukkit.getPlayer(playerId);
         if (player == null || !player.isOnline() || player.isDead()) return;
         ItemStack item = player.getInventory().getItemInMainHand();

@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.util;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -46,12 +47,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@UtilityClass
 public class Shoot {
 
-    public static String actionShootBreak = "GLASS,THIN_GLASS,STAINED_GLASS,STAINED_GLASS_PANE,GLOWSTONE,REDSTONE_LAMP_OFF,REDSTONE_LAMP_ON";
-    public static String actionShootThrough = "FENCE,FENCE_GATE,IRON_BARDING,IRON_FENCE,NETHER_FENCE";
+    public String actionShootBreak = "GLASS,THIN_GLASS,STAINED_GLASS,STAINED_GLASS_PANE,GLOWSTONE,REDSTONE_LAMP_OFF,REDSTONE_LAMP_ON";
+    public String actionShootThrough = "FENCE,FENCE_GATE,IRON_BARDING,IRON_FENCE,NETHER_FENCE";
 
-    public static void shoot(LivingEntity shooter, Parameters params) {
+    public void shoot(LivingEntity shooter, Parameters params) {
         boolean onehit = params.getParam("singlehit", true);
         int distance = params.getParam("distance", 100);
         float knockbackTarget = params.getParam("knockbackTarget", 0);
@@ -67,12 +69,12 @@ public class Shoot {
         }
     }
 
-    private static String getMobName(LivingEntity mob) {
+    private String getMobName(LivingEntity mob) {
         if (mob.getCustomName() == null) return mob.getType().name();
         return mob.getCustomName();
     }
 
-    private static void executeActivator(Player shooter, LivingEntity target, String paramStr) {
+    private void executeActivator(Player shooter, LivingEntity target, String paramStr) {
         Parameters param = Parameters.parseParams(paramStr);
         if (param.isEmpty() || !param.hasAnyParam("activator", "exec")) return;
         Player player = target instanceof Player ? (Player) target : null;
@@ -89,7 +91,7 @@ public class Shoot {
         StoragesManager.raiseExecActivator(shooter, param, tempVars);
     }
 
-    private static List<Block> getBeam(LivingEntity p, int distance) {
+    private List<Block> getBeam(LivingEntity p, int distance) {
         List<Block> beam = new ArrayList<>();
         BlockIterator bi = new BlockIterator(p, distance);
         while (bi.hasNext()) {
@@ -100,7 +102,7 @@ public class Shoot {
         return beam;
     }
 
-    private static Set<LivingEntity> getEntityBeam(LivingEntity shooter, List<Block> beam, boolean hitSingle) {
+    private Set<LivingEntity> getEntityBeam(LivingEntity shooter, List<Block> beam, boolean hitSingle) {
         Set<LivingEntity> list = new HashSet<>();
         for (Block b : beam)
             for (Entity e : b.getChunk().getEntities()) {
@@ -115,7 +117,7 @@ public class Shoot {
         return list;
     }
 
-    private static boolean isEmpty(Block b, LivingEntity shooter) {
+    private boolean isEmpty(Block b, LivingEntity shooter) {
         if (!b.getType().isSolid()) return true;
         if (ItemUtils.isItemInList(b.getType(), 0, actionShootThrough)) return true;
         if ((shooter instanceof Player) && (isShotAndBreak(b, (Player) shooter))) {
@@ -127,23 +129,23 @@ public class Shoot {
     }
 
 
-    public static boolean breakBlock(Block b, Player p) {
+    public boolean breakBlock(Block b, Player p) {
         BlockBreakEvent event = new BlockBreakEvent(b, p);
         Bukkit.getServer().getPluginManager().callEvent(event);
         return !event.isCancelled();
     }
 
-    private static boolean isShotAndBreak(Block b, Player p) {
+    private boolean isShotAndBreak(Block b, Player p) {
         if (ItemUtils.isItemInList(b.getType(), 0, actionShootBreak)) return breakBlock(b, p);
         return false;
     }
 
-    private static boolean isEntityAffectByBeamBlock(Block b, LivingEntity le) {
+    private boolean isEntityAffectByBeamBlock(Block b, LivingEntity le) {
         if (le.getLocation().getBlock().equals(b)) return true;
         return le.getEyeLocation().getBlock().equals(b);
     }
 
-    public static boolean damageEntity(LivingEntity damager, LivingEntity entity, double damage, float knockbackTarget) {
+    public boolean damageEntity(LivingEntity damager, LivingEntity entity, double damage, float knockbackTarget) {
         Vector eVec = entity.getLocation().toVector().clone();
         Vector dVec = damager.getLocation().toVector().clone();
         Vector eDirection = eVec.subtract(dVec).normalize();

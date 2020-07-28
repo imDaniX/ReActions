@@ -1,42 +1,45 @@
 package me.fromgate.reactions.util.math;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public interface Rng {
-    static <T> T randomElement(List<T> list) {
+@UtilityClass
+public class Rng {
+    public <T> T randomElement(List<T> list) {
         return list.get(Rng.nextInt(list.size()));
     }
 
-    static boolean percentChance(double chance) {
+    public boolean percentChance(double chance) {
         return Rng.nextDouble(100) < chance;
     }
 
-    static boolean chance(double v) {
+    public boolean chance(double v) {
         return nextDouble() < v;
     }
 
-    static boolean nextBoolean() {
+    public boolean nextBoolean() {
         return ThreadLocalRandom.current().nextBoolean();
     }
 
-    static int nextInt(int maxvalue) {
+    public int nextInt(int maxvalue) {
         return ThreadLocalRandom.current().nextInt(maxvalue);
     }
 
-    static int nextInt(int min, int max) {
+    public int nextInt(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max);
     }
 
-    static double nextDouble() {
+    public double nextDouble() {
         return ThreadLocalRandom.current().nextDouble();
     }
 
-    static double nextDouble(double max) {
+    public double nextDouble(double max) {
         return ThreadLocalRandom.current().nextDouble(max);
     }
 
-    static double nextDouble(double min, double max) {
+    public double nextDouble(double min, double max) {
         return ThreadLocalRandom.current().nextDouble(min, max);
     }
 
@@ -46,7 +49,7 @@ public interface Rng {
      * @param numsStr String with min-max values or just max value(e.g. "2-47", "76")
      * @return Random value
      */
-    static int nextIntFromString(String numsStr) {
+    public int nextIntFromString(String numsStr) {
         int index = numsStr.indexOf('-');
         if (index > -1) {
             int min = 0;

@@ -27,8 +27,9 @@ import me.fromgate.reactions.logic.activators.ActivatorType;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+@Getter
 public class PlateStorage extends Storage {
-    @Getter
+
     private final Location location;
 
     public PlateStorage(Player p, Location loc) {

@@ -31,8 +31,9 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
 public class ButtonStorage extends Storage {
-    @Getter
+
     private final Location buttonLocation;
 
     public ButtonStorage(Player p, Location loc) {

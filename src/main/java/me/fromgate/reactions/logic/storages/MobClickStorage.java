@@ -33,10 +33,10 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-
+@Getter
 public class MobClickStorage extends Storage {
-    @Getter
-    private final LivingEntity entity;
+
+    LivingEntity entity;
 
     public MobClickStorage(Player p, LivingEntity entity) {
         super(p, ActivatorType.MOB_CLICK);

@@ -22,7 +22,9 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -32,13 +34,13 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Map;
 
+@Getter
+@FieldDefaults(makeFinal=true,level=AccessLevel.PRIVATE)
 public class CommandStorage extends Storage {
-    @Getter
-    private final String label, command;
-    @Getter
-    private final String[] args;
-    @Getter
-    private final CommandSender sender;
+
+    String label, command;
+    String[] args;
+    CommandSender sender;
 
     public CommandStorage(Player p, CommandSender sender, String command) {
         super(p, ActivatorType.COMMAND);

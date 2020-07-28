@@ -22,6 +22,8 @@
 
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.LeverStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -35,13 +37,14 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
 
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class LeverActivator extends Activator implements Locatable {
     // TODO: Use enum
-    private final String state; //on, off
-    private final String world;
-    private final int x;
-    private final int y;
-    private final int z;
+    String state; //on, off
+    String world;
+    int x;
+    int y;
+    int z;
 
     private LeverActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
         super(base);

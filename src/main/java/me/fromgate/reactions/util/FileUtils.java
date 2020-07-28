@@ -1,5 +1,6 @@
 package me.fromgate.reactions.util;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -7,8 +8,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public interface FileUtils {
-    static boolean loadCfg(YamlConfiguration cfg, File f, String error) {
+@UtilityClass
+public class FileUtils {
+    public boolean loadCfg(YamlConfiguration cfg, File f, String error) {
         if (cfg == null) return false;
         try {
             if (!createFile(f, error)) return false;
@@ -21,7 +23,7 @@ public interface FileUtils {
         }
     }
 
-    static boolean saveCfg(YamlConfiguration cfg, File f, String error) {
+    public boolean saveCfg(YamlConfiguration cfg, File f, String error) {
         if (cfg == null) return false;
         try {
             if (recreateFile(f, error)) {
@@ -36,7 +38,7 @@ public interface FileUtils {
         }
     }
 
-    static boolean createFile(File f, String error) {
+    private boolean createFile(File f, String error) {
         if (f == null) return false;
         try {
             if (!f.exists()) f.createNewFile();
@@ -48,7 +50,7 @@ public interface FileUtils {
         }
     }
 
-    static boolean recreateFile(File f, String error) {
+    private boolean recreateFile(File f, String error) {
         if (f == null) return false;
         try {
             if (f.exists()) f.delete();

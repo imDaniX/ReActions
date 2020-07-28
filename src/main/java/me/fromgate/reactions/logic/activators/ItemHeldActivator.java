@@ -1,5 +1,7 @@
 package me.fromgate.reactions.logic.activators;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.ItemHeldStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.item.ItemUtils;
@@ -10,12 +12,13 @@ import org.bukkit.inventory.ItemStack;
 /**
  * Created by MaxDikiy on 2017-11-11.
  */
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class ItemHeldActivator extends Activator {
-    private final int previousSlot;
-    private final int newSlot;
+    int previousSlot;
+    int newSlot;
     // TODO: Store VirtualItem
-    private final String itemNewStr;
-    private final String itemPrevStr;
+    String itemNewStr;
+    String itemPrevStr;
 
     private ItemHeldActivator(ActivatorBase base, String itemPrevStr, String itemNewStr, int previousSlot, int newSlot) {
         super(base);

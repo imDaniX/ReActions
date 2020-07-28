@@ -32,10 +32,10 @@ import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
+@Getter
 public class ItemHoldActivator extends Activator /*implements Manageable*/ {
     // TODO: Store VirtualItem
-    @Getter
-    private String itemStr;
+    private final String itemStr;
     // TODO: Hand option
 
     private ItemHoldActivator(ActivatorBase base, String item) {

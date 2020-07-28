@@ -29,9 +29,10 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
 public class ExecStorage extends Storage {
-    @Getter
-    private Map<String, String> tempVars;
+
+    private final Map<String, String> tempVars;
 
     public ExecStorage(Player player) {
         super(player, ActivatorType.EXEC);

@@ -1,24 +1,26 @@
 package me.fromgate.reactions;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 
+@UtilityClass
 public final class ReActions {
-    private static ReActions.Provider provider;
+    private ReActions.Provider provider;
 
-    public static void register(ReActions.Provider provider) {
+    public void register(ReActions.Provider provider) {
         ReActions.provider = provider;
     }
 
-    public static ActivatorsManager getActivators() {
+    public ActivatorsManager getActivators() {
         return provider.getActivators();
     }
 
-    public static PlaceholdersManager getPlaceholders() {
+    public PlaceholdersManager getPlaceholders() {
         return provider.getPlaceholders();
     }
 
-    public static VariablesManager getVariables() {
+    public VariablesManager getVariables() {
         return provider.getVariables();
     }
 

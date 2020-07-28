@@ -23,7 +23,9 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.MessageActivator;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -35,13 +37,14 @@ import org.bukkit.entity.Player;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+@Getter
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class MessageStorage extends Storage {
     public static final String MESSAGE = "message";
+    private static final Pattern NOT_D = Pattern.compile("\\D+");
 
-    private final static Pattern NOT_D = Pattern.compile("\\D+");
-    @Getter
-    private final String message;
-    private final MessageActivator activator;
+    String message;
+    MessageActivator activator;
 
 
     public MessageStorage(Player player, MessageActivator activator, String message) {

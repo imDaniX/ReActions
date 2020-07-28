@@ -33,7 +33,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class ItemConsumeActivator extends Activator {
     // TODO: Store VirtualItem
-    private String item;
+    private final String item;
     // TODO: Hand option
 
     private ItemConsumeActivator(ActivatorBase base, String item) {

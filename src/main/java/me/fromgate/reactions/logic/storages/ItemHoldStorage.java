@@ -22,7 +22,9 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.entity.Player;
@@ -30,11 +32,12 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
+@Getter
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class ItemHoldStorage extends Storage {
-    @Getter
-    private final boolean mainHand;
-    @Getter
-    private ItemStack item;
+
+    boolean mainHand;
+    ItemStack item;
 
     public ItemHoldStorage(Player p, ItemStack item, boolean mainHand) {
         super(p, ActivatorType.ITEM_HOLD);

@@ -1,26 +1,28 @@
 package me.fromgate.reactions.util;
 
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
-
+@UtilityClass
 public class TemporaryOp {
 
-    private static Set<String> tempOps = new HashSet<>();
+    private Set<UUID> tempOps = new HashSet<>();
 
-    public static void setTempOp(CommandSender sender) {
+    public void setTempOp(CommandSender sender) {
         if (sender instanceof Player && !sender.isOp()) {
-            tempOps.add(sender.getName());
+            tempOps.add(((Player) sender).getUniqueId());
             sender.setOp(true);
         }
     }
 
-    public static void removeTempOp(CommandSender sender) {
-        if (sender instanceof Player && tempOps.remove(sender.getName()))
+    public void removeTempOp(CommandSender sender) {
+        if (sender instanceof Player && tempOps.remove(((Player) sender).getUniqueId()))
             sender.setOp(false);
     }
 

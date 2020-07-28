@@ -33,9 +33,9 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
+@Getter
 public class RegionLeaveActivator extends Activator implements Locatable {
 
-    @Getter
     private final String region;
 
     private RegionLeaveActivator(ActivatorBase base, String region) {

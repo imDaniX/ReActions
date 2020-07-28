@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.util;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -39,9 +40,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
-public interface Utils {
+@UtilityClass
+public class Utils {
 
-    static String removeSpaces(String str) {
+    public String removeSpaces(String str) {
         StringBuilder bld = new StringBuilder();
         for (int i = 0; i < str.length(); i++) {
             char c = str.charAt(i);
@@ -57,7 +59,7 @@ public interface Utils {
      * @param params Parameters of sound
      * @return Name of played sound
      */
-    static String soundPlay(Location loc, Parameters params) {
+    public String soundPlay(Location loc, Parameters params) {
         if (params.isEmpty()) return "";
         Location soundLoc = loc;
         String sndstr = "";
@@ -96,7 +98,7 @@ public interface Utils {
      * @param loc   Location where sound should be played
      * @param param Parameters of sound
      */
-    static void soundPlay(Location loc, String param) {
+    public void soundPlay(Location loc, String param) {
         if (param.isEmpty()) return;
         Parameters params = new Parameters(param, "param");
         soundPlay(loc, params);
@@ -108,7 +110,7 @@ public interface Utils {
      * @param str String to check
      * @return Is string empty or null
      */
-    static boolean isStringEmpty(String str) {
+    public boolean isStringEmpty(String str) {
         return str == null || str.isEmpty();
     }
 
@@ -119,7 +121,7 @@ public interface Utils {
      * @param str  String with words
      * @return Is word contained
      */
-    static boolean isWordInList(String word, String str) {
+    public boolean isWordInList(String word, String str) {
         String[] ln = str.split(",");
         if (ln.length > 0)
             for (String wordInList : ln) {
@@ -130,14 +132,14 @@ public interface Utils {
 
     // *************************************
 
-    static UUID getUUID(OfflinePlayer player) {
+    public UUID getUUID(OfflinePlayer player) {
         return Bukkit.getOnlineMode() ?
                 player.getUniqueId() :
                 UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
     }
 
     @SuppressWarnings("deprecation")
-    static UUID getUUID(String playerName) {
+    public UUID getUUID(String playerName) {
         Player player = getPlayerExact(playerName);
         return player == null ?
                 getUUID(Bukkit.getOfflinePlayer(playerName)) :
@@ -150,7 +152,7 @@ public interface Utils {
      * @param doco String to escape
      * @return Escaped string
      */
-    static String escapeJava(String doco) {
+    public String escapeJava(String doco) {
         if (doco == null)
             return "";
 
@@ -182,7 +184,7 @@ public interface Utils {
      * @param size Size of list
      * @return List with specified size
      */
-    static List<String> getEmptyList(int size) {
+    public List<String> getEmptyList(int size) {
         List<String> l = new ArrayList<>();
         for (int i = 0; i < size; i++) l.add("");
         return l;
@@ -194,7 +196,7 @@ public interface Utils {
      * @param name Nickname of player
      * @return Player with specified name or null
      */
-    static Player getPlayerExact(String name) {
+    public Player getPlayerExact(String name) {
         if (name != null)
             for (Player player : Bukkit.getOnlinePlayers())
                 if (player.getName().equalsIgnoreCase(name)) return player;
@@ -206,7 +208,7 @@ public interface Utils {
      *
      * @return List of names
      */
-    static List<String> getPlayersList() {
+    public List<String> getPlayersList() {
         List<String> players = new ArrayList<>();
         Bukkit.getOnlinePlayers().forEach(p -> players.add(p.getName()));
         return players;
@@ -219,7 +221,7 @@ public interface Utils {
      * @param perm Permission to check
      * @return Is permission is null or user has permissions
      */
-    static boolean checkPermission(Permissible user, String perm) {
+    public boolean checkPermission(Permissible user, String perm) {
         return perm == null || user.hasPermission(perm);
     }
 
@@ -232,7 +234,7 @@ public interface Utils {
      * @return Searched object or default if not found
      */
     @SafeVarargs
-    static <T> T searchNotNull(T def, T... obj) {
+    public <T> T searchNotNull(T def, T... obj) {
         for (T searched : obj)
             if (searched != null) return searched;
         return def;
@@ -242,7 +244,7 @@ public interface Utils {
     /**
      * Idk yet
      */
-    static String implode(String... data) {
+    public String implode(String... data) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < data.length - 1; i++) {
             //data.length - 1 => to not add separator at the end
@@ -263,7 +265,7 @@ public interface Utils {
      * @param name  Name of enum
      * @return Corresponding enum, or null if not found
      */
-    static <T extends Enum<T>> T getEnum(Class<T> clazz, String name) {
+    public <T extends Enum<T>> T getEnum(Class<T> clazz, String name) {
         return getEnum(clazz, name, null);
     }
 
@@ -275,7 +277,7 @@ public interface Utils {
      * @param name  Name of enum
      * @return Corresponding enum, or null if not found
      */
-    static <T extends Enum<T>> T getEnum(Class<T> clazz, String name, T def) {
+    public <T extends Enum<T>> T getEnum(Class<T> clazz, String name, T def) {
         if (clazz != null && !Utils.isStringEmpty(name)) {
             try {
                 return Enum.valueOf(clazz, name.toUpperCase(Locale.ENGLISH));
@@ -285,7 +287,7 @@ public interface Utils {
         return def;
     }
 
-    static boolean containsValue(String str, String... values) {
+    public boolean containsValue(String str, String... values) {
         for (String s : values)
             if (s.equalsIgnoreCase(str)) return true;
         return false;

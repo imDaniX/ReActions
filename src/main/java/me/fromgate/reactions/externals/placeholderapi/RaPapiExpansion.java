@@ -13,6 +13,11 @@ public class RaPapiExpansion extends PlaceholderExpansion {
     private final static Pattern VARP = Pattern.compile("(?i)varp?:\\S+");
 
     @Override
+    public boolean persist() {
+        return true;
+    }
+
+    @Override
     public String getIdentifier() {
         return IDENTIFIER;
     }

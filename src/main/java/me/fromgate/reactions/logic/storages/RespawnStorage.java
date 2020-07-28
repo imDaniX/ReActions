@@ -22,7 +22,9 @@
 
 package me.fromgate.reactions.logic.storages;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.DataValue;
@@ -35,14 +37,14 @@ import org.bukkit.entity.Player;
 
 import java.util.Map;
 
+@Getter
+@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class RespawnStorage extends Storage {
     public static final String RESPAWN_LOCATION = "respawn_loc";
 
-    @Getter
-    private final DeathCause deathCause;
-    @Getter
-    private final LivingEntity killer;
-    private final Location respawnLoc;
+    DeathCause deathCause;
+    LivingEntity killer;
+    Location respawnLoc;
 
     public RespawnStorage(Player player, LivingEntity killer, DeathCause cause, Location respawnLoc) {
         super(player, ActivatorType.RESPAWN);
