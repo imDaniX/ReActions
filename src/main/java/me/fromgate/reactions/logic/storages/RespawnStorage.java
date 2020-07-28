@@ -27,6 +27,7 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.LocationValue;
 import me.fromgate.reactions.util.enums.DeathCause;
@@ -35,6 +36,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -54,7 +56,8 @@ public class RespawnStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         tempVars.put("cause", deathCause.name());
         if (killer != null) {
             tempVars.put("killer-type", killer.getType().name());
@@ -66,10 +69,11 @@ public class RespawnStorage extends Storage {
                 tempVars.put("killer-name", Utils.isStringEmpty(mobName) ? killer.getType().name() : mobName);
             }
         }
+        return tempVars;
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(RESPAWN_LOCATION, new LocationValue(respawnLoc));
+    protected Map<String, DataValue> prepareChangeables() {
+        return MapBuilder.single(RESPAWN_LOCATION, new LocationValue(respawnLoc));
     }
 }

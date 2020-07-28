@@ -31,6 +31,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -47,7 +48,8 @@ public class DeathStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         tempVars.put("cause", cause.name());
         if (killer != null) {
             tempVars.put("killer-type", killer.getType().name());
@@ -59,5 +61,6 @@ public class DeathStorage extends Storage {
                 tempVars.put("killer-name", mobName == null || mobName.isEmpty() ? killer.getType().name() : mobName);
             }
         }
+        return tempVars;
     }
 }

@@ -26,6 +26,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.ItemStackValue;
@@ -75,21 +76,25 @@ public class InventoryClickStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("name", inventoryName);
-        tempVars.put("click", clickType.name());
-        tempVars.put("action", action.name());
-        tempVars.put("slotType", slotType.name());
-        tempVars.put("inventory", inventoryType.name());
-        tempVars.put("item", ItemUtils.itemToString(item));
-        tempVars.put("key", Integer.toString(numberKey + 1));
-        tempVars.put("itemkey", (numberKey > -1) ? ItemUtils.itemToString(getBottomInventory().getItem(numberKey)) : "");
-        tempVars.put("slot", Integer.toString(slot));
+    protected Map<String, String> prepareVariables() {
+        return new MapBuilder<String, String>()
+                .put("name", inventoryName)
+                .put("click", clickType.name())
+                .put("action", action.name())
+                .put("slotType", slotType.name())
+                .put("inventory", inventoryType.name())
+                .put("item", ItemUtils.itemToString(item))
+                .put("key", Integer.toString(numberKey + 1))
+                .put("itemkey", (numberKey > -1) ? ItemUtils.itemToString(getBottomInventory().getItem(numberKey)) : "")
+                .put("slot", Integer.toString(slot))
+                .build();
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
-        changeables.put(ITEM, new ItemStackValue(item));
+    protected Map<String, DataValue> prepareChangeables() {
+        return new MapBuilder<String, DataValue>()
+                .put(CANCEL_EVENT, new BooleanValue(false))
+                .put(ITEM, new ItemStackValue(item))
+                .build();
     }
 }

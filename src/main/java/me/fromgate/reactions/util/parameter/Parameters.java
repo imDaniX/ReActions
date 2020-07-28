@@ -1,7 +1,7 @@
 package me.fromgate.reactions.util.parameter;
 
-import me.fromgate.reactions.util.CaseInsensitiveMap;
 import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
 import me.fromgate.reactions.util.math.NumberUtils;
 
 import java.util.Collection;

@@ -24,6 +24,7 @@ package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -39,7 +40,7 @@ public class PvpKillStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("targetplayer", killedPlayer.getName());
+    protected Map<String, String> prepareVariables() {
+        return MapBuilder.single("targetplayer", killedPlayer.getName());
     }
 }

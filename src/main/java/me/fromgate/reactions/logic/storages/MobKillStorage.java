@@ -29,6 +29,7 @@ import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -42,11 +43,13 @@ public class MobKillStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         tempVars.put("moblocation", LocationUtils.locationToString(entity.getLocation()));
         tempVars.put("mobkiller", getPlayer() == null ? "" : getPlayer().getName());
         tempVars.put("mobtype", entity.getType().name());
         String mobName = entity instanceof Player ? entity.getName() : entity.getCustomName();
         tempVars.put("mobname", Utils.isStringEmpty(mobName) ? entity.getType().name() : mobName);
+        return tempVars;
     }
 }

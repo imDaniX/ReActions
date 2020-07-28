@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
@@ -12,6 +13,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -34,19 +36,23 @@ public class DamageByMobStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("damagerlocation", (damager != null) ? LocationUtils.locationToString(damager.getLocation()) : "");
-        tempVars.put("damagertype", (damager != null) ? damager.getType().name() : "");
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
+        tempVars.put("damagerlocation", LocationUtils.locationToString(damager.getLocation()));
+        tempVars.put("damagertype", damager.getType().name());
         tempVars.put("entitytype", damager.getType().name());
         Player player = damager instanceof Player ? (Player) damager : null;
-        String damagerName = (player == null) ? ((damager != null) ? damager.getCustomName() : "") : player.getName();
-        tempVars.put("damagername", damagerName != null && !damagerName.isEmpty() ? damagerName : ((damager != null) ? damager.getType().name() : ""));
+        String damagerName = (player == null) ? damager.getCustomName() : player.getName();
+        tempVars.put("damagername", damagerName != null && !damagerName.isEmpty() ? damagerName : damager.getType().name());
         tempVars.put("cause", cause.name());
+        return tempVars;
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
-        changeables.put(DamageStorage.DAMAGE, new DoubleValue(damage));
+    protected Map<String, DataValue> prepareChangeables() {
+        return new MapBuilder<String, DataValue>()
+                .put(CANCEL_EVENT, new BooleanValue(false))
+                .put(DamageStorage.DAMAGE, new DoubleValue(damage))
+                .build();
     }
 }

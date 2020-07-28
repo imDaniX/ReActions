@@ -28,12 +28,14 @@ import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.MessageActivator;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.StringValue;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -58,12 +60,13 @@ public class MessageStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         tempVars.put("message", message);
         String[] args = message.split(" ");
         int countInt = 0;
         int countNum = 0;
-        if (args != null && args.length > 0) {
+        if (args.length > 0) {
             for (int i = 0; i < args.length; i++) {
                 tempVars.put("word" + (i + 1), args[i]);
                 tempVars.put("wnum" + (i + 1), NOT_D.matcher(args[i]).replaceAll(""));
@@ -80,12 +83,15 @@ public class MessageStorage extends Storage {
         tempVars.put("word-count", Integer.toString(args.length));
         tempVars.put("int-count", Integer.toString(countInt));
         tempVars.put("num-count", Integer.toString(countNum));
+        return tempVars;
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
-        changeables.put(MESSAGE, new StringValue(message));
+    protected Map<String, DataValue> prepareChangeables() {
+        return new MapBuilder<String, DataValue>()
+                .put(CANCEL_EVENT, new BooleanValue(false))
+                .put(MESSAGE, new StringValue(message))
+                .build();
     }
 
 }

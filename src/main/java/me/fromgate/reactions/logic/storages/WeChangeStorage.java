@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -30,13 +31,15 @@ public class WeChangeStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("blocktype", blockType.name());
-        tempVars.put("blocklocation", LocationUtils.locationToString(location));
+    protected Map<String, String> prepareVariables() {
+        return new MapBuilder<String, String>()
+                .put("blocktype", blockType.name())
+                .put("blocklocation", LocationUtils.locationToString(location))
+                .build();
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(Storage.CANCEL_EVENT, new BooleanValue(false));
+    protected Map<String, DataValue> prepareChangeables() {
+        return MapBuilder.single(CANCEL_EVENT, new BooleanValue(false));
     }
 }

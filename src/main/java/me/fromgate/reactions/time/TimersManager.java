@@ -24,9 +24,9 @@ package me.fromgate.reactions.time;
 
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.util.CaseInsensitiveMap;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.TimeUtils;
+import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;

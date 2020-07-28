@@ -27,6 +27,7 @@ import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -50,8 +51,10 @@ public class ExecStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         if (this.tempVars != null && !this.tempVars.isEmpty())
             tempVars.putAll(this.tempVars);
+        return tempVars;
     }
 }

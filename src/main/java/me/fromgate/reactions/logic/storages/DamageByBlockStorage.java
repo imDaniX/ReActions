@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
@@ -13,6 +14,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,16 +37,20 @@ public class DamageByBlockStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         tempVars.put("blocklocation", LocationUtils.locationToString(blockDamager.getLocation()));
         tempVars.put("blocktype", blockDamager.getType().name());
         tempVars.put("block", ItemUtils.itemFromBlock(blockDamager).toString());
         tempVars.put("cause", cause.name());
+        return tempVars;
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
-        changeables.put(DamageStorage.DAMAGE, new DoubleValue(damage));
+    protected Map<String, DataValue> prepareChangeables() {
+        return new MapBuilder<String, DataValue>()
+                .put(CANCEL_EVENT, new BooleanValue(false))
+                .put(DamageStorage.DAMAGE, new DoubleValue(damage))
+                .build();
     }
 }

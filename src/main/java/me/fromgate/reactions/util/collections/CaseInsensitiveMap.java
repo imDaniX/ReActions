@@ -1,4 +1,4 @@
-package me.fromgate.reactions.util;
+package me.fromgate.reactions.util.collections;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,7 +32,10 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
     }
 
     public CaseInsensitiveMap(Map<String, V> copy) {
-        this();
+        origin = new HashMap<>(copy.size());
+        keySet = new KeySet();
+        valueSet = new ValueSet();
+        entrySet = new EntrySet();
         putAll(copy);
     }
 

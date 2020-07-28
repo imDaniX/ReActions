@@ -31,7 +31,6 @@ import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -50,12 +49,9 @@ public abstract class Storage {
     Map<String, DataValue> changeables;
 
     public Storage(Player player, ActivatorType type) {
-        this.player = player;
-        this.type = type;
-        this.async = false;
+        this(player, type, false);
     }
 
-    @SuppressWarnings("unused")
     public Storage(Player player, ActivatorType type, boolean async) {
         this.player = player;
         this.type = type;
@@ -63,29 +59,16 @@ public abstract class Storage {
     }
 
     public final void init() {
-        Map<String, String> tempVars = new HashMap<>();
-        defaultVariables(tempVars);
-        Map<String, DataValue> changeables = new HashMap<>();
-        defaultChangeables(changeables);
-
-        setDefaultVariables(tempVars.isEmpty() ? Collections.emptyMap() : tempVars);
-        setDefaultChangeables(changeables.isEmpty() ? Collections.emptyMap() : changeables);
+        variables = Collections.unmodifiableMap(prepareVariables());
+        changeables = prepareChangeables();
     }
 
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        return Collections.emptyMap();
     }
 
-    void defaultChangeables(Map<String, DataValue> changeables) {
-    }
-
-    private void setDefaultVariables(Map<String, String> tempVars) {
-        if (this.variables != null) return;
-        this.variables = Collections.unmodifiableMap(tempVars);
-    }
-
-    private void setDefaultChangeables(Map<String, DataValue> changeables) {
-        if (this.changeables != null) return;
-        this.changeables = changeables;
+    protected Map<String, DataValue> prepareChangeables() {
+        return Collections.emptyMap();
     }
 
     public final RaContext generateContext(String activator) {

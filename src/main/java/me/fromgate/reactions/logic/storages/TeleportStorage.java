@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.LocationValue;
@@ -30,8 +31,10 @@ public class TeleportStorage extends Storage {
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
-        changeables.put(LOCATION_TO, new LocationValue(to));
+    protected Map<String, DataValue> prepareChangeables() {
+        return new MapBuilder<String, DataValue>()
+                .put(CANCEL_EVENT, new BooleanValue(false))
+                .put(LOCATION_TO, new LocationValue(to))
+                .build();
     }
 }

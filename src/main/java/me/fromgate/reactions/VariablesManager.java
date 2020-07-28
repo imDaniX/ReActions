@@ -24,9 +24,9 @@ package me.fromgate.reactions;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.util.CaseInsensitiveMap;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;

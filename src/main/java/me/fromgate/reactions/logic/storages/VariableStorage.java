@@ -26,6 +26,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -45,9 +46,11 @@ public class VariableStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("var-id", variableId);
-        tempVars.put("var-old", oldValue);
-        tempVars.put("var-new", newValue);
+    protected Map<String, String> prepareVariables() {
+        return new MapBuilder<String, String>()
+                .put("var-id", variableId)
+                .put("var-old", oldValue)
+                .put("var-new", newValue)
+                .build();
     }
 }

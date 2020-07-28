@@ -4,12 +4,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,7 +35,8 @@ public class ItemHeldStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         if (newItem != null) {
             VirtualItem vi = VirtualItem.fromItemStack(newItem);
             if (vi != null) {
@@ -50,10 +53,11 @@ public class ItemHeldStorage extends Storage {
         }
         tempVars.put("slotNew", Integer.toString(newSlot + 1));
         tempVars.put("slotPrev", Integer.toString(previousSlot + 1));
+        return tempVars;
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+    protected Map<String, DataValue> prepareChangeables() {
+        return MapBuilder.single(CANCEL_EVENT, new BooleanValue(false));
     }
 }

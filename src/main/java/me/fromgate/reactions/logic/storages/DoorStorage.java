@@ -25,6 +25,7 @@ package me.fromgate.reactions.logic.storages;
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.BlockUtils;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -32,6 +33,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @Getter
@@ -54,12 +56,14 @@ public class DoorStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         tempVars.put(DOOR_LOCATION, LocationUtils.locationToString(doorBlock));
+        return tempVars;
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+    protected Map<String, DataValue> prepareChangeables() {
+        return MapBuilder.single(CANCEL_EVENT, new BooleanValue(false));
     }
 }

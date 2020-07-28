@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.DoubleValue;
@@ -37,14 +38,16 @@ public class PickupItemStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("droplocation", LocationUtils.locationToString(dropLoc));
+    protected Map<String, String> prepareVariables() {
+        return MapBuilder.single("droplocation", LocationUtils.locationToString(dropLoc));
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
-        changeables.put(PICKUP_DELAY, new DoubleValue(pickupDelay));
-        changeables.put(ITEM, new ItemStackValue(item));
+    protected Map<String, DataValue> prepareChangeables() {
+        return new MapBuilder<String, DataValue>()
+                .put(CANCEL_EVENT, new BooleanValue(false))
+                .put(PICKUP_DELAY, new DoubleValue(pickupDelay))
+                .put(ITEM, new ItemStackValue(item))
+                .build();
     }
 }

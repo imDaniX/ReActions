@@ -2,11 +2,13 @@ package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -23,12 +25,14 @@ public class GameModeStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
+    protected Map<String, String> prepareVariables() {
+        Map<String, String> tempVars = new HashMap<>();
         tempVars.put("gamemode", gameMode.name());
+        return tempVars;
     }
 
     @Override
-    void defaultChangeables(Map<String, DataValue> changeables) {
-        changeables.put(CANCEL_EVENT, new BooleanValue(false));
+    protected Map<String, DataValue> prepareChangeables() {
+        return MapBuilder.single(CANCEL_EVENT, new BooleanValue(false));
     }
 }

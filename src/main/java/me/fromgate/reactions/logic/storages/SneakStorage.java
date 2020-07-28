@@ -2,6 +2,7 @@ package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -20,7 +21,7 @@ public class SneakStorage extends Storage {
     }
 
     @Override
-    void defaultVariables(Map<String, String> tempVars) {
-        tempVars.put("sneak", Boolean.toString(sneaking));
+    protected Map<String, String> prepareVariables() {
+        return MapBuilder.single("sneak", Boolean.toString(sneaking));
     }
 }
