@@ -36,7 +36,7 @@ public class Parameters implements Iterable<String> {
         Map<String, String> params = new CaseInsensitiveMap<>();
         IterationState state = IterationState.SPACE;
         String param = "";
-        StringBuilder text = new StringBuilder();
+        StringBuilder text = new StringBuilder(str.length() + 10);
         StringBuilder bld = null;
         int brCount = 0;
         for(int i = 0; i < str.length(); i++) {
@@ -52,12 +52,12 @@ public class Parameters implements Iterable<String> {
                     break;
                 case TEXT:
                     if(c == ' ') {
-                        if(defKey != null) {
+                        if(Utils.isStringEmpty(defKey)){
+                            text.append(bld).append(c);
+                        } else {
                             String value = bld.toString();
                             params.put(defKey, value);
                             text.append(defKey).append(':').append(bld).append(c);
-                        } else {
-                            text.append(bld).append(c);
                         }
                         state = IterationState.SPACE;
                         continue;
