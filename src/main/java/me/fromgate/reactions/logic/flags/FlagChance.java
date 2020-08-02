@@ -31,8 +31,8 @@ public class FlagChance implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         context.setVariable("CHANCE", param + "%");
-        int d = 50;
-        if (NumberUtils.isInteger(param)) d = Integer.parseInt(param);
+        double d = 50;
+        if (NumberUtils.isFloat(param)) d = Double.parseDouble(param);
         d = Math.max(Math.min(d, 100), 0);
         return Rng.percentChance(d);
     }
