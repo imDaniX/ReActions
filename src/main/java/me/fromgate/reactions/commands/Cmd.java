@@ -1,22 +1,20 @@
 package me.fromgate.reactions.commands;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-@FieldDefaults(level=AccessLevel.PRIVATE)
 public class Cmd {
+
     @Getter
-    String command;
-    String[] subCommands;
-    String permission;
-    boolean allowConsole;
-    Msg description;
-    String shortDescription;
+    private String command;
+    private String[] subCommands;
+    private String permission;
+    private boolean allowConsole;
+    private Msg description;
+    private String shortDescription;
 
 
     public Cmd() {

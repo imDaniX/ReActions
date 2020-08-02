@@ -22,9 +22,7 @@
 
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.enums.DeathCause;
 import org.bukkit.entity.EntityType;
@@ -35,11 +33,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class DeathStorage extends Storage {
 
-    LivingEntity killer;
-    DeathCause cause;
+    private final LivingEntity killer;
+    private final DeathCause cause;
 
     public DeathStorage(LivingEntity killer, Player player, DeathCause deathCause) {
         super(player, ActivatorType.DEATH);

@@ -1,18 +1,15 @@
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.externals.worldedit.WeSelection;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.WeSelectionRegionStorage;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class WeSelectionActivator extends Activator {
-    int maxBlocks;
-    int minBlocks;
-    String typeSelection;
+    private final int maxBlocks;
+    private final int minBlocks;
+    private final String typeSelection;
 
     private WeSelectionActivator(ActivatorBase base, int maxBlocks, int minBlocks, String typeSelection) {
         super(base);

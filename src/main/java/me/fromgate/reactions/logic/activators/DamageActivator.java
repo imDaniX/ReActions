@@ -1,7 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.DamageStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.enums.DamageType;
@@ -13,10 +11,9 @@ import org.bukkit.event.entity.EntityDamageEvent;
  * Created by MaxDikiy on 2017-07-23.
  */
 // TODO: Assemble to one activator
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class DamageActivator extends Activator {
-    String damageCause;
-    DamageType source;
+    private final String damageCause;
+    private final DamageType source;
 
     private DamageActivator(ActivatorBase base, String cause, DamageType source) {
         super(base);

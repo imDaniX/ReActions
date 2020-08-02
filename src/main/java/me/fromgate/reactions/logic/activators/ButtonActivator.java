@@ -23,8 +23,6 @@
 
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.ButtonStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -35,12 +33,11 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class ButtonActivator extends Activator implements Locatable {
-    String world;
-    int x;
-    int y;
-    int z;
+    private final String world;
+    private final int x;
+    private final int y;
+    private final int z;
 
     private ButtonActivator(ActivatorBase base, String world, int x, int y, int z) {
         super(base);

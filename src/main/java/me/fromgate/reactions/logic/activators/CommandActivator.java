@@ -23,8 +23,6 @@
 
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.CommandStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -37,22 +35,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class CommandActivator extends Activator {
     // Full command
-    String command;
+    private final String command;
     // Check just command?
-    boolean checkExact;
+    private final boolean checkExact;
     // Check it by start?
-    boolean starts;
+    private final boolean starts;
     // List of arguments, if not checkExact
-    List<String> args;
+    private final List<String> args;
     // Use regex?
-    boolean useRegex;
+    private final boolean useRegex;
     // Pattern if useRegex
-    Pattern pattern;
+    private final Pattern pattern;
     // Is console allowed to perform this command?
-    boolean consoleAllowed;
+    private final boolean consoleAllowed;
 
     private CommandActivator(ActivatorBase base, String command, boolean starts, boolean useRegex, boolean consoleAllowed) {
         super(base);

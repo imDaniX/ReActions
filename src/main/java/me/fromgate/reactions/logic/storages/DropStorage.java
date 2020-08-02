@@ -1,8 +1,6 @@
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -21,13 +19,12 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-05-01.
  */
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class DropStorage extends Storage {
     public static final String PICKUP_DELAY = "pickupdelay";
     public static final String ITEM = "item";
 
-    ItemStack item;
-    int pickupDelay;
+    private final ItemStack item;
+    private final int pickupDelay;
 
     public DropStorage(Player p, Item item, int pickupDelay) {
         super(p, ActivatorType.DROP);

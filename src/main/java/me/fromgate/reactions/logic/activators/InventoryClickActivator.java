@@ -1,7 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.InventoryClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.item.ItemUtils;
@@ -10,17 +8,16 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class InventoryClickActivator extends Activator {
     // That's pretty freaky stuff
-    String inventoryName;
-    ClickType click;
-    InventoryAction action;
-    InventoryType inventory;
-    SlotType slotType;
-    String numberKey;
-    String slotStr;
-    String itemStr;
+    private final String inventoryName;
+    private final ClickType click;
+    private final InventoryAction action;
+    private final InventoryType inventory;
+    private final SlotType slotType;
+    private final String numberKey;
+    private final String slotStr;
+    private final String itemStr;
 
     private InventoryClickActivator(ActivatorBase base, String inventoryName, ClickType click, InventoryAction action,
                                     InventoryType inventory, SlotType slotType, String numberKey, String slotStr, String itemStr) {

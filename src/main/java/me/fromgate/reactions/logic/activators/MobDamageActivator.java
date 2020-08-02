@@ -22,8 +22,6 @@
 
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.MobDamageStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -36,12 +34,11 @@ import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class MobDamageActivator extends Activator {
-    String mobName;
+    private final String mobName;
     // TODO: EntityType
-    String mobType;
-    String itemStr;
+    private final String mobType;
+    private final String itemStr;
 
     private MobDamageActivator(ActivatorBase base, String type, String name, String item) {
         super(base);

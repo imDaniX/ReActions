@@ -24,9 +24,7 @@
 package me.fromgate.reactions.logic.storages;
 
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.Location;
@@ -36,12 +34,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class SignStorage extends Storage {
 
-    boolean leftClick;
-    Location location;
-    String[] signLines;
+    private final boolean leftClick;
+    private final Location location;
+    private final String[] signLines;
 
     public SignStorage(Player player, String[] signLines, Location loc, boolean leftClick) {
         super(player, ActivatorType.SIGN);

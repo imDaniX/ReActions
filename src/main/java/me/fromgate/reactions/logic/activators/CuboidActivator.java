@@ -1,7 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.location.Cuboid;
 import me.fromgate.reactions.util.location.VirtualLocation;
@@ -17,11 +15,10 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class CuboidActivator extends Activator implements Locatable {
-    CuboidMode mode;
-    Cuboid cuboid;
-    Set<UUID> within;
+    private final CuboidMode mode;
+    private final Cuboid cuboid;
+    private final Set<UUID> within;
 
     private CuboidActivator(ActivatorBase base, Cuboid cuboid, CuboidMode mode) {
         super(base);

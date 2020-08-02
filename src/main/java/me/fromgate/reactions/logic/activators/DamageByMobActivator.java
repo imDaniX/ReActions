@@ -1,7 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.DamageByMobStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -17,16 +15,15 @@ import java.util.Locale;
  * Created by MaxDikiy on 2017-06-25.
  */
 // TODO: Assemble to one activator
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class DamageByMobActivator extends Activator {
 
-    String damagerName;
+    private final String damagerName;
     // TODO: Use EntityType
-    String damagerType;
+    private final String damagerType;
     // TODO: Use EntityType
-    String entityType;
+    private final String entityType;
     // TODO: Use Enum
-    String damageCause;
+    private final String damageCause;
 
     private DamageByMobActivator(ActivatorBase base, String damagerName, String damagerType, String entityType, String damageCause) {
         super(base);

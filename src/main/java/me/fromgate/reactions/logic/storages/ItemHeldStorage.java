@@ -1,8 +1,6 @@
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -18,13 +16,12 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-11-11.
  */
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class ItemHeldStorage extends Storage {
 
-    int newSlot;
-    int previousSlot;
-    ItemStack newItem;
-    ItemStack previousItem;
+    private final int newSlot;
+    private final int previousSlot;
+    private final ItemStack newItem;
+    private final ItemStack previousItem;
 
     public ItemHeldStorage(Player player, int newSlot, int previousSlot) {
         super(player, ActivatorType.ITEM_HELD);

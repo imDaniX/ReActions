@@ -1,8 +1,6 @@
 package me.fromgate.reactions.util.data;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -12,14 +10,15 @@ import java.util.Locale;
 import java.util.Map;
 
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class RaContext {
+
     public final static RaContext EMPTY_CONTEXT = new RaContext(":unknown", null, null, null);
-    String activatorName;
-    Player player;
-    Map<String, String> variables;
-    Map<String, DataValue> changeables;
-    boolean async;
+
+    private final String activatorName;
+    private final Player player;
+    private final Map<String, String> variables;
+    private final Map<String, DataValue> changeables;
+    private final boolean async;
 
     public RaContext(String activator, Map<String, String> variables, Map<String, DataValue> changeables, Player player) {
         this(activator, variables, changeables, player, false);

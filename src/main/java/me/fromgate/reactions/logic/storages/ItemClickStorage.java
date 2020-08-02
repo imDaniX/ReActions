@@ -22,9 +22,7 @@
 
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -37,11 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class ItemClickStorage extends Storage {
 
-    boolean mainHand;
-    ItemStack item;
+    private final boolean mainHand;
+    private final ItemStack item;
 
     public ItemClickStorage(Player p, ItemStack item, boolean mainHand) {
         super(p, ActivatorType.ITEM_CLICK);

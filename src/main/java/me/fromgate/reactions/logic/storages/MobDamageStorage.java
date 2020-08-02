@@ -22,9 +22,7 @@
 
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.MapBuilder;
@@ -40,13 +38,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class MobDamageStorage extends Storage {
     public static final String DAMAGE = "damage";
 
-    LivingEntity entity;
-    DamageCause cause;
-    double damage;
+    private final LivingEntity entity;
+    private final DamageCause cause;
+    private final double damage;
 
     public MobDamageStorage(LivingEntity entity, Player damager, double damage, DamageCause cause) {
         super(damager, ActivatorType.MOB_DAMAGE);

@@ -1,8 +1,6 @@
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -21,12 +19,11 @@ import java.util.Map;
  * Created by MaxDikiy on 2017-07-23.
  */
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class DamageByBlockStorage extends Storage {
 
-    Block blockDamager;
-    DamageCause cause;
-    double damage;
+    private final Block blockDamager;
+    private final DamageCause cause;
+    private final double damage;
 
 
     public DamageByBlockStorage(Player player, Block blockDamager, double damage, DamageCause cause) {

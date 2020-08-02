@@ -1,7 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.DamageByBlockStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.item.ItemUtils;
@@ -17,11 +15,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
  * Created by MaxDikiy on 2017-07-23.
  */
 // TODO: Assemble to one activator
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class DamageByBlockActivator extends Activator implements Locatable {
-    String blockStr;
-    String blockLocation;
-    String damageCause;
+
+    private final String blockStr;
+    private final String blockLocation;
+    private final String damageCause;
 
     private DamageByBlockActivator(ActivatorBase base, String block, String location, String cause) {
         super(base);

@@ -22,8 +22,6 @@
 
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.MobKillStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -34,11 +32,10 @@ import org.bukkit.entity.LivingEntity;
 
 import java.util.Locale;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class MobKillActivator extends Activator {
     // TODO: EntityType
-    String mobType;
-    String mobName;
+    private final String mobType;
+    private final String mobName;
 
     private MobKillActivator(ActivatorBase base, String type, String name) {
         super(base);

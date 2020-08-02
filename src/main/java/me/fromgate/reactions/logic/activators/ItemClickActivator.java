@@ -22,8 +22,6 @@
 
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.storages.ItemClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.Utils;
@@ -34,11 +32,10 @@ import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class ItemClickActivator extends Activator {
     // TODO: Store VirtualItem
-    String item;
-    HandType hand;
+    private final String item;
+    private final HandType hand;
 
     private ItemClickActivator(ActivatorBase base, String item, HandType hand) {
         super(base);

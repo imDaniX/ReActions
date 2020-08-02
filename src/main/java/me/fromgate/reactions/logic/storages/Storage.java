@@ -22,9 +22,7 @@
 
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.RaContext;
@@ -37,16 +35,16 @@ import java.util.Map;
  * Storages are used to transfer some data to activators
  */
 @Getter
-@FieldDefaults(level=AccessLevel.PRIVATE)
 public abstract class Storage {
     public static final String CANCEL_EVENT = "cancel_event";
 
     protected final Player player;
-    final ActivatorType type;
-    final boolean async;
+    private final ActivatorType type;
+    private final boolean async;
+
     // Default temporary placeholders
-    Map<String, String> variables;
-    Map<String, DataValue> changeables;
+    private Map<String, String> variables;
+    private Map<String, DataValue> changeables;
 
     public Storage(Player player, ActivatorType type) {
         this(player, type, false);

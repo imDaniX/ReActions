@@ -3,8 +3,6 @@
  */
 package me.fromgate.reactions.logic.activators;
 
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.WeChangeStorage;
@@ -15,10 +13,10 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.Locale;
 
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class WeChangeActivator extends Activator {
-    Material blockType;
-    String region;
+
+    private final Material blockType;
+    private final String region;
 
     private WeChangeActivator(ActivatorBase base, Material blockType, String region) {
         super(base);

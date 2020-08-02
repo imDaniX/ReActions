@@ -1,9 +1,7 @@
 
 package me.fromgate.reactions.logic.storages;
 
-import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.experimental.FieldDefaults;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -18,11 +16,10 @@ import java.util.Map;
  * Created by MaxDikiy on 17/10/2017.
  */
 @Getter
-@FieldDefaults(makeFinal=true,level= AccessLevel.PRIVATE)
 public class WeChangeStorage extends Storage {
 
-    Location location;
-    Material blockType;
+    private final Location location;
+    private final Material blockType;
 
     public WeChangeStorage(Player player, Location location, Material blockType) {
         super(player, ActivatorType.WE_CHANGE);
