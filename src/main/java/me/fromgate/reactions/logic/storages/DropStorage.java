@@ -38,7 +38,7 @@ public class DropStorage extends Storage {
     @Override
     protected Map<String, String> prepareVariables() {
         Map<String, String> tempVars = new HashMap<>();
-        tempVars.put("droplocation", LocationUtils.locationToString(getPlayer().getLocation()));
+        tempVars.put("droplocation", LocationUtils.locationToString(player.getLocation()));
         return tempVars;
     }
 

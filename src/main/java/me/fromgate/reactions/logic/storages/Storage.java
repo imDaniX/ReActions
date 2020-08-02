@@ -41,7 +41,7 @@ import java.util.Map;
 public abstract class Storage {
     public static final String CANCEL_EVENT = "cancel_event";
 
-    final Player player;
+    protected final Player player;
     final ActivatorType type;
     final boolean async;
     // Default temporary placeholders

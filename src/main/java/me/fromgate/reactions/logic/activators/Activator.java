@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 @AllArgsConstructor
 public abstract class Activator {
-    private final ActivatorBase base;
+    protected final ActivatorBase base;
 
     /**
      * Execution of activator
@@ -19,7 +19,7 @@ public abstract class Activator {
     public final void executeActivator(Storage storage) {
         if (!activate(storage)) return;
         RaContext context = storage.generateContext(base.getName());
-        Actions.executeActions(context, getBase(), Flags.checkFlags(context, getBase()));
+        Actions.executeActions(context, base, Flags.checkFlags(context, base));
     }
 
     /**

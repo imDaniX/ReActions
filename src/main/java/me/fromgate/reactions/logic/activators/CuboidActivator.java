@@ -31,7 +31,7 @@ public class CuboidActivator extends Activator implements Locatable {
     }
 
     public static CuboidActivator create(ActivatorBase base, Parameters param) {
-        CuboidMode mode = CuboidMode.getByName(param.getString("mode"));
+        CuboidMode mode = CuboidMode.getByName(param.getString("mode", "ENTER"));
         String world = param.getString("world", Bukkit.getWorlds().get(0).getName());
         VirtualLocation loc1 = new VirtualLocation(world, param.getInteger("loc1.x", 0), param.getInteger("loc1.y", 0), param.getInteger("loc1.z", 0));
         VirtualLocation loc2 = new VirtualLocation(world, param.getInteger("loc2.x", 0), param.getInteger("loc2.y", 0), param.getInteger("loc2.z", 0));
@@ -39,7 +39,7 @@ public class CuboidActivator extends Activator implements Locatable {
     }
 
     public static CuboidActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        CuboidMode mode = CuboidMode.getByName(cfg.getString("mode"));
+        CuboidMode mode = CuboidMode.getByName(cfg.getString("mode", "ENTER"));
         String world = cfg.getString("world");
         VirtualLocation loc1 = new VirtualLocation(world, cfg.getInt("loc1.x"), cfg.getInt("loc1.y"), cfg.getInt("loc1.z"));
         VirtualLocation loc2 = new VirtualLocation(world, cfg.getInt("loc2.x"), cfg.getInt("loc2.y"), cfg.getInt("loc2.z"));

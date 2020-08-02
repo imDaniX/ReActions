@@ -59,7 +59,7 @@ public class MobDamageStorage extends Storage {
     protected Map<String, String> prepareVariables() {
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("moblocation", LocationUtils.locationToString(entity.getLocation()));
-        tempVars.put("mobdamager", getPlayer() == null ? "" : getPlayer().getName());
+        tempVars.put("mobdamager", player == null ? "" : player.getName());
         tempVars.put("mobtype", entity.getType().name());
         String mobName = entity instanceof Player ? entity.getName() : entity.getCustomName();
         tempVars.put("mobname", Utils.isStringEmpty(mobName) ? entity.getType().name() : mobName);

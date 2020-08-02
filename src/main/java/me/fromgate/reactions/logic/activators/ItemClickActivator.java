@@ -61,7 +61,7 @@ public class ItemClickActivator extends Activator {
     @Override
     public boolean activate(Storage event) {
         if (item.isEmpty() || (VirtualItem.fromString(item) == null)) {
-            Msg.logOnce(getBase().getName() + "activatoritemempty", "Failed to parse item of activator " + getBase().getName());
+            Msg.logOnce(base.getName() + "activatoritemempty", "Failed to parse item of activator " + base.getName());
             return false;
         }
         ItemClickStorage ie = (ItemClickStorage) event;

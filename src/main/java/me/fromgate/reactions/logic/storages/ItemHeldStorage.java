@@ -30,8 +30,8 @@ public class ItemHeldStorage extends Storage {
         super(player, ActivatorType.ITEM_HELD);
         this.newSlot = newSlot;
         this.previousSlot = previousSlot;
-        this.newItem = this.getPlayer().getInventory().getItem(newSlot);
-        this.previousItem = this.getPlayer().getInventory().getItem(previousSlot);
+        this.newItem = this.player.getInventory().getItem(newSlot);
+        this.previousItem = this.player.getInventory().getItem(previousSlot);
     }
 
     @Override

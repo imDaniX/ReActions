@@ -46,7 +46,7 @@ public class MobKillStorage extends Storage {
     protected Map<String, String> prepareVariables() {
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("moblocation", LocationUtils.locationToString(entity.getLocation()));
-        tempVars.put("mobkiller", getPlayer() == null ? "" : getPlayer().getName());
+        tempVars.put("mobkiller", player == null ? "" : player.getName());
         tempVars.put("mobtype", entity.getType().name());
         String mobName = entity instanceof Player ? entity.getName() : entity.getCustomName();
         tempVars.put("mobname", Utils.isStringEmpty(mobName) ? entity.getType().name() : mobName);
