@@ -35,8 +35,11 @@ public class ActionTp extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Location loc = teleportPlayer(context, params);
-        if (loc != null) this.setMessageParam(LocationUtils.locationToStringFormatted(loc));
-        return (loc != null);
+        if (loc != null) {
+            this.setMessageParam(LocationUtils.locationToStringFormatted(loc));
+            return true;
+        }
+        return false;
     }
 
     private Location teleportPlayer(RaContext context, Parameters params) {
@@ -44,11 +47,11 @@ public class ActionTp extends Action {
         Location loc;
         int radius = 0;
         if (params.isEmpty()) return null;
-        if (params.containsEvery("param")) {
-            loc = LocationUtils.parseLocation(params.getString("param", ""), player.getLocation());
-        } else {
+        if (params.contains("loc")) {
             loc = LocationUtils.parseLocation(params.getString("loc", ""), player.getLocation());
             radius = params.getInteger("radius", 0);
+        } else {
+            loc = LocationUtils.parseLocation(params.toString(), player.getLocation());
         }
         boolean land = params.getBoolean("land", true);
 
@@ -58,10 +61,7 @@ public class ActionTp extends Action {
                 loc.setX(loc.getBlockX() + 0.5);
                 loc.setZ(loc.getBlockZ() + 0.5);
             }
-            try {
-                while (!loc.getChunk().isLoaded()) loc.getChunk().load();
-            } catch (Exception ignore) {
-            }
+            if (!loc.getChunk().isLoaded()) loc.getChunk().load();
 
             context.setVariable("loc-from", LocationUtils.locationToString(player.getLocation()));
             context.setVariable("loc-from-str", LocationUtils.locationToStringFormatted(player.getLocation()));

@@ -74,14 +74,14 @@ public class LocationUtils {
 
     public Location parseLocation(Parameters params, Location defaultLocation) {
         Location location = null;
-        if (params.containsEvery("loc")) {
+        if (params.contains("loc")) {
             String locStr = params.getString("loc", "");
             location = LocationHolder.getTpLoc(locStr);
             if (location == null) location = parseCoordinates(locStr);
         }
 
         boolean land = params.getBoolean("land", true);
-        if (params.containsEvery("region")) {
+        if (params.contains("region")) {
             location = getRegionLocation(params.getString("region", ""), land);
             location = copyYawPitch(location, defaultLocation);
         }
@@ -94,7 +94,7 @@ public class LocationUtils {
                 location = copyYawPitch(location, defaultLocation);
             }
         }
-        if (params.containsEvery("radius")) {
+        if (params.contains("radius")) {
             int radius = params.getInteger("radius", -1);
             if (radius > 0) {
                 location = getRadiusLocation(location == null ? defaultLocation : location, radius, land);
@@ -102,9 +102,8 @@ public class LocationUtils {
             }
         }
         Vector vector = LocationUtils.parseVector(params.getString("add-vector", ""));
-        if (vector == null) vector = new Vector(0, 0, 0);
         Location result = location == null ? defaultLocation : location;
-        if (result != null) result.add(vector);
+        if (result != null && vector != null) result.add(vector);
         return result;
     }
 
