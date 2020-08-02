@@ -27,6 +27,7 @@ import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
+import me.fromgate.reactions.util.data.StringValue;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -44,6 +45,9 @@ public class QuitStorage extends Storage {
 
     @Override
     protected Map<String, DataValue> prepareChangeables() {
-        return MapBuilder.single(CANCEL_EVENT, new BooleanValue(false));
+        return new MapBuilder<String, DataValue>()
+                .put(CANCEL_EVENT, new BooleanValue(false))
+                .put(QUIT_MESSAGE, new StringValue(quitMessage))
+                .build();
     }
 }
