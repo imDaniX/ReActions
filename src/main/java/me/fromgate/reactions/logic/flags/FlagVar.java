@@ -45,7 +45,7 @@ public class FlagVar implements Flag {
         String playerName = this.personalVar && (player != null) ? player.getName() : "";
 
 
-        if (params.containsEvery("id")) {
+        if (params.contains("id")) {
             var = params.getString("id", "");
             if (var.isEmpty()) return false;
             value = params.getString("value", "");

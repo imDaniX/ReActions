@@ -43,13 +43,13 @@ public class ActionDelay extends Action {
         String playerName = this.globalDelay ? "" : (player != null ? player.getName() : "");
         String variableId = "";
         boolean add = false;
-        if (params.containsEvery("id", "delay") || params.containsEvery("id", "time")) {
+        if (params.contains("id") && params.containsAny("delay", "time")) {
             variableId = params.getString("id", "");
             playerName = params.getString("player", playerName);
             timeStr = params.getString("delay", params.getString("time", ""));
             add = params.getBoolean("add", false);
         } else {
-            String oldFormat = params.getString("param-line", "");
+            String oldFormat = params.toString();
             if (oldFormat.contains("/")) {
                 String[] m = oldFormat.split("/");
                 if (m.length >= 2) {

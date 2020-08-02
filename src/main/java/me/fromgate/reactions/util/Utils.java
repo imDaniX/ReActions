@@ -67,7 +67,7 @@ public class Utils {
         String strpitch = "1";
         float pitch = 1;
         float volume = 1;
-        if (params.containsAny("param")) {
+        if (params.contains("param")) {
             String param = params.getString("param", "");
             if (param.isEmpty()) return "";
             if (param.contains("/")) {

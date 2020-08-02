@@ -63,7 +63,7 @@ public class Shoot {
             if (damage > 0) {
                 shoot = damageEntity(shooter, le, damage, knockbackTarget);
             }
-            if (shoot && params.containsAny("run")) {
+            if (shoot && params.contains("run")) {
                 executeActivator(shooter instanceof Player ? (Player) shooter : null, le, params.getString("run"));
             }
         }

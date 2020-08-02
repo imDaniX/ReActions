@@ -27,7 +27,7 @@ public class ActionIfElse extends Action {
 
     private static boolean executeActivator(Player p, String condition, String paramStr) {
         Parameters param = Parameters.fromString(paramStr);
-        if (!param.containsAny("run")) return false;
+        if (!param.contains("run")) return false;
         param = Parameters.fromString(param.getString("run"));
         if (param.isEmpty() || !param.containsAny("activator", "exec")) return false;
         param.put("player", p == null ? "null" : p.getName());
@@ -40,7 +40,7 @@ public class ActionIfElse extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        if (params.containsEvery("if") && params.containsAny("then", "else")) {
+        if (params.contains("if") && params.containsAny("then", "else")) {
 			/*
 			TODO: Meh, not really good - does not support multiply checks
 			String condition = params.getParam("if", "");
@@ -124,12 +124,12 @@ public class ActionIfElse extends Action {
     private boolean executeActions(RaContext context, String paramStr) {
         List<StoredAction> actions = new ArrayList<>();
         Parameters params = Parameters.fromString(paramStr);
-        if (!params.containsAny("run")) return false;
+        if (!params.contains("run")) return false;
         params = Parameters.fromString(params.getString("run"));
-        if (params.isEmpty() || !params.containsAny("actions")) return false;
+        if (params.isEmpty() || !params.contains("actions")) return false;
         params = Parameters.fromString(params.getString("actions"));
 
-        if (!params.containsEvery("action1")) return false;
+        if (!params.contains("action1")) return false;
         for (String actionKey : params.keySet()) {
             if (!((actionKey.toLowerCase(Locale.ENGLISH)).startsWith("action"))) continue;
             if (params.isEmpty() || !params.toString().contains("=")) continue;

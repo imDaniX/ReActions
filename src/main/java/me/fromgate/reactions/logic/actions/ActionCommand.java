@@ -52,7 +52,7 @@ public class ActionCommand extends Action {
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         if (commandAs != Type.CONSOLE && player == null) return false;
-        String commandLine = params.getString("param-line");
+        String commandLine = params.toString();
         switch (commandAs) {
             case NORMAL:
                 dispatchCommand(false, player, commandLine);

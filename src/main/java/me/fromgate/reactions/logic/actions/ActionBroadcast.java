@@ -33,7 +33,7 @@ public class ActionBroadcast extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         for (Player pl : Bukkit.getOnlinePlayers()) {
-            Msg.printMessage(pl, params.getString("param-line"));
+            Msg.printMessage(pl, params.toString());
         }
         return true;
     }

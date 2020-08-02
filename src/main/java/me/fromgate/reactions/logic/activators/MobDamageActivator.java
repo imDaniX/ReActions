@@ -54,7 +54,7 @@ public class MobDamageActivator extends Activator {
         String type = param.toString();
         String name = "";
         String itemStr = "";
-        if (param.containsEvery("type")) {
+        if (param.contains("type")) {
             type = param.getString("type");
             name = param.getString("name");
             itemStr = param.getString("item");

@@ -16,7 +16,7 @@ public class ActionRegex extends Action {
     public boolean execute(RaContext context, Parameters params) {
         String prefix = params.getString("prefix", "");
         String regex = params.getString("regex", "");
-        String input = params.getString("input", removeParams(params.getString("param-line")));
+        String input = params.getString("input", removeParams(params.toString()));
 
         if (input.isEmpty()) return false;
 

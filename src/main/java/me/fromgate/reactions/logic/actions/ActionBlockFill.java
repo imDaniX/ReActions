@@ -53,7 +53,7 @@ public class ActionBlockFill extends Action {
             }
         }
 
-        if (!params.containsEvery("region") && !params.containsEvery("loc1", "loc2")) return false;
+        if (!params.contains("region") && !params.containsEvery("loc1", "loc2")) return false;
 
         Location loc1 = null;
         Location loc2 = null;

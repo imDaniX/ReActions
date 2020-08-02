@@ -39,7 +39,7 @@ public class FlagSQL implements Flag {
         if (!SQLManager.isEnabled()) return false;
         Parameters params = Parameters.fromString(param);
         if (!params.containsEvery("value", "select", "from") &&
-                !(params.containsEvery("query"))) return false;
+                !(params.contains("query"))) return false;
         String value = params.getString("value", "");
         String select = params.getString("select", "");
         String query = params.getString("query", "");

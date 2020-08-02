@@ -47,7 +47,7 @@ public class ActionPotion extends Action {
         int duration = 20;
         int amplifier = 1;
         boolean ambient = false;
-        if (params.containsEvery("param")) {
+        if (params.contains("param")) {
             String param = params.getString("param", "");
             if (param.isEmpty()) return "";
             if (param.contains("/")) {

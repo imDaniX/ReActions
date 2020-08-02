@@ -55,7 +55,7 @@ public class ActionMessage extends Action {
         Set<Player> players = new HashSet<>();
         if (params.containsAny(SelectorsManager.getAllKeys())) {
             players.addAll(SelectorsManager.getPlayerList(params));
-            if (players.isEmpty() && params.containsEvery("player")) {
+            if (players.isEmpty() && params.contains("player")) {
                 players.addAll(SelectorsManager.getPlayerList(Parameters.fromString(params.getString("player"))));
             }
         } else if (player != null) {
@@ -64,7 +64,7 @@ public class ActionMessage extends Action {
         if (players.isEmpty()) return;
 
         String type = params.getString("type", "");
-        String message = params.getString("text", removeParams(params.getString("param-line")));
+        String message = params.getString("text", removeParams(params.toString()));
         if (message.isEmpty()) return;
         String annoymentTime = params.getString("hide");
         for (Player p : players) {

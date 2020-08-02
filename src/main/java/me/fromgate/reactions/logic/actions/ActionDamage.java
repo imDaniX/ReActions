@@ -34,7 +34,7 @@ public class ActionDamage extends Action {
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         double damage = params.getInteger("damage", params.getInteger("param-line", 0));
-        if (params.containsAny("player"))
+        if (params.contains("player"))
             // TODO: Selector?
             player = Utils.getPlayerExact(params.getString("player"));
         return damagePlayer(player, damage);

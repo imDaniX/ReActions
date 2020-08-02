@@ -9,15 +9,15 @@ public class ActionFly extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        if (params.containsAny("player"))
+        if (params.contains("player"))
             player = Utils.getPlayerExact(params.getString("player"));
         AllowFly allow = AllowFly.NONE;
         AllowFly fly = AllowFly.NONE;
-        if (params.containsAny("allow")) {
+        if (params.contains("allow")) {
             if (params.getBoolean("allow", true)) allow = AllowFly.TRUE;
             else allow = AllowFly.FALSE;
         }
-        if (params.containsAny("fly")) {
+        if (params.contains("fly")) {
             if (params.getBoolean("fly", true)) fly = AllowFly.TRUE;
             else fly = AllowFly.FALSE;
         }

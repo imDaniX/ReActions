@@ -82,7 +82,7 @@ public class ActionLog extends Action {
             boolean prefix = params.getBoolean("prefix", true);
             boolean color = params.getBoolean("color", false);
             String file = params.getString("file", "");
-            String message = params.getString("text", removeParams(params.getString("param-line")));
+            String message = params.getString("text", removeParams(params.toString()));
             if (message.isEmpty()) return false;
             if (file.isEmpty()) {
                 if (prefix) {
@@ -91,7 +91,7 @@ public class ActionLog extends Action {
             } else {
                 saveToFile(context, file, message);
             }
-        } else Msg.logMessage(params.getString("param-line"));
+        } else Msg.logMessage(params.toString());
 
         return true;
     }

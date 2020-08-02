@@ -126,11 +126,11 @@ public class TimersManager {
             Msg.MSG_TIMERNEEDACTIVATOR.print(sender);
             return false;
         }
-        if (!params.containsEvery("timer-type")) {
+        if (!params.contains("timer-type")) {
             Msg.MSG_TIMERNEEDTYPE.print(sender);
             return false;
         }
-        if (!params.containsEvery("time")) {
+        if (!params.contains("time")) {
             Msg.MSG_TIMERNEEDTIME.print(sender);
             return false;
         }

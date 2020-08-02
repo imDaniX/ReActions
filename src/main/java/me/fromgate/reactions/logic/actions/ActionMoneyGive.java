@@ -38,7 +38,7 @@ public class ActionMoneyGive extends Action {
         Player player = context.getPlayer();
         if (!RaEconomics.isEconomyFound()) return false;
         if (params.isEmpty()) return false;
-        if (params.size() <= 2) params = parseOldFormat(player, params.getString("param-line"));
+        if (params.size() <= 2) params = parseOldFormat(player, params.toString());
         String amountStr = params.getString("amount", "");
         if (amountStr.isEmpty()) return false;
         String worldName = params.getString("world", "");

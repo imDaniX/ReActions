@@ -80,9 +80,9 @@ public class InventoryMenu implements Listener {
         if (slots.size() < size)
             for (int i = slots.size(); i < size; i++) slots.add("");
         for (int i = 1; i <= size; i++) {
-            if (params.containsEvery("activator" + i))
+            if (params.contains("activator" + i))
                 activators.set(i - 1, params.getString("activator" + i, ""));
-            if (params.containsEvery("item" + i))
+            if (params.contains("item" + i))
                 slots.set(i - 1, params.getString("item" + i, ""));
         }
         vi.setTitle(title);
@@ -99,7 +99,7 @@ public class InventoryMenu implements Listener {
     }
 
     private static List<String> getActivators(Parameters param) {
-        if (param.containsEvery("menu")) {
+        if (param.contains("menu")) {
             String id = param.getString("menu", "");
             if (containsMenu(id)) return getMenu(id).getActivators();
         } else {
@@ -117,7 +117,7 @@ public class InventoryMenu implements Listener {
     public static Inventory getInventory(Parameters param) {
         RaInventoryHolder holder = new RaInventoryHolder(getActivators(param));
         Inventory inv = null;
-        if (param.containsEvery("menu")) {
+        if (param.contains("menu")) {
             String id = param.getString("menu", "");
             if (containsMenu(id)) inv = getMenu(id).getInventory();
         } else {
@@ -127,7 +127,7 @@ public class InventoryMenu implements Listener {
             inv = Bukkit.createInventory(holder, size, title);
             for (int i = 1; i <= size; i++) {
                 String slotStr = "slot" + i;
-                if (!param.containsEvery(slotStr)) continue;
+                if (!param.contains(slotStr)) continue;
                 ItemStack slotItem = VirtualItem.fromString(param.getString(slotStr));
                 if (slotItem == null) continue;
                 inv.setItem(i - 1, slotItem);

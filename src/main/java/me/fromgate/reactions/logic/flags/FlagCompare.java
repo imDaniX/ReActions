@@ -36,7 +36,7 @@ public class FlagCompare implements Flag {
         Parameters params = Parameters.fromString(param, "unknown");
         String paramValue = params.getString("param", "");
         if (paramValue.isEmpty()) return false;
-        if (!params.containsEvery("value1")) return false;
+        if (!params.contains("value1")) return false;
         for (String valueKey : params.keySet()) {
             if (!((valueKey.toLowerCase(Locale.ENGLISH)).startsWith("value"))) continue;
             String value = params.getString(valueKey);

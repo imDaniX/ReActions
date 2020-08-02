@@ -68,9 +68,9 @@ public class VirtualLocation {
 
     public VirtualLocation(Parameters params) {
         this.world = params.getString("world", null);
-        this.x = params.containsAny("x") ? params.getInteger("x", 0) : null;
-        this.y = params.containsAny("y") ? params.getInteger("y", 0) : null;
-        this.z = params.containsAny("z") ? params.getInteger("z", 0) : null;
+        this.x = params.contains("x") ? params.getInteger("x", 0) : null;
+        this.y = params.contains("y") ? params.getInteger("y", 0) : null;
+        this.z = params.contains("z") ? params.getInteger("z", 0) : null;
         this.hash = calcHash();
     }
 

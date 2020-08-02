@@ -49,7 +49,7 @@ public class MobKillActivator extends Activator {
     public static MobKillActivator create(ActivatorBase base, Parameters param) {
         String type = param.toString();
         String name = "";
-        if (param.containsEvery("type")) {
+        if (param.contains("type")) {
             type = param.getString("type");
             name = param.getString("name");
         } else if (param.toString().contains("$")) {

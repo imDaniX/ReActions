@@ -46,7 +46,7 @@ public class ActionVar extends Action {
         String var;
         String value;
 
-        if (params.containsEvery("id")) {
+        if (params.contains("id")) {
             var = params.getString("id", "");
             value = params.getString("value", "");
             player = params.getString("player", player);

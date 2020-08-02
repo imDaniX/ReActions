@@ -12,7 +12,7 @@ public class ActionGlide extends Action {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
-        if (params.containsAny("player"))
+        if (params.contains("player"))
             player = Utils.getPlayerExact(params.getString("player"));
         boolean isGlide = params.getBoolean("glide", true);
         return glidePlayer(player, isGlide);

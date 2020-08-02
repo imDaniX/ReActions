@@ -242,17 +242,17 @@ public class ActionItems extends Action {
 
     private boolean removeItemInHand(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        return removeItem(context, search, context.getPlayer().getInventory().getItemInMainHand(), !params.containsAny("amount"));
+        return removeItem(context, search, context.getPlayer().getInventory().getItemInMainHand(), !params.contains("amount"));
     }
 
     private boolean removeItemInOffHand(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        return removeItem(context, search, context.getPlayer().getInventory().getItemInOffHand(), !params.containsAny("amount"));
+        return removeItem(context, search, context.getPlayer().getInventory().getItemInOffHand(), !params.contains("amount"));
     }
 
     private boolean removeItemInInventory(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        boolean all = !params.containsAny("amount");
+        boolean all = !params.contains("amount");
         int remCount = search.getAmount();
         for (ItemStack item : context.getPlayer().getInventory()) {
             if (removeItem(context, search, item, all) && !all) {

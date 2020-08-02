@@ -267,7 +267,7 @@ public class StoragesManager {
 
         final Set<Player> target = new HashSet<>();
 
-        if (param.containsEvery("player")) {
+        if (param.contains("player")) {
             target.addAll(SelectorsManager.getPlayerList(Parameters.fromString(param.getString("player"), "player")));
         }
         target.addAll(SelectorsManager.getPlayerList(param));   // Оставляем для совместимости со старым вариантом

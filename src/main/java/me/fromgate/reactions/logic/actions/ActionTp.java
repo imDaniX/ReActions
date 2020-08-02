@@ -48,7 +48,7 @@ public class ActionTp extends Action {
         int radius = 0;
         if (params.isEmpty()) return null;
         if (params.contains("loc")) {
-            loc = LocationUtils.parseLocation(params.getString("loc", ""), player.getLocation());
+            loc = LocationUtils.parseLocation(params.getString("loc"), player.getLocation());
             radius = params.getInteger("radius", 0);
         } else {
             loc = LocationUtils.parseLocation(params.toString(), player.getLocation());
@@ -70,7 +70,7 @@ public class ActionTp extends Action {
             Teleporter.teleport(player, loc);
             String playeffect = params.getString("effect", "");
             if (!playeffect.isEmpty()) {
-                if (playeffect.equalsIgnoreCase("smoke") && (!params.containsEvery("wind"))) params.put("wind", "all");
+                if (playeffect.equalsIgnoreCase("smoke") && (!params.contains("wind"))) params.put("wind", "all");
             }
         }
         return loc;

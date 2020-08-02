@@ -59,11 +59,11 @@ public class CommandActivator extends Activator {
         command = command == null ? "unknown" : command;
         this.command = command;
         Parameters cmdParams = Parameters.fromString(command);
-        if (cmdParams.containsAny("cmd")) {
+        if (cmdParams.contains("cmd")) {
             this.args = new ArrayList<>();
             this.args.add(cmdParams.getString("cmd"));
             int i = 1;
-            while (cmdParams.containsAny("arg" + i))
+            while (cmdParams.contains("arg" + i))
                 this.args.add(cmdParams.getString("arg" + i));
             this.checkExact = false;
             this.pattern = null;

@@ -58,7 +58,7 @@ public class MobSpawn {
     public void mobSpawn(Player p, Parameters params) {
         String mob = params.getString("type", "").toUpperCase(Locale.ENGLISH);
         if (mob.isEmpty()) {
-            Msg.logMessage("Failed to spawn mob: " + params.getString("param-line"));
+            Msg.logMessage("Failed to spawn mob: " + params.toString());
             return;
         }
         String locationStr = params.getString("loc", "");
