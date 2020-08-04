@@ -22,19 +22,17 @@
 
 package me.fromgate.reactions.activators.actions;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
+@AllArgsConstructor
 public class ActionDelay extends Action {
 
     private final boolean globalDelay;
-
-    public ActionDelay(boolean globalDelay) {
-        this.globalDelay = globalDelay;
-    }
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

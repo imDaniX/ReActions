@@ -22,17 +22,15 @@
 
 package me.fromgate.reactions.activators.flags;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.SQLManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 
+@AllArgsConstructor
 public class FlagSQL implements Flag {
     // TODO: Make it safer
     private final boolean check;
-
-    public FlagSQL(boolean check) {
-        this.check = check;
-    }
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.activators.actions;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.activators.ItemStoragesManager;
 import me.fromgate.reactions.util.Utils;
@@ -40,14 +41,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+@AllArgsConstructor
 public class ActionItems extends Action {
     // TODO: Optimization
-
     private final ItemActionType actionType;
-
-    public ActionItems(ItemActionType actionType) {
-        this.actionType = actionType;
-    }
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

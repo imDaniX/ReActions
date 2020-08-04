@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.activators.actions;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.SQLManager;
 import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.data.RaContext;
@@ -30,13 +31,10 @@ import me.fromgate.reactions.util.parameter.Parameters;
 
 import java.util.Locale;
 
+@AllArgsConstructor
 public class ActionSql extends Action {
     // TODO: More functionality like working with arrays
     private final Type sqlType;
-
-    public ActionSql(Type sqlType) {
-        this.sqlType = sqlType;
-    }
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

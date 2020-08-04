@@ -22,18 +22,16 @@
 
 package me.fromgate.reactions.activators.flags;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 
+@AllArgsConstructor
 public class FlagRegion implements Flag {
 
     private Type flagType;
-
-    public FlagRegion(Type flagType) {
-        this.flagType = flagType;
-    }
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

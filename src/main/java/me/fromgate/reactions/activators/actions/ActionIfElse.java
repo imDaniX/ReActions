@@ -22,8 +22,7 @@ import java.util.Map;
  */
 public class ActionIfElse extends Action {
     // TODO: Maybe use some custom evaluator instead of freaking JS engine?
-    private static final ScriptEngineManager factory = new ScriptEngineManager();
-    private static final ScriptEngine engine = factory.getEngineByName("JavaScript");
+    private static final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
     private static boolean executeActivator(Player p, String condition, String paramStr) {
         Parameters param = Parameters.fromString(paramStr);

@@ -23,14 +23,12 @@
 package me.fromgate.reactions.activators.flags;
 
 import me.fromgate.reactions.util.data.RaContext;
-import org.bukkit.entity.Player;
 
 public class FlagPerm implements Flag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
-        Player player = context.getPlayer();
-        return player.hasPermission(param);
+        return context.getPlayer().hasPermission(param);
     }
 
 }

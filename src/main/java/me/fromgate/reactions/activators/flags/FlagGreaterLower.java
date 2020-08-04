@@ -1,17 +1,15 @@
 package me.fromgate.reactions.activators.flags;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 
 /**
  * Created by MaxDikiy on 10/1/2017.
  */
+@AllArgsConstructor
 public class FlagGreaterLower implements Flag {
     private final boolean greater;
-
-    public FlagGreaterLower(boolean greater) {
-        this.greater = greater;
-    }
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

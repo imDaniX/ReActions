@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.activators.flags;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
@@ -32,12 +33,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Locale;
 
+@AllArgsConstructor
 public class FlagItem implements Flag {
     private final Type flagType;
-
-    public FlagItem(Type flagType) {
-        this.flagType = flagType;
-    }
 
     @Override
     public boolean checkFlag(RaContext context, String itemStr) {

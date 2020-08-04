@@ -22,19 +22,16 @@
 
 package me.fromgate.reactions.activators.flags;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
+@AllArgsConstructor
 public class FlagVar implements Flag {
     private final Type flagType;
     private final boolean personalVar;
-
-    public FlagVar(Type flagType, boolean personalVar) {
-        this.flagType = flagType;
-        this.personalVar = personalVar;
-    }
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

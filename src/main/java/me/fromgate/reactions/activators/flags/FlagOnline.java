@@ -25,13 +25,11 @@ package me.fromgate.reactions.activators.flags;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class FlagOnline implements Flag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
-        Player player = context.getPlayer();
         return NumberUtils.isNonzeroInteger(param) && Integer.parseInt(param) <= Bukkit.getOnlinePlayers().size();
     }
 

@@ -22,18 +22,17 @@
 
 package me.fromgate.reactions.activators.flags;
 
+import lombok.AllArgsConstructor;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
+@AllArgsConstructor
 public class FlagDelay implements Flag {
-    private final boolean globalDelay;
 
-    public FlagDelay(boolean globalDelay) {
-        this.globalDelay = globalDelay;
-    }
+    private final boolean globalDelay;
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
