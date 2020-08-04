@@ -353,7 +353,6 @@ public class BukkitListener implements Listener {
         LivingEntity le = (LivingEntity) event.getEntity();
         if (!le.hasMetadata("ReActions-cry")) return;
         String cry = le.getMetadata("ReActions-cry").get(0).asString();
-        if (cry == null) return;
         if (cry.isEmpty()) return;
         if (!(event instanceof EntityDamageByEntityEvent)) return;
         EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
@@ -396,7 +395,6 @@ public class BukkitListener implements Listener {
         if (event.getAction() != Action.LEFT_CLICK_BLOCK && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (!BlockUtils.isSign(event.getClickedBlock())) return;
         Sign sign = (Sign) event.getClickedBlock().getState();
-        if (sign == null) return;
         if (StoragesManager.raiseSignActivator(event.getPlayer(), sign.getLines(), event.getClickedBlock().getLocation(), event.getAction() == Action.LEFT_CLICK_BLOCK))
             event.setCancelled(true);
     }
