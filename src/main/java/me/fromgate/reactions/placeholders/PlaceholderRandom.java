@@ -19,7 +19,7 @@ public class PlaceholderRandom implements Placeholder.Prefixed {
             return Integer.toString(Rng.nextInt(Integer.parseInt(param)));
 
         if (NumberUtils.INT_MIN_MAX.matcher(param).matches())
-            return Integer.toString(Rng.nextIntFromString(param));
+            return Integer.toString(Rng.nextIntRanged(param));
 
         if (WORD_LIST.matcher(param).matches()) {
             String[] ln = param.split(",");

@@ -499,7 +499,7 @@ public class ItemUtils {
             if (eType.contains(":")) {
                 String powerStr = eType.substring(eType.indexOf(":") + 1);
                 eType = eType.substring(0, eType.indexOf(":"));
-                power = Rng.nextIntFromString(powerStr);
+                power = Rng.nextIntRanged(powerStr);
             }
             Enchantment enchantment = getEnchantmentByName(eType);
             if (enchantment == null)
@@ -542,7 +542,7 @@ public class ItemUtils {
         String[] si = iStr.split("\\*");
         if (si.length > 0) {
             if (si.length == 2)
-                amount = Math.max(Rng.nextIntFromString(si[1]), 1);
+                amount = Math.max(Rng.nextIntRanged(si[1]), 1);
             String[] ti = si[0].split(":");
             if (ti.length > 0) {
                 Material m = Material.getMaterial(ti[0].toUpperCase(Locale.ENGLISH));
@@ -573,7 +573,7 @@ public class ItemUtils {
                             int level = 1;
                             if (ec.contains(":")) {
                                 ench = ec.substring(0, ec.indexOf(":"));
-                                level = Math.max(1, Rng.nextIntFromString(ec.substring(ench
+                                level = Math.max(1, Rng.nextIntRanged(ec.substring(ench
                                         .length() + 1)));
                             }
                             Enchantment e = ItemUtils.getEnchantmentByName(ench);

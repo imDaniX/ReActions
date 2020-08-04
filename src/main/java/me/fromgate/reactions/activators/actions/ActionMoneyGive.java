@@ -57,10 +57,10 @@ public class ActionMoneyGive extends Action {
         if (mstr.contains("/")) {
             String[] m = mstr.split("/");
             if (m.length >= 2) {
-                newParams.put("amount", m[0].contains("-") ? Integer.toString(Rng.nextIntFromString(m[0])) : m[0]);
+                newParams.put("amount", m[0].contains("-") ? Integer.toString(Rng.nextIntRanged(m[0])) : m[0]);
                 newParams.put("sourse", m[1]);
             }
-        } else newParams.put("amount", mstr.contains("-") ? Integer.toString(Rng.nextIntFromString(mstr)) : mstr);
+        } else newParams.put("amount", mstr.contains("-") ? Integer.toString(Rng.nextIntRanged(mstr)) : mstr);
         return Parameters.fromMap(newParams);
     }
 }

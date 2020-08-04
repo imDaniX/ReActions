@@ -58,7 +58,7 @@ public class Shoot {
         int distance = params.getInteger("distance", 100);
         float knockbackTarget = params.getInteger("knockbackTarget", 0);
         for (LivingEntity le : getEntityBeam(shooter, getBeam(shooter, distance), onehit)) {
-            double damage = (double) Rng.nextIntFromString(params.getString("damage", "1"));
+            double damage = (double) Rng.nextIntRanged(params.getString("damage", "1"));
             boolean shoot = true;
             if (damage > 0) {
                 shoot = damageEntity(shooter, le, damage, knockbackTarget);

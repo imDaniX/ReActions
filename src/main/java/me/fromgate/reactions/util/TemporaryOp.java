@@ -12,16 +12,16 @@ import java.util.UUID;
 @UtilityClass
 public class TemporaryOp {
 
-    private Set<UUID> tempOps = new HashSet<>();
+    private final Set<UUID> tempOps = new HashSet<>();
 
-    public void setTempOp(CommandSender sender) {
+    public void setOp(CommandSender sender) {
         if (sender instanceof Player && !sender.isOp()) {
             tempOps.add(((Player) sender).getUniqueId());
             sender.setOp(true);
         }
     }
 
-    public void removeTempOp(CommandSender sender) {
+    public void removeOp(CommandSender sender) {
         if (sender instanceof Player && tempOps.remove(((Player) sender).getUniqueId()))
             sender.setOp(false);
     }

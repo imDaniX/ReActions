@@ -41,9 +41,9 @@ public class ActionCommand extends Action {
     private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
         Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> {
             if (setOp) {
-                TemporaryOp.setTempOp(sender);
+                TemporaryOp.setOp(sender);
                 Bukkit.getServer().dispatchCommand(sender, commandLine);
-                TemporaryOp.removeTempOp(sender);
+                TemporaryOp.removeOp(sender);
             } else Bukkit.getServer().dispatchCommand(sender, commandLine);
         });
     }
@@ -67,11 +67,13 @@ public class ActionCommand extends Action {
                 commandLine = commandLine.replaceFirst("/", "");
                 player.chat("/" + commandLine);
                 break;
+            default:
+                assert false;
         }
         return true;
     }
 
     public enum Type {
-        NORMAL, OP, CONSOLE, CHAT;
+        NORMAL, OP, CONSOLE, CHAT
     }
 }

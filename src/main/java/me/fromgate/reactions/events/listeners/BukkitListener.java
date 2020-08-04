@@ -255,14 +255,14 @@ public class BukkitListener implements Listener {
         }
 
         if (event.getEntity().hasMetadata("ReActions-xp")) {
-            int xp = Rng.nextIntFromString(event.getEntity().getMetadata("ReActions-xp").get(0).asString());
+            int xp = Rng.nextIntRanged(event.getEntity().getMetadata("ReActions-xp").get(0).asString());
             event.setDroppedExp(xp);
         }
 
         if (event.getEntity().hasMetadata("ReActions-money")) {
             if (!RaVault.isEconomyConnected()) return;
             if (killer != null) {
-                int money = Rng.nextIntFromString(event.getEntity().getMetadata("ReActions-money").get(0).asString());
+                int money = Rng.nextIntRanged(event.getEntity().getMetadata("ReActions-money").get(0).asString());
                 RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "");
                 Msg.MSG_MOBBOUNTY.print(killer, 'e', '6', RaEconomics.format(money, ""), event.getEntity().getType().name());
             }
@@ -379,7 +379,7 @@ public class BukkitListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         WaitingManager.refreshPlayer(player);
-        TemporaryOp.removeTempOp(player);
+        TemporaryOp.removeOp(player);
         RaDebug.offPlayerDebug(player);
         MoveListener.initLocation(player);
 
@@ -460,7 +460,7 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        TemporaryOp.removeTempOp(event.getPlayer());
+        TemporaryOp.removeOp(event.getPlayer());
         event.setQuitMessage(StoragesManager.raiseQuitActivator(event));
         MoveListener.removeLocation(event.getPlayer());
     }

@@ -156,7 +156,7 @@ public class VirtualItem extends ItemStack {
             type = Material.getMaterial(itemStr.toUpperCase(Locale.ENGLISH), false);
             if (type == null)
                 type = Material.getMaterial(itemStr.toUpperCase(Locale.ENGLISH), true);
-            amount = Rng.nextIntFromString(amountStr);
+            amount = Rng.nextIntRanged(amountStr);
             if (amount == 0) return null;
         } else if (params.containsKey("type")) {
             String typeStr = params.getOrDefault("type", "");
@@ -165,15 +165,15 @@ public class VirtualItem extends ItemStack {
             return null;
         if (type == null)
             return null;
-        data = Rng.nextIntFromString(params.getOrDefault("data", "0"));
-        amount = Rng.nextIntFromString(params.getOrDefault("amount", "1"));
+        data = Rng.nextIntRanged(params.getOrDefault("data", "0"));
+        amount = Rng.nextIntRanged(params.getOrDefault("amount", "1"));
         VirtualItem vi = new VirtualItem(type, data, amount);
 
         vi.setName(params.get("name"));
         vi.setLore(params.get("lore"));
         vi.setEnchantments(params.get("enchantments"));
         vi.setBook(params.get("book-author"), params.get("book-title"), params.get("book-pages"));
-        vi.setFireworks(Rng.nextIntFromString(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
+        vi.setFireworks(Rng.nextIntRanged(params.getOrDefault("firework-power", "0")), params.get("firework-effects"));
         vi.setColor(params.get("color"));
         vi.setSkull(params.get("skull-owner"));
         vi.setPotionMeta(params.get("potion-effects"));
@@ -294,7 +294,7 @@ public class VirtualItem extends ItemStack {
                     .toUpperCase(Locale.ENGLISH));
             if (pType == null)
                 continue;
-            int amplifier = (ln.length > 1) ? Rng.nextIntFromString(ln[1]) : 0;
+            int amplifier = (ln.length > 1) ? Rng.nextIntRanged(ln[1]) : 0;
             int duration = (ln.length > 2) ? (int) (TimeUtils.parseTime(ln[2]) / 50) : Integer.MAX_VALUE;
             pm.addCustomEffect(new PotionEffect(pType, duration, amplifier, true), true);
         }

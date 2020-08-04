@@ -4,7 +4,6 @@ import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
 import me.fromgate.reactions.util.math.NumberUtils;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -12,8 +11,8 @@ import java.util.function.BiConsumer;
 import java.util.regex.Pattern;
 
 public class Parameters implements Iterable<String> {
-    private String origin;
-    private Map<String, String> params;
+    private final String origin;
+    private final Map<String, String> params;
 
     protected Parameters(String origin, Map<String, String> params) {
         this.origin = origin;
@@ -162,7 +161,7 @@ public class Parameters implements Iterable<String> {
         return true;
     }
 
-    public boolean containsAny(Collection<String> keys) {
+    public boolean containsAny(Iterable<String> keys) {
         for (String key : keys) {
             if (params.containsKey(key)) return true;
         }

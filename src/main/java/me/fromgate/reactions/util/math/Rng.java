@@ -49,7 +49,7 @@ public class Rng {
      * @param numsStr String with min-max values or just max value(e.g. "2-47", "76")
      * @return Random value
      */
-    public int nextIntFromString(String numsStr) {
+    public int nextIntRanged(String numsStr) {
         int index = numsStr.indexOf('-');
         if (index > -1) {
             int min = 0;
