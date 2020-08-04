@@ -23,6 +23,7 @@
 
 package me.fromgate.reactions.util.location;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
@@ -30,19 +31,19 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@UtilityClass
 public class Teleporter {
-    private static Map<Player, PlayerTeleportEvent> events = new HashMap<>();
+    private final Map<Player, PlayerTeleportEvent> events = new HashMap<>();
 
-    public static void startTeleport(PlayerTeleportEvent event) {
+    public void startTeleport(PlayerTeleportEvent event) {
         events.put(event.getPlayer(), event);
     }
 
-    public static void stopTeleport(Player player) {
+    public void stopTeleport(Player player) {
         events.remove(player);
     }
 
-    public static void teleport(Player player, Location location) {
+    public void teleport(Player player, Location location) {
         if (location == null) return;
         PlayerTeleportEvent event = events.get(player);
         if (event != null)

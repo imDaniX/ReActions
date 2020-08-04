@@ -1,8 +1,8 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.logic.actions.Actions;
-import me.fromgate.reactions.logic.activators.ActivatorType;
-import me.fromgate.reactions.logic.flags.Flags;
+import me.fromgate.reactions.activators.actions.Actions;
+import me.fromgate.reactions.activators.flags.Flags;
+import me.fromgate.reactions.activators.triggers.ActivatorType;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;

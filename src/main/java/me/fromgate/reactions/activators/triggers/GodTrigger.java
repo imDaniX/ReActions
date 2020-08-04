@@ -1,0 +1,77 @@
+package me.fromgate.reactions.activators.triggers;
+
+import me.fromgate.reactions.activators.storages.GodStorage;
+import me.fromgate.reactions.activators.storages.Storage;
+import me.fromgate.reactions.util.parameter.Parameters;
+import org.bukkit.configuration.ConfigurationSection;
+
+/**
+ * Created by MaxDikiy on 2017-10-28.
+ */
+public class GodTrigger extends Trigger {
+    private final GodType god;
+
+    private GodTrigger(ActivatorBase base, GodType type) {
+        super(base);
+        this.god = type;
+    }
+
+    public static GodTrigger create(ActivatorBase base, Parameters param) {
+        GodType type = GodType.getByName(param.getString("god", "ANY"));
+        return new GodTrigger(base, type);
+    }
+
+    public static GodTrigger load(ActivatorBase base, ConfigurationSection cfg) {
+        GodType type = GodType.getByName(cfg.getString("god", "ANY"));
+        return new GodTrigger(base, type);
+    }
+
+    @Override
+    public boolean proceed(Storage event) {
+        GodStorage e = (GodStorage) event;
+        return checkGod(e.isGod());
+    }
+
+    @Override
+    public void saveTrigger(ConfigurationSection cfg) {
+        cfg.set("god", god.name());
+    }
+
+    @Override
+    public ActivatorType getType() {
+        return ActivatorType.GOD;
+    }
+
+    private boolean checkGod(boolean isGod) {
+        switch (god) {
+            case ANY:
+                return true;
+            case TRUE:
+                return isGod;
+            case FALSE:
+                return !isGod;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder(super.toString());
+        sb.append(" (");
+        sb.append("god:").append(this.god.name());
+        sb.append(")");
+        return sb.toString();
+    }
+
+    private enum GodType {
+        TRUE,
+        FALSE,
+        ANY;
+
+        public static GodType getByName(String godStr) {
+            if (godStr.equalsIgnoreCase("true")) return GodType.TRUE;
+            if (godStr.equalsIgnoreCase("any")) return GodType.ANY;
+            return GodType.FALSE;
+        }
+    }
+}

@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.holders;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
@@ -38,21 +39,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@UtilityClass
 public class LocationHolder {
-    private static Map<String, Location> locs = new HashMap<>();
-    private static Map<String, TpLocation> tports = new HashMap<>();
+    private Map<String, Location> locs = new HashMap<>();
+    private Map<String, TpLocation> tports = new HashMap<>();
 
-    public static void hold(Player p, Location loc) {
+    public void hold(Player p, Location loc) {
         if (p == null) return;
         if (loc == null) loc = p.getTargetBlock(null, 100).getLocation();
         locs.put(p.getName(), loc);
     }
 
-    public static Location getHeld(Player p) {
+    public Location getHeld(Player p) {
         return locs.get(p.getName());
     }
 
-    public static void saveLocs() {
+    public void saveLocs() {
         if (tports.size() > 0) {
             File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "locations.yml");
             YamlConfiguration lcs = new YamlConfiguration();
@@ -69,7 +71,7 @@ public class LocationHolder {
         }
     }
 
-    public static void loadLocs() {
+    public void loadLocs() {
         tports.clear();
         File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "locations.yml");
         YamlConfiguration lcs = new YamlConfiguration();
@@ -84,30 +86,30 @@ public class LocationHolder {
     }
 
     @SuppressWarnings("unused")
-    public static boolean containsTpLoc(String locstr) {
+    public boolean containsTpLoc(String locstr) {
         return tports.containsKey(locstr);
     }
 
-    public static Location getTpLoc(String locstr) {
+    public Location getTpLoc(String locstr) {
         if (tports.containsKey(locstr)) return tports.get(locstr).getLocation();
         return null;
     }
 
-    public static int sizeTpLoc() {
+    public int sizeTpLoc() {
         return tports.size();
     }
 
-    public static boolean addTpLoc(String id, Location loc) {
+    public boolean addTpLoc(String id, Location loc) {
         if (Utils.isStringEmpty(id)) return false;
         tports.put(id, new TpLocation(loc));
         return true;
     }
 
-    public static boolean removeTpLoc(String id) {
+    public boolean removeTpLoc(String id) {
         return tports.remove(id) != null;
     }
 
-    public static void printLocList(CommandSender sender, int pageNum, int linesPerPage) {
+    public void printLocList(CommandSender sender, int pageNum, int linesPerPage) {
         List<String> locList = new ArrayList<>();
         for (String loc : tports.keySet()) {
             locList.add("&3" + loc + " &a" + tports.get(loc).toString());

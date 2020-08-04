@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions;
 
+import me.fromgate.reactions.activators.ActivatorsManager;
 import me.fromgate.reactions.commands.Commander;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.events.listeners.BukkitListener;
@@ -31,7 +32,6 @@ import me.fromgate.reactions.events.listeners.RaListener;
 import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.RaVault;
 import me.fromgate.reactions.holders.LocationHolder;
-import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.playerselector.SelectorsManager;

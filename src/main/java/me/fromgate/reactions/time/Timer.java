@@ -35,16 +35,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
 public class Timer {
 
-    @Getter
     @Setter
     private boolean paused;
-    @Getter
+
     private boolean ingameTimer;
-    @Getter
     private Parameters params;
-    @Getter
     private Set<String> timesIngame;
 
     private CronExpression timeServer;

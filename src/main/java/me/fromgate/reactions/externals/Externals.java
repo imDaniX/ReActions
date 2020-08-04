@@ -8,12 +8,6 @@ import org.bukkit.Bukkit;
 // TODO: Externals system looks terrible
 // Maybe external jar modules, that will be registered from folder?
 public class Externals {
-
-    private static boolean factions = false;
-
-    //разные переменные
-    private static boolean townyConnected = false;
-
     public static void init() {
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             try {
@@ -47,13 +41,4 @@ public class Externals {
 
         // TODO: Essentials support (homes, warps, native god check)
     }
-
-    public static boolean isConnectedFactions() {
-        return factions;
-    }
-
-    public static boolean isTownyConnected() {
-        return townyConnected;
-    }
-
 }

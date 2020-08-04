@@ -1,5 +1,6 @@
 package me.fromgate.reactions.util.location;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.math.NumberUtils;
@@ -17,15 +18,15 @@ import java.util.Objects;
  * Location class, where all the coordinates can be null
  * If coordinate is null, it will be ignored in comparison
  */
+@Getter
 public class VirtualLocation {
-    @Getter
+
     private final String world;
-    @Getter
     private final Integer x;
-    @Getter
     private final Integer y;
-    @Getter
     private final Integer z;
+
+    @Getter(AccessLevel.NONE)
     private final int hash;
 
     public VirtualLocation() {

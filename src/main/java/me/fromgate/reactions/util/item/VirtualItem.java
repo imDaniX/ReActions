@@ -73,8 +73,8 @@ import java.util.regex.Pattern;
  */
 public class VirtualItem extends ItemStack {
 
-    private final static String DIVIDER = "\\n";
-    private final static Pattern AMOUNT_RANDOM = Pattern.compile("<\\d+|>\\d+|<=\\d+|>=\\d+");
+    private static final String DIVIDER = "\\n";
+    private static final Pattern AMOUNT_RANDOM = Pattern.compile("<\\d+|>\\d+|<=\\d+|>=\\d+");
 
     /**
      * Constructor Create new VirtualItem object

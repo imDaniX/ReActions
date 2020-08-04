@@ -12,7 +12,7 @@ import java.util.Map;
 @Getter
 public class RaContext {
 
-    public final static RaContext EMPTY_CONTEXT = new RaContext(":unknown", null, null, null);
+    public static final RaContext EMPTY_CONTEXT = new RaContext(":unknown", null, null, null);
 
     private final String activatorName;
     private final Player player;

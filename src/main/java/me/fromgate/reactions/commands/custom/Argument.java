@@ -16,7 +16,7 @@ import java.util.Set;
  * One part of arguments chain.
  */
 public class Argument {
-    private final static List<String> NUMBERS = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+    private static final List<String> NUMBERS = Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
 
     private final String argument;
     private final Set<String> multiple;

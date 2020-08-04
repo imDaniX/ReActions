@@ -1,9 +1,9 @@
 package me.fromgate.reactions.commands;
 
+import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.activators.triggers.ActivatorType;
+import me.fromgate.reactions.activators.triggers.Trigger;
 import me.fromgate.reactions.holders.LocationHolder;
-import me.fromgate.reactions.logic.ActivatorsManager;
-import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -76,7 +76,7 @@ public class CmdCreate extends Cmd {
             if (at.isNeedBlock()) return false;
             params = Parameters.fromString(param);
         }
-        Activator activator = at.create(name, "activators", params);
+        Trigger activator = at.create(name, "activators", params);
         if (activator == null || !activator.isValid()) {
             Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
             return true;

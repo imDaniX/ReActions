@@ -14,18 +14,13 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class VirtualInventory {
-    @Getter
-    @Setter
+
     private int size;
-    @Getter
-    @Setter
     private String title;
-    @Getter
-    @Setter
     private List<String> slots;
-    @Getter
-    @Setter
     private List<String> activators;
 
     public VirtualInventory(int size, String title) {

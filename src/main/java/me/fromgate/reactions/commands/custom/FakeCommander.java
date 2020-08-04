@@ -1,8 +1,9 @@
 package me.fromgate.reactions.commands.custom;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.ReActionsPlugin;
-import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.logic.storages.CommandStorage;
+import me.fromgate.reactions.activators.StoragesManager;
+import me.fromgate.reactions.activators.storages.CommandStorage;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import org.bukkit.Bukkit;
@@ -21,16 +22,17 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+@UtilityClass
 public class FakeCommander {
     // TODO: Use Brigadier.. somehow
-    private final static Map<String, RaCommand> commands = new HashMap<>();
+    private final Map<String, RaCommand> commands = new HashMap<>();
 
-    public static void init() {
+    public void init() {
         ReActionsPlugin.getInstance().saveResource("commands.yml", false);
         updateCommands();
     }
 
-    public static void updateCommands() {
+    public void updateCommands() {
         File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "commands.yml");
         YamlConfiguration cfg = new YamlConfiguration();
         if (!FileUtils.loadCfg(cfg, f, "Failed to load commands")) return;
@@ -50,7 +52,7 @@ public class FakeCommander {
         }
     }
 
-    private static CommandMap getCommandMap() {
+    private CommandMap getCommandMap() {
         try {
             final Field commandMapField = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             commandMapField.setAccessible(true);
@@ -61,7 +63,7 @@ public class FakeCommander {
         }
     }
 
-    public static boolean raiseRaCommand(CommandStorage storage) {
+    public boolean raiseRaCommand(CommandStorage storage) {
         RaCommand raCmd = commands.get(storage.getLabel().toLowerCase(Locale.ENGLISH));
         if (raCmd == null) return false;
         String exec = raCmd.executeCommand(storage.getSender(), storage.getArgs());
@@ -71,7 +73,7 @@ public class FakeCommander {
     }
 
     // @SuppressWarnings("unchecked")
-    private static void unregisterAll(/*CommandMap commandMap*/) {
+    private void unregisterAll(/*CommandMap commandMap*/) {
         if (commands.isEmpty()) return;
 		/*
 		TODO: Command unregister
@@ -88,7 +90,7 @@ public class FakeCommander {
         commands.clear();
     }
 
-    private static boolean register(String command, String prefix, List<String> aliases, CommandMap commandMap, RaCommand raCommand, boolean toBukkit) {
+    private boolean register(String command, String prefix, List<String> aliases, CommandMap commandMap, RaCommand raCommand, boolean toBukkit) {
         if (Utils.isStringEmpty(command)) return false;
         command = command.toLowerCase(Locale.ENGLISH);
         prefix = Utils.isStringEmpty(prefix) ? command : prefix.toLowerCase(Locale.ENGLISH);
@@ -108,11 +110,11 @@ public class FakeCommander {
         return true;
     }
 
-    private static Set<RaCommand> getCommandsSet() {
+    private Set<RaCommand> getCommandsSet() {
         return new HashSet<>(commands.values());
     }
 
-    public static List<String> list() {
+    public List<String> list() {
         List<String> list = new ArrayList<>();
         for (RaCommand cmd : getCommandsSet()) {
             List<String> sublist = cmd.list();

@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
@@ -34,20 +35,21 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+@UtilityClass
 public class SQLManager {
     // TODO: Ability to create h2/sqlite databases through config file like databases.yml
     // TODO: Make from scratch
     // TODO: HikariCP
 
-    private static boolean enabled = false;
-    private static String serverAddress;
-    private static String port;
-    private static String dataBase;
-    private static String userName;
-    private static String password;
-    private static String codepage;
+    private boolean enabled = false;
+    private String serverAddress;
+    private String port;
+    private String dataBase;
+    private String userName;
+    private String password;
+    private String codepage;
 
-    public static void init() {
+    public void init() {
         loadCfg();
         saveCfg();
         try {
@@ -59,7 +61,7 @@ public class SQLManager {
         }
     }
 
-    public static void loadCfg() {
+    public void loadCfg() {
         serverAddress = ReActionsPlugin.getInstance().getConfig().getString("MySQL.server", "localhost");
         port = ReActionsPlugin.getInstance().getConfig().getString("MySQL.port", "3306");
         dataBase = ReActionsPlugin.getInstance().getConfig().getString("MySQL.database", "ReActions");
@@ -68,7 +70,7 @@ public class SQLManager {
         codepage = ReActionsPlugin.getInstance().getConfig().getString("MySQL.codepage", "UTF-8");
     }
 
-    public static void saveCfg() {
+    public void saveCfg() {
         ReActionsPlugin.getInstance().getConfig().set("MySQL.server", serverAddress);
         ReActionsPlugin.getInstance().getConfig().set("MySQL.port", port);
         ReActionsPlugin.getInstance().getConfig().set("MySQL.database", dataBase);
@@ -78,18 +80,18 @@ public class SQLManager {
         ReActionsPlugin.getInstance().saveConfig();
     }
 
-    public static boolean compareSelect(String value, String query, int column, Parameters params, String sqlset) {
+    public boolean compareSelect(String value, String query, int column, Parameters params, String sqlset) {
         String result = executeSelect(query, column, params, sqlset);
         if (NumberUtils.isInteger(result, value)) return (Integer.parseInt(result) == Integer.parseInt(value));
         return result.equalsIgnoreCase(value);
     }
 
-    private static Connection connectToMySQL() {
+    private Connection connectToMySQL() {
         return connectToMySQL(Parameters.fromString(""));
     }
 
     // server port db user password codepage
-    private static Connection connectToMySQL(Parameters params) {
+    private Connection connectToMySQL(Parameters params) {
         String cAddress = params.getString("server", serverAddress);
         String cPort = params.getString("port", port);
         String cDataBase = params.getString("db", dataBase);
@@ -114,7 +116,7 @@ public class SQLManager {
     }
 
 
-    public static String executeSelect(String query, int column, Parameters params, String sqlset) {
+    public String executeSelect(String query, int column, Parameters params, String sqlset) {
         if (!enabled) return "";
 
         Statement selectStmt = null;
@@ -145,7 +147,7 @@ public class SQLManager {
     }
 
 
-    public static boolean executeUpdate(String query, Parameters params) {
+    public boolean executeUpdate(String query, Parameters params) {
         if (!enabled) return false;
         Connection connection = connectToMySQL(params);
         if (connection == null) return false;
@@ -170,11 +172,11 @@ public class SQLManager {
     }
 
 
-    public static boolean isEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
-    public static boolean isSelectResultEmpty(String query) {
+    public boolean isSelectResultEmpty(String query) {
         if (!enabled) return false;
         Connection connection = connectToMySQL();
         if (connection == null) return false;

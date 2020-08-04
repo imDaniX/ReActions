@@ -7,10 +7,10 @@ import org.bukkit.OfflinePlayer;
 import java.util.regex.Pattern;
 
 public class RaPapiExpansion extends PlaceholderExpansion {
-    private final static String IDENTIFIER = "reactions";
-    private final static String AUTHOR = "fromgate";
-    private final static String VERSION = "0.0.3";
-    private final static Pattern VARP = Pattern.compile("(?i)varp?:\\S+");
+    private static final String IDENTIFIER = "reactions";
+    private static final String AUTHOR = "fromgate";
+    private static final String VERSION = "0.0.3";
+    private static final Pattern VARP = Pattern.compile("(?i)varp?:\\S+");
 
     @Override
     public boolean persist() {

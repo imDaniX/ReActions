@@ -22,6 +22,7 @@
 
 package me.fromgate.reactions.externals;
 
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.util.message.Msg;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
@@ -34,13 +35,14 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import java.util.HashMap;
 import java.util.Map;
 
+@UtilityClass
 public class RaVault {
-    private static boolean vault_perm = false;
-    private static boolean vault_eco = false;
-    private static Permission permission = null;
-    private static Economy economy = null;
+    private boolean vault_perm = false;
+    private boolean vault_eco = false;
+    private Permission permission = null;
+    private Economy economy = null;
 
-    public static void init() {
+    public void init() {
         if (checkVault()) {
             vault_perm = setupPermissions();
             vault_eco = setupEconomy();
@@ -48,16 +50,16 @@ public class RaVault {
         }
     }
 
-    public static boolean isEconomyConnected() {
+    public boolean isEconomyConnected() {
         return vault_eco;
     }
 
-    public static boolean isPermissionConnected() {
+    public boolean isPermissionConnected() {
         return vault_perm;
     }
 
 
-    private static boolean setupPermissions() {
+    private boolean setupPermissions() {
         RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {
             permission = permissionProvider.getProvider();
@@ -65,7 +67,7 @@ public class RaVault {
         return (permission != null);
     }
 
-    private static boolean setupEconomy() {
+    private boolean setupEconomy() {
         RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
@@ -75,52 +77,52 @@ public class RaVault {
 
 
     @Deprecated
-    public static double getBalance(String account) {
+    public double getBalance(String account) {
         if (!isEconomyConnected()) return 0;
         return economy.getBalance(account);
     }
 
     @Deprecated
-    public static void withdrawPlayer(String account, double amount) {
+    public void withdrawPlayer(String account, double amount) {
         if (!isEconomyConnected()) return;
         economy.withdrawPlayer(account, amount);
     }
 
     @Deprecated
-    public static void depositPlayer(String account, double amount) {
+    public void depositPlayer(String account, double amount) {
         if (!isEconomyConnected()) return;
         economy.depositPlayer(account, amount);
     }
 
-    public static boolean playerAddGroup(Player p, String group) {
+    public boolean playerAddGroup(Player p, String group) {
         if (!isPermissionConnected()) return false;
         return permission.playerAddGroup(p, group);
     }
 
-    public static boolean playerInGroup(Player p, String group) {
+    public boolean playerInGroup(Player p, String group) {
         if (!isPermissionConnected()) return false;
         return permission.playerInGroup(p, group);
     }
 
-    public static boolean playerRemoveGroup(Player p, String group) {
+    public boolean playerRemoveGroup(Player p, String group) {
         if (!isPermissionConnected()) return false;
         return permission.playerRemoveGroup(p, group);
     }
 
-    private static boolean checkVault() {
+    private boolean checkVault() {
         Plugin vplg = Bukkit.getServer().getPluginManager().getPlugin("Vault");
         return vplg != null;
     }
 
 
     @SuppressWarnings("deprecation")
-    private static void depositAccount(String account, String worldName, double amount) {
+    private void depositAccount(String account, String worldName, double amount) {
         if (worldName.isEmpty()) economy.depositPlayer(account, amount);
         else economy.depositPlayer(account, worldName, amount);
     }
 
     @SuppressWarnings("deprecation")
-    private static void withdrawAccount(String account, String worldName, double amount) {
+    private void withdrawAccount(String account, String worldName, double amount) {
         if (worldName.isEmpty()) economy.withdrawPlayer(account, amount);
         else economy.withdrawPlayer(account, worldName, amount);
     }
@@ -130,7 +132,7 @@ public class RaVault {
      * New method
      */
     @SuppressWarnings("deprecation")
-    public static boolean hasMoney(String account, String worldName, double amount) {
+    public boolean hasMoney(String account, String worldName, double amount) {
         if (!RaVault.isEconomyConnected()) return false;
         if (worldName.isEmpty()) return economy.has(account, amount);
         if (Bukkit.getWorld(worldName) == null) return false;
@@ -138,7 +140,7 @@ public class RaVault {
     }
 
 
-    public static boolean creditAccount(String target, String source, double amount, String worldName) {
+    public boolean creditAccount(String target, String source, double amount, String worldName) {
         if (!RaVault.isEconomyConnected()) return false;
         if (!source.isEmpty()) {
             if (hasMoney(source, worldName, amount)) return false;
@@ -148,7 +150,7 @@ public class RaVault {
         return true;
     }
 
-    public static boolean debitAccount(String accountFrom, String accountTo, double amount, String worldName) {
+    public boolean debitAccount(String accountFrom, String accountTo, double amount, String worldName) {
         if (!RaVault.isEconomyConnected()) return false;
         if (!hasMoney(accountFrom, worldName, amount)) return false;
         withdrawAccount(accountFrom, worldName, amount);
@@ -159,20 +161,20 @@ public class RaVault {
     /*
      * worldName ignored. Vault is not supporting formatting for world's vau
      */
-    public static String format(double amount, String worldName) {
+    public String format(double amount, String worldName) {
         if (!isEconomyConnected()) return Double.toString(amount);
         if (worldName.equalsIgnoreCase(Bukkit.getWorlds().get(0).getName())) return Double.toString(amount);
         return economy.format(amount);
     }
 
     @Deprecated
-    public static String formatMoney(String value) {
+    public String formatMoney(String value) {
         if (!isEconomyConnected()) return value;
         return economy.format(Double.parseDouble(value)); // Integer???
     }
 
     @SuppressWarnings("deprecation")
-    public static Map<String, String> getAllBalances(String name) {
+    public Map<String, String> getAllBalances(String name) {
         Map<String, String> bals = new HashMap<>();
         for (World world : Bukkit.getWorlds()) {
             String key = "money." + world.getName();

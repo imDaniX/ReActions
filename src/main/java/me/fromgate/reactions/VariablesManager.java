@@ -23,7 +23,7 @@
 package me.fromgate.reactions;
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.activators.StoragesManager;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.CaseInsensitiveMap;

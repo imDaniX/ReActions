@@ -1,15 +1,17 @@
 package me.fromgate.reactions.externals.placeholderapi;
 
+import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+@UtilityClass
 public class RaPlaceholderAPI {
 
-    private static boolean enabled = false;
+    private boolean enabled = false;
 
-    public static void init() {
+    public void init() {
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             enabled = true;
             new RaPapiExpansion().register();
@@ -17,7 +19,7 @@ public class RaPlaceholderAPI {
         }
     }
 
-    public static String processPlaceholder(Player player, String text) {
+    public String processPlaceholder(Player player, String text) {
         return enabled ? PlaceholderAPI.setPlaceholders(player, text) : text;
     }
 }

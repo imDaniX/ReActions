@@ -6,7 +6,7 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class Cmd {
+public abstract class Cmd {
 
     @Getter
     private String command;

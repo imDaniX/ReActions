@@ -1,11 +1,8 @@
 package me.fromgate.reactions.externals.worldedit;
 
-import com.sk89q.minecraft.util.commands.CommandException;
 import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.LocalConfiguration;
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
@@ -15,6 +12,7 @@ import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,15 +23,16 @@ import org.bukkit.plugin.Plugin;
  * Created by MaxDikiy on 9/10/2017.
  */
 
+@UtilityClass
 public class RaWorldEdit {
-    private static boolean connected = false;
-    private static WorldEditPlugin worldedit = null;
+    private boolean connected = false;
+    private WorldEditPlugin worldedit = null;
 
-    public static boolean isConnected() {
+    public boolean isConnected() {
         return connected;
     }
 
-    public static void init() {
+    public void init() {
         try {
             Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
             worldedit = (WorldEditPlugin) plugin;
@@ -45,11 +44,11 @@ public class RaWorldEdit {
         }
     }
 
-    public static LocalSession getSession(Player player) {
+    public LocalSession getSession(Player player) {
         return worldedit.getSession(player);
     }
 
-    public static org.bukkit.util.Vector getMinimumPoint(Player player) {
+    public org.bukkit.util.Vector getMinimumPoint(Player player) {
         if (isConnected()) return null;
         Region r = null;
         try {
@@ -61,7 +60,7 @@ public class RaWorldEdit {
         return new org.bukkit.util.Vector(v.getX(), v.getY(), v.getZ());
     }
 
-    public static org.bukkit.util.Vector getMaximumPoint(Player player) {
+    public org.bukkit.util.Vector getMaximumPoint(Player player) {
         if (isConnected()) return null;
         Region r = null;
         try {
@@ -73,19 +72,19 @@ public class RaWorldEdit {
         return new org.bukkit.util.Vector(v.getX(), v.getY(), v.getZ());
     }
 
-    public static Region getRegion(Player player) throws IncompleteRegionException {
+    public Region getRegion(Player player) throws IncompleteRegionException {
         RegionSelector rs = getRegionSelector(player);
         if (rs == null) return null;
         return rs.getRegion();
     }
 
-    public static RegionSelector getRegionSelector(Player player) {
+    public RegionSelector getRegionSelector(Player player) {
         LocalSession session = worldedit.getSession(player);
         if (session == null) return null;
         return session.getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
     }
 
-    public static Region getSelection(Player player) {
+    public Region getSelection(Player player) {
         LocalSession session = worldedit.getSession(player);
         if (session == null) return null;
         try {
@@ -95,25 +94,22 @@ public class RaWorldEdit {
         }
     }
 
-    public static boolean hasSuperPickAxe(Player player) {
+    public boolean hasSuperPickAxe(Player player) {
         return isConnected() && getSession(player).hasSuperPickAxe();
     }
 
-    public static boolean isToolControl(Player player) {
+    @SuppressWarnings("deprecation")
+    public boolean isToolControl(Player player) {
         return isConnected() && getSession(player).isToolControlEnabled();
     }
 
-    public static int getArea(Player player) {
+    public int getArea(Player player) {
         Region selection = getSelection(player);
         if (selection == null) return 0;
         return selection.getArea();
     }
 
-    public static BukkitPlayer getBukkitPlayer(Player player) {
-        return worldedit.wrapPlayer(player);
-    }
-
-    public static ProtectedRegion checkRegionFromSelection(Player player, String id) throws CommandException {
+    public ProtectedRegion checkRegionFromSelection(Player player, String id) {
         Region selection = getSelection(player);
         // Detect the type of region from WorldEdit
         if (selection instanceof Polygonal2DRegion) {
@@ -130,9 +126,4 @@ public class RaWorldEdit {
             return null;
         }
     }
-
-    public LocalConfiguration getLocalConfiguration() {
-        return worldedit.getLocalConfiguration();
-    }
-
 }

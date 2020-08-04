@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
 @Alias({"rnd", "rng"})
 public class PlaceholderRandom implements Placeholder.Prefixed {
 
-    private final static Pattern WORD_LIST = Pattern.compile("[\\S,]*[\\S]");
+    private static final Pattern WORD_LIST = Pattern.compile("[\\S,]*[\\S]");
 
     @Override
     public String processPlaceholder(RaContext context, String key, String param) {

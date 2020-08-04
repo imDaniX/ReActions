@@ -2,7 +2,7 @@ package me.fromgate.reactions.events.listeners;
 
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActionsPlugin;
-import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.activators.StoragesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;

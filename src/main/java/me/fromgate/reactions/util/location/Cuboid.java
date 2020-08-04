@@ -4,20 +4,15 @@ import lombok.Getter;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Location;
 
+@Getter
 public class Cuboid {
-    @Getter
+
     private final String world;
-    @Getter
     private final int xMin;
-    @Getter
     private final int xMax;
-    @Getter
     private final int zMin;
-    @Getter
     private final int zMax;
-    @Getter
     private final Integer yMin;
-    @Getter
     private final Integer yMax;
 
     public Cuboid(Location loc1, Location loc2) {

@@ -22,8 +22,9 @@
 
 package me.fromgate.reactions.util.location;
 
-import me.fromgate.reactions.logic.ActivatorsManager;
-import me.fromgate.reactions.logic.storages.RespawnStorage;
+import lombok.experimental.UtilityClass;
+import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.activators.storages.RespawnStorage;
 import me.fromgate.reactions.util.enums.DeathCause;
 import me.fromgate.reactions.util.mob.EntityUtils;
 import org.bukkit.Location;
@@ -37,22 +38,23 @@ import java.util.Map;
 import java.util.UUID;
 
 // TODO: Move to LocationHolder
+@UtilityClass
 public class PlayerRespawner {
-    private static Map<UUID, LivingEntity> players = new HashMap<>();
-    private static Map<UUID, Location> deathPoints = new HashMap<>();
+    private Map<UUID, LivingEntity> players = new HashMap<>();
+    private Map<UUID, Location> deathPoints = new HashMap<>();
 
-    public static void addPlayerRespawn(PlayerDeathEvent event) {
+    public void addPlayerRespawn(PlayerDeathEvent event) {
         Player deadPlayer = event.getEntity();
         deathPoints.put(deadPlayer.getUniqueId(), deadPlayer.getLocation());  // это может пригодиться и в других ситуациях
         LivingEntity killer = EntityUtils.getAnyKiller(deadPlayer.getLastDamageCause());
         players.put(deadPlayer.getUniqueId(), killer);
     }
 
-    public static Location getLastDeathPoint(Player player) {
+    public Location getLastDeathPoint(Player player) {
         return deathPoints.getOrDefault(player.getUniqueId(), player.getLocation());
     }
 
-    public static void raisePlayerRespawnActivator(Player player, Location respawnLoc) {
+    public void raisePlayerRespawnActivator(Player player, Location respawnLoc) {
         if (!players.containsKey(player.getUniqueId())) return;
         LivingEntity killer = players.remove(player.getUniqueId());
         DeathCause d = killer == null ?

@@ -1,14 +1,17 @@
 package me.fromgate.reactions.util.math;
 
+import lombok.experimental.UtilityClass;
+
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+@UtilityClass
 public class MathBase {
-    private static final Map<String, Function> functions = new HashMap<>();
-    private static final Map<String, Double> constants = new HashMap<>();
+    private final Map<String, Function> functions = new HashMap<>();
+    private final Map<String, Double> constants = new HashMap<>();
 
-    static {
+    {
         for (DefaultFunctions func : DefaultFunctions.values())
             MathBase.registerFunction(func.name(), func);
         MathBase.registerConstant("e", Math.E);
@@ -23,10 +26,7 @@ public class MathBase {
         MathBase.registerConstant("dmin", Double.MIN_VALUE);
     }
 
-    private MathBase() {
-    }
-
-    public static boolean registerFunction(String name, Function function) {
+    public boolean registerFunction(String name, Function function) {
         name = name.toLowerCase(Locale.ENGLISH);
         if (isAllowedName(name) && !functions.containsKey(name)) {
             functions.put(name, function);
@@ -35,7 +35,7 @@ public class MathBase {
         return false;
     }
 
-    public static boolean registerConstant(String name, double value) {
+    public boolean registerConstant(String name, double value) {
         name = name.toLowerCase(Locale.ENGLISH);
         if (isAllowedName(name) && !constants.containsKey(name)) {
             constants.put(name, value);
@@ -44,24 +44,24 @@ public class MathBase {
         return false;
     }
 
-    public static Function getFunction(String name) {
+    public Function getFunction(String name) {
         return functions.get(name);
     }
 
-    public static double getConstant(String name) {
+    public double getConstant(String name) {
         Double value = constants.get(name);
         return value == null ? 0 : value;
     }
 
-    public static boolean isNumberChar(char c) {
+    public boolean isNumberChar(char c) {
         return (c >= '0' && c <= '9') || c == '.';
     }
 
-    public static boolean isWordChar(char c) {
+    public boolean isWordChar(char c) {
         return (c >= 'a' && c <= 'z');
     }
 
-    private static boolean isAllowedName(String str) {
+    private boolean isAllowedName(String str) {
         for (char c : str.toCharArray())
             if (!(isNumberChar(c) && isWordChar(c))) return false;
         return isWordChar(str.charAt(0));
