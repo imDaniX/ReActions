@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.util.location;
 
-import lombok.Getter;
+import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.Cfg;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 // TODO: Move it to LocationHolder
-@Getter
+@UtilityClass
 public class PushBack {
 
     private Map<String, Location> prevLocs1 = new HashMap<>();
