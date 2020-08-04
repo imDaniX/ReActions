@@ -24,12 +24,12 @@ package me.fromgate.reactions.externals.worldguard;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.triggers.ActivatorType;
-import me.fromgate.reactions.activators.triggers.RegionEnterTrigger;
-import me.fromgate.reactions.activators.triggers.RegionLeaveTrigger;
-import me.fromgate.reactions.activators.triggers.RegionTrigger;
-import me.fromgate.reactions.activators.triggers.Trigger;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.triggers.ActivatorType;
+import me.fromgate.reactions.logic.triggers.RegionEnterActivator;
+import me.fromgate.reactions.logic.triggers.RegionLeaveActivator;
+import me.fromgate.reactions.logic.triggers.RegionActivator;
+import me.fromgate.reactions.logic.triggers.Activator;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -50,16 +50,16 @@ public class RaWorldGuard {
 
     public static void updateRegionCache() {
         regionActivators = new HashSet<>();
-        for (Trigger a : ActivatorsManager.getInstance().getActivators(ActivatorType.REGION)) {
-            RegionTrigger r = (RegionTrigger) a;
+        for (Activator a : ActivatorsManager.getInstance().getActivators(ActivatorType.REGION)) {
+            RegionActivator r = (RegionActivator) a;
             regionActivators.add(r.getRegion());
         }
-        for (Trigger a : ActivatorsManager.getInstance().getActivators(ActivatorType.REGION_ENTER)) {
-            RegionEnterTrigger r = (RegionEnterTrigger) a;
+        for (Activator a : ActivatorsManager.getInstance().getActivators(ActivatorType.REGION_ENTER)) {
+            RegionEnterActivator r = (RegionEnterActivator) a;
             regionActivators.add(r.getRegion());
         }
-        for (Trigger a : ActivatorsManager.getInstance().getActivators(ActivatorType.REGION_LEAVE)) {
-            RegionLeaveTrigger r = (RegionLeaveTrigger) a;
+        for (Activator a : ActivatorsManager.getInstance().getActivators(ActivatorType.REGION_LEAVE)) {
+            RegionLeaveActivator r = (RegionLeaveActivator) a;
             regionActivators.add(r.getRegion());
         }
     }

@@ -23,8 +23,8 @@
 package me.fromgate.reactions.util.location;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.storages.RespawnStorage;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.storages.RespawnStorage;
 import me.fromgate.reactions.util.enums.DeathCause;
 import me.fromgate.reactions.util.mob.EntityUtils;
 import org.bukkit.Location;

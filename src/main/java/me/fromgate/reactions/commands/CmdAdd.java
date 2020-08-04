@@ -1,9 +1,9 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.actions.Actions;
-import me.fromgate.reactions.activators.flags.Flags;
-import me.fromgate.reactions.activators.triggers.Trigger;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.actions.Actions;
+import me.fromgate.reactions.logic.flags.Flags;
+import me.fromgate.reactions.logic.triggers.Activator;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
@@ -29,7 +29,7 @@ public class CmdAdd extends Cmd {
         }
         if (ActivatorsManager.getInstance().containsActivator(arg1)) {
             String param = LocationUtils.parsePlaceholders(player, arg4.toString()); // используется в addActions
-            Trigger act = ActivatorsManager.getInstance().getActivator(arg1);
+            Activator act = ActivatorsManager.getInstance().getActivator(arg1);
             switch (arg2) {
                 case "a":
                 case "action":

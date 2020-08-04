@@ -1,22 +1,22 @@
 package me.fromgate.reactions.events.listeners;
 
 import me.fromgate.reactions.ReActionsPlugin;
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.ItemStoragesManager;
-import me.fromgate.reactions.activators.StoragesManager;
-import me.fromgate.reactions.activators.storages.BlockBreakStorage;
-import me.fromgate.reactions.activators.storages.DamageStorage;
-import me.fromgate.reactions.activators.storages.DropStorage;
-import me.fromgate.reactions.activators.storages.InventoryClickStorage;
-import me.fromgate.reactions.activators.storages.MessageStorage;
-import me.fromgate.reactions.activators.storages.MobDamageStorage;
-import me.fromgate.reactions.activators.storages.PickupItemStorage;
-import me.fromgate.reactions.activators.storages.Storage;
-import me.fromgate.reactions.activators.storages.TeleportStorage;
-import me.fromgate.reactions.activators.triggers.ActivatorType;
-import me.fromgate.reactions.activators.triggers.MessageTrigger;
-import me.fromgate.reactions.activators.triggers.SignTrigger;
-import me.fromgate.reactions.activators.triggers.Trigger;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.ItemStoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.logic.storages.BlockBreakStorage;
+import me.fromgate.reactions.logic.storages.DamageStorage;
+import me.fromgate.reactions.logic.storages.DropStorage;
+import me.fromgate.reactions.logic.storages.InventoryClickStorage;
+import me.fromgate.reactions.logic.storages.MessageStorage;
+import me.fromgate.reactions.logic.storages.MobDamageStorage;
+import me.fromgate.reactions.logic.storages.PickupItemStorage;
+import me.fromgate.reactions.logic.storages.Storage;
+import me.fromgate.reactions.logic.storages.TeleportStorage;
+import me.fromgate.reactions.logic.triggers.ActivatorType;
+import me.fromgate.reactions.logic.triggers.MessageActivator;
+import me.fromgate.reactions.logic.triggers.SignActivator;
+import me.fromgate.reactions.logic.triggers.Activator;
 import me.fromgate.reactions.events.PlayerAttacksEntityEvent;
 import me.fromgate.reactions.events.PlayerPickupItemEvent;
 import me.fromgate.reactions.externals.RaEconomics;
@@ -148,7 +148,7 @@ public class BukkitListener implements Listener {
 		});*/
         try {
             Map<String, DataValue> changeables = StoragesManager.raiseMessageActivator(event.getPlayer(),
-                    MessageTrigger.Source.CHAT_INPUT,
+                    MessageActivator.Source.CHAT_INPUT,
                     event.getMessage());
             if (changeables == null) return;
             event.setMessage(changeables.get(MessageStorage.MESSAGE).asString());
@@ -174,8 +174,8 @@ public class BukkitListener implements Listener {
     // TODO: All the checks should be inside activator
     @EventHandler
     public void onSignChange(SignChangeEvent event) {
-        for (Trigger activator : ActivatorsManager.getInstance().getActivators(ActivatorType.SIGN)) {
-            SignTrigger signAct = (SignTrigger) activator;
+        for (Activator activator : ActivatorsManager.getInstance().getActivators(ActivatorType.SIGN)) {
+            SignActivator signAct = (SignActivator) activator;
             if (!signAct.checkMask(event.getLines())) continue;
             Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getBase().getName());
             event.setCancelled(true);

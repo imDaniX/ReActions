@@ -1,8 +1,8 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActionsPlugin;
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.triggers.Trigger;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.triggers.Activator;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
@@ -33,7 +33,7 @@ public class CmdCheck extends Cmd {
             for (int x = playerX - radius; x <= playerX + radius; x++) {
                 for (int y = playerY - radius; y <= playerY + radius; y++) {
                     for (int z = playerZ - radius; z <= playerZ + radius; z++) {
-                        List<Trigger> found = ActivatorsManager.getInstance().getActivatorInLocation(world, x, y, z);
+                        List<Activator> found = ActivatorsManager.getInstance().getActivatorInLocation(world, x, y, z);
                         if (found.isEmpty()) continue;
                         found.forEach(a -> total.add(a.toString()));
                     }

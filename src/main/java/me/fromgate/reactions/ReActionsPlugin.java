@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions;
 
-import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.commands.Commander;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.events.listeners.BukkitListener;

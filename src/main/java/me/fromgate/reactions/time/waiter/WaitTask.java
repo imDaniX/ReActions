@@ -2,8 +2,8 @@ package me.fromgate.reactions.time.waiter;
 
 import lombok.Getter;
 import me.fromgate.reactions.ReActionsPlugin;
-import me.fromgate.reactions.activators.actions.Actions;
-import me.fromgate.reactions.activators.actions.StoredAction;
+import me.fromgate.reactions.logic.actions.Actions;
+import me.fromgate.reactions.logic.actions.StoredAction;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;

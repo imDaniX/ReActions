@@ -1,6 +1,6 @@
 package me.fromgate.reactions.events.listeners;
 
-import me.fromgate.reactions.activators.StoragesManager;
+import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.events.PlayerMoveByBlockEvent;
 import me.fromgate.reactions.events.PlayerStayEvent;
 import org.bukkit.event.EventHandler;

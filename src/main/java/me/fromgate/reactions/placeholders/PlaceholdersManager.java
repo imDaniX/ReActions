@@ -2,7 +2,7 @@ package me.fromgate.reactions.placeholders;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.fromgate.reactions.activators.flags.Flags;
+import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;

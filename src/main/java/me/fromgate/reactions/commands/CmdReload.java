@@ -3,7 +3,7 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.VariablesManager;
-import me.fromgate.reactions.activators.ActivatorsManager;
+import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.menu.InventoryMenu;

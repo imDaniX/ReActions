@@ -1,9 +1,9 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.activators.ActivatorsManager;
-import me.fromgate.reactions.activators.flags.StoredFlag;
-import me.fromgate.reactions.activators.triggers.ActivatorBase;
-import me.fromgate.reactions.activators.triggers.Trigger;
+import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.flags.StoredFlag;
+import me.fromgate.reactions.logic.triggers.ActivatorBase;
+import me.fromgate.reactions.logic.triggers.Activator;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;
@@ -31,7 +31,7 @@ public class CmdInfo extends Cmd {
 
 
     private void printActInfo(CommandSender sender, String activatorName, String far) {
-        Trigger act = ActivatorsManager.getInstance().getActivator(activatorName);
+        Activator act = ActivatorsManager.getInstance().getActivator(activatorName);
         ActivatorBase base = act.getBase();
         boolean f;
         boolean a;

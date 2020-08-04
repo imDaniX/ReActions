@@ -2,8 +2,8 @@ package me.fromgate.reactions.commands.custom;
 
 import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.ReActionsPlugin;
-import me.fromgate.reactions.activators.StoragesManager;
-import me.fromgate.reactions.activators.storages.CommandStorage;
+import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.logic.storages.CommandStorage;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import org.bukkit.Bukkit;
