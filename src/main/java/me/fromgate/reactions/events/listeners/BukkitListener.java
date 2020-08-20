@@ -329,15 +329,13 @@ public class BukkitListener implements Listener {
             event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
             event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
         } else if (event instanceof EntityDamageByBlockEvent) {
+            source = "BLOCK";
             EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
             Block blockDamager = evdmg.getDamager();
             if(blockDamager != null) {
-                source = "BLOCK";
                 Map<String, DataValue> changeables = StoragesManager.raiseDamageByBlockActivator(evdmg, blockDamager);
                 event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
                 event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-            } else {
-                source = "OTHER";
             }
         } else {
             source = "OTHER";
