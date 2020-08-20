@@ -24,8 +24,8 @@
 package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.triggers.ActivatorType;
-import me.fromgate.reactions.logic.triggers.MessageActivator;
+import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.logic.activators.MessageActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;

@@ -2,8 +2,8 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.actions.Actions;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.flags.Flags;
-import me.fromgate.reactions.logic.triggers.Activator;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;

@@ -1,9 +1,17 @@
 package me.fromgate.reactions.events.listeners;
 
 import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.events.PlayerAttacksEntityEvent;
+import me.fromgate.reactions.events.PlayerPickupItemEvent;
+import me.fromgate.reactions.externals.RaEconomics;
+import me.fromgate.reactions.externals.RaVault;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.ItemStoragesManager;
 import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.logic.activators.Activator;
+import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.logic.activators.MessageActivator;
+import me.fromgate.reactions.logic.activators.SignActivator;
 import me.fromgate.reactions.logic.storages.BlockBreakStorage;
 import me.fromgate.reactions.logic.storages.DamageStorage;
 import me.fromgate.reactions.logic.storages.DropStorage;
@@ -13,14 +21,6 @@ import me.fromgate.reactions.logic.storages.MobDamageStorage;
 import me.fromgate.reactions.logic.storages.PickupItemStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.TeleportStorage;
-import me.fromgate.reactions.logic.triggers.ActivatorType;
-import me.fromgate.reactions.logic.triggers.MessageActivator;
-import me.fromgate.reactions.logic.triggers.SignActivator;
-import me.fromgate.reactions.logic.triggers.Activator;
-import me.fromgate.reactions.events.PlayerAttacksEntityEvent;
-import me.fromgate.reactions.events.PlayerPickupItemEvent;
-import me.fromgate.reactions.externals.RaEconomics;
-import me.fromgate.reactions.externals.RaVault;
 import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.TemporaryOp;
@@ -322,19 +322,23 @@ public class BukkitListener implements Listener {
         String source;
         if (event.getEntity().getType() != EntityType.PLAYER) return;
         if (event.getCause() == EntityDamageEvent.DamageCause.CUSTOM && Math.round(event.getDamage()) == 0) return;
-        if ((event instanceof EntityDamageByEntityEvent)) {
+        if (event instanceof EntityDamageByEntityEvent) {
             source = "ENTITY";
             EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             Map<String, DataValue> changeables = StoragesManager.raiseDamageByMobActivator(evdmg);
             event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
             event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-        } else if ((event instanceof EntityDamageByBlockEvent)) {
-            source = "BLOCK";
+        } else if (event instanceof EntityDamageByBlockEvent) {
             EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
             Block blockDamager = evdmg.getDamager();
-            Map<String, DataValue> changeables = StoragesManager.raiseDamageByBlockActivator(evdmg, blockDamager);
-            event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
-            event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
+            if(blockDamager != null) {
+                source = "BLOCK";
+                Map<String, DataValue> changeables = StoragesManager.raiseDamageByBlockActivator(evdmg, blockDamager);
+                event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
+                event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
+            } else {
+                source = "OTHER";
+            }
         } else {
             source = "OTHER";
         }

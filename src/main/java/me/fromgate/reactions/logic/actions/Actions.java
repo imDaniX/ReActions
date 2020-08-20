@@ -24,7 +24,7 @@ package me.fromgate.reactions.logic.actions;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.actions.ActionItems.ItemActionType;
-import me.fromgate.reactions.logic.triggers.ActivatorBase;
+import me.fromgate.reactions.logic.activators.ActivatorBase;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;

@@ -23,8 +23,8 @@
 package me.fromgate.reactions.util.message;
 
 import me.fromgate.reactions.logic.actions.Actions;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.flags.Flags;
-import me.fromgate.reactions.logic.triggers.ActivatorType;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
-import me.fromgate.reactions.logic.triggers.ActivatorType;
+import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.entity.LivingEntity;

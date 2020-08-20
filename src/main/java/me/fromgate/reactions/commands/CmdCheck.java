@@ -2,7 +2,7 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.ActivatorsManager;
-import me.fromgate.reactions.logic.triggers.Activator;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.Bukkit;
