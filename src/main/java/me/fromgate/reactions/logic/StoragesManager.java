@@ -413,11 +413,18 @@ public class StoragesManager {
     }
 
     public boolean raiseBlockClickActivator(PlayerInteractEvent event) {
+        if (event.getHand() != EquipmentSlot.HAND || event.getClickedBlock() == null) return false;
         boolean leftClick;
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) leftClick = false;
-        else if (event.getAction() == Action.LEFT_CLICK_BLOCK) leftClick = true;
-        else return false;
-        if (event.getHand() != EquipmentSlot.HAND) return false;
+        switch (event.getAction()) {
+            case RIGHT_CLICK_BLOCK:
+                leftClick = false;
+                break;
+            case LEFT_CLICK_BLOCK:
+                leftClick = true;
+                break;
+            default:
+                return false;
+        }
         BlockClickStorage e = new BlockClickStorage(event.getPlayer(), event.getClickedBlock(), leftClick);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();

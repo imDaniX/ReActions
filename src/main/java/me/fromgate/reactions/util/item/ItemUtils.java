@@ -149,7 +149,7 @@ public class ItemUtils {
     }
 
     public VirtualItem itemFromBlock(Block block) {
-        if (block == null) return VirtualItem.fromString("AIR");
+        if (block == null) return VirtualItem.fromString("STONE");
         return VirtualItem.fromItemStack(new ItemStack(block.getType(), 1));
     }
 
