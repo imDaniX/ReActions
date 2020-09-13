@@ -37,7 +37,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 @Getter
-public class ActivatorBase {
+public final class ActivatorBase {
     private int hash;
 
     private String name;

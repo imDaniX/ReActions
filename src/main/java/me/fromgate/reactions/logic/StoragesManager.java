@@ -70,6 +70,7 @@ import me.fromgate.reactions.logic.storages.SneakStorage;
 import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.logic.storages.TeleportStorage;
 import me.fromgate.reactions.logic.storages.VariableStorage;
+import me.fromgate.reactions.logic.storages.WeatherChangeStorage;
 import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.TimeUtils;
@@ -520,5 +521,11 @@ public class StoragesManager {
         ItemHeldStorage e = new ItemHeldStorage(player, newSlot, previousSlot);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
+    }
+
+    public boolean raiseWeatherChangeActivator(String world, boolean raining) {
+        WeatherChangeStorage storage = new WeatherChangeStorage(world, raining);
+        ActivatorsManager.getInstance().activate(storage);
+        return storage.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 }

@@ -74,6 +74,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.server.ServerCommandEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -469,6 +470,13 @@ public class BukkitListener implements Listener {
 
     @EventHandler
     public void onGameModeChange(PlayerGameModeChangeEvent event) {
-        if (StoragesManager.raiseGamemodeActivator(event.getPlayer(), event.getNewGameMode())) event.setCancelled(true);
+        if (StoragesManager.raiseGamemodeActivator(event.getPlayer(), event.getNewGameMode()))
+            event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent event) {
+        if (StoragesManager.raiseWeatherChangeActivator(event.getWorld().getName(), event.toWeatherState()))
+            event.setCancelled(true);
     }
 }

@@ -80,6 +80,7 @@ public enum ActivatorType {
     GAMEMODE("gamemode", GamemodeActivator::create, GamemodeActivator::load),
     GOD("god", GodActivator::create, GodActivator::load),
     CUBOID("cube", CuboidActivator::create, CuboidActivator::load, true),
+    WEATHER_CHANGE("weather", WeatherChangeActivator::create, WeatherChangeActivator::load),
     //PROJECTILE_HIT("projhit", ProjectileHitActivator::create, ProjectileHitActivator::load),
     /* WorldGuard */
     REGION("rg", RegionActivator::create, RegionActivator::load, true),
