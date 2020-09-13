@@ -28,7 +28,7 @@ public class WeatherChangeStorage extends Storage {
     protected Map<String, String> prepareVariables() {
         return new MapBuilder<String, String>()
                 .put("world", world)
-                .put("raining", Boolean.toString(raining))
+                .put("weather", raining ? "RAINING" : "CLEAR")
                 .build();
     }
 }
