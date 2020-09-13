@@ -33,6 +33,6 @@ public class ActionExecute extends Action {
         String id = params.getString("activator", "");
         if (id.isEmpty()) return false;
         setMessageParam(id);
-        return StoragesManager.raiseExecActivator(context.getPlayer(), params, context.getVariables());
+        return StoragesManager.triggerExec(context.getPlayer(), params, context.getVariables());
     }
 }

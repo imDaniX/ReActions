@@ -190,7 +190,7 @@ public class TimersManager {
             for (String key : timers.keySet()) {
                 Timer timer = timers.get(key);
                 if (timer.isTimeToRun()) {
-                    Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> StoragesManager.raiseExecActivator(null, timer.getParams()));
+                    Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> StoragesManager.triggerExec(null, timer.getParams()));
                 }
             }
         }, 1, 4);
@@ -201,7 +201,7 @@ public class TimersManager {
         serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActionsPlugin.getInstance(), () -> {
             for (Timer timer : getServerTimers().values()) {
                 if (timer.isTimeToRun()) {
-                    Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> StoragesManager.raiseExecActivator(null, timer.getParams()));
+                    Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> StoragesManager.triggerExec(null, timer.getParams()));
                 }
             }
         }, 1, 20);

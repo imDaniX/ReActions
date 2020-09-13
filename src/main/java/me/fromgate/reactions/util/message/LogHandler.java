@@ -33,7 +33,7 @@ public class LogHandler extends StreamHandler {
 
     @Override
     public void publish(LogRecord record) {
-        StoragesManager.raiseMessageActivator(null, MessageActivator.Source.LOG_OUTPUT, record.getMessage());
+        StoragesManager.triggerMessage(null, MessageActivator.Source.LOG_OUTPUT, record.getMessage());
         super.publish(record);
     }
 

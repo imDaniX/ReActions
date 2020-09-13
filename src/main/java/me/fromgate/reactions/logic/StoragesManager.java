@@ -117,37 +117,37 @@ import java.util.Set;
 @UtilityClass
 public class StoragesManager {
 
-    public Map<String, DataValue> raiseTeleportActivator(Player player, TeleportCause cause, Location to) {
+    public Map<String, DataValue> triggerTeleport(Player player, TeleportCause cause, Location to) {
         TeleportStorage storage = new TeleportStorage(player, cause, to);
         ActivatorsManager.getInstance().activate(storage);
         return storage.getChangeables();
     }
 
-    public boolean raisePrecommandActivator(Player player, CommandSender sender, String fullCommand) {
+    public boolean triggerPrecommand(Player player, CommandSender sender, String fullCommand) {
         CommandStorage storage = new CommandStorage(player, sender, fullCommand);
         ActivatorsManager.getInstance().activate(storage);
         return storage.getChangeables().get(Storage.CANCEL_EVENT).asBoolean() | FakeCommander.raiseRaCommand(storage);
     }
 
-    public boolean raiseMobClickActivator(Player player, LivingEntity mob) {
+    public boolean triggerMobClick(Player player, LivingEntity mob) {
         if (mob == null) return false;
         MobClickStorage e = new MobClickStorage(player, mob);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public void raiseMobKillActivator(Player player, LivingEntity mob) {
+    public void triggerMobKill(Player player, LivingEntity mob) {
         if (mob == null) return;
         MobKillStorage e = new MobKillStorage(player, mob);
         ActivatorsManager.getInstance().activate(e);
     }
 
-    public void raiseJoinActivator(Player player, boolean joinfirst) {
+    public void triggerJoin(Player player, boolean joinfirst) {
         JoinStorage e = new JoinStorage(player, joinfirst);
         ActivatorsManager.getInstance().activate(e);
     }
 
-    public boolean raiseDoorActivator(PlayerInteractEvent event) {
+    public boolean triggerDoor(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return false;
         if (!BlockUtils.isOpenable(event.getClickedBlock()) || event.getHand() != EquipmentSlot.HAND) return false;
         DoorStorage e = new DoorStorage(event.getPlayer(), BlockUtils.getBottomDoor(event.getClickedBlock()));
@@ -155,13 +155,13 @@ public class StoragesManager {
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseItemConsumeActivator(PlayerItemConsumeEvent event) {
+    public boolean triggerItemConsume(PlayerItemConsumeEvent event) {
         ItemConsumeStorage ce = new ItemConsumeStorage(event.getPlayer(), event.getItem(), event.getPlayer().getInventory().getItemInMainHand().isSimilar(event.getItem()));
         ActivatorsManager.getInstance().activate(ce);
         return ce.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseItemClickActivator(PlayerInteractEntityEvent event) {
+    public boolean triggerItemClick(PlayerInteractEntityEvent event) {
         ItemClickStorage ice;
         boolean mainHand = event.getHand() == EquipmentSlot.HAND;
         ItemStack item = mainHand ? event.getPlayer().getInventory().getItemInMainHand() : event.getPlayer().getInventory().getItemInOffHand();
@@ -171,7 +171,7 @@ public class StoragesManager {
         return ice.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseItemClickActivator(PlayerInteractEvent event) {
+    public boolean triggerItemClick(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return false;
         ItemClickStorage ice;
         boolean mainHand = event.getHand() == EquipmentSlot.HAND;
@@ -183,7 +183,7 @@ public class StoragesManager {
     }
 
 
-    public boolean raiseLeverActivator(PlayerInteractEvent event) {
+    public boolean triggerLever(PlayerInteractEvent event) {
         if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
         if (event.getHand() != EquipmentSlot.HAND) return false;
@@ -194,7 +194,7 @@ public class StoragesManager {
     }
 
     // PVP Kill Event
-    public void raisePvpKillActivator(PlayerDeathEvent event) {
+    public void triggerPvpKill(PlayerDeathEvent event) {
         Player deadplayer = event.getEntity();
         Player killer = EntityUtils.getKiller(deadplayer.getLastDamageCause());
         if (killer == null) return;
@@ -203,7 +203,7 @@ public class StoragesManager {
     }
 
     // PVP Death Event
-    public void raisePvpDeathActivator(PlayerDeathEvent event) {
+    public void triggerPvpDeath(PlayerDeathEvent event) {
         Player deadplayer = event.getEntity();
         LivingEntity killer = EntityUtils.getAnyKiller(deadplayer.getLastDamageCause());
         DeathCause ds = (killer == null) ? DeathCause.OTHER : (killer instanceof Player) ? DeathCause.PVP : DeathCause.PVE;
@@ -212,7 +212,7 @@ public class StoragesManager {
     }
 
     // Button Event
-    public boolean raiseButtonActivator(PlayerInteractEvent event) {
+    public boolean triggerButton(PlayerInteractEvent event) {
         if (!((event.getAction() == Action.RIGHT_CLICK_BLOCK) || (event.getAction() == Action.LEFT_CLICK_BLOCK)))
             return false;
         if (!Tag.BUTTONS.isTagged(event.getClickedBlock().getType())) return false;
@@ -224,7 +224,7 @@ public class StoragesManager {
         return be.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseSignActivator(Player player, String[] lines, Location loc, boolean leftClick) {
+    public boolean triggerSign(Player player, String[] lines, Location loc, boolean leftClick) {
         for (Activator act : ActivatorsManager.getInstance().getActivators(ActivatorType.SIGN)) {
             SignActivator sign = (SignActivator) act;
             if (sign.checkMask(lines)) {
@@ -238,16 +238,16 @@ public class StoragesManager {
 
     // TODO: I think all of it should be inside ActionExecute class
 
-    public boolean raiseExecActivator(CommandSender sender, String param) {
+    public boolean triggerExec(CommandSender sender, String param) {
         if (param.isEmpty()) return false;
-        return raiseExecActivator(sender, Parameters.fromString(param, "player"));
+        return triggerExec(sender, Parameters.fromString(param, "player"));
     }
 
-    public boolean raiseExecActivator(CommandSender sender, Parameters param) {
-        return raiseExecActivator(sender, param, null);
+    public boolean triggerExec(CommandSender sender, Parameters param) {
+        return triggerExec(sender, param, null);
     }
 
-    public boolean raiseExecActivator(CommandSender sender, Parameters param, Map<String, String> tempVars) {
+    public boolean triggerExec(CommandSender sender, Parameters param, Map<String, String> tempVars) {
         if (param.isEmpty()) return false;
         final Player senderPlayer = (sender instanceof Player) ? (Player) sender : null;
         final String id = param.getString("activator", param.getString("exec"));
@@ -287,7 +287,7 @@ public class StoragesManager {
         return true;
     }
 
-    public boolean raiseExecActivator(CommandSender sender, String id, Map<String, String> tempVars) {
+    public boolean triggerExec(CommandSender sender, String id, Map<String, String> tempVars) {
         final Player player = (sender instanceof Player) ? (Player) sender : null;
         Activator act = ActivatorsManager.getInstance().getActivator(id);
         if (act == null) {
@@ -304,7 +304,7 @@ public class StoragesManager {
         return true;
     }
 
-    public boolean raisePlateActivator(PlayerInteractEvent event) {
+    public boolean triggerPlate(PlayerInteractEvent event) {
         if (event.getAction() != Action.PHYSICAL) return false;
         if (!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) return false;
         PlateStorage pe = new PlateStorage(event.getPlayer(), event.getClickedBlock().getLocation());
@@ -312,11 +312,11 @@ public class StoragesManager {
         return pe.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public void raiseCuboidActivator(final Player player) {
+    public void triggerCuboid(final Player player) {
         ActivatorsManager.getInstance().activate(new CuboidStorage(player));
     }
 
-    public void raiseAllRegionActivators(final Player player, final Location to, final Location from) {
+    public void triggerAllRegions(final Player player, final Location to, final Location from) {
         if (!RaWorldGuard.isConnected()) return;
         Bukkit.getScheduler().runTaskLaterAsynchronously(ReActionsPlugin.getInstance(), () -> {
 
@@ -324,14 +324,14 @@ public class StoragesManager {
             final Set<String> regionsFrom = RaWorldGuard.getRegions(from);
 
             Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> {
-                raiseRegionActivator(player, regionsTo);
-                raiseRgEnterActivator(player, regionsTo, regionsFrom);
-                raiseRgLeaveActivator(player, regionsTo, regionsFrom);
+                triggerRegion(player, regionsTo);
+                triggerRgEnter(player, regionsTo, regionsFrom);
+                triggerRgLeave(player, regionsTo, regionsFrom);
             });
         }, 1);
     }
 
-    private void raiseRgEnterActivator(Player player, Set<String> regionTo, Set<String> regionFrom) {
+    private void triggerRgEnter(Player player, Set<String> regionTo, Set<String> regionFrom) {
         if (regionTo.isEmpty()) return;
         for (String rg : regionTo)
             if (!regionFrom.contains(rg)) {
@@ -340,7 +340,7 @@ public class StoragesManager {
             }
     }
 
-    private void raiseRgLeaveActivator(Player player, Set<String> regionTo, Set<String> regionFrom) {
+    private void triggerRgLeave(Player player, Set<String> regionTo, Set<String> regionFrom) {
         if (regionFrom.isEmpty()) return;
         for (String rg : regionFrom)
             if (!regionTo.contains(rg)) {
@@ -349,7 +349,7 @@ public class StoragesManager {
             }
     }
 
-    private void raiseRegionActivator(Player player, Set<String> to) {
+    private void triggerRegion(Player player, Set<String> to) {
         if (to.isEmpty()) return;
         for (String region : to) {
             setFutureRegionCheck(player.getName(), region, false);
@@ -380,7 +380,7 @@ public class StoragesManager {
     }
 
     // TODO: Redesign
-    public Map<String, DataValue> raiseMessageActivator(CommandSender sender, MessageActivator.Source source, String message) {
+    public Map<String, DataValue> triggerMessage(CommandSender sender, MessageActivator.Source source, String message) {
         Player player = (sender instanceof Player) ? (Player) sender : null;
         for (Activator act : ActivatorsManager.getInstance().getActivators(ActivatorType.MESSAGE)) {
             MessageActivator a = (MessageActivator) act;
@@ -393,7 +393,7 @@ public class StoragesManager {
         return null;
     }
 
-    public void raiseVariableActivator(String var, String playerName, String newValue, String prevValue) {
+    public void triggerVariable(String var, String playerName, String newValue, String prevValue) {
         if (newValue.equalsIgnoreCase(prevValue)) return;
         Player player = Utils.getPlayerExact(playerName);
         if (!playerName.isEmpty() && player == null) return;
@@ -401,19 +401,19 @@ public class StoragesManager {
         ActivatorsManager.getInstance().activate(ve);
     }
 
-    public Map<String, DataValue> raiseMobDamageActivator(Player damager, LivingEntity entity, double damage, EntityDamageEvent.DamageCause cause) {
+    public Map<String, DataValue> triggerMobDamage(Player damager, LivingEntity entity, double damage, EntityDamageEvent.DamageCause cause) {
         MobDamageStorage mde = new MobDamageStorage(entity, damager, damage, cause);
         ActivatorsManager.getInstance().activate(mde);
         return mde.getChangeables();
     }
 
-    public String raiseQuitActivator(PlayerQuitEvent event) {
+    public String triggerQuit(PlayerQuitEvent event) {
         QuitStorage qu = new QuitStorage(event.getPlayer(), event.getQuitMessage());
         ActivatorsManager.getInstance().activate(qu);
         return qu.getChangeables().get(QuitStorage.QUIT_MESSAGE).asString();
     }
 
-    public boolean raiseBlockClickActivator(PlayerInteractEvent event) {
+    public boolean triggerBlockClick(PlayerInteractEvent event) {
         if (event.getHand() != EquipmentSlot.HAND || event.getClickedBlock() == null) return false;
         boolean leftClick;
         switch (event.getAction()) {
@@ -431,7 +431,7 @@ public class StoragesManager {
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public Map<String, DataValue> raiseInventoryClickActivator(InventoryClickEvent event) {
+    public Map<String, DataValue> triggerInventoryClick(InventoryClickEvent event) {
         InventoryClickStorage e = new InventoryClickStorage((Player) event.getWhoClicked(), event.getAction(),
                 event.getClick(), event.getInventory(), event.getSlotType(),
                 event.getCurrentItem(), event.getHotbarButton(),
@@ -440,49 +440,49 @@ public class StoragesManager {
         return e.getChangeables();
     }
 
-    public Map<String, DataValue> raiseDropActivator(Player player, Item item, int pickupDelay) {
+    public Map<String, DataValue> triggerDrop(Player player, Item item, int pickupDelay) {
         DropStorage e = new DropStorage(player, item, pickupDelay);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables();
     }
 
-    public boolean raiseFlightActivator(Player player, boolean flying) {
+    public boolean triggerFlight(Player player, boolean flying) {
         FlightStorage e = new FlightStorage(player, flying);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseEntityClickActivator(Player player, Entity rightClicked) {
+    public boolean triggerEntityClick(Player player, Entity rightClicked) {
         EntityClickStorage e = new EntityClickStorage(player, rightClicked);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public Map<String, DataValue> raiseBlockBreakActivator(Player player, Block block, boolean dropItems) {
+    public Map<String, DataValue> triggerBlockBreak(Player player, Block block, boolean dropItems) {
         BlockBreakStorage e = new BlockBreakStorage(player, block, dropItems);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables();
     }
 
-    public void raiseSneakActivator(PlayerToggleSneakEvent event) {
+    public void triggerSneak(PlayerToggleSneakEvent event) {
         SneakStorage e = new SneakStorage(event.getPlayer(), event.isSneaking());
         ActivatorsManager.getInstance().activate(e);
     }
 
-    public Map<String, DataValue> raiseDamageByMobActivator(EntityDamageByEntityEvent event) {
+    public Map<String, DataValue> triggerDamageByMob(EntityDamageByEntityEvent event) {
         DamageByMobStorage dm = new DamageByMobStorage((Player) event.getEntity(), event.getDamager(), event.getDamage(), event.getCause());
         ActivatorsManager.getInstance().activate(dm);
         return dm.getChangeables();
     }
 
-    public Map<String, DataValue> raiseDamageByBlockActivator(EntityDamageByBlockEvent event, Block blockDamager) {
+    public Map<String, DataValue> triggerDamageByBlock(EntityDamageByBlockEvent event, Block blockDamager) {
         double damage = event.getDamage();
         DamageByBlockStorage db = new DamageByBlockStorage((Player) event.getEntity(), blockDamager, damage, event.getCause());
         ActivatorsManager.getInstance().activate(db);
         return db.getChangeables();
     }
 
-    public Map<String, DataValue> raiseDamageActivator(EntityDamageEvent event, String source) {
+    public Map<String, DataValue> triggerDamage(EntityDamageEvent event, String source) {
         double damage = event.getDamage();
         DamageStorage de = new DamageStorage((Player) event.getEntity(), damage, event.getCause(), source);
         ActivatorsManager.getInstance().activate(de);
@@ -490,7 +490,7 @@ public class StoragesManager {
     }
 
     // TODO
-    public void raiseProjectileHitActivator(ProjectileHitEvent event) {
+    public void triggerProjectileHit(ProjectileHitEvent event) {
         if (!(event.getEntity().getShooter() instanceof Player)) return;
         ProjectileHitStorage ph = new ProjectileHitStorage((Player) event.getEntity().getShooter(),
                 event.getEntityType(),
@@ -499,31 +499,31 @@ public class StoragesManager {
         ActivatorsManager.getInstance().activate(ph);
     }
 
-    public Map<String, DataValue> raisePickupItemActivator(Player player, Item item, int pickupDelay) {
+    public Map<String, DataValue> triggerPickupItem(Player player, Item item, int pickupDelay) {
         PickupItemStorage e = new PickupItemStorage(player, item, pickupDelay);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables();
     }
 
-    public boolean raiseGamemodeActivator(Player player, GameMode gameMode) {
+    public boolean triggerGamemode(Player player, GameMode gameMode) {
         GameModeStorage e = new GameModeStorage(player, gameMode);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseGodActivator(Player player, boolean god) {
+    public boolean triggerGod(Player player, boolean god) {
         GodStorage e = new GodStorage(player, god);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseItemHeldActivator(Player player, int newSlot, int previousSlot) {
+    public boolean triggerItemHeld(Player player, int newSlot, int previousSlot) {
         ItemHeldStorage e = new ItemHeldStorage(player, newSlot, previousSlot);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public boolean raiseWeatherChangeActivator(String world, boolean raining) {
+    public boolean triggerWeatherChange(String world, boolean raining) {
         WeatherChangeStorage storage = new WeatherChangeStorage(world, raining);
         ActivatorsManager.getInstance().activate(storage);
         return storage.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();

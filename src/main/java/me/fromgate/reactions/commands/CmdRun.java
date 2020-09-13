@@ -10,7 +10,7 @@ public class CmdRun extends Cmd {
     @Override
     public boolean execute(CommandSender sender, String[] args) {
         String param = String.join(" ", args); //sb.toString();
-        if (StoragesManager.raiseExecActivator(sender, param)) {
+        if (StoragesManager.triggerExec(sender, param)) {
             Msg.CMD_RUNPLAYER.print(sender, param);
         } else {
             Msg.CMD_RUNPLAYERFAIL.print(sender, 'c', '6', param);

@@ -46,7 +46,7 @@ import static me.fromgate.reactions.externals.worldedit.RaWorldEdit.*;
 public class WeListener {
     private static Region regionSelection = null;
 
-    public static boolean raiseChangeSelectionRegionActivator(Player player, Region selection, Region region) {
+    public static boolean triggerChangeSelectionRegion(Player player, Region selection, Region region) {
         WeSelection weSelection = new WeSelection(getRegionSelector(player).getTypeName(),
                 BukkitAdapter.adapt(player.getWorld(), selection.getMinimumPoint()),
                 BukkitAdapter.adapt(player.getWorld(), selection.getMaximumPoint()),
@@ -56,7 +56,7 @@ public class WeListener {
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
     }
 
-    public static boolean raiseWEChangeActivator(Player player, Location location, Material blockType) {
+    public static boolean triggerWEChange(Player player, Location location, Material blockType) {
         WeChangeStorage e = new WeChangeStorage(player, location, blockType);
         ActivatorsManager.getInstance().activate(e);
         return e.getChangeables().get(Storage.CANCEL_EVENT).asBoolean();
@@ -104,7 +104,7 @@ public class WeListener {
     private void checkChangeSelectionRegion(Player player, Region selection, Region region) {
         if (regionSelection == null || region != null && !region.toString().equals(regionSelection.toString())) {
             regionSelection = region.clone();
-            if (raiseChangeSelectionRegionActivator(player, selection, regionSelection)) {
+            if (triggerChangeSelectionRegion(player, selection, regionSelection)) {
                 regionSelection = null;
                 RegionSelector rs = getRegionSelector(player);
                 if (rs != null) rs.clear();

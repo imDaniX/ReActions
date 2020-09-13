@@ -127,7 +127,7 @@ public class RaProtocolLib {
                             if (jsonMessage != null) message = textToString(jsonMessage);
                         }
                         if (message.isEmpty()) return;
-                        Map<String, DataValue> changeables = StoragesManager.raiseMessageActivator(event.getPlayer(), Source.CHAT_OUTPUT, message);
+                        Map<String, DataValue> changeables = StoragesManager.triggerMessage(event.getPlayer(), Source.CHAT_OUTPUT, message);
                         if (changeables != null && changeables.get(Storage.CANCEL_EVENT).asBoolean())
                             event.setCancelled(true);
 

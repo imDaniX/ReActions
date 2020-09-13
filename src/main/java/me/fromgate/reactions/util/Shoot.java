@@ -88,7 +88,7 @@ public class Shoot {
             tempVars.put("shooter", shooter.getName());
             tempVars.put("shooterloc", LocationUtils.locationToString(shooter.getLocation()));
         }
-        StoragesManager.raiseExecActivator(shooter, param, tempVars);
+        StoragesManager.triggerExec(shooter, param, tempVars);
     }
 
     private List<Block> getBeam(LivingEntity p, int distance) {

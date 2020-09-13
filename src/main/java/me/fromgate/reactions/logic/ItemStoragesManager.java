@@ -35,7 +35,7 @@ public class ItemStoragesManager {
         Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
     }
 
-    public void raiseItemWearActivator(Player player) {
+    public void triggerItemWear(Player player) {
         final UUID playerId = player.getUniqueId();
         Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
             for (Activator iw : ActivatorsManager.getInstance().getActivators(ActivatorType.ITEM_WEAR))
@@ -43,7 +43,7 @@ public class ItemStoragesManager {
         }, 1);
     }
 
-    public void raiseItemHoldActivator(Player player) {
+    public void triggerItemHold(Player player) {
         final UUID playerId = player.getUniqueId();
         Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
             for (Activator ih : ActivatorsManager.getInstance().getActivators(ActivatorType.ITEM_HOLD))

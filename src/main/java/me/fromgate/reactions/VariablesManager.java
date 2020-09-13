@@ -65,7 +65,7 @@ public class VariablesManager {
         vars.put(varId(player, var), value);
         if (!Cfg.playerSelfVarFile) save();
         else save(player);
-        StoragesManager.raiseVariableActivator(var, player, value, prevVal);
+        StoragesManager.triggerVariable(var, player, value, prevVal);
     }
 
     public boolean clearVar(String player, String var) {
@@ -75,7 +75,7 @@ public class VariablesManager {
         vars.remove(id);
         if (!Cfg.playerSelfVarFile) save();
         else save(player);
-        StoragesManager.raiseVariableActivator(var, player, "", prevVal);
+        StoragesManager.triggerVariable(var, player, "", prevVal);
         return true;
     }
 

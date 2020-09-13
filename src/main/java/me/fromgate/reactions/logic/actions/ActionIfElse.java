@@ -32,7 +32,7 @@ public class ActionIfElse extends Action {
         param.put("player", p == null ? "null" : p.getName());
         Map<String, String> tempVars = new HashMap<>();
         tempVars.put("condition", condition);
-        StoragesManager.raiseExecActivator(p, param, tempVars);
+        StoragesManager.triggerExec(p, param, tempVars);
         return true;
     }
 

@@ -54,7 +54,7 @@ public class PlayerRespawner {
         return deathPoints.getOrDefault(player.getUniqueId(), player.getLocation());
     }
 
-    public void raisePlayerRespawnActivator(Player player, Location respawnLoc) {
+    public void triggerPlayerRespawn(Player player, Location respawnLoc) {
         if (!players.containsKey(player.getUniqueId())) return;
         LivingEntity killer = players.remove(player.getUniqueId());
         DeathCause d = killer == null ?

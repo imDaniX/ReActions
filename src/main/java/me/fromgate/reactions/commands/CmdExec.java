@@ -16,7 +16,7 @@ public class CmdExec extends Cmd {
         if (args.length == 0) return false;
         String commandLine = String.join(" ", args);
         Parameters param = Parameters.fromString(commandLine, "activator");
-        if (StoragesManager.raiseExecActivator(sender, param)) {
+        if (StoragesManager.triggerExec(sender, param)) {
             Msg.printMSG(sender, "cmd_runplayer", commandLine);
         } else Msg.printMSG(sender, "cmd_runplayerfail", 'c', '6', commandLine);
         return true;

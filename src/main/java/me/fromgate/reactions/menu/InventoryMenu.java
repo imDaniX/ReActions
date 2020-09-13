@@ -220,7 +220,7 @@ public class InventoryMenu implements Listener {
         if (activators.size() > clickedSlot) {
             String activator = activators.get(clickedSlot);
             if (!activator.isEmpty()) {
-                StoragesManager.raiseExecActivator(player, Parameters.fromString(activator, "activator"), tempvars);
+                StoragesManager.triggerExec(player, Parameters.fromString(activator, "activator"), tempvars);
             }
         }
         // TODO: Do not close menu option?
