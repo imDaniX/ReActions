@@ -19,7 +19,7 @@ import java.util.Set;
 // TODO: Split to different classes
 @Alias({"player_loc", "player_loc_eye", "player_loc_view", "player_name",
                 "player_display", "dplayer", "player_item_hand", "itemplayer", "player_inv", "invplayer",
-                "health", "player_loc_death", "deathpoint", "player_id", "uuid", "player_level", "level",
+                "health", "player_loc_death", "deathpoint", "player_id", "player_uuid", "uuid", "player_level", "level",
                 "player_held_slot", "slot"})
 public class PlaceholderPlayer implements Placeholder.Prefixed {
 
@@ -69,6 +69,7 @@ public class PlaceholderPlayer implements Placeholder.Prefixed {
             case "player_level":
             case "level":
                 return Integer.toString(player.getLevel());
+            case "player_uuid":
             case "player_id":
             case "uuid":
                 return player.getUniqueId().toString();
@@ -90,7 +91,6 @@ public class PlaceholderPlayer implements Placeholder.Prefixed {
      * @return Location of block
      */
     private Location getViewLocation(Player p, boolean solid) {
-        // Does it work ok on negative coordinates?
         return p.getTargetBlock(solid ? NON_SOLID : null, 100).getLocation().add(0.5, 0.5, 0.5);
     }
 
