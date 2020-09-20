@@ -19,7 +19,7 @@ public class PlaceholderVariable implements Placeholder.Prefixed {
                 }
 
             case "varp":
-                return VariablesManager.getInstance().getVariable(context.getPlayer(), text);
+                return VariablesManager.getInstance().getVariable(context.getPlayer().getName(), text);
 
             default:
                 return null;

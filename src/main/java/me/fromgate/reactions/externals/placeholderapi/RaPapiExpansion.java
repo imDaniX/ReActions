@@ -35,7 +35,7 @@ public class RaPapiExpansion extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String s) {
         if (VARP.matcher(s).find()) {
-            return VariablesManager.getInstance().getVariable(player.getName(), s, null);
+            return VariablesManager.getInstance().getVariable(player.getName(), s);
         }
         return "";
     }

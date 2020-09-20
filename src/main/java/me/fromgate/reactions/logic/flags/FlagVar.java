@@ -25,6 +25,7 @@ package me.fromgate.reactions.logic.flags;
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
@@ -37,34 +38,45 @@ public class FlagVar implements Flag {
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
         Parameters params = Parameters.fromString(param, "param-line");
-        String var;
+        String variableId;
         String value;
         String playerName = this.personalVar && (player != null) ? player.getName() : "";
 
 
         if (params.contains("id")) {
-            var = params.getString("id", "");
-            if (var.isEmpty()) return false;
+            variableId = params.getString("id", "");
+            if (variableId.isEmpty()) return false;
             value = params.getString("value", "");
             playerName = params.getString("player", playerName);
         } else {
             String[] ln = params.getString("param-line", "").split("/", 2);
             if (ln.length == 0) return false;
-            var = ln[0];
+            variableId = ln[0];
             value = (ln.length > 1) ? ln[1] : "";
         }
         if (playerName.isEmpty() && this.personalVar) return false;
+
+        String variable = VariablesManager.getInstance().getVariable(playerName, variableId);
+        if (variable == null)
+            return false;
+
         switch (this.flagType) {
             case EXIST: // VAR_EXIST
-                return VariablesManager.getInstance().existVar(playerName, var);
+                return true;
+
             case COMPARE: // VAR_COMPARE
-                return VariablesManager.getInstance().compareVariable(playerName, var, value);
+                if (NumberUtils.isNumber(variable, value))
+                    return Double.parseDouble(variable) == Double.parseDouble(value);
+                return variable.equalsIgnoreCase(value);
+
             case GREATER: // VAR_GREATER
-                return VariablesManager.getInstance().cmpGreaterVar(playerName, var, value);
+                return NumberUtils.isNumber(variable, value) && Double.parseDouble(variable) > Double.parseDouble(value);
+
             case LOWER: // VAR_LOWER
-                return VariablesManager.getInstance().cmpLowerVar(playerName, var, value);
+                return NumberUtils.isNumber(variable, value) && Double.parseDouble(variable) < Double.parseDouble(value);
+
             case MATCH: // VAR_MATCH
-                return VariablesManager.getInstance().matchVar(playerName, var, value);
+                return variable.matches(value);
         }
         return false;
     }

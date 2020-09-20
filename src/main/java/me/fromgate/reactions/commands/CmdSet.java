@@ -39,8 +39,8 @@ public class CmdSet extends Cmd {
         } else if (var.equalsIgnoreCase("var") || var.equalsIgnoreCase("variable") || var.equalsIgnoreCase("v")) {
             String value = params.getString("value", "");
             String player = params.getString("player", "");
-            VariablesManager.getInstance().setVar(player, id, value);
-            return Msg.CMD_VARSET.print(sender, player.isEmpty() ? id : player + "." + id, VariablesManager.getInstance().getVariable(player, id, ""));
+            VariablesManager.getInstance().setVariable(player, id, value);
+            return Msg.CMD_VARSET.print(sender, player.isEmpty() ? id : player + "." + id, VariablesManager.getInstance().getVariable(player, id));
         } else if (var.equalsIgnoreCase("menu") || var.equalsIgnoreCase("m")) {
             if (InventoryMenu.set(id, params))
                 return Msg.MSG_MENUPARAMSET.print(sender, id);

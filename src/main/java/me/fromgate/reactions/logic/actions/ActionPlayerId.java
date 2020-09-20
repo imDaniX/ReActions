@@ -32,10 +32,10 @@ public class ActionPlayerId extends Action {
 
             String varID = params.getString("varid");
             if (!Utils.isStringEmpty(varID))
-                VariablesManager.getInstance().setVar(playerParam, varID, uuid);
+                VariablesManager.getInstance().setVariable(playerParam, varID, uuid);
             String varName = params.getString("varname");
             if (!Utils.isStringEmpty(varName))
-                VariablesManager.getInstance().setVar(playerParam, varName, pName);
+                VariablesManager.getInstance().setVariable(playerParam, varName, pName);
         }
 
         context.setVariable("playerid", uuid);

@@ -27,7 +27,6 @@ import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
-import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -41,6 +40,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class VariablesManager {
+
     // TODO: Something like classes and objects that just contains variables - actually just global variables
     private final Map<String, String> vars;
 
@@ -52,87 +52,25 @@ public class VariablesManager {
         VariablesManager.instance = this;
     }
 
-    private String varId(Player player, String var) {
-        return (player == null ? "general." + var : player.getName() + "." + var);
+    public String getVariable(String player, String var) {
+        return vars.get(formatId(player, var));
     }
 
-    private String varId(String player, String var) {
-        return (player.isEmpty() ? "general." + var : player + "." + var);
-    }
-
-    public void setVar(String player, String var, String value) {
-        String prevVal = getVariable(player, var, "");
-        vars.put(varId(player, var), value);
+    public void setVariable(String player, String var, String value) {
+        String prevVal = vars.put(formatId(player, var), value);
         if (!Cfg.playerSelfVarFile) save();
         else save(player);
-        StoragesManager.triggerVariable(var, player, value, prevVal);
+        StoragesManager.triggerVariable(var, player, value, prevVal == null ? "" : prevVal);
     }
 
-    public boolean clearVar(String player, String var) {
-        String prevVal = getVariable(player, var, "");
-        String id = varId(player, var);
-        if (!vars.containsKey(id)) return false;
-        vars.remove(id);
+    public boolean removeVariable(String player, String var) {
+        String id = formatId(player, var);
+        String prevVal = vars.remove(id);
+        if (prevVal == null) return false;
         if (!Cfg.playerSelfVarFile) save();
         else save(player);
         StoragesManager.triggerVariable(var, player, "", prevVal);
         return true;
-    }
-
-    public String getVariable(String player, String var) {
-        return vars.get(varId(player, var));
-    }
-
-    public String getVariable(Player player, String var) {
-        return vars.get(varId(player, var));
-    }
-
-        public String getVariable(String player, String var, String defvar) {
-        return vars.getOrDefault(varId(player, var), defvar);
-    }
-
-    public String getVariable(Player player, String var, String defvar) {
-        return vars.getOrDefault(varId(player, var), defvar);
-    }
-
-    public boolean compareVariable(String playerName, String var, String cmpvalue) {
-        String id = varId(playerName, var);
-        if (!vars.containsKey(id)) return false;
-        String value = getVariable(playerName, var, "");
-        if (NumberUtils.isNumber(cmpvalue, value)) return (Double.parseDouble(cmpvalue) == Double.parseDouble(value));
-        return value.equalsIgnoreCase(cmpvalue);
-    }
-
-    public boolean cmpGreaterVar(String playerName, String var, String cmpvalue) {
-        String id = varId(playerName, var);
-        if (!vars.containsKey(id)) return false;
-        if (!NumberUtils.isNumber(vars.get(id), cmpvalue)) return false;
-        return Double.parseDouble(vars.get(id)) > Double.parseDouble(cmpvalue);
-    }
-
-    public boolean cmpLowerVar(String playerName, String var, String cmpvalue) {
-        String id = varId(playerName, var);
-        if (!vars.containsKey(id)) return false;
-        if (!NumberUtils.isNumber(vars.get(id), cmpvalue)) return false;
-        return Double.parseDouble(vars.get(id)) < Double.parseDouble(cmpvalue);
-    }
-
-    public boolean existVar(String playerName, String var) {
-        return (vars.containsKey(varId(playerName, var)));
-    }
-
-    public boolean incVar(String player, String var, double addValue) {
-        String id = varId(player, var);
-        if (!vars.containsKey(id)) setVar(player, var, "0");
-        String valueStr = vars.get(id);
-        if (!NumberUtils.isNumber(valueStr)) return false;
-        setVar(player, var, String.valueOf(Double.parseDouble(valueStr) + addValue));
-        return true;
-    }
-
-
-    public boolean decVar(String player, String var, double decValue) {
-        return incVar(player, var, decValue * (-1));
     }
 
     public void save() {
@@ -264,10 +202,7 @@ public class VariablesManager {
         Msg.printPage(sender, varList, Msg.MSG_VARLIST, pageNum, linesPerPage);
     }
 
-    public boolean matchVar(String playerName, String var, String value) {
-        String id = varId(playerName, var);
-        if (!vars.containsKey(id)) return false;
-        String varValue = vars.get(id);
-        return varValue.matches(value);
+    private static String formatId(String player, String var) {
+        return (player.isEmpty() ? "general" : player) + "." + var;
     }
 }

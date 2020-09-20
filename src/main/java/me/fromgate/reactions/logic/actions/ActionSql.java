@@ -50,7 +50,7 @@ public class ActionSql extends Action {
                     return false;
                 }
                 if (varName.isEmpty()) return false;
-                VariablesManager.getInstance().setVar(playerName, varName, SQLManager.executeSelect(query, column, params, context.getVariable("SQL_SET")));
+                VariablesManager.getInstance().setVariable(playerName, varName, SQLManager.executeSelect(query, column, params, context.getVariable("SQL_SET")));
                 break;
             case INSERT: // INSERT
                 query = params.getString("query", params.getString("param-line", "")).trim();

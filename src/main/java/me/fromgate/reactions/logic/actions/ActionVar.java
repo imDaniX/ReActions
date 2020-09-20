@@ -60,18 +60,34 @@ public class ActionVar extends Action {
 
         switch (this.actType) {
             case SET: //VAR_SET, VAR_PLAYER_SET
-                VariablesManager.getInstance().setVar(player, var, value);
+                VariablesManager.getInstance().setVariable(player, var, value);
                 return true;
+
             case CLEAR: //VAR_CLEAR, VAR_PLAYER_CLEAR
-                VariablesManager.getInstance().clearVar(player, var);
+                VariablesManager.getInstance().removeVariable(player, var);
                 return true;
-            case INCREASE: //VAR_INC, VAR_PLAYER_INC
-                int incValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
-                return VariablesManager.getInstance().incVar(player, var, incValue);
-            case DECREASE: //VAR_DEC, VAR_PLAYER_DEC
-                int decValue = value.isEmpty() || !(NumberUtils.isInteger(value)) ? 1 : Integer.parseInt(value);
-                return VariablesManager.getInstance().decVar(player, var, decValue);
-            case TEMPORARY_SET:  //VAR_TEMP_SET
+
+            case INCREASE: { //VAR_INC, VAR_PLAYER_INC
+                String variable = VariablesManager.getInstance().getVariable(player, var);
+                if (variable == null || !NumberUtils.isNumber(variable)) return false;
+                double variableValue = Double.parseDouble(variable);
+                variableValue += value.isEmpty() || !(NumberUtils.isNumber(value)) ? 1 : Double.parseDouble(value);
+                VariablesManager.getInstance().setVariable(player, var, Double.toString(variableValue));
+                return true;
+            }
+
+            // I'm lazy
+
+            case DECREASE: { //VAR_DEC, VAR_PLAYER_DEC
+                String variable = VariablesManager.getInstance().getVariable(player, var);
+                if (variable == null || !NumberUtils.isNumber(variable)) return false;
+                double variableValue = Double.parseDouble(variable);
+                variableValue -= value.isEmpty() || !(NumberUtils.isNumber(value)) ? 1 : Double.parseDouble(value);
+                VariablesManager.getInstance().setVariable(player, var, Double.toString(variableValue));
+                return true;
+            }
+
+            case TEMPORARY_SET: //VAR_TEMP_SET
                 context.setVariable(var, value);
                 return true;
         }
