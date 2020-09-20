@@ -6,16 +6,32 @@
 
     <groupId>me.fromgate.reactions</groupId>
     <artifactId>reactions</artifactId>
-    <version>0.13.0-SNAPSHOT</version>
+    <version>0.13.0</version>
     <packaging>jar</packaging>
 
     <name>ReActions</name>
 
     <description>Simplest scripting engine for Bukkit</description>
     <properties>
+        <buildNumber>0</buildNumber>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+            <activation>
+                <property>
+                    <name>env.GITHUB_RUN_NUMBER</name>
+                </property>
+            </activation>
+            <properties>
+                <!-- Override only if necessary -->
+                <buildNumber>${env.GITHUB_RUN_NUMBER}</buildNumber>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>ReActions</finalName>

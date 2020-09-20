@@ -1,7 +1,7 @@
 name: ReActions
 api-version: '1.13'
 main: me.fromgate.reactions.ReActionsPlugin
-version: ${project.version}
+version: ${project.version}-b${buildNumber}
 website: http://fromgate.me
 author: fromgate, fromgate@gmail.com
 softdepend: [Vault,WorldGuard,WorldEdit,ProtocolLib,PlaceholderAPI]
