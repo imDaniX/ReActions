@@ -113,7 +113,7 @@ public class BlockClickActivator extends Activator implements Locatable {
         sb.append(" (");
         sb.append("type:").append(blockType == null ? "-" : blockType);
         sb.append("; click:").append(this.click.name());
-        sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
+        sb.append("; loc:").append(blockLocation == null ? "-" : blockLocation);
         sb.append(")");
         return sb.toString();
     }

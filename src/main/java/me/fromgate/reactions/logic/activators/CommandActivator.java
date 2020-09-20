@@ -134,7 +134,7 @@ public class CommandActivator extends Activator {
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
-        sb.append("; regex:").append(this.useRegex);
+        sb.append("regex:").append(this.useRegex);
         sb.append("; command:").append(this.command);
         sb.append("; console:").append(this.consoleAllowed);
         sb.append(")");

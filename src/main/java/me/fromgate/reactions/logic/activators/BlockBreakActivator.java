@@ -85,7 +85,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");
         sb.append("block:").append(blockType == null ? "-" : blockType);
-        sb.append("; loc:").append(blockLocation.isEmpty() ? "-" : blockLocation);
+        sb.append("; loc:").append(blockLocation == null ? "-" : blockLocation);
         sb.append(")");
         return sb.toString();
     }
