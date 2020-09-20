@@ -4,11 +4,9 @@ ReActions is a plugin for craftbukkit (spigot) server. It brings to Minecraft se
 
 ## Download
 
-[**Plugin Page on BukkitDev - Download release here!**](https://dev.bukkit.org/bukkit-plugins/reactions/)
+[**Страница форка на RuBukkit**](http://rubukkit.org/threads/admin-re-reactions-prostejshij-skriptovyj-plagin-1-16.165857/)
 
-[**Страница плагина на RuBukkit**](http://rubukkit.org/threads/mech-fun-reactions-chto-togda-inache-bukkitdev.41857/)
-
-[**Latest Dev Build** ![Snapshot](https://circleci.com/gh/imDaniX/ReActions.svg?style=shield&circle-token=d08c718df862f33368968546420f940243bf3d9e)](https://circleci.com/gh/imDaniX/ReActions)
+[**Latest Dev Build** ![Snapshot](https://github.com/imDaniX/ReActions/workflows/Java%20CI/badge.svg)](https://github.com/imDaniX/ReActions/actions)
 
 ## Documentation
 

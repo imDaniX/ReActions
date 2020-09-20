@@ -1,5 +1,5 @@
 name: ReActions
-api-version: '1.13'
+api-version: '1.14'
 main: me.fromgate.reactions.ReActionsPlugin
 version: ${project.version}-b${buildNumber}
 website: http://fromgate.me
