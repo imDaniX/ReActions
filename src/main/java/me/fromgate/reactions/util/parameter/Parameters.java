@@ -22,7 +22,14 @@ public class Parameters implements Iterable<String> {
     public static Parameters fromMap(Map<String, String> map) {
         StringBuilder bld = new StringBuilder();
         Map<String, String> params = new CaseInsensitiveMap<>(map);
-        params.forEach((k, v) -> bld.append(k).append(":{").append(v).append("} "));
+        params.forEach((k, v) -> {
+            bld.append(k).append(':');
+            if (v.contains(" "))
+                bld.append('{').append(v).append('}');
+            else
+                bld.append(':').append(v);
+            bld.append(' ');
+        });
         String str = bld.toString();
         return new Parameters(str.isEmpty() ? str : str.substring(0, str.length() - 1), params);
     }
@@ -141,9 +148,9 @@ public class Parameters implements Iterable<String> {
     public boolean getBoolean(String key, boolean def) {
         String value = params.get(key);
         if(Utils.isStringEmpty(value)) return def;
-        if(key.equalsIgnoreCase("true"))
+        if(value.equalsIgnoreCase("true"))
             return true;
-        if(key.equalsIgnoreCase("false"))
+        if(value.equalsIgnoreCase("false"))
             return false;
         return def;
     }
