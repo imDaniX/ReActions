@@ -6,25 +6,25 @@ import me.fromgate.reactions.placeholders.PlaceholdersManager;
 
 @UtilityClass
 public final class ReActions {
-    private ReActions.Provider provider;
+    private Platform platform;
 
-    public void register(ReActions.Provider provider) {
-        ReActions.provider = provider;
+    public void register(Platform platform) {
+        ReActions.platform = platform;
     }
 
     public ActivatorsManager getActivators() {
-        return provider.getActivators();
+        return platform.getActivators();
     }
 
     public PlaceholdersManager getPlaceholders() {
-        return provider.getPlaceholders();
+        return platform.getPlaceholders();
     }
 
     public VariablesManager getVariables() {
-        return provider.getVariables();
+        return platform.getVariables();
     }
 
-    public interface Provider {
+    public interface Platform {
         ActivatorsManager getActivators();
         PlaceholdersManager getPlaceholders();
         VariablesManager getVariables();

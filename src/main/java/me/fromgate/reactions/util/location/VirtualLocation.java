@@ -98,6 +98,10 @@ public class VirtualLocation {
         this.hash = calcHash();
     }
 
+    public VirtualLocation adjust(int x, int y, int z) {
+        return new VirtualLocation(world, this.x + x, this.y + y, this.z + z);
+    }
+
     public int getX(int def) {
         return x == null ? def : x;
     }
@@ -114,9 +118,9 @@ public class VirtualLocation {
         World world = Bukkit.getWorld(this.world);
         return new Location(
                 world == null ? Bukkit.getWorlds().get(0) : world,
-                x == null ? 0 : x,
-                y == null ? 0 : y,
-                z == null ? 0 : z);
+                x == null ? 0 : x + 0.5,
+                y == null ? 0 : y + 0.5,
+                z == null ? 0 : z + 0.5);
     }
 
     public boolean isSimilar(Location loc) {
