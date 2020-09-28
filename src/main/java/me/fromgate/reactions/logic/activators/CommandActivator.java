@@ -61,7 +61,7 @@ public class CommandActivator extends Activator {
             this.args.add(cmdParams.getString("cmd"));
             int i = 1;
             while (cmdParams.contains("arg" + i))
-                this.args.add(cmdParams.getString("arg" + i));
+                this.args.add(cmdParams.getString("arg" + i++));
             this.checkExact = false;
             this.pattern = null;
         } else {
