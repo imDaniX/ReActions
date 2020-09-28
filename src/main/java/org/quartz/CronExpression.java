@@ -17,8 +17,6 @@
 
 package org.quartz;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -191,29 +189,28 @@ import java.util.TreeSet;
  * "0 0 14-6 ? * FRI-MON". </li>
  * </ul>
  * </p>
- *
  * @author Sharada Jambula, James House
  * @author Contributions from Mads Henderson
  * @author Refactoring from CronTrigger to CronExpression by Aaron Craven
  */
 public final class CronExpression implements Serializable, Cloneable {
 
-    private static final int MAX_YEAR = Calendar.getInstance().get(Calendar.YEAR) + 100;
-    private static final int SECOND = 0;
-    private static final int MINUTE = 1;
-    private static final int HOUR = 2;
-    private static final int DAY_OF_MONTH = 3;
-    private static final int MONTH = 4;
-    private static final int DAY_OF_WEEK = 5;
-    private static final int YEAR = 6;
-    private static final int ALL_SPEC_INT = 99; // '*'
-    private static final int NO_SPEC_INT = 98; // '?'
-    private static final Integer ALL_SPEC = ALL_SPEC_INT;
-    private static final Integer NO_SPEC = NO_SPEC_INT;
-
-    private static final Map<String, Integer> monthMap = new HashMap<>(20);
-    private static final Map<String, Integer> dayMap = new HashMap<>(60);
     private static final long serialVersionUID = 12423409423L;
+
+    protected static final int SECOND = 0;
+    protected static final int MINUTE = 1;
+    protected static final int HOUR = 2;
+    protected static final int DAY_OF_MONTH = 3;
+    protected static final int MONTH = 4;
+    protected static final int DAY_OF_WEEK = 5;
+    protected static final int YEAR = 6;
+    protected static final int ALL_SPEC_INT = 99; // '*'
+    protected static final int NO_SPEC_INT = 98; // '?'
+    protected static final Integer ALL_SPEC = ALL_SPEC_INT;
+    protected static final Integer NO_SPEC = NO_SPEC_INT;
+
+    protected static final Map<String, Integer> monthMap = new HashMap<>(20);
+    protected static final Map<String, Integer> dayMap = new HashMap<>(60);
 
     static {
         monthMap.put("JAN", 0);
@@ -239,27 +236,29 @@ public final class CronExpression implements Serializable, Cloneable {
     }
 
     private final String cronExpression;
-    private transient SortedSet<Integer> seconds;
-    private transient SortedSet<Integer> minutes;
-    private transient SortedSet<Integer> hours;
-    private transient SortedSet<Integer> daysOfMonth;
-    private transient SortedSet<Integer> months;
-    private transient SortedSet<Integer> daysOfWeek;
-    private transient SortedSet<Integer> years;
-
-    private transient boolean lastdayOfWeek = false;
-    private transient int nthdayOfWeek = 0;
-    private transient boolean lastdayOfMonth = false;
-    private transient boolean nearestWeekday = false;
-    private transient int lastdayOffset = 0;
     private TimeZone timeZone = null;
+    protected transient SortedSet<Integer> seconds;
+    protected transient SortedSet<Integer> minutes;
+    protected transient SortedSet<Integer> hours;
+    protected transient SortedSet<Integer> daysOfMonth;
+    protected transient SortedSet<Integer> months;
+    protected transient SortedSet<Integer> daysOfWeek;
+    protected transient SortedSet<Integer> years;
+
+    protected transient boolean lastdayOfWeek = false;
+    protected transient int nthdayOfWeek = 0;
+    protected transient boolean lastdayOfMonth = false;
+    protected transient boolean nearestWeekday = false;
+    protected transient int lastdayOffset = 0;
+    protected transient boolean expressionParsed = false;
+
+    public static final int MAX_YEAR = Calendar.getInstance().get(Calendar.YEAR) + 100;
 
     /**
      * Constructs a new <CODE>CronExpression</CODE> based on the specified
      * parameter.
-     *
      * @param cronExpression String representation of the cron expression the
-     *                       new object should represent
+     * new object should represent
      * @throws java.text.ParseException if the string expression cannot be parsed into a valid
      *                                  <CODE>CronExpression</CODE>
      */
@@ -268,7 +267,7 @@ public final class CronExpression implements Serializable, Cloneable {
             throw new IllegalArgumentException("cronExpression cannot be null");
         }
 
-        this.cronExpression = cronExpression.toUpperCase(Locale.ENGLISH);
+        this.cronExpression = cronExpression.toUpperCase(Locale.US);
 
         buildExpression(this.cronExpression);
     }
@@ -276,10 +275,9 @@ public final class CronExpression implements Serializable, Cloneable {
     /**
      * Constructs a new {@code CronExpression} as a copy of an existing
      * instance.
-     *
      * @param expression The existing cron expression to be copied
      */
-    private CronExpression(CronExpression expression) {
+    public CronExpression(CronExpression expression) {
         /*
          * We don't call the other constructor here since we need to swallow the
          * ParseException. We also elide some of the sanity checking as it is
@@ -300,7 +298,6 @@ public final class CronExpression implements Serializable, Cloneable {
      * Indicates whether the given date satisfies the cron expression. Note that
      * milliseconds are ignored, so two Dates falling on different milliseconds
      * of the same second will always have the same result here.
-     *
      * @param date the date to evaluate
      * @return a boolean indicating whether the given date satisfies the cron
      * expression
@@ -322,7 +319,7 @@ public final class CronExpression implements Serializable, Cloneable {
      * Returns the time zone for which this <code>CronExpression</code>
      * will be resolved.
      */
-    private TimeZone getTimeZone() {
+    public TimeZone getTimeZone() {
         if (timeZone == null) {
             timeZone = TimeZone.getDefault();
         }
@@ -334,13 +331,12 @@ public final class CronExpression implements Serializable, Cloneable {
      * Sets the time zone for which  this <code>CronExpression</code>
      * will be resolved.
      */
-    private void setTimeZone(TimeZone timeZone) {
+    public void setTimeZone(TimeZone timeZone) {
         this.timeZone = timeZone;
     }
 
     /**
      * Returns the string representation of the <CODE>CronExpression</CODE>
-     *
      * @return a string representation of the <CODE>CronExpression</CODE>
      */
     @Override
@@ -355,7 +351,9 @@ public final class CronExpression implements Serializable, Cloneable {
     //
     ////////////////////////////////////////////////////////////////////////////
 
-    private void buildExpression(String expression) throws ParseException {
+    protected void buildExpression(String expression) throws ParseException {
+        expressionParsed = true;
+
         try {
 
             if (seconds == null) {
@@ -403,7 +401,7 @@ public final class CronExpression implements Serializable, Cloneable {
                 StringTokenizer vTok = new StringTokenizer(expr, ",");
                 while (vTok.hasMoreTokens()) {
                     String v = vTok.nextToken();
-                    storeExpressionVals(v, exprOn);
+                    storeExpressionVals(0, v, exprOn);
                 }
 
                 exprOn++;
@@ -415,7 +413,7 @@ public final class CronExpression implements Serializable, Cloneable {
             }
 
             if (exprOn <= YEAR) {
-                storeExpressionVals("*", YEAR);
+                storeExpressionVals(0, "*", YEAR);
             }
 
             SortedSet<Integer> dow = getSet(DAY_OF_WEEK);
@@ -439,11 +437,13 @@ public final class CronExpression implements Serializable, Cloneable {
         }
     }
 
-    private void storeExpressionVals(String s, int type) throws ParseException {
+    protected int storeExpressionVals(int pos, String s, int type)
+            throws ParseException {
+
         int incr = 0;
-        int i = skipWhiteSpace(0, s);
+        int i = skipWhiteSpace(pos, s);
         if (i >= s.length()) {
-            return;
+            return i;
         }
         char c = s.charAt(i);
         if ((c >= 'A') && (c <= 'Z') && (!s.equals("L")) && (!s.equals("LW")) && (!s.matches("^L-[0-9]*[W]?"))) {
@@ -497,6 +497,7 @@ public final class CronExpression implements Serializable, Cloneable {
                         }
                     } else if (c == 'L') {
                         lastdayOfWeek = true;
+                        i++;
                     }
                 }
 
@@ -509,7 +510,7 @@ public final class CronExpression implements Serializable, Cloneable {
                 incr = 1;
             }
             addToSet(sval, eval, incr, type);
-            return;
+            return (i + 3);
         }
 
         if (c == '?') {
@@ -534,13 +535,13 @@ public final class CronExpression implements Serializable, Cloneable {
             }
 
             addToSet(NO_SPEC_INT, -1, 0, type);
-            return;
+            return i;
         }
 
         if (c == '*' || c == '/') {
             if (c == '*' && (i + 1) >= s.length()) {
                 addToSet(ALL_SPEC_INT, -1, incr, type);
-                return;
+                return i + 1;
             } else if (c == '/'
                     && ((i + 1) >= s.length() || s.charAt(i + 1) == ' ' || s
                     .charAt(i + 1) == '\t')) {
@@ -567,39 +568,53 @@ public final class CronExpression implements Serializable, Cloneable {
             }
 
             addToSet(ALL_SPEC_INT, -1, incr, type);
+            return i;
         } else if (c == 'L') {
             i++;
             if (type == DAY_OF_MONTH) {
                 lastdayOfMonth = true;
-                if(s.length() > i) {
-                    c = s.charAt(i);
-                    if (c == '-') {
-                        ValueSet vs = getValue(s, i + 1);
-                        lastdayOffset = vs.value;
-                        if (lastdayOffset > 30)
-                            throw new ParseException("Offset from last day must be <= 30", i + 1);
-                        i = vs.pos;
-                    }
-                    if (s.length() > i) {
-                        c = s.charAt(i);
-                        if (c == 'W') {
-                            nearestWeekday = true;
-                        }
-                    }
-                }
-            } else if (type == DAY_OF_WEEK) {
+            }
+            if (type == DAY_OF_WEEK) {
                 addToSet(7, 7, 0, type);
             }
+            if (type == DAY_OF_MONTH && s.length() > i) {
+                c = s.charAt(i);
+                if (c == '-') {
+                    ValueSet vs = getValue(0, s, i + 1);
+                    lastdayOffset = vs.value;
+                    if (lastdayOffset > 30)
+                        throw new ParseException("Offset from last day must be <= 30", i + 1);
+                    i = vs.pos;
+                }
+                if (s.length() > i) {
+                    c = s.charAt(i);
+                    if (c == 'W') {
+                        nearestWeekday = true;
+                        i++;
+                    }
+                }
+            }
+            return i;
         } else if (c >= '0' && c <= '9') {
             int val = Integer.parseInt(String.valueOf(c));
             i++;
             if (i >= s.length()) {
                 addToSet(val, -1, -1, type);
+            } else {
+                c = s.charAt(i);
+                if (c >= '0' && c <= '9') {
+                    ValueSet vs = getValue(val, s, i);
+                    val = vs.value;
+                    i = vs.pos;
+                }
+                i = checkNext(i, s, val, type);
+                return i;
             }
         } else {
             throw new ParseException("Unexpected character: " + c, i);
         }
 
+        return i;
     }
 
     private void checkIncrementRange(int incr, int type, int idxPos) throws ParseException {
@@ -616,60 +631,194 @@ public final class CronExpression implements Serializable, Cloneable {
         }
     }
 
-    private String getCronExpression() {
+    protected int checkNext(int pos, String s, int val, int type)
+            throws ParseException {
+
+        int end = -1;
+        int i = pos;
+
+        if (i >= s.length()) {
+            addToSet(val, end, -1, type);
+            return i;
+        }
+
+        char c = s.charAt(pos);
+
+        if (c == 'L') {
+            if (type == DAY_OF_WEEK) {
+                if (val < 1 || val > 7)
+                    throw new ParseException("Day-of-Week values must be between 1 and 7", -1);
+                lastdayOfWeek = true;
+            } else {
+                throw new ParseException("'L' option is not valid here. (pos=" + i + ")", i);
+            }
+            SortedSet<Integer> set = getSet(type);
+            set.add(val);
+            i++;
+            return i;
+        }
+
+        if (c == 'W') {
+            if (type == DAY_OF_MONTH) {
+                nearestWeekday = true;
+            } else {
+                throw new ParseException("'W' option is not valid here. (pos=" + i + ")", i);
+            }
+            if (val > 31)
+                throw new ParseException("The 'W' option does not make sense with values larger than 31 (max number of days in a month)", i);
+            SortedSet<Integer> set = getSet(type);
+            set.add(val);
+            i++;
+            return i;
+        }
+
+        if (c == '#') {
+            if (type != DAY_OF_WEEK) {
+                throw new ParseException("'#' option is not valid here. (pos=" + i + ")", i);
+            }
+            i++;
+            try {
+                nthdayOfWeek = Integer.parseInt(s.substring(i));
+                if (nthdayOfWeek < 1 || nthdayOfWeek > 5) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                throw new ParseException(
+                        "A numeric value between 1 and 5 must follow the '#' option",
+                        i);
+            }
+
+            SortedSet<Integer> set = getSet(type);
+            set.add(val);
+            i++;
+            return i;
+        }
+
+        if (c == '-') {
+            i++;
+            c = s.charAt(i);
+            int v = Integer.parseInt(String.valueOf(c));
+            end = v;
+            i++;
+            if (i >= s.length()) {
+                addToSet(val, end, 1, type);
+                return i;
+            }
+            c = s.charAt(i);
+            if (c >= '0' && c <= '9') {
+                ValueSet vs = getValue(v, s, i);
+                end = vs.value;
+                i = vs.pos;
+            }
+            if (i < s.length() && (s.charAt(i) == '/')) {
+                i++;
+                c = s.charAt(i);
+                int v2 = Integer.parseInt(String.valueOf(c));
+                i++;
+                if (i >= s.length()) {
+                    addToSet(val, end, v2, type);
+                    return i;
+                }
+                c = s.charAt(i);
+                if (c >= '0' && c <= '9') {
+                    ValueSet vs = getValue(v2, s, i);
+                    int v3 = vs.value;
+                    addToSet(val, end, v3, type);
+                    i = vs.pos;
+                    return i;
+                } else {
+                    addToSet(val, end, v2, type);
+                    return i;
+                }
+            } else {
+                addToSet(val, end, 1, type);
+                return i;
+            }
+        }
+
+        if (c == '/') {
+            if ((i + 1) >= s.length() || s.charAt(i + 1) == ' ' || s.charAt(i + 1) == '\t') {
+                throw new ParseException("'/' must be followed by an integer.", i);
+            }
+
+            i++;
+            c = s.charAt(i);
+            int v2 = Integer.parseInt(String.valueOf(c));
+            i++;
+            if (i >= s.length()) {
+                checkIncrementRange(v2, type, i);
+                addToSet(val, end, v2, type);
+                return i;
+            }
+            c = s.charAt(i);
+            if (c >= '0' && c <= '9') {
+                ValueSet vs = getValue(v2, s, i);
+                int v3 = vs.value;
+                checkIncrementRange(v3, type, i);
+                addToSet(val, end, v3, type);
+                i = vs.pos;
+                return i;
+            } else {
+                throw new ParseException("Unexpected character '" + c + "' after '/'", i);
+            }
+        }
+
+        addToSet(val, end, 0, type);
+        i++;
+        return i;
+    }
+
+    public String getCronExpression() {
         return cronExpression;
     }
 
-    private int skipWhiteSpace(int i, String s) {
-        for (; i < s.length() && (s.charAt(i) == ' ' || s.charAt(i) == '\t');) i++;
+    protected int skipWhiteSpace(int i, String s) {
+        for (; i < s.length() && (s.charAt(i) == ' ' || s.charAt(i) == '\t'); i++) {
+        }
 
         return i;
     }
 
-    private int findNextWhiteSpace(int i, String s) {
-        for (; i < s.length() && (s.charAt(i) != ' ' || s.charAt(i) != '\t');) i++;
+    protected int findNextWhiteSpace(int i, String s) {
+        for (; i < s.length() && (s.charAt(i) != ' ' || s.charAt(i) != '\t'); i++) {
+        }
 
         return i;
     }
 
-    private void addToSet(int val, int end, int incr, int type) throws ParseException {
+    protected void addToSet(int val, int end, int incr, int type)
+            throws ParseException {
+
         SortedSet<Integer> set = getSet(type);
 
-        switch (type) {
-            case SECOND:
-            case MINUTE:
-                if ((val < 0 || val > 59 || end > 59) && (val != ALL_SPEC_INT)) {
-                    throw new ParseException(
-                            "Minute and Second values must be between 0 and 59",
-                            -1);
-                }
-                break;
-            case HOUR:
-                if ((val < 0 || val > 23 || end > 23) && (val != ALL_SPEC_INT)) {
-                    throw new ParseException(
-                            "Hour values must be between 0 and 23", -1);
-                }
-                break;
-            case DAY_OF_MONTH:
-                if ((val < 1 || val > 31 || end > 31) && (val != ALL_SPEC_INT)
-                        && (val != NO_SPEC_INT)) {
-                    throw new ParseException(
-                            "Day of month values must be between 1 and 31", -1);
-                }
-                break;
-            case MONTH:
-                if ((val < 1 || val > 12 || end > 12) && (val != ALL_SPEC_INT)) {
-                    throw new ParseException(
-                            "Month values must be between 1 and 12", -1);
-                }
-                break;
-            case DAY_OF_WEEK:
-                if ((val == 0 || val > 7 || end > 7) && (val != ALL_SPEC_INT)
-                        && (val != NO_SPEC_INT)) {
-                    throw new ParseException(
-                            "Day-of-Week values must be between 1 and 7", -1);
-                }
-                break;
+        if (type == SECOND || type == MINUTE) {
+            if ((val < 0 || val > 59 || end > 59) && (val != ALL_SPEC_INT)) {
+                throw new ParseException(
+                        "Minute and Second values must be between 0 and 59",
+                        -1);
+            }
+        } else if (type == HOUR) {
+            if ((val < 0 || val > 23 || end > 23) && (val != ALL_SPEC_INT)) {
+                throw new ParseException(
+                        "Hour values must be between 0 and 23", -1);
+            }
+        } else if (type == DAY_OF_MONTH) {
+            if ((val < 1 || val > 31 || end > 31) && (val != ALL_SPEC_INT)
+                    && (val != NO_SPEC_INT)) {
+                throw new ParseException(
+                        "Day of month values must be between 1 and 31", -1);
+            }
+        } else if (type == MONTH) {
+            if ((val < 1 || val > 12 || end > 12) && (val != ALL_SPEC_INT)) {
+                throw new ParseException(
+                        "Month values must be between 1 and 12", -1);
+            }
+        } else if (type == DAY_OF_WEEK) {
+            if ((val == 0 || val > 7 || end > 7) && (val != ALL_SPEC_INT)
+                    && (val != NO_SPEC_INT)) {
+                throw new ParseException(
+                        "Day-of-Week values must be between 1 and 7", -1);
+            }
         }
 
         if ((incr == 0 || incr == -1) && val != ALL_SPEC_INT) {
@@ -690,56 +839,48 @@ public final class CronExpression implements Serializable, Cloneable {
             set.add(ALL_SPEC); // put in a marker, but also fill values
         }
 
-        switch (type) {
-            case SECOND:
-            case MINUTE:
-                if (stopAt == -1) {
-                    stopAt = 59;
-                }
-                if (startAt == ALL_SPEC_INT) {
-                    startAt = 0;
-                }
-                break;
-            case HOUR:
-                if (stopAt == -1) {
-                    stopAt = 23;
-                }
-                if (startAt == ALL_SPEC_INT) {
-                    startAt = 0;
-                }
-                break;
-            case DAY_OF_MONTH:
-                if (stopAt == -1) {
-                    stopAt = 31;
-                }
-                if (startAt == ALL_SPEC_INT) {
-                    startAt = 1;
-                }
-                break;
-            case MONTH:
-                if (stopAt == -1) {
-                    stopAt = 12;
-                }
-                if (startAt == ALL_SPEC_INT) {
-                    startAt = 1;
-                }
-                break;
-            case DAY_OF_WEEK:
-                if (stopAt == -1) {
-                    stopAt = 7;
-                }
-                if (startAt == -1 || startAt == ALL_SPEC_INT) {
-                    startAt = 1;
-                }
-                break;
-            case YEAR:
-                if (stopAt == -1) {
-                    stopAt = MAX_YEAR;
-                }
-                if (startAt == -1 || startAt == ALL_SPEC_INT) {
-                    startAt = 1970;
-                }
-                break;
+        if (type == SECOND || type == MINUTE) {
+            if (stopAt == -1) {
+                stopAt = 59;
+            }
+            if (startAt == ALL_SPEC_INT) {
+                startAt = 0;
+            }
+        } else if (type == HOUR) {
+            if (stopAt == -1) {
+                stopAt = 23;
+            }
+            if (startAt == ALL_SPEC_INT) {
+                startAt = 0;
+            }
+        } else if (type == DAY_OF_MONTH) {
+            if (stopAt == -1) {
+                stopAt = 31;
+            }
+            if (startAt == ALL_SPEC_INT) {
+                startAt = 1;
+            }
+        } else if (type == MONTH) {
+            if (stopAt == -1) {
+                stopAt = 12;
+            }
+            if (startAt == ALL_SPEC_INT) {
+                startAt = 1;
+            }
+        } else if (type == DAY_OF_WEEK) {
+            if (stopAt == -1) {
+                stopAt = 7;
+            }
+            if (startAt == -1 || startAt == ALL_SPEC_INT) {
+                startAt = 1;
+            }
+        } else if (type == YEAR) {
+            if (stopAt == -1) {
+                stopAt = MAX_YEAR;
+            }
+            if (startAt == -1 || startAt == ALL_SPEC_INT) {
+                startAt = 1970;
+            }
         }
 
         // if the end of the range is before the start, then we need to overflow into
@@ -790,7 +931,7 @@ public final class CronExpression implements Serializable, Cloneable {
         }
     }
 
-    private SortedSet<Integer> getSet(int type) {
+    SortedSet<Integer> getSet(int type) {
         switch (type) {
             case SECOND:
                 return seconds;
@@ -811,9 +952,9 @@ public final class CronExpression implements Serializable, Cloneable {
         }
     }
 
-    private ValueSet getValue(String s, int i) {
+    protected ValueSet getValue(int v, String s, int i) {
         char c = s.charAt(i);
-        StringBuilder s1 = new StringBuilder(String.valueOf(0));
+        StringBuilder s1 = new StringBuilder(String.valueOf(v));
         while (c >= '0' && c <= '9') {
             s1.append(c);
             i++;
@@ -829,18 +970,30 @@ public final class CronExpression implements Serializable, Cloneable {
         return val;
     }
 
-    private int getNumericValue(String s, int i) {
+    protected int getNumericValue(String s, int i) {
         int endOfVal = findNextWhiteSpace(i, s);
         String val = s.substring(i, endOfVal);
         return Integer.parseInt(val);
     }
 
-    private int getMonthNumber(String s) {
-        return monthMap.getOrDefault(s, -1);
+    protected int getMonthNumber(String s) {
+        Integer integer = monthMap.get(s);
+
+        if (integer == null) {
+            return -1;
+        }
+
+        return integer;
     }
 
-    private int getDayOfWeekNumber(String s) {
-        return dayMap.getOrDefault(s, -1);
+    protected int getDayOfWeekNumber(String s) {
+        Integer integer = dayMap.get(s);
+
+        if (integer == null) {
+            return -1;
+        }
+
+        return integer;
     }
 
     ////////////////////////////////////////////////////////////////////////////
@@ -849,7 +1002,8 @@ public final class CronExpression implements Serializable, Cloneable {
     //
     ////////////////////////////////////////////////////////////////////////////
 
-    private Date getTimeAfter(Date afterTime) {
+    public Date getTimeAfter(Date afterTime) {
+
         // Computation is based on Gregorian year only.
         Calendar cl = new java.util.GregorianCalendar(getTimeZone());
 
@@ -1254,45 +1408,48 @@ public final class CronExpression implements Serializable, Cloneable {
     /**
      * Advance the calendar to the particular hour paying particular attention
      * to daylight saving problems.
-     *
-     * @param cal  the calendar to operate on
+     * @param cal the calendar to operate on
      * @param hour the hour to set
      */
-    private void setCalendarHour(Calendar cal, int hour) {
+    protected void setCalendarHour(Calendar cal, int hour) {
         cal.set(java.util.Calendar.HOUR_OF_DAY, hour);
         if (cal.get(java.util.Calendar.HOUR_OF_DAY) != hour && hour != 24) {
             cal.set(java.util.Calendar.HOUR_OF_DAY, hour + 1);
         }
     }
 
-    private boolean isLeapYear(int year) {
+    protected boolean isLeapYear(int year) {
         return ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0));
     }
 
-    private int getLastDayOfMonth(int monthNum, int year) {
+    protected int getLastDayOfMonth(int monthNum, int year) {
+
         switch (monthNum) {
             case 1:
-            case 3:
-            case 5:
-            case 7:
-            case 8:
-            case 10:
             case 12:
+            case 10:
+            case 8:
+            case 7:
+            case 5:
+            case 3:
                 return 31;
             case 2:
                 return (isLeapYear(year)) ? 29 : 28;
             case 4:
-            case 6:
-            case 9:
             case 11:
+            case 9:
+            case 6:
                 return 30;
             default:
-                throw new IllegalArgumentException("Illegal month number: " + monthNum);
+                throw new IllegalArgumentException("Illegal month number: "
+                        + monthNum);
         }
     }
 
 
-    private void readObject(ObjectInputStream stream) throws IOException, ClassNotFoundException {
+    private void readObject(java.io.ObjectInputStream stream)
+            throws java.io.IOException, ClassNotFoundException {
+
         stream.defaultReadObject();
         try {
             buildExpression(cronExpression);
