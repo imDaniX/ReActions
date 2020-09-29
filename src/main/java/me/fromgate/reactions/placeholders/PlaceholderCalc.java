@@ -10,9 +10,9 @@ public class PlaceholderCalc implements Placeholder.Prefixed {
     public String processPlaceholder(RaContext context, String key, String param) {
         if(!param.contains("%")) try {
             double result = MathEvaluator.eval(param);
-            return (result == (int) result) ?
-                    Integer.toString((int) result) :
-                    Double.toString(result);
+            return (result == (long) result) ?
+                   Long.toString((long) result) :
+                   Double.toString(result);
         } catch (NumberFormatException | ArithmeticException ignore) {
             // TODO: Error
         }
