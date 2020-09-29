@@ -24,8 +24,13 @@ package me.fromgate.reactions.logic.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.util.collections.MapBuilder;
+import me.fromgate.reactions.util.data.BooleanValue;
+import me.fromgate.reactions.util.data.DataValue;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+
+import java.util.Map;
 
 @Getter
 public class PlateStorage extends Storage {
@@ -35,5 +40,10 @@ public class PlateStorage extends Storage {
     public PlateStorage(Player p, Location loc) {
         super(p, ActivatorType.PLATE);
         this.location = loc;
+    }
+
+    @Override
+    protected Map<String, DataValue> prepareChangeables() {
+        return MapBuilder.single(Storage.CANCEL_EVENT, new BooleanValue(false));
     }
 }
