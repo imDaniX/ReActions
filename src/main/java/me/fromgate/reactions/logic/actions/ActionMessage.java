@@ -28,6 +28,8 @@ import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -75,17 +77,20 @@ public class ActionMessage extends Action {
                                 params.getString("subtitle", null),
                                 params.getInteger("fadein", 10),
                                 params.getInteger("stay", 70),
-                                params.getInteger("fadeout", 20));
+                                params.getInteger("fadeout", 20)
+                        );
                         break;
                     case "subtitle":
                         p.sendTitle(null,
                                 Msg.colorize(params.getString("subtitle", null)),
                                 params.getInteger("fadein", 10),
                                 params.getInteger("stay", 70),
-                                params.getInteger("fadeout", 20));
+                                params.getInteger("fadeout", 20)
+                        );
                         break;
                     case "actionbar":
-                        // TODO: Spigot-api or reflections/nms
+                        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Msg.colorize(message)));
+                        break;
                     default:
                         Msg.printMessage(p, message);
                 }
