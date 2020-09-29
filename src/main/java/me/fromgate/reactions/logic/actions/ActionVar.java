@@ -72,7 +72,7 @@ public class ActionVar extends Action {
                 if (variable == null || !NumberUtils.isNumber(variable)) return false;
                 double variableValue = Double.parseDouble(variable);
                 variableValue += value.isEmpty() || !(NumberUtils.isNumber(value)) ? 1 : Double.parseDouble(value);
-                VariablesManager.getInstance().setVariable(player, var, Double.toString(variableValue));
+                VariablesManager.getInstance().setVariable(player, var, NumberUtils.format(variableValue));
                 return true;
             }
 
@@ -83,7 +83,7 @@ public class ActionVar extends Action {
                 if (variable == null || !NumberUtils.isNumber(variable)) return false;
                 double variableValue = Double.parseDouble(variable);
                 variableValue -= value.isEmpty() || !(NumberUtils.isNumber(value)) ? 1 : Double.parseDouble(value);
-                VariablesManager.getInstance().setVariable(player, var, Double.toString(variableValue));
+                VariablesManager.getInstance().setVariable(player, var, NumberUtils.format(variableValue));
                 return true;
             }
 

@@ -30,6 +30,12 @@ public class NumberUtils {
         return Integer.parseInt(str);
     }
 
+    public String format(double d) {
+        return (d == (long) d) ?
+               Long.toString((long) d) :
+               Double.toString(d);
+    }
+
     // TODO: Should be removed or refactored
     public boolean isIntegerSigned(String... str) {
         if (str.length == 0) return false;
