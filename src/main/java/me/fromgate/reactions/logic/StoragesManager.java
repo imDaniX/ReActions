@@ -414,7 +414,9 @@ public class StoragesManager {
     }
 
     public boolean triggerBlockClick(PlayerInteractEvent event) {
-        if (event.getHand() != EquipmentSlot.HAND || event.getClickedBlock() == null) return false;
+        if (event.getHand() != EquipmentSlot.HAND ||
+                event.getClickedBlock() == null ||
+                event.getClickedBlock().getType().isAir()) return false;
         boolean leftClick;
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:

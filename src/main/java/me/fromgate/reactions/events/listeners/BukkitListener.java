@@ -81,7 +81,8 @@ import java.util.Map;
 
 public class BukkitListener implements Listener {
 
-/*    private static boolean triggerEntityChangeBlock(EntityChangeBlockEvent event) {
+    /*
+    private static boolean triggerEntityChangeBlock(EntityChangeBlockEvent event) {
         if (event.getEntity() instanceof FallingBlock) {
             Location loc = event.getEntity().getLocation();
             for (Player p : loc.getWorld().getPlayers()) {
@@ -92,7 +93,8 @@ public class BukkitListener implements Listener {
             }
         }
         return false;
-    }*/
+    }
+    */
 
     @EventHandler
     public void raisePickupEvent(EntityPickupItemEvent event) {
@@ -272,10 +274,12 @@ public class BukkitListener implements Listener {
 
     }
 
-/*    @EventHandler(priority = EventPriority.HIGH)
+    /*
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         if (triggerEntityChangeBlock(event)) event.setCancelled(true);
-    }*/
+    }
+    */
 
 	/*
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)

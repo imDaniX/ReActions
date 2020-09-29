@@ -75,42 +75,9 @@ public class ItemUtils {
         }
     }
 
-    @SuppressWarnings("unused")
-    public void giveItemOrDrop(Player player, String itemStr) {
-        VirtualItem vi = VirtualItem.fromString(itemStr);
-        if (vi == null) return;
-        giveItemOrDrop(player, vi);
-    }
-
-    public boolean removeItemInInventory(Inventory inventory, String itemStr) {
-        Map<String, String> itemParams = Parameters.parametersMap(itemStr);
-        return removeItemInInventory(inventory, itemParams);
-    }
-
     public int countItemsInInventory(Inventory inventory, String itemStr) {
         Map<String, String> itemMap = Parameters.parametersMap(itemStr);
         return countItemsInventory(inventory, itemMap);
-    }
-
-    private boolean removeItemInInventory(Inventory inventory, Map<String, String> itemParams) {
-        int amountToRemove = Integer.parseInt(itemParams.getOrDefault("amount", "1"));
-        //int countItems =  countItemsInventory (inventory, itemParams);
-        //if (amountToRemove>countItems) return false;
-        for (int i = 0; i < inventory.getSize(); i++) {
-            if (inventory.getItem(i) == null || inventory.getItem(i).getType() == Material.AIR) continue;
-            VirtualItem vi = VirtualItem.fromItemStack(inventory.getItem(i));
-            if (!vi.compare(itemParams, 1)) continue;
-            if (vi.getAmount() <= amountToRemove) {
-                amountToRemove -= vi.getAmount();
-                inventory.setItem(i, null);
-            } else {
-                vi.setAmount(vi.getAmount() - amountToRemove);
-                inventory.setItem(i, vi);
-                amountToRemove = 0;
-            }
-            if (amountToRemove == 0) return true;
-        }
-        return false;
     }
 
     private int countItemsInventory(Inventory inventory, Map<String, String> itemParams) {
@@ -124,23 +91,6 @@ public class ItemUtils {
         return count;
     }
 
-    /**
-     * @param stack   - source item
-     * @param itemStr - item description to remove
-     * @return - item stack contained left items (if all items removed - remove
-     */
-    private VirtualItem removeItemFromStack(VirtualItem stack, String itemStr) {
-        if (!ItemUtils.compareItemStr(stack, itemStr)) return null;
-        int amountToRemove = getAmount(itemStr);
-        if (amountToRemove <= 0) return null;
-        int leftAmount = stack.getAmount() - amountToRemove;
-        if (leftAmount < 0) return null;
-        VirtualItem result = VirtualItem.fromItemStack(stack);
-        if (leftAmount == 0) result.setType(Material.AIR);
-        else result.setAmount(leftAmount);
-        return result;
-    }
-
     public int getAmount(String itemStr) {
         Map<String, String> itemMap = Parameters.parametersMap(itemStr);
         String amountStr = itemMap.getOrDefault("amount", "1");
@@ -149,8 +99,7 @@ public class ItemUtils {
     }
 
     public VirtualItem itemFromBlock(Block block) {
-        if (block == null) return VirtualItem.fromString("STONE");
-        return VirtualItem.fromItemStack(new ItemStack(block.getType(), 1));
+        return new VirtualItem(block == null ? Material.STONE : block.getType());
     }
 
     public boolean compareItemStr(Block block, String itemStr) {
@@ -170,10 +119,6 @@ public class ItemUtils {
         return (itemStr.equalsIgnoreCase("HAND") || itemStr.equalsIgnoreCase("AIR"));
     }
 
-    public boolean removeItemInInventory(Player player, String itemStr) {
-        return removeItemInInventory(player.getInventory(), itemStr);
-    }
-
     public ItemStack getRndItem(String str) {
         if (str.isEmpty()) return new ItemStack(Material.AIR);
         String[] ln = str.split(",");
@@ -186,21 +131,6 @@ public class ItemUtils {
         return item;
     }
 
-
-    /*
-     *  <item>;<item>;<item>[%<chance>]/<item>;<item>;<item>[%<chance>]
-     *
-     */
-    public List<ItemStack> parseItemStacksOld(String items) {
-        List<ItemStack> stacks = new ArrayList<>();
-        String[] ln = items.split(";"); // ВОТ ЭТО ЛОМАЕТ К ЧЕРТЯМ НОВЫЙ ФОРМАТ!!!
-        for (String item : ln) {
-            VirtualItem vi = VirtualItem.fromString(item);
-            if (vi != null) stacks.add(vi);
-        }
-        return stacks;
-    }
-
     public String itemToString(ItemStack item) {
         VirtualItem vi = VirtualItem.fromItemStack(item);
         return vi == null ? "" : vi.toString();
@@ -210,17 +140,9 @@ public class ItemUtils {
         StringBuilder sb = new StringBuilder();
         for (ItemStack i : items) {
             VirtualItem vi = VirtualItem.fromItemStack(i);
-            if (sb.length() > 0) sb.append(", ");
-            sb.append(vi.toDisplayString());
+            sb.append(vi.toDisplayString()).append(", ");
         }
-        return sb.toString();
-    }
-
-    //item:{item1:{[...] chance:50} item2:{} item3:{}
-
-    public VirtualItem itemFromMap(Parameters params) {
-        return VirtualItem.fromMap(params.getMap());
-
+        return sb.substring(0, sb.length() - 2);
     }
 
     public List<ItemStack> parseItemsSet(Parameters params) {
@@ -281,40 +203,6 @@ public class ItemUtils {
 
         }
         return null;
-    }
-
-
-    //id:data*amount@enchant:level,color;id:data*amount%chance/id:data*amount@enchant:level,color;id:data*amount%chance
-    @SuppressWarnings("unused")
-    public String parseRandomItemsStrOld(String items) {
-        if (items.isEmpty()) return "";
-        String[] loots = items.split("/");
-        Map<String, Integer> drops = new HashMap<>();
-        int maxchance = 0;
-        int nochcount = 0;
-        for (String loot : loots) {
-            String[] ln = loot.split("%");
-            if (ln.length > 0) {
-                String stacks = ln[0];
-                if (stacks.isEmpty()) continue;
-                int chance = -1;
-                if ((ln.length == 2) && (NumberUtils.INT_NONZERO_POSITIVE.matcher(ln[1]).matches())) {
-                    chance = Integer.parseInt(ln[1]);
-                    maxchance += chance;
-                } else nochcount++;
-                drops.put(stacks, chance);
-            }
-        }
-        if (drops.isEmpty()) return "";
-        int eqperc = (nochcount * 100) / drops.size();
-        maxchance = maxchance + eqperc * nochcount;
-        int rnd = Rng.nextInt(maxchance);
-        int curchance = 0;
-        for (String stack : drops.keySet()) {
-            curchance = curchance + (drops.get(stack) < 0 ? eqperc : drops.get(stack));
-            if (rnd <= curchance) return stack;
-        }
-        return "";
     }
 
     public String toDisplayString(String itemStr) {
@@ -382,7 +270,7 @@ public class ItemUtils {
      * @return Is item not null and not air
      */
     public boolean isExist(ItemStack item) {
-        return item != null && item.getType() != Material.AIR;
+        return item != null && !item.getType().isAir();
     }
 
     public String fireworksToString(FireworkEffect fe) {
