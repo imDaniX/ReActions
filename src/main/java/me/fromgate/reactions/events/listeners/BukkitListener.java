@@ -34,11 +34,9 @@ import me.fromgate.reactions.util.message.RaDebug;
 import me.fromgate.reactions.util.mob.EntityUtils;
 import me.fromgate.reactions.util.mob.MobSpawn;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -48,7 +46,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -84,11 +81,10 @@ import java.util.Map;
 
 public class BukkitListener implements Listener {
 
-    // TODO: I really don't like it
-    private static boolean triggerEntityChangeBlock(EntityChangeBlockEvent event) {
+/*    private static boolean triggerEntityChangeBlock(EntityChangeBlockEvent event) {
         if (event.getEntity() instanceof FallingBlock) {
             Location loc = event.getEntity().getLocation();
-            for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            for (Player p : loc.getWorld().getPlayers()) {
                 if (p.getLocation().distanceSquared(loc) > 0.7) continue;
                 EntityDamageByEntityEvent ev = new EntityDamageByEntityEvent(event.getEntity(), p, EntityDamageEvent.DamageCause.FALLING_BLOCK, 0);
                 Bukkit.getPluginManager().callEvent(ev);
@@ -96,7 +92,7 @@ public class BukkitListener implements Listener {
             }
         }
         return false;
-    }
+    }*/
 
     @EventHandler
     public void raisePickupEvent(EntityPickupItemEvent event) {
@@ -276,10 +272,10 @@ public class BukkitListener implements Listener {
 
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
+/*    @EventHandler(priority = EventPriority.HIGH)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         if (triggerEntityChangeBlock(event)) event.setCancelled(true);
-    }
+    }*/
 
 	/*
 	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
