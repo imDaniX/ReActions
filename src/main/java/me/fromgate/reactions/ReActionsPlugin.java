@@ -43,6 +43,7 @@ import me.fromgate.reactions.util.message.LogHandler;
 import me.fromgate.reactions.util.message.Msg;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
@@ -62,7 +63,7 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
         ReActionsPlugin.instance = this;
         this.variablesManager = new VariablesManager();
         this.placeholdersManager = new PlaceholdersManager();
-        ReActions.register(this);
+        ReActions.setPlatform(this);
     }
 
     @Override
@@ -110,5 +111,10 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
     @Override
     public VariablesManager getVariables() {
         return variablesManager;
+    }
+
+    @Override
+    public Plugin getPlugin() {
+        return this;
     }
 }
