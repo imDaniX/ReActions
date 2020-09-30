@@ -36,7 +36,6 @@ import me.fromgate.reactions.logic.storages.Storage;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.message.Msg;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -146,21 +145,6 @@ public class ActivatorsManager {
         for (ActivatorType type : ActivatorType.values())
             if (type.isLocatable())
                 typeActivators.get(type).stream().filter(act -> ((Locatable) act).isLocatedAt(world, x, y, z)).forEach(found::add);
-        return found;
-    }
-
-    /**
-     * Get all activators in specific location
-     *
-     * @param loc Location to check
-     * @return Set of activators in location
-     */
-    @SuppressWarnings("unused")
-    public Set<Activator> getActivatorInLocation(Location loc) {
-        Set<Activator> found = new HashSet<>();
-        for (ActivatorType type : ActivatorType.values())
-            if (type.isLocatable())
-                typeActivators.get(type).stream().filter(act -> ((Locatable) act).isLocatedAt(loc)).forEach(found::add);
         return found;
     }
 
@@ -313,20 +297,8 @@ public class ActivatorsManager {
      */
     public void saveActivators() {
         deleteFiles("");
-        for (String group : findGroupsFromActivators())
-            saveActivators(group);
-    }
-
-    /**
-     * Get groups of loaded activators
-     *
-     * @return Set of groups
-     */
-    private Set<String> findGroupsFromActivators() {
-        Set<String> grps = new HashSet<>();
         for (Activator act : activators.values())
-            grps.add(act.getBase().getGroup());
-        return grps;
+            saveActivators(act.getBase().getGroup());
     }
 
     /**
@@ -577,7 +549,6 @@ public class ActivatorsManager {
         return true;
     }
 
-    @SuppressWarnings("unused")
     public String getGroup(String activator) {
         if (!containsActivator(activator)) return "activator";
         return getActivator(activator).getBase().getGroup();
@@ -591,11 +562,6 @@ public class ActivatorsManager {
      */
     public Set<Activator> getActivators(ActivatorType type) {
         return typeActivators.get(type);
-    }
-
-    @SuppressWarnings("unused")
-    public boolean stopExec(Player player, String actName) {
-        return stopExec(player == null ? "" : player.getName(), actName);
     }
 
     public boolean stopExec(String pstr, String actName) {

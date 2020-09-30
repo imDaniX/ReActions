@@ -34,14 +34,13 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.function.BiConsumer;
 
 @Getter
 public final class ActivatorBase {
-    private int hash;
-
-    private String name;
     private String group;
+    private final String name;
     private final List<StoredFlag> flags = new ArrayList<>();
     private final List<StoredAction> actions = new ArrayList<>();
     private final List<StoredAction> reactions = new ArrayList<>();
@@ -73,14 +72,8 @@ public final class ActivatorBase {
         }
     }
 
-    public void setName(String name) {
-        this.name = name;
-        calcHash();
-    }
-
     public void setGroup(String group) {
         this.group = group;
-        calcHash();
     }
 
     /**
@@ -247,13 +240,9 @@ public final class ActivatorBase {
         return this.name.equals(other.name) && this.group.equals(other.group);
     }
 
-    private void calcHash() {
-        this.hash = group.hashCode() * 31 >> name.hashCode() / 37;
-    }
-
     @Override
     public int hashCode() {
-        return hash;
+        return name.toLowerCase(Locale.ENGLISH).hashCode();
     }
 
     @Override
