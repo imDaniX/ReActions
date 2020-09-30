@@ -63,6 +63,7 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
         ReActionsPlugin.instance = this;
         this.variablesManager = new VariablesManager();
         this.placeholdersManager = new PlaceholdersManager();
+        this.activatorsManager = new ActivatorsManager();
         ReActions.setPlatform(this);
     }
 
@@ -77,7 +78,7 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
 
         Commander.init(this);
         TimersManager.init();
-        this.activatorsManager = new ActivatorsManager();
+        this.activatorsManager.loadActivators();
         FakeCommander.init();
         SelectorsManager.init();
         Externals.init();

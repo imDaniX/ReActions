@@ -70,7 +70,6 @@ public class ActivatorsManager {
         activators = new HashMap<>();
         stopexec = new HashSet<>();
         ActivatorsManager.instance = this;
-        loadActivators();
     }
 
     /**
