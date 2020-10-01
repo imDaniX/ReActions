@@ -197,6 +197,6 @@ public class VariablesManager {
     }
 
     private static String formatId(String player, String var) {
-        return (player.isEmpty() ? "general" : player) + "." + var;
+        return (Utils.isStringEmpty(player) ? "general" : player) + "." + var;
     }
 }
