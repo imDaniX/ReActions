@@ -2,6 +2,7 @@ package me.fromgate.reactions.externals.placeholderapi;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.VariablesManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.util.StringUtil;
 
@@ -31,10 +32,20 @@ public class RaPapiExpansion extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String s) {
-        if (StringUtil.startsWithIgnoreCase(s, "var")) {
-            return ReActions.getVariables().getVariable(player.getName(), s);
+    public String onRequest(OfflinePlayer player, String param) {
+        VariablesManager variables = ReActions.getVariables();
+
+        if (StringUtil.startsWithIgnoreCase(param, "varp:")) {
+            return player.getName() == null ?
+                   null :
+                   variables.getVariable(player.getName(), param.substring(5));
+        } else if (StringUtil.startsWithIgnoreCase(param, "var:")) {
+            String[] split = param.substring(4).split("\\.", 2);
+            return split.length > 1 ?
+                   variables.getVariable(split[0], split[1]) :
+                   variables.getVariable(null, split[0]);
         }
+
         return null;
     }
 }
