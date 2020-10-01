@@ -23,7 +23,7 @@
 package me.fromgate.reactions.holders;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.location.TpLocation;
@@ -56,7 +56,7 @@ public class LocationHolder {
 
     public void saveLocs() {
         if (tports.size() > 0) {
-            File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "locations.yml");
+            File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
             YamlConfiguration lcs = new YamlConfiguration();
             for (String key : tports.keySet()) {
                 TpLocation tploc = tports.get(key);
@@ -73,7 +73,7 @@ public class LocationHolder {
 
     public void loadLocs() {
         tports.clear();
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "locations.yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "locations.yml");
         YamlConfiguration lcs = new YamlConfiguration();
         if (FileUtils.loadCfg(lcs, f, "Failed to load locations configuration file"))
             for (String key : lcs.getKeys(false))

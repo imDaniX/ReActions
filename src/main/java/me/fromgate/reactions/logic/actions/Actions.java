@@ -23,9 +23,9 @@
 package me.fromgate.reactions.logic.actions;
 
 import lombok.Getter;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.logic.activators.ActivatorBase;
-import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.BukkitMessenger;
@@ -180,7 +180,7 @@ public enum Actions {
             if (at == Actions.WAIT) {
                 if (i == actions.size() - 1) return;
                 ActionWait aw = (ActionWait) at.action;
-                Parameters param = Parameters.fromString(PlaceholdersManager.getInstance().parsePlaceholders(context, av.getValue()), "time");
+                Parameters param = Parameters.fromString(ReActions.getPlaceholders().parsePlaceholders(context, av.getValue()), "time");
                 String timeStr = param.getString("time", "0");
                 long time = TimeUtils.parseTime(timeStr);
                 if (time == 0) continue;
@@ -188,7 +188,7 @@ public enum Actions {
                 aw.executeDelayed(context.getPlayer(), futureList, isAction, time);
                 return;
             }
-            at.performAction(context, isAction, Parameters.fromString(PlaceholdersManager.getInstance().parsePlaceholders(context, av.getValue())));
+            at.performAction(context, isAction, Parameters.fromString(ReActions.getPlaceholders().parsePlaceholders(context, av.getValue())));
         }
     }
 

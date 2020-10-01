@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.flags;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.VariablesManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -56,7 +56,7 @@ public class FlagVar implements Flag {
         }
         if (playerName.isEmpty() && this.personalVar) return false;
 
-        String variable = VariablesManager.getInstance().getVariable(playerName, variableId);
+        String variable = ReActions.getVariables().getVariable(playerName, variableId);
         if (variable == null)
             return false;
 

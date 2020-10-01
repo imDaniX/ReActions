@@ -48,19 +48,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
 
-    // TODO: Better to remove;
-    private static ReActionsPlugin instance;
-    public static JavaPlugin getInstance() {
-        return instance;
-    }
-
     private ActivatorsManager activatorsManager;
     private PlaceholdersManager placeholdersManager;
     private VariablesManager variablesManager;
 
     @Override
     public void onLoad() {
-        ReActionsPlugin.instance = this;
         this.variablesManager = new VariablesManager();
         this.placeholdersManager = new PlaceholdersManager();
         this.activatorsManager = new ActivatorsManager();
@@ -85,8 +78,8 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
         RaVault.init();
         WaitingManager.init();
         Delayer.load();
-        if (!Cfg.playerSelfVarFile) VariablesManager.getInstance().load();
-        else VariablesManager.getInstance().loadVars();
+        if (!Cfg.playerSelfVarFile) ReActions.getVariables().load();
+        else ReActions.getVariables().loadVars();
         LocationHolder.loadLocs();
         SQLManager.init();
         InventoryMenu.init();

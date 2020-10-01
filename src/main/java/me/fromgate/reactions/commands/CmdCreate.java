@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands;
 
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.holders.LocationHolder;
-import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.menu.InventoryMenu;
@@ -81,8 +81,8 @@ public class CmdCreate extends Cmd {
             Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
             return true;
         }
-        if (ActivatorsManager.getInstance().addActivator(activator)) {
-            ActivatorsManager.getInstance().saveActivators();
+        if (ReActions.getActivators().addActivator(activator)) {
+            ReActions.getActivators().saveActivators();
             Msg.CMD_ADDBADDED.print(sender, activator.toString());
         } else {
             Msg.CMD_NOTADDBADDED.print(sender, activator.toString());

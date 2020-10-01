@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.VariablesManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.util.TimeUtils;
@@ -39,8 +39,8 @@ public class CmdSet extends Cmd {
         } else if (var.equalsIgnoreCase("var") || var.equalsIgnoreCase("variable") || var.equalsIgnoreCase("v")) {
             String value = params.getString("value", "");
             String player = params.getString("player", "");
-            VariablesManager.getInstance().setVariable(player, id, value);
-            return Msg.CMD_VARSET.print(sender, player.isEmpty() ? id : player + "." + id, VariablesManager.getInstance().getVariable(player, id));
+            ReActions.getVariables().setVariable(player, id, value);
+            return Msg.CMD_VARSET.print(sender, player.isEmpty() ? id : player + "." + id, ReActions.getVariables().getVariable(player, id));
         } else if (var.equalsIgnoreCase("menu") || var.equalsIgnoreCase("m")) {
             if (InventoryMenu.set(id, params))
                 return Msg.MSG_MENUPARAMSET.print(sender, id);

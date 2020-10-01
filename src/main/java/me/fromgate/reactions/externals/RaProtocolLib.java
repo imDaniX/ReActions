@@ -27,7 +27,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.activators.MessageActivator.Source;
 import me.fromgate.reactions.logic.storages.Storage;
@@ -58,7 +58,7 @@ public class RaProtocolLib {
             connected = true;
         } else return;
         initPacketListener();
-        ReActionsPlugin.getInstance().getLogger().info("ProtocolLib connected");
+        ReActions.getPlugin().getLogger().info("ProtocolLib connected");
 
     }
 
@@ -113,7 +113,7 @@ public class RaProtocolLib {
     private void initPacketListener() {
         if (!connected) return;
         ProtocolLibrary.getProtocolManager().addPacketListener(
-                new PacketAdapter(ReActionsPlugin.getInstance(), PacketType.Play.Server.CHAT) {
+                new PacketAdapter(ReActions.getPlugin(), PacketType.Play.Server.CHAT) {
                     @Override
                     public void onPacketSending(PacketEvent event) {
                         String message = "";

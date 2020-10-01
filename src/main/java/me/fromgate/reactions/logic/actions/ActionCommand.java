@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.actions;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.TemporaryOp;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -37,7 +37,7 @@ public class ActionCommand extends Action {
     private final Type commandAs;
 
     private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
-        Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
             if (setOp) {
                 TemporaryOp.setOp(sender);
                 Bukkit.getServer().dispatchCommand(sender, commandLine);

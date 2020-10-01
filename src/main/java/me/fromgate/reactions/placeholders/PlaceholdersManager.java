@@ -13,15 +13,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Getter
-@Setter
 public class PlaceholdersManager {;
     private static final Pattern PLACEHOLDER_GREEDY = Pattern.compile("(?<!&\\\\)%\\S+%");
     private static final Pattern PLACEHOLDER_NONGREEDY = Pattern.compile("(?<!&\\\\)%\\S+?%");
     private static final Pattern PLACEHOLDER_RAW = Pattern.compile("&\\\\(%\\S+%)");
-    @Getter
-    private static PlaceholdersManager instance;
 
+    @Getter
+    @Setter
     private int countLimit = 127;
 
     public PlaceholdersManager() {
@@ -34,7 +32,6 @@ public class PlaceholdersManager {;
         register(new PlaceholderVariable());
         register((c,p,t) -> c.getVariable(p)); // Temporary variables
         register(new PlaceholderPAPI());
-        PlaceholdersManager.instance = this;
     }
 
     public boolean register(Placeholder ph) {

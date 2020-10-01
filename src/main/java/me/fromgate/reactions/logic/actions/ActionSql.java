@@ -23,8 +23,8 @@
 package me.fromgate.reactions.logic.actions;
 
 import lombok.AllArgsConstructor;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.SQLManager;
-import me.fromgate.reactions.VariablesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -50,7 +50,7 @@ public class ActionSql extends Action {
                     return false;
                 }
                 if (varName.isEmpty()) return false;
-                VariablesManager.getInstance().setVariable(playerName, varName, SQLManager.executeSelect(query, column, params, context.getVariable("SQL_SET")));
+                ReActions.getVariables().setVariable(playerName, varName, SQLManager.executeSelect(query, column, params, context.getVariable("SQL_SET")));
                 break;
             case INSERT: // INSERT
                 query = params.getString("query", params.getString("param-line", "")).trim();

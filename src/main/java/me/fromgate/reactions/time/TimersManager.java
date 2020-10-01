@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.time;
 
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.TimeUtils;
@@ -181,7 +181,7 @@ public class TimersManager {
 
     public static void initIngameTimer() {
         if (ingameTimer != null) return;
-        ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActionsPlugin.getInstance(), () -> {
+        ingameTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
             String currentTime = TimeUtils.formattedIngameTime();
             if (currentIngameTime.equalsIgnoreCase(currentTime)) return;
             currentIngameTime = currentTime;
@@ -190,7 +190,7 @@ public class TimersManager {
             for (String key : timers.keySet()) {
                 Timer timer = timers.get(key);
                 if (timer.isTimeToRun()) {
-                    Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> StoragesManager.triggerExec(null, timer.getParams()));
+                    Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> StoragesManager.triggerExec(null, timer.getParams()));
                 }
             }
         }, 1, 4);
@@ -198,10 +198,10 @@ public class TimersManager {
 
     public static void initServerTimer() {
         if (serverTimer != null) return;
-        serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActionsPlugin.getInstance(), () -> {
+        serverTimer = Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), () -> {
             for (Timer timer : getServerTimers().values()) {
                 if (timer.isTimeToRun()) {
-                    Bukkit.getScheduler().runTask(ReActionsPlugin.getInstance(), () -> StoragesManager.triggerExec(null, timer.getParams()));
+                    Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> StoragesManager.triggerExec(null, timer.getParams()));
                 }
             }
         }, 1, 20);
@@ -210,7 +210,7 @@ public class TimersManager {
     public static void load() {
         timers.clear();
         YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "timers.yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "timers.yml");
         if (FileUtils.loadCfg(cfg, f, "Failed to load timers.yml file"))
             for (String timerType : cfg.getKeys(false)) {
                 if (!(timerType.equalsIgnoreCase("INGAME") || timerType.equalsIgnoreCase("SERVER"))) continue;
@@ -232,7 +232,7 @@ public class TimersManager {
 
     public static void save() {
         YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "timers.yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "timers.yml");
         if (f.exists()) f.delete();
         for (String name : timers.keySet()) {
             Timer timer = timers.get(name);

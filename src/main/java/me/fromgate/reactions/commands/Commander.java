@@ -1,6 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.message.BukkitMessenger;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.Command;
@@ -57,7 +57,7 @@ public class Commander implements CommandExecutor {
         for (Cmd cmd : commands) {
             helpList.add(cmd.getFullDescription());
         }
-        Msg.printMessage(sender, "&6&lReActions v" + ReActionsPlugin.getInstance().getDescription().getVersion() + " &r&6| " + Msg.HLP_HELP.getText("NO_COLOR"));
+        Msg.printMessage(sender, "&6&lReActions v" + ReActions.getPlugin().getDescription().getVersion() + " &r&6| " + Msg.HLP_HELP.getText("NO_COLOR"));
         BukkitMessenger.printPage(sender, helpList, null, page);
     }
 

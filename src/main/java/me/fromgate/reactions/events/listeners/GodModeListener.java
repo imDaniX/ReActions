@@ -1,7 +1,7 @@
 package me.fromgate.reactions.events.listeners;
 
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
@@ -22,8 +22,8 @@ public class GodModeListener implements Listener {
 
     public static void init() {
         if (Cfg.godActivatorEnable) {
-            Bukkit.getPluginManager().registerEvents(new GodModeListener(), ReActionsPlugin.getInstance());
-            Bukkit.getScheduler().runTaskTimer(ReActionsPlugin.getInstance(), () -> Bukkit.getOnlinePlayers().forEach(GodModeListener::setEventGod), 30, Cfg.godActivatorCheckTicks);
+            Bukkit.getPluginManager().registerEvents(new GodModeListener(), ReActions.getPlugin());
+            Bukkit.getScheduler().runTaskTimer(ReActions.getPlugin(), () -> Bukkit.getOnlinePlayers().forEach(GodModeListener::setEventGod), 30, Cfg.godActivatorCheckTicks);
         }
     }
 
@@ -33,7 +33,7 @@ public class GodModeListener implements Listener {
 
     public static boolean setGod(Player player) {
         if (!isGod(player)) {
-            player.setMetadata("reactions-god", new FixedMetadataValue(ReActionsPlugin.getInstance(), true));
+            player.setMetadata("reactions-god", new FixedMetadataValue(ReActions.getPlugin(), true));
             return true;
         }
         return false;
@@ -41,21 +41,21 @@ public class GodModeListener implements Listener {
 
     public static boolean removeGod(Player player) {
         if (isGod(player)) {
-            player.removeMetadata("reactions-god", ReActionsPlugin.getInstance());
+            player.removeMetadata("reactions-god", ReActions.getPlugin());
             return true;
         }
         return false;
     }
 
     public static void setCheckGod(Player player) {
-        player.setMetadata("reactions-god-check", new FixedMetadataValue(ReActionsPlugin.getInstance(), true));
+        player.setMetadata("reactions-god-check", new FixedMetadataValue(ReActions.getPlugin(), true));
     }
 
     public static boolean checkGod(Player player) {
         boolean result = false;
         if (player.hasMetadata("reactions-god-check")) {
             result = player.getMetadata("reactions-god-check").get(0).asBoolean();
-            player.removeMetadata("reactions-god-check", ReActionsPlugin.getInstance());
+            player.removeMetadata("reactions-god-check", ReActions.getPlugin());
         }
         return result;
     }

@@ -1,8 +1,7 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.VariablesManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.holders.LocationHolder;
-import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.activators.ActivatorBase;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.TimersManager;
@@ -29,10 +28,10 @@ public class CmdRemove extends Cmd {
         }
         if (arg2.isEmpty()) return false;
         if (arg1.equalsIgnoreCase("act") || arg1.equalsIgnoreCase("activator")) {
-            if (ActivatorsManager.getInstance().containsActivator(arg2)) {
-                ActivatorsManager.getInstance().removeActivator(arg2);
+            if (ReActions.getActivators().containsActivator(arg2)) {
+                ReActions.getActivators().removeActivator(arg2);
                 Msg.printMSG(sender, "msg_removebok", arg2);
-                ActivatorsManager.getInstance().saveActivators();
+                ReActions.getActivators().saveActivators();
             } else Msg.printMSG(sender, "msg_removebnf", arg2);
         } else if (arg1.equalsIgnoreCase("loc")) {
             if (LocationHolder.removeTpLoc(arg2)) {
@@ -46,8 +45,8 @@ public class CmdRemove extends Cmd {
         } else if (arg1.equalsIgnoreCase("menu") || arg1.equalsIgnoreCase("m")) {
             if (InventoryMenu.remove(arg2)) Msg.printMSG(sender, "msg_removemenu", arg2);
             else Msg.printMSG(sender, "msg_removemenufail", 'c', '4', arg2);
-        } else if (ActivatorsManager.getInstance().containsActivator(arg1)) {
-            ActivatorBase act = ActivatorsManager.getInstance().getActivator(arg1).getBase();
+        } else if (ReActions.getActivators().containsActivator(arg1)) {
+            ActivatorBase act = ReActions.getActivators().getActivator(arg1).getBase();
             if (NumberUtils.isNonzeroInteger(arg3.toString())) {
                 int num = Integer.parseInt(arg3.toString());
                 if (arg2.equalsIgnoreCase("f") || arg2.equalsIgnoreCase("flag")) {
@@ -63,7 +62,7 @@ public class CmdRemove extends Cmd {
                         Msg.printMSG(sender, "msg_reactionremoved", act.getName(), num);
                     else Msg.printMSG(sender, "msg_failedtoremovereaction", act.getName(), num);
                 } else return false;
-                ActivatorsManager.getInstance().saveActivators();
+                ReActions.getActivators().saveActivators();
             } else Msg.printMSG(sender, "msg_wrongnumber", arg3.toString());
         }
         return true;
@@ -78,7 +77,7 @@ public class CmdRemove extends Cmd {
         if (id.isEmpty()) {
             return Msg.MSG_VARNEEDID.print(sender);
         }
-        if (VariablesManager.getInstance().removeVariable(player, id)) {
+        if (ReActions.getVariables().removeVariable(player, id)) {
             return Msg.MSG_VARREMOVED.print(sender, id);
         }
         return Msg.MSG_VARREMOVEFAIL.print(sender);

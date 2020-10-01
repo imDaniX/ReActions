@@ -1,11 +1,10 @@
 package me.fromgate.reactions.events.listeners;
 
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.events.PlayerAttacksEntityEvent;
 import me.fromgate.reactions.events.PlayerPickupItemEvent;
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
-import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.logic.ItemStoragesManager;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.activators.Activator;
@@ -173,7 +172,7 @@ public class BukkitListener implements Listener {
     // TODO: All the checks should be inside activator
     @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {
-        for (Activator activator : ActivatorsManager.getInstance().getActivators(ActivatorType.SIGN)) {
+        for (Activator activator : ReActions.getActivators().getActivators(ActivatorType.SIGN)) {
             SignActivator signAct = (SignActivator) activator;
             if (!signAct.checkMask(event.getLines())) continue;
             Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getBase().getName());
@@ -374,8 +373,8 @@ public class BukkitListener implements Listener {
         if (target.getType() != EntityType.PLAYER) return;
         Player damager = event.getPlayer();
         long time = System.currentTimeMillis();
-        damager.setMetadata("reactions-pvp-time", new FixedMetadataValue(ReActionsPlugin.getInstance(), time));
-        target.setMetadata("reactions-pvp-time", new FixedMetadataValue(ReActionsPlugin.getInstance(), time));
+        damager.setMetadata("reactions-pvp-time", new FixedMetadataValue(ReActions.getPlugin(), time));
+        target.setMetadata("reactions-pvp-time", new FixedMetadataValue(ReActions.getPlugin(), time));
     }
 
     @EventHandler

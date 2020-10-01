@@ -2,7 +2,7 @@ package me.fromgate.reactions.logic;
 
 import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.ItemHoldActivator;
@@ -31,22 +31,22 @@ public class ItemStoragesManager {
         if (!StoragesManager.isTimeToRaiseEvent(player, rg, Cfg.itemWearRecheck, repeat)) return;
         ItemWearStorage iwe = new ItemWearStorage(player);
         if (!iwe.isItemWeared(itemStr)) return;
-        ActivatorsManager.getInstance().activate(iwe);
-        Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
+        ReActions.getActivators().activate(iwe);
+        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
     }
 
     public void triggerItemWear(Player player) {
         final UUID playerId = player.getUniqueId();
-        Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
-            for (Activator iw : ActivatorsManager.getInstance().getActivators(ActivatorType.ITEM_WEAR))
+        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
+            for (Activator iw : ReActions.getActivators().getActivators(ActivatorType.ITEM_WEAR))
                 setFutureItemWearCheck(playerId, ((ItemWearActivator) iw).getItemStr(), false);
         }, 1);
     }
 
     public void triggerItemHold(Player player) {
         final UUID playerId = player.getUniqueId();
-        Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
-            for (Activator ih : ActivatorsManager.getInstance().getActivators(ActivatorType.ITEM_HOLD))
+        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
+            for (Activator ih : ReActions.getActivators().getActivators(ActivatorType.ITEM_HOLD))
                 setFutureItemHoldCheck(playerId, ((ItemHoldActivator) ih).getItemStr(), false);
         }, 1);
     }
@@ -60,8 +60,8 @@ public class ItemStoragesManager {
         if (!StoragesManager.isTimeToRaiseEvent(player, rg, Cfg.itemHoldRecheck, repeat)) return;
         if (!ItemUtils.compareItemStr(item, itemStr)) return;
         ItemHoldStorage ihe = new ItemHoldStorage(player, item, true);
-        ActivatorsManager.getInstance().activate(ihe);
+        ReActions.getActivators().activate(ihe);
 
-        Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> setFutureItemHoldCheck(playerId, itemStr, true), 20 * Cfg.itemHoldRecheck);
+        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureItemHoldCheck(playerId, itemStr, true), 20 * Cfg.itemHoldRecheck);
     }
 }

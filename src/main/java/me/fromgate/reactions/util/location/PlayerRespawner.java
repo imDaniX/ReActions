@@ -23,7 +23,7 @@
 package me.fromgate.reactions.util.location;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.storages.RespawnStorage;
 import me.fromgate.reactions.util.enums.DeathCause;
 import me.fromgate.reactions.util.mob.EntityUtils;
@@ -60,7 +60,7 @@ public class PlayerRespawner {
         DeathCause d = killer == null ?
                 DeathCause.OTHER :
                 killer.getType() == EntityType.PLAYER ? DeathCause.PVP : DeathCause.PVE;
-        ActivatorsManager.getInstance().activate(new RespawnStorage(player, killer, d, respawnLoc));
+        ReActions.getActivators().activate(new RespawnStorage(player, killer, d, respawnLoc));
     }
 
 }

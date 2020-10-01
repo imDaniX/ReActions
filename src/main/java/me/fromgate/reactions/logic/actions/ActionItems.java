@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.actions;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.ItemStoragesManager;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -268,7 +268,7 @@ public class ActionItems extends Action {
         String actionItems = ItemUtils.toDisplayString(items);
         setMessageParam(actionItems);
         context.setVariable("item_str", actionItems);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(ReActionsPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().scheduleSyncDelayedTask(ReActions.getPlugin(), () -> {
             for (ItemStack i : items)
                 ItemUtils.giveItemOrDrop(player, i);
             ItemStoragesManager.triggerItemHold(player);

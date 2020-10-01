@@ -1,6 +1,6 @@
 package me.fromgate.reactions.placeholders;
 
-import me.fromgate.reactions.VariablesManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 
@@ -13,13 +13,13 @@ public class PlaceholderVariable implements Placeholder.Prefixed {
             case "variable":
                 String[] varSplit = text.split("\\.", 2);
                 if(varSplit.length > 1) {
-                    return VariablesManager.getInstance().getVariable(varSplit[0], varSplit[1]);
+                    return ReActions.getVariables().getVariable(varSplit[0], varSplit[1]);
                 } else {
-                    return VariablesManager.getInstance().getVariable("", varSplit[0]);
+                    return ReActions.getVariables().getVariable("", varSplit[0]);
                 }
 
             case "varp":
-                return VariablesManager.getInstance().getVariable(context.getPlayer().getName(), text);
+                return ReActions.getVariables().getVariable(context.getPlayer().getName(), text);
 
             default:
                 return null;

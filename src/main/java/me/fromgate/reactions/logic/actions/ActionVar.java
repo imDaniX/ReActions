@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.actions;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.VariablesManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -60,30 +60,30 @@ public class ActionVar extends Action {
 
         switch (this.actType) {
             case SET: //VAR_SET, VAR_PLAYER_SET
-                VariablesManager.getInstance().setVariable(player, var, value);
+                ReActions.getVariables().setVariable(player, var, value);
                 return true;
 
             case CLEAR: //VAR_CLEAR, VAR_PLAYER_CLEAR
-                VariablesManager.getInstance().removeVariable(player, var);
+                ReActions.getVariables().removeVariable(player, var);
                 return true;
 
             case INCREASE: { //VAR_INC, VAR_PLAYER_INC
-                String variable = VariablesManager.getInstance().getVariable(player, var);
+                String variable = ReActions.getVariables().getVariable(player, var);
                 if (variable == null || !NumberUtils.isNumber(variable)) return false;
                 double variableValue = Double.parseDouble(variable);
                 variableValue += value.isEmpty() || !(NumberUtils.isNumber(value)) ? 1 : Double.parseDouble(value);
-                VariablesManager.getInstance().setVariable(player, var, NumberUtils.format(variableValue));
+                ReActions.getVariables().setVariable(player, var, NumberUtils.format(variableValue));
                 return true;
             }
 
             // I'm lazy
 
             case DECREASE: { //VAR_DEC, VAR_PLAYER_DEC
-                String variable = VariablesManager.getInstance().getVariable(player, var);
+                String variable = ReActions.getVariables().getVariable(player, var);
                 if (variable == null || !NumberUtils.isNumber(variable)) return false;
                 double variableValue = Double.parseDouble(variable);
                 variableValue -= value.isEmpty() || !(NumberUtils.isNumber(value)) ? 1 : Double.parseDouble(value);
-                VariablesManager.getInstance().setVariable(player, var, NumberUtils.format(variableValue));
+                ReActions.getVariables().setVariable(player, var, NumberUtils.format(variableValue));
                 return true;
             }
 

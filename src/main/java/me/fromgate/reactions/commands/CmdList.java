@@ -1,7 +1,6 @@
 package me.fromgate.reactions.commands;
 
-import me.fromgate.reactions.VariablesManager;
-import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.menu.InventoryMenu;
@@ -62,7 +61,7 @@ public class CmdList extends Cmd {
                 case "var":
                 case "variables":
                 case "variable":
-                    VariablesManager.getInstance().printList(sender, page, mask);
+                    ReActions.getVariables().printList(sender, page, mask);
                     break;
                 case "menu":
                 case "menus":
@@ -80,19 +79,19 @@ public class CmdList extends Cmd {
     }
 
     private void printAct(CommandSender sender, int page, int lpp) {
-        List<String> ag = ActivatorsManager.getInstance().getNames();
+        List<String> ag = ReActions.getActivators().getNames();
         Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
-        Msg.MSG_LISTCOUNT.print(sender, ActivatorsManager.getInstance().size(), LocationHolder.sizeTpLoc());
+        Msg.MSG_LISTCOUNT.print(sender, ReActions.getActivators().size(), LocationHolder.sizeTpLoc());
     }
 
     private void printActGroup(CommandSender sender, String group, int page, int lpp) {
-        List<String> ag = ActivatorsManager.getInstance().getNamesByGroup(group);
+        List<String> ag = ReActions.getActivators().getNamesByGroup(group);
         Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
         Msg.printPage(sender, ag, null, page, lpp, true);
     }
 
     private void printActType(CommandSender sender, String type, int page, int lpp) {
-        List<String> ag = ActivatorsManager.getInstance().getNamesByType(type);
+        List<String> ag = ReActions.getActivators().getNamesByType(type);
         Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
         Msg.printPage(sender, ag, null, page, lpp, true);
     }

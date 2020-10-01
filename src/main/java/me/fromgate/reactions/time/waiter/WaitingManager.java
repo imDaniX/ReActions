@@ -1,6 +1,6 @@
 package me.fromgate.reactions.time.waiter;
 
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.StoredAction;
 import me.fromgate.reactions.util.FileUtils;
 import org.bukkit.Bukkit;
@@ -50,13 +50,13 @@ public class WaitingManager {
         }
         tasks.clear();
         YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "delayed-actions.yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
         if (!FileUtils.loadCfg(cfg, f, "Failed to load delayed actions")) return;
         for (String key : cfg.getKeys(false)) {
             WaitTask t = new WaitTask(cfg, key);
             tasks.add(t);
         }
-        Bukkit.getScheduler().runTaskTimerAsynchronously(ReActionsPlugin.getInstance(), WaitingManager::refresh, 30, 900);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(ReActions.getPlugin(), WaitingManager::refresh, 30, 900);
     }
 
     public static void refreshPlayer(Player player) {
@@ -88,9 +88,9 @@ public class WaitingManager {
     }
 
     public static void save() {
-        Bukkit.getScheduler().runTaskLater(ReActionsPlugin.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
             YamlConfiguration cfg = new YamlConfiguration();
-            File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "delayed-actions.yml");
+            File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delayed-actions.yml");
             if (f.exists()) f.delete();
             for (WaitTask t : tasks) {
                 if (!t.isExecuted()) t.save(cfg);

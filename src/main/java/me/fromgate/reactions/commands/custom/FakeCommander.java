@@ -1,7 +1,7 @@
 package me.fromgate.reactions.commands.custom;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.storages.CommandStorage;
 import me.fromgate.reactions.util.FileUtils;
@@ -28,12 +28,12 @@ public class FakeCommander {
     private final Map<String, RaCommand> commands = new HashMap<>();
 
     public void init() {
-        ReActionsPlugin.getInstance().saveResource("commands.yml", false);
+        ReActions.getPlugin().saveResource("commands.yml", false);
         updateCommands();
     }
 
     public void updateCommands() {
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "commands.yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "commands.yml");
         YamlConfiguration cfg = new YamlConfiguration();
         if (!FileUtils.loadCfg(cfg, f, "Failed to load commands")) return;
         CommandMap commandMap = getCommandMap();

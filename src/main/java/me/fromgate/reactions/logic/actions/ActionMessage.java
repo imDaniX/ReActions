@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.actions;
 
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -107,7 +107,7 @@ public class ActionMessage extends Action {
             if ((player.getMetadata(key).get(0).asLong() - System.currentTimeMillis()) > 0)
                 return false;
         }
-        player.setMetadata(key, new FixedMetadataValue(ReActionsPlugin.getInstance(), System.currentTimeMillis() + time));
+        player.setMetadata(key, new FixedMetadataValue(ReActions.getPlugin(), System.currentTimeMillis() + time));
         return true;
     }
 }

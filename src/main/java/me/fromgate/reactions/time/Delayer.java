@@ -23,7 +23,7 @@
 package me.fromgate.reactions.time;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -45,7 +45,7 @@ public class Delayer {
 
     public void save() {
         YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "delay.yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
         for (String key : delays.keySet()) {
             long delayTime = delays.get(key);
             if (delayTime > System.currentTimeMillis())
@@ -57,7 +57,7 @@ public class Delayer {
     public void load() {
         delays.clear();
         YamlConfiguration cfg = new YamlConfiguration();
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "delay.yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "delay.yml");
         if (FileUtils.loadCfg(cfg, f, "Failed to load delay configuration file"))
             for (String key : cfg.getKeys(true)) {
                 if (!key.contains(".")) continue;

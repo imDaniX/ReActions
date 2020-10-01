@@ -22,8 +22,7 @@
 
 package me.fromgate.reactions.logic;
 
-import lombok.Getter;
-import me.fromgate.reactions.ReActionsPlugin;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.logic.actions.StoredAction;
 import me.fromgate.reactions.logic.activators.Activator;
@@ -53,9 +52,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class ActivatorsManager {
-    // TODO: Remove getter
-    @Getter
-    private static ActivatorsManager instance;
 
     private Map<ActivatorType, Set<Activator>> typeActivators;
     // Names in lower case
@@ -68,7 +64,6 @@ public class ActivatorsManager {
             typeActivators.put(type, new HashSet<>());
         activators = new HashMap<>();
         stopexec = new HashSet<>();
-        ActivatorsManager.instance = this;
     }
 
     /**
@@ -99,7 +94,7 @@ public class ActivatorsManager {
     private Set<String> findGroups(String dir) {
         dir = ((dir.isEmpty()) ? "" : dir + File.separator);
         Set<String> grps = new HashSet<>();
-        File dirs = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "Activators" + File.separator + dir);
+        File dirs = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + dir);
         if (!dirs.exists()) dirs.mkdirs();
         for (File f : dirs.listFiles()) {
             if (f.isDirectory()) {
@@ -284,7 +279,7 @@ public class ActivatorsManager {
      */
     private void deleteFiles(String dir) {
         dir += dir.isEmpty() ? "" : File.separator;
-        File dirs = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "Activators" + File.separator + dir);
+        File dirs = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + dir);
         for (File f : dirs.listFiles()) {
             if (f.isDirectory())
                 deleteFiles(dir + f.getName());
@@ -309,7 +304,7 @@ public class ActivatorsManager {
     public void saveActivators(String group) {
         String g = Utils.implode(group.split("/"));
 
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + g + ".yml");
         File dir = f.getParentFile();
         if (!dir.exists()) dir.mkdirs();
 
@@ -329,7 +324,7 @@ public class ActivatorsManager {
      * @param clear Clear group before load
      */
     private void loadGroup(String group, boolean clear) {
-        File f = new File(ReActionsPlugin.getInstance().getDataFolder() + File.separator + "Activators" + File.separator + group + ".yml");
+        File f = new File(ReActions.getPlugin().getDataFolder() + File.separator + "Activators" + File.separator + group + ".yml");
         if (!f.exists()) return;
         YamlConfiguration cfg = new YamlConfiguration();
         FileUtils.loadCfg(cfg, f, "Failed to load configuration from file " + f.getAbsolutePath());

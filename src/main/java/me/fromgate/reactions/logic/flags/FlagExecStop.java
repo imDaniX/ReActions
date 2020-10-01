@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.logic.flags;
 
-import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
@@ -31,7 +31,7 @@ public class FlagExecStop implements Flag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
-        return ActivatorsManager.getInstance().isStopped(player, param, false);
+        return ReActions.getActivators().isStopped(player, param, false);
     }
 
 }
