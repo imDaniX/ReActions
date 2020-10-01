@@ -78,8 +78,8 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
         RaVault.init();
         WaitingManager.init();
         Delayer.load();
-        if (!Cfg.playerSelfVarFile) ReActions.getVariables().load();
-        else ReActions.getVariables().loadVars();
+        if (!Cfg.playerSelfVarFile) variablesManager.load();
+        else variablesManager.loadVars();
         LocationHolder.loadLocs();
         SQLManager.init();
         InventoryMenu.init();
