@@ -1,15 +1,24 @@
 package me.fromgate.reactions;
 
-import lombok.Setter;
 import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.logic.ActivatorsManager;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Objects;
+
 @UtilityClass
 public class ReActions {
-    @Setter
     private Platform platform;
+
+    public void setPlatform(Platform platform) {
+        Objects.requireNonNull(platform, "Platform cannot be null.");
+        Objects.requireNonNull(platform.getActivators(), "ActivatorsManager cannot be null.");
+        Objects.requireNonNull(platform.getPlaceholders(), "PlaceholdersManager cannot be null.");
+        Objects.requireNonNull(platform.getVariables(), "VariablesMananger cannot be null.");
+        Objects.requireNonNull(platform.getPlugin(), "Plugin cannot be null.");
+        ReActions.platform = platform;
+    }
 
     public ActivatorsManager getActivators() {
         return platform.getActivators();

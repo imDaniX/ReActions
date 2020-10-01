@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Set;
 
 @UtilityClass
+// TODO: Move to Commander.. but recode it first ;D
 public class FakeCommander {
     // TODO: Use Brigadier.. somehow
     private final Map<String, RaCommand> commands = new HashMap<>();
