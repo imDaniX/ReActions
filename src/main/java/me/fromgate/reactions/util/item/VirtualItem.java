@@ -383,8 +383,10 @@ public class VirtualItem extends ItemStack {
             put(params, "lore", itemMeta.getLore());
         if (itemMeta instanceof BookMeta) {
             BookMeta bm = (BookMeta) itemMeta;
-            put(params, "book-author", bm.getAuthor().replace('§', '&'));
-            put(params, "book-title", bm.getTitle().replace('§', '&'));
+            if (bm.hasAuthor())
+                put(params, "book-author", bm.getAuthor().replace('§', '&'));
+            if (bm.hasTitle())
+                put(params, "book-title", bm.getTitle().replace('§', '&'));
             if (!bm.getPages().isEmpty()) {
                 List<String> pages = new ArrayList<>();
                 for (String page : bm.getPages()) {
@@ -432,9 +434,8 @@ public class VirtualItem extends ItemStack {
     }
 
     private void putFireworkEffectMeta(Map<String, String> params, FireworkEffectMeta fwm) {
-        if (!fwm.hasEffect()) return;
-        put(params, "firework-effects", ItemUtils.fireworksToString(fwm.getEffect()));
-
+        if (fwm.hasEffect())
+            put(params, "firework-effects", ItemUtils.fireworksToString(fwm.getEffect()));
     }
 
     private void putEffects(Map<String, String> params, List<PotionEffect> customEffects) {

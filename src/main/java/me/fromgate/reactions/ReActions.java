@@ -15,7 +15,7 @@ public class ReActions {
         Objects.requireNonNull(platform, "Platform cannot be null.");
         Objects.requireNonNull(platform.getActivators(), "ActivatorsManager cannot be null.");
         Objects.requireNonNull(platform.getPlaceholders(), "PlaceholdersManager cannot be null.");
-        Objects.requireNonNull(platform.getVariables(), "VariablesMananger cannot be null.");
+        Objects.requireNonNull(platform.getVariables(), "VariablesManager cannot be null.");
         Objects.requireNonNull(platform.getPlugin(), "Plugin cannot be null.");
         ReActions.platform = platform;
     }
