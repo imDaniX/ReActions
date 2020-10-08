@@ -38,6 +38,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import java.util.List;
 
@@ -224,39 +225,75 @@ public class ActionItems extends Action {
         return true;
     }
 
-    private boolean removeItem(RaContext context, VirtualItem search, ItemStack item, boolean all) {
-        if (!ItemUtils.isExist(search)) return false;
-        if (search.isSimilar(item)) {
-            context.setVariable("item", ItemUtils.itemToString(item));
-            String display = ItemUtils.toDisplayString(item);
-            context.setVariable("item_str", display);
-            ItemUtils.removeItemAmount(item, all ? item.getAmount() : search.getAmount());
-            setMessageParam(display);
-            return true;
+    private boolean removeItemInInventory(RaContext context, Parameters params) {
+        VirtualItem search = VirtualItem.fromMap(params.getMap());
+        int remAmount = search.getAmount();
+        boolean all = !params.contains("amount");
+        PlayerInventory inventory = context.getPlayer().getInventory();
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack item = inventory.getItem(i);
+            if (search.isSimilar(item)) {
+                if (all) {
+                    inventory.setItem(i, null);
+                } else if (item.getAmount() > remAmount) {
+                    item.setAmount(item.getAmount() - remAmount);
+                    inventory.setItem(i, item);
+                    break;
+                } else {
+                    remAmount -= item.getAmount();
+                    inventory.setItem(i, null);
+                }
+            }
         }
-        return false;
+        context.setVariable("item", search.toString());
+        context.setVariable("item_str", search.toDisplayString());
+        return true;
     }
 
     private boolean removeItemInHand(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        return removeItem(context, search, context.getPlayer().getInventory().getItemInMainHand(), !params.contains("amount"));
+        boolean all = !params.contains("amount");
+        PlayerInventory inventory = context.getPlayer().getInventory();
+        ItemStack item = inventory.getItemInMainHand();
+        if (search.isSimilar(item)) {
+            if (all || item.getAmount() <= search.getAmount()) {
+                inventory.setItemInMainHand(null);
+            } else {
+                item.setAmount(item.getAmount() - search.getAmount());
+                inventory.setItemInMainHand(item);
+            }
+        }
+        VirtualItem result = VirtualItem.fromItemStack(item);
+        if (result != null) {
+            context.setVariable("item", result.toString());
+            context.setVariable("item_str", result.toDisplayString());
+        } else {
+            context.setVariable("item", "");
+            context.setVariable("item_str", "");
+        }
+        return true;
     }
 
     private boolean removeItemInOffHand(RaContext context, Parameters params) {
         VirtualItem search = VirtualItem.fromMap(params.getMap());
-        return removeItem(context, search, context.getPlayer().getInventory().getItemInOffHand(), !params.contains("amount"));
-    }
-
-    private boolean removeItemInInventory(RaContext context, Parameters params) {
-        VirtualItem search = VirtualItem.fromMap(params.getMap());
         boolean all = !params.contains("amount");
-        int remCount = search.getAmount();
-        for (ItemStack item : context.getPlayer().getInventory()) {
-            if (removeItem(context, search, item, all) && !all) {
-                remCount -= item.getAmount();
-                if (remCount <= 0) break;
-                search.setAmount(remCount);
+        PlayerInventory inventory = context.getPlayer().getInventory();
+        ItemStack item = inventory.getItemInOffHand();
+        if (search.isSimilar(item)) {
+            if (all || item.getAmount() <= search.getAmount()) {
+                inventory.setItemInOffHand(null);
+            } else {
+                item.setAmount(item.getAmount() - search.getAmount());
+                inventory.setItemInOffHand(item);
             }
+        }
+        VirtualItem result = VirtualItem.fromItemStack(item);
+        if (result != null) {
+            context.setVariable("item", result.toString());
+            context.setVariable("item_str", result.toDisplayString());
+        } else {
+            context.setVariable("item", "");
+            context.setVariable("item_str", "");
         }
         return true;
     }

@@ -468,19 +468,20 @@ public class VirtualItem extends ItemStack {
 
     public String toDisplayString() {
         StringBuilder sb = new StringBuilder();
-        if (this.getItemMeta().hasDisplayName()) sb.append(this.getItemMeta().getDisplayName());
+        ItemMeta meta = getItemMeta();
+        if (meta.hasDisplayName()) sb.append(meta.getDisplayName());
         else {
-            sb.append(this.getType().name());
-            if (this.getDamage() > 0) sb.append(":").append(this.getDamage());
+            sb.append(getType().name());
+            if (getDamage() > 0) sb.append(":").append(getDamage());
         }
-        if (this.getAmount() > 1) sb.append("*").append(this.getAmount());
+        if (getAmount() > 1) sb.append("*").append(getAmount());
         return ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', sb.toString()));
     }
 
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
-        sb.append(this.getItemMeta().hasDisplayName() ? this.getItemMeta()
-                .getDisplayName() : this.getType().name());
+        ItemMeta meta = this.getItemMeta();
+        sb.append(meta.hasDisplayName() ? meta : getType().name());
         if (this.getAmount() > 1)
             sb.append("*").append(this.getAmount());
         return ChatColor.stripColor(sb.toString());
@@ -499,9 +500,10 @@ public class VirtualItem extends ItemStack {
     }
 
     public void setBook(String author, String title, String pagesStr) {
-        if (!(this.getItemMeta() instanceof BookMeta))
+        ItemMeta meta = this.getItemMeta();
+        if (!(meta instanceof BookMeta))
             return;
-        BookMeta bm = (BookMeta) this.getItemMeta();
+        BookMeta bm = (BookMeta) meta;
         if (pagesStr != null) {
             String[] ln = pagesStr.split(Pattern.quote(DIVIDER));
             List<String> pages = new ArrayList<>();
