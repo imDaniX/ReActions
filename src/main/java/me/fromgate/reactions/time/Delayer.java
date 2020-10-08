@@ -70,7 +70,7 @@ public class Delayer {
     public boolean checkDelay(String id, long updateTime) {
         String idd = (id.contains(".") ? id : "global." + id);
         Long delay = delays.get(idd);
-        boolean result = delay < System.currentTimeMillis();
+        boolean result = delay == null || delay < System.currentTimeMillis();
         if (result && updateTime > 0) Delayer.setDelay(idd, updateTime, false);
         return result;
     }
