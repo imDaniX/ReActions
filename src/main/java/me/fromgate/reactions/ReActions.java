@@ -41,7 +41,6 @@ public class ReActions {
         PlaceholdersManager getPlaceholders();
         VariablesManager getVariables();
         Plugin getPlugin();
-
         // TODO: Selectors, Flags, Actions
     }
 }
