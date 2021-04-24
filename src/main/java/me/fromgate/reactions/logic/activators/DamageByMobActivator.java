@@ -72,11 +72,11 @@ public class DamageByMobActivator extends Activator {
     }
 
     public static DamageByMobActivator load(ActivatorBase base, ConfigurationSection cfg) {
-        String damagerType = cfg.getString("damager-type", "");
         String damagerName = cfg.getString("damager-name", "");
+        String damagerType = cfg.getString("damager-type", "");
         String entityType = cfg.getString("entity-type", "");
         String cause = cfg.getString("cause", "");
-        return new DamageByMobActivator(base, damagerType, damagerName, entityType, cause);
+        return new DamageByMobActivator(base, damagerName, damagerType, entityType, cause);
     }
 
     @Override
