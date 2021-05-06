@@ -244,8 +244,6 @@ public class BukkitListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onDropLoot(EntityDeathEvent event) {
-        Player killer = EntityUtils.getKiller(event.getEntity().getLastDamageCause());
-
         List<ItemStack> stacks = MobSpawn.getMobDrop(event.getEntity());
         if (stacks != null && !stacks.isEmpty()) {
             event.getDrops().clear();
@@ -257,6 +255,8 @@ public class BukkitListener implements Listener {
             event.setDroppedExp(xp);
         }
 
+        Player killer = EntityUtils.getKiller(event.getEntity().getLastDamageCause());
+
         if (event.getEntity().hasMetadata("ReActions-money")) {
             if (!RaVault.isEconomyConnected()) return;
             if (killer != null) {
@@ -266,10 +266,13 @@ public class BukkitListener implements Listener {
             }
         }
 
-        if (event.getEntity().hasMetadata("ReActions-activator") && (killer != null)) {
-            String exec = event.getEntity().getMetadata("ReActions-activator").get(0).asString();
-            StoragesManager.triggerExec(killer, exec, null);
-        } else StoragesManager.triggerMobKill(killer, event.getEntity());
+        if (killer != null) {
+            StoragesManager.triggerMobKill(killer, event.getEntity());
+            if (event.getEntity().hasMetadata("ReActions-activator")) {
+                String exec = event.getEntity().getMetadata("ReActions-activator").get(0).asString();
+                StoragesManager.triggerExec(killer, exec, null);
+            }
+        }
 
     }
 
