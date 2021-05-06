@@ -68,7 +68,7 @@ public class FakeCommander {
         RaCommand raCmd = commands.get(storage.getLabel().toLowerCase(Locale.ENGLISH));
         if (raCmd == null) return false;
         String exec = raCmd.executeCommand(storage.getSender(), storage.getArgs());
-        StoragesManager.triggerExec(storage.getSender(), exec, storage.getVariables());
+        if (exec != null) StoragesManager.triggerExec(storage.getSender(), exec, storage.getVariables());
         // It's not activator - context will not be generated
         return raCmd.isOverride();
     }

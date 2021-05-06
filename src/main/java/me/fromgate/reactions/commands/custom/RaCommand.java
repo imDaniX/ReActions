@@ -12,10 +12,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -35,12 +36,12 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
     private final SortedSet<ArgumentsChain> chains;
 
     public RaCommand(ConfigurationSection cmdSection, boolean register) {
-        super(cmdSection.getString("command"));
+        super(Objects.requireNonNull(cmdSection.getString("command")));
         this.permission = cmdSection.getString("permission");
         this.consoleAllowed = cmdSection.getBoolean("console_allowed", true);
         this.override = cmdSection.getBoolean("override", !register);
         this.tab = cmdSection.getBoolean("tab", register);
-        execs = new HashMap<>();
+        execs = new EnumMap<>(ExecType.class);
         loadExecs(cmdSection);
         chains = new TreeSet<>();
         loadArguments(cmdSection);
@@ -78,7 +79,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
         } else if (!Utils.checkPermission(sender, permission)) return getErroredExec(ExecType.NO_PERMISSIONS);
         if (args.length == 0)
             return execs.get(ExecType.DEFAULT);
-        ExecResult prioritedResult = null;
+        ExecResult prioritizedResult = null;
         for (ArgumentsChain chain : chains) {
             ExecResult result = chain.executeChain(sender, args);
             ExecType type = result.getType();
@@ -87,12 +88,12 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
             if (type == ExecType.DEFAULT) {
                 return exec == null ? execs.getOrDefault(ExecType.DEFAULT, "unknown") : exec;
             } else {
-                if (prioritedResult == null) prioritedResult = result;
+                if (prioritizedResult == null) prioritizedResult = result;
             }
         }
-        if (prioritedResult != null) {
-            String exec = prioritedResult.getExec();
-            return exec == null ? getErroredExec(prioritedResult.getType()) : exec;
+        if (prioritizedResult != null) {
+            String exec = prioritizedResult.getExec();
+            return exec == null ? getErroredExec(prioritizedResult.getType()) : exec;
         }
         String backup = execs.get(ExecType.BACKUP);
         return backup == null ? execs.getOrDefault(ExecType.DEFAULT, "unknown") : backup;
