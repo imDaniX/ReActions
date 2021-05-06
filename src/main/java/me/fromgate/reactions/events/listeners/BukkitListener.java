@@ -243,7 +243,7 @@ public class BukkitListener implements Listener {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onDropLoot(EntityDeathEvent event) {
+    public void onEntityDeath(EntityDeathEvent event) {
         List<ItemStack> stacks = MobSpawn.getMobDrop(event.getEntity());
         if (stacks != null && !stacks.isEmpty()) {
             event.getDrops().clear();
@@ -256,22 +256,17 @@ public class BukkitListener implements Listener {
         }
 
         Player killer = EntityUtils.getKiller(event.getEntity().getLastDamageCause());
+        if (killer == null) return;
 
-        if (event.getEntity().hasMetadata("ReActions-money")) {
-            if (!RaVault.isEconomyConnected()) return;
-            if (killer != null) {
-                int money = Rng.nextIntRanged(event.getEntity().getMetadata("ReActions-money").get(0).asString());
-                RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "");
-                Msg.MSG_MOBBOUNTY.print(killer, 'e', '6', RaEconomics.format(money, ""), event.getEntity().getType().name());
-            }
+        StoragesManager.triggerMobKill(killer, event.getEntity());
+        if (event.getEntity().hasMetadata("ReActions-money") && RaVault.isEconomyConnected()) {
+            int money = Rng.nextIntRanged(event.getEntity().getMetadata("ReActions-money").get(0).asString());
+            RaEconomics.creditAccount(killer.getName(), "", Double.toString(money), "");
+            Msg.MSG_MOBBOUNTY.print(killer, 'e', '6', RaEconomics.format(money, ""), event.getEntity().getType().name());
         }
-
-        if (killer != null) {
-            StoragesManager.triggerMobKill(killer, event.getEntity());
-            if (event.getEntity().hasMetadata("ReActions-activator")) {
-                String exec = event.getEntity().getMetadata("ReActions-activator").get(0).asString();
-                StoragesManager.triggerExec(killer, exec, null);
-            }
+        if (event.getEntity().hasMetadata("ReActions-activator")) {
+            String exec = event.getEntity().getMetadata("ReActions-activator").get(0).asString();
+            StoragesManager.triggerExec(killer, exec, null);
         }
 
     }
