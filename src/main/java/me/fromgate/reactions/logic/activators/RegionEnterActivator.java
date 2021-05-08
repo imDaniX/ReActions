@@ -55,7 +55,7 @@ public class RegionEnterActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         RegionEnterStorage be = (RegionEnterStorage) event;
         return be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region));
     }

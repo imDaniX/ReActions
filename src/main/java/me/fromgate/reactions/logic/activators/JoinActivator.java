@@ -47,7 +47,7 @@ public class JoinActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         JoinStorage ce = (JoinStorage) event;
         return isJoinActivate(ce.isFirstJoin());
     }

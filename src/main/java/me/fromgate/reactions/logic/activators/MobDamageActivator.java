@@ -70,7 +70,7 @@ public class MobDamageActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         MobDamageStorage me = (MobDamageStorage) event;
         if (mobType.isEmpty()) return false;
         if (me.getEntity() == null) return false;

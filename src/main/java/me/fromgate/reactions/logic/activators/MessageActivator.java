@@ -65,7 +65,7 @@ public class MessageActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         MessageStorage e = (MessageStorage) event;
         return e.isForActivator(this);
     }

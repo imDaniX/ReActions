@@ -80,7 +80,7 @@ public class LeverActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         LeverStorage le = (LeverStorage) event;
         if (le.getLever() == null) return false;
         if (!isLocatedAt(le.getLeverLocation())) return false;

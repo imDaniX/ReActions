@@ -30,7 +30,7 @@ public class PickupItemActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         PickupItemStorage pie = (PickupItemStorage) event;
         return checkItem(pie.getItem());
     }

@@ -48,7 +48,7 @@ public class RespawnActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         RespawnStorage pe = (RespawnStorage) event;
         return this.deathCause == DeathCause.ANY || pe.getDeathCause() == this.deathCause;
     }

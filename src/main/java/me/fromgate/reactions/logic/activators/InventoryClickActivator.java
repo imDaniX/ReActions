@@ -78,7 +78,7 @@ public class InventoryClickActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         InventoryClickStorage pice = (InventoryClickStorage) event;
         if (!inventoryName.isEmpty() && !pice.getInventoryName().equalsIgnoreCase(inventoryName)) return false;
         if (pice.getClickType() == null) return false;

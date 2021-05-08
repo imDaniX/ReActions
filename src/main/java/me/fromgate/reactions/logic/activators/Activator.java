@@ -17,7 +17,7 @@ public abstract class Activator {
      * @param storage Storage with data for activator
      */
     public final void executeActivator(Storage storage) {
-        if (!proceed(storage)) return;
+        if (!check(storage)) return;
         RaContext context = storage.generateContext(logic.getName());
         Actions.executeActions(context, logic, Flags.checkFlags(context, logic));
     }
@@ -47,7 +47,7 @@ public abstract class Activator {
      * @param storage Storage with data for trigger
      * @return Are checks successfully past
      */
-    public abstract boolean proceed(Storage storage);
+    public abstract boolean check(Storage storage);
 
     /**
      * Get type of activator

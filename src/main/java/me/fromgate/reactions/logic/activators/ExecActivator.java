@@ -18,7 +18,7 @@ public class ExecActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage storage) {
+    public boolean check(Storage storage) {
         return true;
     }
 

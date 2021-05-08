@@ -91,7 +91,7 @@ public class CommandActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage storage) {
+    public boolean check(Storage storage) {
         CommandStorage cs = (CommandStorage) storage;
         if (!consoleAllowed && cs.getSender() instanceof ConsoleCommandSender) return false;
         if (checkExact) {

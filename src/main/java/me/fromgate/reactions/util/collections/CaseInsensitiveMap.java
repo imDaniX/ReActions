@@ -1,8 +1,5 @@
 package me.fromgate.reactions.util.collections;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.HashMap;
@@ -12,11 +9,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Basically this is a wrapper for HashMap<String, V> which allows to ignore case of the key string
- * Works ~2.3 times faster than TreeMap<String, V>(String.CASE_INSENSITIVE_ORDER) for Map#get and Map#put
+ * Basically this is a wrapper for HashMap<String, V> which allows to ignore case of the string key
+ * For Map#get and Map#put works with O(1), while TreeMap<String, V>(String.CASE_INSENSITIVE_ORDER) is O(log(n))
  *
  * Should be used when keys are needed to save/proceed, otherwise HashMap<String, V> with String#toLowerCase
  * @param <V> Type of value
+ * @author imDaniX
  */
 public class CaseInsensitiveMap<V> implements Map<String, V> {
     private final Map<String, KeyedValue<V>> origin;
@@ -32,10 +30,7 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
     }
 
     public CaseInsensitiveMap(Map<String, V> copy) {
-        origin = new HashMap<>(copy.size());
-        keySet = new KeySet();
-        valueSet = new ValueSet();
-        entrySet = new EntrySet();
+        this();
         putAll(copy);
     }
 
@@ -77,12 +72,8 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public void putAll(Map<? extends String, ? extends V> map) {
-        if(map instanceof CaseInsensitiveMap)
-            origin.putAll(((CaseInsensitiveMap)map).origin);
-        else
-            map.forEach((k, v) -> origin.put(k.toLowerCase(Locale.ENGLISH), new KeyedValue<>(k, v)));
+        map.forEach((k, v) -> origin.put(k.toLowerCase(Locale.ENGLISH), new KeyedValue<>(k, v)));
     }
 
     @Override
@@ -105,14 +96,27 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
         return entrySet;
     }
 
-    @Getter
-    @AllArgsConstructor
     @SuppressWarnings("unchecked")
     private static class KeyedValue<V> implements Map.Entry<String, V> {
         private static final KeyedValue EMPTY = new KeyedValue(null, null);
 
         private final String key;
         private V value;
+
+        public KeyedValue(String key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        @Override
+        public String getKey() {
+            return key;
+        }
+
+        @Override
+        public V getValue() {
+            return value;
+        }
 
         @Override
         public V setValue(V value) {
@@ -207,5 +211,4 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
             }
         }
     }
-
 }

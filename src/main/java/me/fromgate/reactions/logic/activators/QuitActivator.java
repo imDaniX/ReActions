@@ -41,7 +41,7 @@ public class QuitActivator extends Activator {
     }
 
     @Override
-    public boolean proceed(Storage event) {
+    public boolean check(Storage event) {
         return true;
     }
 
