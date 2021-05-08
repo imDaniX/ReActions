@@ -38,19 +38,19 @@ import java.util.Locale;
 import java.util.function.BiConsumer;
 
 @Getter
-public final class ActivatorBase {
+public final class ActivatorLogic {
     private String group;
     private final String name;
     private final List<StoredFlag> flags = new ArrayList<>();
     private final List<StoredAction> actions = new ArrayList<>();
     private final List<StoredAction> reactions = new ArrayList<>();
 
-    public ActivatorBase(String name, String group) {
+    public ActivatorLogic(String name, String group) {
         this.name = name;
         this.group = Utils.isStringEmpty(group) ? "activators" : group;
     }
 
-    public ActivatorBase(String name, String group, ConfigurationSection cfg) {
+    public ActivatorLogic(String name, String group, ConfigurationSection cfg) {
         this.name = name;
         this.group = group == null ? "activators" : group;
         loadData(cfg.getStringList("flags"), this::addFlag);
@@ -230,9 +230,9 @@ public final class ActivatorBase {
             return true;
         if (obj instanceof String)
             return name.equalsIgnoreCase((String) obj);
-        if (!(obj instanceof ActivatorBase))
+        if (!(obj instanceof ActivatorLogic))
             return false;
-        ActivatorBase other = (ActivatorBase) obj;
+        ActivatorLogic other = (ActivatorLogic) obj;
         if (name == null)
             return other.name == null;
         if (group == null)

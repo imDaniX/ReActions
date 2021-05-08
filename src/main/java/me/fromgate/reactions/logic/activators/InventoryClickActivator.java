@@ -19,7 +19,7 @@ public class InventoryClickActivator extends Activator {
     private final String slotStr;
     private final String itemStr;
 
-    private InventoryClickActivator(ActivatorBase base, String inventoryName, ClickType click, InventoryAction action,
+    private InventoryClickActivator(ActivatorLogic base, String inventoryName, ClickType click, InventoryAction action,
                                     InventoryType inventory, SlotType slotType, String numberKey, String slotStr, String itemStr) {
         super(base);
         this.inventoryName = inventoryName;
@@ -53,7 +53,7 @@ public class InventoryClickActivator extends Activator {
         return "ANY";
     }
 
-    public static InventoryClickActivator create(ActivatorBase base, Parameters param) {
+    public static InventoryClickActivator create(ActivatorLogic base, Parameters param) {
         String inventoryName = param.getString("name", "");
         ClickType click = ClickType.getByName(param.getString("click", "ANY"));
         InventoryAction action = InventoryAction.getByName(param.getString("action", "ANY"));
@@ -65,7 +65,7 @@ public class InventoryClickActivator extends Activator {
         return new InventoryClickActivator(base, inventoryName, click, action, inventory, slotType, numberKey, slotStr, itemStr);
     }
 
-    public static InventoryClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static InventoryClickActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String inventoryName = cfg.getString("name", "");
         ClickType click = ClickType.getByName(cfg.getString("click-type", "ANY"));
         InventoryAction action = InventoryAction.getByName(cfg.getString("action-type", "ANY"));

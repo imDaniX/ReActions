@@ -40,14 +40,14 @@ public class MobDamageActivator extends Activator {
     private final String mobType;
     private final String itemStr;
 
-    private MobDamageActivator(ActivatorBase base, String type, String name, String item) {
+    private MobDamageActivator(ActivatorLogic base, String type, String name, String item) {
         super(base);
         this.mobType = type;
         this.mobName = name;
         this.itemStr = item;
     }
 
-    public static MobDamageActivator create(ActivatorBase base, Parameters param) {
+    public static MobDamageActivator create(ActivatorLogic base, Parameters param) {
         String type = param.toString();
         String name = "";
         String itemStr = "";
@@ -62,7 +62,7 @@ public class MobDamageActivator extends Activator {
         return new MobDamageActivator(base, type, name, itemStr);
     }
 
-    public static MobDamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static MobDamageActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String type = cfg.getString("mob-type", "");
         String name = cfg.getString("mob-name", "");
         String itemStr = cfg.getString("item", "");

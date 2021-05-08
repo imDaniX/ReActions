@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 @AllArgsConstructor
 public abstract class Activator {
-    protected final ActivatorBase base;
+    protected final ActivatorLogic base;
 
     /**
      * Execution of activator
@@ -23,11 +23,11 @@ public abstract class Activator {
     }
 
     /**
-     * Get activator base
+     * Get activator logic
      *
-     * @return Related activator base
+     * @return Related activator logic
      */
-    public final ActivatorBase getBase() {
+    public final ActivatorLogic getLogic() {
         return base;
     }
 

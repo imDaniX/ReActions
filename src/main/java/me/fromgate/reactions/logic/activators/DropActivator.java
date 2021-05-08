@@ -14,17 +14,17 @@ public class DropActivator extends Activator {
 
     private final String itemStr;
 
-    private DropActivator(ActivatorBase base, String itemStr) {
+    private DropActivator(ActivatorLogic base, String itemStr) {
         super(base);
         this.itemStr = itemStr;
     }
 
-    public static DropActivator create(ActivatorBase base, Parameters param) {
+    public static DropActivator create(ActivatorLogic base, Parameters param) {
         String itemStr = param.getString("item", param.toString());
         return new DropActivator(base, itemStr);
     }
 
-    public static DropActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static DropActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String itemStr = cfg.getString("item", "");
         return new DropActivator(base, itemStr);
     }

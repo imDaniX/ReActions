@@ -37,13 +37,13 @@ public class MobKillActivator extends Activator {
     private final String mobType;
     private final String mobName;
 
-    private MobKillActivator(ActivatorBase base, String type, String name) {
+    private MobKillActivator(ActivatorLogic base, String type, String name) {
         super(base);
         this.mobType = type;
         this.mobName = name;
     }
 
-    public static MobKillActivator create(ActivatorBase base, Parameters param) {
+    public static MobKillActivator create(ActivatorLogic base, Parameters param) {
         String type = param.toString();
         String name = "";
         if (param.contains("type")) {
@@ -56,7 +56,7 @@ public class MobKillActivator extends Activator {
         return new MobKillActivator(base, type, name);
     }
 
-    public static MobKillActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static MobKillActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String type = cfg.getString("mob-type", "");
         String name = cfg.getString("mob-name", "");
         return new MobKillActivator(base, type, name);

@@ -32,17 +32,17 @@ public class RespawnActivator extends Activator {
 
     private final DeathCause deathCause;
 
-    private RespawnActivator(ActivatorBase base, DeathCause cause) {
+    private RespawnActivator(ActivatorLogic base, DeathCause cause) {
         super(base);
         this.deathCause = cause;
     }
 
-    public static RespawnActivator create(ActivatorBase base, Parameters param) {
+    public static RespawnActivator create(ActivatorLogic base, Parameters param) {
         DeathCause cause = DeathCause.getByName(param.getString("cause", param.toString()));
         return new RespawnActivator(base, cause);
     }
 
-    public static RespawnActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static RespawnActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         DeathCause cause = DeathCause.getByName(cfg.getString("death-cause", "ANY"));
         return new RespawnActivator(base, cause);
     }

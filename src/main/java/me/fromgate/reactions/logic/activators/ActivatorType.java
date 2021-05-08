@@ -150,12 +150,12 @@ public enum ActivatorType {
     }
 
     public Activator create(String name, String group, Parameters param) {
-        ActivatorBase base = new ActivatorBase(name, group);
+        ActivatorLogic base = new ActivatorLogic(name, group);
         return creator.generate(base, param);
     }
 
     public Activator load(String name, String group, ConfigurationSection cfg) {
-        ActivatorBase base = new ActivatorBase(name, group, cfg);
+        ActivatorLogic base = new ActivatorLogic(name, group, cfg);
         return loader.generate(base, cfg);
     }
 

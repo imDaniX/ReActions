@@ -27,15 +27,15 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class PvpKillActivator extends Activator {
-    private PvpKillActivator(ActivatorBase base) {
+    private PvpKillActivator(ActivatorLogic base) {
         super(base);
     }
 
-    public static PvpKillActivator create(ActivatorBase base, Parameters ignore) {
+    public static PvpKillActivator create(ActivatorLogic base, Parameters ignore) {
         return new PvpKillActivator(base);
     }
 
-    public static PvpKillActivator load(ActivatorBase base, ConfigurationSection ignore) {
+    public static PvpKillActivator load(ActivatorLogic base, ConfigurationSection ignore) {
         return new PvpKillActivator(base);
     }
 

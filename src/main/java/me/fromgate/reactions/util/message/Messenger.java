@@ -35,13 +35,9 @@ public interface Messenger {
 
     String clean(String text);
 
-    boolean tip(int seconds, Object sender, String text);
-
     boolean tip(Object sender, String text);
 
     boolean print(Object sender, String text);
-
-    boolean broadcast(String permission, String text);
 
     String toString(Object obj, boolean fullFloat);
 

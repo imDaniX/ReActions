@@ -102,11 +102,6 @@ public class BukkitMessenger implements Messenger {
     }
 
     @Override
-    public boolean tip(int seconds, Object sender, String text) {
-        return tip(sender, text);
-    }
-
-    @Override
     public boolean tip(Object sender, String text) {
         Player player = toPlayer(sender);
         if (player == null)
@@ -122,16 +117,6 @@ public class BukkitMessenger implements Messenger {
             sender.sendMessage(text);
         } else {
             log("Failed to print message - wrong recipient: " + (obj == null ? "null" : obj.toString()));
-        }
-        return true;
-    }
-
-    @Override
-    public boolean broadcast(String permission, String text) {
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (permission == null || permission.isEmpty() || player.hasPermission(permission)) {
-                player.sendMessage(text);
-            }
         }
         return true;
     }

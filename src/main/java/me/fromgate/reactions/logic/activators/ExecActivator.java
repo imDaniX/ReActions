@@ -5,15 +5,15 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class ExecActivator extends Activator {
-    private ExecActivator(ActivatorBase base) {
+    private ExecActivator(ActivatorLogic base) {
         super(base);
     }
 
-    public static Activator create(ActivatorBase base, Parameters param) {
+    public static Activator create(ActivatorLogic base, Parameters param) {
         return new ExecActivator(base);
     }
 
-    public static Activator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static Activator load(ActivatorLogic base, ConfigurationSection cfg) {
         return new ExecActivator(base);
     }
 

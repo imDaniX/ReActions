@@ -38,18 +38,18 @@ public class RegionLeaveActivator extends Activator implements Locatable {
 
     private final String region;
 
-    private RegionLeaveActivator(ActivatorBase base, String region) {
+    private RegionLeaveActivator(ActivatorLogic base, String region) {
         super(base);
         this.region = region;
     }
 
-    public static RegionLeaveActivator create(ActivatorBase base, Parameters param) {
+    public static RegionLeaveActivator create(ActivatorLogic base, Parameters param) {
         String region = param.getString("region", param.toString());
         RaWorldGuard.updateRegionCache();
         return new RegionLeaveActivator(base, region);
     }
 
-    public static RegionLeaveActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static RegionLeaveActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String region = cfg.getString("region", "region");
         return new RegionLeaveActivator(base, region);
     }

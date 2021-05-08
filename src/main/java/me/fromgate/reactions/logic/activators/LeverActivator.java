@@ -43,7 +43,7 @@ public class LeverActivator extends Activator implements Locatable {
     private final int y;
     private final int z;
 
-    private LeverActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
+    private LeverActivator(ActivatorLogic base, String state, String world, int x, int y, int z) {
         super(base);
         this.state = state;
         this.world = world;
@@ -52,7 +52,7 @@ public class LeverActivator extends Activator implements Locatable {
         this.z = z;
     }
 
-    public static LeverActivator create(ActivatorBase base, Parameters p) {
+    public static LeverActivator create(ActivatorLogic base, Parameters p) {
         if (!(p instanceof BlockParameters)) return null;
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
@@ -69,7 +69,7 @@ public class LeverActivator extends Activator implements Locatable {
         } else return null;
     }
 
-    public static LeverActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static LeverActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String world = cfg.getString("world");
         int x = cfg.getInt("x");
         int y = cfg.getInt("y");

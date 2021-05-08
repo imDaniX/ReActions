@@ -18,19 +18,19 @@ public class WeChangeActivator extends Activator {
     private final Material blockType;
     private final String region;
 
-    private WeChangeActivator(ActivatorBase base, Material blockType, String region) {
+    private WeChangeActivator(ActivatorLogic base, Material blockType, String region) {
         super(base);
         this.blockType = blockType;
         this.region = region;
     }
 
-    public static WeChangeActivator create(ActivatorBase base, Parameters param) {
+    public static WeChangeActivator create(ActivatorLogic base, Parameters param) {
         Material blockType = ItemUtils.getMaterial(param.getString("blocktype"));
         String region = param.getString("region", "");
         return new WeChangeActivator(base, blockType, region);
     }
 
-    public static WeChangeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static WeChangeActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         Material blockType = ItemUtils.getMaterial(cfg.getString("block-type"));
         String region = cfg.getString("region", "");
         return new WeChangeActivator(base, blockType, region);

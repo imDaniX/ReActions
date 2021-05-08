@@ -38,17 +38,17 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
     private final String itemStr;
     // TODO: Hand option
 
-    private ItemHoldActivator(ActivatorBase base, String item) {
+    private ItemHoldActivator(ActivatorLogic base, String item) {
         super(base);
         this.itemStr = item;
     }
 
-    public static ItemHoldActivator create(ActivatorBase base, Parameters param) {
+    public static ItemHoldActivator create(ActivatorLogic base, Parameters param) {
         String item = param.getString("item", "");
         return new ItemHoldActivator(base, item);
     }
 
-    public static ItemHoldActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static ItemHoldActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String item = cfg.getString("item", "");
         return new ItemHoldActivator(base, item);
     }

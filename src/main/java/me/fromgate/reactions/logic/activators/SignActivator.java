@@ -41,13 +41,13 @@ public class SignActivator extends Activator {
     private final List<String> maskLines;
     private final ClickType click;
 
-    private SignActivator(ActivatorBase base, ClickType click, List<String> maskLines) {
+    private SignActivator(ActivatorLogic base, ClickType click, List<String> maskLines) {
         super(base);
         this.click = click;
         this.maskLines = maskLines;
     }
 
-    public static SignActivator create(ActivatorBase base, Parameters p) {
+    public static SignActivator create(ActivatorLogic base, Parameters p) {
         if (!(p instanceof BlockParameters)) return null;
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
@@ -70,7 +70,7 @@ public class SignActivator extends Activator {
         return new SignActivator(base, click, maskLines);
     }
 
-    public static SignActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static SignActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         ClickType click = ClickType.getByName(cfg.getString("click-type", "RIGHT"));
         List<String> maskLines = cfg.getStringList("sign-mask");
         return new SignActivator(base, click, maskLines);

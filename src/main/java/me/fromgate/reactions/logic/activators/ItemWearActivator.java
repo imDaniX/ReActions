@@ -35,19 +35,19 @@ public class ItemWearActivator extends Activator /*implements Manageable*/ {
     private final String item;
     // private final WearSlot slot;
 
-    private ItemWearActivator(ActivatorBase base, String item/*, WearSlot slot*/) {
+    private ItemWearActivator(ActivatorLogic base, String item/*, WearSlot slot*/) {
         super(base);
         this.item = item;
         // this.slot = slot;
     }
 
-    public static ItemWearActivator create(ActivatorBase base, Parameters param) {
+    public static ItemWearActivator create(ActivatorLogic base, Parameters param) {
         String item = param.getString("item", "param-line");
         // WearSlot slot = WearSlot.getByName(param.getParam("slot", "any"));
         return new ItemWearActivator(base, item/*, slot*/);
     }
 
-    public static ItemWearActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static ItemWearActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String item = cfg.getString("item");
         // WearSlot slot = WearSlot.getByName(cfg.getString("wear-slot", "any"));
         return new ItemWearActivator(base, item/*, slot*/);

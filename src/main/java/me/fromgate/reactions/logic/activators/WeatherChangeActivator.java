@@ -11,7 +11,7 @@ public class WeatherChangeActivator extends Activator {
     private final String world;
     private final WeatherState state;
 
-    private WeatherChangeActivator(ActivatorBase base, String world, WeatherState state) {
+    private WeatherChangeActivator(ActivatorLogic base, String world, WeatherState state) {
         super(base);
         this.world = world;
         this.state = state;
@@ -36,13 +36,13 @@ public class WeatherChangeActivator extends Activator {
         cfg.set("weather", state.name());
     }
 
-    public static WeatherChangeActivator create(ActivatorBase base, Parameters params) {
+    public static WeatherChangeActivator create(ActivatorLogic base, Parameters params) {
         String world = params.getString("world");
         WeatherState state = WeatherState.getByName(params.getString("weather", "any"));
         return new WeatherChangeActivator(base, world, state);
     }
 
-    public static WeatherChangeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static WeatherChangeActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String world = cfg.getString("world");
         WeatherState state = WeatherState.getByName(cfg.getString("weather", "any"));
         return new WeatherChangeActivator(base, world, state);

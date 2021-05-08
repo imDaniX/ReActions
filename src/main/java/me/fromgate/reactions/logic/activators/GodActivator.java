@@ -11,17 +11,17 @@ import org.bukkit.configuration.ConfigurationSection;
 public class GodActivator extends Activator {
     private final GodType god;
 
-    private GodActivator(ActivatorBase base, GodType type) {
+    private GodActivator(ActivatorLogic base, GodType type) {
         super(base);
         this.god = type;
     }
 
-    public static GodActivator create(ActivatorBase base, Parameters param) {
+    public static GodActivator create(ActivatorLogic base, Parameters param) {
         GodType type = GodType.getByName(param.getString("god", "ANY"));
         return new GodActivator(base, type);
     }
 
-    public static GodActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static GodActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         GodType type = GodType.getByName(cfg.getString("god", "ANY"));
         return new GodActivator(base, type);
     }

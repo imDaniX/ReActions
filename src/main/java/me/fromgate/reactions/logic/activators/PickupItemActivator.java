@@ -14,17 +14,17 @@ public class PickupItemActivator extends Activator {
     // TODO: Store VirtualItem
     private final String itemStr;
 
-    private PickupItemActivator(ActivatorBase base, String item) {
+    private PickupItemActivator(ActivatorLogic base, String item) {
         super(base);
         this.itemStr = item;
     }
 
-    public static PickupItemActivator create(ActivatorBase base, Parameters param) {
+    public static PickupItemActivator create(ActivatorLogic base, Parameters param) {
         String item = param.getString("item", param.toString());
         return new PickupItemActivator(base, item);
     }
 
-    public static PickupItemActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static PickupItemActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String item = cfg.getString("item", "");
         return new PickupItemActivator(base, item);
     }

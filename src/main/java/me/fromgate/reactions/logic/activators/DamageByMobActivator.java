@@ -25,7 +25,7 @@ public class DamageByMobActivator extends Activator {
     // TODO: Use Enum
     private final String damageCause;
 
-    private DamageByMobActivator(ActivatorBase base, String damagerName, String damagerType, String entityType, String damageCause) {
+    private DamageByMobActivator(ActivatorLogic base, String damagerName, String damagerType, String entityType, String damageCause) {
         super(base);
         this.damagerName = damagerName;
         this.damagerType = damagerType;
@@ -55,7 +55,7 @@ public class DamageByMobActivator extends Activator {
         return "ANY";
     }
 
-    public static DamageByMobActivator create(ActivatorBase base, Parameters param) {
+    public static DamageByMobActivator create(ActivatorLogic base, Parameters param) {
         String damagerType = param.toString();
         String damagerName;
         if (damagerType.contains("$")) {
@@ -71,7 +71,7 @@ public class DamageByMobActivator extends Activator {
         return new DamageByMobActivator(base, damagerType, damagerName, entityType, damageCause);
     }
 
-    public static DamageByMobActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static DamageByMobActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String damagerName = cfg.getString("damager-name", "");
         String damagerType = cfg.getString("damager-type", "");
         String entityType = cfg.getString("entity-type", "");

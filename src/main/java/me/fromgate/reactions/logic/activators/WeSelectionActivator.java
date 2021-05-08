@@ -11,21 +11,21 @@ public class WeSelectionActivator extends Activator {
     private final int minBlocks;
     private final String typeSelection;
 
-    private WeSelectionActivator(ActivatorBase base, int maxBlocks, int minBlocks, String typeSelection) {
+    private WeSelectionActivator(ActivatorLogic base, int maxBlocks, int minBlocks, String typeSelection) {
         super(base);
         this.maxBlocks = maxBlocks;
         this.minBlocks = minBlocks;
         this.typeSelection = typeSelection;
     }
 
-    public static WeSelectionActivator create(ActivatorBase base, Parameters param) {
+    public static WeSelectionActivator create(ActivatorLogic base, Parameters param) {
         int minBlocks = param.getInteger("minblocks", 0);
         int maxBlocks = param.getInteger("maxblocks", Integer.MAX_VALUE);
         String typeSelection = param.getString("type", "ANY");
         return new WeSelectionActivator(base, minBlocks, maxBlocks, typeSelection);
     }
 
-    public static WeSelectionActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static WeSelectionActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         int minBlocks = cfg.getInt("min-blocks", 0);
         int maxBlocks = cfg.getInt("max-blocks", Integer.MAX_VALUE);
         String typeSelection = cfg.getString("type", "ANY");

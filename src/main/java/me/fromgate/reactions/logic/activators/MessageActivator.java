@@ -36,21 +36,21 @@ public class MessageActivator extends Activator {
     private final Source source;
     private final String mask;
 
-    private MessageActivator(ActivatorBase base, CheckType type, Source source, String mask) {
+    private MessageActivator(ActivatorLogic base, CheckType type, Source source, String mask) {
         super(base);
         this.type = type;
         this.source = source;
         this.mask = mask;
     }
 
-    public static MessageActivator create(ActivatorBase base, Parameters param) {
+    public static MessageActivator create(ActivatorLogic base, Parameters param) {
         CheckType type = CheckType.getByName(param.getString("type", "EQUAL"));
         Source source = Source.getByName(param.getString("source", "CHAT_MESSAGE"));
         String mask = param.getString("mask", param.getString("message", "Message mask"));
         return new MessageActivator(base, type, source, mask);
     }
 
-    public static MessageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static MessageActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         CheckType type = CheckType.getByName(cfg.getString("type", "EQUAL"));
         Source source = Source.getByName(cfg.getString("source", "CHAT_INPUT"));
         String mask = cfg.getString("mask", "Message mask");

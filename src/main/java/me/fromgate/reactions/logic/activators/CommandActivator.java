@@ -51,7 +51,7 @@ public class CommandActivator extends Activator {
     // Is console allowed to perform this command?
     private final boolean consoleAllowed;
 
-    private CommandActivator(ActivatorBase base, String command, boolean starts, boolean useRegex, boolean consoleAllowed) {
+    private CommandActivator(ActivatorLogic base, String command, boolean starts, boolean useRegex, boolean consoleAllowed) {
         super(base);
         command = command == null ? "unknown" : command;
         this.command = command;
@@ -74,7 +74,7 @@ public class CommandActivator extends Activator {
         this.consoleAllowed = consoleAllowed;
     }
 
-    public static CommandActivator create(ActivatorBase base, Parameters param) {
+    public static CommandActivator create(ActivatorLogic base, Parameters param) {
         String command = param.getString("command", param.toString());
         boolean starts = param.getBoolean("starts", true);
         boolean useRegex = param.getBoolean("regex", false);
@@ -82,7 +82,7 @@ public class CommandActivator extends Activator {
         return new CommandActivator(base, command, starts, useRegex, consoleAllowed);
     }
 
-    public static CommandActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static CommandActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String command = cfg.getString("command");
         boolean starts = cfg.getBoolean("starts", true);
         boolean useRegex = cfg.getBoolean("regex", false);

@@ -21,7 +21,7 @@ public class DamageByBlockActivator extends Activator implements Locatable {
     private final String blockLocation;
     private final String damageCause;
 
-    private DamageByBlockActivator(ActivatorBase base, String block, String location, String cause) {
+    private DamageByBlockActivator(ActivatorLogic base, String block, String location, String cause) {
         super(base);
         this.blockStr = block;
         this.blockLocation = location;
@@ -39,14 +39,14 @@ public class DamageByBlockActivator extends Activator implements Locatable {
         return "ANY";
     }
 
-    public static DamageByBlockActivator create(ActivatorBase base, Parameters param) {
+    public static DamageByBlockActivator create(ActivatorLogic base, Parameters param) {
         String block = param.getString("block", "");
         String location = param.getString("loc", "");
         String cause = param.getString("cause", "ANY");
         return new DamageByBlockActivator(base, block, location, cause);
     }
 
-    public static DamageByBlockActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static DamageByBlockActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String block = cfg.getString("block", "");
         String location = cfg.getString("loc", "");
         String cause = cfg.getString("cause", "ANY");

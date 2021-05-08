@@ -32,17 +32,17 @@ public class DeathActivator extends Activator {
 
     private final DeathCause deathCause;
 
-    private DeathActivator(ActivatorBase base, DeathCause cause) {
+    private DeathActivator(ActivatorLogic base, DeathCause cause) {
         super(base);
         this.deathCause = cause;
     }
 
-    public static DeathActivator create(ActivatorBase base, Parameters param) {
+    public static DeathActivator create(ActivatorLogic base, Parameters param) {
         DeathCause cause = DeathCause.getByName(param.getString("cause", param.toString()));
         return new DeathActivator(base, cause);
     }
 
-    public static DeathActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static DeathActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         DeathCause cause = DeathCause.getByName(cfg.getString("death-cause"));
         return new DeathActivator(base, cause);
     }

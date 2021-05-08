@@ -1,7 +1,7 @@
 package me.fromgate.reactions.util;
 
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorBase;
+import me.fromgate.reactions.logic.activators.ActivatorLogic;
 
 /**
  * Used to generate triggers
@@ -17,5 +17,5 @@ public interface RaGenerator<T> {
      * @param data Data container
      * @return Generated activator, or null if failed
      */
-    Activator generate(ActivatorBase base, T data);
+    Activator generate(ActivatorLogic base, T data);
 }

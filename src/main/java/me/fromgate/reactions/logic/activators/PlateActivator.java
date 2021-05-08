@@ -40,7 +40,7 @@ public class PlateActivator extends Activator implements Locatable {
     private final int y;
     private final int z;
 
-    private PlateActivator(ActivatorBase base, String world, int x, int y, int z) {
+    private PlateActivator(ActivatorLogic base, String world, int x, int y, int z) {
         super(base);
         this.world = world;
         this.x = x;
@@ -48,7 +48,7 @@ public class PlateActivator extends Activator implements Locatable {
         this.z = z;
     }
 
-    public static PlateActivator create(ActivatorBase base, Parameters p) {
+    public static PlateActivator create(ActivatorLogic base, Parameters p) {
         if (!(p instanceof BlockParameters)) return null;
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
@@ -62,7 +62,7 @@ public class PlateActivator extends Activator implements Locatable {
         return null;
     }
 
-    public static PlateActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static PlateActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String world = cfg.getString("world");
         int x = cfg.getInt("x");
         int y = cfg.getInt("y");

@@ -17,7 +17,7 @@ public class ItemHeldActivator extends Activator {
     private final String itemNewStr;
     private final String itemPrevStr;
 
-    private ItemHeldActivator(ActivatorBase base, String itemPrevStr, String itemNewStr, int previousSlot, int newSlot) {
+    private ItemHeldActivator(ActivatorLogic base, String itemPrevStr, String itemNewStr, int previousSlot, int newSlot) {
         super(base);
         this.itemNewStr = itemNewStr;
         this.itemPrevStr = itemPrevStr;
@@ -25,7 +25,7 @@ public class ItemHeldActivator extends Activator {
         this.newSlot = newSlot;
     }
 
-    public static ItemHeldActivator create(ActivatorBase base, Parameters param) {
+    public static ItemHeldActivator create(ActivatorLogic base, Parameters param) {
         String itemNewStr = param.getString("itemnew", "");
         String itemPrevStr = param.getString("itemprev", "");
         int newSlot = param.getInteger("slotnew", 1);
@@ -33,7 +33,7 @@ public class ItemHeldActivator extends Activator {
         return new ItemHeldActivator(base, itemPrevStr, itemNewStr, --newSlot, --previousSlot);
     }
 
-    public static ItemHeldActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static ItemHeldActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String itemNewStr = cfg.getString("item-new");
         String itemPrevStr = cfg.getString("item-prev");
         int newSlot = cfg.getInt("slot-new", 1);

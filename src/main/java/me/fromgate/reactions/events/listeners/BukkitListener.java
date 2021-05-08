@@ -175,7 +175,7 @@ public class BukkitListener implements Listener {
         for (Activator activator : ReActions.getActivators().getActivators(ActivatorType.SIGN)) {
             SignActivator signAct = (SignActivator) activator;
             if (!signAct.checkMask(event.getLines())) continue;
-            Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getBase().getName());
+            Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getLogic().getName());
             event.setCancelled(true);
             return;
         }

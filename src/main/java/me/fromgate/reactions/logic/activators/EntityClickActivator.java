@@ -14,17 +14,17 @@ import org.bukkit.entity.EntityType;
 public class EntityClickActivator extends Activator {
     private final EntityType entityType;
 
-    private EntityClickActivator(ActivatorBase base, String entityType) {
+    private EntityClickActivator(ActivatorLogic base, String entityType) {
         super(base);
         this.entityType = Utils.getEnum(EntityType.class, entityType);
     }
 
-    public static EntityClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static EntityClickActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String entityType = cfg.getString("entity-type");
         return new EntityClickActivator(base, entityType);
     }
 
-    public static EntityClickActivator create(ActivatorBase base, Parameters param) {
+    public static EntityClickActivator create(ActivatorLogic base, Parameters param) {
         String entityType = param.getString("type", "");
         return new EntityClickActivator(base, entityType);
     }

@@ -2,7 +2,7 @@ package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorBase;
+import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.logic.flags.StoredFlag;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -32,7 +32,7 @@ public class CmdInfo extends Cmd {
 
     private void printActInfo(CommandSender sender, String activatorName, String far) {
         Activator act = ReActions.getActivators().getActivator(activatorName);
-        ActivatorBase base = act.getBase();
+        ActivatorLogic base = act.getLogic();
         boolean f;
         boolean a;
         boolean r;

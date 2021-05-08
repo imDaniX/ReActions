@@ -62,7 +62,7 @@ public class CmdAdd extends Cmd {
                     Msg.CMD_UNKNOWNBUTTON.print(sender, arg2);
                     return true;
             }
-            ReActions.getActivators().saveActivators(act.getBase().getGroup());
+            ReActions.getActivators().saveActivators(act.getLogic().getGroup());
         } else {
             Msg.CMD_UNKNOWNADD.print(sender, 'c');
         }

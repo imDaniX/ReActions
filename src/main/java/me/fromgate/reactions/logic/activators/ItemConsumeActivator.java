@@ -36,17 +36,17 @@ public class ItemConsumeActivator extends Activator {
     private final String item;
     // TODO: Hand option
 
-    private ItemConsumeActivator(ActivatorBase base, String item) {
+    private ItemConsumeActivator(ActivatorLogic base, String item) {
         super(base);
         this.item = item;
     }
 
-    public static ItemConsumeActivator create(ActivatorBase base, Parameters param) {
+    public static ItemConsumeActivator create(ActivatorLogic base, Parameters param) {
         String item = param.getString("item", param.toString());
         return new ItemConsumeActivator(base, item);
     }
 
-    public static ItemConsumeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static ItemConsumeActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String item = cfg.getString("item", "");
         return new ItemConsumeActivator(base, item);
     }

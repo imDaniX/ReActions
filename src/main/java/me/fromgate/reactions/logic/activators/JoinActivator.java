@@ -31,17 +31,17 @@ public class JoinActivator extends Activator {
 
     private final boolean firstJoin;
 
-    private JoinActivator(ActivatorBase base, boolean firstJoin) {
+    private JoinActivator(ActivatorLogic base, boolean firstJoin) {
         super(base);
         this.firstJoin = firstJoin;
     }
 
-    public static JoinActivator create(ActivatorBase base, Parameters param) {
+    public static JoinActivator create(ActivatorLogic base, Parameters param) {
         boolean firstJoin = param.toString().contains("first");
         return new JoinActivator(base, firstJoin);
     }
 
-    public static JoinActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static JoinActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         boolean firstJoin = cfg.getString("join-state", "ANY").equalsIgnoreCase("first");
         return new JoinActivator(base, firstJoin);
     }

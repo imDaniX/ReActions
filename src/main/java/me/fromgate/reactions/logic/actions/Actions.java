@@ -25,7 +25,7 @@ package me.fromgate.reactions.logic.actions;
 import lombok.Getter;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.ActionItems.ItemActionType;
-import me.fromgate.reactions.logic.activators.ActivatorBase;
+import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.BukkitMessenger;
@@ -165,7 +165,7 @@ public enum Actions {
         return name;
     }
 
-    public static void executeActions(RaContext context, ActivatorBase act, boolean isAction) {
+    public static void executeActions(RaContext context, ActivatorLogic act, boolean isAction) {
         List<StoredAction> actions = isAction ? act.getActions() : act.getReactions();
         if (actions.isEmpty()) return;
         executeActions(context, actions, isAction);

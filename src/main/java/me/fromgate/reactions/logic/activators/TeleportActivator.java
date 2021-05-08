@@ -11,19 +11,19 @@ public class TeleportActivator extends Activator {
     private final TeleportCause cause;
     private final String worldTo;
 
-    private TeleportActivator(ActivatorBase base, TeleportCause cause, String worldTo) {
+    private TeleportActivator(ActivatorLogic base, TeleportCause cause, String worldTo) {
         super(base);
         this.cause = cause;
         this.worldTo = worldTo;
     }
 
-    public static TeleportActivator create(ActivatorBase base, Parameters param) {
+    public static TeleportActivator create(ActivatorLogic base, Parameters param) {
         TeleportCause cause = Utils.getEnum(TeleportCause.class, param.getString("cause"));
         String worldTo = param.getString("world");
         return new TeleportActivator(base, cause, worldTo);
     }
 
-    public static TeleportActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static TeleportActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         TeleportCause cause = Utils.getEnum(TeleportCause.class, cfg.getString("cause"));
         String worldTo = cfg.getString("world");
         return new TeleportActivator(base, cause, worldTo);

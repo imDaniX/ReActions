@@ -13,17 +13,17 @@ import org.bukkit.configuration.ConfigurationSection;
 public class GamemodeActivator extends Activator {
     private final GameMode gameMode;
 
-    private GamemodeActivator(ActivatorBase base, GameMode gameMode) {
+    private GamemodeActivator(ActivatorLogic base, GameMode gameMode) {
         super(base);
         this.gameMode = gameMode;
     }
 
-    public static GamemodeActivator create(ActivatorBase base, Parameters param) {
+    public static GamemodeActivator create(ActivatorLogic base, Parameters param) {
         GameMode gameMode = Utils.getEnum(GameMode.class, param.getString("gamemode", "ANY"));
         return new GamemodeActivator(base, gameMode);
     }
 
-    public static GamemodeActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static GamemodeActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         GameMode gameMode = Utils.getEnum(GameMode.class, cfg.getString("gamemode", "ANY"));
         return new GamemodeActivator(base, gameMode);
     }

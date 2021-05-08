@@ -556,19 +556,6 @@ public enum Msg {
         testRequiredMessages();
     }
 
-    /**
-     * Enable debugMode
-     *
-     * @param debug
-     */
-    public static void setDebugMode(boolean debug) {
-        debugMode = debug;
-    }
-
-    public static boolean isDebug() {
-        return debugMode;
-    }
-
     private static void initMessages() {
         Map<String, String> lng = messenger.load(language);
         for (Msg key : Msg.values()) {
@@ -615,16 +602,6 @@ public enum Msg {
             messages.put(msg.name().toLowerCase(Locale.ENGLISH), msg.message);
         }
         messenger.save(language, messages);
-    }
-
-    /**
-     * Send message (formed using join method) to server log if debug mode is enabled
-     *
-     * @param s - array of any object that you need to print out.
-     */
-    public static boolean debugMessage(Object... s) {
-        if (debugMode) messenger.log(clean(join(s)));
-        return true;
     }
 
     /**
@@ -746,29 +723,6 @@ public enum Msg {
     }
 
     /**
-     * Show a message to player in center of screen (this routine unfinished yet)
-     *
-     * @param seconds — how much time (in seconds) to show message
-     * @param sender  — Player
-     * @param s       - array of any object that you need to print out.
-     * @return — always returns true.
-     */
-    public boolean tip(int seconds, Object sender, Object... s) {
-        return messenger.tip(seconds, sender, getText(s));
-    }
-
-    /**
-     * Show a message to player in center of screen
-     *
-     * @param sender — Player
-     * @param s      - array of any object that you need to print out.
-     * @return — always returns true.
-     */
-    public boolean tip(Object sender, Object... s) {
-        return messenger.tip(sender, getText(s));
-    }
-
-    /**
      * Send message to Player or to ConsoleSender
      *
      * @param sender
@@ -778,21 +732,6 @@ public enum Msg {
     public boolean print(Object sender, Object... s) {
         if (sender == null) return Msg.LNG_PRINT_FAIL.log(this.name());
         return messenger.print(sender, getText(s));
-    }
-
-    /**
-     * Send message to all players or to players with defined permission
-     *
-     * @param permission
-     * @param s          - array of any object that you need to print out.
-     * @return — always returns true.
-     * <p>
-     * Examples:
-     * Message.MSG_BROADCAST.broadcast ("pluginname.broadcast"); // send message to all players with permission "pluginname.broadcast"
-     * Message.MSG_BROADCAST.broadcast (null); // send message to all players
-     */
-    public boolean broadcast(String permission, Object... s) {
-        return messenger.broadcast(permission, getText(s));
     }
 
     /**

@@ -42,14 +42,14 @@ public class MobClickActivator extends Activator implements Locatable {
     private final String mobName;
     private final String mobLocation;
 
-    private MobClickActivator(ActivatorBase base, String type, String name, String location) {
+    private MobClickActivator(ActivatorLogic base, String type, String name, String location) {
         super(base);
         this.mobType = type;
         this.mobName = name;
         this.mobLocation = location;
     }
 
-    public static MobClickActivator create(ActivatorBase base, Parameters param) {
+    public static MobClickActivator create(ActivatorLogic base, Parameters param) {
         String type = param.toString();
         String name = "";
         String location = "";
@@ -64,7 +64,7 @@ public class MobClickActivator extends Activator implements Locatable {
         return new MobClickActivator(base, type, name, location);
     }
 
-    public static MobClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static MobClickActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String type = cfg.getString("mob-type", "");
         String name = cfg.getString("mob-name", "");
         String location = cfg.getString("location", "");

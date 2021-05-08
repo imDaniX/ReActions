@@ -37,19 +37,19 @@ public class ItemClickActivator extends Activator {
     private final String item;
     private final HandType hand;
 
-    private ItemClickActivator(ActivatorBase base, String item, HandType hand) {
+    private ItemClickActivator(ActivatorLogic base, String item, HandType hand) {
         super(base);
         this.item = item;
         this.hand = hand;
     }
 
-    public static ItemClickActivator create(ActivatorBase base, Parameters param) {
+    public static ItemClickActivator create(ActivatorLogic base, Parameters param) {
         String item = param.getString("item", param.toString());
         HandType hand = HandType.getByName(param.getString("hand", "ANY"));
         return new ItemClickActivator(base, item, hand);
     }
 
-    public static ItemClickActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static ItemClickActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String item = cfg.getString("item", "");
         HandType hand = HandType.getByName(cfg.getString("hand", "ANY"));
         return new ItemClickActivator(base, item, hand);

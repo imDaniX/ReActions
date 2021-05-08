@@ -26,7 +26,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.logic.actions.StoredAction;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorBase;
+import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activators.Locatable;
 import me.fromgate.reactions.logic.flags.Flags;
@@ -150,9 +150,9 @@ public class ActivatorsManager {
      * @return Was activator added or not
      */
     public boolean addActivator(Activator act) {
-        if (containsActivator(act.getBase().getName().toLowerCase(Locale.ENGLISH))) return false;
+        if (containsActivator(act.getLogic().getName().toLowerCase(Locale.ENGLISH))) return false;
         typeActivators.get(act.getType()).add(act);
-        activators.put(act.getBase().getName().toLowerCase(Locale.ENGLISH), act);
+        activators.put(act.getLogic().getName().toLowerCase(Locale.ENGLISH), act);
         return true;
     }
 
@@ -196,7 +196,7 @@ public class ActivatorsManager {
     public boolean clearFlags(String name) {
         Activator a = getActivator(name);
         if (a == null) return false;
-        a.getBase().clearFlags();
+        a.getLogic().clearFlags();
         return true;
     }
 
@@ -209,7 +209,7 @@ public class ActivatorsManager {
     public boolean clearActions(String name) {
         Activator a = getActivator(name);
         if (a == null) return false;
-        a.getBase().clearActions();
+        a.getLogic().clearActions();
         return true;
     }
 
@@ -222,7 +222,7 @@ public class ActivatorsManager {
     public boolean clearReactions(String name) {
         Activator a = getActivator(name);
         if (a == null) return false;
-        a.getBase().clearReactions();
+        a.getLogic().clearReactions();
         return true;
     }
 
@@ -238,7 +238,7 @@ public class ActivatorsManager {
     public boolean addFlag(String activator, String flag, String param, boolean not) {
         Activator a = getActivator(activator);
         if (a == null) return false;
-        a.getBase().addFlag(Flags.getByName(not ? flag.substring(1) : flag), param, not);
+        a.getLogic().addFlag(Flags.getByName(not ? flag.substring(1) : flag), param, not);
         return true;
     }
 
@@ -253,7 +253,7 @@ public class ActivatorsManager {
     public boolean addAction(String activator, String action, String param) {
         Activator a = getActivator(activator);
         if (a == null) return false;
-        a.getBase().addAction(action, param);
+        a.getLogic().addAction(action, param);
         return true;
     }
 
@@ -268,7 +268,7 @@ public class ActivatorsManager {
     public boolean addReaction(String activator, String action, String param) {
         Activator a = getActivator(activator);
         if (a == null) return false;
-        a.getBase().addReaction(action, param);
+        a.getLogic().addReaction(action, param);
         return true;
     }
 
@@ -293,7 +293,7 @@ public class ActivatorsManager {
     public void saveActivators() {
         deleteFiles("");
         for (Activator act : activators.values())
-            saveActivators(act.getBase().getGroup());
+            saveActivators(act.getLogic().getGroup());
     }
 
     /**
@@ -310,8 +310,8 @@ public class ActivatorsManager {
 
         YamlConfiguration cfg = new YamlConfiguration();
         for (Activator a : activators.values()) {
-            if (a.getBase().getGroup().equalsIgnoreCase(group))
-                a.saveActivator(cfg.createSection(a.getType().name() + "." + a.getBase().getName()));
+            if (a.getLogic().getGroup().equalsIgnoreCase(group))
+                a.saveActivator(cfg.createSection(a.getType().name() + "." + a.getLogic().getName()));
         }
 
         FileUtils.saveCfg(cfg, f, "Failed to save activators to file " + f.getAbsolutePath());
@@ -374,7 +374,7 @@ public class ActivatorsManager {
         for (ActivatorType type : typeActivators.keySet()) {
             Iterator<Activator> iter = typeActivators.get(type).iterator();
             while (iter.hasNext()) {
-                ActivatorBase base = iter.next().getBase();
+                ActivatorLogic base = iter.next().getLogic();
                 if (!base.getGroup().equalsIgnoreCase(name))
                     continue;
                 activators.remove(base.getName().toLowerCase(Locale.ENGLISH));
@@ -416,7 +416,7 @@ public class ActivatorsManager {
      */
     public List<String> getNamesByGroup(String group) {
         List<String> list = new ArrayList<>();
-        activators.values().stream().filter(act -> act.getBase().getGroup().equalsIgnoreCase(group)).forEach(act -> list.add(act.toString()));
+        activators.values().stream().filter(act -> act.getLogic().getGroup().equalsIgnoreCase(group)).forEach(act -> list.add(act.toString()));
         return list;
     }
 
@@ -482,10 +482,10 @@ public class ActivatorsManager {
         if (!containsActivator(actTo)) return false;
         Activator afrom = getActivator(actFrom);
         Activator ato = getActivator(actTo);
-        ato.getBase().clearActions();
-        if (!afrom.getBase().getActions().isEmpty()) {
-            for (StoredAction action : afrom.getBase().getActions())
-                ato.getBase().addAction(action.getAction(), action.getValue());
+        ato.getLogic().clearActions();
+        if (!afrom.getLogic().getActions().isEmpty()) {
+            for (StoredAction action : afrom.getLogic().getActions())
+                ato.getLogic().addAction(action.getAction(), action.getValue());
         }
         return true;
     }
@@ -502,10 +502,10 @@ public class ActivatorsManager {
         if (!containsActivator(actTo)) return false;
         Activator afrom = getActivator(actFrom);
         Activator ato = getActivator(actTo);
-        ato.getBase().clearReactions();
-        if (!afrom.getBase().getReactions().isEmpty()) {
-            for (StoredAction action : afrom.getBase().getReactions())
-                ato.getBase().addReaction(action.getAction(), action.getValue());
+        ato.getLogic().clearReactions();
+        if (!afrom.getLogic().getReactions().isEmpty()) {
+            for (StoredAction action : afrom.getLogic().getReactions())
+                ato.getLogic().addReaction(action.getAction(), action.getValue());
         }
         return true;
     }
@@ -522,10 +522,10 @@ public class ActivatorsManager {
         if (!containsActivator(actTo)) return false;
         Activator afrom = getActivator(actFrom);
         Activator ato = getActivator(actTo);
-        ato.getBase().clearFlags();
-        if (!afrom.getBase().getFlags().isEmpty()) {
-            for (StoredFlag flag : afrom.getBase().getFlags())
-                ato.getBase().addFlag(flag.getFlag(), flag.getValue(), flag.isInverted());
+        ato.getLogic().clearFlags();
+        if (!afrom.getLogic().getFlags().isEmpty()) {
+            for (StoredFlag flag : afrom.getLogic().getFlags())
+                ato.getLogic().addFlag(flag.getFlag(), flag.getValue(), flag.isInverted());
         }
         return true;
     }
@@ -540,13 +540,13 @@ public class ActivatorsManager {
     public boolean setGroup(String activator, String group) {
         Activator a = getActivator(activator);
         if (a == null) return false;
-        a.getBase().setGroup(group);
+        a.getLogic().setGroup(group);
         return true;
     }
 
     public String getGroup(String activator) {
         if (!containsActivator(activator)) return "activator";
-        return getActivator(activator).getBase().getGroup();
+        return getActivator(activator).getLogic().getGroup();
     }
 
     /**

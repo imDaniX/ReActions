@@ -20,7 +20,6 @@
  *
  */
 
-
 package me.fromgate.reactions.events.listeners;
 
 import me.fromgate.reactions.logic.StoragesManager;

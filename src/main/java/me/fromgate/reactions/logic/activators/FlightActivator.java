@@ -11,17 +11,17 @@ import org.bukkit.configuration.ConfigurationSection;
 public class FlightActivator extends Activator {
     private final FlightType flight;
 
-    private FlightActivator(ActivatorBase base, FlightType type) {
+    private FlightActivator(ActivatorLogic base, FlightType type) {
         super(base);
         this.flight = type;
     }
 
-    public static FlightActivator create(ActivatorBase base, Parameters param) {
+    public static FlightActivator create(ActivatorLogic base, Parameters param) {
         FlightType type = FlightType.getByName(param.getString("flight", "ANY"));
         return new FlightActivator(base, type);
     }
 
-    public static FlightActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static FlightActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         FlightType type = FlightType.getByName(cfg.getString("flight", "ANY"));
         return new FlightActivator(base, type);
     }

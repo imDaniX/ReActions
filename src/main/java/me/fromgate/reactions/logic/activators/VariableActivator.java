@@ -33,19 +33,19 @@ public class VariableActivator extends Activator {
     private final String id;
     private final boolean personal;
 
-    private VariableActivator(ActivatorBase base, String id, boolean personal) {
+    private VariableActivator(ActivatorLogic base, String id, boolean personal) {
         super(base);
         this.id = id;
         this.personal = personal;
     }
 
-    public static VariableActivator create(ActivatorBase base, Parameters param) {
+    public static VariableActivator create(ActivatorLogic base, Parameters param) {
         String id = param.getString("id", "UnknownVariable");
         boolean personal = param.getBoolean("personal", false);
         return new VariableActivator(base, id, personal);
     }
 
-    public static VariableActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static VariableActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String id = cfg.getString("variable-id", "UnknownVariable");
         boolean personal = cfg.getBoolean("personal", false);
         return new VariableActivator(base, id, personal);

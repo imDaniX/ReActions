@@ -44,7 +44,7 @@ public class DoorActivator extends Activator implements Locatable {
     private final int y;
     private final int z;
 
-    private DoorActivator(ActivatorBase base, String state, String world, int x, int y, int z) {
+    private DoorActivator(ActivatorLogic base, String state, String world, int x, int y, int z) {
         super(base);
         this.state = state;
         this.world = world;
@@ -53,7 +53,7 @@ public class DoorActivator extends Activator implements Locatable {
         this.z = z;
     }
 
-    public static DoorActivator create(ActivatorBase base, Parameters p) {
+    public static DoorActivator create(ActivatorLogic base, Parameters p) {
         if (!(p instanceof BlockParameters)) return null;
         BlockParameters param = (BlockParameters) p;
         Block targetBlock = param.getBlock();
@@ -68,7 +68,7 @@ public class DoorActivator extends Activator implements Locatable {
         } else return null;
     }
 
-    public static DoorActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static DoorActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String state = cfg.getString("state", "ANY");
         if (!(state.equalsIgnoreCase("open") || state.equalsIgnoreCase("close"))) state = "ANY";
         String world = cfg.getString("world");

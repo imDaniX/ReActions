@@ -18,7 +18,7 @@ public class ProjectileHitActivator extends Activator {
 
     private final HitType hitType;
 
-    private ProjectileHitActivator(ActivatorBase base, EntityType projType, Material hitBlock, BlockFace hitFace, EntityType hitEntity, HitType hitType) {
+    private ProjectileHitActivator(ActivatorLogic base, EntityType projType, Material hitBlock, BlockFace hitFace, EntityType hitEntity, HitType hitType) {
         super(base);
         this.projType = projType;
         this.hitBlock = hitBlock;
@@ -27,7 +27,7 @@ public class ProjectileHitActivator extends Activator {
         this.hitType = hitType;
     }
 
-    public static ProjectileHitActivator create(ActivatorBase base, Parameters param) {
+    public static ProjectileHitActivator create(ActivatorLogic base, Parameters param) {
         EntityType projType = Utils.getEnum(EntityType.class, param.getString("projectile", "ARROW"));
         Material hitBlock = Material.getMaterial(param.getString("block", ""));
         BlockFace hitFace = Utils.getEnum(BlockFace.class, param.getString("face", ""));
@@ -36,7 +36,7 @@ public class ProjectileHitActivator extends Activator {
         return new ProjectileHitActivator(base, projType, hitBlock, hitFace, hitEntity, hitType);
     }
 
-    public static ProjectileHitActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static ProjectileHitActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         EntityType projType = Utils.getEnum(EntityType.class, cfg.getString("projectile-type", "ARROW"));
         Material hitBlock = Material.getMaterial(cfg.getString("block-type", ""));
         BlockFace hitFace = Utils.getEnum(BlockFace.class, cfg.getString("block=face", ""));

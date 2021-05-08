@@ -39,7 +39,7 @@ public class ButtonActivator extends Activator implements Locatable {
     private final int y;
     private final int z;
 
-    private ButtonActivator(ActivatorBase base, String world, int x, int y, int z) {
+    private ButtonActivator(ActivatorLogic base, String world, int x, int y, int z) {
         super(base);
         this.world = world;
         this.x = x;
@@ -47,14 +47,14 @@ public class ButtonActivator extends Activator implements Locatable {
         this.z = z;
     }
 
-    public static ButtonActivator create(ActivatorBase base, Parameters p) {
+    public static ButtonActivator create(ActivatorLogic base, Parameters p) {
         if (!(p instanceof BlockParameters)) return null;
         BlockParameters param = (BlockParameters) p;
         Location loc = param.getBlock().getLocation();
         return new ButtonActivator(base, loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }
 
-    public static ButtonActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static ButtonActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         int x = cfg.getInt("x", 0);
         int y = cfg.getInt("y", 0);
         int z = cfg.getInt("z", 0);

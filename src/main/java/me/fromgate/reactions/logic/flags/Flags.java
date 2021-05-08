@@ -23,7 +23,7 @@
 package me.fromgate.reactions.logic.flags;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activators.ActivatorBase;
+import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.logic.flags.worldedit.FlagRegionInRadius;
 import me.fromgate.reactions.logic.flags.worldedit.FlagSelectionBlocks;
 import me.fromgate.reactions.logic.flags.worldedit.FlagSuperPickAxe;
@@ -162,11 +162,11 @@ public enum Flags {
         return check;
     }
 
-    public static boolean checkFlags(RaContext context, ActivatorBase c) {
+    public static boolean checkFlags(RaContext context, ActivatorLogic c) {
         return RaDebug.checkFlagAndDebug(context.getPlayer(), checkAllFlags(context, c));
     }
 
-    public static boolean checkAllFlags(RaContext context, ActivatorBase c) {
+    public static boolean checkAllFlags(RaContext context, ActivatorLogic c) {
         if (c.getFlags().size() > 0)
             for (int i = 0; i < c.getFlags().size(); i++) {
                 StoredFlag f = c.getFlags().get(i);

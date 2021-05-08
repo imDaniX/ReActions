@@ -11,17 +11,17 @@ import org.bukkit.configuration.ConfigurationSection;
 public class SneakActivator extends Activator {
     private final SneakType sneak;
 
-    private SneakActivator(ActivatorBase base, SneakType sneak) {
+    private SneakActivator(ActivatorLogic base, SneakType sneak) {
         super(base);
         this.sneak = sneak;
     }
 
-    public static SneakActivator create(ActivatorBase base, Parameters param) {
+    public static SneakActivator create(ActivatorLogic base, Parameters param) {
         SneakType sneak = SneakType.getByName(param.getString("sneak", "ANY"));
         return new SneakActivator(base, sneak);
     }
 
-    public static SneakActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static SneakActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         SneakType sneak = SneakType.getByName(cfg.getString("sneak", "ANY"));
         return new SneakActivator(base, sneak);
     }

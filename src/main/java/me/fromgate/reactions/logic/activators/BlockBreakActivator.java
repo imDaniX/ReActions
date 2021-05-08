@@ -21,19 +21,19 @@ public class BlockBreakActivator extends Activator implements Locatable {
     // TODO: VirtualLocation
     private final String blockLocation;
 
-    private BlockBreakActivator(ActivatorBase base, Material block, String location) {
+    private BlockBreakActivator(ActivatorLogic base, Material block, String location) {
         super(base);
         this.blockType = block;
         this.blockLocation = location;
     }
 
-    public static BlockBreakActivator create(ActivatorBase base, Parameters param) {
+    public static BlockBreakActivator create(ActivatorLogic base, Parameters param) {
         Material block = ItemUtils.getMaterial(param.getString("block"));
         String loc = param.getString("loc");
         return new BlockBreakActivator(base, block, loc);
     }
 
-    public static BlockBreakActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static BlockBreakActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         Material block = ItemUtils.getMaterial(cfg.getString("block"));
         String loc = cfg.getString("loc");
         return new BlockBreakActivator(base, block, loc);

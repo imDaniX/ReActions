@@ -28,15 +28,15 @@ import org.bukkit.configuration.ConfigurationSection;
 
 public class QuitActivator extends Activator {
 
-    private QuitActivator(ActivatorBase base) {
+    private QuitActivator(ActivatorLogic base) {
         super(base);
     }
 
-    public static QuitActivator create(ActivatorBase base, Parameters ignore) {
+    public static QuitActivator create(ActivatorLogic base, Parameters ignore) {
         return new QuitActivator(base);
     }
 
-    public static QuitActivator load(ActivatorBase base, ConfigurationSection ignore) {
+    public static QuitActivator load(ActivatorLogic base, ConfigurationSection ignore) {
         return new QuitActivator(base);
     }
 

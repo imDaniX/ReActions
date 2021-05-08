@@ -15,19 +15,19 @@ public class DamageActivator extends Activator {
     private final String damageCause;
     private final DamageType source;
 
-    private DamageActivator(ActivatorBase base, String cause, DamageType source) {
+    private DamageActivator(ActivatorLogic base, String cause, DamageType source) {
         super(base);
         this.damageCause = cause;
         this.source = source;
     }
 
-    public static DamageActivator create(ActivatorBase base, Parameters param) {
+    public static DamageActivator create(ActivatorLogic base, Parameters param) {
         String cause = param.getString("cause", "ANY");
         DamageType source = DamageType.getByName(param.getString("source", "ANY"));
         return new DamageActivator(base, cause, source);
     }
 
-    public static DamageActivator load(ActivatorBase base, ConfigurationSection cfg) {
+    public static DamageActivator load(ActivatorLogic base, ConfigurationSection cfg) {
         String cause = cfg.getString("cause", "ANY");
         DamageType source = DamageType.getByName(cfg.getString("source", "ANY"));
         return new DamageActivator(base, cause, source);
