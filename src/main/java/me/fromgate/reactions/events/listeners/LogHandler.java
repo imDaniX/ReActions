@@ -21,7 +21,7 @@
  */
 
 
-package me.fromgate.reactions.util.message;
+package me.fromgate.reactions.events.listeners;
 
 import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.activators.MessageActivator;
