@@ -26,6 +26,7 @@ public class Cfg {
     public static int playerMoveTaskTick = 5;
     public static boolean godActivatorEnable = false; // experimental, disabled by default
     public static int godActivatorCheckTicks = 10;
+    public static boolean altOperator = false; // experimental, disabled by default
     private static FileConfiguration config;
 
     static {
@@ -54,6 +55,7 @@ public class Cfg {
         config.set("reactions.default-chat-line-length", chatLength);
         config.set("actions.shoot.break-block", Shoot.actionShootBreak);
         config.set("actions.shoot.penetrable", Shoot.actionShootThrough);
+        config.set("actions.cmd_op.proxy-operator", false);
 
         ReActions.getPlugin().saveConfig();
     }
@@ -81,5 +83,6 @@ public class Cfg {
         horizontalPushback = config.getBoolean("reactions.horizontal-pushback-action", false);
         Shoot.actionShootBreak = config.getString("actions.shoot.break-block", Shoot.actionShootBreak);
         Shoot.actionShootThrough = config.getString("actions.shoot.penetrable", Shoot.actionShootThrough);
+        altOperator = config.getBoolean("actions.cmd_op.proxy-operator", false);
     }
 }

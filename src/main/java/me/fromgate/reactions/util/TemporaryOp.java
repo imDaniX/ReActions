@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Proxy;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -26,4 +27,17 @@ public class TemporaryOp {
             sender.setOp(false);
     }
 
+    @SuppressWarnings("unchecked")
+    public <T extends CommandSender> T asOp(T sender) {
+        return (T) Proxy.newProxyInstance(
+                sender.getClass().getClassLoader(),
+                sender.getClass().getInterfaces(),
+                (proxy, method, args) -> {
+                        switch (method.getName()) {
+                            case "isOp": case "hasPermission": return true;
+                            default: return method.invoke(sender, args);
+                        }
+                }
+        );
+    }
 }

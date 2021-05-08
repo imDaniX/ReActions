@@ -23,6 +23,7 @@
 package me.fromgate.reactions.logic.actions;
 
 import lombok.AllArgsConstructor;
+import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.TemporaryOp;
 import me.fromgate.reactions.util.data.RaContext;
@@ -39,10 +40,14 @@ public class ActionCommand extends Action {
     private static void dispatchCommand(final boolean setOp, final CommandSender sender, final String commandLine) {
         Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> {
             if (setOp) {
-                TemporaryOp.setOp(sender);
-                Bukkit.getServer().dispatchCommand(sender, commandLine);
-                TemporaryOp.removeOp(sender);
-            } else Bukkit.getServer().dispatchCommand(sender, commandLine);
+                if (Cfg.altOperator) {
+                    Bukkit.dispatchCommand(TemporaryOp.asOp(sender), commandLine);
+                } else {
+                    TemporaryOp.setOp(sender);
+                    Bukkit.dispatchCommand(sender, commandLine);
+                    TemporaryOp.removeOp(sender);
+                }
+            } else Bukkit.dispatchCommand(sender, commandLine);
         });
     }
 
@@ -52,7 +57,7 @@ public class ActionCommand extends Action {
         if (commandAs != Type.CONSOLE && player == null) return false;
         String commandLine = params.toString();
         switch (commandAs) {
-            case NORMAL:
+            default:
                 dispatchCommand(false, player, commandLine);
                 break;
             case OP:
@@ -65,8 +70,6 @@ public class ActionCommand extends Action {
                 commandLine = commandLine.replaceFirst("/", "");
                 player.chat("/" + commandLine);
                 break;
-            default:
-                assert false;
         }
         return true;
     }
