@@ -111,7 +111,6 @@ public class DoorActivator extends Activator implements Locatable {
         cfg.set("y", y);
         cfg.set("z", z);
         cfg.set("state", state);
-        cfg.set("lever-state", null);
     }
 
     @Override

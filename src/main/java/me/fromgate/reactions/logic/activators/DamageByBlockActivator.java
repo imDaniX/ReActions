@@ -2,6 +2,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.DamageByBlockStorage;
 import me.fromgate.reactions.logic.storages.Storage;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -96,8 +97,8 @@ public class DamageByBlockActivator extends Activator implements Locatable {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("block", this.blockStr);
-        cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+        cfg.set("block", blockStr);
+        cfg.set("location", Utils.isStringEmpty(blockLocation) ? null : this.blockLocation);
         cfg.set("cause", this.damageCause);
     }
 

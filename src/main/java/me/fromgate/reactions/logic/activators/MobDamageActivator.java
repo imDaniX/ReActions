@@ -98,9 +98,9 @@ public class MobDamageActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("mob-type", this.mobType);
-        cfg.set("mob-name", this.mobName);
-        cfg.set("item", this.itemStr);
+        cfg.set("mob-type", mobType);
+        cfg.set("mob-name", mobName);
+        cfg.set("item", itemStr);
     }
 
     @Override

@@ -52,9 +52,9 @@ public class WeSelectionActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("min-blocks", this.minBlocks);
-        cfg.set("max-blocks", this.maxBlocks);
-        cfg.set("type", this.typeSelection);
+        cfg.set("min-blocks", minBlocks);
+        cfg.set("max-blocks", maxBlocks);
+        cfg.set("type", typeSelection);
     }
 
     @Override

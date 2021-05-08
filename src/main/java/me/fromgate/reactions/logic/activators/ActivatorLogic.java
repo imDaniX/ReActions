@@ -212,7 +212,7 @@ public final class ActivatorLogic {
      *
      * @param cfg Config for activator
      */
-    public void saveBase(ConfigurationSection cfg) {
+    public void save(ConfigurationSection cfg) {
         List<String> flg = new ArrayList<>();
         for (StoredFlag f : flags) flg.add(f.toString());
         cfg.set("flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);

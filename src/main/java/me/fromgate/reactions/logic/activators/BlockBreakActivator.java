@@ -71,8 +71,8 @@ public class BlockBreakActivator extends Activator implements Locatable {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        if (blockType != null) cfg.set("block", this.blockType.name());
-        cfg.set("location", Utils.isStringEmpty(blockLocation) ? null : this.blockLocation);
+        cfg.set("block", blockType == null ? null : blockType.name());
+        cfg.set("location", Utils.isStringEmpty(blockLocation) ? null : blockLocation);
     }
 
     @Override

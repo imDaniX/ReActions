@@ -53,7 +53,7 @@ public class ItemConsumeActivator extends Activator {
 
     public boolean proceed(Storage event) {
         if (this.item.isEmpty() || VirtualItem.fromString(this.item) == null) {
-            Msg.logOnce(base.getName() + "activatoritemempty", "Failed to parse item of activator " + base.getName());
+            Msg.logOnce(logic.getName() + "activatoritemempty", "Failed to parse item of activator " + logic.getName());
             return false;
         }
         ItemConsumeStorage ie = (ItemConsumeStorage) event;
@@ -61,7 +61,7 @@ public class ItemConsumeActivator extends Activator {
     }
 
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("item", this.item);
+        cfg.set("item", item);
     }
 
     public ActivatorType getType() {

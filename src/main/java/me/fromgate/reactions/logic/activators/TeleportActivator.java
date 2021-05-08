@@ -43,7 +43,7 @@ public class TeleportActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        if (cause != null) cfg.set("cause", cause.name());
-        if (worldTo != null) cfg.set("world", worldTo);
+        cfg.set("cause", cause == null ? null : cause.name());
+        cfg.set("world", worldTo);
     }
 }

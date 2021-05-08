@@ -74,7 +74,7 @@ public class RegionActivator extends Activator implements Locatable {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("region", this.region);
+        cfg.set("region", region);
     }
 
     @Override

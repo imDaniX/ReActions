@@ -94,14 +94,14 @@ public class InventoryClickActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("name", this.inventoryName);
+        cfg.set("name", inventoryName);
         cfg.set("click-type", click.name());
         cfg.set("action-type", action.name());
         cfg.set("inventory-type", inventory.name());
         cfg.set("slot-type", slotType.name());
-        cfg.set("key", this.numberKey);
-        cfg.set("slot", this.slotStr);
-        cfg.set("item", this.itemStr);
+        cfg.set("key", numberKey);
+        cfg.set("slot", slotStr);
+        cfg.set("item", itemStr);
     }
 
     @Override

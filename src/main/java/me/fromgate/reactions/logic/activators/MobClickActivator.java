@@ -111,9 +111,9 @@ public class MobClickActivator extends Activator implements Locatable {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("mob-type", this.mobType);
-        cfg.set("mob-name", this.mobName.isEmpty() ? null : this.mobName);
-        cfg.set("location", this.mobLocation.isEmpty() ? null : this.mobLocation);
+        cfg.set("mob-type", mobType);
+        cfg.set("mob-name", mobName.isEmpty() ? null : mobName);
+        cfg.set("location", mobLocation.isEmpty() ? null : mobLocation);
     }
 
     @Override

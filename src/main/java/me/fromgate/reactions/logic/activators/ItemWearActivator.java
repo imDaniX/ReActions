@@ -56,7 +56,7 @@ public class ItemWearActivator extends Activator /*implements Manageable*/ {
     @Override
     public boolean proceed(Storage event) {
         if (item.isEmpty() || (VirtualItem.fromString(item) == null)) {
-            Msg.logOnce(base.getName() + "activatorwearempty", "Failed to parse item of activator " + base.getName());
+            Msg.logOnce(logic.getName() + "activatorwearempty", "Failed to parse item of activator " + logic.getName());
             return false;
         }
         ItemWearStorage iw = (ItemWearStorage) event;
@@ -65,7 +65,7 @@ public class ItemWearActivator extends Activator /*implements Manageable*/ {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("item", this.item);
+        cfg.set("item", item);
         // cfg.set("wear-slot", this.slot.name());
     }
 

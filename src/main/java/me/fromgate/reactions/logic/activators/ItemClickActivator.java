@@ -58,7 +58,7 @@ public class ItemClickActivator extends Activator {
     @Override
     public boolean proceed(Storage event) {
         if (item.isEmpty() || (VirtualItem.fromString(item) == null)) {
-            Msg.logOnce(base.getName() + "activatoritemempty", "Failed to parse item of activator " + base.getName());
+            Msg.logOnce(logic.getName() + "activatoritemempty", "Failed to parse item of activator " + logic.getName());
             return false;
         }
         ItemClickStorage ie = (ItemClickStorage) event;
@@ -68,8 +68,8 @@ public class ItemClickActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("item", this.item);
-        cfg.set("hand", this.hand.name());
+        cfg.set("item", item);
+        cfg.set("hand", hand.name());
     }
 
     @Override

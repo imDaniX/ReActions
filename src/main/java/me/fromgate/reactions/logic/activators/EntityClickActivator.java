@@ -42,7 +42,7 @@ public class EntityClickActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("entity-type", this.entityType.name());
+        cfg.set("entity-type", entityType.name());
     }
 
     @Override

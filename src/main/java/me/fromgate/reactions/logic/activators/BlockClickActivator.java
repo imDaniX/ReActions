@@ -24,6 +24,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.logic.storages.BlockClickStorage;
 import me.fromgate.reactions.logic.storages.Storage;
+import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.enums.ClickType;
 import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -97,9 +98,9 @@ public class BlockClickActivator extends Activator implements Locatable {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        if (blockType != null) cfg.set("block-type", this.blockType.name());
+        cfg.set("block-type", blockType == null ? null : blockType.name());
         cfg.set("click-type", click.name());
-        cfg.set("location", this.blockLocation.isEmpty() ? null : this.blockLocation);
+        cfg.set("location", Utils.isStringEmpty(blockLocation) ? null : blockLocation);
     }
 
     @Override

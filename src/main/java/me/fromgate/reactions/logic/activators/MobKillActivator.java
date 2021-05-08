@@ -85,8 +85,8 @@ public class MobKillActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("mob-type", this.mobType);
-        cfg.set("mob-name", this.mobName);
+        cfg.set("mob-type", mobType);
+        cfg.set("mob-name", mobName);
     }
 
     @Override

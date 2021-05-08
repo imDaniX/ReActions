@@ -56,7 +56,7 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
     @Override
     public boolean proceed(Storage event) {
         if (itemStr.isEmpty() || (VirtualItem.fromString(itemStr) == null)) {
-            Msg.logOnce(base.getName() + "activatorholdempty", "Failed to parse itemStr of activator " + base.getName());
+            Msg.logOnce(logic.getName() + "activatorholdempty", "Failed to parse itemStr of activator " + logic.getName());
             return false;
         }
         ItemHoldStorage ie = (ItemHoldStorage) event;
@@ -65,7 +65,7 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("item", this.itemStr);
+        cfg.set("item", itemStr);
     }
 
     @Override

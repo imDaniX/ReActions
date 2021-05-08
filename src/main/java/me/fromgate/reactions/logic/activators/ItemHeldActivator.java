@@ -56,10 +56,10 @@ public class ItemHeldActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("item-new", this.itemNewStr);
-        cfg.set("item-prev", this.itemPrevStr);
-        cfg.set("slot-new", this.newSlot + 1);
-        cfg.set("slot-prev", this.previousSlot + 1);
+        cfg.set("item-new", itemNewStr);
+        cfg.set("item-prev", itemPrevStr);
+        cfg.set("slot-new", newSlot + 1);
+        cfg.set("slot-prev", previousSlot + 1);
     }
 
     @Override

@@ -37,7 +37,7 @@ public class PickupItemActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("item", this.itemStr);
+        cfg.set("item", itemStr);
     }
 
     @Override

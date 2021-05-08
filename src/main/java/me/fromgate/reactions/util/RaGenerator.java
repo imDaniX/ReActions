@@ -11,7 +11,7 @@ import me.fromgate.reactions.logic.activators.ActivatorLogic;
 @FunctionalInterface
 public interface RaGenerator<T> {
     /**
-     * Generate activator from base and data container
+     * Generate activator from logic and data container
      *
      * @param base Base of activator
      * @param data Data container

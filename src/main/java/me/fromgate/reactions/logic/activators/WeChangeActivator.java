@@ -49,8 +49,8 @@ public class WeChangeActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        if (blockType != null) cfg.set("block-type", this.blockType.name());
-        cfg.set("region", this.region);
+        cfg.set("block-type", blockType == null ? null : blockType.name());
+        cfg.set("region", region);
     }
 
     @Override

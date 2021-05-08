@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 @AllArgsConstructor
 public abstract class Activator {
-    protected final ActivatorLogic base;
+    protected final ActivatorLogic logic;
 
     /**
      * Execution of activator
@@ -18,8 +18,8 @@ public abstract class Activator {
      */
     public final void executeActivator(Storage storage) {
         if (!proceed(storage)) return;
-        RaContext context = storage.generateContext(base.getName());
-        Actions.executeActions(context, base, Flags.checkFlags(context, base));
+        RaContext context = storage.generateContext(logic.getName());
+        Actions.executeActions(context, logic, Flags.checkFlags(context, logic));
     }
 
     /**
@@ -28,7 +28,7 @@ public abstract class Activator {
      * @return Related activator logic
      */
     public final ActivatorLogic getLogic() {
-        return base;
+        return logic;
     }
 
     /**
@@ -37,7 +37,7 @@ public abstract class Activator {
      * @param cfg Section of activator
      */
     public final void saveActivator(ConfigurationSection cfg) {
-        base.saveBase(cfg);
+        logic.save(cfg);
         saveOptions(cfg);
     }
 
@@ -62,6 +62,7 @@ public abstract class Activator {
      * @param cfg Section of activator
      */
     public void saveOptions(ConfigurationSection cfg) {
+        // Sometimes we don't need those
     }
 
     /**
@@ -75,13 +76,13 @@ public abstract class Activator {
 
     @Override
     public int hashCode() {
-        return base.hashCode();
+        return logic.hashCode();
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(base.getGroup()).append(", ").append(base.getName()).append(" [").append(getType()).append("]");
-        sb.append(base.toString());
+        StringBuilder sb = new StringBuilder(logic.getGroup()).append(", ").append(logic.getName()).append(" [").append(getType()).append("]");
+        sb.append(logic.toString());
         return sb.toString();
     }
 }

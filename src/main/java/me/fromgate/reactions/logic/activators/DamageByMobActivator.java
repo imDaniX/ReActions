@@ -110,10 +110,10 @@ public class DamageByMobActivator extends Activator {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("damager-type", this.damagerType);
-        cfg.set("damager-name", this.damagerName);
-        cfg.set("entity-type", this.entityType);
-        cfg.set("cause", this.damageCause);
+        cfg.set("damager-type", damagerType);
+        cfg.set("damager-name", damagerName);
+        cfg.set("entity-type", entityType);
+        cfg.set("cause", damageCause);
     }
 
     @Override

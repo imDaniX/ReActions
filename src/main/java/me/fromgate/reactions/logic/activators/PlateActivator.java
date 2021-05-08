@@ -95,7 +95,7 @@ public class PlateActivator extends Activator implements Locatable {
 
     @Override
     public void saveOptions(ConfigurationSection cfg) {
-        cfg.set("world", this.world);
+        cfg.set("world", world);
         cfg.set("x", x);
         cfg.set("y", y);
         cfg.set("z", z);

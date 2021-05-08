@@ -176,8 +176,8 @@ public abstract class ActivatorType {
 		byName.put(alias.toUpperCase(Locale.ENGLISH), this);
 	}
 
-	public abstract Activator create(ActivatorBase base, Param params);
+	public abstract Activator create(ActivatorBase logic, Param params);
 
-	public abstract Activator load(ActivatorBase base, ConfigurationSection cfg);
+	public abstract Activator load(ActivatorBase logic, ConfigurationSection cfg);
 }
 */
