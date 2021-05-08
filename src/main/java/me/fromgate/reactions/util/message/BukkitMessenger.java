@@ -86,7 +86,7 @@ public class BukkitMessenger implements Messenger {
 
     @Override
     public boolean broadcast(String text) {
-        Bukkit.getServer().broadcastMessage(text);
+        Bukkit.broadcastMessage(text);
         return true;
     }
 

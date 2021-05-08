@@ -131,7 +131,7 @@ public class Shoot {
 
     public boolean breakBlock(Block b, Player p) {
         BlockBreakEvent event = new BlockBreakEvent(b, p);
-        Bukkit.getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         return !event.isCancelled();
     }
 
@@ -153,7 +153,7 @@ public class Shoot {
         entity.setVelocity(eDirection);
 
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(damager, entity, DamageCause.ENTITY_ATTACK, damage);
-        Bukkit.getServer().getPluginManager().callEvent(event);
+        Bukkit.getPluginManager().callEvent(event);
         if (!(event.isCancelled()))
             entity.damage(damage);
         return !event.isCancelled();

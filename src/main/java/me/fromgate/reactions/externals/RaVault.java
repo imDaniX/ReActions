@@ -60,7 +60,7 @@ public class RaVault {
 
 
     private boolean setupPermissions() {
-        RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
         if (permissionProvider != null) {
             permission = permissionProvider.getProvider();
         }
@@ -68,7 +68,7 @@ public class RaVault {
     }
 
     private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        RegisteredServiceProvider<Economy> economyProvider = Bukkit.getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
             economy = economyProvider.getProvider();
         }
@@ -110,7 +110,7 @@ public class RaVault {
     }
 
     private boolean checkVault() {
-        Plugin vplg = Bukkit.getServer().getPluginManager().getPlugin("Vault");
+        Plugin vplg = Bukkit.getPluginManager().getPlugin("Vault");
         return vplg != null;
     }
 

@@ -58,7 +58,7 @@ public abstract class WGBridge {
     }
 
     private void connectToWorldGuard() {
-        Plugin twn = Bukkit.getServer().getPluginManager().getPlugin("WorldGuard");
+        Plugin twn = Bukkit.getPluginManager().getPlugin("WorldGuard");
         if (twn == null) return;
         wgPlugin = twn;
         connected = true;

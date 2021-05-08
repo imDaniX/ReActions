@@ -34,7 +34,7 @@ public class RaWorldEdit {
 
     public void init() {
         try {
-            Plugin plugin = Bukkit.getServer().getPluginManager().getPlugin("WorldEdit");
+            Plugin plugin = Bukkit.getPluginManager().getPlugin("WorldEdit");
             worldedit = (WorldEditPlugin) plugin;
             worldedit.getWorldEdit().getEventBus().register(new WeListener());
             connected = true;

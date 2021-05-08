@@ -54,7 +54,7 @@ public class MoveListener implements Listener {
                 processMove(pl, from, to);
                 prevLocations.put(pl.getUniqueId(), to);
             }), 30, Cfg.playerMoveTaskTick);
-        } else Bukkit.getServer().getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
+        } else Bukkit.getPluginManager().registerEvents(new MoveListener(), ReActions.getPlugin());
     }
 
     private static void processMove(Player player, Location from, Location to) {
