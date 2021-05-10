@@ -22,7 +22,6 @@ import java.util.TreeSet;
 
 /**
  * Custom implementation of Bukkit's Command just for ReActions - should not be used in other plugins
- * Method execute(...) is ignored and executeCommand(...) is used instead
  */
 public final class RaCommand extends Command implements PluginIdentifiableCommand {
     private final String permission;
@@ -112,6 +111,7 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
 
     @Override
     public final boolean execute(CommandSender sender, String commandLabel, String[] args) {
+        executeCommand(sender, args);
         return true;
     }
 
