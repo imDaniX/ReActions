@@ -17,6 +17,11 @@ public class RaPapiExpansion extends PlaceholderExpansion {
     }
 
     @Override
+    public boolean canRegister() {
+        return true;
+    }
+
+    @Override
     public String getIdentifier() {
         return IDENTIFIER;
     }

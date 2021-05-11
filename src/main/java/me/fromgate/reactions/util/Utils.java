@@ -293,11 +293,14 @@ public class Utils {
         return false;
     }
 
-    public static String[] getAliases(Object obj) {
-        Class<?> clazz = obj.getClass();
+    public static String[] getAliases(Class<?> clazz) {
         if(clazz.isAnnotationPresent(Alias.class)) {
             return clazz.getAnnotation(Alias.class).value();
         }
         return EMPTY_ARRAY;
+    }
+
+    public static String[] getAliases(Object obj) {
+        return getAliases(obj.getClass());
     }
 }

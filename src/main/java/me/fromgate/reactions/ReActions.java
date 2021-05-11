@@ -1,7 +1,7 @@
 package me.fromgate.reactions;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.OldActivatorsManager;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import org.bukkit.plugin.Plugin;
 
@@ -20,7 +20,7 @@ public class ReActions {
         ReActions.platform = platform;
     }
 
-    public ActivatorsManager getActivators() {
+    public OldActivatorsManager getActivators() {
         return platform.getActivators();
     }
 
@@ -37,7 +37,7 @@ public class ReActions {
     }
 
     public interface Platform {
-        ActivatorsManager getActivators();
+        OldActivatorsManager getActivators();
         PlaceholdersManager getPlaceholders();
         VariablesManager getVariables();
         Plugin getPlugin();

@@ -2,6 +2,7 @@ package me.fromgate.reactions.logic.flags;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
+import me.fromgate.reactions.module.defaults.flags.Flags;
 
 @Value
 @AllArgsConstructor

@@ -3,8 +3,8 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.menu.InventoryMenu;
+import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.math.NumberUtils;
@@ -62,7 +62,7 @@ public class CmdCreate extends Cmd {
     }
 
     private boolean addActivator(CommandSender sender, String type, String name, String param) {
-        ActivatorType at = ActivatorType.getByName(type);
+        OldActivatorType at = OldActivatorType.getByName(type);
         if (at == null) return false;
         Parameters params;
         if (sender instanceof Player) {

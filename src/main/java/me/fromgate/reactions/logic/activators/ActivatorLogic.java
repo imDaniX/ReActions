@@ -24,10 +24,10 @@ package me.fromgate.reactions.logic.activators;
 
 import lombok.Getter;
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.actions.StoredAction;
-import me.fromgate.reactions.logic.flags.Flags;
 import me.fromgate.reactions.logic.flags.StoredFlag;
+import me.fromgate.reactions.module.defaults.actions.Actions;
+import me.fromgate.reactions.module.defaults.flags.Flags;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.configuration.ConfigurationSection;

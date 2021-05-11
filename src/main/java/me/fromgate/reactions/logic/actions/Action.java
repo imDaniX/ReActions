@@ -24,6 +24,7 @@ package me.fromgate.reactions.logic.actions;
 
 import lombok.Setter;
 import me.fromgate.reactions.Cfg;
+import me.fromgate.reactions.module.defaults.actions.Actions;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;

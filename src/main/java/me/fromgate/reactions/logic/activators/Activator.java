@@ -1,9 +1,9 @@
 package me.fromgate.reactions.logic.activators;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.logic.actions.Actions;
-import me.fromgate.reactions.logic.flags.Flags;
-import me.fromgate.reactions.logic.storages.Storage;
+import me.fromgate.reactions.module.defaults.actions.Actions;
+import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -54,7 +54,7 @@ public abstract class Activator {
      *
      * @return Type of activator
      */
-    public abstract ActivatorType getType();
+    public abstract OldActivatorType getType();
 
     /**
      * Save activator options to the config
@@ -85,4 +85,5 @@ public abstract class Activator {
         sb.append(logic.toString());
         return sb.toString();
     }
+
 }

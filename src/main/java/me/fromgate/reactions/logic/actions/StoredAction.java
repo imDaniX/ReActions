@@ -2,6 +2,7 @@ package me.fromgate.reactions.logic.actions;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;
+import me.fromgate.reactions.module.defaults.actions.Actions;
 
 @Value
 @AllArgsConstructor
