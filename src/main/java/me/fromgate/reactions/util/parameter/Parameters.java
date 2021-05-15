@@ -3,7 +3,11 @@ package me.fromgate.reactions.util.parameter;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
 import me.fromgate.reactions.util.math.NumberUtils;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
@@ -14,12 +18,18 @@ public class Parameters implements Iterable<String> {
     private final String origin;
     private final Map<String, String> params;
 
-    protected Parameters(String origin, Map<String, String> params) {
+    protected Parameters(@NotNull String origin, @NotNull Map<String, String> params) {
         this.origin = origin;
         this.params = params;
     }
 
-    public static Parameters fromMap(Map<String, String> map) {
+    @NotNull
+    public static Parameters noParse(@NotNull String str) {
+        return new Parameters(str, Collections.singletonMap("param-line", str));
+    }
+
+    @NotNull
+    public static Parameters fromMap(@NotNull Map<String, String> map) {
         StringBuilder bld = new StringBuilder();
         Map<String, String> params = new CaseInsensitiveMap<>(map);
         params.forEach((k, v) -> {
@@ -34,49 +44,52 @@ public class Parameters implements Iterable<String> {
         return new Parameters(str.isEmpty() ? str : str.substring(0, str.length() - 1), params);
     }
 
-    public static Parameters fromString(String str) {
+    @NotNull
+    public static Parameters fromString(@NotNull String str) {
         return fromString(str, null);
     }
 
-    public static Parameters fromString(String str, String defKey) {
+    @NotNull
+    public static Parameters fromString(@NotNull String str, @Nullable String defKey) {
+        boolean hasDefKey = !Utils.isStringEmpty(defKey);
         Map<String, String> params = new CaseInsensitiveMap<>();
         IterationState state = IterationState.SPACE;
         String param = "";
         StringBuilder bld = null;
         int brCount = 0;
-        for(int i = 0; i < str.length(); i++) {
+        for (int i = 0; i < str.length(); ++i) {
             char c = str.charAt(i);
             switch (state) {
                 case SPACE:
-                    if(c == ' ') {
+                    if (c == ' ') {
                         continue;
                     }
                     bld = new StringBuilder().append(c);
                     state = IterationState.TEXT;
                     break;
                 case TEXT:
-                    if(c == ' ') {
-                        if(!Utils.isStringEmpty(defKey)) {
+                    if (c == ' ') {
+                        if (hasDefKey) {
                             String value = bld.toString();
                             params.put(defKey, value);
                         }
                         state = IterationState.SPACE;
                         continue;
                     }
-                    if(c == ':') {
-                        state = IterationState.DOTS;
+                    if (c == ':') {
+                        state = IterationState.COLON;
                         param = bld.toString();
                         bld = new StringBuilder();
                         continue;
                     }
                     bld.append(c);
                     break;
-                case DOTS:
-                    if(c == ' ') {
+                case COLON:
+                    if (c == ' ') {
                         state = IterationState.SPACE;
                         continue;
                     }
-                    if(c == '{') {
+                    if (c == '{') {
                         state = IterationState.BR_PARAM;
                         continue;
                     }
@@ -84,7 +97,7 @@ public class Parameters implements Iterable<String> {
                     state = IterationState.PARAM;
                     break;
                 case PARAM:
-                    if(c == ' ') {
+                    if (c == ' ') {
                         state = IterationState.SPACE;
                         String value = bld.toString();
                         params.put(param, value);
@@ -93,23 +106,24 @@ public class Parameters implements Iterable<String> {
                     bld.append(c);
                     break;
                 case BR_PARAM:
-                    if(c == '}') {
-                        if(brCount == 0) {
+                    if (c == '}') {
+                        if (brCount == 0) {
                             state = IterationState.SPACE;
                             String value = bld.toString();
                             params.put(param, value);
                             continue;
-                        } else brCount--;
-                    } else if(c == '{')
-                        brCount++;
+                        } else --brCount;
+                    } else if (c == '{') {
+                        ++brCount;
+                    }
                     bld.append(c);
                     break;
             }
         }
 
-        if(state == IterationState.PARAM) {
+        if (state == IterationState.PARAM) {
             params.put(param, bld.toString());
-        } else if(state == IterationState.TEXT && !Utils.isStringEmpty(defKey)) {
+        } else if (hasDefKey && state == IterationState.TEXT) {
             params.put(defKey, bld.toString());
         }
 
@@ -117,49 +131,56 @@ public class Parameters implements Iterable<String> {
         return new Parameters(str, params);
     }
 
-    public String getString(String key) {
+    private enum IterationState {
+        SPACE, TEXT, COLON, PARAM, BR_PARAM
+    }
+
+    @NotNull
+    public String getString(@NotNull String key) {
         return getString(key, "");
     }
 
+    @Nullable
+    @Contract("_, !null -> !null")
     public String getString(String key, String def) {
         return params.getOrDefault(key, def);
     }
 
-    public double getDouble(String key) {
+    public double getDouble(@NotNull String key) {
         return getDouble(key, 0);
     }
 
-    public double getDouble(String key, double def) {
+    public double getDouble(@NotNull String key, double def) {
         return NumberUtils.getDouble(params.get(key), def);
     }
 
-    public int getInteger(String key) {
+    public int getInteger(@NotNull String key) {
         return getInteger(key, 0);
     }
 
-    public int getInteger(String key, int def) {
+    public int getInteger(@NotNull String key, int def) {
         return NumberUtils.getInteger(params.get(key), def);
     }
 
-    public boolean getBoolean(String key) {
+    public boolean getBoolean(@NotNull String key) {
         return getBoolean(key, false);
     }
 
-    public boolean getBoolean(String key, boolean def) {
+    public boolean getBoolean(@NotNull String key, boolean def) {
         String value = params.get(key);
-        if(Utils.isStringEmpty(value)) return def;
-        if(value.equalsIgnoreCase("true"))
+        if (Utils.isStringEmpty(value)) return def;
+        if (value.equalsIgnoreCase("true"))
             return true;
-        if(value.equalsIgnoreCase("false"))
+        if (value.equalsIgnoreCase("false"))
             return false;
         return def;
     }
 
-    public boolean contains(String key) {
+    public boolean contains(@NotNull String key) {
         return params.containsKey(key);
     }
 
-    public boolean containsEvery(String... keys) {
+    public boolean containsEvery(@NotNull String@NotNull ... keys) {
         for (String key : keys) {
             if (!params.containsKey(key)) {
                 return false;
@@ -168,21 +189,21 @@ public class Parameters implements Iterable<String> {
         return true;
     }
 
-    public boolean containsAny(Iterable<String> keys) {
+    public boolean containsAny(@NotNull Iterable<String> keys) {
         for (String key : keys) {
             if (params.containsKey(key)) return true;
         }
         return false;
     }
 
-    public boolean containsAny(String... keys) {
+    public boolean containsAny(@NotNull String@NotNull ... keys) {
         for (String key : keys) {
             if (params.containsKey(key)) return true;
         }
         return false;
     }
 
-    public boolean matchesAny(Pattern... patterns) {
+    public boolean matchesAny(@NotNull Pattern@NotNull ... patterns) {
         for (Pattern pattern : patterns) {
             for (String param : params.keySet()) {
                 if (pattern.matcher(param).matches()) return true;
@@ -191,7 +212,7 @@ public class Parameters implements Iterable<String> {
         return false;
     }
 
-    public boolean matchesAny(String... keys) {
+    public boolean matchesAny(@NotNull String@NotNull ... keys) {
         for (String key : keys) {
             for (String param : params.keySet()) {
                 if (param.matches(key)) return true;
@@ -200,10 +221,12 @@ public class Parameters implements Iterable<String> {
         return false;
     }
 
+    @NotNull
     public Set<String> keySet() {
         return this.params.keySet();
     }
 
+    @NotNull
     public Map<String, String> getMap() {
         return this.params;
     }
@@ -212,11 +235,13 @@ public class Parameters implements Iterable<String> {
         return this.params.isEmpty();
     }
 
-    public String put(String key, String value) {
+    @Nullable
+    public String put(@NotNull String key, @NotNull String value) {
         return params.put(key, value);
     }
 
-    public String remove(String key) {
+    @Nullable
+    public String remove(@NotNull String key) {
         return this.params.remove(key);
     }
 
@@ -225,24 +250,23 @@ public class Parameters implements Iterable<String> {
     }
 
     @Override
+    @NotNull
     public String toString() {
         return this.origin;
     }
 
     @Override
+    @NotNull
     public Iterator<String> iterator() {
         return params.keySet().iterator();
     }
 
-    public void forEach(BiConsumer<String, String> consumer) {
+    public void forEach(@NotNull BiConsumer<String, String> consumer) {
         params.forEach(consumer);
     }
 
-    public static Map<String, String> parametersMap(String param) {
+    @NotNull
+    public static Map<String, String> parametersMap(@NotNull String param) {
         return fromString(param).getMap();
-    }
-
-    private enum IterationState {
-        SPACE, TEXT, DOTS, PARAM, BR_PARAM
     }
 }
