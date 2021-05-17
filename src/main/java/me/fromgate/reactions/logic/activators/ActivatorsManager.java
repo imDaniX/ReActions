@@ -27,44 +27,52 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 public class ActivatorsManager {
+    private final File dataFoder;
+    private final Logger logger;
+
     private final Map<Class<? extends Activator>, ActivatorType> types;
     private final Map<String, ActivatorType> aliasTypes;
     private final Map<String, Activator> activatorByName;
-    private final Logger logger;
+    private final Map<String, Set<Activator>> activatorsByGroup;
 
-    public ActivatorsManager(ReActionsPlugin plugin) {
+    public ActivatorsManager(@NotNull ReActionsPlugin plugin) {
+        dataFoder = plugin.getDataFolder();
+        logger = plugin.getLogger();
+
         types = new HashMap<>();
         aliasTypes = new HashMap<>();
         activatorByName = new CaseInsensitiveMap<>();
-        logger = plugin.getLogger();
+        activatorsByGroup = new HashMap<>();
     }
 
-    public List<String> registerType(@NotNull ActivatorType handler) {
-        if (types.containsKey(handler.getType())) {
-            throw new IllegalArgumentException("Activator type '" + handler.getType().getSimpleName() + "' is already registered!");
+    @NotNull
+    public List<String> registerType(@NotNull ActivatorType type) {
+        if (types.containsKey(type.getType())) {
+            throw new IllegalStateException("Activator type '" + type.getType().getSimpleName() + "' is already registered!");
         }
-        String name = handler.getName().toUpperCase(Locale.ENGLISH);
+        String name = type.getName().toUpperCase(Locale.ENGLISH);
         if (aliasTypes.containsKey(name)) {
             ActivatorType preserved = aliasTypes.get(name);
             if (preserved.getName().equalsIgnoreCase(name)) {
-                throw new IllegalArgumentException("Activator type name '" + name + "' is already used for '" + preserved.getType().getSimpleName() + "'!");
+                throw new IllegalStateException("Activator type name '" + name + "' is already used for '" + preserved.getType().getSimpleName() + "'!");
             } else {
                 logger.warning("Activator type name '" + name + "' is already used as an alias for '" + preserved.getType().getSimpleName() + "', overriding it.");
             }
         }
+        types.put(type.getType(), type);
         List<String> registeredNames = new ArrayList<>();
         registeredNames.add(name);
-        aliasTypes.put(name, handler);
-        for (String alias : handler.getAliases()) {
+        aliasTypes.put(name, type);
+        for (String alias : type.getAliases()) {
             aliasTypes.computeIfAbsent(alias.toUpperCase(Locale.ENGLISH), key -> {
                 registeredNames.add(key);
-                return handler;
+                return type;
             });
         }
         return registeredNames;
     }
 
-    public void loadActivators(File file, String group) {
+    public void loadActivators(@NotNull File file, @NotNull String group) {
         if (!file.exists()) return;
         if (file.getName().endsWith(".yml")) {
             FileConfiguration cfg = new YamlConfiguration();
@@ -80,7 +88,7 @@ public class ActivatorsManager {
                     localGroup :
                     group + File.separator + localGroup;
             for (String strType : cfg.getKeys(false)) {
-                ActivatorType type = aliasTypes.get(strType);
+                ActivatorType type = getType(strType);
                 if (type == null) {
                     logger.warning("Failed to load activators with the unknown type '" + strType + "' in the group '"+ group + "'.");
                     // TODO Move failed activators to backup
@@ -108,9 +116,59 @@ public class ActivatorsManager {
         }
     }
 
-    private void addActivator(@NotNull Activator activator) {
+    public boolean saveGroup(String name) {
+        if (!activatorsByGroup.containsKey(name)) return false;
+        File file = new File(dataFoder, name.replace('/', File.separatorChar) + ".yml");
+        if (!file.exists()) {
+            File dir = file.getParentFile();
+            if (!dir.exists()) dir.mkdirs();
+        } else {
+            file.delete();
+        }
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            logger.warning("Failed to save group '" + name + "'!");
+            e.printStackTrace();
+            return false;
+        }
+        FileConfiguration cfg = YamlConfiguration.loadConfiguration(file);
+        for (Activator activator : activatorsByGroup.get(name)) {
+            ConfigurationSection typeCfg = cfg.createSection(Objects.requireNonNull(types.get(activator.getType())).getName());
+            activator.getLogic().save(typeCfg.createSection(activator.getLogic().getName()));
+        }
+        try {
+            cfg.save(file);
+        } catch (IOException e) {
+            logger.warning("Failed to save group '" + name + "'!");
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    public boolean addActivator(@NotNull Activator activator) {
+        String name = activator.getLogic().getName();
+        if (activatorByName.containsKey(name)) {
+            logger.warning("Failed to add activator '" + activator.getLogic().getName() + "' - activator with this name already exists!");
+            return false;
+        }
         types.get(activator.getClass()).addActivator(activator);
         activatorByName.put(activator.getLogic().getName(), activator);
+        return true;
+    }
+
+    @Nullable
+    public Activator removeActivator(@NotNull String name) {
+        Activator activator = activatorByName.remove(name);
+        if (activator == null) return null;
+        types.get(activator.getClass()).removeActivator(activator);
+        return activator;
+    }
+
+    @Nullable
+    public Activator getActivator(@NotNull String name) {
+        return activatorByName.get(name);
     }
 
     @Nullable
