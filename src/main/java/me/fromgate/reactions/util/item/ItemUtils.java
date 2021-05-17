@@ -114,9 +114,10 @@ public class ItemUtils {
     }
 
     public boolean compareItemStr(ItemStack item, String itemStr, boolean allowHand) {
-        if (isExist(item)) return compareItemStr(item, itemStr);
-        if (!allowHand) return false;
-        return (itemStr.equalsIgnoreCase("HAND") || itemStr.equalsIgnoreCase("AIR"));
+        if (allowHand && (itemStr.equalsIgnoreCase("HAND") || itemStr.equalsIgnoreCase("AIR"))) {
+            return !isExist(item);
+        }
+        return compareItemStr(item, itemStr);
     }
 
     public ItemStack getRndItem(String str) {

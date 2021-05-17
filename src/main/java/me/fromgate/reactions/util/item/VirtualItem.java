@@ -674,6 +674,22 @@ public class VirtualItem extends ItemStack {
 
         boolean regex = !itemMap.containsKey("regex") || itemMap.get("regex").equalsIgnoreCase("true");
 
+        if (itemMap.containsKey("type")) {
+            String typeStr = itemMap.get("type").toUpperCase(Locale.ENGLISH);
+            Material m = Material.getMaterial(typeStr);
+            if (m == null) return false;
+            typeStr = m.toString();
+            if (!compareOrMatch(this.getType().toString(), typeStr, regex)) return false;
+
+			/*
+			if (itemMap.containsKey("color")) {
+				DyeColor dyeColor = parseDyeColor(itemMap.get("color"));
+				if(this.getItemMeta() instanceof Colorable)
+					itemMap.put("data", String.valueOf(dyeColor.getWoolData()));
+
+			}
+			*/
+        }
         ItemMeta thisMeta = this.getItemMeta();
         if (itemMap.containsKey("item") || itemMap.containsKey("default-param")) {
             String itemStr = itemMap.containsKey("item") ? itemMap.get("item") : itemMap.get("default-param");
@@ -697,22 +713,6 @@ public class VirtualItem extends ItemStack {
         if (amount > 0) itemMap.put("amount", Integer.toString(amount));
         if (this.hasDisplayName() && !itemMap.containsKey("name")) return false;
         if (this.hasLore() && !itemMap.containsKey("lore")) return false;
-        if (itemMap.containsKey("type")) {
-            String typeStr = itemMap.get("type").toUpperCase(Locale.ENGLISH);
-            Material m = Material.getMaterial(typeStr);
-            if (m == null) return false;
-            typeStr = m.toString();
-            if (!compareOrMatch(this.getType().toString(), typeStr, regex)) return false;
-
-			/*
-			if (itemMap.containsKey("color")) {
-				DyeColor dyeColor = parseDyeColor(itemMap.get("color"));
-				if(this.getItemMeta() instanceof Colorable)
-					itemMap.put("data", String.valueOf(dyeColor.getWoolData()));
-
-			}
-			*/
-        }
 
         if (itemMap.containsKey("data")) {
             String dataStr = itemMap.get("data");
