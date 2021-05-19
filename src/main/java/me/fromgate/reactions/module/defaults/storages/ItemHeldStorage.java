@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.ItemHeldActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -25,11 +26,16 @@ public class ItemHeldStorage extends Storage {
     private final ItemStack previousItem;
 
     public ItemHeldStorage(Player player, int newSlot, int previousSlot) {
-        super(player, OldActivatorType.ITEM_HELD);
+        super(player);
         this.newSlot = newSlot;
         this.previousSlot = previousSlot;
         this.newItem = this.player.getInventory().getItem(newSlot);
         this.previousItem = this.player.getInventory().getItem(previousSlot);
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return ItemHeldActivator.class;
     }
 
     @Override

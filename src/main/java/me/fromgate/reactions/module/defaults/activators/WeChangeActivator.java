@@ -56,11 +56,6 @@ public class WeChangeActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.WE_CHANGE;
-    }
-
-    @Override
     public boolean isValid() {
         return true;
     }

@@ -26,7 +26,6 @@ import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.module.defaults.activators.RegionActivator;
 import me.fromgate.reactions.module.defaults.activators.RegionEnterActivator;
 import me.fromgate.reactions.module.defaults.activators.RegionLeaveActivator;
@@ -50,15 +49,16 @@ public class RaWorldGuard {
 
     public static void updateRegionCache() {
         regionActivators = new HashSet<>();
-        for (Activator a : ReActions.getActivators().getActivators(OldActivatorType.REGION)) {
+        // TODO Custom ActivatorType
+        for (Activator a : ReActions.getActivators().getType(RegionActivator.class).getActivators()) {
             RegionActivator r = (RegionActivator) a;
             regionActivators.add(r.getRegion());
         }
-        for (Activator a : ReActions.getActivators().getActivators(OldActivatorType.REGION_ENTER)) {
+        for (Activator a : ReActions.getActivators().getType(RegionEnterActivator.class).getActivators()) {
             RegionEnterActivator r = (RegionEnterActivator) a;
             regionActivators.add(r.getRegion());
         }
-        for (Activator a : ReActions.getActivators().getActivators(OldActivatorType.REGION_LEAVE)) {
+        for (Activator a : ReActions.getActivators().getType(RegionLeaveActivator.class).getActivators()) {
             RegionLeaveActivator r = (RegionLeaveActivator) a;
             regionActivators.add(r.getRegion());
         }

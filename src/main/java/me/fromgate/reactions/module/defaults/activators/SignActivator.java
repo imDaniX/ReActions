@@ -108,11 +108,6 @@ public class SignActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.SIGN;
-    }
-
-    @Override
     public boolean isValid() {
         if (maskLines == null || maskLines.isEmpty()) {
             return false;

@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.TeleportActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -22,10 +23,15 @@ public class TeleportStorage extends Storage {
     private final Location to;
 
     public TeleportStorage(Player player, TeleportCause cause, Location to) {
-        super(player, OldActivatorType.TELEPORT);
+        super(player);
         this.cause = cause;
         this.worldTo = to.getWorld().getName();
         this.to = to;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return TeleportActivator.class;
     }
 
     @Override

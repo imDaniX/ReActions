@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.ExecActivator;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
@@ -37,17 +38,22 @@ public class ExecStorage extends Storage {
     private final Map<String, String> tempVars;
 
     public ExecStorage(Player player) {
-        super(player, OldActivatorType.EXEC);
+        super(player);
         this.tempVars = null;
     }
 
+    @Override
+    public Class<? extends Activator> getType() {
+        return ExecActivator.class;
+    }
+
     public ExecStorage(Player player, Parameters tempVars) {
-        super(player, OldActivatorType.EXEC);
+        super(player);
         this.tempVars = tempVars.getMap();
     }
 
     public ExecStorage(Player player, Map<String, String> tempVars) {
-        super(player, OldActivatorType.EXEC);
+        super(player);
         this.tempVars = tempVars;
     }
 

@@ -96,11 +96,6 @@ public class ButtonActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.BUTTON;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(world);
     }

@@ -22,8 +22,9 @@
 
 package me.fromgate.reactions.module.defaults.storages;
 
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.LeverActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -38,7 +39,7 @@ public class LeverStorage extends Storage {
     private final Block leverBlock;
 
     public LeverStorage(Player p, Block block) {
-        super(p, OldActivatorType.LEVER);
+        super(p);
         this.leverBlock = block;
     }
 
@@ -54,6 +55,11 @@ public class LeverStorage extends Storage {
 
     public Location getLeverLocation() {
         return leverBlock.getLocation();
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return LeverActivator.class;
     }
 
     @Override

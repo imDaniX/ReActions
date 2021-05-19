@@ -71,11 +71,6 @@ public class ItemHoldActivator extends Activator /*implements Manageable*/ {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.ITEM_HOLD;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (").append(this.itemStr).append(")");

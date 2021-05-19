@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.ItemClickActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -42,9 +43,14 @@ public class ItemClickStorage extends Storage {
     private final ItemStack item;
 
     public ItemClickStorage(Player p, ItemStack item, boolean mainHand) {
-        super(p, OldActivatorType.ITEM_CLICK);
+        super(p);
         this.item = item;
         this.mainHand = mainHand;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return ItemClickActivator.class;
     }
 
     @Override

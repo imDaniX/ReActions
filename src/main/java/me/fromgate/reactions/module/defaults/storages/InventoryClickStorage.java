@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.InventoryClickActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -57,7 +58,7 @@ public class InventoryClickStorage extends Storage {
 
     public InventoryClickStorage(Player p, InventoryAction action, ClickType clickType, Inventory inventory, SlotType
             slotType, ItemStack item, int numberKey, InventoryView inventoryView, int slot) {
-        super(p, OldActivatorType.INVENTORY_CLICK);
+        super(p);
         this.inventoryName = inventoryView.getTitle();
         this.action = action;
         this.clickType = clickType;
@@ -71,6 +72,11 @@ public class InventoryClickStorage extends Storage {
 
     public Inventory getBottomInventory() {
         return this.inventoryView.getBottomInventory();
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return InventoryClickActivator.class;
     }
 
     @Override

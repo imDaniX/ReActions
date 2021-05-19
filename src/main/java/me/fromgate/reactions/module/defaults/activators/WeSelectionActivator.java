@@ -60,11 +60,6 @@ public class WeSelectionActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.WE_SELECTION_REGION;
-    }
-
-    @Override
     public boolean isValid() {
         return true;
     }

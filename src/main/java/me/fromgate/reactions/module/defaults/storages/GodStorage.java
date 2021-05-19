@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.GodActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -16,11 +17,16 @@ import java.util.Map;
 @Getter
 public class GodStorage extends Storage {
 
-    boolean god;
+    private final boolean god;
 
     public GodStorage(Player player, boolean god) {
-        super(player, OldActivatorType.GOD);
+        super(player);
         this.god = god;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return GodActivator.class;
     }
 
     @Override

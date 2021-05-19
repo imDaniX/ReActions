@@ -75,11 +75,6 @@ public class ItemClickActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.ITEM_CLICK;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(item);
     }

@@ -79,11 +79,6 @@ public class RegionEnterActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.REGION_ENTER;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(region);
     }

@@ -43,11 +43,6 @@ public class PickupItemActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.PICKUP_ITEM;
-    }
-
-    @Override
     public boolean isValid() {
         return true;
     }

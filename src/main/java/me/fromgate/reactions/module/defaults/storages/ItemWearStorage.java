@@ -22,8 +22,9 @@
 
 package me.fromgate.reactions.module.defaults.storages;
 
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.ItemWearActivator;
 import me.fromgate.reactions.util.item.ItemUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +32,12 @@ import org.bukkit.inventory.ItemStack;
 public class ItemWearStorage extends Storage {
 
     public ItemWearStorage(Player p) {
-        super(p, OldActivatorType.ITEM_WEAR);
+        super(p);
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return ItemWearActivator.class;
     }
 
     public boolean isItemWeared(String itemStr) {

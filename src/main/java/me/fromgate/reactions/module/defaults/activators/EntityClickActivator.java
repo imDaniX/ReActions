@@ -48,11 +48,6 @@ public class EntityClickActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.ENTITY_CLICK;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");

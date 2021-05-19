@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.MobClickActivator;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -42,8 +43,13 @@ public class MobClickStorage extends Storage {
     LivingEntity entity;
 
     public MobClickStorage(Player p, LivingEntity entity) {
-        super(p, OldActivatorType.MOB_CLICK);
+        super(p);
         this.entity = entity;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return MobClickActivator.class;
     }
 
     @Override

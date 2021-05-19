@@ -104,11 +104,6 @@ public class PlateActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.PLATE;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(world);
     }

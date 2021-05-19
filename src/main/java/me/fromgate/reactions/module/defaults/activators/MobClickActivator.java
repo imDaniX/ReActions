@@ -119,11 +119,6 @@ public class MobClickActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.MOB_CLICK;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(mobType);
     }

@@ -3,6 +3,7 @@ package me.fromgate.reactions.commands;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.holders.LocationHolder;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimersManager;
@@ -11,6 +12,8 @@ import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -79,19 +82,25 @@ public class CmdList extends Cmd {
     }
 
     private void printAct(CommandSender sender, int page, int lpp) {
-        List<String> ag = ReActions.getActivators().getNames();
+        Collection<Activator> activators = ReActions.getActivators().getQuery().all();
+        List<String> ag = new ArrayList<>(activators.size());
+        activators.forEach(a -> ag.add(a.getLogic().getName()));
         Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
-        Msg.MSG_LISTCOUNT.print(sender, ReActions.getActivators().size(), LocationHolder.sizeTpLoc());
+        Msg.MSG_LISTCOUNT.print(sender, ag.size(), LocationHolder.sizeTpLoc());
     }
 
     private void printActGroup(CommandSender sender, String group, int page, int lpp) {
-        List<String> ag = ReActions.getActivators().getNamesByGroup(group);
+        Collection<Activator> activators = ReActions.getActivators().getQuery().byGroup(group);
+        List<String> ag = new ArrayList<>(activators.size());
+        activators.forEach(a -> ag.add(a.getLogic().getName()));
         Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
         Msg.printPage(sender, ag, null, page, lpp, true);
     }
 
     private void printActType(CommandSender sender, String type, int page, int lpp) {
-        List<String> ag = ReActions.getActivators().getNamesByType(type);
+        Collection<Activator> activators = ReActions.getActivators().getQuery().byType(type);
+        List<String> ag = new ArrayList<>(activators.size());
+        activators.forEach(a -> ag.add(a.getLogic().getName()));
         Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');
         Msg.printPage(sender, ag, null, page, lpp, true);
     }

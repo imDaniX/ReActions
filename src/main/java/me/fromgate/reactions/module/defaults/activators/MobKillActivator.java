@@ -92,11 +92,6 @@ public class MobKillActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.MOB_KILL;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(mobType);
     }

@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.JoinActivator;
 import org.bukkit.entity.Player;
 
 @Getter
@@ -33,8 +34,13 @@ public class JoinStorage extends Storage {
     private final boolean firstJoin;
 
     public JoinStorage(Player p, boolean firstJoin) {
-        super(p, OldActivatorType.JOIN);
+        super(p);
         this.firstJoin = firstJoin;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return JoinActivator.class;
     }
 
     // TODO: Message

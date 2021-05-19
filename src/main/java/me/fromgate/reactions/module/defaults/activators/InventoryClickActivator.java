@@ -106,11 +106,6 @@ public class InventoryClickActivator extends Activator {
         cfg.set("item", itemStr);
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.INVENTORY_CLICK;
-    }
-
     private boolean clickCheck(org.bukkit.event.inventory.ClickType ct) {
         if (click.name().equals("ANY")) return true;
         return ct.name().equals(click.name());

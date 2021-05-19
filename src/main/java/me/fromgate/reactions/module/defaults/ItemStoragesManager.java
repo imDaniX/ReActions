@@ -6,7 +6,6 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.module.defaults.activators.ItemHoldActivator;
 import me.fromgate.reactions.module.defaults.activators.ItemWearActivator;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.module.defaults.storages.ItemHoldStorage;
 import me.fromgate.reactions.module.defaults.storages.ItemWearStorage;
 import me.fromgate.reactions.util.item.ItemUtils;
@@ -35,10 +34,11 @@ public class ItemStoragesManager {
         Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureItemWearCheck(playerId, itemStr, true), 20 * Cfg.itemWearRecheck);
     }
 
+    // TODO Move to custom ActivatorType
     public void triggerItemWear(Player player) {
         final UUID playerId = player.getUniqueId();
         Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
-            for (Activator iw : ReActions.getActivators().getActivators(OldActivatorType.ITEM_WEAR))
+            for (Activator iw : ReActions.getActivators().getType(ItemWearActivator.class).getActivators())
                 setFutureItemWearCheck(playerId, ((ItemWearActivator) iw).getItemStr(), false);
         }, 1);
     }
@@ -46,7 +46,7 @@ public class ItemStoragesManager {
     public void triggerItemHold(Player player) {
         final UUID playerId = player.getUniqueId();
         Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
-            for (Activator ih : ReActions.getActivators().getActivators(OldActivatorType.ITEM_HOLD))
+            for (Activator ih : ReActions.getActivators().getType(ItemHoldActivator.class).getActivators())
                 setFutureItemHoldCheck(playerId, ((ItemHoldActivator) ih).getItemStr(), false);
         }, 1);
     }

@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.MobKillActivator;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.entity.LivingEntity;
@@ -39,8 +40,13 @@ public class MobKillStorage extends Storage {
     private final LivingEntity entity;
 
     public MobKillStorage(Player p, LivingEntity entity) {
-        super(p, OldActivatorType.MOB_KILL);
+        super(p);
         this.entity = entity;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return MobKillActivator.class;
     }
 
     @Override

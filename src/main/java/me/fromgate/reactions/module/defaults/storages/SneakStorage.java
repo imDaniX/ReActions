@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.SneakActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import org.bukkit.entity.Player;
 
@@ -17,8 +18,13 @@ public class SneakStorage extends Storage {
     private final boolean sneaking;
 
     public SneakStorage(Player player, boolean sneaking) {
-        super(player, OldActivatorType.SNEAK);
+        super(player);
         this.sneaking = sneaking;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return SneakActivator.class;
     }
 
     @Override

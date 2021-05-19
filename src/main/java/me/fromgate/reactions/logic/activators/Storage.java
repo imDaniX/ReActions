@@ -23,7 +23,6 @@
 package me.fromgate.reactions.logic.activators;
 
 import lombok.Getter;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.util.data.DataValue;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
@@ -39,20 +38,18 @@ public abstract class Storage {
     public static final String CANCEL_EVENT = "cancel_event";
 
     protected final Player player;
-    private final OldActivatorType type;
     private final boolean async;
 
     // Default temporary placeholders
     private Map<String, String> variables;
     private Map<String, DataValue> changeables;
 
-    public Storage(Player player, OldActivatorType type) {
-        this(player, type, false);
+    public Storage(Player player) {
+        this(player, false);
     }
 
-    public Storage(Player player, OldActivatorType type, boolean async) {
+    public Storage(Player player, boolean async) {
         this.player = player;
-        this.type = type;
         this.async = async;
     }
 
@@ -60,6 +57,8 @@ public abstract class Storage {
         variables = prepareVariables();
         changeables = prepareChangeables();
     }
+
+    public abstract Class<? extends Activator> getType();
 
     protected Map<String, String> prepareVariables() {
         return Collections.emptyMap();

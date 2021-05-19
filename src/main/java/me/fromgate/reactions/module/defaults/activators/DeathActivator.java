@@ -61,11 +61,6 @@ public class DeathActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.DEATH;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append("(").append(this.deathCause.name()).append(")");

@@ -39,11 +39,6 @@ public class FlightActivator extends Activator {
         cfg.set("flight", flight.name());
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.FLIGHT;
-    }
-
     private boolean checkFlight(boolean isFlight) {
         switch (flight) {
             case ANY:

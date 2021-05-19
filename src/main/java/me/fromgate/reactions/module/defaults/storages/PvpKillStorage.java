@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.PvpKillActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import org.bukkit.entity.Player;
 
@@ -36,8 +37,13 @@ public class PvpKillStorage extends Storage {
     private final Player killedPlayer;
 
     public PvpKillStorage(Player player, Player killedPlayer) {
-        super(player, OldActivatorType.PVP_KILL);
+        super(player);
         this.killedPlayer = killedPlayer;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return PvpKillActivator.class;
     }
 
     @Override

@@ -46,8 +46,4 @@ public class PvpKillActivator extends Activator {
         return true;
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.PVP_KILL;
-    }
 }

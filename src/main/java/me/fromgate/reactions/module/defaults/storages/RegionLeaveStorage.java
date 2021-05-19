@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.RegionLeaveActivator;
 import org.bukkit.entity.Player;
 
 @Getter
@@ -33,7 +34,12 @@ public class RegionLeaveStorage extends Storage {
     private final String region;
 
     public RegionLeaveStorage(Player player, String region) {
-        super(player, OldActivatorType.REGION_LEAVE);
+        super(player);
         this.region = region;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return RegionLeaveActivator.class;
     }
 }

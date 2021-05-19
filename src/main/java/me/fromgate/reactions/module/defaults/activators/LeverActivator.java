@@ -117,11 +117,6 @@ public class LeverActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.LEVER;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(world);
     }

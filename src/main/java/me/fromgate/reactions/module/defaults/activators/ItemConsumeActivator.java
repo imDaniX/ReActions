@@ -66,10 +66,6 @@ public class ItemConsumeActivator extends Activator {
         cfg.set("item", item);
     }
 
-    public OldActivatorType getType() {
-        return OldActivatorType.ITEM_CONSUME;
-    }
-
     @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(item);

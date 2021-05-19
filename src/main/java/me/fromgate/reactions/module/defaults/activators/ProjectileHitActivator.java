@@ -58,11 +58,6 @@ public class ProjectileHitActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.EXEC;
-    }
-
-    @Override
     public boolean isValid() {
         return true;
     }

@@ -32,7 +32,7 @@ import me.fromgate.reactions.events.listeners.RaListener;
 import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.RaVault;
 import me.fromgate.reactions.holders.LocationHolder;
-import me.fromgate.reactions.logic.OldActivatorsManager;
+import me.fromgate.reactions.logic.activators.ActivatorsManager;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import me.fromgate.reactions.playerselector.SelectorsManager;
@@ -48,7 +48,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
 
-    private OldActivatorsManager activatorsManager;
+    private ActivatorsManager activatorsManager;
     private PlaceholdersManager placeholdersManager;
     private VariablesManager variablesManager;
 
@@ -56,7 +56,7 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
     public void onLoad() {
         this.variablesManager = new VariablesManager();
         this.placeholdersManager = new PlaceholdersManager();
-        this.activatorsManager = new OldActivatorsManager();
+        this.activatorsManager = new ActivatorsManager(this);
         ReActions.setPlatform(this);
     }
 
@@ -66,12 +66,11 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
         Cfg.load();
         Cfg.save();
         Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);
-
-        if (!getDataFolder().exists()) getDataFolder().mkdirs();
+        getDataFolder().mkdirs();
 
         Commander.init(this);
         TimersManager.init();
-        this.activatorsManager.loadActivators();
+        this.activatorsManager.loadGroup("", false);
         FakeCommander.init();
         SelectorsManager.init();
         Externals.init();
@@ -93,7 +92,7 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
     }
 
     @Override
-    public OldActivatorsManager getActivators() {
+    public ActivatorsManager getActivators() {
         return activatorsManager;
     }
 

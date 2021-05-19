@@ -31,6 +31,8 @@ import me.fromgate.reactions.module.defaults.flags.Flags;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,20 +41,24 @@ import java.util.function.BiConsumer;
 
 @Getter
 public final class ActivatorLogic {
+    @NotNull
     private String group;
+    @NotNull
     private final String name;
+    @NotNull
     private final List<StoredFlag> flags = new ArrayList<>();
+    @NotNull
     private final List<StoredAction> actions = new ArrayList<>();
+    @NotNull
     private final List<StoredAction> reactions = new ArrayList<>();
 
-    public ActivatorLogic(String name, String group) {
+    public ActivatorLogic(@NotNull String name, @Nullable String group) {
         this.name = name;
         this.group = Utils.isStringEmpty(group) ? "activators" : group;
     }
 
-    public ActivatorLogic(String name, String group, ConfigurationSection cfg) {
-        this.name = name;
-        this.group = group == null ? "activators" : group;
+    public ActivatorLogic(@NotNull String name, @Nullable String group, @NotNull ConfigurationSection cfg) {
+        this(name, group);
         loadData(cfg.getStringList("flags"), this::addFlag);
         loadData(cfg.getStringList("actions"), this::addAction);
         loadData(cfg.getStringList("reactions"), this::addReaction);
@@ -72,7 +78,7 @@ public final class ActivatorLogic {
         }
     }
 
-    public void setGroup(String group) {
+    public void setGroup(@NotNull String group) {
         this.group = group;
     }
 
@@ -82,7 +88,7 @@ public final class ActivatorLogic {
      * @param flag  Name of flag to add
      * @param param Parameters of flag
      */
-    public void addFlag(String flag, String param) {
+    public void addFlag(@NotNull String flag, @NotNull String param) {
         boolean not = flag.startsWith("!");
         addFlag(Flags.getByName(not ? flag.substring(1) : flag), param, not);
     }
@@ -94,7 +100,7 @@ public final class ActivatorLogic {
      * @param param Parameters of flag
      * @param not   Is indentation needed
      */
-    public void addFlag(Flags flag, String param, boolean not) {
+    public void addFlag(@NotNull Flags flag, @NotNull String param, boolean not) {
         StoredFlag flg = new StoredFlag(flag, param, not);
         if (flg.getFlag() == null)
             Msg.logOnce("wrongflagname" + flags.size() + name, "Flag for activator " + name + " with this name does not exist.");
@@ -120,7 +126,7 @@ public final class ActivatorLogic {
      * @param action Name of action to add
      * @param param  Parameters of action
      */
-    public void addAction(String action, String param) {
+    public void addAction(@NotNull String action, @NotNull String param) {
         addAction(Actions.getByName(action), param);
     }
 
@@ -130,7 +136,7 @@ public final class ActivatorLogic {
      * @param action Action to add
      * @param param  Parameters of action
      */
-    public void addAction(Actions action, String param) {
+    public void addAction(@NotNull Actions action, @NotNull String param) {
         StoredAction act = new StoredAction(action, param);
         if (act.getAction() == null)
             Msg.logOnce("wrongactname" + actions.size() + name, "Flag for activator " + name + " with this name does not exist.");
@@ -156,7 +162,7 @@ public final class ActivatorLogic {
      * @param action Name of action to add
      * @param param  Parameters of action
      */
-    public void addReaction(String action, String param) {
+    public void addReaction(@NotNull String action, @NotNull String param) {
         addReaction(Actions.getByName(action), param);
     }
 
@@ -166,7 +172,7 @@ public final class ActivatorLogic {
      * @param action Action to add
      * @param param  Parameters of action
      */
-    public void addReaction(Actions action, String param) {
+    public void addReaction(@NotNull Actions action, @NotNull String param) {
         StoredAction act = new StoredAction(action, param);
         if (act.getAction() == null)
             Msg.logOnce("wrongactname" + actions.size() + name, "Flag for activator " + name + " with this name does not exist.");
@@ -212,7 +218,7 @@ public final class ActivatorLogic {
      *
      * @param cfg Config for activator
      */
-    public void save(ConfigurationSection cfg) {
+    public void save(@NotNull ConfigurationSection cfg) {
         List<String> flg = new ArrayList<>();
         for (StoredFlag f : flags) flg.add(f.toString());
         cfg.set("flags", flg.isEmpty() && !Cfg.saveEmptySections ? null : flg);
@@ -226,18 +232,7 @@ public final class ActivatorLogic {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj instanceof String)
-            return name.equalsIgnoreCase((String) obj);
-        if (!(obj instanceof ActivatorLogic))
-            return false;
-        ActivatorLogic other = (ActivatorLogic) obj;
-        if (name == null)
-            return other.name == null;
-        if (group == null)
-            return other.group == null;
-        return this.name.equals(other.name) && this.group.equals(other.group);
+        return obj != null && (this == obj || (obj instanceof ActivatorLogic && ((ActivatorLogic) obj).name.equalsIgnoreCase(name)));
     }
 
     @Override

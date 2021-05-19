@@ -22,23 +22,25 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.Action;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
-import org.bukkit.entity.Player;
 
 public class ActionExecUnstop extends Action {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {
-        Player p = context.getPlayer();
+        // TODO Custom ActivatorType to handle exec stopping
+        Msg.logOnce("execunstopnotworking", "Sorry, but action EXEC_UNSTOP doesn't work yet.");
+        return true;
+        /*Player p = context.getPlayer();
         String player = params.getString("player", (p == null ? "" : p.getName()));
         if (player.isEmpty()) return false;
         String activator = params.getString("activator", "");
         if (activator.isEmpty()) return false;
         setMessageParam(activator);
-        return ReActions.getActivators().isStopped(player, activator, true);
+        return ReActions.getActivators().isStopped(player, activator, true);*/
     }
 
 }

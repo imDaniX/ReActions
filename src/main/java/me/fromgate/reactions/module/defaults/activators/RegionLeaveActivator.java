@@ -79,11 +79,6 @@ public class RegionLeaveActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.REGION_LEAVE;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(region);
     }

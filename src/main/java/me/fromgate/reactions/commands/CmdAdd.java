@@ -33,7 +33,7 @@ public class CmdAdd extends Cmd {
             switch (arg2) {
                 case "a":
                 case "action":
-                    if (addAction(arg1, arg3, param)) {
+                    if (addAction(act, arg3, param)) {
                         Msg.CMD_ACTADDED.print(sender, arg3 + " (" + param + ")");
                         break;
                     } else {
@@ -42,7 +42,7 @@ public class CmdAdd extends Cmd {
                     }
                 case "r":
                 case "reaction":
-                    if (addReaction(arg1, arg3, param)) {
+                    if (addReaction(act, arg3, param)) {
                         Msg.CMD_REACTADDED.print(sender, arg3 + " (" + param + ")");
                         break;
                     } else {
@@ -51,7 +51,7 @@ public class CmdAdd extends Cmd {
                     }
                 case "f":
                 case "flag":
-                    if (addFlag(arg1, arg3, param)) {
+                    if (addFlag(act, arg3, param)) {
                         Msg.CMD_FLAGADDED.print(sender, arg3 + " (" + param + ")");
                         break;
                     } else {
@@ -62,35 +62,33 @@ public class CmdAdd extends Cmd {
                     Msg.CMD_UNKNOWNBUTTON.print(sender, arg2);
                     return true;
             }
-            ReActions.getActivators().saveActivators(act.getLogic().getGroup());
+            ReActions.getActivators().saveGroup(act.getLogic().getGroup());
         } else {
             Msg.CMD_UNKNOWNADD.print(sender, 'c');
         }
         return true;
     }
 
-    private boolean addAction(String activator, String act, String param) {
+    private boolean addAction(Activator activator, String act, String param) {
         if (Actions.isValid(act)) {
-            ReActions.getActivators().addAction(activator, act, param);
+            activator.getLogic().addAction(act, param);
             return true;
         }
         return false;
     }
 
-    private boolean addReaction(String activator, String act, String param) {
+    private boolean addReaction(Activator activator, String act, String param) {
         if (Actions.isValid(act)) {
-            ReActions.getActivators().addReaction(activator, act, param);
+            activator.getLogic().addReaction(act, param);
             return true;
         }
         return false;
     }
 
-    private boolean addFlag(String activator, String fl, String param) {
-        String flag = fl.replaceFirst("!", "");
-        boolean not = fl.startsWith("!");
-        if (Flags.isValid(flag)) {
+    private boolean addFlag(Activator activator, String fl, String param) {
+        if (Flags.isValid(fl.replaceFirst("!", ""))) {
             // TODO: все эти проверки вынести в соответствующие классы
-            ReActions.getActivators().addFlag(activator, flag, param, not);
+            activator.getLogic().addFlag(fl, param);
             return true;
         }
         return false;

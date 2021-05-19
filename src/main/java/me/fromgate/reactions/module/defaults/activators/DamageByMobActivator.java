@@ -119,11 +119,6 @@ public class DamageByMobActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.DAMAGE_BY_MOB;
-    }
-
-    @Override
     public boolean isValid() {
         return true;//!Util.emptyString(damagerType);
     }

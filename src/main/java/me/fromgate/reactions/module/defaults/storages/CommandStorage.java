@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.CommandActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -43,12 +44,17 @@ public class CommandStorage extends Storage {
     private final CommandSender sender;
 
     public CommandStorage(Player p, CommandSender sender, String command) {
-        super(p, OldActivatorType.COMMAND);
+        super(p);
         this.sender = sender;
         this.command = command;
         String[] split = command.split("\\s");
         this.label = split[0];
         this.args = Arrays.copyOfRange(split, 1, split.length);
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return CommandActivator.class;
     }
 
     @Override

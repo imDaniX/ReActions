@@ -24,9 +24,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
 import me.fromgate.reactions.module.defaults.activators.MessageActivator;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -48,13 +48,18 @@ public class MessageStorage extends Storage {
 
 
     public MessageStorage(Player player, MessageActivator activator, String message) {
-        super(player, OldActivatorType.MESSAGE);
+        super(player);
         this.activator = activator;
         this.message = message;
     }
 
     public boolean isForActivator(MessageActivator messageActivator) {
         return this.activator.equals(messageActivator);
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return MessageActivator.class;
     }
 
     @Override

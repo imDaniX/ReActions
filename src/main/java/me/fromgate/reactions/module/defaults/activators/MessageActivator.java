@@ -73,11 +73,6 @@ public class MessageActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.MESSAGE;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(mask);
     }

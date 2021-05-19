@@ -20,13 +20,12 @@
  *
  */
 
-
 package me.fromgate.reactions.module.defaults.storages;
 
-
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.SignActivator;
 import me.fromgate.reactions.util.location.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -42,10 +41,15 @@ public class SignStorage extends Storage {
     private final String[] signLines;
 
     public SignStorage(Player player, String[] signLines, Location loc, boolean leftClick) {
-        super(player, OldActivatorType.SIGN);
+        super(player);
         this.signLines = signLines;
         this.location = loc;
         this.leftClick = leftClick;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return SignActivator.class;
     }
 
     @Override

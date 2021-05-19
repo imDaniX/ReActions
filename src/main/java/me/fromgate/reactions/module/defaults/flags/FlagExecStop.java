@@ -22,17 +22,19 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.flags.Flag;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.entity.Player;
 
 public class FlagExecStop implements Flag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
+        // TODO Custom ActivatorType to handle exec stopping
         Player player = context.getPlayer();
-        return ReActions.getActivators().isStopped(player, param, false);
+        Msg.logOnce("flagexecstopnotworking", "Sorry, but flag EXEC_STOP doesn't work yet.");
+        return false; // ReActions.getActivators().isStopped(player, param, false);
     }
 
 }

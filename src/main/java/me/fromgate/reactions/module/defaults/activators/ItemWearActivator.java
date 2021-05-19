@@ -71,11 +71,6 @@ public class ItemWearActivator extends Activator /*implements Manageable*/ {
         // cfg.set("wear-slot", this.slot.name());
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.ITEM_WEAR;
-    }
-
     public String getItemStr() {
         return this.item;
     }

@@ -29,8 +29,8 @@ import me.fromgate.reactions.commands.custom.FakeCommander;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
 import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
+import me.fromgate.reactions.module.defaults.activators.ExecActivator;
 import me.fromgate.reactions.module.defaults.activators.MessageActivator;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.module.defaults.activators.SignActivator;
 import me.fromgate.reactions.module.defaults.storages.BlockBreakStorage;
 import me.fromgate.reactions.module.defaults.storages.BlockClickStorage;
@@ -225,7 +225,7 @@ public class StoragesManager {
     }
 
     public boolean triggerSign(Player player, String[] lines, Location loc, boolean leftClick) {
-        for (Activator act : ReActions.getActivators().getActivators(OldActivatorType.SIGN)) {
+        for (Activator act : ReActions.getActivators().getType(SignActivator.class).getActivators()) {
             SignActivator sign = (SignActivator) act;
             if (sign.checkMask(lines)) {
                 SignStorage se = new SignStorage(player, lines, loc, leftClick);
@@ -257,7 +257,7 @@ public class StoragesManager {
             Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
             return false;
         }
-        if (act.getType() != OldActivatorType.EXEC) {
+        if (act.getClass() != ExecActivator.class) {
             Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
             return false;
         }
@@ -278,8 +278,9 @@ public class StoragesManager {
         for (int i = 0; i < repeat; i++) {
             Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> {
                 for (Player player : target) {
-                    if (ReActions.getActivators().isStopped(player, id, true)) continue;
+                    // if (ReActions.getActivators().isStopped(player, id, true)) continue;
                     ExecStorage ce = new ExecStorage(player, tempVars);
+                    // TODO Custom ActivatorType for Exec
                     ReActions.getActivators().activate(ce, id);
                 }
             }, delay * repeat);
@@ -294,11 +295,12 @@ public class StoragesManager {
             Msg.logOnce("wrongact_" + id, "Failed to run exec activator " + id + ". Activator not found.");
             return false;
         }
-        if (act.getType() != OldActivatorType.EXEC) {
+        if (act.getClass() != ExecActivator.class) {
             Msg.logOnce("wrongactype_" + id, "Failed to run exec activator " + id + ". Wrong activator type.");
             return false;
         }
-        if (ReActions.getActivators().isStopped(player, id, true)) return true;
+        // TODO Custom ActivatorType to handle exec stopping
+        // if (ReActions.getActivators().isStopped(player, id, true)) return true;
         ExecStorage ce = new ExecStorage(player, tempVars);
         ReActions.getActivators().activate(ce, id);
         return true;
@@ -306,6 +308,7 @@ public class StoragesManager {
 
     public boolean triggerPlate(PlayerInteractEvent event) {
         if (event.getAction() != Action.PHYSICAL) return false;
+        // TODO EnumSet Plates?
         if (!(event.getClickedBlock().getType().name().endsWith("_PRESSURE_PLATE"))) return false;
         PlateStorage pe = new PlateStorage(event.getPlayer(), event.getClickedBlock().getLocation());
         ReActions.getActivators().activate(pe);
@@ -382,7 +385,7 @@ public class StoragesManager {
     // TODO: Redesign
     public Map<String, DataValue> triggerMessage(CommandSender sender, MessageActivator.Source source, String message) {
         Player player = (sender instanceof Player) ? (Player) sender : null;
-        for (Activator act : ReActions.getActivators().getActivators(OldActivatorType.MESSAGE)) {
+        for (Activator act : ReActions.getActivators().getType(MessageActivator.class).getActivators()) {
             MessageActivator a = (MessageActivator) act;
             if (a.filterMessage(source, message)) {
                 MessageStorage me = new MessageStorage(player, a, message);

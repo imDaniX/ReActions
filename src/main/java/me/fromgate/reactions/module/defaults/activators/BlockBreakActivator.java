@@ -78,11 +78,6 @@ public class BlockBreakActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.BLOCK_BREAK;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append(" (");

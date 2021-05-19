@@ -61,11 +61,6 @@ public class RespawnActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.RESPAWN;
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(super.toString());
         sb.append("(").append(this.deathCause.name()).append(")");

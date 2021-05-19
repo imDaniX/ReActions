@@ -67,11 +67,6 @@ public class VariableActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.VARIABLE;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(id);
     }

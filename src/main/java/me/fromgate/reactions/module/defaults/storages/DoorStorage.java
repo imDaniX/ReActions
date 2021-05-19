@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.DoorActivator;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
@@ -44,7 +45,7 @@ public class DoorStorage extends Storage {
     private final Block doorBlock;
 
     public DoorStorage(Player p, Block block) {
-        super(p, OldActivatorType.DOOR);
+        super(p);
         this.doorBlock = block;
     }
 
@@ -54,6 +55,11 @@ public class DoorStorage extends Storage {
 
     public Location getDoorLocation() {
         return doorBlock.getLocation();
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return DoorActivator.class;
     }
 
     @Override

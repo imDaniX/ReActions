@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.FlightActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -20,8 +21,13 @@ public class FlightStorage extends Storage {
     private boolean flying;
 
     public FlightStorage(Player p, boolean flying) {
-        super(p, OldActivatorType.FLIGHT);
+        super(p);
         this.flying = flying;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return FlightActivator.class;
     }
 
     @Override

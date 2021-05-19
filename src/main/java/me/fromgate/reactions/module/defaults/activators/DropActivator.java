@@ -42,11 +42,6 @@ public class DropActivator extends Activator {
         cfg.set("item", itemStr);
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.DROP;
-    }
-
     private boolean checkItem(ItemStack item) {
         if (this.itemStr.isEmpty()) return true;
         return ItemUtils.compareItemStr(item, this.itemStr, true);

@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.ItemHoldActivator;
 import me.fromgate.reactions.util.item.VirtualItem;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,9 +40,14 @@ public class ItemHoldStorage extends Storage {
     private final ItemStack item;
 
     public ItemHoldStorage(Player p, ItemStack item, boolean mainHand) {
-        super(p, OldActivatorType.ITEM_HOLD);
+        super(p);
         this.item = item;
         this.mainHand = mainHand;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return ItemHoldActivator.class;
     }
 
     @Override

@@ -2,8 +2,9 @@ package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
 import me.fromgate.reactions.externals.worldedit.WeSelection;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.WeSelectionActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -18,8 +19,13 @@ public class WeSelectionRegionStorage extends Storage {
     private final WeSelection selection;
 
     public WeSelectionRegionStorage(Player player, WeSelection weSelection) {
-        super(player, OldActivatorType.WE_SELECTION_REGION);
+        super(player);
         this.selection = weSelection;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return WeSelectionActivator.class;
     }
 
     @Override

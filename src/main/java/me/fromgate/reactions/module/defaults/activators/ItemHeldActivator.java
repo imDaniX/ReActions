@@ -65,11 +65,6 @@ public class ItemHeldActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.ITEM_HELD;
-    }
-
-    @Override
     public boolean isValid() {
         return true;
     }

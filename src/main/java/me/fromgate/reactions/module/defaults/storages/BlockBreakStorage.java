@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.BlockBreakActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -25,9 +26,14 @@ public class BlockBreakStorage extends Storage {
     private final boolean dropItems;
 
     public BlockBreakStorage(Player p, Block block, boolean dropItems) {
-        super(p, OldActivatorType.BLOCK_BREAK);
+        super(p);
         this.block = block;
         this.dropItems = dropItems;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return BlockBreakActivator.class;
     }
 
     @Override

@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.DeathActivator;
 import me.fromgate.reactions.util.enums.DeathCause;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -40,9 +41,14 @@ public class DeathStorage extends Storage {
     private final DeathCause cause;
 
     public DeathStorage(LivingEntity killer, Player player, DeathCause deathCause) {
-        super(player, OldActivatorType.DEATH);
+        super(player);
         this.killer = killer;
         this.cause = killer != null ? deathCause : DeathCause.OTHER;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return DeathActivator.class;
     }
 
     @Override

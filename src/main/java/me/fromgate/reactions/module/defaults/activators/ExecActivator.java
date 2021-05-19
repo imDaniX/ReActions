@@ -24,8 +24,4 @@ public class ExecActivator extends Activator {
         return true;
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.EXEC;
-    }
 }

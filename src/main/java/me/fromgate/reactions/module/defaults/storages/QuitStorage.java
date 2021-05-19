@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.QuitActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -40,8 +41,13 @@ public class QuitStorage extends Storage {
     private String quitMessage;
 
     public QuitStorage(Player p, String quitMessage) {
-        super(p, OldActivatorType.QUIT);
+        super(p);
         this.quitMessage = quitMessage;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return QuitActivator.class;
     }
 
     @Override

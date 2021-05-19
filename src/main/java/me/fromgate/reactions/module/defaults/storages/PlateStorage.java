@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.PlateActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -39,8 +40,13 @@ public class PlateStorage extends Storage {
     private final Location location;
 
     public PlateStorage(Player p, Location loc) {
-        super(p, OldActivatorType.PLATE);
+        super(p);
         this.location = loc;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return PlateActivator.class;
     }
 
     @Override

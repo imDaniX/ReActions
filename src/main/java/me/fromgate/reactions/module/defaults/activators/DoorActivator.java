@@ -116,11 +116,6 @@ public class DoorActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.DOOR;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(world);
     }

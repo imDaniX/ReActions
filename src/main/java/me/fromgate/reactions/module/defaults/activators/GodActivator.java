@@ -39,11 +39,6 @@ public class GodActivator extends Activator {
         cfg.set("god", god.name());
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.GOD;
-    }
-
     private boolean checkGod(boolean isGod) {
         switch (god) {
             case ANY:

@@ -123,11 +123,6 @@ public class CommandActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.COMMAND;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(command);
     }

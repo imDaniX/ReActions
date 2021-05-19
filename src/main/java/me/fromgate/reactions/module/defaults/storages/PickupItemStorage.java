@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.PickupItemActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -29,10 +30,15 @@ public class PickupItemStorage extends Storage {
     private final int pickupDelay;
 
     public PickupItemStorage(Player p, Item item, int pickupDelay) {
-        super(p, OldActivatorType.PICKUP_ITEM);
+        super(p);
         this.item = item.getItemStack();
         this.pickupDelay = pickupDelay;
         this.dropLoc = item.getLocation();
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return PickupItemActivator.class;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.GameModeActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -21,8 +22,13 @@ public class GameModeStorage extends Storage {
     private GameMode gameMode;
 
     public GameModeStorage(Player player, GameMode gameMode) {
-        super(player, OldActivatorType.GAMEMODE);
+        super(player);
         this.gameMode = gameMode;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return GameModeActivator.class;
     }
 
     @Override

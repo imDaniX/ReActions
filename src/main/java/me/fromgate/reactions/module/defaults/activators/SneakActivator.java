@@ -40,11 +40,6 @@ public class SneakActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.SNEAK;
-    }
-
-    @Override
     public boolean isValid() {
         return true;
     }

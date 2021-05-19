@@ -88,11 +88,6 @@ public class CuboidActivator extends Activator implements Locatable {
         cfg.set("loc2.z", cuboid.getZMax());
     }
 
-    @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.CUBOID;
-    }
-
     // TODO: toString method
 
     @Override

@@ -80,11 +80,6 @@ public class RegionActivator extends Activator implements Locatable {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.REGION;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(region);
     }

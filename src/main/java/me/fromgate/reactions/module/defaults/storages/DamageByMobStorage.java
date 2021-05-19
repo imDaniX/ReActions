@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.DamageByMobActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -26,10 +27,15 @@ public class DamageByMobStorage extends Storage {
     private final double damage;
 
     public DamageByMobStorage(Player player, Entity damager, double damage, DamageCause cause) {
-        super(player, OldActivatorType.DAMAGE_BY_MOB);
+        super(player);
         this.damager = damager;
         this.damage = damage;
         this.cause = cause;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return DamageByMobActivator.class;
     }
 
     @Override

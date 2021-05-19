@@ -106,11 +106,6 @@ public class MobDamageActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.MOB_DAMAGE;
-    }
-
-    @Override
     public boolean isValid() {
         return !Utils.isStringEmpty(mobType);
     }

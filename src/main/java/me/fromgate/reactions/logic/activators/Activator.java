@@ -2,7 +2,6 @@ package me.fromgate.reactions.logic.activators;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.module.defaults.actions.Actions;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.module.defaults.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.configuration.ConfigurationSection;
@@ -50,13 +49,6 @@ public abstract class Activator {
     public abstract boolean check(Storage storage);
 
     /**
-     * Get type of activator
-     *
-     * @return Type of activator
-     */
-    public abstract OldActivatorType getType();
-
-    /**
      * Save activator options to the config
      *
      * @param cfg Section of activator
@@ -81,7 +73,7 @@ public abstract class Activator {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder(logic.getGroup()).append(", ").append(logic.getName()).append(" [").append(getType()).append("]");
+        StringBuilder sb = new StringBuilder(logic.getGroup()).append(", ").append(logic.getName()).append(" [").append(getClass().getSimpleName()).append("]");
         sb.append(logic.toString());
         return sb.toString();
     }

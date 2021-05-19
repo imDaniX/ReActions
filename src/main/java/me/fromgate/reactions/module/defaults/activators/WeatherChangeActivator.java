@@ -28,11 +28,6 @@ public class WeatherChangeActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.WEATHER_CHANGE;
-    }
-
-    @Override
     public void saveOptions(ConfigurationSection cfg) {
         cfg.set("world", world);
         cfg.set("weather", state.name());

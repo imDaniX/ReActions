@@ -10,7 +10,6 @@ import me.fromgate.reactions.logic.activators.Storage;
 import me.fromgate.reactions.module.defaults.ItemStoragesManager;
 import me.fromgate.reactions.module.defaults.StoragesManager;
 import me.fromgate.reactions.module.defaults.activators.MessageActivator;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
 import me.fromgate.reactions.module.defaults.activators.SignActivator;
 import me.fromgate.reactions.module.defaults.storages.BlockBreakStorage;
 import me.fromgate.reactions.module.defaults.storages.DamageStorage;
@@ -172,7 +171,7 @@ public class BukkitListener implements Listener {
     // TODO: All the checks should be inside activator
     @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {
-        for (Activator activator : ReActions.getActivators().getActivators(OldActivatorType.SIGN)) {
+        for (Activator activator : ReActions.getActivators().getType(SignActivator.class).getActivators()) {
             SignActivator signAct = (SignActivator) activator;
             if (!signAct.checkMask(event.getLines())) continue;
             Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getLogic().getName());

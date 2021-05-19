@@ -29,6 +29,8 @@ public interface ActivatorType {
 
     // TODO Module name
 
+    boolean isNeedBlock();
+
     boolean isLocatable();
 
     void addActivator(@NotNull Activator activator);
@@ -41,4 +43,6 @@ public interface ActivatorType {
     Collection<Activator> getActivatorsAt(@NotNull World world, int x, int y, int z);
 
     void activate(@NotNull Storage storage);
+
+    boolean isEmpty();
 }

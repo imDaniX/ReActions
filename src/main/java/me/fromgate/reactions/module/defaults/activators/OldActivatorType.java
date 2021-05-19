@@ -80,7 +80,7 @@ public enum OldActivatorType {
     DAMAGE_BY_MOB("damagebymob", DamageByMobActivator::create, DamageByMobActivator::load),
     DAMAGE_BY_BLOCK("damagebyblock", DamageByBlockActivator::create, DamageByBlockActivator::load, true, true),
     VARIABLE("var", VariableActivator::create, VariableActivator::load),
-    GAMEMODE("gamemode", GamemodeActivator::create, GamemodeActivator::load),
+    GAMEMODE("gamemode", GameModeActivator::create, GameModeActivator::load),
     GOD("god", GodActivator::create, GodActivator::load),
     CUBOID("cube", CuboidActivator::create, CuboidActivator::load, true),
     WEATHER_CHANGE("weather", WeatherChangeActivator::create, WeatherChangeActivator::load),

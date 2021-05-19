@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.ButtonActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -39,8 +40,13 @@ public class ButtonStorage extends Storage {
     private final Location buttonLocation;
 
     public ButtonStorage(Player p, Location loc) {
-        super(p, OldActivatorType.BUTTON);
+        super(p);
         this.buttonLocation = loc;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return ButtonActivator.class;
     }
 
     @Override

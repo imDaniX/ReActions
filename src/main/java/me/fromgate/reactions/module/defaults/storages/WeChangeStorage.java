@@ -2,8 +2,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.WeChangeActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -23,9 +24,14 @@ public class WeChangeStorage extends Storage {
     private final Material blockType;
 
     public WeChangeStorage(Player player, Location location, Material blockType) {
-        super(player, OldActivatorType.WE_CHANGE);
+        super(player);
         this.location = location;
         this.blockType = blockType;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return WeChangeActivator.class;
     }
 
     @Override

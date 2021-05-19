@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.VariableActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import org.bukkit.entity.Player;
 
@@ -38,10 +39,15 @@ public class VariableStorage extends Storage {
     private final String oldValue;
 
     public VariableStorage(Player player, String var, String newValue, String prevValue) {
-        super(player, OldActivatorType.VARIABLE);
+        super(player);
         this.variableId = var;
         this.newValue = newValue;
         this.oldValue = prevValue;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return VariableActivator.class;
     }
 
     @Override

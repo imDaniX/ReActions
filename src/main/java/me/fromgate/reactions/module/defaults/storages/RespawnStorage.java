@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.RespawnActivator;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.DataValue;
@@ -47,10 +48,15 @@ public class RespawnStorage extends Storage {
     private final Location respawnLoc;
 
     public RespawnStorage(Player player, LivingEntity killer, DeathCause cause, Location respawnLoc) {
-        super(player, OldActivatorType.RESPAWN);
+        super(player);
         this.killer = killer;
         this.deathCause = cause;
         this.respawnLoc = respawnLoc;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return RespawnActivator.class;
     }
 
     @Override

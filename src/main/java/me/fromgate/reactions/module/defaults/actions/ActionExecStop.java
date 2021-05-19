@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.Action;
 import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
@@ -37,7 +37,9 @@ public class ActionExecStop extends Action {
         if (player.isEmpty()) return false;
         String activator = params.getString("activator", "");
         if (activator.isEmpty()) return false;
-        ReActions.getActivators().stopExec(player, activator);
+        // TODO Custom ActivatorType to handle exec stopping
+        //ReActions.getActivators().stopExec(player, activator);
+        Msg.logOnce("execstopnotworking", "Sorry, but action EXEC_STOP doesn't work yet.");
         setMessageParam(activator);
         return true;
     }

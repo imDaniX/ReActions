@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.storages;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.activators.Activator;
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.activators.BlockClickActivator;
 import me.fromgate.reactions.util.collections.MapBuilder;
 import me.fromgate.reactions.util.data.BooleanValue;
 import me.fromgate.reactions.util.data.DataValue;
@@ -43,9 +44,14 @@ public class BlockClickStorage extends Storage {
     private final boolean leftClick;
 
     public BlockClickStorage(Player p, Block block, boolean leftClick) {
-        super(p, OldActivatorType.BLOCK_CLICK);
+        super(p);
         this.block = block;
         this.leftClick = leftClick;
+    }
+
+    @Override
+    public Class<? extends Activator> getType() {
+        return BlockClickActivator.class;
     }
 
     @Override

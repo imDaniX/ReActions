@@ -39,11 +39,6 @@ public class TeleportActivator extends Activator {
     }
 
     @Override
-    public OldActivatorType getType() {
-        return OldActivatorType.TELEPORT;
-    }
-
-    @Override
     public void saveOptions(ConfigurationSection cfg) {
         cfg.set("cause", cause == null ? null : cause.name());
         cfg.set("world", worldTo);
