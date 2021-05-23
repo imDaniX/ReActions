@@ -1,6 +1,5 @@
 package me.fromgate.reactions.logic.activators;
 
-import lombok.Getter;
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.util.RaGenerator;
 import me.fromgate.reactions.util.Utils;
@@ -29,14 +28,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 public class ActivatorsManager {
     private final Plugin plugin;
     private final File actsFolder;
     private final Logger logger;
-    @Getter
-    private final Query query;
+    private final Search search;
 
     private final Map<Class<? extends Activator>, ActivatorType> types;
     private final Map<String, ActivatorType> aliasTypes;
@@ -47,7 +46,7 @@ public class ActivatorsManager {
         plugin = react;
         actsFolder = new File(react.getDataFolder(), "Activators");
         logger = react.getLogger();
-        query = new Query();
+        search = new Search();
 
         types = new HashMap<>();
         aliasTypes = new HashMap<>();
@@ -98,7 +97,7 @@ public class ActivatorsManager {
                         logger.warning("Failed to load activator '" + name + "' in the group '" + group + "'.");
                         continue;
                     }
-                    addActivator(activator);
+                    addActivator(activator, false);
                 }
             }
         } else if (file.isDirectory()) {
@@ -125,7 +124,7 @@ public class ActivatorsManager {
         return true;
     }
 
-    public boolean addActivator(@NotNull Activator activator) {
+    public boolean addActivator(@NotNull Activator activator, boolean save) {
         ActivatorLogic logic = activator.getLogic();
         String name = logic.getName();
         if (activatorByName.containsKey(name)) {
@@ -135,7 +134,7 @@ public class ActivatorsManager {
         types.get(activator.getClass()).addActivator(activator);
         activatorByName.put(logic.getName(), activator);
         activatorsByGroup.computeIfAbsent(logic.getGroup(), g -> new HashSet<>()).add(activator);
-        saveGroup(logic.getGroup());
+        if (save) saveGroup(logic.getGroup());
         return true;
     }
 
@@ -370,7 +369,11 @@ public class ActivatorsManager {
         }
     }
 
-    public final class Query {
+    public Search search() {
+        return search;
+    }
+
+    public final class Search {
         @NotNull
         public Collection<Activator> all() {
             return activatorByName.values();
@@ -401,6 +404,15 @@ public class ActivatorsManager {
         @NotNull
         public Collection<Activator> byLocation(@NotNull Location location) {
             return byRawLocation(Objects.requireNonNull(location.getWorld()), location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        }
+
+        @NotNull
+        public Collection<Activator> query(@NotNull Predicate<Activator> predicate) {
+            List<Activator> found = new ArrayList<>();
+            for (Activator activator : activatorByName.values()) {
+                if (predicate.test(activator)) found.add(activator);
+            }
+            return found;
         }
     }
 }

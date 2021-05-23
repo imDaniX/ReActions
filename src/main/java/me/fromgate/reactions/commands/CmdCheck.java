@@ -33,7 +33,7 @@ public class CmdCheck extends Cmd {
             for (int x = playerX - radius; x <= playerX + radius; x++) {
                 for (int y = playerY - radius; y <= playerY + radius; y++) {
                     for (int z = playerZ - radius; z <= playerZ + radius; z++) {
-                        Collection<Activator> found = ReActions.getActivators().getQuery().byRawLocation(world, x, y, z);
+                        Collection<Activator> found = ReActions.getActivators().search().byRawLocation(world, x, y, z);
                         if (found.isEmpty()) continue;
                         found.forEach(a -> total.add(a.toString()));
                     }

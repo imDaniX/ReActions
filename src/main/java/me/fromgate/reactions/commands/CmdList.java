@@ -82,7 +82,7 @@ public class CmdList extends Cmd {
     }
 
     private void printAct(CommandSender sender, int page, int lpp) {
-        Collection<Activator> activators = ReActions.getActivators().getQuery().all();
+        Collection<Activator> activators = ReActions.getActivators().search().all();
         List<String> ag = new ArrayList<>(activators.size());
         activators.forEach(a -> ag.add(a.getLogic().getName()));
         Msg.printPage(sender, ag, Msg.MSG_ACTLIST, page, lpp, true);
@@ -90,7 +90,7 @@ public class CmdList extends Cmd {
     }
 
     private void printActGroup(CommandSender sender, String group, int page, int lpp) {
-        Collection<Activator> activators = ReActions.getActivators().getQuery().byGroup(group);
+        Collection<Activator> activators = ReActions.getActivators().search().byGroup(group);
         List<String> ag = new ArrayList<>(activators.size());
         activators.forEach(a -> ag.add(a.getLogic().getName()));
         Msg.MSG_ACTLISTGRP.print(sender, group, '6', '6');
@@ -98,7 +98,7 @@ public class CmdList extends Cmd {
     }
 
     private void printActType(CommandSender sender, String type, int page, int lpp) {
-        Collection<Activator> activators = ReActions.getActivators().getQuery().byType(type);
+        Collection<Activator> activators = ReActions.getActivators().search().byType(type);
         List<String> ag = new ArrayList<>(activators.size());
         activators.forEach(a -> ag.add(a.getLogic().getName()));
         Msg.MSG_ACTLISTTYPE.print(sender, type, '6', '6');

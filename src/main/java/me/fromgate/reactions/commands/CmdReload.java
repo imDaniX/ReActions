@@ -58,7 +58,7 @@ public class CmdReload extends Cmd {
             InventoryMenu.load();
             FakeCommander.updateCommands();
         }
-        Msg.MSG_CMDRELOAD.print(sender, ReActions.getActivators().getQuery().all().size(), LocationHolder.sizeTpLoc());
+        Msg.MSG_CMDRELOAD.print(sender, ReActions.getActivators().search().all().size(), LocationHolder.sizeTpLoc());
         return true;
     }
 

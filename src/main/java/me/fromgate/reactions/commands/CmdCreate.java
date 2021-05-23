@@ -84,7 +84,7 @@ public class CmdCreate extends Cmd {
             Msg.CMD_NOTADDBADDEDSYNTAX.print(sender, name, type);
             return true;
         }
-        if (activators.addActivator(activator)) {
+        if (activators.addActivator(activator, true)) {
             activators.saveGroup(activator.getLogic().getGroup());
             Msg.CMD_ADDBADDED.print(sender, activator.toString());
         } else {
