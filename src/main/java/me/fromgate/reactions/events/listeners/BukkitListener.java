@@ -17,7 +17,6 @@ import me.fromgate.reactions.module.defaults.storages.DropStorage;
 import me.fromgate.reactions.module.defaults.storages.InventoryClickStorage;
 import me.fromgate.reactions.module.defaults.storages.MessageStorage;
 import me.fromgate.reactions.module.defaults.storages.MobDamageStorage;
-import me.fromgate.reactions.module.defaults.storages.PickupItemStorage;
 import me.fromgate.reactions.module.defaults.storages.TeleportStorage;
 import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.BlockUtils;
@@ -200,17 +199,6 @@ public class BukkitListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         ItemStoragesManager.triggerItemHold((Player) event.getPlayer());
         ItemStoragesManager.triggerItemWear((Player) event.getPlayer());
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        Map<String, DataValue> changeables = StoragesManager.triggerPickupItem(event.getPlayer(), event.getItem(), event.getItem().getPickupDelay());
-        event.getItem().setPickupDelay((int) changeables.get(PickupItemStorage.PICKUP_DELAY).asDouble());
-        event.getItem().setItemStack(changeables.get(PickupItemStorage.ITEM).asItemStack());
-        event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-        if (event.isCancelled()) return;
-        ItemStoragesManager.triggerItemHold(event.getPlayer());
-        ItemStoragesManager.triggerItemWear(event.getPlayer());
     }
 
     @EventHandler(ignoreCancelled = true)
