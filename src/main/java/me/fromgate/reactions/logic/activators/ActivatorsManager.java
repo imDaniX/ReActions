@@ -207,15 +207,15 @@ public class ActivatorsManager {
     @NotNull
     public List<String> registerType(@NotNull ActivatorType type) {
         if (types.containsKey(type.getType())) {
-            throw new IllegalStateException("Activator type '" + type.getType().getSimpleName() + "' is already registered!");
+            throw new IllegalStateException("Activator type '" + type.getName() + "' is already registered!");
         }
         String name = type.getName().toUpperCase(Locale.ENGLISH);
         if (typesAliases.containsKey(name)) {
             ActivatorType preserved = typesAliases.get(name);
             if (preserved.getName().equalsIgnoreCase(name)) {
-                throw new IllegalStateException("Activator type name '" + name + "' is already used for '" + preserved.getType().getSimpleName() + "'!");
+                throw new IllegalStateException("Activator type name '" + name + "' is already used for '" + preserved.getName() + "'!");
             } else {
-                logger.warning("Activator type name '" + name + "' is already used as an alias for '" + preserved.getType().getSimpleName() + "', overriding it.");
+                logger.warning("Activator type name '" + name + "' is already used as an alias for '" + preserved.getName() + "', overriding it.");
             }
         }
         types.put(type.getType(), type);
@@ -228,6 +228,7 @@ public class ActivatorsManager {
                 return type;
             });
         }
+        logger.info("Activator type '" + name + "' registered with aliases '" + String.join("', ", registeredNames) + "'");
         return registeredNames;
     }
 

@@ -63,6 +63,7 @@ public abstract class Storage {
         changeables = prepareChangeables();
     }
 
+    // TODO Maybe register Storage class in ActivatorsManager instead?
     public abstract Class<? extends Activator> getType();
 
     protected Map<String, String> prepareVariables() {
