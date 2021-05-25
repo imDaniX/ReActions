@@ -23,14 +23,14 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 
 import java.util.Locale;
 
-public class FlagCompare implements Flag {
+public class FlagCompare implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

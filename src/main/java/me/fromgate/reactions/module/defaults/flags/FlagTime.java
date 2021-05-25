@@ -22,13 +22,13 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class FlagTime implements Flag {
+public class FlagTime implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String time) {

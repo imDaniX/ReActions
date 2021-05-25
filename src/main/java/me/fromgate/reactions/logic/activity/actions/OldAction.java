@@ -20,7 +20,7 @@
  *
  */
 
-package me.fromgate.reactions.logic.actions;
+package me.fromgate.reactions.logic.activity.actions;
 
 import lombok.Setter;
 import me.fromgate.reactions.Cfg;
@@ -33,8 +33,8 @@ import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
-
-public abstract class Action {
+@Deprecated
+public abstract class OldAction {
     private Actions type = null;
     @Setter
     private String messageParam = "";

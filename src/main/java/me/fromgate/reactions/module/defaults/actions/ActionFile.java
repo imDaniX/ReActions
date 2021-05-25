@@ -1,6 +1,6 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 
@@ -12,7 +12,7 @@ import java.nio.file.StandardCopyOption;
 /**
  * Created by MaxDikiy on 5/7/2017.
  */
-public class ActionFile extends Action {
+public class ActionFile extends OldAction {
     private static final String dir = new File("").getAbsolutePath();
 
     @Override

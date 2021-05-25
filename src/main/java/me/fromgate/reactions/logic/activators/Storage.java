@@ -38,11 +38,16 @@ public abstract class Storage {
     public static final String CANCEL_EVENT = "cancel_event";
 
     protected final Player player;
+    // TODO
     private final boolean async;
 
     // Default temporary placeholders
     private Map<String, String> variables;
     private Map<String, DataValue> changeables;
+
+    public Storage() {
+        this(null);
+    }
 
     public Storage(Player player) {
         this(player, false);

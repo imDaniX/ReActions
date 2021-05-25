@@ -20,10 +20,11 @@
  *
  */
 
-package me.fromgate.reactions.logic.flags;
+package me.fromgate.reactions.logic.activity.flags;
 
 import me.fromgate.reactions.util.data.RaContext;
 
-public interface Flag {
+@Deprecated
+public interface OldFlag {
     boolean checkFlag(RaContext context, String param);
 }

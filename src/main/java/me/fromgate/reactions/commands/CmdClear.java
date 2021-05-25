@@ -1,8 +1,8 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 

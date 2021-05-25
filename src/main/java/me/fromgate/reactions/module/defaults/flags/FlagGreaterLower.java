@@ -1,7 +1,7 @@
 package me.fromgate.reactions.module.defaults.flags;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 
@@ -9,7 +9,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
  * Created by MaxDikiy on 10/1/2017.
  */
 @AllArgsConstructor
-public class FlagGreaterLower implements Flag {
+public class FlagGreaterLower implements OldFlag {
     private final boolean greater;
 
     @Override

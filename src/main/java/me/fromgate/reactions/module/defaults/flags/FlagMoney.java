@@ -23,13 +23,13 @@
 package me.fromgate.reactions.module.defaults.flags;
 
 import me.fromgate.reactions.externals.RaEconomics;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
-public class FlagMoney implements Flag {
+public class FlagMoney implements OldFlag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();

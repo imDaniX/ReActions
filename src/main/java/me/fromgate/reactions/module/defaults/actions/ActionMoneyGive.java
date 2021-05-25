@@ -23,7 +23,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.RaEconomics;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -32,7 +32,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionMoneyGive extends Action {
+public class ActionMoneyGive extends OldAction {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

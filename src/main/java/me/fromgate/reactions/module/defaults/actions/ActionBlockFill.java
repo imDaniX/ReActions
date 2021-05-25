@@ -23,7 +23,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -37,7 +37,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class ActionBlockFill extends Action {
+public class ActionBlockFill extends OldAction {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

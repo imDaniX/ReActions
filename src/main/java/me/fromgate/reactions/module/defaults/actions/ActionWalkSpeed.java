@@ -1,6 +1,6 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 /**
  * Created by MaxDikiy on 2017-05-16.
  */
-public class ActionWalkSpeed extends Action {
+public class ActionWalkSpeed extends OldAction {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();

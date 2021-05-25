@@ -1,6 +1,7 @@
 package me.fromgate.reactions.logic.activators;
 
 import lombok.AllArgsConstructor;
+import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.module.defaults.actions.Actions;
 import me.fromgate.reactions.module.defaults.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
@@ -54,7 +55,7 @@ public abstract class Activator {
      * @param cfg Section of activator
      */
     public void saveOptions(ConfigurationSection cfg) {
-        // Sometimes we don't need those
+        // Sometimes we don't need it
     }
 
     /**

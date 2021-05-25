@@ -23,7 +23,7 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -35,7 +35,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 
-public class ActionSignSet extends Action {
+public class ActionSignSet extends OldAction {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

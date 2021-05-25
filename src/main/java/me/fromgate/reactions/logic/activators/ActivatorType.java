@@ -1,7 +1,7 @@
 package me.fromgate.reactions.logic.activators;
 
+import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.util.parameter.Parameters;
-import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -38,9 +38,6 @@ public interface ActivatorType {
     void removeActivator(@NotNull Activator activator);
 
     void clearActivators();
-
-    @NotNull
-    Collection<Activator> getActivatorsAt(@NotNull World world, int x, int y, int z);
 
     void activate(@NotNull Storage storage);
 

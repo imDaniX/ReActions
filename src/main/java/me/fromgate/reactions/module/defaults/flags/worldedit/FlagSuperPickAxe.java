@@ -23,14 +23,14 @@
 package me.fromgate.reactions.module.defaults.flags.worldedit;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
 /**
  * Created by MaxDikiy on 11/10/2017.
  */
-public class FlagSuperPickAxe implements Flag {
+public class FlagSuperPickAxe implements OldFlag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();

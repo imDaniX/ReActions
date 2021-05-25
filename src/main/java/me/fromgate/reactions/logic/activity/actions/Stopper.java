@@ -1,4 +1,4 @@
-package me.fromgate.reactions.logic.actions;
+package me.fromgate.reactions.logic.activity.actions;
 
 import java.util.List;
 

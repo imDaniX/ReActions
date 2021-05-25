@@ -23,13 +23,13 @@
 package me.fromgate.reactions.module.defaults.flags.worldedit;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class FlagSelectionBlocks implements Flag {
+public class FlagSelectionBlocks implements OldFlag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();

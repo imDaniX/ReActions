@@ -23,7 +23,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -31,7 +31,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
 @AllArgsConstructor
-public class ActionDelay extends Action {
+public class ActionDelay extends OldAction {
 
     private final boolean globalDelay;
 

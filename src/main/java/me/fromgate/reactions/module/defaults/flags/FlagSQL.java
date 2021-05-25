@@ -24,12 +24,12 @@ package me.fromgate.reactions.module.defaults.flags;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.SQLManager;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 
 @AllArgsConstructor
-public class FlagSQL implements Flag {
+public class FlagSQL implements OldFlag {
     // TODO: Make it safer
     private final boolean check;
 

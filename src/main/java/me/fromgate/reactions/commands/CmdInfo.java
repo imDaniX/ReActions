@@ -1,9 +1,9 @@
 package me.fromgate.reactions.commands;
 
 import me.fromgate.reactions.ReActions;
+import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorLogic;
-import me.fromgate.reactions.logic.flags.StoredFlag;
+import me.fromgate.reactions.logic.activity.flags.StoredFlag;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;

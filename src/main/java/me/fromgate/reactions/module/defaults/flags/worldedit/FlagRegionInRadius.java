@@ -23,11 +23,11 @@
 package me.fromgate.reactions.module.defaults.flags.worldedit;
 
 import me.fromgate.reactions.externals.worldguard.WGBridge7x;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
-public class FlagRegionInRadius implements Flag {
+public class FlagRegionInRadius implements OldFlag {
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();

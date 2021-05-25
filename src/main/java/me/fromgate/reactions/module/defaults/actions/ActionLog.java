@@ -23,7 +23,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
-public class ActionLog extends Action {
+public class ActionLog extends OldAction {
 
     private final Logger LOGGER = Logger.getLogger("Minecraft");
     private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

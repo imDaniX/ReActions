@@ -1,6 +1,6 @@
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -8,7 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-public class FlagBlock implements Flag {
+public class FlagBlock implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

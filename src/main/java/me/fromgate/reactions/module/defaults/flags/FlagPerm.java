@@ -22,10 +22,10 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 
-public class FlagPerm implements Flag {
+public class FlagPerm implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

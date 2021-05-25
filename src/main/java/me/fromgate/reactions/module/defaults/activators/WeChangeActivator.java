@@ -4,8 +4,8 @@
 package me.fromgate.reactions.module.defaults.activators;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
+import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Storage;
 import me.fromgate.reactions.module.defaults.storages.WeChangeStorage;
 import me.fromgate.reactions.util.item.ItemUtils;

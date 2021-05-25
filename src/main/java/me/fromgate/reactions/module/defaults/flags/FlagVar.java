@@ -24,14 +24,14 @@ package me.fromgate.reactions.module.defaults.flags;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 
 @AllArgsConstructor
-public class FlagVar implements Flag {
+public class FlagVar implements OldFlag {
     private final Type flagType;
     private final boolean personalVar;
 

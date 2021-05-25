@@ -1,7 +1,7 @@
 package me.fromgate.reactions.time.waiter;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.StoredAction;
+import me.fromgate.reactions.logic.activity.actions.StoredAction;
 import me.fromgate.reactions.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;

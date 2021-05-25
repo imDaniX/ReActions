@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FlagFlagSet implements Flag {
+public class FlagFlagSet implements OldFlag {
 
     private static final Pattern BRACES = Pattern.compile("(^\\{\\s*)|(\\s*}$)");
     private static final Pattern BRACES_GROUP = Pattern.compile("\\S+:\\{[^\\{\\}]*\\}|\\S+");

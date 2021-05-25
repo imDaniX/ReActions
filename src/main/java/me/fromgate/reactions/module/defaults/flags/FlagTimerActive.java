@@ -22,11 +22,11 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.data.RaContext;
 
-public class FlagTimerActive implements Flag {
+public class FlagTimerActive implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

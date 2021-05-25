@@ -23,7 +23,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.mob.EntityUtils;
@@ -37,7 +37,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public class ActionClearRegion extends Action {
+public class ActionClearRegion extends OldAction {
     // TODO: Too weird. Optimize, simplify
 
     @Override

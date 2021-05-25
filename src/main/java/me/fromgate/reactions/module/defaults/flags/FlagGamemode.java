@@ -22,13 +22,13 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
-public class FlagGamemode implements Flag {
+public class FlagGamemode implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

@@ -1,4 +1,4 @@
-package me.fromgate.reactions.logic.flags;
+package me.fromgate.reactions.logic.activity.flags;
 
 import lombok.AllArgsConstructor;
 import lombok.Value;

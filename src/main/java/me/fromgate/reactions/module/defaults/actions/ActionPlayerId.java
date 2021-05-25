@@ -1,7 +1,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -11,7 +11,7 @@ import org.bukkit.OfflinePlayer;
 /**
  * Created by MaxDikiy on 5/6/2017.
  */
-public class ActionPlayerId extends Action {
+public class ActionPlayerId extends OldAction {
 
     @SuppressWarnings("deprecation")
     @Override

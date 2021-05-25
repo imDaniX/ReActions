@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.location.VelocityUtils;
@@ -32,7 +32,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-public class ActionVelocityJump extends Action {
+public class ActionVelocityJump extends OldAction {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

@@ -23,7 +23,7 @@
 package me.fromgate.reactions.module.defaults.flags;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
@@ -35,7 +35,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Locale;
 
 @AllArgsConstructor
-public class FlagItem implements Flag {
+public class FlagItem implements OldFlag {
     private final Type flagType;
 
     @Override

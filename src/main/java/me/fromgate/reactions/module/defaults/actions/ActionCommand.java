@@ -25,7 +25,7 @@ package me.fromgate.reactions.module.defaults.actions;
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.TemporaryOp;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -34,7 +34,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 @AllArgsConstructor
-public class ActionCommand extends Action {
+public class ActionCommand extends OldAction {
 
     private final Type commandAs;
 

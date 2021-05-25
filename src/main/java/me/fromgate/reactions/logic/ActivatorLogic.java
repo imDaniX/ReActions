@@ -20,12 +20,12 @@
  *
  */
 
-package me.fromgate.reactions.logic.activators;
+package me.fromgate.reactions.logic;
 
 import lombok.Getter;
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.logic.actions.StoredAction;
-import me.fromgate.reactions.logic.flags.StoredFlag;
+import me.fromgate.reactions.logic.activity.actions.StoredAction;
+import me.fromgate.reactions.logic.activity.flags.StoredFlag;
 import me.fromgate.reactions.module.defaults.actions.Actions;
 import me.fromgate.reactions.module.defaults.flags.Flags;
 import me.fromgate.reactions.util.Utils;
@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
+// TODO Refactor to latest changes
 @Getter
 public final class ActivatorLogic {
     @NotNull
@@ -64,8 +65,7 @@ public final class ActivatorLogic {
         loadData(cfg.getStringList("reactions"), this::addReaction);
     }
 
-    private static void loadData(List<String> data, BiConsumer<String, String> loader) {
-        if (data == null) return;
+    private static void loadData(@NotNull List<String> data, @NotNull BiConsumer<String, String> loader) {
         for (String str : data) {
             String param = str;
             String value = "";

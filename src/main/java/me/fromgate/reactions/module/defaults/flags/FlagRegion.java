@@ -24,13 +24,13 @@ package me.fromgate.reactions.module.defaults.flags;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.entity.Player;
 
 @AllArgsConstructor
-public class FlagRegion implements Flag {
+public class FlagRegion implements OldFlag {
 
     private Type flagType;
 

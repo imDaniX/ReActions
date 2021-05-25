@@ -23,9 +23,9 @@
 package me.fromgate.reactions.module.defaults.flags;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activators.ActivatorLogic;
-import me.fromgate.reactions.logic.flags.Flag;
-import me.fromgate.reactions.logic.flags.StoredFlag;
+import me.fromgate.reactions.logic.ActivatorLogic;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
+import me.fromgate.reactions.logic.activity.flags.StoredFlag;
 import me.fromgate.reactions.module.defaults.flags.worldedit.FlagRegionInRadius;
 import me.fromgate.reactions.module.defaults.flags.worldedit.FlagSelectionBlocks;
 import me.fromgate.reactions.module.defaults.flags.worldedit.FlagSuperPickAxe;
@@ -132,15 +132,15 @@ public enum Flags {
 
     private final String alias;
     private final boolean requirePlayer;
-    private final Flag flag;
+    private final OldFlag flag;
 
-    Flags(String alias, Flag flag, boolean requirePlayer) {
+    Flags(String alias, OldFlag flag, boolean requirePlayer) {
         this.alias = alias;
         this.requirePlayer = requirePlayer;
         this.flag = flag;
     }
 
-    Flags(String alias, Flag flag) {
+    Flags(String alias, OldFlag flag) {
         this(alias, flag, false);
     }
 

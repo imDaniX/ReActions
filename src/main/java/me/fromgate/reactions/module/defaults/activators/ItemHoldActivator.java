@@ -23,8 +23,8 @@
 package me.fromgate.reactions.module.defaults.activators;
 
 import lombok.Getter;
+import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Storage;
 import me.fromgate.reactions.module.defaults.storages.ItemHoldStorage;
 import me.fromgate.reactions.util.Utils;

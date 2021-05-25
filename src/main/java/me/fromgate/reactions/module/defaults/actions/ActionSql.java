@@ -25,7 +25,7 @@ package me.fromgate.reactions.module.defaults.actions;
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.SQLManager;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -33,7 +33,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import java.util.Locale;
 
 @AllArgsConstructor
-public class ActionSql extends Action {
+public class ActionSql extends OldAction {
     // TODO: More functionality like working with arrays
     private final Type sqlType;
 

@@ -1,6 +1,6 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -18,7 +18,7 @@ import java.util.Locale;
 /**
  * Created by MaxDikiy on 20/10/2017.
  */
-public class ActionClearRadius extends Action {
+public class ActionClearRadius extends OldAction {
     // TODO: Too weird. Optimize, simplify
 
     @Override

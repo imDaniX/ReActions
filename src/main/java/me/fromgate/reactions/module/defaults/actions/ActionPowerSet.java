@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -32,7 +32,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Switch;
 
-public class ActionPowerSet extends Action {
+public class ActionPowerSet extends OldAction {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

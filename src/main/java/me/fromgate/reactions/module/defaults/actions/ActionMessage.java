@@ -23,7 +23,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.playerselector.SelectorsManager;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -38,7 +38,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-public class ActionMessage extends Action {
+public class ActionMessage extends OldAction {
 
     @Override
     public boolean execute(RaContext context, Parameters params) {

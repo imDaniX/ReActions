@@ -22,12 +22,12 @@
 
 package me.fromgate.reactions.module.defaults.flags;
 
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.math.Rng;
 
-public class FlagChance implements Flag {
+public class FlagChance implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {

@@ -24,9 +24,9 @@ package me.fromgate.reactions.module.defaults.actions;
 
 import lombok.Getter;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.Action;
-import me.fromgate.reactions.logic.actions.StoredAction;
-import me.fromgate.reactions.logic.activators.ActivatorLogic;
+import me.fromgate.reactions.logic.ActivatorLogic;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.StoredAction;
 import me.fromgate.reactions.module.defaults.actions.ActionItems.ItemActionType;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -145,16 +145,16 @@ public enum Actions {
     private final String alias;
     private final boolean requirePlayer;
     @Getter
-    private final Action action;
+    private final OldAction action;
 
-    Actions(String alias, Action action, boolean requirePlayer) {
+    Actions(String alias, OldAction action, boolean requirePlayer) {
         this.alias = alias.toUpperCase(Locale.ENGLISH);
         this.requirePlayer = requirePlayer;
         this.action = action;
         this.action.init(this);
     }
 
-    Actions(String alias, Action action) {
+    Actions(String alias, OldAction action) {
         this(alias, action, false);
     }
 

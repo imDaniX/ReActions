@@ -24,7 +24,7 @@ package me.fromgate.reactions.module.defaults.actions;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.module.defaults.ItemStoragesManager;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -44,7 +44,7 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.List;
 
 @AllArgsConstructor
-public class ActionItems extends Action {
+public class ActionItems extends OldAction {
     // TODO: Optimization
     private final ItemActionType actionType;
 

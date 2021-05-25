@@ -1,7 +1,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.actions.Action;
-import me.fromgate.reactions.logic.actions.StoredAction;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.StoredAction;
 import me.fromgate.reactions.module.defaults.StoragesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * Created by MaxDikiy on 2017-05-17.
  */
-public class ActionIfElse extends Action {
+public class ActionIfElse extends OldAction {
     // TODO: Maybe use some custom evaluator instead of freaking JS engine?
     private static final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 

@@ -1,7 +1,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.worldedit.RaWorldEdit;
-import me.fromgate.reactions.logic.actions.Action;
+import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 /**
  * Created by MaxDikiy on 18/10/2017.
  */
-public class ActionWeSuperPickaxe extends Action {
+public class ActionWeSuperPickaxe extends OldAction {
     @Override
     public boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();

@@ -4,8 +4,8 @@ import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.Shoot;
 import org.bukkit.configuration.file.FileConfiguration;
 
+// TODO: Fully rework. Please.
 public class Cfg {
-    // TODO: Fully rework
 
     public static boolean debugMode = false;
     public static boolean saveEmptySections = false;

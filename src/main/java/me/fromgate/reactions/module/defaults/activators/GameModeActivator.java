@@ -1,7 +1,7 @@
 package me.fromgate.reactions.module.defaults.activators;
 
+import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorLogic;
 import me.fromgate.reactions.logic.activators.Storage;
 import me.fromgate.reactions.module.defaults.storages.GameModeStorage;
 import me.fromgate.reactions.util.Utils;

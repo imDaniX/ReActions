@@ -23,11 +23,11 @@
 package me.fromgate.reactions.module.defaults.flags;
 
 import me.fromgate.reactions.externals.RaVault;
-import me.fromgate.reactions.logic.flags.Flag;
+import me.fromgate.reactions.logic.activity.flags.OldFlag;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.entity.Player;
 
-public class FlagGroup implements Flag {
+public class FlagGroup implements OldFlag {
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
