@@ -75,7 +75,7 @@ public class BlockClickActivator extends Activator implements Locatable {
     }
 
     private boolean checkLocations(Block block) {
-        if (this.blockLocation.isEmpty()) return true;
+        if (Utils.isStringEmpty(blockLocation)) return true;
         return this.isLocatedAt(block.getLocation());
     }
 
