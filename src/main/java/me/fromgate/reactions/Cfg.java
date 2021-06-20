@@ -1,6 +1,5 @@
 package me.fromgate.reactions;
 
-
 import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.Shoot;
 import org.bukkit.configuration.file.FileConfiguration;
