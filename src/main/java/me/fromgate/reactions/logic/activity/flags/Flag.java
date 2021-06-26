@@ -5,7 +5,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Flag {
-    public final boolean check(@NotNull RaContext context, @NotNull String paramsStr) {
+    public boolean check(@NotNull RaContext context, @NotNull String paramsStr) {
         return check(
                 context,
                 isParameterized() ?
