@@ -37,7 +37,7 @@ import java.util.Properties;
 
 @UtilityClass
 public class SQLManager {
-    // TODO: Ability to create h2/sqlite databases through config file like databases.yml
+    // TODO: Ability to create h2/sqlite tables through config file like databases.yml
     // TODO: Make from scratch
     // TODO: HikariCP
 

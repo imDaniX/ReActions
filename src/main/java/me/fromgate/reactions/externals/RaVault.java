@@ -114,14 +114,11 @@ public class RaVault {
         return vplg != null;
     }
 
-
-    @SuppressWarnings("deprecation")
     private void depositAccount(String account, String worldName, double amount) {
         if (worldName.isEmpty()) economy.depositPlayer(account, amount);
         else economy.depositPlayer(account, worldName, amount);
     }
 
-    @SuppressWarnings("deprecation")
     private void withdrawAccount(String account, String worldName, double amount) {
         if (worldName.isEmpty()) economy.withdrawPlayer(account, amount);
         else economy.withdrawPlayer(account, worldName, amount);
@@ -131,7 +128,6 @@ public class RaVault {
     /*
      * New method
      */
-    @SuppressWarnings("deprecation")
     public boolean hasMoney(String account, String worldName, double amount) {
         if (!RaVault.isEconomyConnected()) return false;
         if (worldName.isEmpty()) return economy.has(account, amount);
@@ -173,7 +169,6 @@ public class RaVault {
         return economy.format(Double.parseDouble(value)); // Integer???
     }
 
-    @SuppressWarnings("deprecation")
     public Map<String, String> getAllBalances(String name) {
         Map<String, String> bals = new HashMap<>();
         for (World world : Bukkit.getWorlds()) {

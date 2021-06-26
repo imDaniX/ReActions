@@ -27,7 +27,7 @@ import me.fromgate.reactions.util.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 @UtilityClass
@@ -66,7 +66,7 @@ public class RaEconomics {
 
     public Map<String, String> getBalances(Player p) {
         if (RaVault.isEconomyConnected()) return RaVault.getAllBalances(p.getName());
-        return new HashMap<>();
+        return Collections.emptyMap();
     }
 
     public String format(double amount, String worldName) {
