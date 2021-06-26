@@ -1,31 +1,41 @@
 package me.fromgate.reactions.logic.activity.flags;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
-import me.fromgate.reactions.module.defaults.flags.Flags;
+import org.jetbrains.annotations.NotNull;
 
-@Value
-@AllArgsConstructor
 public class StoredFlag {
 
-    Flags flag;
-    String value;
-    boolean inverted;
+    private final Flag flag;
+    private final String value;
+    private final boolean inverted;
+    private final boolean placeholders;
 
-    public StoredFlag(String f, String v, boolean not) {
-        this.flag = Flags.getByName(f);
-        this.value = v;
-        this.inverted = not;
+    public StoredFlag(@NotNull Flag flag, @NotNull String value, boolean inverted) {
+        this.flag = flag;
+        this.value = value;
+        this.inverted = inverted;
+        this.placeholders = value.contains("%");
     }
 
-    public String getFlagName() {
-        return flag == null ? "UNKNOWN" : flag.name();
+    @NotNull
+    public Flag getFlag() {
+        return flag;
+    }
+
+    @NotNull
+    public String getValue() {
+        return value;
+    }
+
+    public boolean isInverted() {
+        return inverted;
+    }
+
+    public boolean hasPlaceholders() {
+        return placeholders;
     }
 
     @Override
     public String toString() {
-        String str = this.getFlagName() + "=" + value;
-        if (this.inverted) str = "!" + str;
-        return str;
+        return (inverted ? "!" : "") + flag.getName() + "=" + value;
     }
 }

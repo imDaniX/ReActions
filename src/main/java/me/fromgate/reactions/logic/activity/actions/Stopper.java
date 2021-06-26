@@ -8,8 +8,7 @@ import java.util.List;
  */
 public interface Stopper {
     /**
-     * This method will be called after action execution(if it was successful)
-     *
+     * This method will be called after action execution (if it was successful)
      * @param stoppedActions List of actions that were stopped
      */
     void stop(List<StoredAction> stoppedActions);

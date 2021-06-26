@@ -1,27 +1,31 @@
 package me.fromgate.reactions.logic.activity.actions;
 
-import lombok.AllArgsConstructor;
-import lombok.Value;
-import me.fromgate.reactions.module.defaults.actions.Actions;
-
-@Value
-@AllArgsConstructor
 public class StoredAction {
 
-    Actions action;
-    String value;
+    private final Action action;
+    private final String value;
+    private final boolean placeholders;
 
-    public StoredAction(String a, String v) {
-        this.action = Actions.getByName(a);
-        this.value = v;
+    public StoredAction(Action action, String value) {
+        this.action = action;
+        this.value = value;
+        this.placeholders = value.contains("%");
     }
 
-    public String getActionName() {
-        return action == null ? "UNKNOWN" : action.name();
+    public Action getAction() {
+        return action;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public boolean hasPlaceholders() {
+        return placeholders;
     }
 
     @Override
     public String toString() {
-        return action.name() + "=" + value;
+        return action.getName() + "=" + value;
     }
 }
