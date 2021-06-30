@@ -28,8 +28,6 @@ public interface ActivatorType {
 
     boolean isNeedBlock();
 
-    boolean isLocatable();
-
     void addActivator(@NotNull Activator activator);
 
     void removeActivator(@NotNull Activator activator);

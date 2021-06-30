@@ -274,7 +274,6 @@ public class ActivatorsManager {
         private final RaGenerator<Parameters> creator;
         private final RaGenerator<ConfigurationSection> loader;
         private final boolean needBlock;
-        private final boolean locatable;
         private final String name;
         private final Set<Activator> activators;
 
@@ -283,7 +282,6 @@ public class ActivatorsManager {
             this.creator = creator;
             this.loader = loader;
             this.needBlock = needBlock;
-            this.locatable = type.isAssignableFrom(Locatable.class);
             this.name = name;
             this.activators = new HashSet<>();
         }
@@ -321,11 +319,6 @@ public class ActivatorsManager {
         @Override
         public boolean isNeedBlock() {
             return needBlock;
-        }
-
-        @Override
-        public boolean isLocatable() {
-            return locatable;
         }
 
         @Override
@@ -382,8 +375,9 @@ public class ActivatorsManager {
         public Collection<Activator> byRawLocation(@NotNull World world, int x, int y, int z) {
             List<Activator> found = new ArrayList<>();
             for (ActivatorType type : types.values()) {
-                if (type.isLocatable())
+                if (Locatable.class.isAssignableFrom(type.getType())) {
                     type.getActivators().stream().filter(act -> ((Locatable) act).isLocatedAt(world, x, y, z)).forEach(found::add);
+                }
             }
             return found;
         }
