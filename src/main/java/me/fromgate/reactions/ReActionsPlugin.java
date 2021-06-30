@@ -33,9 +33,10 @@ import me.fromgate.reactions.externals.Externals;
 import me.fromgate.reactions.externals.RaVault;
 import me.fromgate.reactions.holders.LocationHolder;
 import me.fromgate.reactions.logic.activators.ActivatorsManager;
+import me.fromgate.reactions.logic.activity.ActivitiesRegistry;
 import me.fromgate.reactions.menu.InventoryMenu;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
-import me.fromgate.reactions.playerselector.SelectorsManager;
+import me.fromgate.reactions.selectors.SelectorsManager;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.time.waiter.WaitingManager;
@@ -48,6 +49,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
 
+    private ActivitiesRegistry activitiesRegistry;
     private ActivatorsManager activatorsManager;
     private PlaceholdersManager placeholdersManager;
     private VariablesManager variablesManager;
@@ -56,13 +58,14 @@ public class ReActionsPlugin extends JavaPlugin implements ReActions.Platform {
     public void onLoad() {
         this.variablesManager = new VariablesManager();
         this.placeholdersManager = new PlaceholdersManager();
-        this.activatorsManager = new ActivatorsManager(this);
+        this.activitiesRegistry = new ActivitiesRegistry();
+        this.activatorsManager = new ActivatorsManager(this, activitiesRegistry);
         ReActions.setPlatform(this);
     }
 
     @Override
     public void onEnable() {
-        // TODO: More OOP style
+        // TODO god why
         Cfg.load();
         Cfg.save();
         Msg.init("ReActions", new BukkitMessenger(this), Cfg.language, Cfg.debugMode, Cfg.languageSave);

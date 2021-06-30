@@ -1,4 +1,4 @@
-package me.fromgate.reactions.playerselector;
+package me.fromgate.reactions.selectors;
 
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.parameter.Parameters;

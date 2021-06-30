@@ -1,4 +1,4 @@
-package me.fromgate.reactions.playerselector;
+package me.fromgate.reactions.selectors;
 
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class SelectorsManager {
+    // TODO Unstatic
+
     private static Set<Selector> selectors;
     private static Set<String> keys;
 

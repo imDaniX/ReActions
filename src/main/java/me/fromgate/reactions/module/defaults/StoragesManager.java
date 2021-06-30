@@ -71,7 +71,7 @@ import me.fromgate.reactions.module.defaults.storages.SneakStorage;
 import me.fromgate.reactions.module.defaults.storages.TeleportStorage;
 import me.fromgate.reactions.module.defaults.storages.VariableStorage;
 import me.fromgate.reactions.module.defaults.storages.WeatherChangeStorage;
-import me.fromgate.reactions.playerselector.SelectorsManager;
+import me.fromgate.reactions.selectors.SelectorsManager;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.Utils;

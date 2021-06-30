@@ -1,7 +1,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.logic.activity.actions.OldAction;
-import me.fromgate.reactions.playerselector.SelectorsManager;
+import me.fromgate.reactions.selectors.SelectorsManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 

@@ -69,7 +69,7 @@ public final class ActivatorLogic {
         loadData(cfg.getStringList("reactions"), (s, v) -> storeAction(s, v, reactions, activity));
     }
 
-    private static void loadData(@NotNull List<String> data, @NotNull BiConsumer<String, String> loader) {
+    private static void loadData(List<String> data, BiConsumer<String, String> loader) {
         for (String str : data) {
             String param = str;
             String value = "";
@@ -105,7 +105,7 @@ public final class ActivatorLogic {
         this.group = group;
     }
 
-    public void executeLogic(RaContext context) {
+    public void executeLogic(@NotNull RaContext context) {
         boolean noPlayer = context.getPlayer() == null;
         for (StoredFlag flag : flags) {
             if (flag.getFlag().requiresPlayer() && noPlayer) {

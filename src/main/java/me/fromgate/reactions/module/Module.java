@@ -5,7 +5,7 @@ import me.fromgate.reactions.logic.activators.ActivatorType;
 import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.logic.activity.flags.Flag;
 import me.fromgate.reactions.placeholders.Placeholder;
-import me.fromgate.reactions.playerselector.Selector;
+import me.fromgate.reactions.selectors.Selector;
 
 import java.util.Collection;
 import java.util.Collections;

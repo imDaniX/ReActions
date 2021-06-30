@@ -1,4 +1,4 @@
-package me.fromgate.reactions.playerselector;
+package me.fromgate.reactions.selectors;
 
 import me.fromgate.reactions.util.Utils;
 import org.bukkit.Bukkit;

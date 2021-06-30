@@ -1,4 +1,4 @@
-package me.fromgate.reactions.playerselector;
+package me.fromgate.reactions.selectors;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
