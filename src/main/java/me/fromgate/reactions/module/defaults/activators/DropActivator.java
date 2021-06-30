@@ -32,7 +32,7 @@ public class DropActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         DropStorage de = (DropStorage) event;
         return checkItem(de.getItem());
     }

@@ -42,7 +42,7 @@ public class PvpKillActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         return true;
     }
 

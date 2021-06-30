@@ -53,7 +53,7 @@ public class ItemConsumeActivator extends Activator {
         return new ItemConsumeActivator(base, item);
     }
 
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         if (this.item.isEmpty() || VirtualItem.fromString(this.item) == null) {
             Msg.logOnce(logic.getName() + "activatoritemempty", "Failed to parse item of activator " + logic.getName());
             return false;

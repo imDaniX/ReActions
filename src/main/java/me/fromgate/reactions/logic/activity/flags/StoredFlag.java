@@ -5,15 +5,15 @@ import org.jetbrains.annotations.NotNull;
 public class StoredFlag {
 
     private final Flag flag;
-    private final String value;
+    private final String params;
     private final boolean inverted;
     private final boolean placeholders;
 
-    public StoredFlag(@NotNull Flag flag, @NotNull String value, boolean inverted) {
+    public StoredFlag(@NotNull Flag flag, @NotNull String params, boolean inverted) {
         this.flag = flag;
-        this.value = value;
+        this.params = params;
         this.inverted = inverted;
-        this.placeholders = value.contains("%");
+        this.placeholders = params.contains("%");
     }
 
     @NotNull
@@ -22,8 +22,8 @@ public class StoredFlag {
     }
 
     @NotNull
-    public String getValue() {
-        return value;
+    public String getParameters() {
+        return params;
     }
 
     public boolean isInverted() {
@@ -36,6 +36,6 @@ public class StoredFlag {
 
     @Override
     public String toString() {
-        return (inverted ? "!" : "") + flag.getName() + "=" + value;
+        return (inverted ? "!" : "") + flag.getName() + "=" + params;
     }
 }

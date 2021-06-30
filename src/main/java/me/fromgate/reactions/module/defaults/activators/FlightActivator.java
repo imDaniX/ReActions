@@ -29,7 +29,7 @@ public class FlightActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         FlightStorage fe = (FlightStorage) event;
         return checkFlight(fe.isFlying());
     }

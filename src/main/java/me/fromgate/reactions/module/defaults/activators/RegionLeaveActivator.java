@@ -58,7 +58,7 @@ public class RegionLeaveActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         RegionLeaveStorage be = (RegionLeaveStorage) event;
         return be.getRegion().equalsIgnoreCase(WGBridge.getFullRegionName(this.region));
     }

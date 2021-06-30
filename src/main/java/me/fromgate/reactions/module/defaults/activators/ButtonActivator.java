@@ -66,7 +66,7 @@ public class ButtonActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         ButtonStorage be = (ButtonStorage) event;
         return isLocatedAt(be.getButtonLocation());
     }

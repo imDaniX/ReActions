@@ -32,7 +32,7 @@ public class TeleportActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage storage) {
+    public boolean checkStorage(Storage storage) {
         TeleportStorage tpStorage = (TeleportStorage) storage;
         if (cause != null && tpStorage.getCause() != cause) return false;
         return worldTo == null || tpStorage.getWorldTo().equalsIgnoreCase(worldTo);

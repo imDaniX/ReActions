@@ -82,7 +82,7 @@ public class DamageByMobActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         DamageByMobStorage pde = (DamageByMobStorage) event;
         if (damagerType.isEmpty()) return false;
         Entity damager = pde.getDamager();

@@ -43,7 +43,7 @@ public class BlockBreakActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         BlockBreakStorage bbe = (BlockBreakStorage) event;
         Block brokenBlock = bbe.getBlock();
         if (brokenBlock == null) return false;

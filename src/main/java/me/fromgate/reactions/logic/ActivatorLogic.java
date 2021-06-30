@@ -24,12 +24,14 @@ package me.fromgate.reactions.logic;
 
 import lombok.Getter;
 import me.fromgate.reactions.Cfg;
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.activity.ActivitiesRegistry;
 import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.logic.activity.actions.StoredAction;
 import me.fromgate.reactions.logic.activity.flags.Flag;
 import me.fromgate.reactions.logic.activity.flags.StoredFlag;
 import me.fromgate.reactions.util.Utils;
+import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -39,7 +41,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.BiConsumer;
 
-// TODO Refactor to latest changes
 @Getter
 public final class ActivatorLogic {
     @NotNull
@@ -68,6 +69,19 @@ public final class ActivatorLogic {
         loadData(cfg.getStringList("reactions"), (s, v) -> storeAction(s, v, reactions, activity));
     }
 
+    private static void loadData(@NotNull List<String> data, @NotNull BiConsumer<String, String> loader) {
+        for (String str : data) {
+            String param = str;
+            String value = "";
+            int index = str.indexOf("=");
+            if (index != -1) {
+                param = str.substring(0, index).trim();
+                value = str.substring(index + 1);
+            }
+            loader.accept(param, value);
+        }
+    }
+
     private static void storeFlag(String flagStr, String value, List<StoredFlag> flags, ActivitiesRegistry activity) {
         boolean inverted = flagStr.startsWith("!");
         Flag flag = activity.getFlag(inverted ? flagStr.substring(1) : flagStr);
@@ -87,21 +101,38 @@ public final class ActivatorLogic {
         actions.add(new StoredAction(action, value));
     }
 
-    private static void loadData(@NotNull List<String> data, @NotNull BiConsumer<String, String> loader) {
-        for (String str : data) {
-            String param = str;
-            String value = "";
-            int index = str.indexOf("=");
-            if (index != -1) {
-                param = str.substring(0, index).trim();
-                value = str.substring(index + 1);
-            }
-            loader.accept(param, value);
-        }
-    }
-
     public void setGroup(@NotNull String group) {
         this.group = group;
+    }
+
+    public void executeLogic(RaContext context) {
+        boolean noPlayer = context.getPlayer() == null;
+        for (StoredFlag flag : flags) {
+            if (flag.getFlag().requiresPlayer() && noPlayer) {
+                executeActions(context, reactions, false);
+                return;
+            }
+            String params = flag.hasPlaceholders() ?
+                            ReActions.getPlaceholders().parsePlaceholders(context, flag.getParameters()) : // TODO Placeholders DI
+                            flag.getParameters();
+            if (!flag.getFlag().check(context, params)) {
+                executeActions(context, reactions, !noPlayer);
+                return;
+            }
+        }
+        executeActions(context, actions, !noPlayer);
+    }
+
+    private static void executeActions(RaContext context, List<StoredAction> actions, boolean hasPlayer) {
+        for (StoredAction action : actions) {
+            // TODO Stopper (WAIT action)
+            if (action.getAction().requiresPlayer() && hasPlayer) {
+                String params = action.hasPlaceholders() ?
+                                ReActions.getPlaceholders().parsePlaceholders(context, action.getParameters()) : // TODO Placeholders DI
+                                action.getParameters();
+                action.getAction().execute(context, params);
+            }
+        }
     }
 
     /**

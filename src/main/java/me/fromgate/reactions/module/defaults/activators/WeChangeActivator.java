@@ -39,7 +39,7 @@ public class WeChangeActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         WeChangeStorage e = (WeChangeStorage) event;
         if (!checkBlockType(e.getBlockType())) return false;
         return region.isEmpty() || RaWorldGuard.isLocationInRegion(e.getLocation(), region);

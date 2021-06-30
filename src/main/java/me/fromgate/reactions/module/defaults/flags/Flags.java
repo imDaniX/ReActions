@@ -173,9 +173,9 @@ public enum Flags {
         if (c.getFlags().size() > 0)
             for (int i = 0; i < c.getFlags().size(); i++) {
                 StoredFlag f = c.getFlags().get(i);
-                context.setVariable((f.getFlagName() + "_flag").toUpperCase(Locale.ENGLISH), f.getValue());
+                context.setVariable((f.getFlagName() + "_flag").toUpperCase(Locale.ENGLISH), f.getParameters());
                 if (!checkFlag(context, f.getFlag(),
-                        ReActions.getPlaceholders().parsePlaceholders(context, f.getValue()), f.isInverted()))
+                        ReActions.getPlaceholders().parsePlaceholders(context, f.getParameters()), f.isInverted()))
                     return false;
             }
         return true;

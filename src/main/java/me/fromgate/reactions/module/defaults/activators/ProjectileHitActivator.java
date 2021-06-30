@@ -48,7 +48,7 @@ public class ProjectileHitActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage storage) {
+    public boolean checkStorage(Storage storage) {
         return false;
     }
 

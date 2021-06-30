@@ -35,7 +35,7 @@ public class WeSelectionActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         WeSelectionRegionStorage e = (WeSelectionRegionStorage) event;
         WeSelection selection = e.getSelection();
         if (!selection.isValid()) return false;

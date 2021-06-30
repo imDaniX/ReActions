@@ -54,7 +54,7 @@ public class VariableActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         VariableStorage ve = (VariableStorage) event;
         if (!this.id.equalsIgnoreCase(ve.getVariableId())) return false;
         return !personal || ve.getPlayer() == null;

@@ -82,7 +82,7 @@ public class DoorActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         DoorStorage de = (DoorStorage) event;
         if (de.getDoorBlock() == null) return false;
         if (!isLocatedAt(de.getDoorLocation())) return false;

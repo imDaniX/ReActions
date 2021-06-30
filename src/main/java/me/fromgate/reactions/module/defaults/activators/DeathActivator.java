@@ -50,7 +50,7 @@ public class DeathActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         DeathStorage de = (DeathStorage) event;
         return this.deathCause == DeathCause.ANY || de.getCause() == this.deathCause;
     }

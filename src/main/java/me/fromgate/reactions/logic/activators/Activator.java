@@ -2,9 +2,6 @@ package me.fromgate.reactions.logic.activators;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.logic.ActivatorLogic;
-import me.fromgate.reactions.module.defaults.actions.Actions;
-import me.fromgate.reactions.module.defaults.flags.Flags;
-import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.configuration.ConfigurationSection;
 
 @AllArgsConstructor
@@ -17,9 +14,8 @@ public abstract class Activator {
      * @param storage Storage with data for activator
      */
     public final void executeActivator(Storage storage) {
-        if (!check(storage)) return;
-        RaContext context = storage.generateContext(logic.getName());
-        Actions.executeActions(context, logic, Flags.checkFlags(context, logic));
+        if (!checkStorage(storage)) return;
+        logic.executeLogic(storage.generateContext(logic.getName()));
     }
 
     /**
@@ -47,7 +43,7 @@ public abstract class Activator {
      * @param storage Storage with data for trigger
      * @return Are checks successfully past
      */
-    public abstract boolean check(Storage storage);
+    protected abstract boolean checkStorage(Storage storage);
 
     /**
      * Save activator options to the config
@@ -55,10 +51,11 @@ public abstract class Activator {
      * @param cfg Section of activator
      */
     public void saveOptions(ConfigurationSection cfg) {
-        // Sometimes we don't need it
+        // Sometimes we don't need that
     }
 
     /**
+     * TODO: Actually pretty useless right now
      * Check if trigger is valid
      *
      * @return Is trigger valid

@@ -29,7 +29,7 @@ public class SneakActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         SneakStorage se = (SneakStorage) event;
         return checkSneak(se.isSneaking());
     }

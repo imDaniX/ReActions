@@ -31,7 +31,7 @@ public class GameModeActivator extends Activator {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         GameModeStorage e = (GameModeStorage) event;
         return gameModeCheck(e.getGameMode());
     }

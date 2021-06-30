@@ -17,6 +17,8 @@ public abstract class Flag {
     @NotNull
     public abstract String getName();
 
+    public abstract boolean requiresPlayer();
+
     // TODO
     protected boolean isAsync() {
         return true;

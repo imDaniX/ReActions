@@ -74,7 +74,7 @@ public class PlateActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         PlateStorage be = (PlateStorage) event;
         return isLocatedAt(be.getLocation());
     }

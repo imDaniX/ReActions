@@ -65,7 +65,7 @@ public class BlockClickActivator extends Activator implements Locatable {
     }
 
     @Override
-    public boolean check(Storage event) {
+    public boolean checkStorage(Storage event) {
         BlockClickStorage bce = (BlockClickStorage) event;
         if (bce.getBlock() == null) return false;
         if (!isActivatorBlock(bce.getBlock())) return false;
