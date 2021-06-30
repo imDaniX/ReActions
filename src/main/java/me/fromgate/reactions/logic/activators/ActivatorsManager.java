@@ -2,6 +2,7 @@ package me.fromgate.reactions.logic.activators;
 
 import me.fromgate.reactions.ReActionsPlugin;
 import me.fromgate.reactions.logic.ActivatorLogic;
+import me.fromgate.reactions.logic.activity.ActivitiesRegistry;
 import me.fromgate.reactions.util.RaGenerator;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
@@ -37,17 +38,19 @@ public class ActivatorsManager {
     private final File actsFolder;
     private final Logger logger;
     private final Search search;
+    private final ActivitiesRegistry activity;
 
     private final Map<Class<? extends Activator>, ActivatorType> types;
     private final Map<String, ActivatorType> typesAliases;
     private final Map<String, Activator> activatorsNames;
     private final Map<String, Set<Activator>> activatorsGroups;
 
-    public ActivatorsManager(@NotNull ReActionsPlugin react) {
+    public ActivatorsManager(@NotNull ReActionsPlugin react, @NotNull ActivitiesRegistry activity) {
         plugin = react;
         actsFolder = new File(react.getDataFolder(), "Activators");
         logger = react.getLogger();
         search = new Search();
+        this.activity = activity;
 
         types = new HashMap<>();
         typesAliases = new HashMap<>();
@@ -93,7 +96,7 @@ public class ActivatorsManager {
                 ConfigurationSection cfgType = Objects.requireNonNull(cfg.getConfigurationSection(strType));
                 for (String name : cfgType.getKeys(false)) {
                     ConfigurationSection cfgActivator = Objects.requireNonNull(cfg.getConfigurationSection(name));
-                    Activator activator = type.loadActivator(new ActivatorLogic(name, group, cfgActivator), cfgActivator);
+                    Activator activator = type.loadActivator(new ActivatorLogic(name, group, cfgActivator, activity), cfgActivator);
                     if (activator == null || !activator.isValid()) {
                         logger.warning("Failed to load activator '" + name + "' in the group '" + group + "'.");
                         continue;
@@ -222,7 +225,7 @@ public class ActivatorsManager {
         List<String> registeredNames = new ArrayList<>();
         registeredNames.add(name);
         typesAliases.put(name, type);
-        for (String alias : type.getAliases()) {
+        for (String alias : Utils.getAliases(type)) {
             typesAliases.computeIfAbsent(alias.toUpperCase(Locale.ENGLISH), key -> {
                 registeredNames.add(key);
                 return type;
@@ -273,7 +276,6 @@ public class ActivatorsManager {
         private final boolean needBlock;
         private final boolean locatable;
         private final String name;
-        private final List<String> aliases;
         private final Set<Activator> activators;
 
         public SimpleType(Class<? extends Activator> type, String name, RaGenerator<Parameters> creator, RaGenerator<ConfigurationSection> loader, boolean needBlock) {
@@ -283,7 +285,6 @@ public class ActivatorsManager {
             this.needBlock = needBlock;
             this.locatable = type.isAssignableFrom(Locatable.class);
             this.name = name;
-            this.aliases = List.of(Utils.getAliases(type));
             this.activators = new HashSet<>();
         }
 
@@ -297,12 +298,6 @@ public class ActivatorsManager {
         @Override
         public String getName() {
             return name;
-        }
-
-        @NotNull
-        @Override
-        public List<String> getAliases() {
-            return aliases;
         }
 
         @NotNull

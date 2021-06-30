@@ -32,6 +32,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
+import org.jetbrains.annotations.Contract;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -110,6 +111,7 @@ public class Utils {
      * @param str String to check
      * @return Is string empty or null
      */
+    @Contract("null -> true")
     public boolean isStringEmpty(String str) {
         return str == null || str.isEmpty();
     }

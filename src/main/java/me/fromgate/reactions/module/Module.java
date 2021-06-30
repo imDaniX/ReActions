@@ -1,11 +1,18 @@
 package me.fromgate.reactions.module;
 
+import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.activators.ActivatorType;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.logic.activity.flags.Flag;
+import me.fromgate.reactions.placeholders.Placeholder;
+import me.fromgate.reactions.playerselector.Selector;
 
 import java.util.Collection;
+import java.util.Collections;
 
 public interface Module {
-    default void register() {
+    default void register(ReActions.Platform rea) {
+
         /*
         TODO
         ActivatorsManager activators = ReActions.getActivators();
@@ -19,7 +26,27 @@ public interface Module {
 
     String getName();
 
-    Collection<ActivatorType> getActivatorTypes();
+    String[] getAuthors();
 
-    // TODO Actions, Flags, Placeholders
+    String getVersion();
+
+    default Collection<ActivatorType> getActivatorTypes() {
+        return Collections.emptyList();
+    }
+
+    default Collection<Action> getActions() {
+        return Collections.emptyList();
+    }
+
+    default Collection<Flag> getFlags() {
+        return Collections.emptyList();
+    }
+
+    default Collection<Placeholder> getPlaceholders() {
+        return Collections.emptyList();
+    }
+
+    default Collection<Selector> getSelectors() {
+        return Collections.emptyList();
+    }
 }

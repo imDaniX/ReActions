@@ -16,9 +16,6 @@ public interface ActivatorType {
     String getName();
 
     @NotNull
-    Collection<String> getAliases();
-
-    @NotNull
     Collection<Activator> getActivators();
 
     @Nullable
