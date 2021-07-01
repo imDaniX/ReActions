@@ -52,8 +52,7 @@ public class PlateActivator extends Activator implements Locatable {
     }
 
     public static PlateActivator create(ActivatorLogic base, Parameters p) {
-        if (!(p instanceof BlockParameters)) return null;
-        BlockParameters param = (BlockParameters) p;
+        if (!(p instanceof BlockParameters param)) return null;
         Block targetBlock = param.getBlock();
         if (targetBlock != null && BlockUtils.isPlate(targetBlock)) {
             String world = targetBlock.getWorld().getName();

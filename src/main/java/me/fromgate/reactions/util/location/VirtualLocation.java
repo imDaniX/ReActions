@@ -153,9 +153,8 @@ public class VirtualLocation {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof VirtualLocation) {
+        if (obj instanceof VirtualLocation loc) {
             if (obj.hashCode() != this.hashCode()) return false;
-            VirtualLocation loc = (VirtualLocation) obj;
             return Objects.equals(loc.x, this.x) &&
                     Objects.equals(loc.z, this.z) &&
                     Objects.equals(loc.y, this.y) &&

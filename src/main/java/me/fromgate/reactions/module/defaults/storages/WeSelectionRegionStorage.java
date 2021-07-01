@@ -32,11 +32,11 @@ public class WeSelectionRegionStorage extends Storage {
     protected Map<String, String> prepareVariables() {
         Map<String, String> tempVars = new HashMap<>();
         if (selection.isValid()) {
-            tempVars.put("seltype", selection.getSelType());
-            World world = selection.getWorld();
+            tempVars.put("seltype", selection.selType());
+            World world = selection.world();
             tempVars.put("world", (world != null) ? world.getName() : "");
-            tempVars.put("selblocks", Integer.toString(selection.getArea()));
-            tempVars.put("region", selection.getRegion());
+            tempVars.put("selblocks", Integer.toString(selection.area()));
+            tempVars.put("region", selection.region());
         }
         return tempVars;
     }

@@ -40,15 +40,11 @@ public class GodActivator extends Activator {
     }
 
     private boolean checkGod(boolean isGod) {
-        switch (god) {
-            case ANY:
-                return true;
-            case TRUE:
-                return isGod;
-            case FALSE:
-                return !isGod;
-        }
-        return false;
+        return switch (god) {
+            case ANY -> true;
+            case TRUE -> isGod;
+            case FALSE -> !isGod;
+        };
     }
 
     @Override

@@ -1,5 +1,5 @@
-/**
- * Created by MaxDikiy on 17/10/2017.
+/*
+  Created by MaxDikiy on 17/10/2017.
  */
 package me.fromgate.reactions.module.defaults.activators;
 

@@ -60,15 +60,15 @@ public class ActionVar extends OldAction {
         if (this.personalVar && player.isEmpty()) return false;
 
         switch (this.actType) {
-            case SET: //VAR_SET, VAR_PLAYER_SET
+            case SET -> { //VAR_SET, VAR_PLAYER_SET
                 ReActions.getVariables().setVariable(player, var, value);
                 return true;
-
-            case CLEAR: //VAR_CLEAR, VAR_PLAYER_CLEAR
+            }
+            case CLEAR -> { //VAR_CLEAR, VAR_PLAYER_CLEAR
                 ReActions.getVariables().removeVariable(player, var);
                 return true;
-
-            case INCREASE: { //VAR_INC, VAR_PLAYER_INC
+            }
+            case INCREASE -> { //VAR_INC, VAR_PLAYER_INC
                 String variable = ReActions.getVariables().getVariable(player, var);
                 if (variable == null || !NumberUtils.isNumber(variable)) return false;
                 double variableValue = Double.parseDouble(variable);
@@ -77,9 +77,10 @@ public class ActionVar extends OldAction {
                 return true;
             }
 
+
             // I'm lazy
 
-            case DECREASE: { //VAR_DEC, VAR_PLAYER_DEC
+            case DECREASE -> { //VAR_DEC, VAR_PLAYER_DEC
                 String variable = ReActions.getVariables().getVariable(player, var);
                 if (variable == null || !NumberUtils.isNumber(variable)) return false;
                 double variableValue = Double.parseDouble(variable);
@@ -87,10 +88,10 @@ public class ActionVar extends OldAction {
                 ReActions.getVariables().setVariable(player, var, NumberUtils.format(variableValue));
                 return true;
             }
-
-            case TEMPORARY_SET: //VAR_TEMP_SET
+            case TEMPORARY_SET -> { //VAR_TEMP_SET
                 context.setVariable(var, value);
                 return true;
+            }
         }
         return false;
     }

@@ -51,8 +51,7 @@ public class ButtonActivator extends Activator implements Locatable {
     }
 
     public static ButtonActivator create(ActivatorLogic base, Parameters p) {
-        if (!(p instanceof BlockParameters)) return null;
-        BlockParameters param = (BlockParameters) p;
+        if (!(p instanceof BlockParameters param)) return null;
         Location loc = param.getBlock().getLocation();
         return new ButtonActivator(base, loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     }

@@ -40,15 +40,11 @@ public class FlightActivator extends Activator {
     }
 
     private boolean checkFlight(boolean isFlight) {
-        switch (flight) {
-            case ANY:
-                return true;
-            case TRUE:
-                return isFlight;
-            case FALSE:
-                return !isFlight;
-        }
-        return false;
+        return switch (flight) {
+            case ANY -> true;
+            case TRUE -> isFlight;
+            case FALSE -> !isFlight;
+        };
     }
 
     @Override

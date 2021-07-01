@@ -307,15 +307,13 @@ public class BukkitListener implements Listener {
         String source;
         if (event.getEntity().getType() != EntityType.PLAYER) return;
         if (event.getCause() == EntityDamageEvent.DamageCause.CUSTOM && Math.round(event.getDamage()) == 0) return;
-        if (event instanceof EntityDamageByEntityEvent) {
+        if (event instanceof EntityDamageByEntityEvent evdmg) {
             source = "ENTITY";
-            EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             Map<String, DataValue> changeables = StoragesManager.triggerDamageByMob(evdmg);
             event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
             event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-        } else if (event instanceof EntityDamageByBlockEvent) {
+        } else if (event instanceof EntityDamageByBlockEvent evdmg) {
             source = "BLOCK";
-            EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
             Block blockDamager = evdmg.getDamager();
             if(blockDamager != null) {
                 Map<String, DataValue> changeables = StoragesManager.triggerDamageByBlock(evdmg, blockDamager);
@@ -336,15 +334,12 @@ public class BukkitListener implements Listener {
         if ((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) && (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE))
             return;
         if (event.getEntityType() == EntityType.PLAYER) return;
-        if (!(event.getEntity() instanceof LivingEntity)) return;
-        LivingEntity le = (LivingEntity) event.getEntity();
+        if (!(event.getEntity() instanceof LivingEntity le)) return;
         if (!le.hasMetadata("ReActions-cry")) return;
         String cry = le.getMetadata("ReActions-cry").get(0).asString();
         if (cry.isEmpty()) return;
-        if (!(event instanceof EntityDamageByEntityEvent)) return;
-        EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-        if (evdmg.getDamager() instanceof Projectile) {
-            Projectile prj = (Projectile) evdmg.getDamager();
+        if (!(event instanceof EntityDamageByEntityEvent evdmg)) return;
+        if (evdmg.getDamager() instanceof Projectile prj) {
             LivingEntity shooter = EntityUtils.getEntityFromProjectile(prj.getShooter());
             if (shooter == null) return;
             if (!(shooter instanceof Player)) return;

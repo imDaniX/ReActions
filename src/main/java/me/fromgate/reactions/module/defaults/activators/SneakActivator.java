@@ -45,15 +45,11 @@ public class SneakActivator extends Activator {
     }
 
     private boolean checkSneak(boolean isSneak) {
-        switch (sneak) {
-            case ANY:
-                return true;
-            case TRUE:
-                return isSneak;
-            case FALSE:
-                return !isSneak;
-        }
-        return false;
+        return switch (sneak) {
+            case ANY -> true;
+            case TRUE -> isSneak;
+            case FALSE -> !isSneak;
+        };
     }
 
     @Override

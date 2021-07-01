@@ -251,8 +251,7 @@ public class VirtualItem extends ItemStack {
 
     public void setEnchantStorage(String enchStr) {
         if (Utils.isStringEmpty(enchStr)) return;
-        if (!(this.getItemMeta() instanceof EnchantmentStorageMeta)) return;
-        EnchantmentStorageMeta esm = (EnchantmentStorageMeta) this.getItemMeta();
+        if (!(this.getItemMeta() instanceof EnchantmentStorageMeta esm)) return;
         String[] enchLn = enchStr.split(";");
         for (String e : enchLn) {
             String eType = e;
@@ -260,7 +259,7 @@ public class VirtualItem extends ItemStack {
             if (eType.contains(":")) {
                 String powerStr = eType.substring(eType.indexOf(":") + 1);
                 eType = eType.substring(0, eType.indexOf(":"));
-                power = NumberUtils.INT_POSITIVE.matcher(powerStr).matches() ? Integer.valueOf(powerStr) : 0;
+                power = NumberUtils.INT_POSITIVE.matcher(powerStr).matches() ? Integer.parseInt(powerStr) : 0;
             }
             Enchantment enchantment = ItemUtils.getEnchantmentByName(eType);
             if (enchantment == null) continue;
@@ -270,8 +269,7 @@ public class VirtualItem extends ItemStack {
     }
 
     public void setMap(boolean scale) {
-        if (this.getItemMeta() instanceof MapMeta) {
-            MapMeta mm = (MapMeta) this.getItemMeta();
+        if (this.getItemMeta() instanceof MapMeta mm) {
             mm.setScaling(scale);
             this.setItemMeta(mm);
         }
@@ -281,10 +279,9 @@ public class VirtualItem extends ItemStack {
     public void setPotionMeta(String potions) {
         if (Utils.isStringEmpty(potions))
             return;
-        if (!(this.getItemMeta() instanceof PotionMeta))
+        if (!(this.getItemMeta() instanceof PotionMeta pm))
             return;
         String[] potLn = potions.split(";");
-        PotionMeta pm = (PotionMeta) this.getItemMeta();
         pm.clearCustomEffects();
         for (String pStr : potLn) {
             String[] ln = pStr.trim().split(":");
@@ -305,8 +302,7 @@ public class VirtualItem extends ItemStack {
     private void setSkull(String owner) {
         if (Utils.isStringEmpty(owner))
             return;
-        if (this.getItemMeta() instanceof SkullMeta) {
-            SkullMeta sm = (SkullMeta) this.getItemMeta();
+        if (this.getItemMeta() instanceof SkullMeta sm) {
             sm.setOwner(owner);
             this.setItemMeta(sm);
         }
@@ -320,10 +316,9 @@ public class VirtualItem extends ItemStack {
     private void setColor(String colorStr) {
         if (Utils.isStringEmpty(colorStr)) return;
 
-        if (this.getItemMeta() instanceof LeatherArmorMeta) {
+        if (this.getItemMeta() instanceof LeatherArmorMeta lm) {
             Color c = ItemUtils.parseColor(colorStr);
             if (c == null) return;
-            LeatherArmorMeta lm = (LeatherArmorMeta) this.getItemMeta();
             lm.setColor(c);
             this.setItemMeta(lm);
         }
@@ -381,8 +376,7 @@ public class VirtualItem extends ItemStack {
             put(params, "name", itemMeta.getDisplayName().replace('§', '&'));
         if (itemMeta.hasLore())
             put(params, "lore", itemMeta.getLore());
-        if (itemMeta instanceof BookMeta) {
-            BookMeta bm = (BookMeta) itemMeta;
+        if (itemMeta instanceof BookMeta bm) {
             if (bm.hasAuthor())
                 put(params, "book-author", bm.getAuthor().replace('§', '&'));
             if (bm.hasTitle())
@@ -397,34 +391,28 @@ public class VirtualItem extends ItemStack {
                 put(params, "book-pages", pages);
             }
         }
-        if (itemMeta instanceof FireworkMeta) {
-            FireworkMeta fm = (FireworkMeta) itemMeta;
+        if (itemMeta instanceof FireworkMeta fm) {
             put(params, "firework-power", fm.getPower());
             put(params, "firework-effects", fireworksToList(fm.getEffects()));
         }
 
-        if (itemMeta instanceof LeatherArmorMeta) {
-            LeatherArmorMeta lm = (LeatherArmorMeta) itemMeta;
+        if (itemMeta instanceof LeatherArmorMeta lm) {
             put(params, "color", ItemUtils.colorToString(lm.getColor(), true));
         }
-        if (itemMeta instanceof SkullMeta) {
-            SkullMeta sm = (SkullMeta) itemMeta;
+        if (itemMeta instanceof SkullMeta sm) {
             if (sm.hasOwner())
                 put(params, "skull-owner", sm.getOwningPlayer().getName());
         }
-        if (itemMeta instanceof PotionMeta) {
-            PotionMeta pm = (PotionMeta) itemMeta;
+        if (itemMeta instanceof PotionMeta pm) {
             if (pm.hasCustomEffects())
                 putEffects(params, pm.getCustomEffects());
         }
-        if (itemMeta instanceof MapMeta) {
-            MapMeta mm = (MapMeta) itemMeta;
+        if (itemMeta instanceof MapMeta mm) {
             if (mm.isScaling())
                 put(params, "map-scale", "true");
         }
 
-        if (itemMeta instanceof EnchantmentStorageMeta) {
-            EnchantmentStorageMeta esm = (EnchantmentStorageMeta) itemMeta;
+        if (itemMeta instanceof EnchantmentStorageMeta esm) {
             if (esm.hasStoredEnchants())
                 putEnchants(params, "stored-enchants", esm.getStoredEnchants());
         }
@@ -501,9 +489,8 @@ public class VirtualItem extends ItemStack {
 
     public void setBook(String author, String title, String pagesStr) {
         ItemMeta meta = this.getItemMeta();
-        if (!(meta instanceof BookMeta))
+        if (!(meta instanceof BookMeta bm))
             return;
-        BookMeta bm = (BookMeta) meta;
         if (pagesStr != null) {
             String[] ln = pagesStr.split(Pattern.quote(DIVIDER));
             List<String> pages = new ArrayList<>();
@@ -528,8 +515,7 @@ public class VirtualItem extends ItemStack {
 
     private void setFireworkEffect(String fireworkStr) {
         if (fireworkStr == null || fireworkStr.isEmpty()) return;
-        if (!(this.getItemMeta() instanceof FireworkEffectMeta)) return;
-        FireworkEffectMeta fm = (FireworkEffectMeta) this.getItemMeta();
+        if (!(this.getItemMeta() instanceof FireworkEffectMeta fm)) return;
         Map<String, String> params = Parameters.parametersMap(fireworkStr);
         FireworkEffect.Type fType;
         List<Color> colors;
@@ -556,9 +542,8 @@ public class VirtualItem extends ItemStack {
     }
 
     private void setFireworks(int power, String fireworkStr) {
-        if (!(this.getItemMeta() instanceof FireworkMeta))
+        if (!(this.getItemMeta() instanceof FireworkMeta fm))
             return;
-        FireworkMeta fm = (FireworkMeta) this.getItemMeta();
         fm.clearEffects();
         fm.setPower(power);
         if (fireworkStr != null && !fireworkStr.isEmpty()) {

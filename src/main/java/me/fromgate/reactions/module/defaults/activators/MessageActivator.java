@@ -83,19 +83,13 @@ public class MessageActivator extends Activator {
     }
 
     private boolean filter(String message) {
-        switch (type) {
-            case CONTAINS:
-                return message.toLowerCase(Locale.ENGLISH).contains(this.mask.toLowerCase(Locale.ENGLISH));
-            case END:
-                return message.toLowerCase(Locale.ENGLISH).endsWith(this.mask.toLowerCase(Locale.ENGLISH));
-            case EQUAL:
-                return message.equalsIgnoreCase(this.mask);
-            case REGEX:
-                return message.matches(this.mask);
-            case START:
-                return message.toLowerCase(Locale.ENGLISH).startsWith(this.mask.toLowerCase(Locale.ENGLISH));
-        }
-        return false;
+        return switch (type) {
+            case CONTAINS -> message.toLowerCase(Locale.ENGLISH).contains(this.mask.toLowerCase(Locale.ENGLISH));
+            case END -> message.toLowerCase(Locale.ENGLISH).endsWith(this.mask.toLowerCase(Locale.ENGLISH));
+            case EQUAL -> message.equalsIgnoreCase(this.mask);
+            case REGEX -> message.matches(this.mask);
+            case START -> message.toLowerCase(Locale.ENGLISH).startsWith(this.mask.toLowerCase(Locale.ENGLISH));
+        };
     }
 
     @Override

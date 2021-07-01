@@ -112,8 +112,7 @@ public class RaWorldEdit {
     public ProtectedRegion checkRegionFromSelection(Player player, String id) {
         Region selection = getSelection(player);
         // Detect the type of region from WorldEdit
-        if (selection instanceof Polygonal2DRegion) {
-            Polygonal2DRegion polySel = (Polygonal2DRegion) selection;
+        if (selection instanceof Polygonal2DRegion polySel) {
             int minY = polySel.getMaximumY();
             int maxY = polySel.getMinimumY();
             return new ProtectedPolygonalRegion(id, polySel.getPoints(), minY, maxY);

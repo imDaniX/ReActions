@@ -58,19 +58,13 @@ public class ActionCommand extends OldAction {
         if (commandAs != Type.CONSOLE && player == null) return false;
         String commandLine = params.toString();
         switch (commandAs) {
-            default:
-                dispatchCommand(false, player, commandLine);
-                break;
-            case OP:
-                dispatchCommand(true, player, commandLine);
-                break;
-            case CONSOLE:
-                dispatchCommand(false, Bukkit.getConsoleSender(), commandLine);
-                break;
-            case CHAT:
+            default -> dispatchCommand(false, player, commandLine);
+            case OP -> dispatchCommand(true, player, commandLine);
+            case CONSOLE -> dispatchCommand(false, Bukkit.getConsoleSender(), commandLine);
+            case CHAT -> {
                 commandLine = commandLine.replaceFirst("/", "");
                 player.chat("/" + commandLine);
-                break;
+            }
         }
         return true;
     }

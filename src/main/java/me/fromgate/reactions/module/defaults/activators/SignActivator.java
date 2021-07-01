@@ -50,8 +50,7 @@ public class SignActivator extends Activator {
     }
 
     public static SignActivator create(ActivatorLogic base, Parameters p) {
-        if (!(p instanceof BlockParameters)) return null;
-        BlockParameters param = (BlockParameters) p;
+        if (!(p instanceof BlockParameters param)) return null;
         Block targetBlock = param.getBlock();
         Sign sign = null;
         if (targetBlock != null && BlockUtils.isSign(targetBlock))

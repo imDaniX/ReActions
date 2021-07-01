@@ -161,20 +161,23 @@ public class Utils {
         StringBuilder b = new StringBuilder();
         for (char c : doco.toCharArray()) {
             switch (c) {
-                case '\r':
+                case '\r' -> {
                     b.append("\\r");
                     continue;
-                case '\n':
+                }
+                case '\n' -> {
                     b.append("\\n");
                     continue;
-                case '"':
+                }
+                case '"' -> {
                     b.append("\\\"");
                     continue;
-                case '\\':
+                }
+                case '\\' -> {
                     b.append("\\\\");
                     continue;
-                default:
-                    b.append(c);
+                }
+                default -> b.append(c);
             }
         }
         return b.toString();

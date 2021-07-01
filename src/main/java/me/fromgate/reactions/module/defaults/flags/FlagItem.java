@@ -84,22 +84,10 @@ public class FlagItem implements OldFlag {
 
         if (slotNum < 0) {
             switch (slotStr.toLowerCase(Locale.ENGLISH)) {
-                case "helm":
-                case "helmet":
-                    vi = VirtualItem.fromItemStack(player.getInventory().getHelmet());
-                    break;
-                case "chest":
-                case "chestplate":
-                    vi = VirtualItem.fromItemStack(player.getInventory().getChestplate());
-                    break;
-                case "legs":
-                case "leggings":
-                    vi = VirtualItem.fromItemStack(player.getInventory().getLeggings());
-                    break;
-                case "boot":
-                case "boots":
-                    vi = VirtualItem.fromItemStack(player.getInventory().getBoots());
-                    break;
+                case "helm", "helmet" -> vi = VirtualItem.fromItemStack(player.getInventory().getHelmet());
+                case "chest", "chestplate" -> vi = VirtualItem.fromItemStack(player.getInventory().getChestplate());
+                case "legs", "leggings" -> vi = VirtualItem.fromItemStack(player.getInventory().getLeggings());
+                case "boot", "boots" -> vi = VirtualItem.fromItemStack(player.getInventory().getBoots());
             }
         } else vi = VirtualItem.fromItemStack(player.getInventory().getItem(slotNum));
 

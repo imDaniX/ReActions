@@ -19,7 +19,7 @@ import java.util.Map;
 @Getter
 public class GameModeStorage extends Storage {
 
-    private GameMode gameMode;
+    private final GameMode gameMode;
 
     public GameModeStorage(Player player, GameMode gameMode) {
         super(player);

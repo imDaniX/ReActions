@@ -31,7 +31,7 @@ import java.util.UUID;
 
 @UtilityClass
 public class RaDebug {
-    private Map<UUID, Boolean> debug = new HashMap<>();
+    private final Map<UUID, Boolean> debug = new HashMap<>();
 
     public void setPlayerDebug(Player p, boolean debugMode) {
         debug.put(p.getUniqueId(), debugMode);

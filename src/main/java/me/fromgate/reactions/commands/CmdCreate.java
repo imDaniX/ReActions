@@ -52,7 +52,7 @@ public class CmdCreate extends Cmd {
                 String arg3 = args[3];
                 if (InventoryMenu.add(id,
                         NumberUtils.isInteger(arg3) ? Integer.parseInt(arg3) : 9,
-                        (param.length() == 1) ? "" : param.toString().substring(arg3.length()))) {
+                        (param.length() == 1) ? "" : param.substring(arg3.length()))) {
                     Msg.CMD_ADDMENUADDED.print(sender, id);
                     return true;
                 }
@@ -68,8 +68,7 @@ public class CmdCreate extends Cmd {
         ActivatorType type = activators.getType(typeStr);
         if (type == null) return false;
         Parameters params;
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (sender instanceof Player player) {
             param = LocationUtils.parsePlaceholders(player, param);
             if (type.isNeedBlock())
                 params = new BlockParameters(param, player.getTargetBlock(null, 100));

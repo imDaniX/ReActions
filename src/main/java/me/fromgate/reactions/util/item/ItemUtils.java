@@ -62,8 +62,7 @@ public class ItemUtils {
 
     public void setDurability(ItemStack item, int durability) {
         ItemMeta meta = item.getItemMeta();
-        if (meta instanceof Damageable) {
-            Damageable dmg = (Damageable) meta;
+        if (meta instanceof Damageable dmg) {
             dmg.setDamage(durability);
             item.setItemMeta(meta);
         }
@@ -372,10 +371,9 @@ public class ItemUtils {
                 return dc.name();
         if (!useRGB)
             getClosestColor(c).name();
-        String sb = c.getRed() + "," +
+        return c.getRed() + "," +
                 c.getGreen() + "," +
                 c.getBlue();
-        return sb;
     }
 
     public Map<Enchantment, Integer> parseEnchantmentsString(String enchStr) {
@@ -452,8 +450,7 @@ public class ItemUtils {
                         Color clr = parseColor(ec);
                         if (clr != null) {
                             if (item.hasItemMeta()
-                                    && (item.getItemMeta() instanceof LeatherArmorMeta)) {
-                                LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+                                    && (item.getItemMeta() instanceof LeatherArmorMeta meta)) {
                                 meta.setColor(clr);
                                 item.setItemMeta(meta);
                             }

@@ -34,8 +34,8 @@ import java.util.Map;
 @UtilityClass
 public class PushBack {
 
-    private Map<String, Location> prevLocs1 = new HashMap<>();
-    private Map<String, Location> prevLocs2 = new HashMap<>();
+    private final Map<String, Location> prevLocs1 = new HashMap<>();
+    private final Map<String, Location> prevLocs2 = new HashMap<>();
 
     public boolean teleportToPrev(Player player, int prev) {
         Location loc;

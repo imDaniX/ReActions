@@ -41,8 +41,8 @@ import java.util.Map;
 
 @UtilityClass
 public class LocationHolder {
-    private Map<String, Location> locs = new HashMap<>();
-    private Map<String, TpLocation> tports = new HashMap<>();
+    private final Map<String, Location> locs = new HashMap<>();
+    private final Map<String, TpLocation> tports = new HashMap<>();
 
     public void hold(Player p, Location loc) {
         if (p == null) return;

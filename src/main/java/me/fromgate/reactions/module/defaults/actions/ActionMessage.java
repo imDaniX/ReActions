@@ -72,27 +72,20 @@ public class ActionMessage extends OldAction {
         for (Player p : players) {
             if (showMessage(p, message, annoymentTime)) {
                 switch (type.toLowerCase(Locale.ENGLISH)) {
-                    case "title":
-                        p.sendTitle(Msg.colorize(message),
-                                params.getString("subtitle", null),
-                                params.getInteger("fadein", 10),
-                                params.getInteger("stay", 70),
-                                params.getInteger("fadeout", 20)
-                        );
-                        break;
-                    case "subtitle":
-                        p.sendTitle(null,
-                                Msg.colorize(params.getString("subtitle", null)),
-                                params.getInteger("fadein", 10),
-                                params.getInteger("stay", 70),
-                                params.getInteger("fadeout", 20)
-                        );
-                        break;
-                    case "actionbar":
-                        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Msg.colorize(message)));
-                        break;
-                    default:
-                        Msg.printMessage(p, message);
+                    case "title" -> p.sendTitle(Msg.colorize(message),
+                            params.getString("subtitle", null),
+                            params.getInteger("fadein", 10),
+                            params.getInteger("stay", 70),
+                            params.getInteger("fadeout", 20)
+                    );
+                    case "subtitle" -> p.sendTitle(null,
+                            Msg.colorize(params.getString("subtitle", null)),
+                            params.getInteger("fadein", 10),
+                            params.getInteger("stay", 70),
+                            params.getInteger("fadeout", 20)
+                    );
+                    case "actionbar" -> p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Msg.colorize(message)));
+                    default -> Msg.printMessage(p, message);
                 }
             }
         }

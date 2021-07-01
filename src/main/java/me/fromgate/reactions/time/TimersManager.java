@@ -88,12 +88,12 @@ public class TimersManager {
         Map<String, Timer> timers = getIngameTimers();
         for (String id : timers.keySet()) {
             Timer timer = timers.get(id);
-            timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer.toString());
+            timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer);
         }
         timers = getServerTimers();
         for (String id : timers.keySet()) {
             Timer timer = timers.get(id);
-            timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer.toString());
+            timerList.add((timer.isPaused() ? "&c" : "&2") + id + " &a" + timer);
         }
         Msg.printPage(sender, timerList, Msg.MSG_TIMERLIST, pageNum, LINES_PER_PAGE_15, true);
     }

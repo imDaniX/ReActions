@@ -90,7 +90,7 @@ public class VariablesManager {
         if (player == null || player.isEmpty()) return;
         UUID id = Utils.getUUID(player);
         if (id == null) return;
-        File f = new File(varDir + File.separator + id.toString() + ".yml");
+        File f = new File(varDir + File.separator + id + ".yml");
         for (String key : vars.keySet()) {
             if (key.contains(player)) cfg.set(key, vars.get(key));
         }

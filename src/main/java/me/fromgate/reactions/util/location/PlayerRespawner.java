@@ -40,8 +40,8 @@ import java.util.UUID;
 // TODO: Move to LocationHolder
 @UtilityClass
 public class PlayerRespawner {
-    private Map<UUID, LivingEntity> players = new HashMap<>();
-    private Map<UUID, Location> deathPoints = new HashMap<>();
+    private final Map<UUID, LivingEntity> players = new HashMap<>();
+    private final Map<UUID, Location> deathPoints = new HashMap<>();
 
     public void addPlayerRespawn(PlayerDeathEvent event) {
         Player deadPlayer = event.getEntity();

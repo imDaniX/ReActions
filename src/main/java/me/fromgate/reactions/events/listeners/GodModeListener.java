@@ -18,7 +18,7 @@ import java.util.Set;
 
 public class GodModeListener implements Listener {
 
-    private static Set<EntityDamageEvent> godCheckEvents = new HashSet<>();
+    private static final Set<EntityDamageEvent> godCheckEvents = new HashSet<>();
 
     public static void init() {
         if (Cfg.godActivatorEnable) {

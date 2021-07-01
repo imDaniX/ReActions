@@ -53,12 +53,12 @@ import java.util.Map;
 @UtilityClass
 public class MobSpawn {
 
-    private Map<LivingEntity, List<ItemStack>> drops = new HashMap<>();
+    private final Map<LivingEntity, List<ItemStack>> drops = new HashMap<>();
 
     public void mobSpawn(Player p, Parameters params) {
         String mob = params.getString("type", "").toUpperCase(Locale.ENGLISH);
         if (mob.isEmpty()) {
-            Msg.logMessage("Failed to spawn mob: " + params.toString());
+            Msg.logMessage("Failed to spawn mob: " + params);
             return;
         }
         String locationStr = params.getString("loc", "");
@@ -130,13 +130,12 @@ public class MobSpawn {
 
             Entity e = loc.getWorld().spawnEntity(loc, et);
 
-            if (!(e instanceof LivingEntity)) {
+            if (!(e instanceof LivingEntity mob)) {
                 e.remove();
                 Msg.logOnce("mobspawnnotmob_" + mobstr, "Cannot spawn mob " + mbs + " (" + mobstr + ")");
                 continue;
             }
 
-            LivingEntity mob = (LivingEntity) e;
             setMobName(mob, name);
             mobs.add(mob);
             if (k > 0) mobs.get(k).addPassenger(mobs.get(k - 1));

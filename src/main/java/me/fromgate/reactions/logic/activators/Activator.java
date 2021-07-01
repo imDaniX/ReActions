@@ -72,7 +72,7 @@ public abstract class Activator {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder(logic.getGroup()).append(", ").append(logic.getName()).append(" [").append(getClass().getSimpleName()).append("]");
-        sb.append(logic.toString());
+        sb.append(logic);
         return sb.toString();
     }
 

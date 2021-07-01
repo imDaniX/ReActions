@@ -30,7 +30,7 @@ import java.util.Map;
 public class InventoryMenu implements Listener {
     // TODO: Some things are weird, needs refactoring
 
-    private static Map<String, VirtualInventory> menu = new HashMap<>();
+    private static final Map<String, VirtualInventory> menu = new HashMap<>();
     private static Map<String, String> tempvars;
 
     public static void init() {

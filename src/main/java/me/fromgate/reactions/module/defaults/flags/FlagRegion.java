@@ -32,25 +32,19 @@ import org.bukkit.entity.Player;
 @AllArgsConstructor
 public class FlagRegion implements OldFlag {
 
-    private Type flagType;
+    private final Type flagType;
 
     @Override
     public boolean checkFlag(RaContext context, String param) {
         Player player = context.getPlayer();
         if (!RaWorldGuard.isConnected()) return false;
-        switch (flagType) {
-            case REGION:
-                return RaWorldGuard.isPlayerInRegion(player, param);
-            case REGION_PLAYERS:
-                return playersInRegion(param);
-            case REGION_MEMBER:
-                return RaWorldGuard.isMember(player, param);
-            case REGION_OWNER:
-                return RaWorldGuard.isOwner(player, param);
-            case REGION_STATE:
-                return RaWorldGuard.isFlagInRegion(player, param);
-        }
-        return false;
+        return switch (flagType) {
+            case REGION -> RaWorldGuard.isPlayerInRegion(player, param);
+            case REGION_PLAYERS -> playersInRegion(param);
+            case REGION_MEMBER -> RaWorldGuard.isMember(player, param);
+            case REGION_OWNER -> RaWorldGuard.isOwner(player, param);
+            case REGION_STATE -> RaWorldGuard.isFlagInRegion(player, param);
+        };
     }
 
     private boolean playersInRegion(String param) {
@@ -60,6 +54,6 @@ public class FlagRegion implements OldFlag {
     }
 
     public enum Type {
-        REGION, REGION_PLAYERS, REGION_MEMBER, REGION_OWNER, REGION_STATE;
+        REGION, REGION_PLAYERS, REGION_MEMBER, REGION_OWNER, REGION_STATE
     }
 }

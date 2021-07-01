@@ -15,7 +15,7 @@ import java.util.Set;
 
 // TODO: Refactor a whole commands system
 public class Commander implements CommandExecutor {
-    private static Set<Cmd> commands = new HashSet<>();
+    private static final Set<Cmd> commands = new HashSet<>();
     private static JavaPlugin plugin;
     private static Commander commander;
 

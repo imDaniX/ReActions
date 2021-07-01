@@ -63,24 +63,16 @@ public class FlagDirection implements OldFlag {
         public static Direction getByYaw(Player p) {
             double angle = (p.getLocation().getYaw() < 0) ? (360 + p.getLocation().getYaw()) : p.getLocation().getYaw();
             int sector = (int) (angle - ((angle + 22.5) % 45.0) + 22.5);
-            switch (sector) {
-                case 45:
-                    return SOUTHWEST;
-                case 90:
-                    return WEST;
-                case 135:
-                    return NORTHWEST;
-                case 180:
-                    return NORTH;
-                case 225:
-                    return NORTHEAST;
-                case 270:
-                    return EAST;
-                case 315:
-                    return SOUTHEAST;
-                default:
-                    return SOUTH;
-            }
+            return switch (sector) {
+                case 45 -> SOUTHWEST;
+                case 90 -> WEST;
+                case 135 -> NORTHWEST;
+                case 180 -> NORTH;
+                case 225 -> NORTHEAST;
+                case 270 -> EAST;
+                case 315 -> SOUTHEAST;
+                default -> SOUTH;
+            };
         }
     }
 }

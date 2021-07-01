@@ -84,7 +84,7 @@ public class CommandStorage extends Storage {
         for (int j = args.length - 1; j >= 0; j--) {
             builder.append(" ").append(args[j]);
             // Arguments after [j] argument
-            tempVars.put("args" + j, builder.toString().substring(1));
+            tempVars.put("args" + j, builder.substring(1));
         }
         return tempVars;
     }

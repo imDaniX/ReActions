@@ -99,14 +99,11 @@ public class CuboidActivator extends Activator implements Locatable {
         CHECK, ENTER, LEAVE;
 
         static CuboidMode getByName(String name) {
-            switch (name.toUpperCase(Locale.ENGLISH)) {
-                case "CHECK":
-                    return CHECK;
-                case "LEAVE":
-                    return LEAVE;
-                default:
-                    return ENTER;
-            }
+            return switch (name.toUpperCase(Locale.ENGLISH)) {
+                case "CHECK" -> CHECK;
+                case "LEAVE" -> LEAVE;
+                default -> ENTER;
+            };
         }
     }
 }

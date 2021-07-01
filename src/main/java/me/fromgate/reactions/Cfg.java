@@ -26,7 +26,7 @@ public class Cfg {
     public static boolean godActivatorEnable = false; // experimental, disabled by default
     public static int godActivatorCheckTicks = 10;
     public static boolean altOperator = false; // experimental, disabled by default
-    private static FileConfiguration config;
+    private static final FileConfiguration config;
 
     static {
         config = ReActions.getPlugin().getConfig();

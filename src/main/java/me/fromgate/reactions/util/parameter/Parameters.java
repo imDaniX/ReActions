@@ -60,14 +60,14 @@ public class Parameters implements Iterable<String> {
         for (int i = 0; i < str.length(); ++i) {
             char c = str.charAt(i);
             switch (state) {
-                case SPACE:
+                case SPACE -> {
                     if (c == ' ') {
                         continue;
                     }
                     bld = new StringBuilder().append(c);
                     state = IterationState.TEXT;
-                    break;
-                case TEXT:
+                }
+                case TEXT -> {
                     if (c == ' ') {
                         if (hasDefKey) {
                             String value = bld.toString();
@@ -83,8 +83,8 @@ public class Parameters implements Iterable<String> {
                         continue;
                     }
                     bld.append(c);
-                    break;
-                case COLON:
+                }
+                case COLON -> {
                     if (c == ' ') {
                         state = IterationState.SPACE;
                         continue;
@@ -95,8 +95,8 @@ public class Parameters implements Iterable<String> {
                     }
                     bld.append(c);
                     state = IterationState.PARAM;
-                    break;
-                case PARAM:
+                }
+                case PARAM -> {
                     if (c == ' ') {
                         state = IterationState.SPACE;
                         String value = bld.toString();
@@ -104,8 +104,8 @@ public class Parameters implements Iterable<String> {
                         continue;
                     }
                     bld.append(c);
-                    break;
-                case BR_PARAM:
+                }
+                case BR_PARAM -> {
                     if (c == '}') {
                         if (brCount == 0) {
                             state = IterationState.SPACE;
@@ -117,7 +117,7 @@ public class Parameters implements Iterable<String> {
                         ++brCount;
                     }
                     bld.append(c);
-                    break;
+                }
             }
         }
 

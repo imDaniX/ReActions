@@ -371,13 +371,13 @@ public class StoragesManager {
         RegionStorage wge = new RegionStorage(player, region);
         ReActions.getActivators().activate(wge);
 
-        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureRegionCheck(playerName, region, true), 20 * Cfg.worldguardRecheck);
+        Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), () -> setFutureRegionCheck(playerName, region, true), 20L * Cfg.worldguardRecheck);
     }
 
     public boolean isTimeToRaiseEvent(Player p, String id, int seconds, boolean repeat) {
         long curTime = System.currentTimeMillis();
         long prevTime = p.hasMetadata("reactions-rchk-" + id) ? p.getMetadata("reactions-rchk-" + id).get(0).asLong() : 0;
-        boolean needUpdate = repeat || ((curTime - prevTime) >= (1000 * seconds));
+        boolean needUpdate = repeat || ((curTime - prevTime) >= (1000L * seconds));
         if (needUpdate) p.setMetadata("reactions-rchk-" + id, new FixedMetadataValue(ReActions.getPlugin(), curTime));
         return needUpdate;
     }

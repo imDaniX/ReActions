@@ -43,39 +43,15 @@ public class CmdList extends Cmd {
             }
 
             switch (arg1) {
-                case "type":
-                    printActType(sender, mask, page, lpp);
-                    break;
-                case "group":
-                    printActGroup(sender, mask, page, lpp);
-                    break;
-                case "timer":
-                case "timers":
-                    TimersManager.listTimers(sender, page);
-                    break;
-                case "delay":
-                case "delays":
-                    Delayer.printDelayList(sender, page, lpp);
-                    break;
-                case "loc":
-                case "location":
-                    LocationHolder.printLocList(sender, page, lpp);
-                    break;
-                case "var":
-                case "variables":
-                case "variable":
-                    ReActions.getVariables().printList(sender, page, mask);
-                    break;
-                case "menu":
-                case "menus":
-                    InventoryMenu.printMenuList(sender, page, mask);
-                    break;
-                case "cmd":
-                case "commands":
-                    FakeCommander.list().forEach(sender::sendMessage);
-                    break;
-                default:
-                    printAct(sender, page, lpp);
+                case "type" -> printActType(sender, mask, page, lpp);
+                case "group" -> printActGroup(sender, mask, page, lpp);
+                case "timer", "timers" -> TimersManager.listTimers(sender, page);
+                case "delay", "delays" -> Delayer.printDelayList(sender, page, lpp);
+                case "loc", "location" -> LocationHolder.printLocList(sender, page, lpp);
+                case "var", "variables", "variable" -> ReActions.getVariables().printList(sender, page, mask);
+                case "menu", "menus" -> InventoryMenu.printMenuList(sender, page, mask);
+                case "cmd", "commands" -> FakeCommander.list().forEach(sender::sendMessage);
+                default -> printAct(sender, page, lpp);
             }
         }
         return true;

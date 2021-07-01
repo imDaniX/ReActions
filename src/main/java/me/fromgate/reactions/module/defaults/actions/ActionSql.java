@@ -44,7 +44,7 @@ public class ActionSql extends OldAction {
         int column = params.getInteger("column", 1);
         String query = params.getString("query", "").trim();
         switch (sqlType) {
-            case SELECT: // SELECT to variable
+            case SELECT -> { // SELECT to variable
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("select")) {
                     Msg.logOnce("needselect" + query, "You need to use only \"SELECT\" query in SQL_SELECT action. Query: " + query);
@@ -52,8 +52,8 @@ public class ActionSql extends OldAction {
                 }
                 if (varName.isEmpty()) return false;
                 ReActions.getVariables().setVariable(playerName, varName, SQLManager.executeSelect(query, column, params, context.getVariable("SQL_SET")));
-                break;
-            case INSERT: // INSERT
+            }
+            case INSERT -> { // INSERT
                 query = params.getString("query", params.getString("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("insert")) {
@@ -61,8 +61,8 @@ public class ActionSql extends OldAction {
                     return false;
                 }
                 SQLManager.executeUpdate(query, params);
-                break;
-            case UPDATE: // UPDATE
+            }
+            case UPDATE -> { // UPDATE
                 query = params.getString("query", params.getString("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("update")) {
@@ -70,8 +70,8 @@ public class ActionSql extends OldAction {
                     return false;
                 }
                 SQLManager.executeUpdate(query, params);
-                break;
-            case DELETE: // DELETE
+            }
+            case DELETE -> { // DELETE
                 query = params.getString("query", params.getString("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("delete")) {
@@ -79,8 +79,8 @@ public class ActionSql extends OldAction {
                     return false;
                 }
                 SQLManager.executeUpdate(query, params);
-                break;
-            case SET: // SET
+            }
+            case SET -> { // SET
                 query = params.getString("query", params.getString("param-line", "")).trim();
                 if (query.isEmpty()) return false;
                 if (!query.toLowerCase(Locale.ENGLISH).startsWith("set")) {
@@ -88,7 +88,7 @@ public class ActionSql extends OldAction {
                     return false;
                 }
                 context.setVariable("SQL_SET", query);
-                break;
+            }
         }
         return true;
     }
