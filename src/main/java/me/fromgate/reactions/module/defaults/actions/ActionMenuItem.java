@@ -8,7 +8,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 public class ActionMenuItem extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         return InventoryMenu.createAndOpenInventory(context.getPlayer(), params, context.getVariables());
     }
 

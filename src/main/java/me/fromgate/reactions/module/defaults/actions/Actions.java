@@ -27,7 +27,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.ActivatorLogic;
 import me.fromgate.reactions.logic.activity.actions.OldAction;
 import me.fromgate.reactions.logic.activity.actions.StoredAction;
-import me.fromgate.reactions.module.defaults.actions.ActionItems.ItemActionType;
+import me.fromgate.reactions.module.defaults.actions.ActionItems.Type;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.BukkitMessenger;
@@ -66,15 +66,15 @@ public enum Actions {
     BROADCAST("msgall", new ActionBroadcast()),
     DAMAGE("dmg", new ActionDamage()),
     // TODO: Don't like it
-    ITEM_GIVE("itemgive", new ActionItems(ItemActionType.GIVE_ITEM), true),
-    ITEM_REMOVE("itemrmv", new ActionItems(ItemActionType.REMOVE_ITEM_HAND), true),
-    ITEM_REMOVE_OFFHAND("itemrmvoffhand", new ActionItems(ItemActionType.REMOVE_ITEM_OFFHAND), true),
-    ITEM_REMOVE_INVENTORY("invitemrmv", new ActionItems(ItemActionType.REMOVE_ITEM_INVENTORY), true),
-    ITEM_DROP("itemdrop", new ActionItems(ItemActionType.DROP_ITEM), true),
-    ITEM_WEAR("itemwear", new ActionItems(ItemActionType.WEAR_ITEM), true),
-    ITEM_UNWEAR("itemundress", new ActionItems(ItemActionType.UNWEAR_ITEM), true),
-    ITEM_SLOT("itemslot", new ActionItems(ItemActionType.SET_INVENTORY), true),
-    ITEM_SLOT_VIEW("itemslotview", new ActionItems(ItemActionType.GET_INVENTORY), true),
+    ITEM_GIVE("itemgive", new ActionItems(Type.GIVE_ITEM), true),
+    ITEM_REMOVE("itemrmv", new ActionItems(Type.REMOVE_ITEM_HAND), true),
+    ITEM_REMOVE_OFFHAND("itemrmvoffhand", new ActionItems(Type.REMOVE_ITEM_OFFHAND), true),
+    ITEM_REMOVE_INVENTORY("invitemrmv", new ActionItems(Type.REMOVE_ITEM_INVENTORY), true),
+    ITEM_DROP("itemdrop", new ActionItems(Type.DROP_ITEM), true),
+    ITEM_WEAR("itemwear", new ActionItems(Type.WEAR_ITEM), true),
+    ITEM_UNWEAR("itemundress", new ActionItems(Type.UNWEAR_ITEM), true),
+    ITEM_SLOT("itemslot", new ActionItems(Type.SET_INVENTORY), true),
+    ITEM_SLOT_VIEW("itemslotview", new ActionItems(Type.GET_INVENTORY), true),
     // *******************
     CMD("cmdplr", new ActionCommand(ActionCommand.Type.NORMAL), true),
     CMD_OP("cmdop", new ActionCommand(ActionCommand.Type.OP), true),

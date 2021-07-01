@@ -23,8 +23,9 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.selectors.SelectorsManager;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
@@ -33,27 +34,39 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-public class ActionMessage extends OldAction {
+@Alias("MSG")
+public class ActionMessage extends Action {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         sendMessage(context.getPlayer(), params);
         return true;
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "MESSAGE";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
+    }
+
     // TODO: Remove it somehow
-    private String removeParams(String message) {
+    private static String removeParams(String message) {
         String sb = "(?i)(" + String.join("|", SelectorsManager.getAllKeys()) + "|type|hide):(\\{.*}|\\S+)\\s?";
         return message.replaceAll(sb, "");
 
     }
 
-    private void sendMessage(Player player, Parameters params) {
+    private static void sendMessage(Player player, Parameters params) {
         Set<Player> players = new HashSet<>();
         if (params.containsAny(SelectorsManager.getAllKeys())) {
             players.addAll(SelectorsManager.getPlayerList(params));
@@ -91,11 +104,11 @@ public class ActionMessage extends OldAction {
         }
     }
 
-    private boolean showMessage(Player player, String message, String annoymentTime) {
+    private static boolean showMessage(Player player, String message, String annoymentTime) {
         if (annoymentTime.isEmpty()) return true;
         long time = TimeUtils.parseTime(annoymentTime);
         if (time == 0) return false;
-        String key = "reactions-msg-" +/*.append(this.getActivatorName())*/message.hashCode() + (this.isAction() ? "act" : "react");
+        String key = "reactions-msg-" +/*.append(this.getActivatorName())*/message.hashCode();
         if (player.hasMetadata(key)) {
             if ((player.getMetadata(key).get(0).asLong() - System.currentTimeMillis()) > 0)
                 return false;

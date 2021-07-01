@@ -6,7 +6,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 
 public class ActionChange extends OldAction {
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         // TODO: Error message
         return context.setChangeable(params.getString("key", params.getString("id")),
                 params.getString("value", ""));

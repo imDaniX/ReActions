@@ -30,7 +30,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 public class ActionMobSpawn extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         MobSpawn.mobSpawn(context.getPlayer(), params);
         return true;
     }

@@ -31,7 +31,7 @@ import org.bukkit.entity.Player;
 public class ActionExecStop extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player p = context.getPlayer();
         String player = params.getString("player", (p == null ? "" : p.getName()));
         if (player.isEmpty()) return false;

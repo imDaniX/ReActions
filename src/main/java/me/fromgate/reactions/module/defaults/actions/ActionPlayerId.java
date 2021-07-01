@@ -15,7 +15,7 @@ public class ActionPlayerId extends OldAction {
 
     @SuppressWarnings("deprecation")
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         String uuid;
         String pName;
 

@@ -30,7 +30,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 public class ActionExecUnstop extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         // TODO Custom ActivatorType to handle exec stopping
         Msg.logOnce("execunstopnotworking", "Sorry, but action EXEC_UNSTOP doesn't work yet.");
         return true;

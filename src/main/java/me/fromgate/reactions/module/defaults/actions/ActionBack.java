@@ -30,7 +30,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 public class ActionBack extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         return PushBack.teleportToPrev(context.getPlayer(), params.getInteger("param-line", 1));
     }
 

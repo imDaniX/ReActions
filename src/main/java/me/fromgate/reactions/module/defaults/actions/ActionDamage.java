@@ -22,17 +22,20 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionDamage extends OldAction {
+@Alias("DMG")
+public class ActionDamage extends Action {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         double damage = params.getInteger("damage", params.getInteger("param-line", 0));
         if (params.contains("player"))
@@ -41,12 +44,21 @@ public class ActionDamage extends OldAction {
         return damagePlayer(player, damage);
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "DAMAGE";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
+    }
+
 
     private boolean damagePlayer(Player player, double damage) {
         if (player == null || player.isDead() || !player.isOnline()) return false;
         if (damage > 0) player.damage(damage);
         else player.playEffect(EntityEffect.HURT);
-        setMessageParam(Double.toString(damage));
         return true;
     }
 

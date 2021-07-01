@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class ActionRegex extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         String prefix = params.getString("prefix", "");
         String regex = params.getString("regex", "");
         String input = params.getString("input", removeParams(params.toString()));

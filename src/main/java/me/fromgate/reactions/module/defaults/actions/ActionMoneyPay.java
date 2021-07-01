@@ -35,7 +35,7 @@ import java.util.Map;
 public class ActionMoneyPay extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         if (!RaEconomics.isEconomyFound()) return false;
         if (params.size() == 0) return false;

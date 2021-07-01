@@ -22,21 +22,22 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionVelocity extends OldAction {
+@Alias("VECTOR")
+public class ActionVelocity extends Action {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Vector v = setPlayerVelocity(context.getPlayer(), params);
-        if (v == null) return false;
-        this.setMessageParam("[" + v.getBlockX() + ", " + v.getBlockY() + ", " + v.getBlockZ() + "]");
-        return true;
+        return v != null;
     }
 
     private Vector setPlayerVelocity(Player p, Parameters params) {
@@ -74,4 +75,13 @@ public class ActionVelocity extends OldAction {
         return v;
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "VELOCITY";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
 }

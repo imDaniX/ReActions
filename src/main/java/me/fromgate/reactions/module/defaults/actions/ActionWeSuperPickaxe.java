@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
  */
 public class ActionWeSuperPickaxe extends OldAction {
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         boolean isSP = params.getBoolean("value", params.getBoolean("param-line", false));
         if (params.contains("player"))

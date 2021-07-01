@@ -38,7 +38,7 @@ public class ActionSql extends OldAction {
     private final Type sqlType;
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         String playerName = params.getString("player", "");
         String varName = params.getString("variable", "");
         int column = params.getInteger("column", 1);

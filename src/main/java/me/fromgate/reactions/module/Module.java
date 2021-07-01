@@ -6,6 +6,7 @@ import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.logic.activity.flags.Flag;
 import me.fromgate.reactions.placeholders.Placeholder;
 import me.fromgate.reactions.selectors.Selector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -24,29 +25,27 @@ public interface Module {
          */
     }
 
-    String getName();
+    @NotNull String getName();
 
-    String[] getAuthors();
+    @NotNull String@NotNull [] getAuthors();
 
-    String getVersion();
-
-    default Collection<ActivatorType> getActivatorTypes() {
+    default @NotNull Collection<ActivatorType> getActivatorTypes() {
         return Collections.emptyList();
     }
 
-    default Collection<Action> getActions() {
+    default @NotNull Collection<Action> getActions() {
         return Collections.emptyList();
     }
 
-    default Collection<Flag> getFlags() {
+    default @NotNull Collection<Flag> getFlags() {
         return Collections.emptyList();
     }
 
-    default Collection<Placeholder> getPlaceholders() {
+    default @NotNull Collection<Placeholder> getPlaceholders() {
         return Collections.emptyList();
     }
 
-    default Collection<Selector> getSelectors() {
+    default @NotNull Collection<Selector> getSelectors() {
         return Collections.emptyList();
     }
 }

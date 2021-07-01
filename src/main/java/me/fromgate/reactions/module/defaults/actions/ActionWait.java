@@ -12,7 +12,7 @@ import java.util.List;
 public class ActionWait extends OldAction /*TODO: implements Stopper*/ {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         return false;
     }
 

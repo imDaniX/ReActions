@@ -14,6 +14,8 @@ public abstract class Action {
         );
     }
 
+    protected abstract boolean execute(@NotNull RaContext context, @NotNull Parameters params);
+
     @NotNull
     public abstract String getName();
 
@@ -27,6 +29,4 @@ public abstract class Action {
     protected boolean isParameterized() {
         return true;
     }
-
-    protected abstract boolean execute(@NotNull RaContext context, @NotNull Parameters params);
 }

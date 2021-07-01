@@ -22,7 +22,8 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.location.VelocityUtils;
@@ -31,11 +32,12 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionVelocityJump extends OldAction {
-
+@Alias("JUMP")
+public class ActionVelocityJump extends Action {
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         Msg.logOnce("velocity-jump-warning", "&cWarning! VELOCITY_JUMP action is under construction. In next version of plugin it could be changed, renamed or removed!");
         String locStr = params.getString("loc", "");
@@ -48,4 +50,13 @@ public class ActionVelocityJump extends OldAction {
         return false;
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "VELOCITY_JUMP";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
 }

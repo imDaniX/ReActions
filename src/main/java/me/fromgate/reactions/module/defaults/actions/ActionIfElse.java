@@ -39,7 +39,7 @@ public class ActionIfElse extends OldAction {
     }
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         if (params.contains("if") && params.containsAny("then", "else")) {
 			/*

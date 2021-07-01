@@ -46,10 +46,10 @@ import java.util.List;
 @AllArgsConstructor
 public class ActionItems extends OldAction {
     // TODO: Optimization
-    private final ItemActionType actionType;
+    private final Type actionType;
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         return switch (actionType) {
             case GIVE_ITEM -> giveItemPlayer(context, params.getString("param-line", ""));
             case REMOVE_ITEM_HAND -> removeItemInHand(context, params);
@@ -396,7 +396,7 @@ public class ActionItems extends OldAction {
         return -1;
     }
 
-    public enum ItemActionType {
+    public enum Type {
         GIVE_ITEM,
         REMOVE_ITEM_HAND,
         REMOVE_ITEM_OFFHAND,
@@ -408,29 +408,4 @@ public class ActionItems extends OldAction {
         SET_INVENTORY,
         GET_INVENTORY
     }
-
-
-	/*
-		public boolean execute(RaContext context, Param params) {
-		switch (actionType) {
-			case 0:
-				return giveItemPlayer(p, params.getParam("param-line", ""));
-			case 1:
-				return removeItemInHand(p, params);
-			case 2:
-				return removeItemInInventory(p, params);
-			case 3:
-				return dropItems(p, params);
-			case 4:
-				return wearItem(p, params);
-			case 5:
-				return openInventory(p, params.getParam("param-line", ""));
-			case 6:
-				return setInventorySlot(p, params);
-			case 7:
-				return unwearItem(p, params);
-		}
-		return true;
-	}
-	 */
 }

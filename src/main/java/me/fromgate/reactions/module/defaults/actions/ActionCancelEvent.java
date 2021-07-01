@@ -30,7 +30,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 public class ActionCancelEvent extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         return context.setChangeable(Storage.CANCEL_EVENT, params.getBoolean("param-line", false));
     }
 

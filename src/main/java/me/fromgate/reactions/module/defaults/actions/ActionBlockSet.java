@@ -37,7 +37,7 @@ import org.bukkit.inventory.ItemStack;
 public class ActionBlockSet extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         //String istr = params.getParam("block", "");
         boolean phys = params.getBoolean("physics", false);
         boolean drop = params.getBoolean("drop", false);

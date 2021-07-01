@@ -34,7 +34,7 @@ public class ActionTimer extends OldAction {
     private final boolean pauseTimer;
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         String timer = params.getString("timer", "");
         if (timer.isEmpty()) return false;
         return TimersManager.setPause(timer, pauseTimer);

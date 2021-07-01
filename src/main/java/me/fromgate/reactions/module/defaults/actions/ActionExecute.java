@@ -30,7 +30,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 public class ActionExecute extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         String id = params.getString("activator", "");
         if (id.isEmpty()) return false;
         setMessageParam(id);

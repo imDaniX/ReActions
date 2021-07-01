@@ -11,7 +11,7 @@ import me.fromgate.reactions.util.parameter.Parameters;
 public class ActionDelayed extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         long delay = TimeUtils.parseTime(params.getString("time", "0"));
         if (delay == 0) return false;
 

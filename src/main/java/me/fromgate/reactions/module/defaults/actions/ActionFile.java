@@ -16,7 +16,7 @@ public class ActionFile extends OldAction {
     private static final String dir = new File("").getAbsolutePath();
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         String action = params.getString("action", "");
         String fileName = params.getString("fileName", "");
         String fileNameTo = params.getString("fileNameTo", "");

@@ -23,24 +23,22 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.Cfg;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.location.Teleporter;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionTp extends OldAction {
+@Alias("TP")
+public class ActionTp extends Action {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
-        Location loc = teleportPlayer(context, params);
-        if (loc != null) {
-            this.setMessageParam(LocationUtils.locationToStringFormatted(loc));
-            return true;
-        }
-        return false;
+    protected boolean execute(RaContext context, Parameters params) {
+        return teleportPlayer(context, params) != null;
     }
 
     private Location teleportPlayer(RaContext context, Parameters params) {
@@ -77,4 +75,13 @@ public class ActionTp extends OldAction {
         return loc;
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "TELEPORT";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
 }

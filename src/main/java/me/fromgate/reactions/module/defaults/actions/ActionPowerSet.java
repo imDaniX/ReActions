@@ -35,7 +35,7 @@ import org.bukkit.block.data.type.Switch;
 public class ActionPowerSet extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Location loc = LocationUtils.parseLocation(params.getString("loc", ""), null);
         setMessageParam("UNKNOWN");
         if (loc == null) return false;

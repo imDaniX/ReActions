@@ -22,21 +22,36 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionPotionRemove extends OldAction {
+@Alias("RMVPOT")
+public class ActionPotionRemove extends Action {
+    @Override
+    protected boolean execute(RaContext context, Parameters params) {
+        String str = removePotionEffect(context.getPlayer(), params.getString("param-line", ""));
+        return !str.isEmpty();
+    }
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
-        String str = removePotionEffect(context.getPlayer(), params.getString("param-line", ""));
-        if (str.isEmpty()) return false;
-        this.setMessageParam(str);
-        return true;
+    public @NotNull String getName() {
+        return "POTION_REMOVE";
+    }
+
+    @Override
+    protected boolean isParameterized() {
+        return false;
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true; // TODO Allow to use player selectors
     }
 
     private String removePotionEffect(Player p, String param) {

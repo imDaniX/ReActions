@@ -22,7 +22,8 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
@@ -30,17 +31,26 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionPotion extends OldAction {
+@Alias("POTION_EFFECT")
+public class ActionPotion extends Action {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         String str = potionEffect(context.getPlayer(), params);
-        if (str.isEmpty()) return false;
-        this.setMessageParam(str);
-        return true;
+        return !str.isEmpty();
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "POTION";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true; // TODO Allow to use player selectors
+    }
 
     private String potionEffect(Player p, Parameters params) {
         if (params.isEmpty()) return "";

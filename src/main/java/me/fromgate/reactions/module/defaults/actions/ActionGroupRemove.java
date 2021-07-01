@@ -23,15 +23,18 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.RaVault;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionGroupRemove extends OldAction {
+@Alias("GRPRMV")
+public class ActionGroupRemove extends Action {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         String param = params.getString("param-line", "");
         if (RaVault.playerInGroup(player, param))
@@ -39,4 +42,18 @@ public class ActionGroupRemove extends OldAction {
         return true;
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "GROUP_REMOVE";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
+    @Override
+    protected boolean isParameterized() {
+        return false;
+    }
 }

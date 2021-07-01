@@ -32,7 +32,7 @@ import org.bukkit.entity.Player;
 public class ActionHeal extends OldAction {
 
     @Override
-    public boolean execute(RaContext context, Parameters params) {
+    protected boolean execute(RaContext context, Parameters params) {
         Player player = context.getPlayer();
         if (params.contains("player"))
             player = Utils.getPlayerExact(params.getString("player"));
