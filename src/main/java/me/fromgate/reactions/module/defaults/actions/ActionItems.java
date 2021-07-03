@@ -24,7 +24,7 @@ package me.fromgate.reactions.module.defaults.actions;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.module.defaults.ItemStoragesManager;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -40,11 +40,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 @AllArgsConstructor
-public class ActionItems extends OldAction {
+public class ActionItems extends Action {
     // TODO: Optimization
     private final Type actionType;
 
@@ -64,6 +65,26 @@ public class ActionItems extends OldAction {
         };
     }
 
+    @Override
+    public @NotNull String getName() {
+        return switch (actionType) {
+            case GIVE_ITEM -> "ITEM_GIVE";
+            case REMOVE_ITEM_HAND -> "ITEM_REMOVE";
+            case REMOVE_ITEM_OFFHAND -> "ITEM_REMOVE_OFFHAND";
+            case REMOVE_ITEM_INVENTORY -> "ITEM_REMOVE_INVENTORY";
+            case DROP_ITEM -> "ITEM_DROP";
+            case WEAR_ITEM -> "ITEM_WEAR";
+            case OPEN_INVENTORY -> "OPEN_INVENTORY";
+            case SET_INVENTORY -> "ITEM_SLOT";
+            case GET_INVENTORY -> "ITEM_SLOT_VIEW";
+            case UNWEAR_ITEM -> "ITEM_UNWEAR";
+        };
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
 
     /**
      * Реализует действие ITEM_SLOT - установить предмет в определенный слот
@@ -97,7 +118,6 @@ public class ActionItems extends OldAction {
         else if (existStr.equalsIgnoreCase("undress")) ItemUtils.giveItemOrDrop(player, oldItem);
         else if (existStr.equalsIgnoreCase("keep")) player.getInventory().setItem(slotNum, oldItem);
         String actionItems = ItemUtils.toDisplayString(itemStr);
-        setMessageParam(actionItems);
         context.setVariable("item_str", actionItems);
 
         return true;
@@ -293,7 +313,6 @@ public class ActionItems extends OldAction {
         final List<ItemStack> items = ItemUtils.parseRandomItemsStr(param);
         if (items == null || items.isEmpty()) return false;
         String actionItems = ItemUtils.toDisplayString(items);
-        setMessageParam(actionItems);
         context.setVariable("item_str", actionItems);
         Bukkit.getScheduler().scheduleSyncDelayedTask(ReActions.getPlugin(), () -> {
             for (ItemStack i : items)
@@ -307,7 +326,6 @@ public class ActionItems extends OldAction {
         List<ItemStack> items = ItemUtils.parseRandomItemsStr(itemStr);
         if (items.isEmpty()) return false;
         String actionItems = ItemUtils.toDisplayString(items);
-        setMessageParam(actionItems);
         context.setVariable("item_str", actionItems);
         int size = Math.min(items.size(), 36);
         Inventory inv = Bukkit.createInventory(null, size);
@@ -333,7 +351,6 @@ public class ActionItems extends OldAction {
             if (scatter) l = LocationUtils.getRadiusLocation(loc, radius, land);
         }
         String actionItems = ItemUtils.toDisplayString(items);
-        setMessageParam(actionItems);
         context.setVariable("item_str", actionItems);
         return true;
     }

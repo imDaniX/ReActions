@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
-import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.message.Msg;
@@ -33,8 +33,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionBlockSet extends OldAction {
+@Alias("SET_BLOCK")
+public class ActionBlockSet extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
@@ -62,8 +64,17 @@ public class ActionBlockSet extends OldAction {
             //b.setBlockData(item.getData(),phys);
             //b.setTypeIdAndData(item.getTypeId(), item.getData().getData(), phys);
         } else b.setType(Material.AIR, phys);
-        setMessageParam(ItemUtils.itemToString(item));
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BLOCK_SET";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 }

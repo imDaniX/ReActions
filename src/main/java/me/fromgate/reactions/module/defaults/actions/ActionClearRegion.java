@@ -23,7 +23,8 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.mob.EntityUtils;
@@ -32,12 +33,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public class ActionClearRegion extends OldAction {
+@Alias("RGCLEAR")
+public class ActionClearRegion extends Action {
     // TODO: Too weird. Optimize, simplify
 
     @Override
@@ -57,8 +60,17 @@ public class ActionClearRegion extends OldAction {
                 count++;
             }
         }
-        setMessageParam(Integer.toString(count));
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "REGION_CLEAR";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 

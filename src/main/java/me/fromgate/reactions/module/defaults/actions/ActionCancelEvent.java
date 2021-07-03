@@ -23,15 +23,32 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.logic.activators.Storage;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionCancelEvent extends OldAction {
+@Alias("CANCEL")
+public class ActionCancelEvent extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         return context.setChangeable(Storage.CANCEL_EVENT, params.getBoolean("param-line", false));
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "CANCEL_EVENT";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
+    }
+
+    @Override
+    protected boolean isParameterized() {
+        return false;
+    }
 }

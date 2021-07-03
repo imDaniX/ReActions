@@ -22,7 +22,8 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -31,20 +32,30 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Switch;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionPowerSet extends OldAction {
+@Alias("POWER")
+public class ActionPowerSet extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         Location loc = LocationUtils.parseLocation(params.getString("loc", ""), null);
-        setMessageParam("UNKNOWN");
         if (loc == null) return false;
         Block b = loc.getBlock();
-        setMessageParam(b.getType().name());
         if (!isPowerBlock(b)) return false;
         String state = params.getString("power", "on");
         boolean power = getPower(b, state);
         return setPower(b, power);
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "POWER_SET";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 

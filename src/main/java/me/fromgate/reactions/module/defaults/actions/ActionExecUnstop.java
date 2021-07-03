@@ -22,25 +22,38 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionExecUnstop extends OldAction {
+@Alias("UNSTOP")
+public class ActionExecUnstop extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         // TODO Custom ActivatorType to handle exec stopping
         Msg.logOnce("execunstopnotworking", "Sorry, but action EXEC_UNSTOP doesn't work yet.");
-        return true;
-        /*Player p = context.getPlayer();
+        if (true) return true;
+        Player p = context.getPlayer();
         String player = params.getString("player", (p == null ? "" : p.getName()));
         if (player.isEmpty()) return false;
         String activator = params.getString("activator", "");
         if (activator.isEmpty()) return false;
-        setMessageParam(activator);
-        return ReActions.getActivators().isStopped(player, activator, true);*/
+        return true; //ReActions.getActivators().isStopped(player, activator, true);
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "EXEC_UNSTOP";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 }

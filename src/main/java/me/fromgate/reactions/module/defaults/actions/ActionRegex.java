@@ -1,9 +1,10 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.selectors.SelectorsManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 /**
  * Created by MaxDikiy on 2017-04-29.
  */
-public class ActionRegex extends OldAction {
+public class ActionRegex extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
@@ -37,6 +38,16 @@ public class ActionRegex extends OldAction {
             }
         }
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "REGEX";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
     // TODO: Remove it somehow

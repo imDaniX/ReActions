@@ -1,15 +1,19 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.logic.activity.actions.StoredAction;
 import me.fromgate.reactions.time.waiter.WaitingManager;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionDelayed extends OldAction {
+@Alias("ACTDELAY")
+public class ActionDelayed extends Action {
 
+    // TODO Make it actually work
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         long delay = TimeUtils.parseTime(params.getString("time", "0"));
@@ -32,6 +36,16 @@ public class ActionDelayed extends OldAction {
 
         StoredAction av = new StoredAction(actionStr, paramStr);
         WaitingManager.executeDelayed(context.getPlayer(), av, this.isAction(), delay);
+        return false;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "ACTION_DELAYED";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
         return false;
     }
 

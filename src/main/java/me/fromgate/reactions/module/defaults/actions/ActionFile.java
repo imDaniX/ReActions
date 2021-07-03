@@ -1,8 +1,9 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import java.nio.file.StandardCopyOption;
 /**
  * Created by MaxDikiy on 5/7/2017.
  */
-public class ActionFile extends OldAction {
+public class ActionFile extends Action {
     private static final String dir = new File("").getAbsolutePath();
 
     @Override
@@ -57,6 +58,16 @@ public class ActionFile extends OldAction {
             }
 
         }
+        return false;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "FILE";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
         return false;
     }
 }

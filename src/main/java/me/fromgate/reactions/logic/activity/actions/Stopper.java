@@ -1,5 +1,7 @@
 package me.fromgate.reactions.logic.activity.actions;
 
+import me.fromgate.reactions.util.data.RaContext;
+import me.fromgate.reactions.util.parameter.Parameters;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -12,7 +14,7 @@ import java.util.List;
 public interface Stopper {
     /**
      * This method will be called after action execution (if it was successful)
-     * @param stoppedActions List of actions that were stopped
+     * @param actions List of actions that were stopped
      */
-    void stop(@NotNull List<StoredAction> stoppedActions);
+    void stop(@NotNull RaContext context, @NotNull Parameters params, @NotNull List<StoredAction> actions);
 }

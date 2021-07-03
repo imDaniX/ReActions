@@ -22,14 +22,17 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.mob.EntityUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionHeal extends OldAction {
+@Alias("HP")
+public class ActionHeal extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
@@ -44,7 +47,16 @@ public class ActionHeal extends OldAction {
         if (health < healthMax && hp >= 0) {
             player.setHealth(hp == 0 ? healthMax : Math.min(hp + health, healthMax));
         }
-        setMessageParam(Double.toString(hp));
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "HEAL";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 }

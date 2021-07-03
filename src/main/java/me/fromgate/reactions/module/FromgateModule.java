@@ -74,6 +74,12 @@ public class FromgateModule implements Module {
     @Override
     public @NotNull Collection<ActivatorType> getActivatorTypes() {
         // TODO
+        return Module.super.getActivatorTypes();
+    }
+
+    @Override
+    public @NotNull Collection<Action> getActions() {
+        // TODO Split actions one-by-one? Or implement MultiAction?..
         return List.of(
                 new ActionTp(),
                 new ActionVelocity(),
@@ -151,12 +157,6 @@ public class FromgateModule implements Module {
                 new ActionWeSuperPickaxe(),
                 new ActionClearRadius()
         );
-    }
-
-    @Override
-    public @NotNull Collection<Action> getActions() {
-        // TODO
-        return Module.super.getActions();
     }
 
     @Override

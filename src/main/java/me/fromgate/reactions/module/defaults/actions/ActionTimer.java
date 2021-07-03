@@ -23,13 +23,14 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.time.TimersManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
-public class ActionTimer extends OldAction {
+public class ActionTimer extends Action {
 
     private final boolean pauseTimer;
 
@@ -38,6 +39,16 @@ public class ActionTimer extends OldAction {
         String timer = params.getString("timer", "");
         if (timer.isEmpty()) return false;
         return TimersManager.setPause(timer, pauseTimer);
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return pauseTimer ? "TIMER_STOP" : "TIMER_RESUME";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 }

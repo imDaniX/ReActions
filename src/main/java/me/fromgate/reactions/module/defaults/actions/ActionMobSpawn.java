@@ -22,17 +22,30 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.mob.MobSpawn;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionMobSpawn extends OldAction {
+@Alias("MOB")
+public class ActionMobSpawn extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         MobSpawn.mobSpawn(context.getPlayer(), params);
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "MOB_SPAWN";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 }

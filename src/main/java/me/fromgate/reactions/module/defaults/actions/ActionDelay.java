@@ -23,15 +23,16 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import lombok.AllArgsConstructor;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.time.Delayer;
 import me.fromgate.reactions.util.TimeUtils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
-public class ActionDelay extends OldAction {
+public class ActionDelay extends Action {
 
     private final boolean globalDelay;
 
@@ -62,8 +63,17 @@ public class ActionDelay extends OldAction {
         if (variableId.isEmpty()) return false;
         setDelay(playerName, variableId, TimeUtils.parseTime(timeStr), add);
         Delayer.setTempPlaceholders(context, playerName, variableId);
-        setMessageParam(context.getVariable("delay-left-hms", timeStr));
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return globalDelay ? "DELAY" : "DELAY_PLAYER";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return !globalDelay;
     }
 
     private void setDelay(String playerName, String variableId, long delayTime, boolean add) {

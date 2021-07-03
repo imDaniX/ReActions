@@ -22,16 +22,27 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.util.Shoot;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionShoot extends OldAction {
+public class ActionShoot extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         Shoot.shoot(context.getPlayer(), params);
+        return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "SHOOT";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
         return true;
     }
 

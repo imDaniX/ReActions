@@ -23,7 +23,8 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.worldguard.RaWorldGuard;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.item.VirtualItem;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -34,10 +35,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ActionBlockFill extends OldAction {
+@Alias("FILL_BLOCK")
+public class ActionBlockFill extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
@@ -78,6 +81,16 @@ public class ActionBlockFill extends OldAction {
         int chance = params.getInteger("chance", 100);
         fillArea(item, loc1, loc2, chance, phys, drop);
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "BLOCK_FILL";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
     private void fillArea(ItemStack blockItem, Location loc1, Location loc2, int chance, boolean phys, boolean drop) {

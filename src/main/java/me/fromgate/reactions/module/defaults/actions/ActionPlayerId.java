@@ -1,17 +1,18 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by MaxDikiy on 5/6/2017.
  */
-public class ActionPlayerId extends OldAction {
+public class ActionPlayerId extends Action {
 
     @SuppressWarnings("deprecation")
     @Override
@@ -42,6 +43,16 @@ public class ActionPlayerId extends OldAction {
         context.setVariable("playerid", uuid);
         context.setVariable("playername", pName);
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "PLAYER_ID";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 }

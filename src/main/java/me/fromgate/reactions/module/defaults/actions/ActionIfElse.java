@@ -1,11 +1,12 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.logic.activity.actions.StoredAction;
 import me.fromgate.reactions.module.defaults.StoragesManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
@@ -22,7 +23,7 @@ import java.util.Map;
 /**
  * Created by MaxDikiy on 2017-05-17.
  */
-public class ActionIfElse extends OldAction {
+public class ActionIfElse extends Action {
     // TODO: Maybe use some custom evaluator instead of freaking JS engine?
     private static final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
 
@@ -122,6 +123,16 @@ public class ActionIfElse extends OldAction {
         return false;
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "IF_ELSE";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
+    }
+
     private boolean executeActions(RaContext context, String paramStr) {
         List<StoredAction> actions = new ArrayList<>();
         Parameters params = Parameters.fromString(paramStr);
@@ -138,6 +149,7 @@ public class ActionIfElse extends OldAction {
 
             String flag = action.substring(0, action.indexOf("="));
             String param = action.substring(action.indexOf("=") + 1);
+            // TODO
             actions.add(new StoredAction(Actions.getValidName(flag), param));
         }
 

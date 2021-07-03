@@ -22,16 +22,31 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.PushBack;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionBack extends OldAction {
+public class ActionBack extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         return PushBack.teleportToPrev(context.getPlayer(), params.getInteger("param-line", 1));
     }
 
+    @Override
+    public @NotNull String getName() {
+        return "BACK";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return true;
+    }
+
+    @Override
+    protected boolean isParameterized() {
+        return false;
+    }
 }

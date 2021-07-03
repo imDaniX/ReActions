@@ -23,12 +23,13 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.selectors.SelectorsManager;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -39,10 +40,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Logger;
 
-public class ActionLog extends OldAction {
+public class ActionLog extends Action {
 
-    private final Logger LOGGER = Logger.getLogger("Minecraft");
-    private final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final Logger LOGGER = Logger.getLogger("Minecraft");
+    private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private void saveToFile(RaContext context, String fileName, String message) {
         File path = new File("");
@@ -95,6 +96,16 @@ public class ActionLog extends OldAction {
         } else Msg.logMessage(params.toString());
 
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "LOG";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
     private String removeParams(String message) {

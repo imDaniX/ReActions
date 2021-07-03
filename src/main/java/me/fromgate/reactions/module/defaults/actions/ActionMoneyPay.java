@@ -23,16 +23,19 @@
 package me.fromgate.reactions.module.defaults.actions;
 
 import me.fromgate.reactions.externals.RaEconomics;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.Rng;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionMoneyPay extends OldAction {
+@Alias("MONEYPAY")
+public class ActionMoneyPay extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
@@ -47,9 +50,17 @@ public class ActionMoneyPay extends OldAction {
         String source = params.getString("source", params.getString("player", (player != null ? player.getName() : "")));
         if (source.isEmpty()) return false;
         String message = RaEconomics.debitAccount(source, target, amountStr, worldName);
-        if (message.isEmpty()) return false;
-        setMessageParam(message);
-        return true;
+        return !message.isEmpty();
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "MONEY_PAY";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
     private Parameters parseOldFormat(Player p, String mstr) {

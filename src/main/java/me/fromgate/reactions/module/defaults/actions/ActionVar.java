@@ -24,14 +24,15 @@ package me.fromgate.reactions.module.defaults.actions;
 
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.math.NumberUtils;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
-public class ActionVar extends OldAction {
+public class ActionVar extends Action {
 
     private final Type actType;
     private final boolean personalVar;
@@ -94,6 +95,22 @@ public class ActionVar extends OldAction {
             }
         }
         return false;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return switch (actType) {
+            case SET -> personalVar ? "VAR_PLAYER_SET" : "VAR_SET";
+            case CLEAR -> personalVar ? "VAR_PLAYER_CLEAR" : "VAR_PLAYER_CLEAR";
+            case INCREASE -> personalVar ? "VAR_PLAYER_INC" : "VAR_INC";
+            case DECREASE -> personalVar ? "VAR_PLAYER_DEC" : "VAR_DEC";
+            case TEMPORARY_SET -> "VAR_TEMP_SET";
+        };
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return personalVar;
     }
 
     public enum Type {

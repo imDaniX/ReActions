@@ -23,7 +23,8 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
@@ -34,8 +35,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionSignSet extends OldAction {
+@Alias("SIGN_LINE")
+public class ActionSignSet extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
@@ -69,6 +72,16 @@ public class ActionSignSet extends OldAction {
         }
         sign.update(true);
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "SIGN_SET_LINE";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
 }

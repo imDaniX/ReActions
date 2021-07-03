@@ -24,15 +24,13 @@ public class WaitTask implements Runnable {
     @Getter
     private boolean executed;
     private List<StoredAction> actions;
-    private boolean isAction;
     private long executionTime;
     private BukkitTask task;
 
-    public WaitTask(String playerName, List<StoredAction> actions, boolean isAction, long time) {
+    public WaitTask(String playerName, List<StoredAction> actions, long time) {
         this.taskId = UUID.randomUUID().toString();
         this.playerName = playerName;
         this.actions = actions;
-        this.isAction = isAction;
         this.executed = false;
         this.executionTime = System.currentTimeMillis() + time;
         task = Bukkit.getScheduler().runTaskLater(ReActions.getPlugin(), this, TimeUtils.timeToTicks(time));
@@ -57,7 +55,7 @@ public class WaitTask implements Runnable {
         Player p = playerName == null ? null : Utils.getPlayerExact(playerName);
         if (System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
         if (p == null && playerName != null) return;
-        Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions, isAction));
+        Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions));
         this.executed = true;
     }
 
@@ -73,7 +71,6 @@ public class WaitTask implements Runnable {
     public void save(YamlConfiguration cfg) {
         cfg.set(this.taskId + ".player", this.playerName == null ? "" : this.playerName);
         cfg.set(this.taskId + ".execution-time", this.executionTime);
-        cfg.set(this.taskId + ".actions.action", this.isAction);
         List<String> actionList = new ArrayList<>();
         for (StoredAction a : this.actions) {
             actionList.add(a.toString());
@@ -84,7 +81,6 @@ public class WaitTask implements Runnable {
     public void load(YamlConfiguration cfg, String root) {
         this.playerName = cfg.getString(root + ".player");
         this.executionTime = cfg.getLong(root + ".execution-time", 0);
-        this.isAction = cfg.getBoolean(root + ".actions.action", true);
         List<String> actionList = cfg.getStringList(root + ".actions.list");
         this.actions = new ArrayList<>();
         if (actionList != null)

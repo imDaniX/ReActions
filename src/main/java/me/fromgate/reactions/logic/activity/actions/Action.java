@@ -5,6 +5,8 @@ import me.fromgate.reactions.util.parameter.Parameters;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Action {
+
+    // TODO Return String to mimic "setMessageParam" behaviour?
     public boolean execute(@NotNull RaContext context, @NotNull String paramsStr) {
         return execute(
                 context,

@@ -22,18 +22,30 @@
 
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.module.defaults.StoragesManager;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
-public class ActionExecute extends OldAction {
+@Alias("RUN")
+public class ActionExecute extends Action {
 
     @Override
     protected boolean execute(RaContext context, Parameters params) {
         String id = params.getString("activator", "");
         if (id.isEmpty()) return false;
-        setMessageParam(id);
         return StoragesManager.triggerExec(context.getPlayer(), params, context.getVariables());
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "EXECUTE";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 }

@@ -25,15 +25,16 @@ package me.fromgate.reactions.module.defaults.actions;
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.SQLManager;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import me.fromgate.reactions.util.parameter.Parameters;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
 
 @AllArgsConstructor
-public class ActionSql extends OldAction {
+public class ActionSql extends Action {
     // TODO: More functionality like working with arrays
     private final Type sqlType;
 
@@ -91,6 +92,16 @@ public class ActionSql extends OldAction {
             }
         }
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "SQL_" + sqlType.name();
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
     }
 
     public enum Type {

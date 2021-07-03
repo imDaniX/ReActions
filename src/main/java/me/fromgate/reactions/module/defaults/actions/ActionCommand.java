@@ -25,16 +25,17 @@ package me.fromgate.reactions.module.defaults.actions;
 import lombok.AllArgsConstructor;
 import me.fromgate.reactions.Cfg;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
 import me.fromgate.reactions.util.TemporaryOp;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.parameter.Parameters;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 @AllArgsConstructor
-public class ActionCommand extends OldAction {
+public class ActionCommand extends Action {
 
     private final Type commandAs;
 
@@ -67,6 +68,26 @@ public class ActionCommand extends OldAction {
             }
         }
         return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return switch (commandAs) {
+            case NORMAL -> "CMD";
+            case OP -> "CMD_OP";
+            case CONSOLE -> "CMD_CONSOLE";
+            case CHAT -> "CMD_CHAT";
+        };
+    }
+
+    @Override
+    public boolean requiresPlayer() {
+        return false;
+    }
+
+    @Override
+    protected boolean isParameterized() {
+        return false;
     }
 
     public enum Type {

@@ -1,6 +1,7 @@
 package me.fromgate.reactions.module.defaults.actions;
 
-import me.fromgate.reactions.logic.activity.actions.OldAction;
+import me.fromgate.reactions.logic.activity.actions.Action;
+import me.fromgate.reactions.util.Alias;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.location.LocationUtils;
@@ -10,6 +11,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
@@ -18,7 +20,8 @@ import java.util.Locale;
 /**
  * Created by MaxDikiy on 20/10/2017.
  */
-public class ActionClearRadius extends OldAction {
+@Alias("CLEAR_RADIUS")
+public class ActionClearRadius extends Action {
     // TODO: Too weird. Optimize, simplify
 
     @Override
@@ -39,7 +42,16 @@ public class ActionClearRadius extends OldAction {
                 count++;
             }
         }
-        setMessageParam(Integer.toString(count));
+        return true;
+    }
+
+    @Override
+    public @NotNull String getName() {
+        return "RADIUS_CLEAR";
+    }
+
+    @Override
+    public boolean requiresPlayer() {
         return true;
     }
 
