@@ -22,9 +22,9 @@
 
 package me.fromgate.reactions.util.message;
 
-import me.fromgate.reactions.logic.actions.Actions;
-import me.fromgate.reactions.logic.activators.ActivatorType;
-import me.fromgate.reactions.logic.flags.Flags;
+import me.fromgate.reactions.module.defaults.actions.Actions;
+import me.fromgate.reactions.module.defaults.activators.OldActivatorType;
+import me.fromgate.reactions.module.defaults.flags.Flags;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -569,7 +569,7 @@ public enum Msg {
 
     private static void testRequiredMessages() {
         String key;
-        for (ActivatorType activator : ActivatorType.values()) {
+        for (OldActivatorType activator : OldActivatorType.values()) {
             key = "ACTIVATOR_" + activator.name().toUpperCase(Locale.ENGLISH);
             if (!exists(key)) {
                 Msg.LNG_MISSED_ACTIVATOR_DESC.log(key);

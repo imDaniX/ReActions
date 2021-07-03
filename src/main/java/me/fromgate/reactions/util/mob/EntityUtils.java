@@ -100,8 +100,7 @@ public class EntityUtils {
     }
 
     public LivingEntity getAnyKiller(EntityDamageEvent event) {
-        if (event instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
+        if (event instanceof EntityDamageByEntityEvent evdmg) {
             if (evdmg.getDamager() instanceof LivingEntity) return (LivingEntity) evdmg.getDamager();
             if (evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();
@@ -112,8 +111,7 @@ public class EntityUtils {
     }
 
     public Player getKiller(EntityDamageEvent event) {
-        if (event instanceof EntityDamageByEntityEvent) {
-            EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
+        if (event instanceof EntityDamageByEntityEvent evdmg) {
             if (evdmg.getDamager().getType() == EntityType.PLAYER) return (Player) evdmg.getDamager();
             if (evdmg.getCause() == EntityDamageEvent.DamageCause.PROJECTILE) {
                 Projectile prj = (Projectile) evdmg.getDamager();

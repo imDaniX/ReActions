@@ -98,7 +98,7 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
 
     @SuppressWarnings("unchecked")
     private static class KeyedValue<V> implements Map.Entry<String, V> {
-        private static final KeyedValue EMPTY = new KeyedValue(null, null);
+        private static final KeyedValue<?> EMPTY = new KeyedValue<>(null, null);
 
         private final String key;
         private V value;
@@ -126,7 +126,7 @@ public class CaseInsensitiveMap<V> implements Map<String, V> {
 
         @Override
         public boolean equals(Object o) {
-            return value == ((KeyedValue) o).value || value.equals(((KeyedValue) o).value);
+            return value == ((KeyedValue<V>) o).value || value.equals(((KeyedValue<V>) o).value);
         }
 
         @Override

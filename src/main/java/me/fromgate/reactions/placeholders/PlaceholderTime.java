@@ -11,19 +11,11 @@ public class PlaceholderTime implements Placeholder.Equal {
     @Override
     public String processPlaceholder(RaContext context, String key, String param) {
         Player player = context.getPlayer();
-        switch (key) {
-            case "time":
-            case "time_server":
-            case "servertime":
-                return TimeUtils.fullTimeToString(System.currentTimeMillis(), param.isEmpty() ? "dd-MM-YYYY HH:mm:ss" : param);
-
-            case "TIME_INGAME":
-            case "curtime":
-                return TimeUtils.formattedIngameTime((player == null ? Bukkit.getWorlds().get(0).getTime() : player.getWorld().getTime()), false);
-
-            default:
-                return null;
-        }
+        return switch (key) {
+            case "time", "time_server", "servertime" -> TimeUtils.fullTimeToString(System.currentTimeMillis(), param.isEmpty() ? "dd-MM-YYYY HH:mm:ss" : param);
+            case "TIME_INGAME", "curtime" -> TimeUtils.formattedIngameTime((player == null ? Bukkit.getWorlds().get(0).getTime() : player.getWorld().getTime()), false);
+            default -> null;
+        };
     }
 
     @Override

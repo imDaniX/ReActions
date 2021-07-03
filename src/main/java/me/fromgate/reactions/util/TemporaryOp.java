@@ -1,6 +1,5 @@
 package me.fromgate.reactions.util;
 
-
 import lombok.experimental.UtilityClass;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -32,11 +31,9 @@ public class TemporaryOp {
         return (T) Proxy.newProxyInstance(
                 sender.getClass().getClassLoader(),
                 sender.getClass().getInterfaces(),
-                (proxy, method, args) -> {
-                        switch (method.getName()) {
-                            case "isOp": case "hasPermission": return true;
-                            default: return method.invoke(sender, args);
-                        }
+                (proxy, method, args) -> switch (method.getName()) {
+                    case "isOp", "hasPermission" -> true;
+                    default -> method.invoke(sender, args);
                 }
         );
     }

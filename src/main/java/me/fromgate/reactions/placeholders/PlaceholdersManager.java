@@ -2,7 +2,7 @@ package me.fromgate.reactions.placeholders;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.fromgate.reactions.logic.flags.Flags;
+import me.fromgate.reactions.module.defaults.flags.Flags;
 import me.fromgate.reactions.util.data.RaContext;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PlaceholdersManager {;
+public class PlaceholdersManager {
     private static final Pattern PLACEHOLDER_GREEDY = Pattern.compile("(?<!&\\\\)%\\S+%");
     private static final Pattern PLACEHOLDER_NONGREEDY = Pattern.compile("(?<!&\\\\)%\\S+?%");
     private static final Pattern PLACEHOLDER_RAW = Pattern.compile("&\\\\(%\\S+%)");

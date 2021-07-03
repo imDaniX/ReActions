@@ -11,7 +11,7 @@ public class MathBase {
     private final Map<String, Function> functions = new HashMap<>();
     private final Map<String, Double> constants = new HashMap<>();
 
-    {
+    static {
         for (DefaultFunctions func : DefaultFunctions.values())
             MathBase.registerFunction(func.name(), func);
         MathBase.registerConstant("e", Math.E);

@@ -24,7 +24,7 @@ package me.fromgate.reactions.util.location;
 
 import lombok.experimental.UtilityClass;
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.storages.RespawnStorage;
+import me.fromgate.reactions.module.defaults.storages.RespawnStorage;
 import me.fromgate.reactions.util.enums.DeathCause;
 import me.fromgate.reactions.util.mob.EntityUtils;
 import org.bukkit.Location;
@@ -40,8 +40,8 @@ import java.util.UUID;
 // TODO: Move to LocationHolder
 @UtilityClass
 public class PlayerRespawner {
-    private Map<UUID, LivingEntity> players = new HashMap<>();
-    private Map<UUID, Location> deathPoints = new HashMap<>();
+    private final Map<UUID, LivingEntity> players = new HashMap<>();
+    private final Map<UUID, Location> deathPoints = new HashMap<>();
 
     public void addPlayerRespawn(PlayerDeathEvent event) {
         Player deadPlayer = event.getEntity();

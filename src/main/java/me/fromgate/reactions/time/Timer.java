@@ -41,8 +41,8 @@ public class Timer {
     @Setter
     private boolean paused;
 
-    private boolean ingameTimer;
-    private Parameters params;
+    private final boolean ingameTimer;
+    private final Parameters params;
     private Set<String> timesIngame;
 
     private CronExpression timeServer;

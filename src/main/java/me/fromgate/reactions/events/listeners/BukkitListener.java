@@ -5,21 +5,19 @@ import me.fromgate.reactions.events.PlayerAttacksEntityEvent;
 import me.fromgate.reactions.events.PlayerPickupItemEvent;
 import me.fromgate.reactions.externals.RaEconomics;
 import me.fromgate.reactions.externals.RaVault;
-import me.fromgate.reactions.logic.ItemStoragesManager;
-import me.fromgate.reactions.logic.StoragesManager;
 import me.fromgate.reactions.logic.activators.Activator;
-import me.fromgate.reactions.logic.activators.ActivatorType;
-import me.fromgate.reactions.logic.activators.MessageActivator;
-import me.fromgate.reactions.logic.activators.SignActivator;
-import me.fromgate.reactions.logic.storages.BlockBreakStorage;
-import me.fromgate.reactions.logic.storages.DamageStorage;
-import me.fromgate.reactions.logic.storages.DropStorage;
-import me.fromgate.reactions.logic.storages.InventoryClickStorage;
-import me.fromgate.reactions.logic.storages.MessageStorage;
-import me.fromgate.reactions.logic.storages.MobDamageStorage;
-import me.fromgate.reactions.logic.storages.PickupItemStorage;
-import me.fromgate.reactions.logic.storages.Storage;
-import me.fromgate.reactions.logic.storages.TeleportStorage;
+import me.fromgate.reactions.logic.activators.Storage;
+import me.fromgate.reactions.module.defaults.ItemStoragesManager;
+import me.fromgate.reactions.module.defaults.StoragesManager;
+import me.fromgate.reactions.module.defaults.activators.MessageActivator;
+import me.fromgate.reactions.module.defaults.activators.SignActivator;
+import me.fromgate.reactions.module.defaults.storages.BlockBreakStorage;
+import me.fromgate.reactions.module.defaults.storages.DamageStorage;
+import me.fromgate.reactions.module.defaults.storages.DropStorage;
+import me.fromgate.reactions.module.defaults.storages.InventoryClickStorage;
+import me.fromgate.reactions.module.defaults.storages.MessageStorage;
+import me.fromgate.reactions.module.defaults.storages.MobDamageStorage;
+import me.fromgate.reactions.module.defaults.storages.TeleportStorage;
 import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.BlockUtils;
 import me.fromgate.reactions.util.TemporaryOp;
@@ -172,7 +170,7 @@ public class BukkitListener implements Listener {
     // TODO: All the checks should be inside activator
     @EventHandler(ignoreCancelled = true)
     public void onSignChange(SignChangeEvent event) {
-        for (Activator activator : ReActions.getActivators().getActivators(ActivatorType.SIGN)) {
+        for (Activator activator : ReActions.getActivators().getType(SignActivator.class).getActivators()) {
             SignActivator signAct = (SignActivator) activator;
             if (!signAct.checkMask(event.getLines())) continue;
             Msg.MSG_SIGNFORBIDDEN.print(event.getPlayer(), '4', 'c', signAct.getLogic().getName());
@@ -201,17 +199,6 @@ public class BukkitListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         ItemStoragesManager.triggerItemHold((Player) event.getPlayer());
         ItemStoragesManager.triggerItemWear((Player) event.getPlayer());
-    }
-
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        Map<String, DataValue> changeables = StoragesManager.triggerPickupItem(event.getPlayer(), event.getItem(), event.getItem().getPickupDelay());
-        event.getItem().setPickupDelay((int) changeables.get(PickupItemStorage.PICKUP_DELAY).asDouble());
-        event.getItem().setItemStack(changeables.get(PickupItemStorage.ITEM).asItemStack());
-        event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-        if (event.isCancelled()) return;
-        ItemStoragesManager.triggerItemHold(event.getPlayer());
-        ItemStoragesManager.triggerItemWear(event.getPlayer());
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -320,15 +307,13 @@ public class BukkitListener implements Listener {
         String source;
         if (event.getEntity().getType() != EntityType.PLAYER) return;
         if (event.getCause() == EntityDamageEvent.DamageCause.CUSTOM && Math.round(event.getDamage()) == 0) return;
-        if (event instanceof EntityDamageByEntityEvent) {
+        if (event instanceof EntityDamageByEntityEvent evdmg) {
             source = "ENTITY";
-            EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
             Map<String, DataValue> changeables = StoragesManager.triggerDamageByMob(evdmg);
             event.setDamage(changeables.get(DamageStorage.DAMAGE).asDouble());
             event.setCancelled(changeables.get(Storage.CANCEL_EVENT).asBoolean());
-        } else if (event instanceof EntityDamageByBlockEvent) {
+        } else if (event instanceof EntityDamageByBlockEvent evdmg) {
             source = "BLOCK";
-            EntityDamageByBlockEvent evdmg = (EntityDamageByBlockEvent) event;
             Block blockDamager = evdmg.getDamager();
             if(blockDamager != null) {
                 Map<String, DataValue> changeables = StoragesManager.triggerDamageByBlock(evdmg, blockDamager);
@@ -349,15 +334,12 @@ public class BukkitListener implements Listener {
         if ((event.getCause() != EntityDamageEvent.DamageCause.ENTITY_ATTACK) && (event.getCause() != EntityDamageEvent.DamageCause.PROJECTILE))
             return;
         if (event.getEntityType() == EntityType.PLAYER) return;
-        if (!(event.getEntity() instanceof LivingEntity)) return;
-        LivingEntity le = (LivingEntity) event.getEntity();
+        if (!(event.getEntity() instanceof LivingEntity le)) return;
         if (!le.hasMetadata("ReActions-cry")) return;
         String cry = le.getMetadata("ReActions-cry").get(0).asString();
         if (cry.isEmpty()) return;
-        if (!(event instanceof EntityDamageByEntityEvent)) return;
-        EntityDamageByEntityEvent evdmg = (EntityDamageByEntityEvent) event;
-        if (evdmg.getDamager() instanceof Projectile) {
-            Projectile prj = (Projectile) evdmg.getDamager();
+        if (!(event instanceof EntityDamageByEntityEvent evdmg)) return;
+        if (evdmg.getDamager() instanceof Projectile prj) {
             LivingEntity shooter = EntityUtils.getEntityFromProjectile(prj.getShooter());
             if (shooter == null) return;
             if (!(shooter instanceof Player)) return;

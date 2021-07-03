@@ -41,7 +41,7 @@ import java.util.TreeSet;
 public class Delayer {
     // TODO: I don't like anything here...
 
-    private Map<String, Long> delays = new HashMap<>();
+    private final Map<String, Long> delays = new HashMap<>();
 
     public void save() {
         YamlConfiguration cfg = new YamlConfiguration();

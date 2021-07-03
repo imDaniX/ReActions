@@ -4,8 +4,8 @@ import me.fromgate.reactions.time.waiter.WaitingManager;
 import me.fromgate.reactions.util.Shoot;
 import org.bukkit.configuration.file.FileConfiguration;
 
+// TODO: Fully rework. Please.
 public class Cfg {
-    // TODO: Fully rework
 
     public static boolean debugMode = false;
     public static boolean saveEmptySections = false;
@@ -26,7 +26,7 @@ public class Cfg {
     public static boolean godActivatorEnable = false; // experimental, disabled by default
     public static int godActivatorCheckTicks = 10;
     public static boolean altOperator = false; // experimental, disabled by default
-    private static FileConfiguration config;
+    private static final FileConfiguration config;
 
     static {
         config = ReActions.getPlugin().getConfig();

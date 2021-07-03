@@ -1,7 +1,7 @@
 package me.fromgate.reactions;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.logic.ActivatorsManager;
+import me.fromgate.reactions.logic.activators.ActivatorsManager;
 import me.fromgate.reactions.placeholders.PlaceholdersManager;
 import org.bukkit.plugin.Plugin;
 

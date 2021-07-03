@@ -1,7 +1,7 @@
 package me.fromgate.reactions.time.waiter;
 
 import me.fromgate.reactions.ReActions;
-import me.fromgate.reactions.logic.actions.StoredAction;
+import me.fromgate.reactions.logic.activity.actions.StoredAction;
 import me.fromgate.reactions.util.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -24,15 +24,15 @@ public class WaitingManager {
         load();
     }
 
-    public static void executeDelayed(Player player, StoredAction action, boolean isAction, long time) {
+    public static void executeDelayed(Player player, StoredAction action, long time) {
         if (action == null) return;
-        executeDelayed(player, Collections.singletonList(action), isAction, time);
+        executeDelayed(player, Collections.singletonList(action), time);
     }
 
-    public static void executeDelayed(Player player, List<StoredAction> actions, boolean isAction, long time) {
+    public static void executeDelayed(Player player, List<StoredAction> actions, long time) {
         if (actions.isEmpty()) return;
         String playerStr = player != null ? player.getName() : null;
-        WaitTask task = new WaitTask(playerStr, actions, isAction, time);
+        WaitTask task = new WaitTask(playerStr, actions, time);
         tasks.add(task);
         save();
     }

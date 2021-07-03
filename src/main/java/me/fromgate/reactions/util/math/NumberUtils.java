@@ -121,6 +121,6 @@ public class NumberUtils {
      * @return Trimed double
      */
     public double trimDouble(double d) {
-        return Math.round(d * 1000) / 1000;
+        return Math.round(d * 1000) / 1000d;
     }
 }

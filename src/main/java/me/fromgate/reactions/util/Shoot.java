@@ -23,7 +23,7 @@
 package me.fromgate.reactions.util;
 
 import lombok.experimental.UtilityClass;
-import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.module.defaults.StoragesManager;
 import me.fromgate.reactions.util.item.ItemUtils;
 import me.fromgate.reactions.util.location.LocationUtils;
 import me.fromgate.reactions.util.math.Rng;
@@ -58,7 +58,7 @@ public class Shoot {
         int distance = params.getInteger("distance", 100);
         float knockbackTarget = params.getInteger("knockbackTarget", 0);
         for (LivingEntity le : getEntityBeam(shooter, getBeam(shooter, distance), onehit)) {
-            double damage = (double) Rng.nextIntRanged(params.getString("damage", "1"));
+            double damage = Rng.nextIntRanged(params.getString("damage", "1"));
             boolean shoot = true;
             if (damage > 0) {
                 shoot = damageEntity(shooter, le, damage, knockbackTarget);
@@ -106,8 +106,7 @@ public class Shoot {
         Set<LivingEntity> list = new HashSet<>();
         for (Block b : beam)
             for (Entity e : b.getChunk().getEntities()) {
-                if (!(e instanceof LivingEntity)) continue;
-                LivingEntity le = (LivingEntity) e;
+                if (!(e instanceof LivingEntity le)) continue;
                 if (le.equals(shooter)) continue;
                 if (isEntityAffectByBeamBlock(b, le)) {
                     list.add(le);

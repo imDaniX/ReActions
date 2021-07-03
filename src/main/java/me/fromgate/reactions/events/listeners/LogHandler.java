@@ -22,8 +22,8 @@
 
 package me.fromgate.reactions.events.listeners;
 
-import me.fromgate.reactions.logic.StoragesManager;
-import me.fromgate.reactions.logic.activators.MessageActivator;
+import me.fromgate.reactions.module.defaults.StoragesManager;
+import me.fromgate.reactions.module.defaults.activators.MessageActivator;
 
 import java.util.logging.LogRecord;
 import java.util.logging.StreamHandler;

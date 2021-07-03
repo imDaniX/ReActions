@@ -22,7 +22,7 @@
 
 package me.fromgate.reactions;
 
-import me.fromgate.reactions.logic.StoragesManager;
+import me.fromgate.reactions.module.defaults.StoragesManager;
 import me.fromgate.reactions.util.FileUtils;
 import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.collections.CaseInsensitiveMap;
@@ -90,7 +90,7 @@ public class VariablesManager {
         if (player == null || player.isEmpty()) return;
         UUID id = Utils.getUUID(player);
         if (id == null) return;
-        File f = new File(varDir + File.separator + id.toString() + ".yml");
+        File f = new File(varDir + File.separator + id + ".yml");
         for (String key : vars.keySet()) {
             if (key.contains(player)) cfg.set(key, vars.get(key));
         }

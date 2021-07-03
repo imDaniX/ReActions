@@ -13,15 +13,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+// TODO: Refactor a whole commands system
 public class Commander implements CommandExecutor {
-    private static Set<Cmd> commands = new HashSet<>();
+    private static final Set<Cmd> commands = new HashSet<>();
     private static JavaPlugin plugin;
     private static Commander commander;
 
     public static void init(JavaPlugin plg) {
         plugin = plg;
         commander = new Commander();
-        // TODO: All the commands should be redesigned
+
         addNewCommand(new CmdHelp());
         addNewCommand(new CmdRun());
         addNewCommand(new CmdAdd());

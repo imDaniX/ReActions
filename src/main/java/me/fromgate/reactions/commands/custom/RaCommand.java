@@ -81,8 +81,8 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
         ExecResult prioritizedResult = null;
         for (ArgumentsChain chain : chains) {
             ExecResult result = chain.executeChain(sender, args);
-            ExecType type = result.getType();
-            String exec = result.getExec();
+            ExecType type = result.type();
+            String exec = result.exec();
             if (type == ExecType.BACKUP) continue;
             if (type == ExecType.DEFAULT) {
                 return exec == null ? execs.getOrDefault(ExecType.DEFAULT, "unknown") : exec;
@@ -91,8 +91,8 @@ public final class RaCommand extends Command implements PluginIdentifiableComman
             }
         }
         if (prioritizedResult != null) {
-            String exec = prioritizedResult.getExec();
-            return exec == null ? getErroredExec(prioritizedResult.getType()) : exec;
+            String exec = prioritizedResult.exec();
+            return exec == null ? getErroredExec(prioritizedResult.type()) : exec;
         }
         String backup = execs.get(ExecType.BACKUP);
         return backup == null ? execs.getOrDefault(ExecType.DEFAULT, "unknown") : backup;

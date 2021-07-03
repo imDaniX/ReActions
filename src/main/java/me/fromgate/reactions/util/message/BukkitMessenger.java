@@ -72,9 +72,9 @@ public class BukkitMessenger implements Messenger {
             lines.addAll(Arrays.asList(ChatPaginator.wordWrap(str, lineLength)));
         }
         int totalPages = lines.size() / pageHeight + (lines.size() % pageHeight == 0 ? 0 : 1);
-        int actualPageNumber = pageNumber <= totalPages ? pageNumber : totalPages;
+        int actualPageNumber = Math.min(pageNumber, totalPages);
         int from = (actualPageNumber - 1) * pageHeight;
-        int to = from + pageHeight <= lines.size() ? from + pageHeight : lines.size();
+        int to = Math.min(from + pageHeight, lines.size());
         String[] selectedLines = Arrays.copyOfRange(lines.toArray(new String[0]), from, to);
         return new ChatPaginator.ChatPage(selectedLines, actualPageNumber, totalPages);
     }
@@ -125,8 +125,7 @@ public class BukkitMessenger implements Messenger {
     public String toString(Object obj, boolean fullFloat) {
         if (obj == null) return "'null'";
         String s = obj.toString();
-        if (obj instanceof Location) {
-            Location loc = (Location) obj;
+        if (obj instanceof Location loc) {
             if (fullFloat)
                 s = loc.getWorld() + "[" + loc.getX() + ", " + loc.getY() + ", " + loc.getZ() + "]";
             else

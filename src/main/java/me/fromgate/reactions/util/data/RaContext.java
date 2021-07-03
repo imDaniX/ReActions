@@ -16,8 +16,10 @@ public class RaContext {
 
     private final String activatorName;
     private final Player player;
+    // TODO Use Map<String, Function<String>> instead
     private final Map<String, String> variables;
     private final Map<String, DataValue> changeables;
+    // TODO
     private final boolean async;
 
     public RaContext(String activator, Map<String, String> variables, Map<String, DataValue> changeables, Player player) {

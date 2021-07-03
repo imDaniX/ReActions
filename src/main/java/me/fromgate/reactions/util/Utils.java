@@ -32,6 +32,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permissible;
+import org.jetbrains.annotations.Contract;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
@@ -110,6 +111,7 @@ public class Utils {
      * @param str String to check
      * @return Is string empty or null
      */
+    @Contract("null -> true")
     public boolean isStringEmpty(String str) {
         return str == null || str.isEmpty();
     }
@@ -159,20 +161,23 @@ public class Utils {
         StringBuilder b = new StringBuilder();
         for (char c : doco.toCharArray()) {
             switch (c) {
-                case '\r':
+                case '\r' -> {
                     b.append("\\r");
                     continue;
-                case '\n':
+                }
+                case '\n' -> {
                     b.append("\\n");
                     continue;
-                case '"':
+                }
+                case '"' -> {
                     b.append("\\\"");
                     continue;
-                case '\\':
+                }
+                case '\\' -> {
                     b.append("\\\\");
                     continue;
-                default:
-                    b.append(c);
+                }
+                default -> b.append(c);
             }
         }
         return b.toString();
@@ -293,11 +298,14 @@ public class Utils {
         return false;
     }
 
-    public static String[] getAliases(Object obj) {
-        Class<?> clazz = obj.getClass();
+    public static String[] getAliases(Class<?> clazz) {
         if(clazz.isAnnotationPresent(Alias.class)) {
             return clazz.getAnnotation(Alias.class).value();
         }
         return EMPTY_ARRAY;
+    }
+
+    public static String[] getAliases(Object obj) {
+        return getAliases(obj.getClass());
     }
 }
