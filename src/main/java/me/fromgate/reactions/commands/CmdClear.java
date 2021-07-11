@@ -4,7 +4,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
-@CmdDefine(command = "react", description = Msg.CMD_CLEAR, permission = "reactions.config",
+@CmdDefine(command = "reactions", description = Msg.CMD_CLEAR, permission = "reactions.config",
         subCommands = {"clear"}, allowConsole = true, shortDescription = "&3/react clear <id> [f|a|r]")
 public class CmdClear extends Cmd {
     @Override

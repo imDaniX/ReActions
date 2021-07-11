@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-@CmdDefine(command = "react", description = Msg.CMD_CHECK, permission = "reactions.config",
+@CmdDefine(command = "reactions", description = Msg.CMD_CHECK, permission = "reactions.config",
         subCommands = {"check"}, allowConsole = false, shortDescription = "&3/react check [radius]")
 public class CmdCheck extends Cmd {
 

@@ -12,8 +12,8 @@ commands:
   reactions:
     aliases: [ra,rea,react]
     description: Main command of ReActions
-    usage: /reactions help
+    usage: /<command> help
   exec:
     aliases: [run]
     description: Execute EXEC-activator
-    usage: /exec <ActivatorId> [player:<PlayerSelector>] [delay:<Time>]
+    usage: /<command> <ActivatorId> [player:<PlayerSelector>] [delay:<Time>]

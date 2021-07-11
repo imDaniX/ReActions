@@ -5,7 +5,6 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.logic.actions.Actions;
 import me.fromgate.reactions.logic.actions.StoredAction;
 import me.fromgate.reactions.util.TimeUtils;
-import me.fromgate.reactions.util.Utils;
 import me.fromgate.reactions.util.data.RaContext;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -54,7 +53,7 @@ public class WaitTask implements Runnable {
 
     public void execute() {
         if (this.isExecuted()) return;
-        Player p = playerName == null ? null : Utils.getPlayerExact(playerName);
+        Player p = playerName == null ? null : Bukkit.getPlayerExact(playerName);
         if (System.currentTimeMillis() > executionTime + WaitingManager.getTimeLimit()) this.executed = true;
         if (p == null && playerName != null) return;
         Bukkit.getScheduler().runTask(ReActions.getPlugin(), () -> Actions.executeActions(RaContext.EMPTY_CONTEXT, actions, isAction));
@@ -87,14 +86,13 @@ public class WaitTask implements Runnable {
         this.isAction = cfg.getBoolean(root + ".actions.action", true);
         List<String> actionList = cfg.getStringList(root + ".actions.list");
         this.actions = new ArrayList<>();
-        if (actionList != null)
-            for (String a : actionList) {
-                if (a.contains("=")) {
-                    String av = a.substring(0, a.indexOf("="));
-                    String vv = a.substring(a.indexOf("=") + 1);
-                    this.actions.add(new StoredAction(av, vv));
-                }
+        for (String a : actionList) {
+            if (a.contains("=")) {
+                String av = a.substring(0, a.indexOf("="));
+                String vv = a.substring(a.indexOf("=") + 1);
+                this.actions.add(new StoredAction(av, vv));
             }
+        }
     }
 
 }

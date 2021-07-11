@@ -4,7 +4,7 @@ import me.fromgate.reactions.ReActions;
 import me.fromgate.reactions.util.message.Msg;
 import org.bukkit.command.CommandSender;
 
-@CmdDefine(command = "react", description = Msg.CMD_GROUP, permission = "reactions.config",
+@CmdDefine(command = "reactions", description = Msg.CMD_GROUP, permission = "reactions.config",
         subCommands = {"group"}, allowConsole = true, shortDescription = "&3/react group <activator> <groupname>")
 public class CmdGroup extends Cmd {
     @Override
