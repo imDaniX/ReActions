@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import javax.script.ScriptContext;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
@@ -22,7 +23,20 @@ import java.util.Map;
  */
 public class ActionIfElse extends Action {
     // TODO: Maybe use some custom evaluator instead of freaking JS engine?
-    private static final ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+    private static final ScriptEngine ENGINE;
+    static {
+        ScriptEngineManager scripts = new ScriptEngineManager();
+        ScriptEngine engine = scripts.getEngineByName("javascript");
+        if (engine == null) {
+            try {
+                scripts.registerEngineName("rhino", (ScriptEngineFactory) Class.forName("org.mozilla.javascript.engine.RhinoScriptEngineFactory").getConstructor().newInstance());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            engine = scripts.getEngineByName("rhino");
+        }
+        ENGINE = engine;
+    }
 
     private static boolean executeActivator(Player p, String condition, String paramStr) {
         Parameters param = Parameters.fromString(paramStr);
@@ -107,7 +121,7 @@ public class ActionIfElse extends Action {
             String suffix = params.getString("suffix", "");
 
             try {
-                boolean result = (boolean) engine.eval(condition, scriptContext);
+                boolean result = (boolean) ENGINE.eval(condition, scriptContext);
                 if (!executeActivator(player, condition, (result) ? then_ : else_)
                         && !executeActions(context, (result) ? then_ : else_))
                     context.setVariable("ifelseresult" + suffix, (result) ? then_ : else_);
